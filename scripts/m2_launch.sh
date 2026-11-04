@@ -6,6 +6,9 @@
 #   scripts/m2_launch.sh resubmit PHASE N ERROR_FILE [AUTHOR_DIR]
 #       After the runner rejects a submission (BuildError), resume the same session with ONLY the
 #       runner's error text (ERROR_FILE). N is 1..3 per phase (pre-registered cap, experiments/m2/README.md).
+#   scripts/m2_launch.sh continue PHASE K [AUTHOR_DIR]
+#       Technical continuation after an API/limit error ended a response before anything was submitted
+#       (no feedback; fixed prompt experiments/m2/prompt_continue.md). Logged as PHASE.cK.
 #
 # Headless (-p). Tools are limited by experiments/m2/settings_<phase>.json (dontAsk: anything not
 # allowed is refused). User-level settings, MCP servers, subagents and the web are off. The full
@@ -14,7 +17,9 @@ set -eu
 PHASE="$1"
 REPO="$(cd "$(dirname "$0")/.." && pwd)"
 RESUBMIT_CAP=3
-if [ "$PHASE" = "resubmit" ]; then
+if [ "$PHASE" = "continue" ]; then
+  TARGET="$2"; K="$3"; AUTHOR_DIR="${4:-$(dirname "$REPO")/HypaNet-m2-author}"
+elif [ "$PHASE" = "resubmit" ]; then
   TARGET="$2"; N="$3"; ERROR_FILE="$4"; AUTHOR_DIR="${5:-$(dirname "$REPO")/HypaNet-m2-author}"
 else
   AUTHOR_DIR="${2:-$(dirname "$REPO")/HypaNet-m2-author}"
@@ -22,6 +27,7 @@ fi
 MODEL="${M2_MODEL:-claude-fable-5-1}"
 FALLBACK="${M2_FALLBACK_MODEL:-claude-opus-5-5}"
 EFFORT="${M2_EFFORT:-max}"
+export CLAUDE_CODE_MAX_OUTPUT_TOKENS="${M2_MAX_OUTPUT_TOKENS:-128000}"
 LOGDIR="$REPO/experiments/m2/logs"
 mkdir -p "$LOGDIR"
 case "$PHASE" in
@@ -39,6 +45,15 @@ case "$PHASE" in
     STRICT_SHA="$(cut -d' ' -f1 "$REPO/weight_program/phase-a-strict/artifact.sha256")"
     PROMPT="$(sed "s/{A_STRICT_SHA256}/$STRICT_SHA/" "$REPO/experiments/m2/prompt_phase_a_selfcheck.md")"
     SESSION_ARGS="--resume $SID"
+    ;;
+  continue)
+    case "$TARGET" in phase-a-strict|phase-a-selfcheck) ;; *) echo "continue: bad phase $TARGET" >&2; exit 2;; esac
+    case "$K" in [1-9]) ;; *) echo "continue: K must be 1..9" >&2; exit 2;; esac
+    SETTINGS="$REPO/experiments/m2/settings_$(echo "$TARGET" | tr '-' '_').json"
+    SID="$(cat "$REPO/experiments/m2/SESSION_ID")"
+    PROMPT="$(sed "s/{PHASE}/$TARGET/" "$REPO/experiments/m2/prompt_continue.md")"
+    SESSION_ARGS="--resume $SID"
+    PHASE="$TARGET.c$K"
     ;;
   resubmit)
     case "$TARGET" in phase-a-strict|phase-a-selfcheck) ;; *) echo "resubmit: bad phase $TARGET" >&2; exit 2;; esac
@@ -62,7 +77,7 @@ esac
 LOG="$LOGDIR/$PHASE.stream.jsonl"
 [ -e "$LOG" ] && { echo "refusing: $LOG exists (sessions are not re-run silently)" >&2; exit 2; }
 cd "$AUTHOR_DIR"
-echo "launching $PHASE: model=$MODEL fallback=$FALLBACK effort=$EFFORT session=$SID dir=$AUTHOR_DIR"
+echo "launching $PHASE: model=$MODEL fallback=$FALLBACK effort=$EFFORT max_output=$CLAUDE_CODE_MAX_OUTPUT_TOKENS session=$SID dir=$AUTHOR_DIR"
 # shellcheck disable=SC2086
 claude -p "$PROMPT" \
   --model "$MODEL" --fallback-model "$FALLBACK" --effort "$EFFORT" \
@@ -73,5 +88,5 @@ claude -p "$PROMPT" \
   --output-format stream-json --verbose \
   < /dev/null > "$LOG" 2> "$LOGDIR/$PHASE.stderr.log" || echo "claude exited non-zero (see logs)" >&2
 echo "transcript: $LOG"
-AUDIT_PHASE="${PHASE%%.r*}"
+AUDIT_PHASE="${PHASE%%.[rc]*}"
 cd "$REPO" && uv run python scripts/m2_audit_session.py "$LOG" "$AUTHOR_DIR" "$AUDIT_PHASE"

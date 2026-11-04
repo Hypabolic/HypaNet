@@ -42,6 +42,13 @@ The rules:
 - A kit failure is not a Phase A attempt. That covers `claude` exiting on a flag or auth error before the model does any work. In that case, delete `SESSION_ID` and the log by hand and relaunch.
 - Read the audit's `models` field after every launch. `--fallback-model` can switch to Opus mid-session, and the archive must record which model actually wrote the weights.
 
+## Technical continuations
+
+If a response ends on an API or limit error before anything is submitted, the session is resumed with the fixed, feedback-free `prompt_continue.md`, via `scripts/m2_launch.sh continue <phase> <K>`. These continuations are logged as `<phase>.cK` and are not Phase A attempts. `CLAUDE_CODE_MAX_OUTPUT_TOKENS` defaults to 128000; set `M2_MAX_OUTPUT_TOKENS` to change it.
+
+**Incident log**
+- 2026-11-04, phase-a-strict: the first response hit the 64,000 output-token cap after 56.8 min (12 turns, $13.95, claude-fable-5-1), so no files were written. The audit flagged one executed `ls -la` of the author's own directory. Claude Code auto-allows read-only commands inside the working directory; this is harmless, but it is recorded. Resumed as phase-a-strict.c1.
+
 ## Isolation controls
 
 | Control | Mechanism |
