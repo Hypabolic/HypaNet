@@ -1,0 +1,338 @@
+{
+  "split": "dev",
+  "sessions": 12000,
+  "events": 343290,
+  "renderer_source_sha256": "b5451f7fe65152cb7c6c8401b8ee2bcb927e87c41985b379c6b5caf993ff920b",
+  "tokeniser_source_sha256": "dc26886cb75db9cebacdb9c68e31fcbb3072434e48ae19892d89707db57d614d",
+  "revisit_evidence": {
+    "definition": "REVERSION event i has evidence if a rendered h_new (h0 excluded) of i equals an h_old or h_new rendered on an earlier event j of the window. Per event: j in [i-7, i-1]. Per OSCILLATING window ending at t, two readings: strict in-window (j in [t-7, i-1] for every reversion i in [t-7, t]) and event-window (every reversion i in [t-7, t] has per-event evidence)",
+    "reversion_events": 31008,
+    "reversion_events_with_evidence": 30982,
+    "fraction_reversion_events_with_evidence": 0.9992,
+    "reversion_events_without_hunk_lines": 0,
+    "oscillating_windows": 44308,
+    "oscillating_windows_with_reversions": 44308,
+    "oscillating_windows_all_reversions_evidenced": 6956,
+    "fraction_oscillating_windows_all_evidenced": 0.157,
+    "oscillating_windows_all_reversions_event_evidenced": 44305,
+    "fraction_oscillating_windows_all_event_evidenced": 0.9999
+  },
+  "marker_audit": {
+    "n": 56417,
+    "positive_rate": 0.392,
+    "macro_f1_threshold_0_5": 0.3781,
+    "macro_f1_threshold_base_rate": 0.416,
+    "macro_f1_constant_prior": 0.3781,
+    "auc": 0.5623,
+    "fold_weights_standardised": [
+      [
+        0.0,
+        0.0,
+        1.2036,
+        -3.3267,
+        1.0631,
+        0.0,
+        -1.5344
+      ],
+      [
+        0.0,
+        0.0,
+        1.2055,
+        -3.3232,
+        1.0543,
+        0.0,
+        -1.534
+      ],
+      [
+        0.0,
+        0.0,
+        1.1971,
+        -3.332,
+        1.0405,
+        0.0,
+        -1.5149
+      ],
+      [
+        0.0,
+        0.0,
+        1.1518,
+        -3.2815,
+        1.0232,
+        0.0,
+        -1.4524
+      ],
+      [
+        0.0,
+        0.0,
+        1.1666,
+        -3.2872,
+        1.0422,
+        0.0,
+        -1.4594
+      ]
+    ],
+    "features": [
+      "hunk_lines",
+      "changed_paths",
+      "tool=edit_file",
+      "tool=revert",
+      "tool=write_file",
+      "trunc_present"
+    ],
+    "label": "1 = PROGRESS or RESOLVES_EPISODE, 0 = NONE or REVERSION (REDUNDANT excluded)",
+    "folds": "5-fold grouped by session: sha256('v03-audit-fold:'+session_id) mod 5",
+    "ablation_without_tool": {
+      "n": 56417,
+      "positive_rate": 0.392,
+      "macro_f1_threshold_0_5": 0.3781,
+      "macro_f1_threshold_base_rate": 0.4931,
+      "macro_f1_constant_prior": 0.3781,
+      "auc": 0.4847
+    },
+    "ablation_tool_only": {
+      "n": 56417,
+      "positive_rate": 0.392,
+      "macro_f1_threshold_0_5": 0.3781,
+      "macro_f1_threshold_base_rate": 0.416,
+      "macro_f1_constant_prior": 0.3781,
+      "auc": 0.5623
+    },
+    "counts_by_tool_and_hunk_lines": {
+      "cell": "[events, positives]",
+      "edit_file": {
+        "1": [
+          42441,
+          17992
+        ]
+      },
+      "revert": {
+        "1": [
+          4549,
+          0
+        ]
+      },
+      "write_file": {
+        "1": [
+          9427,
+          4124
+        ]
+      }
+    }
+  },
+  "hashed_bucket_collisions": {
+    "definition": "distinct surface words sharing a hashed id (>= 2048) within one session",
+    "sessions_with_collision": 981,
+    "fraction_sessions_with_collision": 0.0818,
+    "colliding_word_pairs": 1050,
+    "words_in_collisions": 2097,
+    "distinct_hashed_words_summed_over_sessions": 403018,
+    "word_collision_rate": 0.005203,
+    "examples": [
+      [
+        "NullPointerException",
+        "hcc4ae0b1d3"
+      ],
+      [
+        "encode",
+        "he8400f191b"
+      ],
+      [
+        "hb03d7aeade",
+        "src/billing"
+      ],
+      [
+        "TestReconcileOffsetEmptyInput",
+        "h1a14bd75ad"
+      ],
+      [
+        "dataset",
+        "tests/unit/test_config_loader.py"
+      ],
+      [
+        "OverflowError",
+        "Override"
+      ],
+      [
+        "page",
+        "serializer"
+      ],
+      [
+        "Utf8Error",
+        "list_hypotheses"
+      ],
+      [
+        "eslintrc.json",
+        "tsconfig.json"
+      ],
+      [
+        "hf885a46eac",
+        "hfac29e70f9"
+      ]
+    ]
+  },
+  "length": {
+    "tokens_per_session": {
+      "n": 12000,
+      "mean": 870.2,
+      "p50": 768.0,
+      "p90": 1486.0,
+      "p99": 2175.01,
+      "max": 3292
+    },
+    "tokens_per_block_by_family": {
+      "ask": {
+        "n": 413,
+        "mean": 22.04,
+        "p50": 22.0,
+        "p90": 23.0,
+        "p99": 23.0,
+        "max": 23
+      },
+      "build": {
+        "n": 6571,
+        "mean": 27.24,
+        "p50": 31.0,
+        "p90": 33.0,
+        "p99": 33.0,
+        "max": 37
+      },
+      "edit_file": {
+        "n": 59177,
+        "mean": 26.78,
+        "p50": 27.0,
+        "p90": 28.0,
+        "p99": 28.0,
+        "max": 32
+      },
+      "http_call": {
+        "n": 13593,
+        "mean": 40.47,
+        "p50": 38.0,
+        "p90": 56.0,
+        "p99": 70.0,
+        "max": 80
+      },
+      "lint": {
+        "n": 9238,
+        "mean": 26.09,
+        "p50": 22.0,
+        "p90": 33.0,
+        "p99": 36.0,
+        "max": 38
+      },
+      "list_dir": {
+        "n": 22993,
+        "mean": 21.27,
+        "p50": 21.0,
+        "p90": 22.0,
+        "p99": 23.0,
+        "max": 27
+      },
+      "plan": {
+        "n": 16072,
+        "mean": 22.13,
+        "p50": 22.0,
+        "p90": 23.0,
+        "p99": 23.0,
+        "max": 27
+      },
+      "poll_status": {
+        "n": 11410,
+        "mean": 23.26,
+        "p50": 24.0,
+        "p90": 24.0,
+        "p99": 25.0,
+        "max": 29
+      },
+      "read_file": {
+        "n": 66496,
+        "mean": 24.19,
+        "p50": 26.0,
+        "p90": 27.0,
+        "p99": 27.0,
+        "max": 31
+      },
+      "revert": {
+        "n": 4549,
+        "mean": 27.09,
+        "p50": 27.0,
+        "p90": 28.0,
+        "p99": 29.0,
+        "max": 30
+      },
+      "run_tests": {
+        "n": 87521,
+        "mean": 43.71,
+        "p50": 43.0,
+        "p90": 56.0,
+        "p99": 71.0,
+        "max": 76
+      },
+      "search": {
+        "n": 28700,
+        "mean": 27.11,
+        "p50": 27.0,
+        "p90": 28.0,
+        "p99": 29.0,
+        "max": 33
+      },
+      "write_file": {
+        "n": 11640,
+        "mean": 26.79,
+        "p50": 27.0,
+        "p90": 28.0,
+        "p99": 28.0,
+        "max": 32
+      },
+      "yield": {
+        "n": 4917,
+        "mean": 22.13,
+        "p50": 22.0,
+        "p90": 23.0,
+        "p99": 23.0,
+        "max": 27
+      }
+    },
+    "tokens_per_block_all": {
+      "n": 343290,
+      "mean": 30.38,
+      "p50": 27.0,
+      "p90": 45.0,
+      "p99": 69.0,
+      "max": 80
+    }
+  },
+  "leakage_scan": {
+    "markers": [
+      "cleanup pass",
+      "revised",
+      "-ok",
+      "enabled=",
+      "investigation",
+      "explanation",
+      "+1)"
+    ],
+    "marker_counts": {
+      "cleanup pass": 0,
+      "revised": 0,
+      "-ok": 0,
+      "enabled=": 0,
+      "investigation": 0,
+      "explanation": 0,
+      "+1)": 0
+    },
+    "marker_examples": {},
+    "non_grammar_body_lines": 0,
+    "non_grammar_body_line_examples": [],
+    "file_text_lines_found_in_blocks": 0,
+    "clean": true
+  },
+  "reserved_field_words_outside_field_position": {
+    "backoff": 852,
+    "limit": 2417,
+    "path": 2174,
+    "query": 2941,
+    "target": 421,
+    "tests": 1482
+  }
+}

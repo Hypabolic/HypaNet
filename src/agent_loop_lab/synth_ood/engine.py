@@ -18,6 +18,7 @@ from ..oracle_config import OracleConfig
 from ..schema import CanonicalEvent, LatentEffect as E, OracleRecord, Outcome, Provenance
 from ..synth.labeller import label_session
 from ..synth.latent import LatentStep, latent_trace
+from ..v03.rawop import RawOp, emit_finished, normalise_ood_drop
 
 
 class PackageResolver:
@@ -123,6 +124,7 @@ never supplied by scenario scripts. No encoder is imported here.
         self.service_calls: dict[str, int] = {}
         self.events: list[CanonicalEvent] = []
         self.steps: list[LatentStep] = []
+        self.raw: list[RawOp] = []  # v0.3 harness side channel, aligned with events
         self.states = [self.repo.digest()]
         self.last_failure: tuple | None = None
         self.episode_key: tuple | None = None
@@ -152,6 +154,7 @@ never supplied by scenario scripts. No encoder is imported here.
         # Relevant state for retry equality is behavioural, so cosmetic edits
         # do not make a deterministic failing validation a fresh attempt.
         key = (family, repr(target), repr(sorted(args.items())), behaviour)
+        pre_files = dict(self.repo.files)  # v0.3 raw capture: shallow snapshot, no rng
         if family == "read_file":
             text = self.repo.files[target]
             read_key = (target, text)
@@ -314,6 +317,19 @@ never supplied by scenario scripts. No encoder is imported here.
             output_tokens=cost-input_tokens,
             provenance=Provenance(source="simulator:ood-0.1"),
         ))
+        # v0.3 harness side channel (no rng, no state change): the operation as executed and emitted.
+        ev, is_error = self.events[-1], outcome is Outcome.ERROR
+        self.raw.append(RawOp.make(
+            family=family, target=target, args=args, outcome=outcome,
+            error_class=error_class if is_error else None, error_location=error_location if is_error else None,
+            validation=(suite, passed, total) if produced else None,
+            changed=[{"path": p, "before": pre_files.get(p), "after": self.repo.files.get(p)}
+                     for p in sorted(set(pre_files) | set(self.repo.files))
+                     if pre_files.get(p) != self.repo.files.get(p)],
+            extra={"status": "pending" if outcome is Outcome.NEUTRAL else "ready"} if family == "poll_status" else None,
+            input_tokens=ev.input_tokens, output_tokens=ev.output_tokens, timestamp=ev.timestamp,
+            dropped=normalise_ood_drop(dropped, is_error=is_error, produced=produced),
+        ))
         self.states.append(after)
 
     def read(self, path: str) -> None:
@@ -326,6 +342,7 @@ never supplied by scenario scripts. No encoder is imported here.
         self.perform("run_tests", self.repo.suite, {"tests": ["replica-contract"]}, dropped=dropped)
 
     def finish(self, name: str) -> tuple[list[CanonicalEvent], OracleRecord]:
+        emit_finished(self.session_id, self.events, self.raw)  # v0.3 raw capture (no-op unless a sink is open)
         return self.events, OracleRecord(
             session_id=self.session_id, generator_version="ood-0.1", seed=self.seed,
             scenario_family=f"ood:{name}", event_effects=tuple(s.effect for s in self.steps),

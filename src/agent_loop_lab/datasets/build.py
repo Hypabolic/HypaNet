@@ -309,12 +309,16 @@ def build(
     cfg: OracleConfig | None = None,
     reports_dir: str | Path | None = None,
     progress: Callable[[str], None] | None = None,
+    on_session: Callable[[str, list[CanonicalEvent], OracleRecord], None] | None = None,
 ) -> BuildResult:
     """Generate the standard splits and the counterfactual set into ``out_dir``.
 
     Writes the six split files, the two counterfactual files, ``MANIFEST.json``
     and ``splits.json``. When ``reports_dir`` is given, also reads the split
     files back and writes the dataset-stats and dev collision reports there.
+    ``on_session(split, events, record)`` (optional, observe-only) is called
+    right after each session's lines are written, in file order; the v0.3
+    raw builder uses it. It does not change what is generated or written.
     """
     from ..synth import counterfactual as cf
     from ..synth.engine import GENERATOR_VERSION
@@ -357,6 +361,8 @@ def build(
                 writers[(split, "oracle")].write(oracle_line(record))
                 split_ids[split].append(sid)
                 split_counts[split].add(events, record)
+                if on_session is not None:
+                    on_session(split, events, record)
             say(f"{family}: {n} sessions {family_split[family]}")
 
         cf_counts = _Counts()
@@ -379,6 +385,8 @@ def build(
                     writers[(COUNTERFACTUAL, "events")].write(events_line(record.session_id, events))
                     writers[(COUNTERFACTUAL, "oracle")].write(oracle_line(record))
                     cf_counts.add(events, record)
+                    if on_session is not None:
+                        on_session(COUNTERFACTUAL, events, record)
                 with_contrast += bool(pair[0][1].latent_trace["counterfactual"]["contrast_endpoints"])
             cf_summary[kind] = {"pairs": pairs_per_kind, "pairs_with_contrast_endpoints": with_contrast}
             say(f"counterfactual {kind}: {pairs_per_kind} pairs, {with_contrast} with contrast")

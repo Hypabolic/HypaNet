@@ -17,7 +17,7 @@ import hashlib
 import json
 import random
 from pathlib import Path
-from typing import Any, Iterator
+from typing import Any, Callable, Iterator
 
 from ..oracle_config import OracleConfig, load_oracle_config
 from ..schema import CanonicalEvent, OracleLabel, OracleRecord
@@ -61,8 +61,13 @@ def build_ood(
     master_seed: int,
     sessions_per_family: int = OOD_SESSIONS_PER_FAMILY,
     cfg: OracleConfig | None = None,
+    on_session: Callable[[list[CanonicalEvent], OracleRecord], None] | None = None,
 ) -> dict[str, Any]:
-    """Generate the OOD set into ``out_dir`` and write ``OOD_MANIFEST.json``; return the manifest."""
+    """Generate the OOD set into ``out_dir`` and write ``OOD_MANIFEST.json``; return the manifest.
+
+    ``on_session(events, record)`` (optional, observe-only) is called right
+    after each session's lines are written, in file order (v0.3 raw builder).
+    """
     from ..synth_ood import FAMILIES
 
     cfg = cfg or load_oracle_config()
@@ -85,6 +90,8 @@ def build_ood(
                 fe.write(events_line(sid, events))
                 fo.write(oracle_line(record))
                 session_ids.append(sid)
+                if on_session is not None:
+                    on_session(events, record)
                 for lab in record.window_labels.values():
                     counts[lab.value] = counts.get(lab.value, 0) + 1
             label_counts[family] = dict(sorted(counts.items()))

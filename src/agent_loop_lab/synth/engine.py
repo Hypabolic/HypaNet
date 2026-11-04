@@ -44,6 +44,7 @@ from typing import Any, Iterable, Mapping, Sequence
 
 from ..fingerprint import FAMILY_CATEGORY, failure_fingerprint, intent_fingerprint, normalise_path, workspace_digest
 from ..oracle_config import OracleConfig, load_oracle_config
+from ..v03.rawop import RawOp, emit_finished, normalise_standard_drop
 from ..schema import (
     EVENTS_PER_WINDOW,
     CanonicalEvent,
@@ -129,6 +130,12 @@ class Change:
         if self.kind == "wrong":
             return "wrong" + (":regress" if self.regress else "")
         return self.kind
+
+
+def _changed(before: Mapping[str, str | None], after: Mapping[str, str | None]) -> list[dict]:
+    """v0.3 raw capture: files whose text differs, sorted by path (None = absent)."""
+    return [{"path": p, "before": before.get(p), "after": after.get(p)}
+            for p in sorted(set(before) | set(after)) if before.get(p) != after.get(p)]
 
 
 def _fid(fault: Fault | str) -> str:
@@ -305,6 +312,8 @@ class Session:
         self._events: list[CanonicalEvent] = []
         self._steps: list[LatentStep] = []
         self._log: list[_LogEntry] = []
+        self._raw: list[RawOp] = []  # v0.3 side channel, aligned with _events (no latent data)
+        self._finished_raw: list[RawOp] | None = None
         self._K: dict[str, int] = {}
         self._seen_content: set[tuple] = set()
         self._seen_obs: set[tuple] = set()
@@ -339,6 +348,12 @@ class Session:
     @property
     def steps(self) -> list[LatentStep]:
         return list(self._steps)
+
+    @property
+    def raw_ops(self) -> list[RawOp]:
+        """v0.3 raw operation records, aligned with :attr:`events` (after
+        :meth:`finish`, with the returned events, i.e. after any truncation)."""
+        return list(self._finished_raw if self._finished_raw is not None else self._raw)
 
     @property
     def episode(self) -> tuple[str, int] | None:
@@ -494,6 +509,7 @@ class Session:
             raise ValueError("to must be 'last' or 'initial'")
         w = self.world
         before = self._mut_snapshot()
+        pre_texts = {p: (w.text(p) if p in w.files else None) for p in paths}  # v0.3 raw capture (no rng)
         for p in paths:
             if to == "last":
                 stack = self._stacks.get(p)
@@ -505,8 +521,10 @@ class Session:
                 self._restore(p, self._initial.get(p))
         target = {p: w.text(p) for p in paths if p in w.files}
         revision = workspace_digest(target) if target else _sha("deleted:" + ",".join(paths))
+        post_texts = {p: (w.text(p) if p in w.files else None) for p in paths}
         return self._finish_mutation("revert", list(paths), {"revision": revision}, ("revert", tuple(paths), revision),
-                                     before, f"revert {','.join(paths)} to {to}", cost, drop)
+                                     before, f"revert {','.join(paths)} to {to}", cost, drop,
+                                     changed=_changed(pre_texts, post_texts))
 
     def _push(self, path: str) -> None:
         fm = self.world.files.get(path)
@@ -557,7 +575,8 @@ class Session:
                 self._push(path)
                 w.set_states(path, new_states)
             desc = change.describe()
-        new_text = w.text(path) if path in w.files else ""
+        new_exists = path in w.files
+        new_text = w.text(path) if new_exists else ""
         if family == "edit_file":
             patch = "\n".join(difflib.unified_diff(old_text.split("\n"), new_text.split("\n"), f"a/{path}", f"b/{path}",
                                                    lineterm="", n=0)) or f"--- a/{path}\n+++ b/{path}\n@@ no change @@"
@@ -567,7 +586,9 @@ class Session:
             args = {"content": new_text}
             key = (family, path, _sha(new_text))
         return self._finish_mutation(family, path, args, key, before, f"{family} {path} {desc}", cost, drop,
-                                     hint=0.6 + abs(len(new_text) - len(old_text)) / 2000.0)
+                                     hint=0.6 + abs(len(new_text) - len(old_text)) / 2000.0,
+                                     changed=_changed({path: old_text if exists else None},
+                                                      {path: new_text if new_exists else None}))
 
     def _plan_change(self, path: str, change: Change, block: str | None) -> dict:
         w = self.world
@@ -598,7 +619,8 @@ class Session:
         raise ValueError(f"unknown change kind {change.kind!r}")
 
     def _finish_mutation(self, family: str, target: Any, args: dict, key: tuple, before: tuple, desc: str,
-                         cost: float | None, drop: Sequence[str], hint: float = 1.0) -> OpResult:
+                         cost: float | None, drop: Sequence[str], hint: float = 1.0, *,
+                         changed: list[dict] | None = None) -> OpResult:
         w = self.world
         ws_b, beh_b, causes_b, _ = before
         beh_changed = w.behaviour_key() != beh_b
@@ -606,7 +628,7 @@ class Session:
         return self._commit(
             family, target, args, key=key, rel_kind="text", outcome=Outcome.SUCCESS, ws_before=ws_b,
             redundant=not beh_changed, beh_changed=beh_changed, repaired=repaired, desc=desc, cost=cost, drop=drop,
-            hint=hint,
+            hint=hint, changed=changed,
         )
 
     # -- validation -------------------------------------------------------
@@ -628,6 +650,7 @@ class Session:
             redundant=redundant, validation=(suite, passed, total), obs=("val", vkey, passed, total, first and first[0]),
             desc=f"test {suite}{'' if sel is None else f' [{len(sel)}]'} -> {passed}/{total}",
             hint=0.6 + total / 40.0 + (0.8 if first else 0.0), cost=cost, drop=drop,
+            extra={"failing_test": first[0]} if first else None,
         )
         return replace(res, failing_test=first[0] if first else None, error_class=first[1] if first else None,
                        passed=passed, total=total)
@@ -712,7 +735,7 @@ class Session:
             "poll_status", resource, args, key=("poll_status", resource), rel_kind=f"res:{resource}",
             outcome=Outcome.SUCCESS if ready else Outcome.NEUTRAL, poll=True, redundant=redundant,
             obs=("poll", resource, status), desc=f"poll {resource} -> {status}", hint=0.5, cost=cost, drop=drop,
-            seconds=1.0 + (backoff or 0),
+            seconds=1.0 + (backoff or 0), extra={"status": status},
         )
 
     # -- control ----------------------------------------------------------
@@ -777,6 +800,8 @@ class Session:
         cost: float | None = None,
         drop: Sequence[str] = (),
         seconds: float | None = None,
+        changed: list[dict] | None = None,
+        extra: Mapping[str, Any] | None = None,
     ) -> OpResult:
         if self._finished:
             raise RuntimeError("session already finished")
@@ -885,6 +910,16 @@ class Session:
         self._events.append(event)
         self._steps.append(step)
         self._log.append(_LogEntry(desc, validation[0] if validation else None, drop))
+        # v0.3 side channel: the concrete operation as executed and as emitted.
+        # Built from values computed above; no world or rng access.
+        err = failure is not None and outcome is Outcome.ERROR
+        self._raw.append(RawOp.make(
+            family=family, target=target, args=args, outcome=outcome,
+            error_class=failure[1] if err else None, error_location=failure[2] if err else None,
+            validation=validation, changed=changed, extra=extra,
+            input_tokens=event.input_tokens, output_tokens=event.output_tokens, timestamp=event.timestamp,
+            dropped=normalise_standard_drop(drop),
+        ))
         return OpResult(event, step)
 
     def _build_event(self, idx: int, family: str, target: Any, args: dict, outcome: Outcome,
@@ -933,7 +968,8 @@ class Session:
 
         The emitted prefix is re-stamped with the new ``session_id``/``event_id``;
         everything else, including the latent state and future random draws, is
-        identical until the two sessions diverge.
+        identical until the two sessions diverge. The v0.3 raw ops are copied
+        unchanged by the deepcopy: they carry no session identity.
         """
         new = copy.deepcopy(self)
         new.session_id = session_id
@@ -966,6 +1002,7 @@ class Session:
         events = self._events[m:]
         steps = self._steps[m:]
         log = self._log[m:]
+        raw = self._raw[m:]
         if m:
             events = [replace(e, provenance=replace(e.provenance, history_complete=False)) for e in events]
             p0 = self._steps[m - 1].progress_after
@@ -1018,4 +1055,6 @@ class Session:
             latent_trace=trace,
         )
         self._finished = True
+        self._finished_raw = raw
+        emit_finished(self.session_id, events, raw)
         return events, record
