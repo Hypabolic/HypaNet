@@ -1,0 +1,11 @@
+{
+  "author_dir": "/Users/matthew/Development/hypabolic/HypaNet-v03-author",
+  "disclosure_dir": "disclosure",
+  "disclosure_sha256": "27c8deb03432a0ad79ebcd32f867a132d6c6bca210bdd81cd011ee2987e87492",
+  "disclosure_sha256_file_sha256": "bbadba6629b4fe4e9e283757d4b7c6dc0baa5a1422112e8ec7a4425d2a448fb8",
+  "output_dir": "output/v03-phase-b",
+  "packet_sha256": "72d2bebf0a4c2c8607fd1ca7f451ef56ff95dea444276f8a13132921d99045f2",
+  "phase_a_artifact_sha256": "ba6f4743e6c4c32a0a71124357511146889a94204d8263d547edaa85b251dfb6",
+  "prompt_v03_phase_b_sha256": "b37fd4217974a320e0361029fc6aa2c9f175896235fac51e097c1913fbb63583",
+  "settings_v03_phase_b_sha256": "9091118a38bee3080fb5ec91aa406cea1b1f19981d6545b1bfb56f5983b6192e"
+}
