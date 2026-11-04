@@ -1,0 +1,249 @@
+{
+  "best_epoch": 26,
+  "best_val_macro_f1": 0.9927031319513732,
+  "budget": "all",
+  "budget_sessions_count": 12000,
+  "budget_sessions_sha256": "78ac1004bd2f36cfb28af2d602cb63ea952510e36b733a74bcb4340b4ede94a5",
+  "code_sha256": {
+    "scripts/m4_train_phase_c.py": "e25249a7734492b4abf51df7f9c667781637b30d1f9c4b9cfe8a75579e4d5283",
+    "src/agent_loop_lab/baselines/phase_c.py": "df0c34a6a5a4bb58dd3a3ff517852e450d45f2f8b04d783e124cccea86997e70"
+  },
+  "data_sha256": {
+    "standard/dev.events.jsonl.gz": "0f007a3b3ff54801326fc963ea092594215eb4f45413097c1dd4481d8da31cf8",
+    "standard/dev.oracle.jsonl.gz": "2b868ede2ace45e64f84f3f51fba59161604ae5f2adf3885fe45ff71f989700d",
+    "standard/val.events.jsonl.gz": "fd8d4ee17c1a1a600fea694e7f192aef8be15a700a48a300bdff3a82c98335e0",
+    "standard/val.oracle.jsonl.gz": "9fd0a876b35d0667bcd3e6ca404c39b485e932843d4b0459d752f58f1a669fd4"
+  },
+  "environment": {
+    "deterministic_algorithms": true,
+    "numpy": "1.26.4",
+    "platform": "macOS-26.7.1-x86_64-i386-64bit",
+    "python": "3.12.13",
+    "torch": "2.2.2",
+    "torch_threads": 2
+  },
+  "epochs_run": 31,
+  "first_sessions": [
+    "s-0488bede030194e2",
+    "s-ba60bb84e5017af3",
+    "s-74e94a9bdea0b6ca",
+    "s-984c2f6a3f1aad91",
+    "s-a40c3d87214a7383"
+  ],
+  "history": [
+    {
+      "epoch": 1,
+      "train_loss": 0.28895245282060045,
+      "val_macro_f1": 0.9619319074144825
+    },
+    {
+      "epoch": 2,
+      "train_loss": 0.09670421655736879,
+      "val_macro_f1": 0.9724051555136153
+    },
+    {
+      "epoch": 3,
+      "train_loss": 0.07421832040916498,
+      "val_macro_f1": 0.9777305224215713
+    },
+    {
+      "epoch": 4,
+      "train_loss": 0.06213814650104065,
+      "val_macro_f1": 0.9809637081551619
+    },
+    {
+      "epoch": 5,
+      "train_loss": 0.0541653612672914,
+      "val_macro_f1": 0.9821373481565081
+    },
+    {
+      "epoch": 6,
+      "train_loss": 0.047843712323701215,
+      "val_macro_f1": 0.9853563401743652
+    },
+    {
+      "epoch": 7,
+      "train_loss": 0.04325512376196477,
+      "val_macro_f1": 0.9863237321660501
+    },
+    {
+      "epoch": 8,
+      "train_loss": 0.03988094586463615,
+      "val_macro_f1": 0.9873875741788363
+    },
+    {
+      "epoch": 9,
+      "train_loss": 0.037301305705888646,
+      "val_macro_f1": 0.9874454380548422
+    },
+    {
+      "epoch": 10,
+      "train_loss": 0.034907247916975935,
+      "val_macro_f1": 0.9887582389607699
+    },
+    {
+      "epoch": 11,
+      "train_loss": 0.033289983539406584,
+      "val_macro_f1": 0.9893585803888119
+    },
+    {
+      "epoch": 12,
+      "train_loss": 0.03148414102976321,
+      "val_macro_f1": 0.9889556208562714
+    },
+    {
+      "epoch": 13,
+      "train_loss": 0.0303765434304888,
+      "val_macro_f1": 0.9897994973552883
+    },
+    {
+      "epoch": 14,
+      "train_loss": 0.028834092397440253,
+      "val_macro_f1": 0.9894472509159278
+    },
+    {
+      "epoch": 15,
+      "train_loss": 0.028072442546255946,
+      "val_macro_f1": 0.9906082473432885
+    },
+    {
+      "epoch": 16,
+      "train_loss": 0.02710613157735415,
+      "val_macro_f1": 0.9902442085842422
+    },
+    {
+      "epoch": 17,
+      "train_loss": 0.026410372033335947,
+      "val_macro_f1": 0.9908547310224658
+    },
+    {
+      "epoch": 18,
+      "train_loss": 0.02526966525443111,
+      "val_macro_f1": 0.9912705301962157
+    },
+    {
+      "epoch": 19,
+      "train_loss": 0.02461306836100217,
+      "val_macro_f1": 0.9911387238546983
+    },
+    {
+      "epoch": 20,
+      "train_loss": 0.02427988347756252,
+      "val_macro_f1": 0.9912145842184237
+    },
+    {
+      "epoch": 21,
+      "train_loss": 0.02343052006878306,
+      "val_macro_f1": 0.9915809926105326
+    },
+    {
+      "epoch": 22,
+      "train_loss": 0.023169787532612045,
+      "val_macro_f1": 0.9916221480394469
+    },
+    {
+      "epoch": 23,
+      "train_loss": 0.022578362909462194,
+      "val_macro_f1": 0.9917886053797448
+    },
+    {
+      "epoch": 24,
+      "train_loss": 0.02223603640337092,
+      "val_macro_f1": 0.9920644827663769
+    },
+    {
+      "epoch": 25,
+      "train_loss": 0.021731934793032624,
+      "val_macro_f1": 0.9921118050657798
+    },
+    {
+      "epoch": 26,
+      "train_loss": 0.02136257163947708,
+      "val_macro_f1": 0.9927031319513732
+    },
+    {
+      "epoch": 27,
+      "train_loss": 0.021150794873956602,
+      "val_macro_f1": 0.9916460741967282
+    },
+    {
+      "epoch": 28,
+      "train_loss": 0.020733800458849122,
+      "val_macro_f1": 0.9924379053440835
+    },
+    {
+      "epoch": 29,
+      "train_loss": 0.020393640034472017,
+      "val_macro_f1": 0.9925574772342067
+    },
+    {
+      "epoch": 30,
+      "train_loss": 0.020159845299247213,
+      "val_macro_f1": 0.9922984458198242
+    },
+    {
+      "epoch": 31,
+      "train_loss": 0.020139445994279387,
+      "val_macro_f1": 0.9921454372422767
+    }
+  ],
+  "model_sha256": "c56bd9bc3414a2a84a9fdb55ffa72a39f7c7acc8b2b97051d8403920d4b44071",
+  "protocol": {
+    "batch_size": 256,
+    "budget_order": "ascending sha256('20261105:m4-budget:{session_id}').hexdigest() over splits.json dev ids",
+    "early_stopping": "val macro-F1, strict improvement, patience 5, keep best",
+    "init": "torch.manual_seed(seed); DoomLoopMLP() (PyTorch default nn.Linear init)",
+    "loss": "cross_entropy (mean, unweighted)",
+    "max_epochs": 50,
+    "optimiser": "Adam(lr=0.001), PyTorch defaults",
+    "shuffle": "torch.randperm(n, generator=torch.Generator().manual_seed(seed)) per epoch"
+  },
+  "seed": 2,
+  "sparsity": {
+    "fc1.bias": {
+      "density": 1.0,
+      "nonzero": 24,
+      "slots": 24
+    },
+    "fc1.weight": {
+      "density": 1.0,
+      "nonzero": 2880,
+      "slots": 2880
+    },
+    "fc2.bias": {
+      "density": 1.0,
+      "nonzero": 12,
+      "slots": 12
+    },
+    "fc2.weight": {
+      "density": 1.0,
+      "nonzero": 288,
+      "slots": 288
+    },
+    "fc3.bias": {
+      "density": 1.0,
+      "nonzero": 4,
+      "slots": 4
+    },
+    "fc3.weight": {
+      "density": 1.0,
+      "nonzero": 48,
+      "slots": 48
+    },
+    "overall": {
+      "density": 1.0,
+      "nonzero": 3256,
+      "slots": 3256
+    }
+  },
+  "stopped": "patience (5 epochs without improvement)",
+  "train_class_counts": {
+    "OSCILLATING": 44308,
+    "PRODUCTIVE": 83352,
+    "RECOVERY": 35453,
+    "STALLED": 60817
+  },
+  "train_windows": 223930,
+  "val_windows": 75078,
+  "wall_seconds": 26.792794942855835
+}

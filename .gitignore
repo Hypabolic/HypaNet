@@ -8,3 +8,6 @@ datasets/**/*.jsonl.gz
 datasets/**/*.npz
 authoring_packet/
 
+.pytest_tmp/
+datasets/**/*.encoded.pt
+datasets/**/*.encoded.pt.tmp
