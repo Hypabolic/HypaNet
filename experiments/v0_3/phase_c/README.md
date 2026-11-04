@@ -86,3 +86,4 @@ A `--smoke` mode (epoch cap 2, output only outside `experiments/phase-c-trained/
 None.
 
 - **Note (2026-11-05, before the first registered run):** the dev encoding cache (`load_dev()`, `datasets/v0_3/dev.encoded.pt`) was built at 04:19 by a smoke run of budget 32, seed 0, 2 epochs, written to scratch and not used for any reported result. No registered Phase C model has been trained or evaluated.
+- **Note (2026-11-05, interruption):** the schedule runner was killed at 09:01 by the end of its parent session, about one minute into budget 2048 seed 0 (no output directory, no model written). The runner was restarted at 09:17. It skipped the nine completed runs by sha256 and, per §3 of this README and the runner's documented behaviour, started 2048 seed 0 again from scratch. Nothing else changed.

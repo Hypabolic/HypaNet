@@ -1,6 +1,6 @@
 # Status (updated as results land)
 
-_Last update: 2026-11-05 ~04:30. The v0.3 Phase A Fable session is running._
+_Last update: 2026-11-05 10:55. v0.3 Phase A is submitted and archived; the Phase B disclosure is being built._
 
 ## v0.2: small MLP on engineered features (complete)
 
@@ -44,9 +44,18 @@ Costs: Phase A about $59, Phase B $40, all `claude-fable-5-1`.
   - Builds run from a single-file private copy.
   - The kit tests are recorded in `KIT_TESTS.md`.
 - **Phase A:** launched 03:25. Cost cap US$500.
+  - **Interrupted 04:42** by the account's shared 5-hour usage limit (HTTP 429). It had made 14 tool calls, all reads of the packet plus a 153-byte directory-listing script in scratch, so nothing was authored. It had used 256K thinking tokens and cost $14.89.
+  - **Audit note:** the audit's single `[EXECUTED]` finding is `./py -c "import os; print(sorted(os.listdir('.'))); ..."`. The semicolons sit inside a quoted Python string that lists the author's own directory. The compound-command heuristic matched it, but it is not a redirection and reads nothing outside the sandbox. Reviewed and judged benign.
+  - **Continuation 1** was launched at 09:17 with `scripts/v03_launch.sh continue 1`, using the fixed `prompt_continue.md` (sha256 matches HANDOVER).
+  - **Submitted final at 10:51.** Continuation 1 made 64 tool calls and cost $42.73, so Phase A cost $57.62 in total. The audit found 0 violations and 0 denials.
+  - **Archived at 10:52** in `weight_program/v0_3/phase-a/`:
+    - artifact sha256 `ba6f4743e6c4c32a0a71124357511146889a94204d8263d547edaa85b251dfb6`;
+    - the rebuild is byte-identical and the packet is registered;
+    - 121,126 of 2,128,932 parameters are non-zero.
+  - **Build attempts:** `attempts/0001.json` was an operator error. `--author-dir` was given as the author root instead of `output/v03-phase-a`, so the runner reported the required files missing. The author's files were not involved, and no error text was disclosed to the author. `0002.json` is the build that was archived.
 
 ## Waiting on
 
 1. v0.3 Phase A. Then the harness build, validation scoring (harness only), the Phase B disclosure and Phase B.
 2. v0.2 M4: Phase C MLPs and the sealed evaluation.
-3. v0.3 Phase C, the trained transformers. These are CPU-heavy, so they run after Fable finishes.
+3. v0.3 Phase C, the trained transformers. 9 of 11 runs are done (32, 128 and 512 × 3 seeds). The runner was killed at 09:01 and restarted at 09:17, and 2048 seed 0 is running again from scratch. Still to run: 2048 seed 0 and all seed 0.
