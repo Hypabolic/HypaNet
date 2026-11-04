@@ -1,20 +1,30 @@
 # Status (updated as results land)
 
-_Last update: 2026-11-05 03:30. The v0.3 Phase A Fable session is running._
+_Last update: 2026-11-05 ~04:30. The v0.3 Phase A Fable session is running._
 
-## v0.2: small MLP on engineered features (finished apart from M4)
+## v0.2: small MLP on engineered features (complete)
 
-All scores are on the **validation** split. Macro-F1 is given with its 95% session-bootstrap CI.
+**Sealed test and OOD** results were computed once (`artifacts/reports/m4_sealed_v02.json`). Values are macro-F1 with 95% session-bootstrap CIs. For Phase C the figure is the mean ± sd over 3 seeds.
 
-| Phase | Labelled examples seen | Macro-F1 | False-loop alarm | Network = policy |
-|---|---|---|---|---|
-| A-strict / A-selfcheck (identical weights) | 0 | 0.668 [0.660, 0.676] | 2.6% | 100% (84,679 windows) |
-| **B (one revision after 200 disclosed windows)** | 200 | **0.936 [0.932, 0.940]** | 3.1% | 100% |
+| Column | Labels seen by the author | Test macro-F1 | Test false alarm | OOD macro-F1 | OOD false alarm |
+|---|---|---|---|---|---|
+| A-strict = A-selfcheck (hand-written, 0 labels) | 0 | 0.667 [0.659, 0.675] | 2.5% | **0.810** [0.803, 0.817] | 1.3% |
+| **B (hand-written, one revision)** | 200 windows | **0.936** [0.932, 0.940] | 3.1% | **0.870** [0.867, 0.873] | 8.5% |
+| C-32 (trained) | 563 windows | 0.618 ± 0.130 | 8.2% | 0.517 ± 0.182 | 30.6% |
+| C-128 (trained) | 2,207 | 0.932 ± 0.006 | 4.9% | 0.644 ± 0.026 | 39.1% |
+| C-512 (trained) | 9,216 | 0.966 ± 0.003 | 3.1% | 0.727 ± 0.026 | 28.6% |
+| C-2048 (trained) | 38,120 | 0.985 ± 0.000 | 1.6% | 0.768 ± 0.034 | 19.9% |
+| C-all (trained) | 223,930 | 0.992 ± 0.001 | 0.8% | 0.843 ± 0.023 | 11.6% |
+| Rules engine (Codex) | 0 | 0.417 | 1.1% | 0.415 | 2.4% |
+| Constant prior | 0 | 0.136 | 0 | 0.181 | 0 |
 
-- **Compilation is exact in every phase.** The hand-written network always agrees with Fable's own policy.
-- **The Phase A shortfall came from the policy, not the compilation.** STALLED recall was 0.45 and PRODUCTIVE was often confused with RECOVERY. Phase B fixed most of this.
-- **Phase B cost.** 31.6 min, US$40, `claude-fable-5-1` only. The audit flagged 3 items, all false positives: a `~` inside an f-string was read as a home-directory path (`experiments/m3/logs/AUDIT_NOTE.md`).
-- **Still to do (M4, running now).** Trained same-shape baselines, the rules engine and the priors, then one sealed test and OOD evaluation of every v0.2 column.
+**What the table shows:**
+- **Compilation is exact.** H2 fidelity is 1.000 in every hand-written phase. That holds on test, OOD, val and on 100,000 random valid windows, so the network always computes exactly Fable's stated policy.
+- **In-distribution, trained beats hand-written.** Fable's one-revision network (B, 200 labelled windows) matches a trained network given about 2,200 windows (C-128). Trained networks with more data reach 0.99.
+- **Out of distribution, hand-written beats trained.** B scores 0.870 on the separately written OOD generator, above every trained network including C-all (0.843). Even zero-label Phase A (0.810) beats C-512. Trained networks also raise far more false loop alarms on OOD (12–39%, against 1–9%).
+- **Phase A's weakness was policy design, not compilation.** STALLED recall was low and PRODUCTIVE was often confused with RECOVERY. That is H1, not H2.
+
+Costs: Phase A about $59, Phase B $40, all `claude-fable-5-1`.
 
 ## v0.3: hand-programmed transformer on raw logs
 
