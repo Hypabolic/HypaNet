@@ -1,0 +1,48 @@
+phase dir: /Users/matthew/Development/hypabolic/HypaNet-m2-author/output/phase-b-revision
+current build == disclosed network class on all 200: False
+current policy == disclosed policy class on all 200: False
+network == policy on all 200: True
+
+ORACLE vs NETWORK (current build): rows = oracle, cols = predicted (PROD, REC, STALL, OSC)
+  PROD     46    3    1    0   recall 0.92
+  REC       0   49    1    0   recall 0.98
+  STALL     1    0   49    0   recall 0.98
+  OSC       0    0    0   50   recall 1.00
+  accuracy 0.970  macro-F1 0.970  per-class F1 [0.95, 0.96, 0.97, 1.0]  false-loop-alarm 0.020
+
+ORACLE vs POLICY (current policy): rows = oracle, cols = predicted (PROD, REC, STALL, OSC)
+  PROD     46    3    1    0   recall 0.92
+  REC       0   49    1    0   recall 0.98
+  STALL     1    0   49    0   recall 0.98
+  OSC       0    0    0   50   recall 1.00
+  accuracy 0.970  macro-F1 0.970  per-class F1 [0.95, 0.96, 0.97, 1.0]  false-loop-alarm 0.020
+
+== windows ==  (per slot: CAT/OUT/flags[R=rep_intent F=rep_failure W=ws_changed S=state_revisited C=comparable]delta~tokencost)
+D006 XX oracle=PROD  net=REC   policy=REC  
+     VAL/ERR~0.7  INS/SUC~0.6  INS/SUC~0.6  MUT/SUC/W~0.7  VAL/ERR/RFC+0.18~0.7  INS/SUC~0.6  MUT/SUC/W~0.6  VAL/SUC/RC+0.27~0.6
+     C=3.0 END=1.0 V=0.0 S=0.4545 PROG=1.0 E=0.0 RF=1.0 OOP=0.0 ACT=0.0 RES=0.0 POLL=0.0 OSC=0.0 STALLp=0.0
+D021 XX oracle=PROD  net=STALL policy=STALL
+     EXT/ERR~0.6  EXT/ERR/RF~0.6  EXT/ERR/RF~0.6  EXT/SUC/R~0.6  VAL/ERR/C~0.7  INS/SUC~0.7  MUT/SUC/W~0.7  INS/SUC~0.7
+     C=5.0 END=0.0 V=0.0 S=0.0 PROG=0.0 E=0.0 RF=2.0 OOP=0.0 ACT=0.0 RES=0.0 POLL=0.0 OSC=0.0 STALLp=0.0
+D027 XX oracle=STALL net=PROD  policy=PROD 
+     INS/SUC~0.7  VAL/ERR/C~0.8  INS/SUC~0.6  INS/SUC~0.7  INS/SUC/R~0.7  CTL/SUC~0.9  EXT/SUC~0.7  CTL/SUC~0.7
+     C=1.0 END=0.0 V=0.0 S=0.0 PROG=0.0 E=0.0 RF=0.0 OOP=0.0 ACT=0.0 RES=0.0 POLL=0.0 OSC=0.0 STALLp=0.0
+D047 XX oracle=PROD  net=REC   policy=REC  
+     VAL/ERR~0.6  INS/SUC~0.5  MUT/SUC/W~0.6  VAL/ERR/RC+0.23~0.6  INS/SUC~0.6  VAL/ERR/FC-0.77~0.5  MUT/SUC/W~0.6  VAL/ERR/RFC~0.6
+     C=4.0 END=1.0 V=0.0 S=-0.5385 PROG=0.0 E=0.0 RF=2.0 OOP=0.0 ACT=0.0 RES=0.0 POLL=0.0 OSC=0.0 STALLp=0.0
+D093 XX oracle=PROD  net=REC   policy=REC  
+     INS/SUC~0.6  VAL/ERR~0.7  INS/SUC~0.6  MUT/SUC/W~0.6  VAL/ERR/RFC~0.7  MUT/SUC/W~0.7  INS/SUC~0.6  VAL/ERR/RFC~0.7
+     C=4.0 END=1.0 V=0.0 S=0.0 PROG=0.0 E=0.0 RF=2.0 OOP=0.0 ACT=0.0 RES=0.0 POLL=0.0 OSC=0.0 STALLp=0.0
+D142 XX oracle=REC   net=STALL policy=STALL
+     VAL/ERR/C~0.6  VAL/ERR/C~0.6  VAL/ERR/FC~0.7  VAL/ERR/RFC~0.6  CTL/SUC~0.6  VAL/ERR/RFC~0.6  INS/SUC~0.5  MUT/SUC/W~0.6
+     C=5.0 END=0.0 V=0.0 S=0.0 PROG=0.0 E=0.0 RF=3.0 OOP=0.0 ACT=0.0 RES=0.0 POLL=0.0 OSC=0.0 STALLp=0.0
+
+== oracle -> policy pair counts ==
+  OSC   -> OSC  : 50
+  PROD  -> PROD : 46
+  PROD  -> REC  : 3
+  PROD  -> STALL: 1
+  REC   -> REC  : 49
+  REC   -> STALL: 1
+  STALL -> PROD : 1
+  STALL -> STALL: 49
