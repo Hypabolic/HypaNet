@@ -1,0 +1,1990 @@
+Reading additional input from stdin...
+OpenAI Codex v0.166.0
+--------
+workdir: /private/tmp/claude-501/-Users-matthew-Development-hypabolic-HypaNet/515f7eed-7abe-4ed8-9526-67cd3895cadd/scratchpad/commissions/rules_baseline
+model: gpt-6.1-sol
+provider: openai
+approval: never
+sandbox: workspace-write [workdir, /tmp, $TMPDIR]
+reasoning effort: low
+reasoning summaries: none
+session id: 01a1a56e-777b-71c3-a9d9-98f47cefc109
+--------
+user
+Read BRIEF.md in the current directory and carry out the commission exactly as described. Read only files in this directory.
+2026-11-04T07:20:43.973891Z ERROR rmcp::transport::worker: worker quit with fatal: Transport channel closed, when AuthRequired(AuthRequiredError { www_authenticate_header: "Bearer resource_metadata=\"https://mcp.context7.com/.well-known/oauth-protected-resource/mcp\"" })
+hook: SessionStart
+hook: SessionStart
+hook: SessionStart
+hook: SessionStart
+hook: SessionStart
+hook: SessionStart Completed
+hook: SessionStart Completed
+hook: SessionStart Completed
+hook: SessionStart Completed
+hook: SessionStart Completed
+hook: UserPromptSubmit
+hook: UserPromptSubmit Completed
+codex
+I’ll read BRIEF.md, then carry out the commission using only files in this directory.
+2026-11-04T07:20:47.641434Z ERROR rmcp::transport::worker: worker quit with fatal: Transport channel closed, when AuthRequired(AuthRequiredError { www_authenticate_header: "Bearer resource_metadata=\"https://mcp.context7.com/.well-known/oauth-protected-resource/mcp\"" })
+hook: PreToolUse
+hook: PreToolUse Completed
+exec
+/bin/zsh -lc 'cat BRIEF.md' in /private/tmp/claude-501/-Users-matthew-Development-hypabolic-HypaNet/515f7eed-7abe-4ed8-9526-67cd3895cadd/scratchpad/commissions/rules_baseline
+ succeeded in 0ms:
+# Commission: independent rules baseline (spec §9.5, role "Rules-baseline author", §8)
+
+You are the **rules-baseline author** for a research experiment. Your job is to write a
+deterministic, hand-written rules engine that classifies an 8-event agent-trace window into
+one of four classes, using only the 120 input features described in `SPEC_AUTHORING.md` §4
+and `feature_index.json`. You do NOT write neural-network weights; that is a different role.
+
+## Inputs (the only material you may read)
+- `SPEC_AUTHORING.md` — the experiment spec (domain semantics, features, class definitions, oracle rules over latent state in §6).
+- `feature_index.json` — flat index of each (position, feature) in the 120-vector, and class order.
+
+Do not read, search or open anything outside this directory. Do not use the network.
+There is no data, and no labelled examples exist for you; that is deliberate (the baseline is pre-registered).
+
+## Deliverables (write them in this directory)
+1. `rules.py` — defines `def rules_classify(x: tuple[float, ...]) -> int`.
+   - `x` is a tuple of exactly 120 Python floats ordered as in `feature_index.json` (8 events oldest-first × 15 features).
+   - Return 0..3 in the canonical order `[PRODUCTIVE, RECOVERY, STALLED, OSCILLATING]`.
+   - Standard library only; pure and deterministic; no I/O; no global mutable state.
+   - Windows have already passed the runtime evidence gate (§5.2), so every window you see is fully instrumented. You must always return one of the four classes.
+2. `RULES.md` — each rule, its order/precedence, its thresholds, and why (cite spec sections). Explain how you approximate the latent-state oracle (§6) from observable features, and where you expect the rules to be wrong.
+3. `test_rules.py` — `unittest` tests on hand-constructed windows of your own (no data exists), covering each rule and the precedence between them. Run them with `python3 -m unittest test_rules -v` (python 3.12+ is available as `python3`).
+
+## Rules for you
+- No fitting, search or tuning against data — you have none, and you must not generate a synthetic dataset to tune thresholds. Thresholds come from reasoning about the spec.
+- Keep it simple and inspectable; this is a baseline that the experiment's other methods are compared against.
+- When finished, print a short summary of the rules.
+
+hook: PreToolUse
+hook: PreToolUse Completed
+hook: PreToolUse
+hook: PreToolUse Completed
+exec
+/bin/zsh -lc 'cat SPEC_AUTHORING.md feature_index.json' in /private/tmp/claude-501/-Users-matthew-Development-hypabolic-HypaNet/515f7eed-7abe-4ed8-9526-67cd3895cadd/scratchpad/commissions/rules_baseline
+ succeeded in 0ms:
+# Agent Doom Loop Detector — Direct Weight Programming Experiment
+
+**Specification:** v0.2 (supersedes v0.1)
+**Status:** design approved 2026-11-04. Encoder, architecture, fingerprint rules and oracle parameters are frozen. Implementation details are confirmed at M0 sign-off.
+**Purpose:** Measure whether a reasoning LLM can (a) design a sound classification policy for agent-trace behaviour and (b) compile that policy directly into the parameters of a small fixed MLP, with no optimiser and no labelled examples.
+
+---
+
+## 1. Objective and hypotheses
+
+Build a small, inspectable PyTorch network that classifies the most recent eight operations of an AI coding agent into one of four observed patterns:
+
+1. **PRODUCTIVE**: evidence of forward progress or materially new investigation.
+2. **RECOVERY**: a bounded retry or repair episode after a transient or diagnosed failure, still inside policy or recently resolved.
+3. **STALLED**: repeated ineffective operations without observed progress and without a state-reversion cycle.
+4. **OSCILLATING**: recurring reversal between previously held workspace or execution states without net progress.
+
+The classifier describes the **current observed pattern**. It does not predict eventual task failure. `INSUFFICIENT_EVIDENCE` is a non-neural result returned by the runtime gate (§5.2) and by the oracle for ambiguous windows (§6.3).
+
+### 1.1 What this experiment tests
+
+The features in §4 are already partial detectors (`repeated_intent`, `state_revisited`, `validation_delta`). Any network built on them is effectively a compiled rule policy. So the experiment does **not** test whether neural networks beat rules. It tests three separable claims:
+
+| ID | Claim | Measured as | Uses labels? |
+|---|---|---|---|
+| **H1 Design** | An LLM can write, without labelled examples, a classification policy over the 120 features that matches the latent-state oracle. | `reference_policy.py` vs oracle: macro-F1, false-alarm rate | Yes (evaluation only) |
+| **H2 Compilation** | The same LLM can compile its own policy into the fixed 120→24→12→4 ReLU network. | Agreement of network argmax with `reference_policy.py` on benchmark windows and on a random valid-window sweep | **No** |
+| **H3 End-to-end** | The directly written network is a useful classifier. | Network vs oracle: macro-F1, false-alarm rate, OOD generalisation | Yes (evaluation only) |
+
+A poor H3 result can then be attributed to policy design (H1 low), compilation (H2 low), representation limits (high collision rate, low Bayes ceiling) or distribution shift (OOD gap).
+
+### 1.2 Non-goals for v0.2
+
+- No automatic interruption or remediation of agents.
+- No live collector, database, dashboard or production integration.
+- No claim that direct programming is generally better than training.
+
+---
+
+## 2. Architecture
+
+### 2.1 Boundary
+
+```text
+Synthetic session generator (latent state) ──► OracleRecord (sealed)
+        │
+        ▼
+CanonicalEvent[] ──► session prefix ──► 8-event window ──► runtime gate ──► encoder (120 floats)
+                                                                               │
+                                                     ┌─────────────────────────┤
+                                                     ▼                         ▼
+                                    MLP (directly written weights)   reference_policy.py
+                                                     │                         │
+                                                     ▼                         ▼
+                                             4 logits + debug view       class index
+                                                     │                         │
+                                                     └──────► evaluation ◄─────┘
+                                                                 ▲
+                                                          OracleRecord labels
+```
+
+Model construction, generation, encoding, adjudication and evaluation live in separate packages (§13). The canonical event format should stay compatible with future adapters from an agent-trajectory IR or OpenTelemetry GenAI spans. No adapter is built in v0.2.
+
+### 2.2 Target model (immutable within an experimental run)
+
+- **Input:** `float32[batch, 120]` = 8 ordered events × 15 features, oldest first.
+- **Network:** `Linear(120, 24) → ReLU → Linear(24, 12) → ReLU → Linear(12, 4)`.
+- **Output:** four raw logits in canonical order `[PRODUCTIVE, RECOVERY, STALLED, OSCILLATING]`.
+- **Parameter slots:** `(120·24 + 24) + (24·12 + 12) + (12·4 + 4) = 2,904 + 300 + 52 = 3,256`.
+- **Initial state:** every tensor zero, then populated only by the weight-construction program. CPU, float32, `torch.no_grad()`.
+- **Prediction:** `torch.argmax(logits, dim=-1)`. Ties resolve to the first maximal index, so an all-zero output predicts PRODUCTIVE. That makes the benign class the default.
+- **No softmax** in the model. Softmax may be computed for display only and must not be read as calibrated confidence.
+- **Excluded:** learned embeddings, normalisation layers, attention, recurrence, data-fitted feature scaling.
+
+Architecture, feature order, encoding rules, fingerprint rules, class order, gate logic and oracle parameters are frozen at M0 sign-off, before any weights are requested. Changing any of them creates a new registered experiment version.
+
+---
+
+## 3. Canonical event schema
+
+### 3.1 Fields
+
+For each completed logical operation:
+
+| Field | Type | Notes |
+|---|---|---|
+| `session_id`, `agent_id`, `task_id` | str | A sequence never mixes tasks or concurrent agents. |
+| `event_id`, `sequence_index`, `timestamp` | str, int, ISO-8601 | `sequence_index` is dense and 0-based within the session. |
+| `operation_family` | str | For example `read_file`, `run_tests`. Not a model feature. Used for fingerprinting. |
+| `operation_category` | enum | `INSPECT`, `MUTATE`, `VALIDATE`, `EXTERNAL`, `CONTROL` |
+| `outcome` | enum | `SUCCESS`, `ERROR`, `NEUTRAL` |
+| `intent_fingerprint` | hex str | §3.2 |
+| `failure_fingerprint` | hex str \| null | Required when `outcome = ERROR`. A normalised error identifier (§3.2). |
+| `workspace_state_before`, `workspace_state_after` | hex str \| null | Digests of tracked workspace content. Null means not observed, which is distinct from unchanged. |
+| `validation_suite_id`, `validation_passed`, `validation_total` | str, int, int \| null | Present only for events that produced a comparable validation result. |
+| `input_tokens`, `output_tokens` | int \| null | Tokens attributable to this operation only. |
+| `provenance` | object | Source (`simulator:<version>` or adapter), instrumentation-quality flags, original trace/span IDs. |
+
+One event is one completed logical operation, not every low-level span. Retry attempts are separate events. The public inference object must **not** carry task labels, scenario or family IDs, latent progress, retry-policy state or future outcomes.
+
+### 3.2 Fingerprint canonicalisation (frozen with the encoder)
+
+`intent_fingerprint = sha256(canonical_json({family, target, args}))`. Canonical JSON means sorted keys, UTF-8, no insignificant whitespace, and normalised repo-relative POSIX paths.
+
+| Family | Category | `target` | `args` included | Excluded |
+|---|---|---|---|---|
+| `read_file` | INSPECT | path | line range | — |
+| `search` | INSPECT | scope path | query, lower-cased, whitespace-collapsed | result limit |
+| `list_dir` | INSPECT | path | — | — |
+| `edit_file` | MUTATE | path | sha256 of normalised patch | — |
+| `write_file` | MUTATE | path | sha256 of content | — |
+| `revert` | MUTATE | sorted path set | target revision digest | — |
+| `run_tests` | VALIDATE | suite id | sorted selected test ids | verbosity, parallelism, timeout |
+| `build` / `lint` | VALIDATE | target | — | flags not affecting result |
+| `http_call` | EXTERNAL | method + host + path template | sha256 of normalised body for non-idempotent methods | request id, timestamp, retry counter |
+| `poll_status` | EXTERNAL | resource id | — | attempt number, backoff |
+| `plan` / `ask` / `yield` | CONTROL | — | action type | free text |
+
+Across all families, timestamps, attempt counters, timeouts, request IDs and free-text reasoning are always excluded. As a result, the same edit repeated gives the same intent, and two different edits to the same file give different intents.
+
+`failure_fingerprint = sha256(canonical_json({family, error_class, normalised_location}))`. Messages are stripped of numbers, paths outside the repo, addresses and timestamps.
+
+`workspace_state_*` = sha256 over the sorted list of `(path, sha256(content))` for tracked files. INSPECT events must report `before == after` when nothing changed. They must not report null.
+
+---
+
+## 4. Deterministic feature encoding: exactly 15 per event
+
+The encoder takes the **session prefix** up to and including the window endpoint. Window events are flattened oldest to newest. Indices are zero-based within each 15-feature block. Every feature is computed from observed events at or before the endpoint.
+
+| Idx | Feature | Definition | Scope |
+|---:|---|---|---|
+| 0–4 | `category_one_hot` | One of `[INSPECT, MUTATE, VALIDATE, EXTERNAL, CONTROL]` | event |
+| 5–7 | `outcome_one_hot` | One of `[SUCCESS, ERROR, NEUTRAL]` | event |
+| 8 | `repeated_intent` | 1 iff `intent_fingerprint` equals that of an earlier event **in this window** | window |
+| 9 | `repeated_failure` | 1 iff `outcome = ERROR` and `failure_fingerprint` equals that of an earlier ERROR event **in this window** | window |
+| 10 | `workspace_changed` | 1 iff `workspace_state_before ≠ workspace_state_after` | event |
+| 11 | `state_revisited` | 1 iff `workspace_changed = 1` and `workspace_state_after` equals any before- or after-digest of an earlier event **in this window** (including the first event's before-state) | window |
+| 12 | `validation_comparable` | 1 iff this event produced a validation result **and** an earlier result from the same `validation_suite_id` exists **anywhere earlier in the session** | session prefix |
+| 13 | `validation_delta` | If `validation_comparable = 1`: `clip(passed/total − prev_passed/prev_total, −1, 1)` against the most recent earlier result from that suite. Otherwise 0. | session prefix |
+| 14 | `relative_token_cost` | `min(1, log1p(input_tokens + output_tokens) / log1p(100000))`. Exactly 0 for a verified zero-token step. | event |
+
+Invariants (unit-tested):
+
+- One-hot groups sum to exactly 1.
+- `repeated_failure ≤ outcome_ERROR`, `state_revisited ≤ workspace_changed`, `validation_comparable ≤ category_VALIDATE`, and `validation_delta ≠ 0 ⇒ validation_comparable = 1`.
+- All values lie in [0, 1] except `validation_delta` ∈ [−1, 1].
+- Index 0 of each window always has `repeated_intent = repeated_failure = 0`. This is a known positional asymmetry.
+
+`workspace_changed` is not evidence of progress. `validation_delta` uses only observable, comparable results. A green tool result does not by itself imply progress.
+
+**Missing data:** the encoder has no missingness masks. Missing values are never silently mapped to 0. Windows with missing required observations are rejected by the gate (§5.2). Masks are a future versioned extension for real telemetry.
+
+---
+
+## 5. Windowing and runtime gate
+
+### 5.1 Windows
+
+- A sequence is one `(session_id, agent_id, task_id)` stream ordered by `sequence_index`.
+- For each endpoint `t ≥ 7` (0-based), the window is events `t−7 … t`. Stride is 1.
+- Benchmark splits are grouped by **whole session**. Windows from one session never appear in two partitions.
+
+### 5.2 Runtime evidence gate (non-neural, applied before inference)
+
+The gate returns `INSUFFICIENT_EVIDENCE` if and only if:
+
+1. fewer than 8 events exist, **or**
+2. any window event is missing a required observation:
+   - category, outcome or either token count;
+   - either workspace digest;
+   - `failure_fingerprint` when `outcome = ERROR`;
+   - suite id, passed or total for an event flagged as having produced a validation result;
+   - **or** the validation baseline needed for features 12–13 is flagged as unobserved, for example truncated history.
+
+The gate makes **no semantic judgement**. Windows with no repeats, no state change and no tests are valid, and they are usually PRODUCTIVE exploration. Semantic ambiguity is decided only by the oracle (§6.3). Gate coverage and gate agreement with oracle instrumentation flags are reported separately (§10).
+
+---
+
+## 6. Ground truth: latent state and oracle
+
+### 6.1 Latent state (simulator-internal, never encoded)
+
+Per session the simulator maintains:
+
+- `progress p_t ∈ [0, 1]`: hidden objective completion.
+- `knowledge K_t`: a set of latent facts about the fault. An operation may add facts. A new fact is "material narrowing".
+- `workspace W_t`: real simulated file contents. Digests are computed from these.
+- `episodes`: failure episodes with latent cause (`transient`, `persistent`, `diagnosed_repair`), a retry counter and a resolution flag.
+- Per-operation latent effect: one of `PROGRESS`, `NEW_FACT`, `RESOLVES_EPISODE`, `IN_POLICY_RETRY`, `IN_POLICY_POLL`, `REVERSION`, `REDUNDANT`, `NONE`.
+
+`REDUNDANT` means the operation repeats work already reflected in latent state. It re-acquires a fact already in `K_t`, re-applies an edit already present in `W_t`, re-runs validation on an unchanged workspace, or is an out-of-policy retry or poll. Redundancy is defined against `K_t` and `W_t`, **not** against `intent_fingerprint`, so it stays independent of the encoded features. `NONE` means the operation is novel but yielded nothing, for example a first read of a file that turns out to be irrelevant.
+
+An episode's **initial failing operation** has effect `NONE`, because the attempt itself was reasonable. Its in-policy retries are `IN_POLICY_RETRY`. Retries beyond `R_max` are `REDUNDANT`.
+
+An operation is **stall-ineffective** iff its latent effect is `REDUNDANT` or `REVERSION`. An operation is **ineffective** iff it is stall-ineffective or has effect `NONE`.
+
+A **reversion** is an agent mutation whose latent after-state equals a workspace state held earlier in the window **and** that undoes an earlier agent mutation. External resets don't count.
+
+### 6.2 Pre-registered oracle parameters
+
+| Symbol | Value | Meaning |
+|---|---:|---|
+| `ε_p` | 0.02 | Progress tolerance over a window |
+| `F_prod` | 2 | Minimum new facts in the window for investigative PRODUCTIVE |
+| `N_stall` | 5 | Minimum ineffective operations of 8 for STALLED |
+| `N_grey` | 3 | Lower bound of the stall grey zone |
+| `N_rev` | 2 | Minimum reversions in the window for OSCILLATING |
+| `R_max` | 3 | Maximum retries of one intent within an episode while still in policy |
+| `P_max` | 5 | Maximum polls of an external dependency (with backoff) while still in policy |
+| `k_rec` | 4 | Recency horizon for RECOVERY |
+
+These values live in `oracle_config.v0_2.yaml` and are frozen at M0.
+
+### 6.3 Window labelling rules (evaluated in order; first match wins)
+
+Let `Δp` be the progress change across the window, `F` the number of new facts, `I` the number of **stall-ineffective** operations (`REDUNDANT` + `REVERSION`) and `V` the number of reversions.
+
+1. **INSUFFICIENT_EVIDENCE (instrumentation):** the generator deliberately dropped a required observation (scenario 12).
+2. **OSCILLATING:** `V ≥ N_rev` and `Δp ≤ ε_p`.
+3. **STALLED:** `Δp ≤ ε_p`, `F = 0`, `I ≥ N_stall`, the final event is stall-ineffective, **and** no episode is in policy at the endpoint.
+4. **RECOVERY:** an episode is active at the endpoint with retries ≤ `R_max` (or polls ≤ `P_max`), **or** an episode resolved within the last `k_rec` events.
+5. **PRODUCTIVE:** `Δp > ε_p` or `F ≥ F_prod`.
+6. **INSUFFICIENT_EVIDENCE (ambiguous):** everything else. This includes the grey zone `N_grey ≤ I < N_stall` with no progress, windows with a single new fact and no progress, and aimless novel activity (mostly `NONE` effects). Novel but fruitless exploration is never labelled STALLED. Repetition of already-done work is what defines a stall.
+
+This ordering gives `OSCILLATING > STALLED > RECOVERY > PRODUCTIVE`. The recency bound in rule 4 stops a long-resolved retry from overriding later productive work.
+
+Labels depend on latent causal state. Observable features are emitted independently by the event layer. Labels are never defined in terms of encoded features. For example, there must be no rule of the form "STALLED iff `repeated_intent`".
+
+### 6.4 Feature-collision audit
+
+Group windows by exact float32 byte equality of the 120-vector. If one group contains different non-ambiguous labels, record it as a representational collision. Report:
+
+- the collision rate per class and per family;
+- the **Bayes ceiling**: accuracy and macro-F1 of predicting each group's majority label.
+
+Collisions stay in the primary metric. The Bayes ceiling tells readers how much of any shortfall the inputs cannot resolve.
+
+---
+
+## 7. Synthetic generator
+
+### 7.1 Scenario families (names only; this list is in the authoring packet)
+
+1. Incremental productive repair: failing tests, targeted edits, fewer failures, eventually green.
+2. Productive exploration: several inspections and diagnostics before a meaningful change.
+3. Transient external failure: repeated timeout, then success, then productive work.
+4. Bounded backoff or retry: a recoverable failure with one or two controlled retries.
+5. Repeated failed test invocation with unchanged artefact and unchanged failure.
+6. Repeated edits that change files but don't improve validation.
+7. A/B/A/B workspace oscillation between competing edits.
+8. Tool oscillation: two operations repeatedly undo each other's effects.
+9. Benign lookalike: repeated test runs with genuine incremental improvement.
+10. Benign lookalike: repeated reads or polls while an external dependency legitimately recovers.
+11. Rising context or token expenditure without useful work. Cost is weak supporting evidence, not a label shortcut.
+12. Under-instrumented sessions, for gate coverage.
+
+---
+
+## 8. Roles and independence
+
+| Role | Does | Must not have seen |
+|---|---|---|
+| **Harness implementer** | M0/M1 code: schema, encoder, gate, model shell, standard generator, oracle, eval harness | — |
+| **Weight author** | Phase A/B: `reference_policy.py`, `build_weights.py` | Generator or oracle code, any dataset, any eval output (until Phase B's disclosed set) |
+| **OOD generator author** | OOD holdout generator from a written brief | Weight artefacts, standard generator code |
+| **Rules-baseline author** | Independent pre-registered rules engine | Datasets and labels |
+| **Adjudicator** (human) | Approves the frozen spec, verifies logs, runs final evaluation | — |
+
+- The weight author runs in a **fresh context** (new session, no repository access beyond the authoring packet directory). A context that implemented or read the generator cannot act as the Phase A weight author.
+- A different model family is recommended for the OOD generator author.
+- **Authoring packet** (built by script, sha256 recorded): this spec minus §0, §2.3 and §7.2–§7.3; `model.py`; the zero-filled `state_dict` template with tensor names and shapes; the encoder's feature-index map; and the rules in §9.
+
+---
+
+## 9. Direct-weight construction protocol
+
+### 9.1 Required deliverables from the weight author
+
+1. `reference_policy.py`: a pure, deterministic function `reference_policy(x: tuple[float, ...]) -> int ∈ {0,1,2,3}`. `x` holds the 120 input values as Python floats, each exactly representable in float32. The function does no I/O, imports nothing beyond the standard library and accesses no data. It states the author's intended policy.
+2. `build_weights.py`: defines `build()`, which starts from `zero_model()`, sets every `Linear.weight` and `Linear.bias` entry by literal assignment or closed-form rule, and returns the model. It runs no forward computation, matrix products or linear-algebra solvers, and writes no files. The harness runs `build()` under the anti-training guard and writes the `.dlw` artefact, its sha256 and a build record with sparsity statistics.
+3. `CIRCUITS.md`: the purpose of every non-zero hidden unit, grouped by circuit, plus which reference-policy branch each output logit implements.
+
+Allowed: arithmetic reasoning, explicit constants, structured matrix assignment, and deterministic loops that fill known circuits. The authoring packet's `AUTHOR_INSTRUCTIONS.md` gives the exact interfaces and the full list of checks the harness applies.
+
+Forbidden in Phases A and B: labelled examples (except Phase B's disclosed set), fitting, autograd, `.backward()`, `torch.optim`, numerical or evolutionary search over weights, distillation, and importing `synth/`, `datasets/` or `eval/`.
+
+### 9.2 Phase A-strict (zero execution)
+
+The author may run only shape, dtype and finiteness checks plus `reference_policy.py` syntax checks. No forward passes. The harness runs `build()` and calls `reference_policy` once on the all-zero input as a type check, without recording the result. That is the only execution. The harness archives the first valid artefact and the adjudicator git-commits it with its sha256 **before anything else runs**.
+
+### 9.3 Phase A-selfcheck (zero labels)
+
+This starts from the archived A-strict artefact, in the same authoring context. The author may run forward passes and `reference_policy.py` **on inputs they construct themselves** (hand-written windows, or enumerations of their own policy's branch conditions). They may compare the two and revise weights by direct, reasoned edits. Not allowed: generator output, datasets, labels, or automated weight search. Log every iteration with a diff and the reason. Archive the final artefact.
+
+Both A-strict and A-selfcheck are reported. Both count as **0 labelled examples**.
+
+### 9.4 Phase B (one diagnostic revision)
+
+The base is the A-selfcheck artefact. The author receives a fixed disclosed diagnostic report: 200 windows from the **validation** split (fixed seed, stratified by class), each with features, oracle label, network prediction and reference-policy prediction. They may make **one** revision to the weights and to `reference_policy.py`. Log exactly what was disclosed. This is feedback-assisted programming and is reported as 200 labelled examples with one revision.
+
+### 9.5 Phase C and other baselines
+
+- **Supervised, same topology and encoder:** cross-entropy with Adam (lr 1e-3, batch 256, up to 50 epochs, early stopping on validation macro-F1). Budgets are **32, 128, 512, 2,048 and all development sessions** (window counts reported). Three seeds per budget. Hyperparameters are fixed before training. An L1-regularised variant is optional, for a sparsity comparison.
+- **Independent rules engine:** written by the rules-baseline author against this spec, before M2.
+- **Author reference policy:** `reference_policy.py` is itself evaluated as a baseline (H1).
+- **Constant prior:** always predicts the development-set majority class, plus always-PRODUCTIVE.
+
+---
+
+## 10. Evaluation
+
+### 10.1 Metrics (standard test set, OOD set and each family)
+
+- Macro-F1, and per-class precision and recall, on oracle-labelled (non-INSUFFICIENT) windows.
+- **False-loop alarm rate:** the fraction of PRODUCTIVE + RECOVERY windows predicted STALLED or OSCILLATING.
+- Confusion matrices with counts.
+- **Compilation fidelity (H2):** argmax agreement between the network and `reference_policy.py` on (a) all benchmark windows and (b) 100,000 windows from a random valid-window sampler that respects §4's invariants but ignores the generator. No labels are needed.
+- Sparsity: `count(|w| > 1e-9) / 3,256`, per layer and overall.
+- Collision rate and Bayes ceiling (§6.4).
+- Gate coverage, and gate agreement with oracle instrumentation flags. Report the class distribution of network predictions on oracle-ambiguous windows, but don't score it.
+- Counterfactual consistency: the fraction of counterfactual pairs whose predicted classes differ in the direction of the oracle labels.
+- CPU latency per batch of 1 and of 1,024.
+- 95% bootstrap confidence intervals over **sessions** (10,000 resamples).
+
+### 10.2 Reporting
+
+One table with columns for A-strict, A-selfcheck, B, C (per budget, mean ± sd over seeds), independent rules, author reference policy and constant prior. Rows cover each metric above, **labelled examples seen by the weight author**, and the number of weight revisions or self-check iterations.
+
+Suggested research targets (not acceptance gates): A-selfcheck macro-F1 ≥ 0.80 on the standard sealed set, false-loop alarms ≤ 5%, compilation fidelity ≥ 0.99, and a non-trivial OOD score. Beating a weak trained baseline does not show that direct programming is generally better.
+
+Sealed-test and OOD outputs are computed once, after all phases are archived. Every failed attempt and intermediate artefact is kept.
+
+---
+
+## 11. Verification requirements
+
+- **Encoder:** feature order, one-hot validity, invariants in §4, numeric ranges, byte-identical output for identical session prefixes, and no future leakage (appending events after the endpoint never changes that window's features).
+- **Fingerprints:** golden tests per family in §3.2, including excluded-argument insensitivity.
+- **Architecture:** exact shapes, exactly 3,256 slots, all-zero initial state, finite weights, output `[batch, 4]`, and the argmax tie rule.
+- **Anti-training:** the weight-build path runs under a guard that fails if autograd records a graph, `.backward()` is called, any `torch.optim` object is created, or any module under `synth/`, `datasets/` or `eval/` is imported. Use an import hook plus `torch.is_grad_enabled()` assertions.
+- **Leakage:** no oracle fields on `CanonicalEvent`, no session shared across splits, no identical window crossing splits (reported, not just checked), and the authoring packet contains no generator or dataset files (checked against the packet manifest).
+- **Gate:** scenario-12 sessions are rejected, and all-novel INSPECT windows are **not** rejected.
+- **Oracle:** unit tests per rule in §6.3, including the RECOVERY recency bound, grey-zone handling, and the requirement that eight novel, fruitless operations are never labelled STALLED.
+- **Repeatability:** the same seed and the same `state_dict` give byte-identical feature tensors and identical CPU predictions.
+
+---
+
+## 12. Diagnostic interface (CLI)
+
+- `inspect window <file>`: prints the 8 × 15 feature matrix with names, gate result, raw logits, predicted class and reference-policy class.
+- `inspect model <artefact>`: lists non-zero parameters per layer with the `CIRCUITS.md` label for each hidden unit.
+- `inspect activations <file>`: shows the layer-by-layer activation vectors, with active units named.
+- `inspect perturb <file>`: flips or nudges each input feature and reports changes in prediction and logits. Weights are never modified.
+- `export`: writes confusion matrices, hard examples, fidelity disagreements, counterfactual pairs, collision groups and sparsity summaries.
+
+No dashboard in v0.2.
+
+---
+
+## 13. Repository layout
+
+```text
+agent_doom_loop_detector_spec_v0_2.md  # this document (frozen)
+pyproject.toml
+oracle_config.v0_2.yaml
+src/agent_loop_lab/
+  schema.py                   # CanonicalEvent, OracleRecord
+  fingerprint.py              # §3.2 canonicalisation
+  encode.py                   # frozen 15-feature encoder
+  windows.py                  # windowing + runtime gate
+  model.py                    # immutable MLP
+  synth/                      # standard generator + oracle   (never in authoring packet)
+  synth_ood/                  # OOD generator, separate author (never in authoring packet)
+  baselines/                  # rules engine, constant prior, supervised training
+  eval/                       # splits, metrics, fidelity, collisions, bootstrap
+  inspect/                    # CLI
+  guards.py                   # anti-training import/autograd guard
+authoring_packet/             # generated, hashed; the only input to the weight author
+weight_program/
+  phase-a-strict/             # reference_policy.py, build_weights.py, CIRCUITS.md, artefact, sha256
+  phase-a-selfcheck/          # + iteration log
+  phase-b-revision/           # + disclosed diagnostic report
+tests/
+datasets/                     # manifests + split hashes; data files git-ignored
+experiments/phase-c-trained/
+artifacts/reports/
+```
+
+---
+
+## 14. Milestones
+
+- **M0, contracts and harness:** schema, fingerprints, encoder, gate, zero-weight model, guards, tests, `oracle_config` and the authoring-packet builder. **Freeze sign-off by the adjudicator.**
+- **M1, synthetic oracle:** standard generator, oracle, 12 families, counterfactual pairs, splits, manifests, collision audit on the development split. Commission the OOD generator and the independent rules engine in parallel, from separate authors.
+- **M2, Phase A:** a fresh weight-author context gets the hashed packet. Archive A-strict, then A-selfcheck.
+- **M3, Phase B:** disclose the diagnostic report and accept one revision.
+- **M4, baselines and report:** Phase C, rules, priors, sealed and OOD evaluation, bootstrap CIs, fidelity and collision analysis, reproducibility report.
+- **M5 (optional), real traces:** manually adjudicated, de-identified agent sessions through an adapter. Study domain shift. No autonomous interruption.
+
+## 15. Definition of done
+
+An independent person can:
+
+1. rebuild the authoring packet and confirm its hash and contents;
+2. re-run `build_weights.py` and get a byte-identical artefact for each phase;
+3. verify from logs and guards that no optimiser, search or unauthorised labelled data touched Phases A or B;
+4. read `CIRCUITS.md` alongside `inspect model` and trace each active circuit;
+5. reproduce the comparison table, including H1, H2 and H3 separately, against supervised and rules baselines on the sealed and OOD sets.
+
+A poor result still counts as success if the analysis attributes it to policy design (H1), compilation (H2), representation limits (Bayes ceiling), network capacity or distribution shift (OOD gap).
+{
+  "category_order": [
+    "INSPECT",
+    "MUTATE",
+    "VALIDATE",
+    "EXTERNAL",
+    "CONTROL"
+  ],
+  "class_order": [
+    "PRODUCTIVE",
+    "RECOVERY",
+    "STALLED",
+    "OSCILLATING"
+  ],
+  "entries": [
+    {
+      "feature": "cat_INSPECT",
+      "feature_index": 0,
+      "flat_index": 0,
+      "position": 0
+    },
+    {
+      "feature": "cat_MUTATE",
+      "feature_index": 1,
+      "flat_index": 1,
+      "position": 0
+    },
+    {
+      "feature": "cat_VALIDATE",
+      "feature_index": 2,
+      "flat_index": 2,
+      "position": 0
+    },
+    {
+      "feature": "cat_EXTERNAL",
+      "feature_index": 3,
+      "flat_index": 3,
+      "position": 0
+    },
+    {
+      "feature": "cat_CONTROL",
+      "feature_index": 4,
+      "flat_index": 4,
+      "position": 0
+    },
+    {
+      "feature": "out_SUCCESS",
+      "feature_index": 5,
+      "flat_index": 5,
+      "position": 0
+    },
+    {
+      "feature": "out_ERROR",
+      "feature_index": 6,
+      "flat_index": 6,
+      "position": 0
+    },
+    {
+      "feature": "out_NEUTRAL",
+      "feature_index": 7,
+      "flat_index": 7,
+      "position": 0
+    },
+    {
+      "feature": "repeated_intent",
+      "feature_index": 8,
+      "flat_index": 8,
+      "position": 0
+    },
+    {
+      "feature": "repeated_failure",
+      "feature_index": 9,
+      "flat_index": 9,
+      "position": 0
+    },
+    {
+      "feature": "workspace_changed",
+      "feature_index": 10,
+      "flat_index": 10,
+      "position": 0
+    },
+    {
+      "feature": "state_revisited",
+      "feature_index": 11,
+      "flat_index": 11,
+      "position": 0
+    },
+    {
+      "feature": "validation_comparable",
+      "feature_index": 12,
+      "flat_index": 12,
+      "position": 0
+    },
+    {
+      "feature": "validation_delta",
+      "feature_index": 13,
+      "flat_index": 13,
+      "position": 0
+    },
+    {
+      "feature": "relative_token_cost",
+      "feature_index": 14,
+      "flat_index": 14,
+      "position": 0
+    },
+    {
+      "feature": "cat_INSPECT",
+      "feature_index": 0,
+      "flat_index": 15,
+      "position": 1
+    },
+    {
+      "feature": "cat_MUTATE",
+      "feature_index": 1,
+      "flat_index": 16,
+      "position": 1
+    },
+    {
+      "feature": "cat_VALIDATE",
+      "feature_index": 2,
+      "flat_index": 17,
+      "position": 1
+    },
+    {
+      "feature": "cat_EXTERNAL",
+      "feature_index": 3,
+      "flat_index": 18,
+      "position": 1
+    },
+    {
+      "feature": "cat_CONTROL",
+      "feature_index": 4,
+      "flat_index": 19,
+      "position": 1
+    },
+    {
+      "feature": "out_SUCCESS",
+      "feature_index": 5,
+      "flat_index": 20,
+      "position": 1
+    },
+    {
+      "feature": "out_ERROR",
+      "feature_index": 6,
+      "flat_index": 21,
+      "position": 1
+    },
+    {
+      "feature": "out_NEUTRAL",
+      "feature_index": 7,
+      "flat_index": 22,
+      "position": 1
+    },
+    {
+      "feature": "repeated_intent",
+      "feature_index": 8,
+      "flat_index": 23,
+      "position": 1
+    },
+    {
+      "feature": "repeated_failure",
+      "feature_index": 9,
+      "flat_index": 24,
+      "position": 1
+    },
+    {
+      "feature": "workspace_changed",
+      "feature_index": 10,
+      "flat_index": 25,
+      "position": 1
+    },
+    {
+      "feature": "state_revisited",
+      "feature_index": 11,
+      "flat_index": 26,
+      "position": 1
+    },
+    {
+      "feature": "validation_comparable",
+      "feature_index": 12,
+      "flat_index": 27,
+      "position": 1
+    },
+    {
+      "feature": "validation_delta",
+      "feature_index": 13,
+      "flat_index": 28,
+      "position": 1
+    },
+    {
+      "feature": "relative_token_cost",
+      "feature_index": 14,
+      "flat_index": 29,
+      "position": 1
+    },
+    {
+      "feature": "cat_INSPECT",
+      "feature_index": 0,
+      "flat_index": 30,
+      "position": 2
+    },
+    {
+      "feature": "cat_MUTATE",
+      "feature_index": 1,
+      "flat_index": 31,
+      "position": 2
+    },
+    {
+      "feature": "cat_VALIDATE",
+      "feature_index": 2,
+      "flat_index": 32,
+      "position": 2
+    },
+    {
+      "feature": "cat_EXTERNAL",
+      "feature_index": 3,
+      "flat_index": 33,
+      "position": 2
+    },
+    {
+      "feature": "cat_CONTROL",
+      "feature_index": 4,
+      "flat_index": 34,
+      "position": 2
+    },
+    {
+      "feature": "out_SUCCESS",
+      "feature_index": 5,
+      "flat_index": 35,
+      "position": 2
+    },
+    {
+      "feature": "out_ERROR",
+      "feature_index": 6,
+      "flat_index": 36,
+      "position": 2
+    },
+    {
+      "feature": "out_NEUTRAL",
+      "feature_index": 7,
+      "flat_index": 37,
+      "position": 2
+    },
+    {
+      "feature": "repeated_intent",
+      "feature_index": 8,
+      "flat_index": 38,
+      "position": 2
+    },
+    {
+      "feature": "repeated_failure",
+      "feature_index": 9,
+      "flat_index": 39,
+      "position": 2
+    },
+    {
+      "feature": "workspace_changed",
+      "feature_index": 10,
+      "flat_index": 40,
+      "position": 2
+    },
+    {
+      "feature": "state_revisited",
+      "feature_index": 11,
+      "flat_index": 41,
+      "position": 2
+    },
+    {
+      "feature": "validation_comparable",
+      "feature_index": 12,
+      "flat_index": 42,
+      "position": 2
+    },
+    {
+      "feature": "validation_delta",
+      "feature_index": 13,
+      "flat_index": 43,
+      "position": 2
+    },
+    {
+      "feature": "relative_token_cost",
+      "feature_index": 14,
+      "flat_index": 44,
+      "position": 2
+    },
+    {
+      "feature": "cat_INSPECT",
+      "feature_index": 0,
+      "flat_index": 45,
+      "position": 3
+    },
+    {
+      "feature": "cat_MUTATE",
+      "feature_index": 1,
+      "flat_index": 46,
+      "position": 3
+    },
+    {
+      "feature": "cat_VALIDATE",
+      "feature_index": 2,
+      "flat_index": 47,
+      "position": 3
+    },
+    {
+      "feature": "cat_EXTERNAL",
+      "feature_index": 3,
+      "flat_index": 48,
+      "position": 3
+    },
+    {
+      "feature": "cat_CONTROL",
+      "feature_index": 4,
+      "flat_index": 49,
+      "position": 3
+    },
+    {
+      "feature": "out_SUCCESS",
+      "feature_index": 5,
+      "flat_index": 50,
+      "position": 3
+    },
+    {
+      "feature": "out_ERROR",
+      "feature_index": 6,
+      "flat_index": 51,
+      "position": 3
+    },
+    {
+      "feature": "out_NEUTRAL",
+      "feature_index": 7,
+      "flat_index": 52,
+      "position": 3
+    },
+    {
+      "feature": "repeated_intent",
+      "feature_index": 8,
+      "flat_index": 53,
+      "position": 3
+    },
+    {
+      "feature": "repeated_failure",
+      "feature_index": 9,
+      "flat_index": 54,
+      "position": 3
+    },
+    {
+      "feature": "workspace_changed",
+      "feature_index": 10,
+      "flat_index": 55,
+      "position": 3
+    },
+    {
+      "feature": "state_revisited",
+      "feature_index": 11,
+      "flat_index": 56,
+      "position": 3
+    },
+    {
+      "feature": "validation_comparable",
+      "feature_index": 12,
+      "flat_index": 57,
+      "position": 3
+    },
+    {
+      "feature": "validation_delta",
+      "feature_index": 13,
+      "flat_index": 58,
+      "position": 3
+    },
+    {
+      "feature": "relative_token_cost",
+      "feature_index": 14,
+      "flat_index": 59,
+      "position": 3
+    },
+    {
+      "feature": "cat_INSPECT",
+      "feature_index": 0,
+      "flat_index": 60,
+      "position": 4
+    },
+    {
+      "feature": "cat_MUTATE",
+      "feature_index": 1,
+      "flat_index": 61,
+      "position": 4
+    },
+    {
+      "feature": "cat_VALIDATE",
+      "feature_index": 2,
+      "flat_index": 62,
+      "position": 4
+    },
+    {
+      "feature": "cat_EXTERNAL",
+      "feature_index": 3,
+      "flat_index": 63,
+      "position": 4
+    },
+    {
+      "feature": "cat_CONTROL",
+      "feature_index": 4,
+      "flat_index": 64,
+      "position": 4
+    },
+    {
+      "feature": "out_SUCCESS",
+      "feature_index": 5,
+      "flat_index": 65,
+      "position": 4
+    },
+    {
+      "feature": "out_ERROR",
+      "feature_index": 6,
+      "flat_index": 66,
+      "position": 4
+    },
+    {
+      "feature": "out_NEUTRAL",
+      "feature_index": 7,
+      "flat_index": 67,
+      "position": 4
+    },
+    {
+      "feature": "repeated_intent",
+      "feature_index": 8,
+      "flat_index": 68,
+      "position": 4
+    },
+    {
+      "feature": "repeated_failure",
+      "feature_index": 9,
+      "flat_index": 69,
+      "position": 4
+    },
+    {
+      "feature": "workspace_changed",
+      "feature_index": 10,
+      "flat_index": 70,
+      "position": 4
+    },
+    {
+      "feature": "state_revisited",
+      "feature_index": 11,
+      "flat_index": 71,
+      "position": 4
+    },
+    {
+      "feature": "validation_comparable",
+      "feature_index": 12,
+      "flat_index": 72,
+      "position": 4
+    },
+    {
+      "feature": "validation_delta",
+      "feature_index": 13,
+      "flat_index": 73,
+      "position": 4
+    },
+    {
+      "feature": "relative_token_cost",
+      "feature_index": 14,
+      "flat_index": 74,
+      "position": 4
+    },
+    {
+      "feature": "cat_INSPECT",
+      "feature_index": 0,
+      "flat_index": 75,
+      "position": 5
+    },
+    {
+      "feature": "cat_MUTATE",
+      "feature_index": 1,
+      "flat_index": 76,
+      "position": 5
+    },
+    {
+      "feature": "cat_VALIDATE",
+      "feature_index": 2,
+      "flat_index": 77,
+      "position": 5
+    },
+    {
+      "feature": "cat_EXTERNAL",
+      "feature_index": 3,
+      "flat_index": 78,
+      "position": 5
+    },
+    {
+      "feature": "cat_CONTROL",
+      "feature_index": 4,
+      "flat_index": 79,
+      "position": 5
+    },
+    {
+      "feature": "out_SUCCESS",
+      "feature_index": 5,
+      "flat_index": 80,
+      "position": 5
+    },
+    {
+      "feature": "out_ERROR",
+      "feature_index": 6,
+      "flat_index": 81,
+      "position": 5
+    },
+    {
+      "feature": "out_NEUTRAL",
+      "feature_index": 7,
+      "flat_index": 82,
+      "position": 5
+    },
+    {
+      "feature": "repeated_intent",
+      "feature_index": 8,
+      "flat_index": 83,
+      "position": 5
+    },
+    {
+      "feature": "repeated_failure",
+      "feature_index": 9,
+      "flat_index": 84,
+      "position": 5
+    },
+    {
+      "feature": "workspace_changed",
+      "feature_index": 10,
+      "flat_index": 85,
+      "position": 5
+    },
+    {
+      "feature": "state_revisited",
+      "feature_index": 11,
+      "flat_index": 86,
+      "position": 5
+    },
+    {
+      "feature": "validation_comparable",
+      "feature_index": 12,
+      "flat_index": 87,
+      "position": 5
+    },
+    {
+      "feature": "validation_delta",
+      "feature_index": 13,
+      "flat_index": 88,
+      "position": 5
+    },
+    {
+      "feature": "relative_token_cost",
+      "feature_index": 14,
+      "flat_index": 89,
+      "position": 5
+    },
+    {
+      "feature": "cat_INSPECT",
+      "feature_index": 0,
+      "flat_index": 90,
+      "position": 6
+    },
+    {
+      "feature": "cat_MUTATE",
+      "feature_index": 1,
+      "flat_index": 91,
+      "position": 6
+    },
+    {
+      "feature": "cat_VALIDATE",
+      "feature_index": 2,
+      "flat_index": 92,
+      "position": 6
+    },
+    {
+      "feature": "cat_EXTERNAL",
+      "feature_index": 3,
+      "flat_index": 93,
+      "position": 6
+    },
+    {
+      "feature": "cat_CONTROL",
+      "feature_index": 4,
+      "flat_index": 94,
+      "position": 6
+    },
+    {
+      "feature": "out_SUCCESS",
+      "feature_index": 5,
+      "flat_index": 95,
+      "position": 6
+    },
+    {
+      "feature": "out_ERROR",
+      "feature_index": 6,
+      "flat_index": 96,
+      "position": 6
+    },
+    {
+      "feature": "out_NEUTRAL",
+      "feature_index": 7,
+      "flat_index": 97,
+      "position": 6
+    },
+    {
+      "feature": "repeated_intent",
+      "feature_index": 8,
+      "flat_index": 98,
+      "position": 6
+    },
+    {
+      "feature": "repeated_failure",
+      "feature_index": 9,
+      "flat_index": 99,
+      "position": 6
+    },
+    {
+      "feature": "workspace_changed",
+      "feature_index": 10,
+      "flat_index": 100,
+      "position": 6
+    },
+    {
+      "feature": "state_revisited",
+      "feature_index": 11,
+      "flat_index": 101,
+      "position": 6
+    },
+    {
+      "feature": "validation_comparable",
+      "feature_index": 12,
+      "flat_index": 102,
+      "position": 6
+    },
+    {
+      "feature": "validation_delta",
+      "feature_index": 13,
+      "flat_index": 103,
+      "position": 6
+    },
+    {
+      "feature": "relative_token_cost",
+      "feature_index": 14,
+      "flat_index": 104,
+      "position": 6
+    },
+    {
+      "feature": "cat_INSPECT",
+      "feature_index": 0,
+      "flat_index": 105,
+      "position": 7
+    },
+    {
+      "feature": "cat_MUTATE",
+      "feature_index": 1,
+      "flat_index": 106,
+      "position": 7
+    },
+    {
+      "feature": "cat_VALIDATE",
+      "feature_index": 2,
+      "flat_index": 107,
+      "position": 7
+    },
+    {
+      "feature": "cat_EXTERNAL",
+      "feature_index": 3,
+      "flat_index": 108,
+      "position": 7
+    },
+    {
+      "feature": "cat_CONTROL",
+      "feature_index": 4,
+      "flat_index": 109,
+      "position": 7
+    },
+    {
+      "feature": "out_SUCCESS",
+      "feature_index": 5,
+      "flat_index": 110,
+      "position": 7
+    },
+    {
+      "feature": "out_ERROR",
+      "feature_index": 6,
+      "flat_index": 111,
+      "position": 7
+    },
+    {
+      "feature": "out_NEUTRAL",
+      "feature_index": 7,
+      "flat_index": 112,
+      "position": 7
+    },
+    {
+      "feature": "repeated_intent",
+      "feature_index": 8,
+      "flat_index": 113,
+      "position": 7
+    },
+    {
+      "feature": "repeated_failure",
+      "feature_index": 9,
+      "flat_index": 114,
+      "position": 7
+    },
+    {
+      "feature": "workspace_changed",
+      "feature_index": 10,
+      "flat_index": 115,
+      "position": 7
+    },
+    {
+      "feature": "state_revisited",
+      "feature_index": 11,
+      "flat_index": 116,
+      "position": 7
+    },
+    {
+      "feature": "validation_comparable",
+      "feature_index": 12,
+      "flat_index": 117,
+      "position": 7
+    },
+    {
+      "feature": "validation_delta",
+      "feature_index": 13,
+      "flat_index": 118,
+      "position": 7
+    },
+    {
+      "feature": "relative_token_cost",
+      "feature_index": 14,
+      "flat_index": 119,
+      "position": 7
+    }
+  ],
+  "events_per_window": 8,
+  "features": [
+    {
+      "definition": "1 iff operation_category == INSPECT",
+      "feature_index": 0,
+      "name": "cat_INSPECT"
+    },
+    {
+      "definition": "1 iff operation_category == MUTATE",
+      "feature_index": 1,
+      "name": "cat_MUTATE"
+    },
+    {
+      "definition": "1 iff operation_category == VALIDATE",
+      "feature_index": 2,
+      "name": "cat_VALIDATE"
+    },
+    {
+      "definition": "1 iff operation_category == EXTERNAL",
+      "feature_index": 3,
+      "name": "cat_EXTERNAL"
+    },
+    {
+      "definition": "1 iff operation_category == CONTROL",
+      "feature_index": 4,
+      "name": "cat_CONTROL"
+    },
+    {
+      "definition": "1 iff outcome == SUCCESS",
+      "feature_index": 5,
+      "name": "out_SUCCESS"
+    },
+    {
+      "definition": "1 iff outcome == ERROR",
+      "feature_index": 6,
+      "name": "out_ERROR"
+    },
+    {
+      "definition": "1 iff outcome == NEUTRAL",
+      "feature_index": 7,
+      "name": "out_NEUTRAL"
+    },
+    {
+      "definition": "1 iff intent_fingerprint equals that of an earlier event in this window",
+      "feature_index": 8,
+      "name": "repeated_intent"
+    },
+    {
+      "definition": "1 iff outcome == ERROR and failure_fingerprint equals that of an earlier ERROR event in this window",
+      "feature_index": 9,
+      "name": "repeated_failure"
+    },
+    {
+      "definition": "1 iff workspace_state_before != workspace_state_after",
+      "feature_index": 10,
+      "name": "workspace_changed"
+    },
+    {
+      "definition": "1 iff workspace_changed == 1 and workspace_state_after equals any before- or after-digest of an earlier event in this window (including the first event's before-state)",
+      "feature_index": 11,
+      "name": "state_revisited"
+    },
+    {
+      "definition": "1 iff this event produced a validation result and an earlier result from the same validation_suite_id exists anywhere earlier in the session",
+      "feature_index": 12,
+      "name": "validation_comparable"
+    },
+    {
+      "definition": "if validation_comparable: clip(passed/total - prev_passed/prev_total, -1, 1) against the most recent earlier result from that suite; else 0",
+      "feature_index": 13,
+      "name": "validation_delta"
+    },
+    {
+      "definition": "min(1, log1p(input_tokens + output_tokens) / log1p(100000)); 0 for a verified zero-token step",
+      "feature_index": 14,
+      "name": "relative_token_cost"
+    }
+  ],
+  "features_per_event": 15,
+  "input_dim": 120,
+  "layout": "flat_index = position * features_per_event + feature_index; position 0 is the oldest event of the window, position 7 the newest (the window endpoint)",
+  "outcome_order": [
+    "SUCCESS",
+    "ERROR",
+    "NEUTRAL"
+  ],
+  "spec_version": "0.2"
+}
+
+hook: PreToolUse
+hook: PreToolUse Completed
+exec
+/bin/zsh -lc "sed -n '235,420p' SPEC_AUTHORING.md" in /private/tmp/claude-501/-Users-matthew-Development-hypabolic-HypaNet/515f7eed-7abe-4ed8-9526-67cd3895cadd/scratchpad/commissions/rules_baseline
+ succeeded in 0ms:
+- the **Bayes ceiling**: accuracy and macro-F1 of predicting each group's majority label.
+
+Collisions stay in the primary metric. The Bayes ceiling tells readers how much of any shortfall the inputs cannot resolve.
+
+---
+
+## 7. Synthetic generator
+
+### 7.1 Scenario families (names only; this list is in the authoring packet)
+
+1. Incremental productive repair: failing tests, targeted edits, fewer failures, eventually green.
+2. Productive exploration: several inspections and diagnostics before a meaningful change.
+3. Transient external failure: repeated timeout, then success, then productive work.
+4. Bounded backoff or retry: a recoverable failure with one or two controlled retries.
+5. Repeated failed test invocation with unchanged artefact and unchanged failure.
+6. Repeated edits that change files but don't improve validation.
+7. A/B/A/B workspace oscillation between competing edits.
+8. Tool oscillation: two operations repeatedly undo each other's effects.
+9. Benign lookalike: repeated test runs with genuine incremental improvement.
+10. Benign lookalike: repeated reads or polls while an external dependency legitimately recovers.
+11. Rising context or token expenditure without useful work. Cost is weak supporting evidence, not a label shortcut.
+12. Under-instrumented sessions, for gate coverage.
+
+---
+
+## 8. Roles and independence
+
+| Role | Does | Must not have seen |
+|---|---|---|
+| **Harness implementer** | M0/M1 code: schema, encoder, gate, model shell, standard generator, oracle, eval harness | — |
+| **Weight author** | Phase A/B: `reference_policy.py`, `build_weights.py` | Generator or oracle code, any dataset, any eval output (until Phase B's disclosed set) |
+| **OOD generator author** | OOD holdout generator from a written brief | Weight artefacts, standard generator code |
+| **Rules-baseline author** | Independent pre-registered rules engine | Datasets and labels |
+| **Adjudicator** (human) | Approves the frozen spec, verifies logs, runs final evaluation | — |
+
+- The weight author runs in a **fresh context** (new session, no repository access beyond the authoring packet directory). A context that implemented or read the generator cannot act as the Phase A weight author.
+- A different model family is recommended for the OOD generator author.
+- **Authoring packet** (built by script, sha256 recorded): this spec minus §0, §2.3 and §7.2–§7.3; `model.py`; the zero-filled `state_dict` template with tensor names and shapes; the encoder's feature-index map; and the rules in §9.
+
+---
+
+## 9. Direct-weight construction protocol
+
+### 9.1 Required deliverables from the weight author
+
+1. `reference_policy.py`: a pure, deterministic function `reference_policy(x: tuple[float, ...]) -> int ∈ {0,1,2,3}`. `x` holds the 120 input values as Python floats, each exactly representable in float32. The function does no I/O, imports nothing beyond the standard library and accesses no data. It states the author's intended policy.
+2. `build_weights.py`: defines `build()`, which starts from `zero_model()`, sets every `Linear.weight` and `Linear.bias` entry by literal assignment or closed-form rule, and returns the model. It runs no forward computation, matrix products or linear-algebra solvers, and writes no files. The harness runs `build()` under the anti-training guard and writes the `.dlw` artefact, its sha256 and a build record with sparsity statistics.
+3. `CIRCUITS.md`: the purpose of every non-zero hidden unit, grouped by circuit, plus which reference-policy branch each output logit implements.
+
+Allowed: arithmetic reasoning, explicit constants, structured matrix assignment, and deterministic loops that fill known circuits. The authoring packet's `AUTHOR_INSTRUCTIONS.md` gives the exact interfaces and the full list of checks the harness applies.
+
+Forbidden in Phases A and B: labelled examples (except Phase B's disclosed set), fitting, autograd, `.backward()`, `torch.optim`, numerical or evolutionary search over weights, distillation, and importing `synth/`, `datasets/` or `eval/`.
+
+### 9.2 Phase A-strict (zero execution)
+
+The author may run only shape, dtype and finiteness checks plus `reference_policy.py` syntax checks. No forward passes. The harness runs `build()` and calls `reference_policy` once on the all-zero input as a type check, without recording the result. That is the only execution. The harness archives the first valid artefact and the adjudicator git-commits it with its sha256 **before anything else runs**.
+
+### 9.3 Phase A-selfcheck (zero labels)
+
+This starts from the archived A-strict artefact, in the same authoring context. The author may run forward passes and `reference_policy.py` **on inputs they construct themselves** (hand-written windows, or enumerations of their own policy's branch conditions). They may compare the two and revise weights by direct, reasoned edits. Not allowed: generator output, datasets, labels, or automated weight search. Log every iteration with a diff and the reason. Archive the final artefact.
+
+Both A-strict and A-selfcheck are reported. Both count as **0 labelled examples**.
+
+### 9.4 Phase B (one diagnostic revision)
+
+The base is the A-selfcheck artefact. The author receives a fixed disclosed diagnostic report: 200 windows from the **validation** split (fixed seed, stratified by class), each with features, oracle label, network prediction and reference-policy prediction. They may make **one** revision to the weights and to `reference_policy.py`. Log exactly what was disclosed. This is feedback-assisted programming and is reported as 200 labelled examples with one revision.
+
+### 9.5 Phase C and other baselines
+
+- **Supervised, same topology and encoder:** cross-entropy with Adam (lr 1e-3, batch 256, up to 50 epochs, early stopping on validation macro-F1). Budgets are **32, 128, 512, 2,048 and all development sessions** (window counts reported). Three seeds per budget. Hyperparameters are fixed before training. An L1-regularised variant is optional, for a sparsity comparison.
+- **Independent rules engine:** written by the rules-baseline author against this spec, before M2.
+- **Author reference policy:** `reference_policy.py` is itself evaluated as a baseline (H1).
+- **Constant prior:** always predicts the development-set majority class, plus always-PRODUCTIVE.
+
+---
+
+## 10. Evaluation
+
+### 10.1 Metrics (standard test set, OOD set and each family)
+
+- Macro-F1, and per-class precision and recall, on oracle-labelled (non-INSUFFICIENT) windows.
+- **False-loop alarm rate:** the fraction of PRODUCTIVE + RECOVERY windows predicted STALLED or OSCILLATING.
+- Confusion matrices with counts.
+- **Compilation fidelity (H2):** argmax agreement between the network and `reference_policy.py` on (a) all benchmark windows and (b) 100,000 windows from a random valid-window sampler that respects §4's invariants but ignores the generator. No labels are needed.
+- Sparsity: `count(|w| > 1e-9) / 3,256`, per layer and overall.
+- Collision rate and Bayes ceiling (§6.4).
+- Gate coverage, and gate agreement with oracle instrumentation flags. Report the class distribution of network predictions on oracle-ambiguous windows, but don't score it.
+- Counterfactual consistency: the fraction of counterfactual pairs whose predicted classes differ in the direction of the oracle labels.
+- CPU latency per batch of 1 and of 1,024.
+- 95% bootstrap confidence intervals over **sessions** (10,000 resamples).
+
+### 10.2 Reporting
+
+One table with columns for A-strict, A-selfcheck, B, C (per budget, mean ± sd over seeds), independent rules, author reference policy and constant prior. Rows cover each metric above, **labelled examples seen by the weight author**, and the number of weight revisions or self-check iterations.
+
+Suggested research targets (not acceptance gates): A-selfcheck macro-F1 ≥ 0.80 on the standard sealed set, false-loop alarms ≤ 5%, compilation fidelity ≥ 0.99, and a non-trivial OOD score. Beating a weak trained baseline does not show that direct programming is generally better.
+
+Sealed-test and OOD outputs are computed once, after all phases are archived. Every failed attempt and intermediate artefact is kept.
+
+---
+
+## 11. Verification requirements
+
+- **Encoder:** feature order, one-hot validity, invariants in §4, numeric ranges, byte-identical output for identical session prefixes, and no future leakage (appending events after the endpoint never changes that window's features).
+- **Fingerprints:** golden tests per family in §3.2, including excluded-argument insensitivity.
+- **Architecture:** exact shapes, exactly 3,256 slots, all-zero initial state, finite weights, output `[batch, 4]`, and the argmax tie rule.
+- **Anti-training:** the weight-build path runs under a guard that fails if autograd records a graph, `.backward()` is called, any `torch.optim` object is created, or any module under `synth/`, `datasets/` or `eval/` is imported. Use an import hook plus `torch.is_grad_enabled()` assertions.
+- **Leakage:** no oracle fields on `CanonicalEvent`, no session shared across splits, no identical window crossing splits (reported, not just checked), and the authoring packet contains no generator or dataset files (checked against the packet manifest).
+- **Gate:** scenario-12 sessions are rejected, and all-novel INSPECT windows are **not** rejected.
+- **Oracle:** unit tests per rule in §6.3, including the RECOVERY recency bound, grey-zone handling, and the requirement that eight novel, fruitless operations are never labelled STALLED.
+- **Repeatability:** the same seed and the same `state_dict` give byte-identical feature tensors and identical CPU predictions.
+
+---
+
+## 12. Diagnostic interface (CLI)
+
+- `inspect window <file>`: prints the 8 × 15 feature matrix with names, gate result, raw logits, predicted class and reference-policy class.
+- `inspect model <artefact>`: lists non-zero parameters per layer with the `CIRCUITS.md` label for each hidden unit.
+- `inspect activations <file>`: shows the layer-by-layer activation vectors, with active units named.
+- `inspect perturb <file>`: flips or nudges each input feature and reports changes in prediction and logits. Weights are never modified.
+- `export`: writes confusion matrices, hard examples, fidelity disagreements, counterfactual pairs, collision groups and sparsity summaries.
+
+No dashboard in v0.2.
+
+---
+
+## 13. Repository layout
+
+```text
+agent_doom_loop_detector_spec_v0_2.md  # this document (frozen)
+pyproject.toml
+oracle_config.v0_2.yaml
+src/agent_loop_lab/
+  schema.py                   # CanonicalEvent, OracleRecord
+  fingerprint.py              # §3.2 canonicalisation
+  encode.py                   # frozen 15-feature encoder
+  windows.py                  # windowing + runtime gate
+  model.py                    # immutable MLP
+  synth/                      # standard generator + oracle   (never in authoring packet)
+  synth_ood/                  # OOD generator, separate author (never in authoring packet)
+  baselines/                  # rules engine, constant prior, supervised training
+  eval/                       # splits, metrics, fidelity, collisions, bootstrap
+  inspect/                    # CLI
+  guards.py                   # anti-training import/autograd guard
+authoring_packet/             # generated, hashed; the only input to the weight author
+weight_program/
+  phase-a-strict/             # reference_policy.py, build_weights.py, CIRCUITS.md, artefact, sha256
+  phase-a-selfcheck/          # + iteration log
+  phase-b-revision/           # + disclosed diagnostic report
+tests/
+datasets/                     # manifests + split hashes; data files git-ignored
+experiments/phase-c-trained/
+artifacts/reports/
+```
+
+---
+
+## 14. Milestones
+
+- **M0, contracts and harness:** schema, fingerprints, encoder, gate, zero-weight model, guards, tests, `oracle_config` and the authoring-packet builder. **Freeze sign-off by the adjudicator.**
+- **M1, synthetic oracle:** standard generator, oracle, 12 families, counterfactual pairs, splits, manifests, collision audit on the development split. Commission the OOD generator and the independent rules engine in parallel, from separate authors.
+- **M2, Phase A:** a fresh weight-author context gets the hashed packet. Archive A-strict, then A-selfcheck.
+- **M3, Phase B:** disclose the diagnostic report and accept one revision.
+- **M4, baselines and report:** Phase C, rules, priors, sealed and OOD evaluation, bootstrap CIs, fidelity and collision analysis, reproducibility report.
+- **M5 (optional), real traces:** manually adjudicated, de-identified agent sessions through an adapter. Study domain shift. No autonomous interruption.
+
+## 15. Definition of done
+
+An independent person can:
+
+1. rebuild the authoring packet and confirm its hash and contents;
+2. re-run `build_weights.py` and get a byte-identical artefact for each phase;
+3. verify from logs and guards that no optimiser, search or unauthorised labelled data touched Phases A or B;
+4. read `CIRCUITS.md` alongside `inspect model` and trace each active circuit;
+5. reproduce the comparison table, including H1, H2 and H3 separately, against supervised and rules baselines on the sealed and OOD sets.
+
+A poor result still counts as success if the analysis attributes it to policy design (H1), compilation (H2), representation limits (Bayes ceiling), network capacity or distribution shift (OOD gap).
+
+codex
+The spec’s oracle uses hidden progress, knowledge, and retry-policy state that the features cannot fully recover. I’ll document those limits and use the oracle’s precedence and thresholds for a simple observable approximation.
+
+The terminal session rename was blocked by the sandbox; it does not affect the commission.
+hook: PreToolUse
+hook: PreToolUse Completed
+apply patch
+patch: completed
+/private/tmp/claude-501/-Users-matthew-Development-hypabolic-HypaNet/515f7eed-7abe-4ed8-9526-67cd3895cadd/scratchpad/commissions/rules_baseline/RULES.md
+/private/tmp/claude-501/-Users-matthew-Development-hypabolic-HypaNet/515f7eed-7abe-4ed8-9526-67cd3895cadd/scratchpad/commissions/rules_baseline/rules.py
+diff --git a/RULES.md b/RULES.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..3294c28f4d8e87cd30c7d46585be79f52d84a80e
+--- /dev/null
++++ b/RULES.md
+@@ -0,0 +1,87 @@
++# Independent rules baseline
++
++This is a pre-registered, hand-written policy using only the 120 features in
++`feature_index.json`, with eight oldest-first blocks of 15 (§4). It reads no
++files at inference time, uses no fitted parameters, and returns the canonical
++indices PRODUCTIVE=0, RECOVERY=1, STALLED=2, OSCILLATING=3. The caller supplies
++valid encoded windows after the instrumentation gate (§5.2). Lengths other than
++120 raise ValueError; semantic ambiguity never causes abstention.
++
++## Observable proxies
++
++- Progress: sum comparable validation deltas over all eight events; progress
++  is strictly greater than 0.02. This borrows epsilon_p from §6.2, but validation
++  ratios are only a proxy for objective completion. Negative deltas cancel
++  positive ones. No tolerance or rounding is added. Workspace changes, SUCCESS,
++  and token cost alone never establish progress (§4).
++- Reversions: count MUTATE events with state_revisited=1. Requiring mutation
++  excludes observed external resets; it cannot prove an earlier agent mutation
++  was undone (§6.1).
++- Knowledge: count non-ERROR INSPECT events with repeated_intent=0. Any such
++  event vetoes STALLED, approximating its F=0 requirement (§6.3). Two or more
++  are compatible with F_prod=2, but both one and zero ultimately default to
++  PRODUCTIVE when no other rule applies. Novelty cannot establish new facts.
++- Stall-ineffective: a mutation reversion, or repeated_intent/repeated_failure
++  without a strictly positive comparable validation delta. Count each event
++  once. Changed files do not exempt repeated operations. Novel failed edits
++  without repeat/reversion evidence are not counted (§4, §6.1).
++
++## Episode approximation
++
++Scan oldest to newest, tracking one active failure category and a retry count.
++An ERROR starts an episode at count zero if none is active or its category
++differs. Another ERROR in the active category increments the count only when
++repeated_intent=1. A non-error repeated operation in that category increments
++the count, except that repeated SUCCESS resolves the episode. Any strictly
++positive comparable validation delta also resolves an active episode. Record
++the most recent resolution index. A later ERROR starts a new episode. Events
++in other categories otherwise leave the active episode unchanged.
++
++The endpoint episode is in policy at counts <=3, or <=5 for EXTERNAL, borrowing
++R_max and P_max (§6.2). The initial failure counts as zero retries (§6.1).
++Additionally, a trailing uninterrupted run of neutral EXTERNAL events is
++treated as active polling if it contains 1 through 5 repeated_intent events.
++The first novel poll is treated as the initial request. There is no backoff
++feature, so backoff is not verified. Counts restart at the window boundary.
++
++## First-match precedence
++
++1. **OSCILLATING:** at least 2 mutation reversions and no proxy progress.
++   N_rev=2 and the progress tolerance follow §6.2–6.3. This overrides recovery
++   and novel investigation, as the oracle does.
++2. **STALLED:** no proxy progress, zero novel non-error inspections, at least
++   5 stall-ineffective events, final event stall-ineffective, and no endpoint
++   in-policy episode. N_stall=5 and the endpoint guards follow §6.3. A recent
++   resolution alone does not veto this rule, matching oracle precedence.
++3. **RECOVERY:** endpoint episode is in policy, or latest resolution occurred
++   at index 4, 5, 6, or 7. This is the last k_rec=4 events (§6.2–6.3).
++   Recovery overrides even positive proxy progress.
++4. **PRODUCTIVE:** otherwise. This covers measured improvement, novel
++   investigation, and all forced decisions on ambiguous windows. It is the
++   benign default (§2.2, §5.2); §6.3's semantic INSUFFICIENT_EVIDENCE cannot be
++   returned under this commission's four-class interface.
++
++## Expected errors and independence
++
++The oracle uses hidden causal state (§6), so these are approximations, not
++equivalent oracle rules. Repeated reads can teach new facts; novel reads can
++be useless. Different novel edits can repeatedly fail without triggering the
++stall proxy. Category-level episode tracking conflates unrelated intents and
++failures, cannot represent concurrent episodes, and cannot distinguish
++persistent failures from transient or diagnosed ones. A first visible failure
++may already exceed its latent retry budget. Poll counts can mix resources.
++SUCCESS can fail to resolve the underlying cause, while a novel successful
++repair without validation may go unrecognized. Old unresolved errors may
++overextend recovery. Successful polls without a visible failure are not
++recognized as resolution.
++
++Validation deltas from different suites can cancel or double-count and do not
++measure hidden progress; improvement can coexist with a real loop. State
++revisits lack causal provenance. History before the window is absent except
++for comparable validation deltas. These limitations can produce false loop
++alarms and missed loops, including feature collisions (§6.4). Token cost is
++ignored because expenditure alone is not a label (§7.1). Thresholds come
++solely from the spec and the explicit initial-request convention above.
++
++Only the authoring packet was consulted. Tests are individual hand-constructed
++branch and boundary checks, not a generated dataset or threshold tuning.
+diff --git a/rules.py b/rules.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..ba118d5b8b16226b2ed1e4b6dbd3e62e996eac3a
+--- /dev/null
++++ b/rules.py
+@@ -0,0 +1,63 @@
++"""Independent, hand-written baseline for the v0.2 authoring packet."""
++
++
++def rules_classify(x: tuple[float, ...]) -> int:
++    """Classify a gated 8 x 15 window; class order is P, R, S, O."""
++    if len(x) != 120:
++        raise ValueError("expected exactly 120 features")
++    events = tuple(x[i:i + 15] for i in range(0, 120, 15))
++    net_validation = sum(e[13] for e in events if e[12] == 1.0)
++    progress = net_validation > 0.02
++    reversions = sum(e[1] == 1.0 and e[11] == 1.0 for e in events)
++    novel_inspections = sum(
++        e[0] == 1.0 and e[6] == 0.0 and e[8] == 0.0 for e in events
++    )
++
++    # One visible failure episode at a time; category substitutes for identity.
++    episode_category = None
++    retries = 0
++    resolved_at = -8
++    for i, e in enumerate(events):
++        category = e[:5].index(1.0)
++        if e[6] == 1.0:
++            if episode_category != category:
++                episode_category = category
++                retries = 0
++            elif e[8] == 1.0:
++                retries += 1
++        elif episode_category is not None:
++            if (category == episode_category and e[5] == 1.0 and e[8] == 1.0) or (
++                e[12] == 1.0 and e[13] > 0.0
++            ):
++                episode_category = None
++                retries = 0
++                resolved_at = i
++            elif category == episode_category and e[8] == 1.0:
++                retries += 1
++
++    active = episode_category is not None and retries <= (
++        5 if episode_category == 3 else 3
++    )
++    # Neutral external polling can be a bounded episode without an ERROR.
++    poll_start = 8
++    while poll_start > 0:
++        e = events[poll_start - 1]
++        if e[3] != 1.0 or e[7] != 1.0:
++            break
++        poll_start -= 1
++    polls = sum(e[8] == 1.0 for e in events[poll_start:])
++    active = active or (poll_start < 8 and 1 <= polls <= 5)
++
++    ineffective = tuple(
++        (e[1] == 1.0 and e[11] == 1.0)
++        or ((e[8] == 1.0 or e[9] == 1.0) and not (e[12] == 1.0 and e[13] > 0.0))
++        for e in events
++    )
++    if reversions >= 2 and not progress:
++        return 3
++    if (not progress and novel_inspections == 0 and sum(ineffective) >= 5
++            and ineffective[-1] and not active):
++        return 2
++    if active or resolved_at >= 4:
++        return 1
++    return 0
+
+hook: PreToolUse
+hook: PreToolUse Completed
+apply patch
+patch: completed
+/private/tmp/claude-501/-Users-matthew-Development-hypabolic-HypaNet/515f7eed-7abe-4ed8-9526-67cd3895cadd/scratchpad/commissions/rules_baseline/test_rules.py
+diff --git a/RULES.md b/RULES.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..3294c28f4d8e87cd30c7d46585be79f52d84a80e
+--- /dev/null
++++ b/RULES.md
+@@ -0,0 +1,87 @@
++# Independent rules baseline
++
++This is a pre-registered, hand-written policy using only the 120 features in
++`feature_index.json`, with eight oldest-first blocks of 15 (§4). It reads no
++files at inference time, uses no fitted parameters, and returns the canonical
++indices PRODUCTIVE=0, RECOVERY=1, STALLED=2, OSCILLATING=3. The caller supplies
++valid encoded windows after the instrumentation gate (§5.2). Lengths other than
++120 raise ValueError; semantic ambiguity never causes abstention.
++
++## Observable proxies
++
++- Progress: sum comparable validation deltas over all eight events; progress
++  is strictly greater than 0.02. This borrows epsilon_p from §6.2, but validation
++  ratios are only a proxy for objective completion. Negative deltas cancel
++  positive ones. No tolerance or rounding is added. Workspace changes, SUCCESS,
++  and token cost alone never establish progress (§4).
++- Reversions: count MUTATE events with state_revisited=1. Requiring mutation
++  excludes observed external resets; it cannot prove an earlier agent mutation
++  was undone (§6.1).
++- Knowledge: count non-ERROR INSPECT events with repeated_intent=0. Any such
++  event vetoes STALLED, approximating its F=0 requirement (§6.3). Two or more
++  are compatible with F_prod=2, but both one and zero ultimately default to
++  PRODUCTIVE when no other rule applies. Novelty cannot establish new facts.
++- Stall-ineffective: a mutation reversion, or repeated_intent/repeated_failure
++  without a strictly positive comparable validation delta. Count each event
++  once. Changed files do not exempt repeated operations. Novel failed edits
++  without repeat/reversion evidence are not counted (§4, §6.1).
++
++## Episode approximation
++
++Scan oldest to newest, tracking one active failure category and a retry count.
++An ERROR starts an episode at count zero if none is active or its category
++differs. Another ERROR in the active category increments the count only when
++repeated_intent=1. A non-error repeated operation in that category increments
++the count, except that repeated SUCCESS resolves the episode. Any strictly
++positive comparable validation delta also resolves an active episode. Record
++the most recent resolution index. A later ERROR starts a new episode. Events
++in other categories otherwise leave the active episode unchanged.
++
++The endpoint episode is in policy at counts <=3, or <=5 for EXTERNAL, borrowing
++R_max and P_max (§6.2). The initial failure counts as zero retries (§6.1).
++Additionally, a trailing uninterrupted run of neutral EXTERNAL events is
++treated as active polling if it contains 1 through 5 repeated_intent events.
++The first novel poll is treated as the initial request. There is no backoff
++feature, so backoff is not verified. Counts restart at the window boundary.
++
++## First-match precedence
++
++1. **OSCILLATING:** at least 2 mutation reversions and no proxy progress.
++   N_rev=2 and the progress tolerance follow §6.2–6.3. This overrides recovery
++   and novel investigation, as the oracle does.
++2. **STALLED:** no proxy progress, zero novel non-error inspections, at least
++   5 stall-ineffective events, final event stall-ineffective, and no endpoint
++   in-policy episode. N_stall=5 and the endpoint guards follow §6.3. A recent
++   resolution alone does not veto this rule, matching oracle precedence.
++3. **RECOVERY:** endpoint episode is in policy, or latest resolution occurred
++   at index 4, 5, 6, or 7. This is the last k_rec=4 events (§6.2–6.3).
++   Recovery overrides even positive proxy progress.
++4. **PRODUCTIVE:** otherwise. This covers measured improvement, novel
++   investigation, and all forced decisions on ambiguous windows. It is the
++   benign default (§2.2, §5.2); §6.3's semantic INSUFFICIENT_EVIDENCE cannot be
++   returned under this commission's four-class interface.
++
++## Expected errors and independence
++
++The oracle uses hidden causal state (§6), so these are approximations, not
++equivalent oracle rules. Repeated reads can teach new facts; novel reads can
++be useless. Different novel edits can repeatedly fail without triggering the
++stall proxy. Category-level episode tracking conflates unrelated intents and
++failures, cannot represent concurrent episodes, and cannot distinguish
++persistent failures from transient or diagnosed ones. A first visible failure
++may already exceed its latent retry budget. Poll counts can mix resources.
++SUCCESS can fail to resolve the underlying cause, while a novel successful
++repair without validation may go unrecognized. Old unresolved errors may
++overextend recovery. Successful polls without a visible failure are not
++recognized as resolution.
++
++Validation deltas from different suites can cancel or double-count and do not
++measure hidden progress; improvement can coexist with a real loop. State
++revisits lack causal provenance. History before the window is absent except
++for comparable validation deltas. These limitations can produce false loop
++alarms and missed loops, including feature collisions (§6.4). Token cost is
++ignored because expenditure alone is not a label (§7.1). Thresholds come
++solely from the spec and the explicit initial-request convention above.
++
++Only the authoring packet was consulted. Tests are individual hand-constructed
++branch and boundary checks, not a generated dataset or threshold tuning.
+diff --git a/rules.py b/rules.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..ba118d5b8b16226b2ed1e4b6dbd3e62e996eac3a
+--- /dev/null
++++ b/rules.py
+@@ -0,0 +1,63 @@
++"""Independent, hand-written baseline for the v0.2 authoring packet."""
++
++
++def rules_classify(x: tuple[float, ...]) -> int:
++    """Classify a gated 8 x 15 window; class order is P, R, S, O."""
++    if len(x) != 120:
++        raise ValueError("expected exactly 120 features")
++    events = tuple(x[i:i + 15] for i in range(0, 120, 15))
++    net_validation = sum(e[13] for e in events if e[12] == 1.0)
++    progress = net_validation > 0.02
++    reversions = sum(e[1] == 1.0 and e[11] == 1.0 for e in events)
++    novel_inspections = sum(
++        e[0] == 1.0 and e[6] == 0.0 and e[8] == 0.0 for e in events
++    )
++
++    # One visible failure episode at a time; category substitutes for identity.
++    episode_category = None
++    retries = 0
++    resolved_at = -8
++    for i, e in enumerate(events):
++        category = e[:5].index(1.0)
++        if e[6] == 1.0:
++            if episode_category != category:
++                episode_category = category
++                retries = 0
++            elif e[8] == 1.0:
++                retries += 1
++        elif episode_category is not None:
++            if (category == episode_category and e[5] == 1.0 and e[8] == 1.0) or (
++                e[12] == 1.0 and e[13] > 0.0
++            ):
++                episode_category = None
++                retries = 0
++                resolved_at = i
++            elif category == episode_category and e[8] == 1.0:
++                retries += 1
++
++    active = episode_category is not None and retries <= (
++        5 if episode_category == 3 else 3
++    )
++    # Neutral external polling can be a bounded episode without an ERROR.
++    poll_start = 8
++    while poll_start > 0:
++        e = events[poll_start - 1]
++        if e[3] != 1.0 or e[7] != 1.0:
++            break
++        poll_start -= 1
++    polls = sum(e[8] == 1.0 for e in events[poll_start:])
++    active = active or (poll_start < 8 and 1 <= polls <= 5)
++
++    ineffective = tuple(
++        (e[1] == 1.0 and e[11] == 1.0)
++        or ((e[8] == 1.0 or e[9] == 1.0) and not (e[12] == 1.0 and e[13] > 0.0))
++        for e in events
++    )
++    if reversions >= 2 and not progress:
++        return 3
++    if (not progress and novel_inspections == 0 and sum(ineffective) >= 5
++            and ineffective[-1] and not active):
++        return 2
++    if active or resolved_at >= 4:
++        return 1
++    return 0
+diff --git a/test_rules.py b/test_rules.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..d37596939ff2b4a49b02d769757d03e308a80d81
+--- /dev/null
++++ b/test_rules.py
+@@ -0,0 +1,113 @@
++import unittest
++
++from rules import rules_classify
++
++
++def event(category=4, outcome=7, *, repeat=False, failure=False,
++          changed=False, revisit=False, comparable=False, delta=0.0, cost=0.0):
++    e = [0.0] * 15
++    e[category] = e[outcome] = 1.0
++    e[8:15] = map(float, (repeat, failure, changed, revisit, comparable, delta, cost))
++    return tuple(e)
++
++
++def window(*tail):
++    return sum((event(),) * (8 - len(tail)) + tail, ())
++
++
++class RulesTests(unittest.TestCase):
++    def test_productive_default_and_novel_exploration(self):
++        self.assertEqual(rules_classify(window()), 0)
++        self.assertEqual(rules_classify(window(*(event(0) for _ in range(8)))), 0)
++
++    def test_success_changes_and_cost_do_not_prove_progress(self):
++        tail = (event(1, 5, changed=True),) + (event(1, 5, repeat=True, changed=True),) * 7
++        self.assertEqual(rules_classify(window(*tail)), 2)
++        self.assertEqual(rules_classify(window(*(event(cost=1.0) for _ in range(8)))), 0)
++
++    def test_stall_count_and_final_event(self):
++        repeated = event(0, repeat=True)
++        self.assertEqual(rules_classify(window(*([repeated] * 4))), 0)
++        self.assertEqual(rules_classify(window(*([repeated] * 5))), 2)
++        self.assertEqual(rules_classify(window(*([repeated] * 5), event())), 0)
++        self.assertEqual(rules_classify(window(event(0), *([repeated] * 5))), 0)
++
++    def test_repeated_failure_counts_without_intent_repeat(self):
++        # A neutral external request followed by distinct failing intents can
++        # share a failure fingerprint. Six same-category repeats exceed policy.
++        errors = (event(2, 6),) + (event(2, 6, repeat=True, failure=True),) * 4
++        extra = event(3, 6, failure=True)
++        # New external episode would protect the endpoint; resolve it first.
++        self.assertEqual(rules_classify(window(*errors)), 0)
++        self.assertEqual(rules_classify(window(*errors, extra, event(3, 5, repeat=True),
++                                             event(0, repeat=True))), 2)
++
++    def test_retry_budget(self):
++        first = event(2, 6)
++        retry = event(2, 6, repeat=True, failure=True)
++        self.assertEqual(rules_classify(window(first, *([retry] * 3))), 1)
++        self.assertEqual(rules_classify(window(first, *([retry] * 4))), 0)
++        self.assertEqual(rules_classify(window(first, *([retry] * 5))), 2)
++
++    def test_external_budget_and_neutral_polls(self):
++        for outcome in (6, 7):
++            with self.subTest(outcome=outcome):
++                first = event(3, outcome)
++                repeat = event(3, outcome, repeat=True, failure=outcome == 6)
++                self.assertEqual(rules_classify(window(first, *([repeat] * 5))), 1)
++                self.assertEqual(rules_classify(window(first, *([repeat] * 6))), 2)
++        self.assertEqual(rules_classify(window(event(3))), 0)
++
++    def test_resolution_recency_boundary(self):
++        first, resolved = event(3, 6), event(3, 5, repeat=True)
++        self.assertEqual(rules_classify(window(first, resolved, *([event()] * 3))), 1)
++        self.assertEqual(rules_classify(window(first, resolved, *([event()] * 4))), 0)
++
++    def test_validation_resolution_and_recovery_over_progress(self):
++        self.assertEqual(rules_classify(window(event(2, 6),
++                                             event(2, 5, comparable=True, delta=0.1))), 1)
++        self.assertEqual(rules_classify(window(event(2, 5, comparable=True, delta=0.1),
++                                             event(3, 6))), 1)
++
++    def test_oscillation_threshold_and_precedence(self):
++        rev = event(1, 5, changed=True, revisit=True)
++        self.assertEqual(rules_classify(window(rev)), 0)
++        self.assertEqual(rules_classify(window(rev, rev)), 3)
++        self.assertEqual(rules_classify(window(rev, rev, event(3, 6))), 3)
++        self.assertEqual(rules_classify(window(rev, rev, *([event(0, repeat=True)] * 5))), 3)
++        self.assertEqual(rules_classify(window(event(0), rev, rev)), 3)
++        external = event(3, 5, changed=True, revisit=True)
++        self.assertEqual(rules_classify(window(external, external)), 0)
++
++    def test_progress_threshold_netting_and_positive_event_exemption(self):
++        rev = event(1, 5, changed=True, revisit=True)
++        self.assertEqual(rules_classify(window(rev, rev,
++                                             event(2, comparable=True, delta=0.02))), 3)
++        self.assertEqual(rules_classify(window(rev, rev,
++                                             event(2, comparable=True, delta=0.021))), 0)
++        self.assertEqual(rules_classify(window(rev, rev,
++                                             event(2, comparable=True, delta=0.1),
++                                             event(2, comparable=True, delta=-0.1))), 3)
++        repeated = event(2, repeat=True, comparable=True)
++        self.assertEqual(rules_classify(window(*([repeated] * 5),
++                                             event(2, repeat=True, comparable=True, delta=0.01))), 0)
++
++    def test_stall_over_recent_resolution(self):
++        self.assertEqual(rules_classify(window(event(3, 6),
++                                             *([event(0, repeat=True)] * 4),
++                                             event(3, 5, repeat=True),
++                                             event(0, repeat=True))), 2)
++
++    def test_new_episode_category_and_determinism(self):
++        x = window(event(2, 6), event(2, 6, repeat=True), event(3, 6))
++        self.assertEqual(rules_classify(x), 1)
++        self.assertEqual(rules_classify(x), rules_classify(x))
++        self.assertIsInstance(rules_classify(x), int)
++
++    def test_length_contract(self):
++        with self.assertRaises(ValueError):
++            rules_classify(())
++
++
++if __name__ == '__main__':
++    unittest.main()
+
+hook: PreToolUse
+hook: PreToolUse Completed
+exec
+/bin/zsh -lc 'python3 -m unittest test_rules -v' in /private/tmp/claude-501/-Users-matthew-Development-hypabolic-HypaNet/515f7eed-7abe-4ed8-9526-67cd3895cadd/scratchpad/commissions/rules_baseline
+ succeeded in 52ms:
+test_external_budget_and_neutral_polls (test_rules.RulesTests.test_external_budget_and_neutral_polls) ... ok
+test_length_contract (test_rules.RulesTests.test_length_contract) ... ok
+test_new_episode_category_and_determinism (test_rules.RulesTests.test_new_episode_category_and_determinism) ... ok
+test_oscillation_threshold_and_precedence (test_rules.RulesTests.test_oscillation_threshold_and_precedence) ... ok
+test_productive_default_and_novel_exploration (test_rules.RulesTests.test_productive_default_and_novel_exploration) ... ok
+test_progress_threshold_netting_and_positive_event_exemption (test_rules.RulesTests.test_progress_threshold_netting_and_positive_event_exemption) ... ok
+test_repeated_failure_counts_without_intent_repeat (test_rules.RulesTests.test_repeated_failure_counts_without_intent_repeat) ... ok
+test_resolution_recency_boundary (test_rules.RulesTests.test_resolution_recency_boundary) ... ok
+test_retry_budget (test_rules.RulesTests.test_retry_budget) ... ok
+test_stall_count_and_final_event (test_rules.RulesTests.test_stall_count_and_final_event) ... ok
+test_stall_over_recent_resolution (test_rules.RulesTests.test_stall_over_recent_resolution) ... ok
+test_success_changes_and_cost_do_not_prove_progress (test_rules.RulesTests.test_success_changes_and_cost_do_not_prove_progress) ... ok
+test_validation_resolution_and_recovery_over_progress (test_rules.RulesTests.test_validation_resolution_and_recovery_over_progress) ... ok
+
+----------------------------------------------------------------------
+Ran 13 tests in 0.001s
+
+OK
+
+codex
+Created `rules.py`, `RULES.md`, and `test_rules.py`.
+
+Precedence: OSCILLATING → STALLED → RECOVERY → PRODUCTIVE, using observable proxies for reversions, ineffective repetition, bounded retries, and validation progress. Assumptions and expected errors are documented.
+
+All 13 tests passed with `python3 -m unittest test_rules -v`.
+hook: Stop
+hook: Stop
+hook: Stop Completed
+hook: Stop Completed
+tokens used
+49,665
+Created `rules.py`, `RULES.md`, and `test_rules.py`.
+
+Precedence: OSCILLATING → STALLED → RECOVERY → PRODUCTIVE, using observable proxies for reversions, ineffective repetition, bounded retries, and validation progress. Assumptions and expected errors are documented.
+
+All 13 tests passed with `python3 -m unittest test_rules -v`.

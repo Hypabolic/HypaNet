@@ -1,0 +1,16 @@
+# Role assignments (spec v0.2 §8, decision D5). Recorded at M1 start, 2026-11-04.
+adjudicator: Matthew Gribben (human)
+harness_implementer: Claude Code session (Opus 5.5) with workflow subagents; built M0 and the standard generator (M1)
+weight_author:
+  model: claude-fable-5-1          # Claude Fable 5.1
+  fallback_model: claude-opus-5-5  # Claude Opus 5.5, only if Fable is unavailable
+  context: fresh Claude session that has seen only the hashed authoring_packet/ (never the repo, generator, datasets or eval output)
+  disqualified: any session that implemented or read synth/, synth_ood/, datasets/, oracle code or eval outputs (including the harness session)
+ood_generator_author:
+  model: Codex (OpenAI codex-cli 0.166.0)
+  context: isolated directory outside the repo; brief + schema/fingerprint/labeller copies only; never saw synth/ scenario code
+  note: Grok was unavailable at M1 start
+rules_baseline_author:
+  model: Codex (OpenAI codex-cli 0.166.0), separate session
+  context: isolated directory with SPEC_AUTHORING.md + feature_index.json only (same information as the weight author); no data or labels
+  archive: experiments/commissions/rules_baseline/
