@@ -1,0 +1,10 @@
+{
+  "a_selfcheck_artifact_sha256": "561366300f9d84f6d81adc88f17daf4eeafd69f9206efb30614a52caa6c615ad",
+  "author_dir": "/Users/matthew/Development/hypabolic/HypaNet-m2-author",
+  "disclosure_sha256": "484f885a1cc94113e19fa7016ad739630c5cc7b959314774bbe534610349c3b6",
+  "disclosure_sha256_file_sha256": "df05c465328e765b6b546dd3ef3706d7ee9bad3b3005f9d2c7ff527c05bb5a65",
+  "output_dir": "output/phase-b-revision",
+  "packet_sha256": "44ca33b77ce0d9d79601c9eed75be334e127859f98dccb61315f91495f0f5960",
+  "prompt_phase_b_sha256": "f353902bc32efea1bd86f311ad6a96eaee5a57e2a742b2f1d7bd8eee5ac15227",
+  "settings_phase_b_sha256": "68746a144b22aed0d5eff5a836e03716ec4d4080b6d06261248051ebcdb6978d"
+}
