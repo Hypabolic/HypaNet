@@ -6,3 +6,6 @@ __pycache__/
 datasets/**/*.jsonl
 datasets/**/*.npz
 authoring_packet/
+
+# M2 author transcripts are committed; dry-run scratch is not
+experiments/m2/*.stream.audit.json.tmp

@@ -1,0 +1,4 @@
+#!/bin/sh
+# Author-side Python wrapper: packet on the module path, no bytecode caching.
+here="$(cd "$(dirname "$0")" && pwd)"
+PYTHONPATH="$here/packet" PYTHONDONTWRITEBYTECODE=1 exec "$here/.venv/bin/python" -B "$@"

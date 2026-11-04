@@ -1,0 +1,49 @@
+# M2 launch kit: Phase A weight authoring
+
+Weight author: a fresh **Claude Fable 5.1** session (`claude-fable-5-1`), with **Opus 5.5** (`claude-opus-5-5`) as the automatic fallback. It runs headless at effort `max` in an isolated directory **outside** the repo (default `../HypaNet-m2-author`). It sees only the authoring packet, its own output directory, `tools/shape_check.py` and the `./py` wrapper (spec §8, `experiments/roles.yaml`).
+
+## Precondition
+
+M1 data hashes (`datasets/v0_2/MANIFEST.json`, splits, and the OOD set) are committed **before** step 1 (spec §7.3).
+
+## Run
+
+```sh
+scripts/m2_prepare_author_dir.sh                  # fresh packet, verified against the registry; private venv
+git add experiments/m2/packet_handed_over experiments/m2/HANDOVER.json && git commit   # pin what the author received
+
+scripts/m2_launch.sh phase-a-strict               # Fable writes reference_policy.py, build_weights.py, CIRCUITS.md
+uv run python scripts/run_build.py phase-a-strict \
+  --author-dir ../HypaNet-m2-author/output/phase-a-strict \
+  --packet-dir ../HypaNet-m2-author/packet --out-dir weight_program/phase-a-strict
+git add weight_program/phase-a-strict experiments/m2/logs experiments/m2/SESSION_ID && git commit   # archive BEFORE any behavioural test
+
+scripts/m2_launch.sh phase-a-selfcheck            # resumes the same session (spec §9.3)
+uv run python scripts/run_build.py phase-a-selfcheck \
+  --author-dir ../HypaNet-m2-author/output/phase-a-selfcheck \
+  --packet-dir ../HypaNet-m2-author/packet --out-dir weight_program/phase-a-selfcheck
+git add weight_program/phase-a-selfcheck experiments/m2/logs && git commit
+```
+
+Override the defaults with `M2_MODEL`, `M2_FALLBACK_MODEL` and `M2_EFFORT`. Each launch refuses to overwrite an existing transcript or session.
+
+## Isolation controls
+
+| Control | Mechanism |
+|---|---|
+| No repo, harness-scratch or Claude-project reads | `deny` rules in `settings_phase_*.json` for Read, Grep, Glob, Edit and Write |
+| No web, subagents, workflows, skills or MCP | `--disallowedTools …`, `--strict-mcp-config` |
+| No user-level settings or allow-lists | `--setting-sources project` (the author dir has none) plus `--settings <phase file>` |
+| Anything not explicitly allowed is refused | `--permission-mode dontAsk` |
+| A-strict: zero execution | Bash allowed only for `./py -m py_compile …` and `./py tools/shape_check.py output/phase-a-strict` (no forward pass) |
+| A-selfcheck: own inputs only | Bash allowed only for `./py …`; the archived A-strict directory is write-denied |
+| Audit trail | stream-json transcript in `logs/`, checked by `scripts/m2_audit_session.py`, which separates refused attempts from executed violations |
+
+These controls were tested with throwaway Fable sessions on 2026-11-04:
+- reading the repo was refused;
+- `ls ..` was refused;
+- compound shell commands were refused;
+- the two allowed A-strict commands ran;
+- nothing was written into the packet.
+
+The prompts tell the author to run each command on its own, because Fable otherwise appends `; echo` and the command is refused.

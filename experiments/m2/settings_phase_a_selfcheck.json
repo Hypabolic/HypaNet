@@ -1,0 +1,34 @@
+{
+  "permissions": {
+    "allow": [
+      "Read",
+      "Glob",
+      "Grep",
+      "Write(./output/phase-a-selfcheck/**)",
+      "Edit(./output/phase-a-selfcheck/**)",
+      "Write(./output/selfcheck_scripts/**)",
+      "Edit(./output/selfcheck_scripts/**)",
+      "Bash(./py:*)"
+    ],
+    "deny": [
+      "WebFetch",
+      "WebSearch",
+      "Read(//Users/matthew/Development/hypabolic/HypaNet/**)",
+      "Edit(//Users/matthew/Development/hypabolic/HypaNet/**)",
+      "Write(//Users/matthew/Development/hypabolic/HypaNet/**)",
+      "Grep(//Users/matthew/Development/hypabolic/HypaNet/**)",
+      "Glob(//Users/matthew/Development/hypabolic/HypaNet/**)",
+      "Read(//private/tmp/claude-501/**)",
+      "Grep(//private/tmp/claude-501/**)",
+      "Glob(//private/tmp/claude-501/**)",
+      "Read(//Users/matthew/.claude/projects/**)",
+      "Grep(//Users/matthew/.claude/projects/**)",
+      "Edit(./packet/**)",
+      "Write(./packet/**)",
+      "Edit(./tools/**)",
+      "Write(./tools/**)",
+      "Edit(./output/phase-a-strict/**)",
+      "Write(./output/phase-a-strict/**)"
+    ]
+  }
+}
