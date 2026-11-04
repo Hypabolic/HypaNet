@@ -1,0 +1,4 @@
+# Frozen files are hashed byte for byte (spec v0.2 §2.2, §14): keep every text file LF on every platform.
+* text=auto eol=lf
+# Model artefacts are raw float32 payloads; never touch their bytes.
+*.dlw binary

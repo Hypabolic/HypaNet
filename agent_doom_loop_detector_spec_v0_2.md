@@ -1,7 +1,7 @@
 # Agent Doom Loop Detector — Direct Weight Programming Experiment
 
 **Specification:** v0.2 (supersedes v0.1)
-**Status:** design approved 2026-11-04 (see §0.1). Encoder, architecture, fingerprint rules and oracle parameters are frozen. Implementation details are confirmed at M0 sign-off.
+**Status:** design approved 2026-11-04. Encoder, architecture, fingerprint rules and oracle parameters are frozen. Implementation details are confirmed at M0 sign-off.
 **Purpose:** Measure whether a reasoning LLM can (a) design a sound classification policy for agent-trace behaviour and (b) compile that policy directly into the parameters of a small fixed MLP, with no optimiser and no labelled examples.
 
 ---
@@ -39,6 +39,22 @@ Approved by the adjudicator (Matthew Gribben) on 2026-11-04:
 | — | Carried over from v0.1 | Hidden widths 24/12, 8-event window, four classes in canonical order, 20,000 sessions split 60/20/20, Phase B (one revision, 200 disclosed windows), Phase C settings, and the targets in §10.2. |
 
 From here on, any change to D1–D5 or to anything in §2.2, §3.2, §4, §5.2 or §6 creates a new registered spec version.
+
+**Revision r1 (M0 sign-off, 2026-11-04), ratified by the adjudicator:** wording fixes to the status line, §8, §13 and §15; the §0.2 implementation clarifications; and §9.1/§9.2 aligned with the harness interfaces (`build()` returns the model; no forward computation in the build; one harness type-check call on `reference_policy`; failed attempts logged). D1–D5 and the frozen sections are unchanged.
+
+### 0.2 Implementation clarifications (M0)
+
+These record how M0 implemented points the text above leaves open. They don't change any approved decision.
+
+- **Frozen spec file:** this versioned file, `agent_doom_loop_detector_spec_v0_2.md`, is the frozen spec. §13 lists it by this name.
+- **Failure fingerprints (§3.2):** the hash covers `family`, `error_class` and the normalised location only. "Messages are stripped of…" describes `normalise_message`, which is for diagnostics and is not part of any hash. In absolute locations, everything before the leftmost `src/`, `tests/` or `lib/` segment is cut, and the segment itself is kept, so absolute and repo-relative forms of the same location converge.
+- **Required fingerprint arguments (§3.2):** `search.query`, `edit_file.patch`, `write_file.content` and `plan`/`ask`/`yield` `action_type` are required. Any argument key a family doesn't list as included or excluded is rejected.
+- **HTTP bodies (§3.2):** JSON bodies are hashed in canonical form (sorted keys, no insignificant whitespace) with float literals kept verbatim.
+- **Validation baseline (§4, §5.2):** if the most recent earlier validation result that could belong to the suite has an unobserved suite id or unobserved counts, the baseline counts as unobserved and the gate rejects the window.
+- **Weight-author interfaces (§9.1):** `reference_policy.py` defines `reference_policy(x: tuple[float, ...]) -> int`, taking 120 Python floats that are each exactly representable in float32. `build_weights.py` defines `build()`, which returns the populated model. The harness, not the author's script, saves `artifact.dlw` and writes `BUILD_RECORD.json`. `build()` may not run forward passes, matrix products or linear-algebra solvers. Literal assignment and closed-form rules don't need them, and using them would amount to fitting.
+- **Harness smoke call (§9.2):** the harness calls `reference_policy` once, on the all-zero input, to check that it returns an int in 0..3. The return value is not recorded. This is the only execution in A-strict apart from `build()` itself.
+- **Failed attempts (§10.2):** every rejected build is logged under the phase's `attempts/` directory. Only a successful build writes the artefact.
+- **Packet `model.py` (§8):** the packet copy replaces the relative `schema` import with inlined literal constants so it runs standalone. The substitution is reversible and checked against the source hash.
 
 ---
 
@@ -324,7 +340,7 @@ Collisions stay in the primary metric. The Bayes ceiling tells readers how much 
 
 - The weight author runs in a **fresh context** (new session, no repository access beyond the authoring packet directory). A context that implemented or read the generator cannot act as the Phase A weight author.
 - A different model family is recommended for the OOD generator author.
-- **Authoring packet** (built by script, sha256 recorded): this spec minus §0 (it restates the capacity note), §2.3 and §7.2–§7.3; `model.py`; the zero-filled `state_dict` template with tensor names and shapes; the encoder's feature-index map; and the rules in §9.
+- **Authoring packet** (built by script, sha256 recorded): this spec minus §0, §2.3 and §7.2–§7.3; `model.py`; the zero-filled `state_dict` template with tensor names and shapes; the encoder's feature-index map; and the rules in §9.
 
 ---
 
@@ -332,17 +348,17 @@ Collisions stay in the primary metric. The Bayes ceiling tells readers how much 
 
 ### 9.1 Required deliverables from the weight author
 
-1. `reference_policy.py`: a pure, deterministic function `f(x: float32[120]) -> int ∈ {0,1,2,3}` with no I/O, no imports beyond the standard library, and no data access. It states the author's intended policy.
-2. `build_weights.py`: starts from zeros and sets every `Linear.weight` and `Linear.bias` entry by literal assignment or closed-form rule. It writes `state_dict` and a model artefact, and prints sparsity statistics.
+1. `reference_policy.py`: a pure, deterministic function `reference_policy(x: tuple[float, ...]) -> int ∈ {0,1,2,3}`. `x` holds the 120 input values as Python floats, each exactly representable in float32. The function does no I/O, imports nothing beyond the standard library and accesses no data. It states the author's intended policy.
+2. `build_weights.py`: defines `build()`, which starts from `zero_model()`, sets every `Linear.weight` and `Linear.bias` entry by literal assignment or closed-form rule, and returns the model. It runs no forward computation, matrix products or linear-algebra solvers, and writes no files. The harness runs `build()` under the anti-training guard and writes the `.dlw` artefact, its sha256 and a build record with sparsity statistics.
 3. `CIRCUITS.md`: the purpose of every non-zero hidden unit, grouped by circuit, plus which reference-policy branch each output logit implements.
 
-Allowed: arithmetic reasoning, explicit constants, structured matrix assignment, and deterministic loops that fill known circuits.
+Allowed: arithmetic reasoning, explicit constants, structured matrix assignment, and deterministic loops that fill known circuits. The authoring packet's `AUTHOR_INSTRUCTIONS.md` gives the exact interfaces and the full list of checks the harness applies.
 
 Forbidden in Phases A and B: labelled examples (except Phase B's disclosed set), fitting, autograd, `.backward()`, `torch.optim`, numerical or evolutionary search over weights, distillation, and importing `synth/`, `datasets/` or `eval/`.
 
 ### 9.2 Phase A-strict (zero execution)
 
-The author may run only shape, dtype and finiteness checks plus `reference_policy.py` syntax checks. No forward passes. The first valid artefact is **archived and git-committed with its sha256 before anything else runs**.
+The author may run only shape, dtype and finiteness checks plus `reference_policy.py` syntax checks. No forward passes. The harness runs `build()` and calls `reference_policy` once on the all-zero input as a type check, without recording the result. That is the only execution. The harness archives the first valid artefact and the adjudicator git-commits it with its sha256 **before anything else runs**.
 
 ### 9.3 Phase A-selfcheck (zero labels)
 
@@ -416,7 +432,7 @@ No dashboard in v0.2.
 ## 13. Repository layout
 
 ```text
-SPEC.md                       # this document, once frozen
+agent_doom_loop_detector_spec_v0_2.md  # this document (frozen)
 pyproject.toml
 oracle_config.v0_2.yaml
 src/agent_loop_lab/
@@ -463,4 +479,4 @@ An independent person can:
 4. read `CIRCUITS.md` alongside `inspect model` and trace each active circuit;
 5. reproduce the comparison table, including H1, H2 and H3 separately, against supervised and rules baselines on the sealed and OOD sets.
 
-A poor result still counts as success if the analysis attributes it to policy design (H1), compilation (H2), representation limits (Bayes ceiling), capacity (§2.3) or distribution shift (OOD gap).
+A poor result still counts as success if the analysis attributes it to policy design (H1), compilation (H2), representation limits (Bayes ceiling), network capacity or distribution shift (OOD gap).

@@ -1,0 +1,8 @@
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+# generated data (manifests and hashes are committed, data files are not)
+datasets/**/*.jsonl
+datasets/**/*.npz
+authoring_packet/

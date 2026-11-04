@@ -1,0 +1,15 @@
+# Pre-registered oracle parameters (spec v0.2 §6.2).
+# Approved by the adjudicator on 2026-11-04 (spec §0.1, decisions D2 and D4).
+# Frozen at M0: any change creates a new registered spec version.
+# Loaded and validated by agent_loop_lab.oracle_config.load_oracle_config.
+spec_version: "0.2"
+approved: "2026-11-04"
+parameters:
+  eps_p: 0.02   # ε_p     progress tolerance over a window
+  f_prod: 2     # F_prod  minimum new facts in the window for investigative PRODUCTIVE
+  n_stall: 5    # N_stall minimum ineffective operations of 8 for STALLED
+  n_grey: 3     # N_grey  lower bound of the stall grey zone
+  n_rev: 2      # N_rev   minimum reversions in the window for OSCILLATING
+  r_max: 3      # R_max   maximum retries of one intent within an episode while still in policy
+  p_max: 5      # P_max   maximum polls of an external dependency (with backoff) while still in policy
+  k_rec: 4      # k_rec   recency horizon for RECOVERY
