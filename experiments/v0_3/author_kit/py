@@ -1,0 +1,5 @@
+#!/bin/sh
+# Author-side Python wrapper (spec v0.3 §8): the private venv in isolated mode (-I: no PYTHONPATH,
+# no user site, no script directory on the path), no bytecode, every script under the AUTHOR_RUN guard.
+here="$(cd "$(dirname "$0")" && pwd)"
+PYTHONDONTWRITEBYTECODE=1 exec "$here/.venv/bin/python" -I -B "$here/tools/launch.py" "$@"

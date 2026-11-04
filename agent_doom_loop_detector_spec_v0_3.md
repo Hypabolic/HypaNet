@@ -350,7 +350,7 @@ These are unchanged from v0.2 §5–§6. The prediction for endpoint *t* is the 
 
 - **Allowed:** forward passes and `reference_policy` calls on logs the author writes: hand-written text, or `RawOp` sequences it builds and renders with the packet renderer. Direct, reasoned edits.
 - **Forbidden:** any other data, and automated search. That includes fitting, gradient steps, random restarts, parameter sweeps scored against an objective, and distilling anything into the weights, the author's own `reference_policy` included.
-- **Cost cap:** E5. Technical continuations (≤ 9) and build-rejection resubmissions (≤ 3, error text only) count against it.
+- **Cost cap:** US$500 of session spend, summed over every Phase A launch. Technical continuations (≤ 9) and build-rejection resubmissions (≤ 3, error text only) count against it.
 - **Result:** the first valid artefact submitted as final.
 
 ### 9.3 Phase B (one diagnostic revision)

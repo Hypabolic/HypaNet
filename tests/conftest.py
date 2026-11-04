@@ -17,7 +17,7 @@ import pytest
 import agent_loop_lab
 from agent_loop_lab.guards import FORBIDDEN_MODULE_PREFIXES
 
-_GUARD_TEST_MODULES = {"tests.test_guards", "tests.test_runner", "tests.test_cli"}
+_GUARD_TEST_MODULES = {"tests.test_guards", "tests.test_runner", "tests.test_cli", "tests.test_v03_guards"}
 
 
 @pytest.fixture(autouse=True)
