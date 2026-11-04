@@ -1,0 +1,21 @@
+{
+  "files": {
+    "AUTHOR_INSTRUCTIONS.md": "456abdea0ffa4e06647f6893b12820ca97ec75878b96567237211891342d1022",
+    "GRAMMAR_SHEET.md": "13341c152f837c8b047cde4900a83a33ca75ad7242e7447f3113b067e7488dd8",
+    "SPEC.md": "da5ceedce5a28996ff37afd2ea2c1949a18c52e63f45326b48ecac6df4f1cc41",
+    "model.py": "11cb75636ac01911f1f2bdaf2e169596de972942ab6fcead0f72cebebd28613e",
+    "renderer.py": "b5451f7fe65152cb7c6c8401b8ee2bcb927e87c41985b379c6b5caf993ff920b",
+    "state_dict_template.json": "e5b2c19987d6fde1ae7cd4a54ea3179c0a866d334248feb797964575dee373ea",
+    "tokenizer.py": "dc26886cb75db9cebacdb9c68e31fcbb3072434e48ae19892d89707db57d614d"
+  },
+  "packet_format_version": 1,
+  "sources": {
+    "spec_v0_2": "0695c9322698b526ba991c063a54de2e61407e1686ae5ffe775468c6981c7cef",
+    "spec_v0_3": "f4d38a755193bd07533101a89b3166b09c38a92c76ebf3e4eafdcb055bfe69d9",
+    "v03/model.py": "11cb75636ac01911f1f2bdaf2e169596de972942ab6fcead0f72cebebd28613e",
+    "v03/renderer.py": "b5451f7fe65152cb7c6c8401b8ee2bcb927e87c41985b379c6b5caf993ff920b",
+    "v03/tokenizer.py": "dc26886cb75db9cebacdb9c68e31fcbb3072434e48ae19892d89707db57d614d"
+  },
+  "spec_sections": "v0.3 [packet] sections; v0.2 ### 6.1, ### 6.2, ### 6.3, ### 7.1",
+  "spec_version": "0.3"
+}

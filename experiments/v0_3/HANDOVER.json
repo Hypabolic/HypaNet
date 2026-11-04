@@ -1,0 +1,25 @@
+{
+  "author_dir": "/Users/matthew/Development/hypabolic/HypaNet-v03-author",
+  "packet_sha256": "72d2bebf0a4c2c8607fd1ca7f451ef56ff95dea444276f8a13132921d99045f2",
+  "prompts": {
+    "prompt_continue.md": "dbfb3cc6c1ce0aec6d5f9d5a4119dd1371b390653af125fc4c51516179a0ff33",
+    "prompt_resubmit.md": "684c5afa14517fa1137cc1b0fc5c058c0a73359b7cb1582e8306a1d4782bd5e5",
+    "prompt_v03_phase_a.md": "4a566f66fbef863f4f9b36b907a01e53ecab82a227f35ccc40aa5bca64013e02"
+  },
+  "py": "36e0947d89f5a281d5dbb0f1b9bf18227ee84e25844a40206571e507103dd51f",
+  "registry_sha256": "8b755d441f870cc6722b53cd82246ffbbbbe02e96299c17b000fec0d814b7f6e",
+  "settings": {
+    "settings_v03_phase_a.json": "da9ad33a70bac64292630927255fc1df8095c0e9a60bca8ae9966434bbcdfdaa",
+    "settings_v03_phase_b.json": "9091118a38bee3080fb5ec91aa406cea1b1f19981d6545b1bfb56f5983b6192e"
+  },
+  "tools": {
+    "tools/hn_guard/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "tools/hn_guard/guards_v02.py": "a15bc11de8774d6e9f93ca2219af70a418a9d434f56d9adeac7cd5042868e001",
+    "tools/hn_guard/guards_v03.py": "2c69d49ea3acad7e299341c2a59dbecf838b38a75c521e40e2900dfd44c9eaaf",
+    "tools/launch.py": "fea7beeab90531f3869b17f251f22b24486766b3faacd34f4b98d32f32e48f52"
+  },
+  "venv": {
+    "numpy": "1.26.4",
+    "torch": "2.2.2"
+  }
+}

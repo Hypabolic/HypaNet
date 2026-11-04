@@ -1,0 +1,439 @@
+{
+  "class_order": [
+    "PRODUCTIVE",
+    "RECOVERY",
+    "STALLED",
+    "OSCILLATING"
+  ],
+  "construction": "start from model.zero_model() (every tensor exactly 0.0), assign entries under torch.no_grad(), and return the model from build(); the harness saves the artefact (see AUTHOR_INSTRUCTIONS.md)",
+  "device": "cpu",
+  "dtype": "float32",
+  "initial_state": "all zeros",
+  "param_count": 2128932,
+  "spec_version": "0.3",
+  "tensors": [
+    {
+      "name": "tok_emb.weight",
+      "numel": 1310720,
+      "shape": [
+        10240,
+        128
+      ]
+    },
+    {
+      "name": "off_emb.weight",
+      "numel": 24576,
+      "shape": [
+        192,
+        128
+      ]
+    },
+    {
+      "name": "layers.0.attn.rel_bias",
+      "numel": 520,
+      "shape": [
+        8,
+        65
+      ]
+    },
+    {
+      "name": "layers.0.attn.q.weight",
+      "numel": 16384,
+      "shape": [
+        128,
+        128
+      ]
+    },
+    {
+      "name": "layers.0.attn.q.bias",
+      "numel": 128,
+      "shape": [
+        128
+      ]
+    },
+    {
+      "name": "layers.0.attn.k.weight",
+      "numel": 16384,
+      "shape": [
+        128,
+        128
+      ]
+    },
+    {
+      "name": "layers.0.attn.k.bias",
+      "numel": 128,
+      "shape": [
+        128
+      ]
+    },
+    {
+      "name": "layers.0.attn.v.weight",
+      "numel": 16384,
+      "shape": [
+        128,
+        128
+      ]
+    },
+    {
+      "name": "layers.0.attn.v.bias",
+      "numel": 128,
+      "shape": [
+        128
+      ]
+    },
+    {
+      "name": "layers.0.attn.o.weight",
+      "numel": 16384,
+      "shape": [
+        128,
+        128
+      ]
+    },
+    {
+      "name": "layers.0.attn.o.bias",
+      "numel": 128,
+      "shape": [
+        128
+      ]
+    },
+    {
+      "name": "layers.0.mlp.fc1.weight",
+      "numel": 65536,
+      "shape": [
+        512,
+        128
+      ]
+    },
+    {
+      "name": "layers.0.mlp.fc1.bias",
+      "numel": 512,
+      "shape": [
+        512
+      ]
+    },
+    {
+      "name": "layers.0.mlp.fc2.weight",
+      "numel": 65536,
+      "shape": [
+        128,
+        512
+      ]
+    },
+    {
+      "name": "layers.0.mlp.fc2.bias",
+      "numel": 128,
+      "shape": [
+        128
+      ]
+    },
+    {
+      "name": "layers.1.attn.rel_bias",
+      "numel": 520,
+      "shape": [
+        8,
+        65
+      ]
+    },
+    {
+      "name": "layers.1.attn.q.weight",
+      "numel": 16384,
+      "shape": [
+        128,
+        128
+      ]
+    },
+    {
+      "name": "layers.1.attn.q.bias",
+      "numel": 128,
+      "shape": [
+        128
+      ]
+    },
+    {
+      "name": "layers.1.attn.k.weight",
+      "numel": 16384,
+      "shape": [
+        128,
+        128
+      ]
+    },
+    {
+      "name": "layers.1.attn.k.bias",
+      "numel": 128,
+      "shape": [
+        128
+      ]
+    },
+    {
+      "name": "layers.1.attn.v.weight",
+      "numel": 16384,
+      "shape": [
+        128,
+        128
+      ]
+    },
+    {
+      "name": "layers.1.attn.v.bias",
+      "numel": 128,
+      "shape": [
+        128
+      ]
+    },
+    {
+      "name": "layers.1.attn.o.weight",
+      "numel": 16384,
+      "shape": [
+        128,
+        128
+      ]
+    },
+    {
+      "name": "layers.1.attn.o.bias",
+      "numel": 128,
+      "shape": [
+        128
+      ]
+    },
+    {
+      "name": "layers.1.mlp.fc1.weight",
+      "numel": 65536,
+      "shape": [
+        512,
+        128
+      ]
+    },
+    {
+      "name": "layers.1.mlp.fc1.bias",
+      "numel": 512,
+      "shape": [
+        512
+      ]
+    },
+    {
+      "name": "layers.1.mlp.fc2.weight",
+      "numel": 65536,
+      "shape": [
+        128,
+        512
+      ]
+    },
+    {
+      "name": "layers.1.mlp.fc2.bias",
+      "numel": 128,
+      "shape": [
+        128
+      ]
+    },
+    {
+      "name": "layers.2.attn.rel_bias",
+      "numel": 520,
+      "shape": [
+        8,
+        65
+      ]
+    },
+    {
+      "name": "layers.2.attn.q.weight",
+      "numel": 16384,
+      "shape": [
+        128,
+        128
+      ]
+    },
+    {
+      "name": "layers.2.attn.q.bias",
+      "numel": 128,
+      "shape": [
+        128
+      ]
+    },
+    {
+      "name": "layers.2.attn.k.weight",
+      "numel": 16384,
+      "shape": [
+        128,
+        128
+      ]
+    },
+    {
+      "name": "layers.2.attn.k.bias",
+      "numel": 128,
+      "shape": [
+        128
+      ]
+    },
+    {
+      "name": "layers.2.attn.v.weight",
+      "numel": 16384,
+      "shape": [
+        128,
+        128
+      ]
+    },
+    {
+      "name": "layers.2.attn.v.bias",
+      "numel": 128,
+      "shape": [
+        128
+      ]
+    },
+    {
+      "name": "layers.2.attn.o.weight",
+      "numel": 16384,
+      "shape": [
+        128,
+        128
+      ]
+    },
+    {
+      "name": "layers.2.attn.o.bias",
+      "numel": 128,
+      "shape": [
+        128
+      ]
+    },
+    {
+      "name": "layers.2.mlp.fc1.weight",
+      "numel": 65536,
+      "shape": [
+        512,
+        128
+      ]
+    },
+    {
+      "name": "layers.2.mlp.fc1.bias",
+      "numel": 512,
+      "shape": [
+        512
+      ]
+    },
+    {
+      "name": "layers.2.mlp.fc2.weight",
+      "numel": 65536,
+      "shape": [
+        128,
+        512
+      ]
+    },
+    {
+      "name": "layers.2.mlp.fc2.bias",
+      "numel": 128,
+      "shape": [
+        128
+      ]
+    },
+    {
+      "name": "layers.3.attn.rel_bias",
+      "numel": 520,
+      "shape": [
+        8,
+        65
+      ]
+    },
+    {
+      "name": "layers.3.attn.q.weight",
+      "numel": 16384,
+      "shape": [
+        128,
+        128
+      ]
+    },
+    {
+      "name": "layers.3.attn.q.bias",
+      "numel": 128,
+      "shape": [
+        128
+      ]
+    },
+    {
+      "name": "layers.3.attn.k.weight",
+      "numel": 16384,
+      "shape": [
+        128,
+        128
+      ]
+    },
+    {
+      "name": "layers.3.attn.k.bias",
+      "numel": 128,
+      "shape": [
+        128
+      ]
+    },
+    {
+      "name": "layers.3.attn.v.weight",
+      "numel": 16384,
+      "shape": [
+        128,
+        128
+      ]
+    },
+    {
+      "name": "layers.3.attn.v.bias",
+      "numel": 128,
+      "shape": [
+        128
+      ]
+    },
+    {
+      "name": "layers.3.attn.o.weight",
+      "numel": 16384,
+      "shape": [
+        128,
+        128
+      ]
+    },
+    {
+      "name": "layers.3.attn.o.bias",
+      "numel": 128,
+      "shape": [
+        128
+      ]
+    },
+    {
+      "name": "layers.3.mlp.fc1.weight",
+      "numel": 65536,
+      "shape": [
+        512,
+        128
+      ]
+    },
+    {
+      "name": "layers.3.mlp.fc1.bias",
+      "numel": 512,
+      "shape": [
+        512
+      ]
+    },
+    {
+      "name": "layers.3.mlp.fc2.weight",
+      "numel": 65536,
+      "shape": [
+        128,
+        512
+      ]
+    },
+    {
+      "name": "layers.3.mlp.fc2.bias",
+      "numel": 128,
+      "shape": [
+        128
+      ]
+    },
+    {
+      "name": "head.weight",
+      "numel": 512,
+      "shape": [
+        4,
+        128
+      ]
+    },
+    {
+      "name": "head.bias",
+      "numel": 4,
+      "shape": [
+        4
+      ]
+    }
+  ]
+}
