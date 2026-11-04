@@ -42,6 +42,8 @@ From here on, any change to D1–D5 or to anything in §2.2, §3.2, §4, §5.2 o
 
 **Revision r1 (M0 sign-off, 2026-11-04), ratified by the adjudicator:** wording fixes to the status line, §8, §13 and §15; the §0.2 implementation clarifications; and §9.1/§9.2 aligned with the harness interfaces (`build()` returns the model; no forward computation in the build; one harness type-check call on `reference_policy`; failed attempts logged). D1–D5 and the frozen sections are unchanged.
 
+**Revision r2 (M1 start, 2026-11-04), ratified by the adjudicator:** §0.2 adds the semantic reading of "edit already present in `W_t`" (family 6). Role assignments for D5: the OOD generator author and the independent rules-baseline author are both Codex, in separate isolated sessions (Grok was unavailable). D1–D4 and the frozen section text are unchanged.
+
 ### 0.2 Implementation clarifications (M0)
 
 These record how M0 implemented points the text above leaves open. They don't change any approved decision.
@@ -54,6 +56,7 @@ These record how M0 implemented points the text above leaves open. They don't ch
 - **Weight-author interfaces (§9.1):** `reference_policy.py` defines `reference_policy(x: tuple[float, ...]) -> int`, taking 120 Python floats that are each exactly representable in float32. `build_weights.py` defines `build()`, which returns the populated model. The harness, not the author's script, saves `artifact.dlw` and writes `BUILD_RECORD.json`. `build()` may not run forward passes, matrix products or linear-algebra solvers. Literal assignment and closed-form rules don't need them, and using them would amount to fitting.
 - **Harness smoke call (§9.2):** the harness calls `reference_policy` once, on the all-zero input, to check that it returns an int in 0..3. The return value is not recorded. This is the only execution in A-strict apart from `build()` itself.
 - **Failed attempts (§10.2):** every rejected build is logged under the phase's `attempts/` directory. Only a successful build writes the artefact.
+- **Latent workspace and REDUNDANT edits (§6.1, family 6):** the simulator's workspace `W_t` holds file contents, which the digests are computed from, and a latent behavioural state. An edit "already present in `W_t`" is one whose behavioural change is already there. It changes the text but not the behaviour, for example reformatting, renaming locals or re-adding an existing guard. Such edits are REDUNDANT, and so is validation re-run on a workspace that is behaviourally unchanged. A new edit that does change behaviour but doesn't help is NONE. Family 6 is built from REDUNDANT edits of this kind.
 - **Packet `model.py` (§8):** the packet copy replaces the relative `schema` import with inlined literal constants so it runs standalone. The substitution is reversible and checked against the source hash.
 
 ---
