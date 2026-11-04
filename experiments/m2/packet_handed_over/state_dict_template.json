@@ -1,0 +1,55 @@
+{
+  "construction": "start from model.zero_model() (every tensor exactly 0.0), assign entries under torch.no_grad(), and return the model from build(); the harness saves the artefact (see AUTHOR_INSTRUCTIONS.md)",
+  "device": "cpu",
+  "dtype": "float32",
+  "initial_state": "all zeros",
+  "param_count": 3256,
+  "spec_version": "0.2",
+  "tensors": [
+    {
+      "name": "fc1.weight",
+      "numel": 2880,
+      "shape": [
+        24,
+        120
+      ]
+    },
+    {
+      "name": "fc1.bias",
+      "numel": 24,
+      "shape": [
+        24
+      ]
+    },
+    {
+      "name": "fc2.weight",
+      "numel": 288,
+      "shape": [
+        12,
+        24
+      ]
+    },
+    {
+      "name": "fc2.bias",
+      "numel": 12,
+      "shape": [
+        12
+      ]
+    },
+    {
+      "name": "fc3.weight",
+      "numel": 48,
+      "shape": [
+        4,
+        12
+      ]
+    },
+    {
+      "name": "fc3.bias",
+      "numel": 4,
+      "shape": [
+        4
+      ]
+    }
+  ]
+}

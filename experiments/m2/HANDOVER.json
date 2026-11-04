@@ -1,0 +1,17 @@
+{
+  "author_dir": "/Users/matthew/Development/hypabolic/HypaNet-m2-author",
+  "packet_sha256": "44ca33b77ce0d9d79601c9eed75be334e127859f98dccb61315f91495f0f5960",
+  "prompts": {
+    "prompt_phase_a_selfcheck.md": "47f284928c4a95292841949375a0d60c99901e372db5a73faf9121cd43c0e56b",
+    "prompt_phase_a_strict.md": "aeefa50490ec5bed4b352c14ee8e1e379e6235a299e29997f9feb3c26017d7dc",
+    "prompt_resubmit.md": "281b7e749f0180744a1652a5c179288908cd34f08b076df2c6b6b59108bf1e8b"
+  },
+  "settings": {
+    "settings_phase_a_selfcheck.json": "6ca233701ed8fa728891f8c9f80da7877bdad625a6ff78e5d048fbe6fc24a18a",
+    "settings_phase_a_strict.json": "c66d04104fff8781b95a30d969783cbda8103d3102c85cb6a4bab9dea5caa7d6"
+  },
+  "tools": {
+    "py": "d96672b67bc2e85dd07b25658d9fdb39699b7cb62f80e7db53eab3e67917c38d",
+    "shape_check.py": "1515aef26cb5bb623552bbfa662551cd6fbf41950c2b62236b57803d7d0d1bef"
+  }
+}

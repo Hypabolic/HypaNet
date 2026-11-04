@@ -1,0 +1,20 @@
+{
+  "excluded_sections": [
+    "## 0.",
+    "### 2.3",
+    "### 7.2",
+    "### 7.3"
+  ],
+  "files": {
+    "AUTHOR_INSTRUCTIONS.md": "bc9b0225f2a76fe51638ac3afad0ae2ecb3e6b716e558c3d3d89215cc6cfbdd7",
+    "SPEC_AUTHORING.md": "8961bb9a7f199ab6f1ee5ad60dbfb9c0cb48cdc83f6a1930cf4730ea938dc444",
+    "feature_index.json": "2b9ec96b7d1e655612dc58725e5ef32389ad74d44074b52a2e6877b6ac7b78aa",
+    "model.py": "e80e805382cdcd3bb1908f4784c79846c8bf98715d7cfe7741168b476a1c64e6",
+    "state_dict_template.json": "c4fd5e92daa1ab8a0c97701fb56ddaeef351479d0c55666b853fdf7a47f2ba5c"
+  },
+  "packet_format_version": 1,
+  "packet_sha256": "44ca33b77ce0d9d79601c9eed75be334e127859f98dccb61315f91495f0f5960",
+  "source_model_sha256": "35be2960727a8d1f6b2b0d36717f57d74537447b224dad6f28296b6cb7e3d011",
+  "source_spec_sha256": "0695c9322698b526ba991c063a54de2e61407e1686ae5ffe775468c6981c7cef",
+  "spec_version": "0.2"
+}
