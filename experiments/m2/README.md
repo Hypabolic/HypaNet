@@ -27,6 +27,21 @@ git add weight_program/phase-a-selfcheck experiments/m2/logs && git commit
 
 Override the defaults with `M2_MODEL`, `M2_FALLBACK_MODEL` and `M2_EFFORT`. Each launch refuses to overwrite an existing transcript or session.
 
+## Rejected submissions (pre-registered, 2026-11-04)
+
+Spec §9.2 archives the first **valid** artefact, and spec §8 says compile and shape checks are not behavioural feedback. If `run_build.py` rejects a submission with a `BuildError`:
+
+1. Save the runner's error text, and nothing else, to a file.
+2. Run `scripts/m2_launch.sh resubmit <phase> <N> <error-file>`. This resumes the same session with only that text.
+3. Rebuild.
+
+The rules:
+- At most **3** resubmissions per phase.
+- Every attempt stays in the run directory's `attempts/` log, and every resubmission transcript stays in `logs/<phase>.rN.stream.jsonl`.
+- The archive commit message records the number of resubmissions.
+- A kit failure is not a Phase A attempt. That covers `claude` exiting on a flag or auth error before the model does any work. In that case, delete `SESSION_ID` and the log by hand and relaunch.
+- Read the audit's `models` field after every launch. `--fallback-model` can switch to Opus mid-session, and the archive must record which model actually wrote the weights.
+
 ## Isolation controls
 
 | Control | Mechanism |
