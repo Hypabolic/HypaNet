@@ -492,9 +492,25 @@ def test_forbidden_import_raises_training_violation_not_module_not_found(modname
         with no_training_guard():
             importlib.import_module(modname)
     assert not isinstance(ei.value, ImportError)
-    # After exit the hook is gone: the module simply doesn't exist in M0.
-    with pytest.raises(ModuleNotFoundError):
+    # After exit the hook is gone: the import behaves normally again. The module
+    # may not exist yet (ModuleNotFoundError) or may exist from M1 on (imports).
+    try:
         importlib.import_module(modname)
+    except ModuleNotFoundError:
+        pass
+    finally:
+        _purge_forbidden_modules()
+
+
+def _purge_forbidden_modules():
+    """Drop harness-forbidden modules from sys.modules so later guard entries are clean."""
+    import agent_loop_lab
+
+    for name in [m for m in sys.modules if m.startswith(FORBIDDEN_MODULE_PREFIXES)]:
+        del sys.modules[name]
+        parent, _, child = name.rpartition(".")
+        if parent == "agent_loop_lab" and hasattr(agent_loop_lab, child):
+            delattr(agent_loop_lab, child)
 
 
 @pytest.mark.parametrize(
