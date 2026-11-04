@@ -1,0 +1,260 @@
+{
+  "audit_split": "dev",
+  "collisions": {
+    "definitions": {
+      "population": "windows that pass the runtime gate and carry a scored oracle label",
+      "group_key": "exact bytes of the float32 (120,) input vector; group id = sha256 of those bytes",
+      "collision_group": "a group whose windows carry more than one distinct scored label",
+      "collision_rate": "scored windows lying in a collision group / scored windows in the population (per class, per family, overall)",
+      "majority_label": "most frequent scored label in a group; ties broken by canonical class order (lowest index wins)",
+      "bayes_accuracy": "windows whose label equals their group's majority label / windows in the population",
+      "bayes_macro_f1": "mean per-class F1 of the majority-label predictor over canonical classes with support > 0; precision is 0 for a class never predicted",
+      "cross_split": "a vector is shared when the same input-vector bytes occur in windows of two or more splits"
+    },
+    "population": {
+      "windows_total": 259290,
+      "gate_rejected": 7576,
+      "gate_passed_unscored": {
+        "INSUFFICIENT_INSTRUMENTATION": 0,
+        "INSUFFICIENT_AMBIGUOUS": 27784
+      },
+      "scored_gate_passed": 223930
+    },
+    "groups": 223930,
+    "singleton_groups": 223930,
+    "group_size_histogram": {
+      "1": 223930
+    },
+    "collision_groups_count": 0,
+    "windows_in_collision_groups": 0,
+    "collision_rate": 0.0,
+    "per_class": {
+      "PRODUCTIVE": {
+        "windows": 83352,
+        "in_collision_groups": 0,
+        "collision_rate": 0.0
+      },
+      "RECOVERY": {
+        "windows": 35453,
+        "in_collision_groups": 0,
+        "collision_rate": 0.0
+      },
+      "STALLED": {
+        "windows": 60817,
+        "in_collision_groups": 0,
+        "collision_rate": 0.0
+      },
+      "OSCILLATING": {
+        "windows": 44308,
+        "in_collision_groups": 0,
+        "collision_rate": 0.0
+      }
+    },
+    "per_family": {
+      "abab_oscillation": {
+        "windows": 24671,
+        "in_collision_groups": 0,
+        "collision_rate": 0.0
+      },
+      "bounded_retry": {
+        "windows": 13822,
+        "in_collision_groups": 0,
+        "collision_rate": 0.0
+      },
+      "cosmetic_churn": {
+        "windows": 29743,
+        "in_collision_groups": 0,
+        "collision_rate": 0.0
+      },
+      "exploration": {
+        "windows": 15106,
+        "in_collision_groups": 0,
+        "collision_rate": 0.0
+      },
+      "improving_tests": {
+        "windows": 11951,
+        "in_collision_groups": 0,
+        "collision_rate": 0.0
+      },
+      "incremental_repair": {
+        "windows": 13239,
+        "in_collision_groups": 0,
+        "collision_rate": 0.0
+      },
+      "polling_recovery": {
+        "windows": 18884,
+        "in_collision_groups": 0,
+        "collision_rate": 0.0
+      },
+      "repeated_test_failure": {
+        "windows": 27347,
+        "in_collision_groups": 0,
+        "collision_rate": 0.0
+      },
+      "rising_cost": {
+        "windows": 16375,
+        "in_collision_groups": 0,
+        "collision_rate": 0.0
+      },
+      "tool_oscillation": {
+        "windows": 25463,
+        "in_collision_groups": 0,
+        "collision_rate": 0.0
+      },
+      "transient_external": {
+        "windows": 17243,
+        "in_collision_groups": 0,
+        "collision_rate": 0.0
+      },
+      "under_instrumented": {
+        "windows": 10086,
+        "in_collision_groups": 0,
+        "collision_rate": 0.0
+      }
+    },
+    "bayes_ceiling": {
+      "windows": 223930,
+      "groups": 223930,
+      "correct": 223930,
+      "accuracy": 1.0,
+      "macro_f1": 1.0,
+      "macro_f1_classes": [
+        "PRODUCTIVE",
+        "RECOVERY",
+        "STALLED",
+        "OSCILLATING"
+      ],
+      "per_class": {
+        "PRODUCTIVE": {
+          "support": 83352,
+          "predicted": 83352,
+          "correct": 83352,
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0
+        },
+        "RECOVERY": {
+          "support": 35453,
+          "predicted": 35453,
+          "correct": 35453,
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0
+        },
+        "STALLED": {
+          "support": 60817,
+          "predicted": 60817,
+          "correct": 60817,
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0
+        },
+        "OSCILLATING": {
+          "support": 44308,
+          "predicted": 44308,
+          "correct": 44308,
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0
+        }
+      }
+    },
+    "collision_groups": []
+  },
+  "cross_split": {
+    "definition": "a vector is shared when the same input-vector bytes occur in windows of two or more splits",
+    "splits": [
+      "dev",
+      "val",
+      "test"
+    ],
+    "gate_passed": {
+      "vectors_in_multiple_splits": 0,
+      "vectors_in_multiple_splits_with_conflicting_scored_labels": 0,
+      "per_split": {
+        "dev": {
+          "windows": 251714,
+          "distinct_vectors": 251714,
+          "windows_with_vector_in_another_split": 0,
+          "distinct_vectors_in_another_split": 0,
+          "shared_window_rate": 0.0
+        },
+        "val": {
+          "windows": 84679,
+          "distinct_vectors": 84679,
+          "windows_with_vector_in_another_split": 0,
+          "distinct_vectors_in_another_split": 0,
+          "shared_window_rate": 0.0
+        },
+        "test": {
+          "windows": 84584,
+          "distinct_vectors": 84584,
+          "windows_with_vector_in_another_split": 0,
+          "distinct_vectors_in_another_split": 0,
+          "shared_window_rate": 0.0
+        }
+      },
+      "pairs": {
+        "dev|val": {
+          "shared_distinct_vectors": 0,
+          "windows_in_dev": 0,
+          "windows_in_val": 0
+        },
+        "dev|test": {
+          "shared_distinct_vectors": 0,
+          "windows_in_dev": 0,
+          "windows_in_test": 0
+        },
+        "val|test": {
+          "shared_distinct_vectors": 0,
+          "windows_in_val": 0,
+          "windows_in_test": 0
+        }
+      }
+    },
+    "scored": {
+      "vectors_in_multiple_splits": 0,
+      "vectors_in_multiple_splits_with_conflicting_scored_labels": 0,
+      "per_split": {
+        "dev": {
+          "windows": 223930,
+          "distinct_vectors": 223930,
+          "windows_with_vector_in_another_split": 0,
+          "distinct_vectors_in_another_split": 0,
+          "shared_window_rate": 0.0
+        },
+        "val": {
+          "windows": 75078,
+          "distinct_vectors": 75078,
+          "windows_with_vector_in_another_split": 0,
+          "distinct_vectors_in_another_split": 0,
+          "shared_window_rate": 0.0
+        },
+        "test": {
+          "windows": 75022,
+          "distinct_vectors": 75022,
+          "windows_with_vector_in_another_split": 0,
+          "distinct_vectors_in_another_split": 0,
+          "shared_window_rate": 0.0
+        }
+      },
+      "pairs": {
+        "dev|val": {
+          "shared_distinct_vectors": 0,
+          "windows_in_dev": 0,
+          "windows_in_val": 0
+        },
+        "dev|test": {
+          "shared_distinct_vectors": 0,
+          "windows_in_dev": 0,
+          "windows_in_test": 0
+        },
+        "val|test": {
+          "shared_distinct_vectors": 0,
+          "windows_in_val": 0,
+          "windows_in_test": 0
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,188 @@
+{
+  "audit_split": "ood",
+  "collisions": {
+    "definitions": {
+      "population": "windows that pass the runtime gate and carry a scored oracle label",
+      "group_key": "exact bytes of the float32 (120,) input vector; group id = sha256 of those bytes",
+      "collision_group": "a group whose windows carry more than one distinct scored label",
+      "collision_rate": "scored windows lying in a collision group / scored windows in the population (per class, per family, overall)",
+      "majority_label": "most frequent scored label in a group; ties broken by canonical class order (lowest index wins)",
+      "bayes_accuracy": "windows whose label equals their group's majority label / windows in the population",
+      "bayes_macro_f1": "mean per-class F1 of the majority-label predictor over canonical classes with support > 0; precision is 0 for a class never predicted",
+      "cross_split": "a vector is shared when the same input-vector bytes occur in windows of two or more splits"
+    },
+    "population": {
+      "windows_total": 83011,
+      "gate_rejected": 2800,
+      "gate_passed_unscored": {
+        "INSUFFICIENT_INSTRUMENTATION": 0,
+        "INSUFFICIENT_AMBIGUOUS": 2673
+      },
+      "scored_gate_passed": 77538
+    },
+    "groups": 77538,
+    "singleton_groups": 77538,
+    "group_size_histogram": {
+      "1": 77538
+    },
+    "collision_groups_count": 0,
+    "windows_in_collision_groups": 0,
+    "collision_rate": 0.0,
+    "per_class": {
+      "PRODUCTIVE": {
+        "windows": 44002,
+        "in_collision_groups": 0,
+        "collision_rate": 0.0
+      },
+      "RECOVERY": {
+        "windows": 12881,
+        "in_collision_groups": 0,
+        "collision_rate": 0.0
+      },
+      "STALLED": {
+        "windows": 8023,
+        "in_collision_groups": 0,
+        "collision_rate": 0.0
+      },
+      "OSCILLATING": {
+        "windows": 12632,
+        "in_collision_groups": 0,
+        "collision_rate": 0.0
+      }
+    },
+    "per_family": {
+      "ood:annotation_spiral": {
+        "windows": 7694,
+        "in_collision_groups": 0,
+        "collision_rate": 0.0
+      },
+      "ood:fixture_archaeology": {
+        "windows": 7843,
+        "in_collision_groups": 0,
+        "collision_rate": 0.0
+      },
+      "ood:index_watermark": {
+        "windows": 7462,
+        "in_collision_groups": 0,
+        "collision_rate": 0.0
+      },
+      "ood:lease_reconnect": {
+        "windows": 6892,
+        "in_collision_groups": 0,
+        "collision_rate": 0.0
+      },
+      "ood:lockfile_churn": {
+        "windows": 8706,
+        "in_collision_groups": 0,
+        "collision_rate": 0.0
+      },
+      "ood:merge_ping_pong": {
+        "windows": 8506,
+        "in_collision_groups": 0,
+        "collision_rate": 0.0
+      },
+      "ood:pinned_validation": {
+        "windows": 7742,
+        "in_collision_groups": 0,
+        "collision_rate": 0.0
+      },
+      "ood:serializer_duel": {
+        "windows": 7844,
+        "in_collision_groups": 0,
+        "collision_rate": 0.0
+      },
+      "ood:shard_migration": {
+        "windows": 7628,
+        "in_collision_groups": 0,
+        "collision_rate": 0.0
+      },
+      "ood:telemetry_gaps": {
+        "windows": 7221,
+        "in_collision_groups": 0,
+        "collision_rate": 0.0
+      }
+    },
+    "bayes_ceiling": {
+      "windows": 77538,
+      "groups": 77538,
+      "correct": 77538,
+      "accuracy": 1.0,
+      "macro_f1": 1.0,
+      "macro_f1_classes": [
+        "PRODUCTIVE",
+        "RECOVERY",
+        "STALLED",
+        "OSCILLATING"
+      ],
+      "per_class": {
+        "PRODUCTIVE": {
+          "support": 44002,
+          "predicted": 44002,
+          "correct": 44002,
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0
+        },
+        "RECOVERY": {
+          "support": 12881,
+          "predicted": 12881,
+          "correct": 12881,
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0
+        },
+        "STALLED": {
+          "support": 8023,
+          "predicted": 8023,
+          "correct": 8023,
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0
+        },
+        "OSCILLATING": {
+          "support": 12632,
+          "predicted": 12632,
+          "correct": 12632,
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0
+        }
+      }
+    },
+    "collision_groups": []
+  },
+  "cross_split": {
+    "definition": "a vector is shared when the same input-vector bytes occur in windows of two or more splits",
+    "splits": [
+      "ood"
+    ],
+    "gate_passed": {
+      "vectors_in_multiple_splits": 0,
+      "vectors_in_multiple_splits_with_conflicting_scored_labels": 0,
+      "per_split": {
+        "ood": {
+          "windows": 80211,
+          "distinct_vectors": 80211,
+          "windows_with_vector_in_another_split": 0,
+          "distinct_vectors_in_another_split": 0,
+          "shared_window_rate": 0.0
+        }
+      },
+      "pairs": {}
+    },
+    "scored": {
+      "vectors_in_multiple_splits": 0,
+      "vectors_in_multiple_splits_with_conflicting_scored_labels": 0,
+      "per_split": {
+        "ood": {
+          "windows": 77538,
+          "distinct_vectors": 77538,
+          "windows_with_vector_in_another_split": 0,
+          "distinct_vectors_in_another_split": 0,
+          "shared_window_rate": 0.0
+        }
+      },
+      "pairs": {}
+    }
+  }
+}

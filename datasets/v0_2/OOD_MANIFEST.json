@@ -1,0 +1,96 @@
+{
+  "dataset": "v0_2-ood",
+  "spec_version": "0.2",
+  "generator": "agent_loop_lab.synth_ood",
+  "generator_version": "ood-0.1",
+  "generator_author": "Codex (isolated commission; see experiments/commissions/ood_generator/)",
+  "generator_source_sha256": "1d9399e2696a4f832e0765b7da31ce4604c29106009ae712d9268273c5a72b12",
+  "master_seed": 20261104,
+  "seed_formula": "int.from_bytes(sha256(f\"{master_seed}:ood:{family}:{k}\").digest()[:8], \"big\")",
+  "session_id_format": "o-{seed:016x}",
+  "families": [
+    "shard_migration",
+    "fixture_archaeology",
+    "lease_reconnect",
+    "index_watermark",
+    "pinned_validation",
+    "annotation_spiral",
+    "serializer_duel",
+    "merge_ping_pong",
+    "lockfile_churn",
+    "telemetry_gaps"
+  ],
+  "sessions_per_family": 200,
+  "sessions": 2000,
+  "session_ids_sha256": "f5d4dd878b44b59bccc7b5ec8d46e760618f3eca8eb547cf525aaa97624384cc",
+  "window_label_counts": {
+    "INSUFFICIENT_AMBIGUOUS": 2673,
+    "INSUFFICIENT_INSTRUMENTATION": 2800,
+    "OSCILLATING": 12632,
+    "PRODUCTIVE": 44002,
+    "RECOVERY": 12881,
+    "STALLED": 8023
+  },
+  "window_label_counts_per_family": {
+    "shard_migration": {
+      "INSUFFICIENT_AMBIGUOUS": 1,
+      "PRODUCTIVE": 5168,
+      "RECOVERY": 2091,
+      "STALLED": 369
+    },
+    "fixture_archaeology": {
+      "INSUFFICIENT_AMBIGUOUS": 26,
+      "PRODUCTIVE": 5622,
+      "STALLED": 2221
+    },
+    "lease_reconnect": {
+      "INSUFFICIENT_AMBIGUOUS": 3,
+      "PRODUCTIVE": 3509,
+      "RECOVERY": 3383
+    },
+    "index_watermark": {
+      "PRODUCTIVE": 3823,
+      "RECOVERY": 3639
+    },
+    "pinned_validation": {
+      "INSUFFICIENT_AMBIGUOUS": 528,
+      "PRODUCTIVE": 4790,
+      "RECOVERY": 600,
+      "STALLED": 2352
+    },
+    "annotation_spiral": {
+      "INSUFFICIENT_AMBIGUOUS": 3,
+      "PRODUCTIVE": 4609,
+      "RECOVERY": 878,
+      "STALLED": 2207
+    },
+    "serializer_duel": {
+      "OSCILLATING": 3960,
+      "PRODUCTIVE": 3235,
+      "RECOVERY": 649
+    },
+    "merge_ping_pong": {
+      "OSCILLATING": 3757,
+      "PRODUCTIVE": 4401,
+      "RECOVERY": 348
+    },
+    "lockfile_churn": {
+      "INSUFFICIENT_AMBIGUOUS": 1461,
+      "OSCILLATING": 2761,
+      "PRODUCTIVE": 5689,
+      "STALLED": 256
+    },
+    "telemetry_gaps": {
+      "INSUFFICIENT_AMBIGUOUS": 651,
+      "INSUFFICIENT_INSTRUMENTATION": 2800,
+      "OSCILLATING": 2154,
+      "PRODUCTIVE": 3156,
+      "RECOVERY": 1293,
+      "STALLED": 618
+    }
+  },
+  "files": {
+    "ood/ood.events.jsonl.gz": "fc93b96d81f9886e5c4df3f54f7c8b5d8266a662f3a371b1f012843137ce7837",
+    "ood/ood.oracle.jsonl.gz": "8562d4de216453ed1d1ca2d11f6421e51175e40cfcecb4800bc9adc28b1f17d6"
+  }
+}

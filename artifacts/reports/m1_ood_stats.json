@@ -1,0 +1,967 @@
+{
+  "definitions": {
+    "scored_priors": "fraction of scored oracle windows (PRODUCTIVE/RECOVERY/STALLED/OSCILLATING) per class",
+    "gate_oracle_agreement": "a window agrees iff the gate rejects it exactly when its oracle label is INSUFFICIENT_INSTRUMENTATION",
+    "windows": "every full stride-1 window of a session (list position >= 7)"
+  },
+  "splits": [
+    "ood"
+  ],
+  "families": [
+    "ood:annotation_spiral",
+    "ood:fixture_archaeology",
+    "ood:index_watermark",
+    "ood:lease_reconnect",
+    "ood:lockfile_churn",
+    "ood:merge_ping_pong",
+    "ood:pinned_validation",
+    "ood:serializer_duel",
+    "ood:shard_migration",
+    "ood:telemetry_gaps"
+  ],
+  "sessions": {
+    "total": 2000,
+    "per_split": {
+      "ood": 2000
+    },
+    "per_family": {
+      "ood:annotation_spiral": 200,
+      "ood:fixture_archaeology": 200,
+      "ood:index_watermark": 200,
+      "ood:lease_reconnect": 200,
+      "ood:lockfile_churn": 200,
+      "ood:merge_ping_pong": 200,
+      "ood:pinned_validation": 200,
+      "ood:serializer_duel": 200,
+      "ood:shard_migration": 200,
+      "ood:telemetry_gaps": 200
+    },
+    "per_split_family": {
+      "ood": {
+        "ood:annotation_spiral": 200,
+        "ood:fixture_archaeology": 200,
+        "ood:index_watermark": 200,
+        "ood:lease_reconnect": 200,
+        "ood:lockfile_churn": 200,
+        "ood:merge_ping_pong": 200,
+        "ood:pinned_validation": 200,
+        "ood:serializer_duel": 200,
+        "ood:shard_migration": 200,
+        "ood:telemetry_gaps": 200
+      }
+    }
+  },
+  "window_counts": {
+    "total": {
+      "windows": 83011,
+      "gate_passed": 80211,
+      "scored": 77538,
+      "scored_gate_passed": 77538
+    },
+    "per_split": {
+      "ood": {
+        "windows": 83011,
+        "gate_passed": 80211,
+        "scored": 77538,
+        "scored_gate_passed": 77538
+      }
+    },
+    "per_family": {
+      "ood:annotation_spiral": {
+        "windows": 7697,
+        "gate_passed": 7697,
+        "scored": 7694,
+        "scored_gate_passed": 7694
+      },
+      "ood:fixture_archaeology": {
+        "windows": 7869,
+        "gate_passed": 7869,
+        "scored": 7843,
+        "scored_gate_passed": 7843
+      },
+      "ood:index_watermark": {
+        "windows": 7462,
+        "gate_passed": 7462,
+        "scored": 7462,
+        "scored_gate_passed": 7462
+      },
+      "ood:lease_reconnect": {
+        "windows": 6895,
+        "gate_passed": 6895,
+        "scored": 6892,
+        "scored_gate_passed": 6892
+      },
+      "ood:lockfile_churn": {
+        "windows": 10167,
+        "gate_passed": 10167,
+        "scored": 8706,
+        "scored_gate_passed": 8706
+      },
+      "ood:merge_ping_pong": {
+        "windows": 8506,
+        "gate_passed": 8506,
+        "scored": 8506,
+        "scored_gate_passed": 8506
+      },
+      "ood:pinned_validation": {
+        "windows": 8270,
+        "gate_passed": 8270,
+        "scored": 7742,
+        "scored_gate_passed": 7742
+      },
+      "ood:serializer_duel": {
+        "windows": 7844,
+        "gate_passed": 7844,
+        "scored": 7844,
+        "scored_gate_passed": 7844
+      },
+      "ood:shard_migration": {
+        "windows": 7629,
+        "gate_passed": 7629,
+        "scored": 7628,
+        "scored_gate_passed": 7628
+      },
+      "ood:telemetry_gaps": {
+        "windows": 10672,
+        "gate_passed": 7872,
+        "scored": 7221,
+        "scored_gate_passed": 7221
+      }
+    }
+  },
+  "class_priors": {
+    "total": {
+      "label_counts": {
+        "PRODUCTIVE": 44002,
+        "RECOVERY": 12881,
+        "STALLED": 8023,
+        "OSCILLATING": 12632,
+        "INSUFFICIENT_INSTRUMENTATION": 2800,
+        "INSUFFICIENT_AMBIGUOUS": 2673
+      },
+      "scored_windows": 77538,
+      "scored_priors": {
+        "PRODUCTIVE": 0.5674894890247363,
+        "RECOVERY": 0.16612499677577447,
+        "STALLED": 0.10347184606257577,
+        "OSCILLATING": 0.16291366813691352
+      }
+    },
+    "per_split": {
+      "ood": {
+        "label_counts": {
+          "PRODUCTIVE": 44002,
+          "RECOVERY": 12881,
+          "STALLED": 8023,
+          "OSCILLATING": 12632,
+          "INSUFFICIENT_INSTRUMENTATION": 2800,
+          "INSUFFICIENT_AMBIGUOUS": 2673
+        },
+        "scored_windows": 77538,
+        "scored_priors": {
+          "PRODUCTIVE": 0.5674894890247363,
+          "RECOVERY": 0.16612499677577447,
+          "STALLED": 0.10347184606257577,
+          "OSCILLATING": 0.16291366813691352
+        }
+      }
+    }
+  },
+  "family_label_mix": {
+    "ood:annotation_spiral": {
+      "label_counts": {
+        "PRODUCTIVE": 4609,
+        "RECOVERY": 878,
+        "STALLED": 2207,
+        "OSCILLATING": 0,
+        "INSUFFICIENT_INSTRUMENTATION": 0,
+        "INSUFFICIENT_AMBIGUOUS": 3
+      },
+      "scored_windows": 7694,
+      "scored_priors": {
+        "PRODUCTIVE": 0.5990382115934494,
+        "RECOVERY": 0.1141148947231609,
+        "STALLED": 0.28684689368338967,
+        "OSCILLATING": 0.0
+      }
+    },
+    "ood:fixture_archaeology": {
+      "label_counts": {
+        "PRODUCTIVE": 5622,
+        "RECOVERY": 0,
+        "STALLED": 2221,
+        "OSCILLATING": 0,
+        "INSUFFICIENT_INSTRUMENTATION": 0,
+        "INSUFFICIENT_AMBIGUOUS": 26
+      },
+      "scored_windows": 7843,
+      "scored_priors": {
+        "PRODUCTIVE": 0.7168175443070254,
+        "RECOVERY": 0.0,
+        "STALLED": 0.2831824556929746,
+        "OSCILLATING": 0.0
+      }
+    },
+    "ood:index_watermark": {
+      "label_counts": {
+        "PRODUCTIVE": 3823,
+        "RECOVERY": 3639,
+        "STALLED": 0,
+        "OSCILLATING": 0,
+        "INSUFFICIENT_INSTRUMENTATION": 0,
+        "INSUFFICIENT_AMBIGUOUS": 0
+      },
+      "scored_windows": 7462,
+      "scored_priors": {
+        "PRODUCTIVE": 0.5123291342803538,
+        "RECOVERY": 0.4876708657196462,
+        "STALLED": 0.0,
+        "OSCILLATING": 0.0
+      }
+    },
+    "ood:lease_reconnect": {
+      "label_counts": {
+        "PRODUCTIVE": 3509,
+        "RECOVERY": 3383,
+        "STALLED": 0,
+        "OSCILLATING": 0,
+        "INSUFFICIENT_INSTRUMENTATION": 0,
+        "INSUFFICIENT_AMBIGUOUS": 3
+      },
+      "scored_windows": 6892,
+      "scored_priors": {
+        "PRODUCTIVE": 0.509141033081834,
+        "RECOVERY": 0.490858966918166,
+        "STALLED": 0.0,
+        "OSCILLATING": 0.0
+      }
+    },
+    "ood:lockfile_churn": {
+      "label_counts": {
+        "PRODUCTIVE": 5689,
+        "RECOVERY": 0,
+        "STALLED": 256,
+        "OSCILLATING": 2761,
+        "INSUFFICIENT_INSTRUMENTATION": 0,
+        "INSUFFICIENT_AMBIGUOUS": 1461
+      },
+      "scored_windows": 8706,
+      "scored_priors": {
+        "PRODUCTIVE": 0.6534573857110039,
+        "RECOVERY": 0.0,
+        "STALLED": 0.029405008040431887,
+        "OSCILLATING": 0.3171376062485642
+      }
+    },
+    "ood:merge_ping_pong": {
+      "label_counts": {
+        "PRODUCTIVE": 4401,
+        "RECOVERY": 348,
+        "STALLED": 0,
+        "OSCILLATING": 3757,
+        "INSUFFICIENT_INSTRUMENTATION": 0,
+        "INSUFFICIENT_AMBIGUOUS": 0
+      },
+      "scored_windows": 8506,
+      "scored_priors": {
+        "PRODUCTIVE": 0.5173994827180813,
+        "RECOVERY": 0.040912297201975076,
+        "STALLED": 0.0,
+        "OSCILLATING": 0.44168822007994357
+      }
+    },
+    "ood:pinned_validation": {
+      "label_counts": {
+        "PRODUCTIVE": 4790,
+        "RECOVERY": 600,
+        "STALLED": 2352,
+        "OSCILLATING": 0,
+        "INSUFFICIENT_INSTRUMENTATION": 0,
+        "INSUFFICIENT_AMBIGUOUS": 528
+      },
+      "scored_windows": 7742,
+      "scored_priors": {
+        "PRODUCTIVE": 0.6187031774735211,
+        "RECOVERY": 0.07749935417204856,
+        "STALLED": 0.3037974683544304,
+        "OSCILLATING": 0.0
+      }
+    },
+    "ood:serializer_duel": {
+      "label_counts": {
+        "PRODUCTIVE": 3235,
+        "RECOVERY": 649,
+        "STALLED": 0,
+        "OSCILLATING": 3960,
+        "INSUFFICIENT_INSTRUMENTATION": 0,
+        "INSUFFICIENT_AMBIGUOUS": 0
+      },
+      "scored_windows": 7844,
+      "scored_priors": {
+        "PRODUCTIVE": 0.41241713411524733,
+        "RECOVERY": 0.08273839877613462,
+        "STALLED": 0.0,
+        "OSCILLATING": 0.5048444671086181
+      }
+    },
+    "ood:shard_migration": {
+      "label_counts": {
+        "PRODUCTIVE": 5168,
+        "RECOVERY": 2091,
+        "STALLED": 369,
+        "OSCILLATING": 0,
+        "INSUFFICIENT_INSTRUMENTATION": 0,
+        "INSUFFICIENT_AMBIGUOUS": 1
+      },
+      "scored_windows": 7628,
+      "scored_priors": {
+        "PRODUCTIVE": 0.6775039328788673,
+        "RECOVERY": 0.27412165705296276,
+        "STALLED": 0.0483744100681699,
+        "OSCILLATING": 0.0
+      }
+    },
+    "ood:telemetry_gaps": {
+      "label_counts": {
+        "PRODUCTIVE": 3156,
+        "RECOVERY": 1293,
+        "STALLED": 618,
+        "OSCILLATING": 2154,
+        "INSUFFICIENT_INSTRUMENTATION": 2800,
+        "INSUFFICIENT_AMBIGUOUS": 651
+      },
+      "scored_windows": 7221,
+      "scored_priors": {
+        "PRODUCTIVE": 0.43705857914416285,
+        "RECOVERY": 0.1790610718737017,
+        "STALLED": 0.08558371416701288,
+        "OSCILLATING": 0.2982966348151226
+      }
+    }
+  },
+  "gate": {
+    "per_family": {
+      "ood:annotation_spiral": {
+        "windows": 7697,
+        "gate_passed": 7697,
+        "gate_pass_rate": 1.0,
+        "gate_oracle_disagreements": 0,
+        "gate_oracle_agreement_rate": 1.0,
+        "disagreement_examples": []
+      },
+      "ood:fixture_archaeology": {
+        "windows": 7869,
+        "gate_passed": 7869,
+        "gate_pass_rate": 1.0,
+        "gate_oracle_disagreements": 0,
+        "gate_oracle_agreement_rate": 1.0,
+        "disagreement_examples": []
+      },
+      "ood:index_watermark": {
+        "windows": 7462,
+        "gate_passed": 7462,
+        "gate_pass_rate": 1.0,
+        "gate_oracle_disagreements": 0,
+        "gate_oracle_agreement_rate": 1.0,
+        "disagreement_examples": []
+      },
+      "ood:lease_reconnect": {
+        "windows": 6895,
+        "gate_passed": 6895,
+        "gate_pass_rate": 1.0,
+        "gate_oracle_disagreements": 0,
+        "gate_oracle_agreement_rate": 1.0,
+        "disagreement_examples": []
+      },
+      "ood:lockfile_churn": {
+        "windows": 10167,
+        "gate_passed": 10167,
+        "gate_pass_rate": 1.0,
+        "gate_oracle_disagreements": 0,
+        "gate_oracle_agreement_rate": 1.0,
+        "disagreement_examples": []
+      },
+      "ood:merge_ping_pong": {
+        "windows": 8506,
+        "gate_passed": 8506,
+        "gate_pass_rate": 1.0,
+        "gate_oracle_disagreements": 0,
+        "gate_oracle_agreement_rate": 1.0,
+        "disagreement_examples": []
+      },
+      "ood:pinned_validation": {
+        "windows": 8270,
+        "gate_passed": 8270,
+        "gate_pass_rate": 1.0,
+        "gate_oracle_disagreements": 0,
+        "gate_oracle_agreement_rate": 1.0,
+        "disagreement_examples": []
+      },
+      "ood:serializer_duel": {
+        "windows": 7844,
+        "gate_passed": 7844,
+        "gate_pass_rate": 1.0,
+        "gate_oracle_disagreements": 0,
+        "gate_oracle_agreement_rate": 1.0,
+        "disagreement_examples": []
+      },
+      "ood:shard_migration": {
+        "windows": 7629,
+        "gate_passed": 7629,
+        "gate_pass_rate": 1.0,
+        "gate_oracle_disagreements": 0,
+        "gate_oracle_agreement_rate": 1.0,
+        "disagreement_examples": []
+      },
+      "ood:telemetry_gaps": {
+        "windows": 10672,
+        "gate_passed": 7872,
+        "gate_pass_rate": 0.7376311844077961,
+        "gate_oracle_disagreements": 0,
+        "gate_oracle_agreement_rate": 1.0,
+        "disagreement_examples": []
+      }
+    }
+  },
+  "under_instrumented_gate_oracle": null,
+  "session_length": {
+    "total": {
+      "sessions": 2000,
+      "min": 26,
+      "max": 79,
+      "mean": 48.5055,
+      "median": 48.0,
+      "histogram": {
+        "26": 1,
+        "27": 2,
+        "28": 4,
+        "29": 6,
+        "30": 12,
+        "31": 17,
+        "32": 17,
+        "33": 21,
+        "34": 32,
+        "35": 32,
+        "36": 33,
+        "37": 44,
+        "38": 48,
+        "39": 64,
+        "40": 51,
+        "41": 46,
+        "42": 78,
+        "43": 86,
+        "44": 81,
+        "45": 97,
+        "46": 86,
+        "47": 85,
+        "48": 98,
+        "49": 88,
+        "50": 92,
+        "51": 82,
+        "52": 68,
+        "53": 77,
+        "54": 75,
+        "55": 65,
+        "56": 53,
+        "57": 48,
+        "58": 37,
+        "59": 47,
+        "60": 31,
+        "61": 26,
+        "62": 26,
+        "63": 19,
+        "64": 16,
+        "65": 18,
+        "66": 17,
+        "67": 21,
+        "68": 13,
+        "69": 10,
+        "70": 7,
+        "71": 6,
+        "72": 6,
+        "73": 1,
+        "74": 4,
+        "75": 1,
+        "76": 1,
+        "78": 2,
+        "79": 2
+      }
+    },
+    "per_split": {
+      "ood": {
+        "sessions": 2000,
+        "min": 26,
+        "max": 79,
+        "mean": 48.5055,
+        "median": 48.0,
+        "histogram": {
+          "26": 1,
+          "27": 2,
+          "28": 4,
+          "29": 6,
+          "30": 12,
+          "31": 17,
+          "32": 17,
+          "33": 21,
+          "34": 32,
+          "35": 32,
+          "36": 33,
+          "37": 44,
+          "38": 48,
+          "39": 64,
+          "40": 51,
+          "41": 46,
+          "42": 78,
+          "43": 86,
+          "44": 81,
+          "45": 97,
+          "46": 86,
+          "47": 85,
+          "48": 98,
+          "49": 88,
+          "50": 92,
+          "51": 82,
+          "52": 68,
+          "53": 77,
+          "54": 75,
+          "55": 65,
+          "56": 53,
+          "57": 48,
+          "58": 37,
+          "59": 47,
+          "60": 31,
+          "61": 26,
+          "62": 26,
+          "63": 19,
+          "64": 16,
+          "65": 18,
+          "66": 17,
+          "67": 21,
+          "68": 13,
+          "69": 10,
+          "70": 7,
+          "71": 6,
+          "72": 6,
+          "73": 1,
+          "74": 4,
+          "75": 1,
+          "76": 1,
+          "78": 2,
+          "79": 2
+        }
+      }
+    },
+    "per_family": {
+      "ood:annotation_spiral": {
+        "sessions": 200,
+        "min": 27,
+        "max": 72,
+        "mean": 45.485,
+        "median": 45.0,
+        "histogram": {
+          "27": 2,
+          "28": 4,
+          "29": 3,
+          "30": 5,
+          "31": 6,
+          "32": 5,
+          "33": 6,
+          "34": 7,
+          "35": 8,
+          "36": 9,
+          "37": 4,
+          "38": 7,
+          "39": 1,
+          "40": 3,
+          "41": 3,
+          "42": 2,
+          "43": 14,
+          "44": 4,
+          "45": 9,
+          "46": 9,
+          "47": 4,
+          "48": 7,
+          "49": 10,
+          "50": 9,
+          "51": 4,
+          "52": 7,
+          "53": 4,
+          "54": 6,
+          "55": 2,
+          "56": 2,
+          "57": 1,
+          "58": 4,
+          "59": 4,
+          "60": 3,
+          "61": 4,
+          "62": 1,
+          "63": 3,
+          "64": 3,
+          "65": 1,
+          "66": 1,
+          "67": 4,
+          "69": 3,
+          "71": 1,
+          "72": 1
+        }
+      },
+      "ood:fixture_archaeology": {
+        "sessions": 200,
+        "min": 32,
+        "max": 59,
+        "mean": 46.345,
+        "median": 46.0,
+        "histogram": {
+          "32": 1,
+          "35": 1,
+          "37": 3,
+          "38": 1,
+          "39": 8,
+          "40": 7,
+          "41": 4,
+          "42": 15,
+          "43": 18,
+          "44": 18,
+          "45": 15,
+          "46": 18,
+          "47": 11,
+          "48": 15,
+          "49": 13,
+          "50": 14,
+          "51": 12,
+          "52": 6,
+          "53": 4,
+          "54": 5,
+          "55": 4,
+          "56": 4,
+          "57": 1,
+          "58": 1,
+          "59": 1
+        }
+      },
+      "ood:index_watermark": {
+        "sessions": 200,
+        "min": 30,
+        "max": 61,
+        "mean": 44.31,
+        "median": 44.5,
+        "histogram": {
+          "30": 1,
+          "31": 1,
+          "32": 4,
+          "33": 5,
+          "34": 8,
+          "35": 7,
+          "36": 4,
+          "37": 12,
+          "38": 9,
+          "39": 9,
+          "40": 8,
+          "41": 9,
+          "42": 8,
+          "43": 9,
+          "44": 6,
+          "45": 13,
+          "46": 6,
+          "47": 11,
+          "48": 7,
+          "49": 6,
+          "50": 9,
+          "51": 12,
+          "52": 9,
+          "53": 3,
+          "54": 9,
+          "55": 3,
+          "56": 5,
+          "57": 5,
+          "60": 1,
+          "61": 1
+        }
+      },
+      "ood:lease_reconnect": {
+        "sessions": 200,
+        "min": 26,
+        "max": 58,
+        "mean": 41.475,
+        "median": 42.0,
+        "histogram": {
+          "26": 1,
+          "29": 3,
+          "30": 4,
+          "31": 7,
+          "32": 4,
+          "33": 3,
+          "34": 9,
+          "35": 3,
+          "36": 8,
+          "37": 6,
+          "38": 16,
+          "39": 18,
+          "40": 8,
+          "41": 7,
+          "42": 14,
+          "43": 7,
+          "44": 20,
+          "45": 11,
+          "46": 8,
+          "47": 7,
+          "48": 8,
+          "49": 9,
+          "50": 6,
+          "51": 4,
+          "52": 1,
+          "53": 2,
+          "54": 2,
+          "55": 2,
+          "56": 1,
+          "58": 1
+        }
+      },
+      "ood:lockfile_churn": {
+        "sessions": 200,
+        "min": 46,
+        "max": 71,
+        "mean": 57.835,
+        "median": 58.0,
+        "histogram": {
+          "46": 2,
+          "47": 4,
+          "48": 5,
+          "49": 6,
+          "50": 7,
+          "51": 6,
+          "52": 6,
+          "53": 10,
+          "54": 13,
+          "55": 12,
+          "56": 14,
+          "57": 14,
+          "58": 13,
+          "59": 12,
+          "60": 11,
+          "61": 7,
+          "62": 14,
+          "63": 8,
+          "64": 6,
+          "65": 10,
+          "66": 3,
+          "67": 7,
+          "68": 5,
+          "69": 2,
+          "70": 2,
+          "71": 1
+        }
+      },
+      "ood:merge_ping_pong": {
+        "sessions": 200,
+        "min": 35,
+        "max": 66,
+        "mean": 49.53,
+        "median": 49.0,
+        "histogram": {
+          "35": 1,
+          "37": 1,
+          "38": 1,
+          "39": 3,
+          "40": 4,
+          "41": 5,
+          "42": 8,
+          "43": 8,
+          "44": 9,
+          "45": 9,
+          "46": 12,
+          "47": 10,
+          "48": 20,
+          "49": 10,
+          "50": 12,
+          "51": 13,
+          "52": 10,
+          "53": 13,
+          "54": 15,
+          "55": 10,
+          "56": 6,
+          "57": 7,
+          "58": 2,
+          "59": 3,
+          "60": 1,
+          "61": 2,
+          "62": 2,
+          "63": 1,
+          "66": 2
+        }
+      },
+      "ood:pinned_validation": {
+        "sessions": 200,
+        "min": 35,
+        "max": 66,
+        "mean": 48.35,
+        "median": 48.0,
+        "histogram": {
+          "35": 1,
+          "36": 2,
+          "38": 1,
+          "39": 3,
+          "40": 11,
+          "41": 5,
+          "42": 8,
+          "43": 10,
+          "44": 8,
+          "45": 16,
+          "46": 7,
+          "47": 12,
+          "48": 17,
+          "49": 12,
+          "50": 14,
+          "51": 15,
+          "52": 15,
+          "53": 17,
+          "54": 5,
+          "55": 6,
+          "56": 1,
+          "57": 2,
+          "58": 5,
+          "59": 2,
+          "60": 2,
+          "62": 1,
+          "63": 1,
+          "66": 1
+        }
+      },
+      "ood:serializer_duel": {
+        "sessions": 200,
+        "min": 30,
+        "max": 63,
+        "mean": 46.22,
+        "median": 45.0,
+        "histogram": {
+          "30": 1,
+          "32": 1,
+          "33": 1,
+          "34": 1,
+          "35": 6,
+          "36": 5,
+          "37": 5,
+          "38": 4,
+          "39": 13,
+          "40": 5,
+          "41": 3,
+          "42": 14,
+          "43": 14,
+          "44": 10,
+          "45": 18,
+          "46": 7,
+          "47": 15,
+          "48": 7,
+          "49": 11,
+          "50": 9,
+          "51": 5,
+          "52": 3,
+          "53": 9,
+          "54": 7,
+          "55": 6,
+          "56": 3,
+          "57": 4,
+          "58": 1,
+          "59": 8,
+          "60": 2,
+          "61": 1,
+          "63": 1
+        }
+      },
+      "ood:shard_migration": {
+        "sessions": 200,
+        "min": 30,
+        "max": 62,
+        "mean": 45.145,
+        "median": 45.5,
+        "histogram": {
+          "30": 1,
+          "31": 3,
+          "32": 2,
+          "33": 6,
+          "34": 7,
+          "35": 5,
+          "36": 5,
+          "37": 13,
+          "38": 9,
+          "39": 9,
+          "40": 5,
+          "41": 10,
+          "42": 9,
+          "43": 6,
+          "44": 6,
+          "45": 4,
+          "46": 13,
+          "47": 9,
+          "48": 8,
+          "49": 9,
+          "50": 4,
+          "51": 8,
+          "52": 3,
+          "53": 8,
+          "54": 7,
+          "55": 7,
+          "56": 9,
+          "57": 3,
+          "58": 1,
+          "59": 6,
+          "60": 3,
+          "61": 1,
+          "62": 1
+        }
+      },
+      "ood:telemetry_gaps": {
+        "sessions": 200,
+        "min": 45,
+        "max": 79,
+        "mean": 60.36,
+        "median": 60.0,
+        "histogram": {
+          "45": 2,
+          "46": 4,
+          "47": 2,
+          "48": 4,
+          "49": 2,
+          "50": 8,
+          "51": 3,
+          "52": 8,
+          "53": 7,
+          "54": 6,
+          "55": 13,
+          "56": 8,
+          "57": 11,
+          "58": 9,
+          "59": 11,
+          "60": 8,
+          "61": 10,
+          "62": 7,
+          "63": 5,
+          "64": 7,
+          "65": 7,
+          "66": 10,
+          "67": 10,
+          "68": 8,
+          "69": 5,
+          "70": 5,
+          "71": 4,
+          "72": 5,
+          "73": 1,
+          "74": 4,
+          "75": 1,
+          "76": 1,
+          "78": 2,
+          "79": 2
+        }
+      }
+    }
+  },
+  "checks": {
+    "gate_all_pass_families_1_11": false,
+    "families_below_full_gate_pass": [
+      "ood:telemetry_gaps"
+    ],
+    "under_instrumented_present": false,
+    "under_instrumented_gate_oracle_agree": null,
+    "gate_oracle_agree_all_families": true
+  }
+}
