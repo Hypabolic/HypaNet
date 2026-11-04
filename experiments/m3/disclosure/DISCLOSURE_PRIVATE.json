@@ -1,0 +1,1618 @@
+{
+ "artifact_sha256": "561366300f9d84f6d81adc88f17daf4eeafd69f9206efb30614a52caa6c615ad",
+ "dataset_manifest_sha256": "693ba89f42f0e5a40ced967960a04d80443e8c406203fe0dc80f6a0d2433181f",
+ "disclosure_sha256": "484f885a1cc94113e19fa7016ad739630c5cc7b959314774bbe534610349c3b6",
+ "format": "m3-phase-b-disclosure/1-private",
+ "key_format": "20261104:phase-b-disclosure:{session_id}:{endpoint}",
+ "note": "repo only; never handed to the weight author (experiments/m3/README.md \u00a72)",
+ "per_class": 50,
+ "reference_policy_sha256": "db8fb337018338d6ff99cc3f3adc25c525d23d419ea95fafb3af55b2970c3ad9",
+ "source_phase": "phase-a-selfcheck",
+ "split": "val",
+ "val_files_sha256": {
+  "val.events.jsonl.gz": "fd8d4ee17c1a1a600fea694e7f192aef8be15a700a48a300bdff3a82c98335e0",
+  "val.oracle.jsonl.gz": "9fd0a876b35d0667bcd3e6ca404c39b485e932843d4b0459d752f58f1a669fd4"
+ },
+ "windows": [
+  {
+   "endpoint": 21,
+   "family": "rising_cost",
+   "id": "D001",
+   "key": "0000643c17a2300a8ed2afa2e130cae086f92818fc8ca9207cd54ac0a1d3681b",
+   "oracle_label": "STALLED",
+   "session_id": "s-a88d9bd877e06923"
+  },
+  {
+   "endpoint": 14,
+   "family": "transient_external",
+   "id": "D002",
+   "key": "0002232263cc3c986a05f3fd380f78194b336c034cc83e1d33755e3a5f3220b8",
+   "oracle_label": "RECOVERY",
+   "session_id": "s-dc4b969cdcfac812"
+  },
+  {
+   "endpoint": 20,
+   "family": "under_instrumented",
+   "id": "D003",
+   "key": "0003ac5b047eb69e08c17234d9f1507f47d03b66db760458b8f24ad3f4b513dc",
+   "oracle_label": "PRODUCTIVE",
+   "session_id": "s-2241fdf56c26eef5"
+  },
+  {
+   "endpoint": 30,
+   "family": "polling_recovery",
+   "id": "D004",
+   "key": "0006f10d1106c7d0be0aceb45b9b104c545127cb79322a7b133869cd93bb1912",
+   "oracle_label": "PRODUCTIVE",
+   "session_id": "s-88c9f6baf324f85d"
+  },
+  {
+   "endpoint": 26,
+   "family": "transient_external",
+   "id": "D005",
+   "key": "0007d4324140fb1b93c057d1c8920879cbdcf6804b148f02ef79fbd61a980ac1",
+   "oracle_label": "PRODUCTIVE",
+   "session_id": "s-6e94370a69bad8e4"
+  },
+  {
+   "endpoint": 23,
+   "family": "under_instrumented",
+   "id": "D006",
+   "key": "0007f2b137a02b38ddcc526e670dbba9444d7509921148d9fbc35efeb9c91b98",
+   "oracle_label": "PRODUCTIVE",
+   "session_id": "s-ade02b5a96c15a9e"
+  },
+  {
+   "endpoint": 21,
+   "family": "rising_cost",
+   "id": "D007",
+   "key": "0008b37fa4fef3090d7dd4beda56b95c08e018c733fd996c16d97ffccb1597b4",
+   "oracle_label": "PRODUCTIVE",
+   "session_id": "s-16499cab6aa50f89"
+  },
+  {
+   "endpoint": 11,
+   "family": "transient_external",
+   "id": "D008",
+   "key": "0009ea0bc960ce57f94f2f0a9e41a807714e57db216f16677277c09691a75e86",
+   "oracle_label": "PRODUCTIVE",
+   "session_id": "s-7f4be8327f4a519a"
+  },
+  {
+   "endpoint": 32,
+   "family": "repeated_test_failure",
+   "id": "D009",
+   "key": "000b3a4ca959d7db69340ab1c6fe5e5567b5e429f948acfce94de057383f7ffb",
+   "oracle_label": "STALLED",
+   "session_id": "s-19227be5f4270056"
+  },
+  {
+   "endpoint": 24,
+   "family": "abab_oscillation",
+   "id": "D010",
+   "key": "000ba4316172d21e93ec6f5dfc15ba983370773bed4a07a92022631d53f34530",
+   "oracle_label": "OSCILLATING",
+   "session_id": "s-baf0b3c0f02c3154"
+  },
+  {
+   "endpoint": 14,
+   "family": "incremental_repair",
+   "id": "D011",
+   "key": "000bfbd3f06d2421d4b860d3253df9cfccea591971d4f3ed77c205c6c17015ce",
+   "oracle_label": "PRODUCTIVE",
+   "session_id": "s-d72d85908f4bbcc9"
+  },
+  {
+   "endpoint": 27,
+   "family": "cosmetic_churn",
+   "id": "D012",
+   "key": "000d81bdeb1d413c972a435211322773a8726c9a51e578b0a0b77f19fd6f6212",
+   "oracle_label": "STALLED",
+   "session_id": "s-660b94cc1dc908b1"
+  },
+  {
+   "endpoint": 12,
+   "family": "rising_cost",
+   "id": "D013",
+   "key": "000ea5cc2d346203210a3f533e662591207b2ab5869aba48ea3d80ce29661b1d",
+   "oracle_label": "PRODUCTIVE",
+   "session_id": "s-e5373c0604464638"
+  },
+  {
+   "endpoint": 13,
+   "family": "bounded_retry",
+   "id": "D014",
+   "key": "000f0c31e3bf73b01f1c9ad2127f34024435af2900c9be0d4999f98b0452a040",
+   "oracle_label": "RECOVERY",
+   "session_id": "s-b45d1d1f54cf1c16"
+  },
+  {
+   "endpoint": 11,
+   "family": "incremental_repair",
+   "id": "D015",
+   "key": "000f4780578f2d4be660115e965cbc6c92be9698ec0e337ff7fefbde921e4f1f",
+   "oracle_label": "PRODUCTIVE",
+   "session_id": "s-84faca0d4d651280"
+  },
+  {
+   "endpoint": 36,
+   "family": "cosmetic_churn",
+   "id": "D016",
+   "key": "000f5e644a9e2622ab90e8fc48721822f314e30271762c2641ea9554710c8db4",
+   "oracle_label": "STALLED",
+   "session_id": "s-299c779e9b9296cd"
+  },
+  {
+   "endpoint": 16,
+   "family": "tool_oscillation",
+   "id": "D017",
+   "key": "00108874a08138dd6dcb17a91c38937312338bff847c14ffe616c3b43794a739",
+   "oracle_label": "OSCILLATING",
+   "session_id": "s-f747ab16387937ac"
+  },
+  {
+   "endpoint": 26,
+   "family": "polling_recovery",
+   "id": "D018",
+   "key": "00110575bba73390e0a9ce18afa918b252200fa2f1eb8ac014fb7fed2ac9c428",
+   "oracle_label": "PRODUCTIVE",
+   "session_id": "s-540802af955572f0"
+  },
+  {
+   "endpoint": 23,
+   "family": "tool_oscillation",
+   "id": "D019",
+   "key": "001215d511fd49b330d0faff0edd49549d624eb922ce1c5be934b0a415b9606c",
+   "oracle_label": "OSCILLATING",
+   "session_id": "s-8b5fdbdc009cb42c"
+  },
+  {
+   "endpoint": 27,
+   "family": "tool_oscillation",
+   "id": "D020",
+   "key": "0012dad7ba7d619fc224aa53cda8f8519349107067ec90f8e2ed5aa3bcfac30d",
+   "oracle_label": "OSCILLATING",
+   "session_id": "s-2d812d8e31b473fb"
+  },
+  {
+   "endpoint": 15,
+   "family": "transient_external",
+   "id": "D021",
+   "key": "00146d5421e7766b2ccf31a19ce3a819c3860127ae017cd7577dc96139fa83fa",
+   "oracle_label": "PRODUCTIVE",
+   "session_id": "s-62ff10af47dff3c2"
+  },
+  {
+   "endpoint": 7,
+   "family": "abab_oscillation",
+   "id": "D022",
+   "key": "0014c87228f18fd2457cf8756725036494be9a87a177891e29c0dc75997df93a",
+   "oracle_label": "PRODUCTIVE",
+   "session_id": "s-6a13483abdae1499"
+  },
+  {
+   "endpoint": 37,
+   "family": "cosmetic_churn",
+   "id": "D023",
+   "key": "001591c2e39e6a1fae63d95bcb0241c7f49d9789924ffd1719769ab972e69831",
+   "oracle_label": "STALLED",
+   "session_id": "s-3bb6b2bb4991b04b"
+  },
+  {
+   "endpoint": 19,
+   "family": "exploration",
+   "id": "D024",
+   "key": "001763bf49758e4d7b73df8e35f31a89d6e61f19d79742131b1857c18809b5c4",
+   "oracle_label": "PRODUCTIVE",
+   "session_id": "s-6b2fcf6ee56b4247"
+  },
+  {
+   "endpoint": 8,
+   "family": "improving_tests",
+   "id": "D025",
+   "key": "0018216421869f5ac349f5e3387566170c59fe6d1b7c965493280efc49194867",
+   "oracle_label": "PRODUCTIVE",
+   "session_id": "s-62db8ee837613c5c"
+  },
+  {
+   "endpoint": 28,
+   "family": "transient_external",
+   "id": "D026",
+   "key": "001b2c49c3d8f9e0f58be07b3ae488a951a38e14f5ccbaba356d352130f23601",
+   "oracle_label": "PRODUCTIVE",
+   "session_id": "s-2ac884a8d7c82a4a"
+  },
+  {
+   "endpoint": 20,
+   "family": "rising_cost",
+   "id": "D027",
+   "key": "001b8757446b5ce48eb606af7bf8961824b34a35d148305beb7775558c215edf",
+   "oracle_label": "STALLED",
+   "session_id": "s-21ffa8dcf88a2c1b"
+  },
+  {
+   "endpoint": 19,
+   "family": "polling_recovery",
+   "id": "D028",
+   "key": "001c032db251628a61074da09f9341c05bfd10a2bb556f21350cbbf5fea0cfc6",
+   "oracle_label": "RECOVERY",
+   "session_id": "s-906fd64c83fb7196"
+  },
+  {
+   "endpoint": 20,
+   "family": "cosmetic_churn",
+   "id": "D029",
+   "key": "001c177edea059f0f3c4a15fa6417f62e20c56f3c39c31687ec4002f08d1aecf",
+   "oracle_label": "STALLED",
+   "session_id": "s-4ab28a909282f511"
+  },
+  {
+   "endpoint": 28,
+   "family": "cosmetic_churn",
+   "id": "D030",
+   "key": "001c38af9840a333a802dd9aea6066961a02596e04b2e7cbdd378aaa0a98b651",
+   "oracle_label": "STALLED",
+   "session_id": "s-00c08340bafc3e80"
+  },
+  {
+   "endpoint": 17,
+   "family": "cosmetic_churn",
+   "id": "D031",
+   "key": "001c453920cdfe6e49e2adc2d0ba8f7640913153bccdeea4335c8feae8dd9851",
+   "oracle_label": "PRODUCTIVE",
+   "session_id": "s-cd580f2052a4906c"
+  },
+  {
+   "endpoint": 22,
+   "family": "transient_external",
+   "id": "D032",
+   "key": "00200c513fbf73bbd2854e64d04b50b14a4566c4114e99a9262fe6e37f686bad",
+   "oracle_label": "RECOVERY",
+   "session_id": "s-430c61425418ed60"
+  },
+  {
+   "endpoint": 33,
+   "family": "abab_oscillation",
+   "id": "D033",
+   "key": "002104a395037094563ed9ea8cce9e4c68f2e5e084630efe288451a0e7bec9b7",
+   "oracle_label": "OSCILLATING",
+   "session_id": "s-b63416c8f5f81beb"
+  },
+  {
+   "endpoint": 17,
+   "family": "bounded_retry",
+   "id": "D034",
+   "key": "002118ecc41673aac1f3f23bcb69cd4d1d7039a1e04cc8b233c57ce91c8b24a7",
+   "oracle_label": "RECOVERY",
+   "session_id": "s-ed45b0bf1f7aea02"
+  },
+  {
+   "endpoint": 30,
+   "family": "cosmetic_churn",
+   "id": "D035",
+   "key": "002363b22e8156e3f487e2a82810ba1598bd18bf390e440448f729f271316fa9",
+   "oracle_label": "STALLED",
+   "session_id": "s-bebd9b2d15b49655"
+  },
+  {
+   "endpoint": 19,
+   "family": "incremental_repair",
+   "id": "D036",
+   "key": "0023898b4c2b6de81ed11f7ec2b1890ac3e62468f02541ed7a9b807d053329e6",
+   "oracle_label": "PRODUCTIVE",
+   "session_id": "s-e76476210bc8e3f5"
+  },
+  {
+   "endpoint": 30,
+   "family": "incremental_repair",
+   "id": "D037",
+   "key": "0023f33a4b6b515ce2f76f2adc2e4b1ffb3c8e4e28c569ca330a8ff5e24f7850",
+   "oracle_label": "PRODUCTIVE",
+   "session_id": "s-773186dd5528d20c"
+  },
+  {
+   "endpoint": 18,
+   "family": "tool_oscillation",
+   "id": "D038",
+   "key": "0025713720ef90448803323a82f0328f0f7329edc687eb7d491661034ab2aec7",
+   "oracle_label": "OSCILLATING",
+   "session_id": "s-259ff1a1435167bc"
+  },
+  {
+   "endpoint": 12,
+   "family": "exploration",
+   "id": "D039",
+   "key": "0026e449d011fe793849c29508672b3333cace9c1ef57f63c12391a97cd64ec9",
+   "oracle_label": "PRODUCTIVE",
+   "session_id": "s-1771ab8d66c2464c"
+  },
+  {
+   "endpoint": 16,
+   "family": "transient_external",
+   "id": "D040",
+   "key": "00271d0801fc4dafa8ef7f878e6f8e15a2946081e51fc2df8f75a499aa979b59",
+   "oracle_label": "PRODUCTIVE",
+   "session_id": "s-41189ef30c8fb343"
+  },
+  {
+   "endpoint": 28,
+   "family": "abab_oscillation",
+   "id": "D041",
+   "key": "0027addd5c728299e228d09a3b8e02619b0b3b504c521edf1167d996dae2ff39",
+   "oracle_label": "OSCILLATING",
+   "session_id": "s-e3230a49e7a1065a"
+  },
+  {
+   "endpoint": 8,
+   "family": "improving_tests",
+   "id": "D042",
+   "key": "0027f897d07a0d870d0ce82cd016495c2160346d87c5d3224e5e5c72b5380bc1",
+   "oracle_label": "PRODUCTIVE",
+   "session_id": "s-cc22477fe72e7d82"
+  },
+  {
+   "endpoint": 20,
+   "family": "polling_recovery",
+   "id": "D043",
+   "key": "0029539c951643026f96fb3d759eccc0b3a35dda9b790e90a22f8610eb3ccdb2",
+   "oracle_label": "PRODUCTIVE",
+   "session_id": "s-3973963009a074e9"
+  },
+  {
+   "endpoint": 14,
+   "family": "transient_external",
+   "id": "D044",
+   "key": "0029b9a647cb3375a2922f8b4306517dfa8a35ab798cd2e055494d2e44a5e1f9",
+   "oracle_label": "PRODUCTIVE",
+   "session_id": "s-f9b1b98c1e2731f7"
+  },
+  {
+   "endpoint": 9,
+   "family": "bounded_retry",
+   "id": "D045",
+   "key": "002a01f5ca8f275774aec641971f7f226866a6dde9ea70e87c9cd7e54852756c",
+   "oracle_label": "RECOVERY",
+   "session_id": "s-c7f02dffe3f9f64c"
+  },
+  {
+   "endpoint": 20,
+   "family": "cosmetic_churn",
+   "id": "D046",
+   "key": "002dfae27e20f2040efa689a50bf58261d63e6848a56ddbad47eb84096d5287d",
+   "oracle_label": "STALLED",
+   "session_id": "s-66916b400558c806"
+  },
+  {
+   "endpoint": 15,
+   "family": "cosmetic_churn",
+   "id": "D047",
+   "key": "0031f4eccf0bd89fd7b146d4fb1f742cb0c08a9e9bf7b2d37686bb2e3b26add2",
+   "oracle_label": "PRODUCTIVE",
+   "session_id": "s-d108a5bfb25a9684"
+  },
+  {
+   "endpoint": 20,
+   "family": "bounded_retry",
+   "id": "D048",
+   "key": "0036673cb3eb93aaf94b1fbbf5e5ed8872fb98a224c31acf7099073966a31e6c",
+   "oracle_label": "RECOVERY",
+   "session_id": "s-429c69db4cb5d6bb"
+  },
+  {
+   "endpoint": 19,
+   "family": "cosmetic_churn",
+   "id": "D049",
+   "key": "003725699faefeb0e42fb50d33665c49375b1d31b1869e8ee1f7773aedbabbe2",
+   "oracle_label": "STALLED",
+   "session_id": "s-a82a3b4251357994"
+  },
+  {
+   "endpoint": 34,
+   "family": "repeated_test_failure",
+   "id": "D050",
+   "key": "003c38e2fb59d52d552bb7494265be39ee3142da62b8def394b6a9c17a89953c",
+   "oracle_label": "STALLED",
+   "session_id": "s-91668d033425e956"
+  },
+  {
+   "endpoint": 14,
+   "family": "incremental_repair",
+   "id": "D051",
+   "key": "003d043882830fd76d39ba2494e1978fea6d89701319714673c3ff34d016e634",
+   "oracle_label": "PRODUCTIVE",
+   "session_id": "s-b7bcffa7e2a122df"
+  },
+  {
+   "endpoint": 8,
+   "family": "incremental_repair",
+   "id": "D052",
+   "key": "003e49a33213c8ed7f85c6ded46fecb5ac735c0092d712f09742b87f507599b5",
+   "oracle_label": "PRODUCTIVE",
+   "session_id": "s-2801bd6ca582c5f3"
+  },
+  {
+   "endpoint": 16,
+   "family": "transient_external",
+   "id": "D053",
+   "key": "003ec10569bbc951d8830e15e3a1827d33a64ac2112241276f942dea2c530817",
+   "oracle_label": "PRODUCTIVE",
+   "session_id": "s-2e7dcf8f68d1d6c5"
+  },
+  {
+   "endpoint": 49,
+   "family": "tool_oscillation",
+   "id": "D054",
+   "key": "003fcc0aa1a29a8f06b85c450e1a482ca2cdb43da04d470825e3967125c6bcf5",
+   "oracle_label": "OSCILLATING",
+   "session_id": "s-32f87b766fba70ab"
+  },
+  {
+   "endpoint": 26,
+   "family": "repeated_test_failure",
+   "id": "D055",
+   "key": "003fe279657c65718d410f5165eb7b84dedaeb2db08165fc3714d70f74f5cca5",
+   "oracle_label": "STALLED",
+   "session_id": "s-67ad25731a3384c8"
+  },
+  {
+   "endpoint": 17,
+   "family": "incremental_repair",
+   "id": "D056",
+   "key": "0040dabdb2cd5217e7924a39a16e3141e7676d39d930571f237368a008243c59",
+   "oracle_label": "PRODUCTIVE",
+   "session_id": "s-f9c13ab6beb8e305"
+  },
+  {
+   "endpoint": 23,
+   "family": "transient_external",
+   "id": "D057",
+   "key": "0040f1c984efec7605b14e60e22616f4048d249a205e3ffce00d4f020de6409f",
+   "oracle_label": "PRODUCTIVE",
+   "session_id": "s-4ee4adc79829cb92"
+  },
+  {
+   "endpoint": 19,
+   "family": "incremental_repair",
+   "id": "D058",
+   "key": "00410d860530f02be05df5b9d86693e2736ba64d5f84311d7da47133a98b42f0",
+   "oracle_label": "PRODUCTIVE",
+   "session_id": "s-d3c546fc72694919"
+  },
+  {
+   "endpoint": 19,
+   "family": "bounded_retry",
+   "id": "D059",
+   "key": "0041acb6272fd07a4d581ae2492e5800084dbd304aac7c5be0bf806e29f9f44e",
+   "oracle_label": "RECOVERY",
+   "session_id": "s-d59ccc88b31d5991"
+  },
+  {
+   "endpoint": 20,
+   "family": "rising_cost",
+   "id": "D060",
+   "key": "0042ec8f2c425d7f9b5b4a06611ecf121a9c2a0a4b444cbec2deed354d1ad1ee",
+   "oracle_label": "STALLED",
+   "session_id": "s-a00c68f8ce207ec6"
+  },
+  {
+   "endpoint": 27,
+   "family": "cosmetic_churn",
+   "id": "D061",
+   "key": "0044343e7842b838c715afc4dab26c5c9813a51fa648747e5497e2b57d3de6b2",
+   "oracle_label": "STALLED",
+   "session_id": "s-47b2716972533eca"
+  },
+  {
+   "endpoint": 35,
+   "family": "abab_oscillation",
+   "id": "D062",
+   "key": "0044e7a4ba028a7ca3feadcde2979a3cd59a3c90ee1526f5df9216a6caa6b002",
+   "oracle_label": "OSCILLATING",
+   "session_id": "s-2289d4e15cdaf7eb"
+  },
+  {
+   "endpoint": 10,
+   "family": "improving_tests",
+   "id": "D063",
+   "key": "0045bb8890340bf836e907e944a5e9fcb018eea3d182e1f947fa5d6fe76b7223",
+   "oracle_label": "PRODUCTIVE",
+   "session_id": "s-e28cf520edcea086"
+  },
+  {
+   "endpoint": 18,
+   "family": "incremental_repair",
+   "id": "D064",
+   "key": "00460ebc48c0961436988423790a9fbf4961c7b33d4de707ecd9eabfc4b27618",
+   "oracle_label": "PRODUCTIVE",
+   "session_id": "s-1f7ce9168cf7bcf8"
+  },
+  {
+   "endpoint": 27,
+   "family": "cosmetic_churn",
+   "id": "D065",
+   "key": "00473cfc1ec964b282e402f3f7f06cb4b5739ac20dcae41fadcb13819b3c8385",
+   "oracle_label": "STALLED",
+   "session_id": "s-1aca5c7bc8add1d0"
+  },
+  {
+   "endpoint": 11,
+   "family": "bounded_retry",
+   "id": "D066",
+   "key": "00476292abfe278b2ed3cdd1ac7722efb7101cc8899fd423a8a2a5b105cb8f4a",
+   "oracle_label": "RECOVERY",
+   "session_id": "s-d4bc5dfd6ff2dd37"
+  },
+  {
+   "endpoint": 19,
+   "family": "tool_oscillation",
+   "id": "D067",
+   "key": "00488c3bd5a4eab042b38ce74369c1e3c5e884072765808ea92a2d22c8adbfbe",
+   "oracle_label": "OSCILLATING",
+   "session_id": "s-5b7880ad75ad8288"
+  },
+  {
+   "endpoint": 19,
+   "family": "incremental_repair",
+   "id": "D068",
+   "key": "00497af49aacefec26fa4a23fca4cb400d5007391600c10a68d447870fb1aa54",
+   "oracle_label": "PRODUCTIVE",
+   "session_id": "s-172e78230e1a9f76"
+  },
+  {
+   "endpoint": 12,
+   "family": "abab_oscillation",
+   "id": "D069",
+   "key": "0049d6348f1eff04134fa5aa83c14cbbdb28ebebffa3637832a28d7cbf041823",
+   "oracle_label": "PRODUCTIVE",
+   "session_id": "s-04e5c502fc29b206"
+  },
+  {
+   "endpoint": 17,
+   "family": "rising_cost",
+   "id": "D070",
+   "key": "004b5cfa23dedbb125746632ccb57b67aeb0eee32fbde840c23e2ddfdb9af545",
+   "oracle_label": "STALLED",
+   "session_id": "s-66eb530654281cb6"
+  },
+  {
+   "endpoint": 25,
+   "family": "incremental_repair",
+   "id": "D071",
+   "key": "004f70d40f976374b7aa6ce62a2cedd508de87dfc0395b0f93d3f2ee5e1f77a1",
+   "oracle_label": "PRODUCTIVE",
+   "session_id": "s-0ea26b0f8ae94511"
+  },
+  {
+   "endpoint": 16,
+   "family": "transient_external",
+   "id": "D072",
+   "key": "004fb2b1c49bc51651a120452da45c07acbe2139f79749a2a91d59515e079f8e",
+   "oracle_label": "PRODUCTIVE",
+   "session_id": "s-9f7de7a5db3e9299"
+  },
+  {
+   "endpoint": 24,
+   "family": "tool_oscillation",
+   "id": "D073",
+   "key": "004fbce22626514abbd843ebf44984dc2019705c8cc37f861d1e41b5851fb810",
+   "oracle_label": "OSCILLATING",
+   "session_id": "s-a2b989a9d9cb30b5"
+  },
+  {
+   "endpoint": 18,
+   "family": "tool_oscillation",
+   "id": "D074",
+   "key": "005173e486baaa304af10e7860cb7b1f934e7b3bd74440b34d512b5ea146ebbf",
+   "oracle_label": "OSCILLATING",
+   "session_id": "s-73d8a403b9c21e4d"
+  },
+  {
+   "endpoint": 18,
+   "family": "cosmetic_churn",
+   "id": "D075",
+   "key": "00526d45cd0848ead2cc3ed63b6abda17ac304647b1bcf5bd3b3d6c267d2c0cc",
+   "oracle_label": "STALLED",
+   "session_id": "s-98e122c9e7128fae"
+  },
+  {
+   "endpoint": 24,
+   "family": "tool_oscillation",
+   "id": "D076",
+   "key": "0054485a61048221b6a57c4578833a4cb093e336ad8819a6904db63c156942c5",
+   "oracle_label": "OSCILLATING",
+   "session_id": "s-52971afc67dc1675"
+  },
+  {
+   "endpoint": 24,
+   "family": "polling_recovery",
+   "id": "D077",
+   "key": "0054fdb072feb12cb856f9c39078e1cc5fe4d27b9454b6ad102938213deaf932",
+   "oracle_label": "STALLED",
+   "session_id": "s-9507ae5e1f9df192"
+  },
+  {
+   "endpoint": 44,
+   "family": "cosmetic_churn",
+   "id": "D078",
+   "key": "00552446492ad1c78f8f28e9a96c38048d799ba6392901d3f316104e40565041",
+   "oracle_label": "STALLED",
+   "session_id": "s-20c7653511665a78"
+  },
+  {
+   "endpoint": 30,
+   "family": "repeated_test_failure",
+   "id": "D079",
+   "key": "005667ef34daf976ee534790ac4a3942b2101d1dd2574324d4b931551ba3b66d",
+   "oracle_label": "STALLED",
+   "session_id": "s-92f9334b80fcee60"
+  },
+  {
+   "endpoint": 7,
+   "family": "rising_cost",
+   "id": "D080",
+   "key": "005736b00d36463c02be5626fef6cbc5c487eb403b27c22983d5b40a28007336",
+   "oracle_label": "PRODUCTIVE",
+   "session_id": "s-b082ef4232731682"
+  },
+  {
+   "endpoint": 29,
+   "family": "rising_cost",
+   "id": "D081",
+   "key": "0058a8c7611b70a85b172128384f8e8854a0cea6ba8dc85fa65b8c214a948b53",
+   "oracle_label": "PRODUCTIVE",
+   "session_id": "s-c70a94b244c03a86"
+  },
+  {
+   "endpoint": 44,
+   "family": "abab_oscillation",
+   "id": "D082",
+   "key": "0058b823485e51df6ae58c188f0715f7aa119236ea7e238023abc7b73be7c347",
+   "oracle_label": "OSCILLATING",
+   "session_id": "s-b9d289c3abac831b"
+  },
+  {
+   "endpoint": 13,
+   "family": "exploration",
+   "id": "D083",
+   "key": "0058f80155891cc54d08ce8d1549a405d5f68cf7fa11eb0686d5809068e2101b",
+   "oracle_label": "PRODUCTIVE",
+   "session_id": "s-b7a36faf0918db8b"
+  },
+  {
+   "endpoint": 17,
+   "family": "cosmetic_churn",
+   "id": "D084",
+   "key": "00593a4d01bf103463eafb564fc82ce1191da05b8af5b590641509a98f9808f1",
+   "oracle_label": "STALLED",
+   "session_id": "s-518e16254d150f9d"
+  },
+  {
+   "endpoint": 26,
+   "family": "repeated_test_failure",
+   "id": "D085",
+   "key": "00597f440151022e491cc22a44cb1f193b09d96b01990bb98c2337c02f486665",
+   "oracle_label": "STALLED",
+   "session_id": "s-b955080c802e6c14"
+  },
+  {
+   "endpoint": 13,
+   "family": "cosmetic_churn",
+   "id": "D086",
+   "key": "005a4c20bf5c3972a738e690f808b421f582c71b6cf83fe20fc0bacb87ae9c89",
+   "oracle_label": "PRODUCTIVE",
+   "session_id": "s-6afbc2a5420607c8"
+  },
+  {
+   "endpoint": 41,
+   "family": "repeated_test_failure",
+   "id": "D087",
+   "key": "005d82770008d11ec8a84d4693f07d785e8e4aefcf2a6cdb25bc25ddc3282afc",
+   "oracle_label": "STALLED",
+   "session_id": "s-d71ae525a3876510"
+  },
+  {
+   "endpoint": 38,
+   "family": "repeated_test_failure",
+   "id": "D088",
+   "key": "005f4123b839d9c76b321ca68683b448a033cfb9c729b062943322e14b2d53a5",
+   "oracle_label": "STALLED",
+   "session_id": "s-308cba3126c501c3"
+  },
+  {
+   "endpoint": 10,
+   "family": "abab_oscillation",
+   "id": "D089",
+   "key": "005f70ec0f8b40a548fd2aeae8ae5e1766794aa8a1afe598d025d03396e1f986",
+   "oracle_label": "PRODUCTIVE",
+   "session_id": "s-8b461e7af509c92d"
+  },
+  {
+   "endpoint": 19,
+   "family": "under_instrumented",
+   "id": "D090",
+   "key": "0060e7f87ea76bd6a974f272c9a4517414824d4f8a8e3d7f1712758bb9d5f4da",
+   "oracle_label": "STALLED",
+   "session_id": "s-d37ab74c2940afa8"
+  },
+  {
+   "endpoint": 10,
+   "family": "under_instrumented",
+   "id": "D091",
+   "key": "0060f8b12f5d9a66142893cf0696c3ed6a4bd93404c04c954261e4fb8add3552",
+   "oracle_label": "RECOVERY",
+   "session_id": "s-e5dc0865c2102ee9"
+  },
+  {
+   "endpoint": 50,
+   "family": "repeated_test_failure",
+   "id": "D092",
+   "key": "00621fe6656e5cd6476442f63612fefc2a2829b363a1bb44a15bbe973aaa20e4",
+   "oracle_label": "STALLED",
+   "session_id": "s-4b9dfc6cc429c3c5"
+  },
+  {
+   "endpoint": 13,
+   "family": "cosmetic_churn",
+   "id": "D093",
+   "key": "00639ecc223bccdb37639ae1dc1a509814b1d85c6590b19a69d1b210c0d0cd4c",
+   "oracle_label": "PRODUCTIVE",
+   "session_id": "s-06d280217d33c213"
+  },
+  {
+   "endpoint": 7,
+   "family": "abab_oscillation",
+   "id": "D094",
+   "key": "0063e6726474c3d45914c652458fed256ac5e09634065d17f5d6859c3f09d801",
+   "oracle_label": "PRODUCTIVE",
+   "session_id": "s-4299f53162f0ee0c"
+  },
+  {
+   "endpoint": 35,
+   "family": "abab_oscillation",
+   "id": "D095",
+   "key": "00642e31691e4703c3296480bd14caeebbb830225529058de3a1cb7b93642537",
+   "oracle_label": "OSCILLATING",
+   "session_id": "s-3bc71030db98376d"
+  },
+  {
+   "endpoint": 11,
+   "family": "rising_cost",
+   "id": "D096",
+   "key": "006509b5e3a2847afb25ca175beaa215ad657ec0c812cd1cada03f321e844307",
+   "oracle_label": "PRODUCTIVE",
+   "session_id": "s-17c6cd6dfff9a9b9"
+  },
+  {
+   "endpoint": 18,
+   "family": "polling_recovery",
+   "id": "D097",
+   "key": "0066066e38c2ea962c3e40b531cb629d3ffc50b74cfa336339a3382598798bd0",
+   "oracle_label": "STALLED",
+   "session_id": "s-aac9a0ba06757c26"
+  },
+  {
+   "endpoint": 39,
+   "family": "cosmetic_churn",
+   "id": "D098",
+   "key": "00665ff10be95c5adaaca803ff2672ce104960192fc56de97d76d089cc7fecfe",
+   "oracle_label": "STALLED",
+   "session_id": "s-ac443d2f398672ea"
+  },
+  {
+   "endpoint": 12,
+   "family": "bounded_retry",
+   "id": "D099",
+   "key": "00666a027c63e0318238985f0b3030f22e4e26c977f3ee7e0e7d6dd17143ec30",
+   "oracle_label": "PRODUCTIVE",
+   "session_id": "s-10441992a0fe1e07"
+  },
+  {
+   "endpoint": 26,
+   "family": "tool_oscillation",
+   "id": "D100",
+   "key": "0066ffd1ae740db50eabe0d846d409f99883aab92d176dfb1e9a12fdb5a7baba",
+   "oracle_label": "OSCILLATING",
+   "session_id": "s-f653080ffec813ae"
+  },
+  {
+   "endpoint": 29,
+   "family": "repeated_test_failure",
+   "id": "D101",
+   "key": "00685b31daef860f2164298e88c29f7b60ece5e9a8ba5ce65d5f92a6664338d1",
+   "oracle_label": "STALLED",
+   "session_id": "s-c39ba29c5decc517"
+  },
+  {
+   "endpoint": 38,
+   "family": "cosmetic_churn",
+   "id": "D102",
+   "key": "00686c06708ab1d6336a72e54171dbf637d5d2e348ed04e368df0d4313121a08",
+   "oracle_label": "STALLED",
+   "session_id": "s-feba34095207c48d"
+  },
+  {
+   "endpoint": 18,
+   "family": "repeated_test_failure",
+   "id": "D103",
+   "key": "006ae0fb65f8d6f056dd8fcdf18318875b76ffac2cc0ec3c2f03b687caf9c59c",
+   "oracle_label": "STALLED",
+   "session_id": "s-23c3d65f3044184c"
+  },
+  {
+   "endpoint": 7,
+   "family": "rising_cost",
+   "id": "D104",
+   "key": "006e1a61a00eabba64c009027460413b2ef4b34fd8ab3d62e559360f4273e3a6",
+   "oracle_label": "PRODUCTIVE",
+   "session_id": "s-876c36cc872c0f20"
+  },
+  {
+   "endpoint": 14,
+   "family": "cosmetic_churn",
+   "id": "D105",
+   "key": "006e3fb29f0f78c0ec731d51f1354d8fedb64ce114a6eedf837f96af02654ddb",
+   "oracle_label": "STALLED",
+   "session_id": "s-4098f9e442dd7018"
+  },
+  {
+   "endpoint": 42,
+   "family": "tool_oscillation",
+   "id": "D106",
+   "key": "006e9465eda33396e906f967036c010d0ed2a68c31642d65d5d22cfa7840048e",
+   "oracle_label": "OSCILLATING",
+   "session_id": "s-07637801aab2d686"
+  },
+  {
+   "endpoint": 23,
+   "family": "bounded_retry",
+   "id": "D107",
+   "key": "006e9684eed8ac01f15ea8c1da2f2f504efe2c917b203783dd1acde98cf7dd9f",
+   "oracle_label": "RECOVERY",
+   "session_id": "s-a08978b9fd218d4a"
+  },
+  {
+   "endpoint": 11,
+   "family": "cosmetic_churn",
+   "id": "D108",
+   "key": "006f109bb991e8c89d5ec0e28c7ecb4f327ef198bd365159a9b1e509cdf0e7f2",
+   "oracle_label": "STALLED",
+   "session_id": "s-771cf2f1293b5358"
+  },
+  {
+   "endpoint": 37,
+   "family": "cosmetic_churn",
+   "id": "D109",
+   "key": "006f31415dd82636470416d2110a15464a08168ae38954044533c7e680de4915",
+   "oracle_label": "STALLED",
+   "session_id": "s-0cedd65f6f825ea2"
+  },
+  {
+   "endpoint": 12,
+   "family": "polling_recovery",
+   "id": "D110",
+   "key": "006f4b23a55c79ecb75f84a7be026d548db89476bafb90a2e206b1f78400d8e6",
+   "oracle_label": "RECOVERY",
+   "session_id": "s-b1f98ce98eccddee"
+  },
+  {
+   "endpoint": 19,
+   "family": "rising_cost",
+   "id": "D111",
+   "key": "006fe83a51882279863b06dd11c230b1afbc5f82a297004250e2038c1a4fdfe1",
+   "oracle_label": "STALLED",
+   "session_id": "s-c6f83a093ea44fa6"
+  },
+  {
+   "endpoint": 27,
+   "family": "abab_oscillation",
+   "id": "D112",
+   "key": "007261e627c31b2f4b59c0689fde13965270d05882a54b81c3cd156b391de4f3",
+   "oracle_label": "OSCILLATING",
+   "session_id": "s-991ee80f26f1dfc6"
+  },
+  {
+   "endpoint": 32,
+   "family": "abab_oscillation",
+   "id": "D113",
+   "key": "0072d47aa67630b384e0c404844d4505cabb6bd206fc78c0570cd4c175fe6432",
+   "oracle_label": "OSCILLATING",
+   "session_id": "s-d95e67c19f97e799"
+  },
+  {
+   "endpoint": 16,
+   "family": "exploration",
+   "id": "D114",
+   "key": "0074b8b01cebd0d2b07f77e688408c36123772a19a04e2607be543fda8d1685e",
+   "oracle_label": "PRODUCTIVE",
+   "session_id": "s-bdd78596c997a683"
+  },
+  {
+   "endpoint": 26,
+   "family": "polling_recovery",
+   "id": "D115",
+   "key": "00767895043c7164a8c4bcfef3f60ea013ea9794b36d400cbb981255ced32513",
+   "oracle_label": "RECOVERY",
+   "session_id": "s-a8c3fe5517d9eddd"
+  },
+  {
+   "endpoint": 20,
+   "family": "improving_tests",
+   "id": "D116",
+   "key": "007871f8e42612df919ae098b741bb06a732b51c9a48608399446616ac498fe5",
+   "oracle_label": "PRODUCTIVE",
+   "session_id": "s-97aad9717d56575a"
+  },
+  {
+   "endpoint": 16,
+   "family": "polling_recovery",
+   "id": "D117",
+   "key": "0079502ae51a837ac51a358ab881dce6943872846861390f06d262e41d1cc10b",
+   "oracle_label": "PRODUCTIVE",
+   "session_id": "s-498b046b4c3afae2"
+  },
+  {
+   "endpoint": 33,
+   "family": "polling_recovery",
+   "id": "D118",
+   "key": "0079989a3f020d051743706bf5eab4b157e4ccf785add6a7700e3fdee1bd8665",
+   "oracle_label": "STALLED",
+   "session_id": "s-ef49f12df4e17074"
+  },
+  {
+   "endpoint": 11,
+   "family": "incremental_repair",
+   "id": "D119",
+   "key": "007a463cf80a55ad39cc40cc33cc4bbc6678b266599bdcc5ba7174296af07119",
+   "oracle_label": "PRODUCTIVE",
+   "session_id": "s-84b1c0dec17e46b5"
+  },
+  {
+   "endpoint": 24,
+   "family": "abab_oscillation",
+   "id": "D120",
+   "key": "007ade866efa7c3af53d63d1f15141139de6a523f2afd590a8127c883d88800b",
+   "oracle_label": "OSCILLATING",
+   "session_id": "s-ea09b79b258f7163"
+  },
+  {
+   "endpoint": 19,
+   "family": "polling_recovery",
+   "id": "D121",
+   "key": "007ceabff1f57b2bf0b2f79dcee5e7dc1c0456f14d24e818b8493606d55de5ca",
+   "oracle_label": "RECOVERY",
+   "session_id": "s-d607016688b2bc25"
+  },
+  {
+   "endpoint": 30,
+   "family": "tool_oscillation",
+   "id": "D122",
+   "key": "007cf5672a4d99fb9554fd772b53d9842ed0b5f7c710aabceb4646fe8d08ce95",
+   "oracle_label": "OSCILLATING",
+   "session_id": "s-916849701f283b54"
+  },
+  {
+   "endpoint": 29,
+   "family": "cosmetic_churn",
+   "id": "D123",
+   "key": "007e54337371fe13ec2d6da3251aff1cfe4cd1a664e25ffac58936c1a30c471d",
+   "oracle_label": "STALLED",
+   "session_id": "s-870df5201275fde3"
+  },
+  {
+   "endpoint": 21,
+   "family": "bounded_retry",
+   "id": "D124",
+   "key": "007ec133af6dd8403a86870a05117d820723acca00dc615fbe75d829a2d6f241",
+   "oracle_label": "RECOVERY",
+   "session_id": "s-b3f03527d26609ea"
+  },
+  {
+   "endpoint": 10,
+   "family": "bounded_retry",
+   "id": "D125",
+   "key": "007f0996873500ae710093128e8e237c1f9397a10f59b92bee720732e9dde45d",
+   "oracle_label": "RECOVERY",
+   "session_id": "s-77efe005a50388a6"
+  },
+  {
+   "endpoint": 13,
+   "family": "tool_oscillation",
+   "id": "D126",
+   "key": "008051a80da28d588c8bb8e0fca0012c961882226a8f0c821044d57ff841abd0",
+   "oracle_label": "OSCILLATING",
+   "session_id": "s-a193e196ef983a48"
+  },
+  {
+   "endpoint": 23,
+   "family": "cosmetic_churn",
+   "id": "D127",
+   "key": "0082ba3bb771e79ccffc814bd578193f12328a91b0b93b0fb9a1f12b04f86d98",
+   "oracle_label": "STALLED",
+   "session_id": "s-7e417ee790f98704"
+  },
+  {
+   "endpoint": 42,
+   "family": "tool_oscillation",
+   "id": "D128",
+   "key": "00853a45e894d098eb673742da6670da4d06a6015cc00b8e39798a70b5cba890",
+   "oracle_label": "OSCILLATING",
+   "session_id": "s-8333d2e494bd30a1"
+  },
+  {
+   "endpoint": 26,
+   "family": "tool_oscillation",
+   "id": "D129",
+   "key": "00861933dc33e3f6016f11f1d7ffeb021b19ba4c8bd8f5d1b91d971f34a93206",
+   "oracle_label": "OSCILLATING",
+   "session_id": "s-b89c97280cc5764e"
+  },
+  {
+   "endpoint": 10,
+   "family": "rising_cost",
+   "id": "D130",
+   "key": "0086bad95ce25c3fdbe799af32d5a87e2e75d0efb0e00ba98e5abd4d0b806c1f",
+   "oracle_label": "STALLED",
+   "session_id": "s-bf55106bdc4534cd"
+  },
+  {
+   "endpoint": 29,
+   "family": "cosmetic_churn",
+   "id": "D131",
+   "key": "008824948f80fb682149426816966707210a17d6d056371d417c5e9c3a79a38c",
+   "oracle_label": "STALLED",
+   "session_id": "s-a92ee1e93ab97a7c"
+  },
+  {
+   "endpoint": 54,
+   "family": "repeated_test_failure",
+   "id": "D132",
+   "key": "0088bab509604cc9cef98089c6273e7b9c7d9398da045554070fbabf8dd33673",
+   "oracle_label": "STALLED",
+   "session_id": "s-66260323c009757c"
+  },
+  {
+   "endpoint": 9,
+   "family": "bounded_retry",
+   "id": "D133",
+   "key": "00891d5a7408cee48b0dc00f6bc1d6f0886fddb9e4a45e2ecb87c1817403783f",
+   "oracle_label": "RECOVERY",
+   "session_id": "s-983af14d0e954da0"
+  },
+  {
+   "endpoint": 19,
+   "family": "tool_oscillation",
+   "id": "D134",
+   "key": "008aa461e634835434da22956ac4b563d58497081b717ada8eb6303ccbf27834",
+   "oracle_label": "OSCILLATING",
+   "session_id": "s-b9145a296a686e2a"
+  },
+  {
+   "endpoint": 14,
+   "family": "tool_oscillation",
+   "id": "D135",
+   "key": "008acfb78914c422f4aff03e33eb3c2f536af7d97763afdcdca2003588756f75",
+   "oracle_label": "OSCILLATING",
+   "session_id": "s-5633466c05b5d1f3"
+  },
+  {
+   "endpoint": 28,
+   "family": "tool_oscillation",
+   "id": "D136",
+   "key": "008ad0db7d2e0bdb053c41ffed2203b84eb54e788554c23bddcaba50eb8b9993",
+   "oracle_label": "OSCILLATING",
+   "session_id": "s-670c15513a895295"
+  },
+  {
+   "endpoint": 30,
+   "family": "tool_oscillation",
+   "id": "D137",
+   "key": "008d328e9a339266be59d24509a61d900b551c7b5de015f2780b454ca4e22f68",
+   "oracle_label": "OSCILLATING",
+   "session_id": "s-0308640b76068159"
+  },
+  {
+   "endpoint": 11,
+   "family": "bounded_retry",
+   "id": "D138",
+   "key": "008ecee48d76b977727f541296a10e5c4ea258dd12aac38e1d0ff715a0e1c2bd",
+   "oracle_label": "RECOVERY",
+   "session_id": "s-dd14df54ca2ff7bb"
+  },
+  {
+   "endpoint": 19,
+   "family": "abab_oscillation",
+   "id": "D139",
+   "key": "009131d5dffa7bd24a309009085821313590879cdf35520e6be8fbb34536fbe0",
+   "oracle_label": "OSCILLATING",
+   "session_id": "s-373d08f9c26516df"
+  },
+  {
+   "endpoint": 20,
+   "family": "repeated_test_failure",
+   "id": "D140",
+   "key": "009330eb3c2e6bac4ccabfaf0b9723e955abde4e80a9ea032b95c1b5b8a09295",
+   "oracle_label": "STALLED",
+   "session_id": "s-5990df8279d4501f"
+  },
+  {
+   "endpoint": 11,
+   "family": "polling_recovery",
+   "id": "D141",
+   "key": "00956e6730c65d962fc46b84e5ddfcc9c21f91462f139768d773b389944597c5",
+   "oracle_label": "RECOVERY",
+   "session_id": "s-d156ee628f40f82a"
+  },
+  {
+   "endpoint": 13,
+   "family": "bounded_retry",
+   "id": "D142",
+   "key": "00957fee027d7a5a8317d58deded477b487b8869000b7de3c50db66dbce083fc",
+   "oracle_label": "RECOVERY",
+   "session_id": "s-74e2245780253443"
+  },
+  {
+   "endpoint": 34,
+   "family": "tool_oscillation",
+   "id": "D143",
+   "key": "0095fa14724586e1548e766d3bc0b7821dbf09d7a3eb82aa3bf91dd7b78a0c33",
+   "oracle_label": "OSCILLATING",
+   "session_id": "s-de9a5f490cb8932b"
+  },
+  {
+   "endpoint": 23,
+   "family": "abab_oscillation",
+   "id": "D144",
+   "key": "0096f1c0be1c41626f1480ed73076858b8b54debe2a5355a7535209b01dfda8e",
+   "oracle_label": "OSCILLATING",
+   "session_id": "s-d7ca685c50c2d978"
+  },
+  {
+   "endpoint": 12,
+   "family": "polling_recovery",
+   "id": "D145",
+   "key": "009713f7af119c0e6b50e925ebde0861359e2a6ecbdb6f119020ac8a0f374101",
+   "oracle_label": "RECOVERY",
+   "session_id": "s-b3c93293b27be982"
+  },
+  {
+   "endpoint": 37,
+   "family": "repeated_test_failure",
+   "id": "D146",
+   "key": "009763941c1c00d70d8660c7f4e3d4a2e0925240d989a6d5869dc5b0302486c7",
+   "oracle_label": "STALLED",
+   "session_id": "s-1280055db04ff775"
+  },
+  {
+   "endpoint": 7,
+   "family": "under_instrumented",
+   "id": "D147",
+   "key": "009ecc625e5c1f68d4dd898b190692b2bd9bbada835979c93b92ceabee6326e8",
+   "oracle_label": "RECOVERY",
+   "session_id": "s-eebebbcbc2be491c"
+  },
+  {
+   "endpoint": 31,
+   "family": "repeated_test_failure",
+   "id": "D148",
+   "key": "009f8801fdbb11c3dd79b365acc0bd354897de209158bc72f1f65dc6e9ba04d4",
+   "oracle_label": "STALLED",
+   "session_id": "s-960c69d965b46bcc"
+  },
+  {
+   "endpoint": 37,
+   "family": "cosmetic_churn",
+   "id": "D149",
+   "key": "00a00881f896e44550b6a6f69f66632bff0444716688c9606d7fa253438a2d87",
+   "oracle_label": "STALLED",
+   "session_id": "s-8ef3be8aff3934ee"
+  },
+  {
+   "endpoint": 25,
+   "family": "abab_oscillation",
+   "id": "D150",
+   "key": "00a0baa213a724a6d86d0b476ac6a13da1c5b9075a119360d2d6afe473934bdc",
+   "oracle_label": "OSCILLATING",
+   "session_id": "s-4691c39c7ac041b4"
+  },
+  {
+   "endpoint": 25,
+   "family": "repeated_test_failure",
+   "id": "D151",
+   "key": "00a19dcf3a0bdff2db5692ab9dca3e20067dbd79eeffd4200f73c1d1d90be908",
+   "oracle_label": "STALLED",
+   "session_id": "s-a09ff01f871f6cb5"
+  },
+  {
+   "endpoint": 15,
+   "family": "repeated_test_failure",
+   "id": "D152",
+   "key": "00a3d07780d4423755abef60a7f37987e5d4937fa280765676682b980edbe73d",
+   "oracle_label": "STALLED",
+   "session_id": "s-773149d61f3b04b4"
+  },
+  {
+   "endpoint": 23,
+   "family": "tool_oscillation",
+   "id": "D153",
+   "key": "00a41e4e1b41a6a7d4b62ff92d57b886c97a49dc83ee388ae79f5ae504eb5f45",
+   "oracle_label": "OSCILLATING",
+   "session_id": "s-1fe3f439fe712aa5"
+  },
+  {
+   "endpoint": 38,
+   "family": "repeated_test_failure",
+   "id": "D154",
+   "key": "00a5a741ed6c9d9aa2c089b7efca8bba62872926a305608763cea0ceafd50bee",
+   "oracle_label": "STALLED",
+   "session_id": "s-a4933d16b76e1812"
+  },
+  {
+   "endpoint": 14,
+   "family": "rising_cost",
+   "id": "D155",
+   "key": "00a5c1a901b071d68d81d2403f0c0f8fc145bf1725043acc54b87f2906db87d7",
+   "oracle_label": "STALLED",
+   "session_id": "s-9e321a8bd62d3da6"
+  },
+  {
+   "endpoint": 24,
+   "family": "tool_oscillation",
+   "id": "D156",
+   "key": "00a88da4ba7795e32157fea99e84d9017ee7e3198b0f1f2d45f2a300e2ab5c53",
+   "oracle_label": "OSCILLATING",
+   "session_id": "s-ca3afd5b44534502"
+  },
+  {
+   "endpoint": 22,
+   "family": "transient_external",
+   "id": "D157",
+   "key": "00aaa8c906a040e5cfc4ebffd2cbd12ea207489f7f30c54400ef34d78fb9d038",
+   "oracle_label": "RECOVERY",
+   "session_id": "s-54e7cebfc81e10f0"
+  },
+  {
+   "endpoint": 53,
+   "family": "abab_oscillation",
+   "id": "D158",
+   "key": "00ac109ea6f628bddf92868ac9b67f9b72cdff10cc300698f97e4e2ec3e832da",
+   "oracle_label": "OSCILLATING",
+   "session_id": "s-e5254201b89f129b"
+  },
+  {
+   "endpoint": 12,
+   "family": "tool_oscillation",
+   "id": "D159",
+   "key": "00ad319822d5334952fd8e8a7f7b161999a2d4bac2b3e177e61779193edeff51",
+   "oracle_label": "OSCILLATING",
+   "session_id": "s-e618466159cf974d"
+  },
+  {
+   "endpoint": 46,
+   "family": "abab_oscillation",
+   "id": "D160",
+   "key": "00b2d06e55c62d0f23fdda7eb6f4728b9f1a38394d1101326c7fa6f993d0eddb",
+   "oracle_label": "OSCILLATING",
+   "session_id": "s-04f2bacf1b26f945"
+  },
+  {
+   "endpoint": 8,
+   "family": "polling_recovery",
+   "id": "D161",
+   "key": "00b40b0bf687c9a8c9f1d384427d7a291eeb07a031d4621fbb06e9a81250d18d",
+   "oracle_label": "RECOVERY",
+   "session_id": "s-1c5f39164b281dd1"
+  },
+  {
+   "endpoint": 34,
+   "family": "tool_oscillation",
+   "id": "D162",
+   "key": "00b7127ed6cf7e4e96081e1fd95cbce67f3bd5ffcde9f11b6037e95cb6de1bdf",
+   "oracle_label": "OSCILLATING",
+   "session_id": "s-ae843dfe3c26d885"
+  },
+  {
+   "endpoint": 16,
+   "family": "tool_oscillation",
+   "id": "D163",
+   "key": "00b71ecd594b6a2cfdfa380f55fbdbb36baee93f6e90ecb1b1890d4aa0800af7",
+   "oracle_label": "OSCILLATING",
+   "session_id": "s-c4dadc29691c6131"
+  },
+  {
+   "endpoint": 7,
+   "family": "abab_oscillation",
+   "id": "D164",
+   "key": "00b7bc706883aa90d7612a7ddf6bd5225f17b976205f278063ed63bf4e1ee9fe",
+   "oracle_label": "OSCILLATING",
+   "session_id": "s-11d46426c53a533c"
+  },
+  {
+   "endpoint": 10,
+   "family": "tool_oscillation",
+   "id": "D165",
+   "key": "00c3316f6b63d2a910f798e7de3ca7e79eb387ab24fffaa624f59e5cd1dff078",
+   "oracle_label": "OSCILLATING",
+   "session_id": "s-3925e86c2761161e"
+  },
+  {
+   "endpoint": 14,
+   "family": "tool_oscillation",
+   "id": "D166",
+   "key": "00c4e1b90abe5ad14779be0f0ccdfcc83f71c47a51a64ca4240d79a9131da54f",
+   "oracle_label": "OSCILLATING",
+   "session_id": "s-63e9f38450b56df8"
+  },
+  {
+   "endpoint": 39,
+   "family": "abab_oscillation",
+   "id": "D167",
+   "key": "00c97e63c66ef763247d0323135e2a88f4f7ce0a6a4ff7b9fbf9097174f98d37",
+   "oracle_label": "OSCILLATING",
+   "session_id": "s-a8de1fb4afd2c2bf"
+  },
+  {
+   "endpoint": 27,
+   "family": "tool_oscillation",
+   "id": "D168",
+   "key": "00ceb5de43e78d4619c54dbf93ccf708874a4e114d869f0fae44d279e626a71e",
+   "oracle_label": "OSCILLATING",
+   "session_id": "s-2ac447b6ab136743"
+  },
+  {
+   "endpoint": 14,
+   "family": "abab_oscillation",
+   "id": "D169",
+   "key": "00cffb81a2ac32ec3162af9c4c91567e59aefa668ac6c249a4280f1c3c55d99f",
+   "oracle_label": "OSCILLATING",
+   "session_id": "s-d391c58010a76183"
+  },
+  {
+   "endpoint": 37,
+   "family": "abab_oscillation",
+   "id": "D170",
+   "key": "00d0f8b148c9bb8e403b5bc6f84b9fa2bd28a2079f2ea428db7e0f4edcce4146",
+   "oracle_label": "OSCILLATING",
+   "session_id": "s-f47439719a712f47"
+  },
+  {
+   "endpoint": 8,
+   "family": "bounded_retry",
+   "id": "D171",
+   "key": "00d36f73c1696a37a307f3f0abed7ca3799b9fd97f4ad3bbe2279d543729723b",
+   "oracle_label": "RECOVERY",
+   "session_id": "s-058d76537405b37e"
+  },
+  {
+   "endpoint": 30,
+   "family": "abab_oscillation",
+   "id": "D172",
+   "key": "00d71e0429b5c17d9fc5430ff6a321d5c3ba25114a593d6187e20e0988b1c8b4",
+   "oracle_label": "OSCILLATING",
+   "session_id": "s-66dec8a34fe96f44"
+  },
+  {
+   "endpoint": 24,
+   "family": "abab_oscillation",
+   "id": "D173",
+   "key": "00da7e17935fb7deee4f77bc3d789941415066a9a6decb5e4b7b733ed4ac7a24",
+   "oracle_label": "OSCILLATING",
+   "session_id": "s-87c3e77e3d9b6bdc"
+  },
+  {
+   "endpoint": 28,
+   "family": "bounded_retry",
+   "id": "D174",
+   "key": "00daeee429d1f04dc7cd5a53bb638af4b360d694148462ce8b72b434eabdb3e8",
+   "oracle_label": "RECOVERY",
+   "session_id": "s-299690a5562601ad"
+  },
+  {
+   "endpoint": 28,
+   "family": "abab_oscillation",
+   "id": "D175",
+   "key": "00dd0c7deb8ab1a2ab04c09beb042234f0e19a0f5048c8014f8115c271bcea0d",
+   "oracle_label": "OSCILLATING",
+   "session_id": "s-1c1cc73b6f55eac4"
+  },
+  {
+   "endpoint": 15,
+   "family": "tool_oscillation",
+   "id": "D176",
+   "key": "00df4104d5511da09a1fc5e397c63692331cafa81d0d4e46765c6ae20ba49b37",
+   "oracle_label": "OSCILLATING",
+   "session_id": "s-9918ee9e59e25090"
+  },
+  {
+   "endpoint": 14,
+   "family": "transient_external",
+   "id": "D177",
+   "key": "00df481c542081454dee7598c291229ff30ac52d356183d424308f8b15da0f0c",
+   "oracle_label": "RECOVERY",
+   "session_id": "s-1b738c3a7f838620"
+  },
+  {
+   "endpoint": 8,
+   "family": "bounded_retry",
+   "id": "D178",
+   "key": "00e12d493d0a8ab76017e203e240a1bc1df6c1e2cac9a72ccc38b24517a5e842",
+   "oracle_label": "RECOVERY",
+   "session_id": "s-f6b70198162b0caf"
+  },
+  {
+   "endpoint": 9,
+   "family": "bounded_retry",
+   "id": "D179",
+   "key": "00ece414c1e5a72988dd5d9b3d1d67de712c9bddcd76d8d963f11f458cba9d7d",
+   "oracle_label": "RECOVERY",
+   "session_id": "s-2ca8c8a8b03a13d2"
+  },
+  {
+   "endpoint": 23,
+   "family": "bounded_retry",
+   "id": "D180",
+   "key": "00f3aa4423cfef78e8f6de218a742514f668f8f32c7566ae7de25d628bfe7114",
+   "oracle_label": "RECOVERY",
+   "session_id": "s-55cce370ca04d6ec"
+  },
+  {
+   "endpoint": 13,
+   "family": "polling_recovery",
+   "id": "D181",
+   "key": "00f65cd147664dc55cedcdf24c19d78b3043feaea4d553328e14ce33f9a8c69b",
+   "oracle_label": "RECOVERY",
+   "session_id": "s-76755abcddc9bfcb"
+  },
+  {
+   "endpoint": 15,
+   "family": "transient_external",
+   "id": "D182",
+   "key": "00f9ea1f4df7df198ce2b8bc76351ef817f5670a55165e2a52a29a03a5761f11",
+   "oracle_label": "RECOVERY",
+   "session_id": "s-9cd3f4a5258a8c50"
+  },
+  {
+   "endpoint": 11,
+   "family": "transient_external",
+   "id": "D183",
+   "key": "00f9fbc297d2ec0e9742a9b0546424218eb60b9fa72c7955ab795d2e9855add2",
+   "oracle_label": "RECOVERY",
+   "session_id": "s-e7a3637ebc964776"
+  },
+  {
+   "endpoint": 9,
+   "family": "repeated_test_failure",
+   "id": "D184",
+   "key": "00fa3283a13f3880a97c058eba75dc954fa3e26e873ec763a741ab066648b6ce",
+   "oracle_label": "RECOVERY",
+   "session_id": "s-e2be1fbd54ddd2e5"
+  },
+  {
+   "endpoint": 11,
+   "family": "repeated_test_failure",
+   "id": "D185",
+   "key": "00fb37acad59e4362cf6cf8e78fb6b4f1af72b8a3f4a30a166951ca85556f890",
+   "oracle_label": "RECOVERY",
+   "session_id": "s-86c04652e77a8b95"
+  },
+  {
+   "endpoint": 16,
+   "family": "bounded_retry",
+   "id": "D186",
+   "key": "00fd30445608e474389ab7aa95228f84142d1dbbc70ca0e312c211270dd102f2",
+   "oracle_label": "RECOVERY",
+   "session_id": "s-4b48186b6f02c2d7"
+  },
+  {
+   "endpoint": 25,
+   "family": "polling_recovery",
+   "id": "D187",
+   "key": "01028082ba205fac65ac683843e2aef8e6138674b4687a55bca3be6852a7f789",
+   "oracle_label": "RECOVERY",
+   "session_id": "s-828410be6854466c"
+  },
+  {
+   "endpoint": 18,
+   "family": "bounded_retry",
+   "id": "D188",
+   "key": "01134e01f9439d2057adb05a603aa5f594ca8e7fa6635db968cce4b3f78e2916",
+   "oracle_label": "RECOVERY",
+   "session_id": "s-bc89673b98529ecd"
+  },
+  {
+   "endpoint": 7,
+   "family": "transient_external",
+   "id": "D189",
+   "key": "011687a4e6d4ccc54406564135233280ee4060a322cb76ada0fb7f4c534d4f3a",
+   "oracle_label": "RECOVERY",
+   "session_id": "s-ecf0caa740320847"
+  },
+  {
+   "endpoint": 7,
+   "family": "bounded_retry",
+   "id": "D190",
+   "key": "01173540755c72dbd45f4be6fca72eef4d2b66fbbe434ebd07be0c751dc25df8",
+   "oracle_label": "RECOVERY",
+   "session_id": "s-4573f458028d0acb"
+  },
+  {
+   "endpoint": 9,
+   "family": "polling_recovery",
+   "id": "D191",
+   "key": "011f6c97593d0bf268aca9e0d9a9a17f71023e8f58676bee17b2232023147244",
+   "oracle_label": "RECOVERY",
+   "session_id": "s-2e18852038a5248b"
+  },
+  {
+   "endpoint": 8,
+   "family": "under_instrumented",
+   "id": "D192",
+   "key": "01262aa3df489bc5d1155c711b570ba82f46b8b4f8b6900ceee9931e5b5db0c6",
+   "oracle_label": "RECOVERY",
+   "session_id": "s-872b64f3c4f08a5f"
+  },
+  {
+   "endpoint": 21,
+   "family": "polling_recovery",
+   "id": "D193",
+   "key": "0127be511c452ccf929e469b80c9d11f203fd06761fe7dda330a3f698a96dd14",
+   "oracle_label": "RECOVERY",
+   "session_id": "s-6192a697123ed687"
+  },
+  {
+   "endpoint": 8,
+   "family": "repeated_test_failure",
+   "id": "D194",
+   "key": "01293dec0daf75a956995b25941cc314206c0adb4708c49a4c8a862c84701569",
+   "oracle_label": "RECOVERY",
+   "session_id": "s-29a290b4f923b3ef"
+  },
+  {
+   "endpoint": 13,
+   "family": "repeated_test_failure",
+   "id": "D195",
+   "key": "0136a975bd9acac7eaa34d8425af3f5d591dfa1c290201103b02e5c2a5061abf",
+   "oracle_label": "RECOVERY",
+   "session_id": "s-23be5765e4c1b6b8"
+  },
+  {
+   "endpoint": 13,
+   "family": "bounded_retry",
+   "id": "D196",
+   "key": "0144be30d7fbda53945f96a40d45c8934f610ea02e8753b0fa00cb9e62bd6b93",
+   "oracle_label": "RECOVERY",
+   "session_id": "s-f1dccd15b216bc21"
+  },
+  {
+   "endpoint": 27,
+   "family": "polling_recovery",
+   "id": "D197",
+   "key": "014d5d4cd23fda5d862673a048ce94330fbb7428b171efc25a10d5a9febebd3a",
+   "oracle_label": "RECOVERY",
+   "session_id": "s-ef49f12df4e17074"
+  },
+  {
+   "endpoint": 18,
+   "family": "transient_external",
+   "id": "D198",
+   "key": "014db81165f8b3e32418d39545e15ee67e1abc4374baeae074e7bf35481dcff8",
+   "oracle_label": "RECOVERY",
+   "session_id": "s-0d3610be33c41128"
+  },
+  {
+   "endpoint": 18,
+   "family": "repeated_test_failure",
+   "id": "D199",
+   "key": "015fe786ed4e43943a0c7c382218574533afd668d2d3cea74afcdd9dc19bebff",
+   "oracle_label": "RECOVERY",
+   "session_id": "s-13293a7ae85d3d92"
+  },
+  {
+   "endpoint": 10,
+   "family": "polling_recovery",
+   "id": "D200",
+   "key": "0162ac6a73324881fd7ee5a81e9a3ff081d5eea7001128e26e6412a1250499cb",
+   "oracle_label": "RECOVERY",
+   "session_id": "s-bddcc1405da04a18"
+  }
+ ]
+}
