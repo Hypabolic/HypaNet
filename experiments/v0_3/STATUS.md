@@ -1,6 +1,6 @@
 # Status (updated as results land)
 
-_Last update: 2026-11-05 10:55. v0.3 Phase A is submitted and archived; the Phase B disclosure is being built._
+_Last update: 2026-11-05 11:10. v0.3 Phase A is archived and scored on val. The Phase B Fable session is running (launched 10:54)._
 
 ## v0.2: small MLP on engineered features (complete)
 
@@ -53,6 +53,20 @@ Costs: Phase A about $59, Phase B $40, all `claude-fable-5-1`.
     - the rebuild is byte-identical and the packet is registered;
     - 121,126 of 2,128,932 parameters are non-zero.
   - **Build attempts:** `attempts/0001.json` was an operator error. `--author-dir` was given as the author root instead of `output/v03-phase-a`, so the runner reported the required files missing. The author's files were not involved, and no error text was disclosed to the author. `0002.json` is the build that was archived.
+  - **Validation (harness only, never shown to the author)** is in `artifacts/reports/v03_val_v03-phase-a.json`. The primary population, `excluding_disclosed`, has 3,804 sessions and 69,974 scored windows.
+    - Macro-F1 is **0.750** [0.740, 0.760] and the false-alarm rate 2.0%. H2 fidelity is **1.000**, with 0 policy failures. For all of val the macro-F1 is 0.748.
+    - For comparison, v0.2 Phase A on val (engineered features) scored 0.668 and v0.2 Phase B 0.936.
+    - Per-class F1:
+
+      | Class | F1 | Recall | Precision |
+      |---|---|---|---|
+      | OSCILLATING | 0.942 | 0.93 | 0.96 |
+      | RECOVERY | 0.771 | 0.68 | 0.90 |
+      | PRODUCTIVE | 0.751 | 0.96 | 0.62 |
+      | STALLED | 0.535 | **0.37** | 0.97 |
+
+    - The main weakness, as in v0.2, is STALLED recall: stalls are mostly called PRODUCTIVE.
+- **Phase B:** the disclosure (200 windows, sha256 `27c8deb0…`) was handed over and Fable resumed at 10:54 (`scripts/v03_launch.sh phase-b`). Cost cap US$250.
 
 ## Waiting on
 
