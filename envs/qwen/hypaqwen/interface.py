@@ -1,7 +1,8 @@
 """The v0.4 task interface: fixed prefix, per-block text, query suffix and label words (plan v0.4, Task interface).
 
-**DRAFT.** The texts below are placeholders for M0 plumbing. They are frozen at G1 by the
-pre-registration, chosen on dev only by a written rule. Nothing here has been scored.
+**FROZEN** is the interface every verbaliser arm reads: candidate ``w1-state-full``, chosen with no
+labels by the pre-registered prompt choice as revised (experiments/v0_4/prompt_choice/README.md,
+Revision 1). Its words are those of the M0 draft (``DRAFT``). G1 records :func:`spec_sha256`.
 
 A session is fed to Qwen as a sequence of *pieces*, each tokenised on its own and concatenated as
 token ids: the prefix, then one piece per block (the block text plus a newline). The prompt for the
@@ -15,6 +16,8 @@ label word must be a single token in Qwen's vocabulary, with its leading space.
 
 from __future__ import annotations
 
+import hashlib
+import json
 from dataclasses import dataclass
 from typing import Sequence
 
@@ -57,13 +60,21 @@ class TextSpec:
         return f"<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n{self.answer_cue}"
 
 
-DRAFT = TextSpec("draft", (" productive", " recovering", " stalled", " looping"), "State:", "full")
+DRAFT = TextSpec("draft", (" productive", " recovering", " stalled", " looping"), "State:", "full")  # M0 plumbing
+FROZEN = TextSpec("w1-state-full", DRAFT.label_words, DRAFT.answer_cue, DRAFT.style)  # prompt choice, Revision 1
 
 BLOCK_TEMPLATE = "{block}\n"
-INSTRUCTION = DRAFT.instruction()
-PREFIX = DRAFT.prefix()
-SUFFIX = DRAFT.suffix()
-LABEL_WORDS = DRAFT.label_words
+INSTRUCTION = FROZEN.instruction()
+PREFIX = FROZEN.prefix()
+SUFFIX = FROZEN.suffix()
+LABEL_WORDS = FROZEN.label_words
+
+
+def spec_sha256(spec: TextSpec = FROZEN) -> str:
+    """sha256 of everything the model reads from an interface: prefix, block template, suffix, label words."""
+    body = {"prefix": spec.prefix(), "block_template": BLOCK_TEMPLATE, "suffix": spec.suffix(),
+            "label_words": list(spec.label_words)}
+    return hashlib.sha256(json.dumps(body, sort_keys=True, ensure_ascii=False).encode()).hexdigest()
 
 
 @dataclass(frozen=True)
@@ -84,7 +95,7 @@ class Interface:
         return ids
 
 
-def build_interface(tok, spec: TextSpec = DRAFT) -> Interface:
+def build_interface(tok, spec: TextSpec = FROZEN) -> Interface:
     label_ids = []
     for w in spec.label_words:
         ids = tok.encode(w, add_special_tokens=False)

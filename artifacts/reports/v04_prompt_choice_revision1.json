@@ -1,0 +1,85 @@
+{
+ "report": "v04_prompt_choice_revision1",
+ "rule": "experiments/v0_4/prompt_choice/README.md Revision 1: highest median label-word mass x normalised entropy of the predicted-class shares, from the first run's report; ties to the earlier candidate. No labels, gate results or families are read.",
+ "first_run": {
+  "file": "v04_prompt_choice.json",
+  "sha256": "8e54132c3bfe56501fab97eefdca74b111666ee267fb436192bb00c1441b6da5",
+  "chosen": "w3-state-full"
+ },
+ "code_sha256": "9d3995aaa257d80b8d498ab31cae572a1af6b203275607b60eaf48da5d94f120",
+ "candidates": [
+  {
+   "name": "w1-state-full",
+   "median_mass": 0.8161622285842896,
+   "share_entropy": 0.9096005378411303,
+   "score": 0.7423816020858853
+  },
+  {
+   "name": "w1-state-short",
+   "median_mass": 0.7562013864517212,
+   "share_entropy": 0.6839755242279147,
+   "score": 0.5172232397201919
+  },
+  {
+   "name": "w1-answer-full",
+   "median_mass": 0.8627957701683044,
+   "share_entropy": 0.6099129218318575,
+   "score": 0.5262302891275183
+  },
+  {
+   "name": "w1-answer-short",
+   "median_mass": 0.7950903177261353,
+   "share_entropy": 0.6095770766882095,
+   "score": 0.4846688315825972
+  },
+  {
+   "name": "w2-state-full",
+   "median_mass": 0.9468874931335449,
+   "share_entropy": 0.1630922124007739,
+   "score": 0.15442997614977244
+  },
+  {
+   "name": "w2-state-short",
+   "median_mass": 0.9052133560180664,
+   "share_entropy": 0.28356368536137094,
+   "score": 0.2566856352708176
+  },
+  {
+   "name": "w2-answer-full",
+   "median_mass": 0.952390193939209,
+   "share_entropy": 0.011406039470542252,
+   "score": 0.010863000143428008
+  },
+  {
+   "name": "w2-answer-short",
+   "median_mass": 0.9155187010765076,
+   "share_entropy": 0.23403125754691803,
+   "score": 0.214259992920656
+  },
+  {
+   "name": "w3-state-full",
+   "median_mass": 0.985894501209259,
+   "share_entropy": 0.0,
+   "score": 0.0
+  },
+  {
+   "name": "w3-state-short",
+   "median_mass": 0.9745051264762878,
+   "share_entropy": 0.0,
+   "score": 0.0
+  },
+  {
+   "name": "w3-answer-full",
+   "median_mass": 0.9833235144615173,
+   "share_entropy": 0.0,
+   "score": 0.0
+  },
+  {
+   "name": "w3-answer-short",
+   "median_mass": 0.9749531745910645,
+   "share_entropy": 0.0,
+   "score": 0.0
+  }
+ ],
+ "chosen": "w1-state-full"
+}

@@ -64,6 +64,7 @@ def main(argv=None) -> int:
         "python": platform.python_version(), "attn_implementation": qmodel.ATTN_IMPLEMENTATION,
         "model": {"id": MODEL_ID, "revision": MODEL_REVISION, "file_sha256": qmodel.FILE_SHA256},
         "interface_sha256": hashlib.sha256(Path(iface_mod.__file__).read_bytes()).hexdigest(),
+        "interface": {"name": iface_mod.FROZEN.name, "spec_sha256": iface_mod.spec_sha256()},
         "sessions": len(sess_ids), "tokens": n_tok, "seconds": round(el, 1), "tokens_per_second": round(n_tok / el, 1),
     }
     a.out.parent.mkdir(parents=True, exist_ok=True)

@@ -63,4 +63,14 @@ The rule runs once, after the fresh test manifest is committed. G1 then writes t
 
 ## Revisions
 
-None.
+### Revision 1 (2026-11-05, after the first run; approved by Matthew)
+
+**What the first run showed.** The rule in §3 chose `w3-state-full` (median mass 0.986). It is reported unchanged in `artifacts/reports/v04_prompt_choice.json` (commit `8dac1f2`). Under that candidate, the model gives STALLED for all 2,069 dev windows, and so does every other w3 candidate. The w2 candidates give STALLED for 89–100% of windows. The mass was high because one label word took nearly all of it, so mass alone rewarded the degenerate answer it was meant to rule out. With such an interface, Qwen-0 would be a constant classifier.
+
+**What was seen.** Only label-free quantities: the mass quantiles and the predicted-class shares that §4 puts in the report. No labels, gate results or families were read, and no candidate was scored. Qwen-0 and WSP-A remain zero-label.
+
+**Revised rule.** Each candidate is scored by its **median label-word mass × the normalised entropy of its predicted-class shares** (entropy ÷ log 4: 0 means one class always, 1 means uniform). The highest score wins, and a tie goes to the earlier candidate. Both factors are read from the first run's report, so nothing is run again (`uv run python -m hypaqwen.prompt_choice --revision1`, written to `artifacts/reports/v04_prompt_choice_revision1.json`).
+
+**Result.** `w1-state-full` scores 0.742; the next best is `w1-answer-full` at 0.526, and every w3 candidate scores 0. `w1-state-full` is the M0 draft text, so every M0 measurement used this interface. It is frozen as `FROZEN` in `hypaqwen/interface.py`, and G1 records its `spec_sha256`.
+
+**Known weakness.** The entropy factor rewards a spread of answers, not correct ones. A candidate that spread its answers at random would also score well. Here the choice is clear: the winner leads by 0.22, and among the w1 candidates it has both the highest entropy and the second-highest mass.

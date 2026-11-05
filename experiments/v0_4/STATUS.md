@@ -1,6 +1,6 @@
 # v0.4 status
 
-_Last update: 2026-11-05 21:30. Plan: `agent_doom_loop_detector_plan_v0_4.md`. Matthew accepted every recommendation in it, and the post-M0 revisions are in its "Revisions after M0" section. No Qwen output has been compared with a label._
+_Last update: 2026-11-05 23:30. Plan: `agent_doom_loop_detector_plan_v0_4.md`. Matthew accepted every recommendation in it, and the post-M0 revisions are in its "Revisions after M0" section. No Qwen output has been compared with a label._
 
 ## Done
 
@@ -13,13 +13,18 @@ _Last update: 2026-11-05 21:30. Plan: `agent_doom_loop_detector_plan_v0_4.md`. M
 | Token audit | `artifacts/reports/v04_token_audit.json` | val: 1,726 tokens per session with the prefix (1,559 without), 1.97× v0.3; 7.87M readout tokens |
 | **Fresh sealed test set** | registration `6a778d1`, manifest `8475556` | Seed 20261106, 3,996 sessions, 86,412 windows (83,874 gate-passing). Rebuilt byte-identically under a second PYTHONHASHSEED. No label statistics recorded |
 | Prompt choice, pre-registered | `experiments/v0_4/prompt_choice/README.md` | 12 candidates and a label-free rule (median label-word mass, 100 dev sessions) |
+| Prompt choice, run and revised | `artifacts/reports/v04_prompt_choice*.json` | The first run chose `w3-state-full`, under which Qwen answers STALLED on all 2,069 dev windows (reported as run). Revision 1 (approved): mass × entropy of the predicted-class shares, still label-free → **`w1-state-full`** (0.742; next 0.526), the M0 draft text. Frozen as `interface.FROZEN`, `spec_sha256` `5922eb45…` |
+| **WSP kernel** (§3–6) | `envs/qwen/hypaqwen/wsp/` | Model server with a kernel socket and a forward socket, author client, `./fwd`, guards on torch 2.14.1 (KERNEL_CLIENT, BUILD_EDIT), build runner. Built in three worktrees, then adversarially reviewed: 19 findings, all fixed. At merge, the server and runner were given one shared rescaling rule and edit hash (`wsp/edit_state.py`), and the runner was moved to the real guard |
 | Scoring bridge | `src/agent_loop_lab/v04/scoring.py` | Val rows checked against v0.3's `rows_sha256`. Strict column alignment. `m4.score_columns`, with H2 not applicable |
 | WSP kernel contract | `docs/V04_WSP_KERNEL.md` | Two processes; forward as a separate metered tool; edit scope; guards; build runner |
 
-## Running
+## Kernel rules added beyond the contract (fold into `docs/V04_WSP_KERNEL.md` at G1)
 
-- **Prompt choice** on MPS, 12 × 100 dev sessions, label-free. The report goes to `artifacts/reports/v04_prompt_choice.json`.
-- **WSP kernel build**, as a workflow in three worktrees: server/client/`./fwd`, guards on torch 2.14.1, and the build runner. Each part is reviewed and fixed before it is merged.
+- **Rescaling refusal.** With `new = c·W + R`, an edit is refused when `|c − 1| > 1e-3` and `‖R‖ < 0.5·‖(c − 1)·W‖`. For the zero-centred `(1 + w)` norms it also applies to the gain; for the label rows, also to the row-centred block and to the changed rows.
+- **Disclosed windows.** `forward` refuses any session that overlaps a WSP-B disclosed window (0.6 shingle or block share). `forward_disclosed` allows **at most 2** distinct non-empty edit states per phase. Confirm at G1.
+- **Load quota.** A `./py` script may load at most half of the layer-weight bytes (distinct tensors, per phase). Every kernel op is logged to `<phase>.kernel.jsonl`.
+- **Tools copied read-only.** The tools go into the author dir read-only, and `install.verify()` checks them. **Still needed in the launcher (§7):** deny Write/Edit under `tools/` and protect the `./py` and `./fwd` wrappers.
+- **Guard.** stderr is kept on a private copy of fd 2, so any violation still ends the run with exit 3. Launchers must use `hn_guard.clean_run(returncode, stderr)`.
 
 ## v0.3 reproduces exactly on this Mac
 
@@ -36,7 +41,7 @@ So the frozen v0.3 artefacts can be re-scored on the fresh test set here with no
 
 ## Next
 
-1. Freeze the chosen interface text in `hypaqwen/interface.py`.
+1. **Qwen-0 val logits** (label-free, about 5 h on MPS): `hypaqwen.run_readout --split val`. They are scored only after G1.
 2. Build the session harness: prepare script, launch with a tool allow-list and command hook, audit, cost by session delta, packet, kit tests.
 3. Write the v0.4 spec with `[packet]` sections.
 4. Write the probe and LoRA recipes and the cloud-GPU scripts.

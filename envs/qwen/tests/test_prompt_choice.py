@@ -8,7 +8,7 @@ from transformers import AutoTokenizer
 
 from hypaqwen import model as qmodel
 from hypaqwen import prompt_choice as P
-from hypaqwen.interface import DRAFT, build_interface
+from hypaqwen.interface import DRAFT, FROZEN, build_interface, spec_sha256
 
 
 @pytest.fixture(scope="module")
@@ -43,3 +43,23 @@ def test_label_mass():
 def test_choose_highest_median_ties_to_earlier():
     r = [{"name": "a", "mass": {"median": 0.4}}, {"name": "b", "mass": {"median": 0.6}}, {"name": "c", "mass": {"median": 0.6}}]
     assert P.choose(r) == "b"
+
+
+def test_revision1_rule():
+    def r(name, med, share):
+        return {"name": name, "mass": {"median": med}, "predicted_share": dict(zip(P.CLASS_NAMES, share))}
+    one = r("one", 0.99, (0.0, 0.0, 1.0, 0.0))
+    spread = r("spread", 0.8, (0.1, 0.3, 0.4, 0.2))
+    assert P.share_entropy(one["predicted_share"]) == 0.0
+    assert P.share_entropy({c: 0.25 for c in P.CLASS_NAMES}) == pytest.approx(1.0)
+    assert P.choose_revision1([one, spread]) == "spread"
+    assert P.choose_revision1([spread, dict(spread, name="tie")]) == "spread"
+
+
+def test_frozen_is_the_revision1_choice():
+    import json
+    rep = json.loads(P.REVISION1_REPORT.read_text())
+    assert rep["chosen"] == FROZEN.name
+    chosen = next(c for c in P.CANDIDATES if c.name == FROZEN.name)
+    assert (chosen.label_words, chosen.answer_cue, chosen.style) == (FROZEN.label_words, FROZEN.answer_cue, FROZEN.style)
+    assert spec_sha256(chosen) == spec_sha256(FROZEN) == spec_sha256(DRAFT)  # the M0 draft text, unchanged
