@@ -3,6 +3,10 @@
     uv run python scripts/v04_build_disclosure.py --column COLUMN.npz [--wsp-a-archive DIR] [--data-dir DIR]
                                                   [--out-dir DIR [--kit-unfrozen]] [--force]
 
+Deviation D1 (PREREGISTRATION §13 log): COLUMN may instead be a readout of exactly the 200 disclosed sessions
+(``--sessions ../../datasets/v0_4/DISCLOSED_SESSIONS.txt``, scripts/v04_disclosed_sessions.py); rows of other
+sessions then carry no prediction, and the disclosed windows' classes are the same as from a full val readout.
+
 Run it once, after WSP-A is archived (scripts/v04_run_build.py wsp-a) and its val column has been read out
 with the archived edit applied (``uv run python -m hypaqwen.run_readout --split val --device mps --dtype fp32
 --edit ../../weight_program/v0_4/wsp-a --out COLUMN.npz`` in envs/qwen; the column's meta must name the archive's
@@ -38,6 +42,8 @@ import sys
 from pathlib import Path
 from typing import Any, Sequence
 
+import numpy as np
+
 REPO = Path(__file__).resolve().parents[1]
 if str(REPO / "src") not in sys.path:  # pragma: no cover
     sys.path.insert(0, str(REPO / "src"))
@@ -68,7 +74,16 @@ def load_inputs(args: argparse.Namespace) -> dict[str, Any]:
 
     wsp_a, freeze = check_archive(args.wsp_a_archive, kit_unfrozen=args.kit_unfrozen)
     rows, lab = S.load_rows(args.data_dir)
-    pred, meta, _arr = S.load_column(args.column, lab)
+    if S.column_meta(args.column).get("subset") is None:
+        pred, meta, _arr = S.load_column(args.column, lab)
+    else:  # deviation D1: a readout of the disclosed sessions only; other rows get no prediction (-1)
+        ids, info = S.read_subset(D.DISCLOSED_SESSIONS)
+        if info["sha256"] != D.DISCLOSED_SESSIONS_SHA256:
+            raise D.DisclosureError(f"{D.DISCLOSED_SESSIONS.name} sha256 {info['sha256']} != {D.DISCLOSED_SESSIONS_SHA256}")
+        _sub_rows, sub_lab, mask = S.restrict(rows, lab, ids)
+        sub_pred, meta, _arr = S.load_column(args.column, sub_lab, subset_sha256=info["sha256"])
+        pred = np.full(len(rows), -1, dtype=np.int64)
+        pred[mask] = sub_pred
     D.check_column(meta, wsp_a["edit_state_sha256"], interface_spec_sha256=R.INTERFACE_SPEC_SHA256,
                    model_pins=R.model_pins(REPO), build_record_sha256=wsp_a["build_record_sha256"])
     pub_path = D.V03_ROOT / "disclosure" / D.PUBLIC
@@ -78,6 +93,8 @@ def load_inputs(args: argparse.Namespace) -> dict[str, Any]:
     D.check_v03_disclosure(v03_public, v03_private, pub_sha, D.sha_field(D.V03_ROOT / "disclosure" / D.SHA_FILE))
     tasks = export.tasks_path("val", args.data_dir)
     blocks, window_pos = D.read_tasks(tasks, {w["session_id"] for w in v03_private["windows"]})
+    if meta.get("subset") is not None and set(ids) != {w["session_id"] for w in v03_private["windows"]}:
+        raise D.DisclosureError(f"{D.DISCLOSED_SESSIONS.name} is not the v0.3 disclosed sessions")
     source = {
         "wsp_a": wsp_a,
         "column": {"path": D._rel(args.column), "sha256": D._sha256_file(args.column), "meta": meta},

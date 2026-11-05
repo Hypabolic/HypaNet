@@ -319,7 +319,7 @@ def test_cli_refuses_a_limited_column_before_anything_is_written(tmp_path, monke
     np.savez(col, label_logits=np.zeros((1, 4)), logsumexp=np.zeros(1), session_ids=np.array(["s1"]),
              row_pos=np.array([3]), meta=json.dumps({"split": "val", "limit": 20}))
     assert m.main(["--column", str(col), "--out-dir", str(tmp_path / "o")]) == 2
-    assert "refusing: col.npz: not a full val run" in capsys.readouterr().err and not (tmp_path / "o").exists()
+    assert "refusing: col.npz: not a complete val run" in capsys.readouterr().err and not (tmp_path / "o").exists()
 
 
 def test_cli_archive_freeze_policy(tmp_path, monkeypatch):
@@ -346,3 +346,58 @@ def test_cli_archive_freeze_policy(tmp_path, monkeypatch):
     with pytest.raises(SystemExit):  # refused once a registry exists
         m.main(["--column", str(col), "--kit-unfrozen", "--out-dir", str(tmp_path / "o"), "--wsp-a-archive",
                 str(unfrozen)])
+
+
+# -- deviation D1: a readout of only the disclosed sessions -------------------------------------------------
+
+
+def test_disclosed_sessions_file_is_the_v03_disclosed_sessions(v03):
+    ids = D.DISCLOSED_SESSIONS.read_text().split()
+    assert _sha(D.DISCLOSED_SESSIONS.read_bytes()) == D.DISCLOSED_SESSIONS_SHA256
+    assert ids == sorted({w["session_id"] for w in v03[1]["windows"]}) and len(ids) == 200
+
+
+def test_column_may_be_the_disclosed_sessions_subset_only():
+    D.check_column({**META, "subset": {"file": "DISCLOSED_SESSIONS.txt", "sha256": D.DISCLOSED_SESSIONS_SHA256}},
+                   EDIT_HASH)
+    with pytest.raises(D.DisclosureError, match="other than DISCLOSED_SESSIONS.txt"):
+        D.check_column({**META, "subset": {"file": "VAL_QUICK.txt", "sha256": "b" * 64}}, EDIT_HASH)
+
+
+def test_cli_maps_a_disclosed_sessions_column_onto_the_val_rows(tmp_path, monkeypatch):
+    """Rows of the subset's sessions get the column's argmax; every other row gets -1 (no prediction)."""
+    from agent_loop_lab.v04 import scoring as S
+
+    m = _cli()
+    sub = tmp_path / "SUB.txt"
+    sub.write_text("s2\ns1\n")
+    monkeypatch.setattr(D, "DISCLOSED_SESSIONS", sub)
+    monkeypatch.setattr(D, "DISCLOSED_SESSIONS_SHA256", _sha(sub.read_bytes()))
+    monkeypatch.setattr(m, "check_archive", lambda *a, **k: ({"edit_state_sha256": EDIT_HASH,
+                                                               "build_record_sha256": "b" * 64}, {"freeze_sha256": None}))
+    lab = {"session_ids": np.array(["s0", "s1", "s2"]), "families": np.array(["f", "f", "f"]),
+           "row_session": np.array([0, 1, 1, 2]), "row_pos": np.array([7, 7, 9, 8]),
+           "row_endpoint": np.zeros(4), "row_label": np.zeros(4), "row_gate": np.ones(4, bool)}
+    monkeypatch.setattr(S, "load_rows", lambda data_dir: ([object()] * 4, lab))
+    monkeypatch.setattr(D, "check_column", lambda *a, **k: None)
+    monkeypatch.setattr(D, "read_tasks", lambda path, ids: ({}, {}))
+    monkeypatch.setattr(D, "check_v03_disclosure", lambda *a: None)
+    logits = np.eye(4)[[2, 3, 1]]
+    col = tmp_path / "col.npz"
+    meta = {"split": "val", "limit": None, "subset": {"file": "SUB.txt", "sha256": _sha(sub.read_bytes())}}
+    np.savez(col, label_logits=logits, logsumexp=np.zeros(3), session_ids=np.array(["s1", "s2"]),
+             row_pos=np.array([7, 9, 8]), meta=json.dumps(meta))
+    root = tmp_path / "v03"
+    (root / "disclosure").mkdir(parents=True)
+    (root / "disclosure" / "DISCLOSURE.json").write_text("{}")
+    (root / "disclosure" / "DISCLOSURE.sha256").write_text("0" * 64 + "  DISCLOSURE.json\n")
+    monkeypatch.setattr(D, "V03_ROOT", root)
+    for name in ("val.tasks.jsonl.gz", "val.labels.npz"):
+        (tmp_path / name).write_bytes(b"fake")
+    args = m.argparse.Namespace(column=col, wsp_a_archive=tmp_path, data_dir=tmp_path, kit_unfrozen=False)
+    (root / "DISCLOSURE_PRIVATE.json").write_text(json.dumps({"windows": [{"session_id": "s1"}, {"session_id": "s0"}]}))
+    with pytest.raises(D.DisclosureError, match="not the v0.3 disclosed sessions"):
+        m.load_inputs(args)
+    (root / "DISCLOSURE_PRIVATE.json").write_text(json.dumps({"windows": [{"session_id": "s1"}, {"session_id": "s2"}]}))
+    inp = m.load_inputs(args)
+    assert inp["pred"].tolist() == [-1, 2, 3, 1]

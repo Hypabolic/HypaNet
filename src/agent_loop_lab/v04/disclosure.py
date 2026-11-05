@@ -82,6 +82,11 @@ EDIT_FILES = ("edit.safetensors", "edit_diff.safetensors")
 RECORD_FORMAT_VERSION = 2  # hypaqwen.wsp.runner.RECORD_FORMAT_VERSION
 # PREREGISTRATION §7.1: network_class is read out on MPS in fp32 with the frozen interface.
 COLUMN_DEVICE, COLUMN_DTYPE = "mps", "fp32"
+# Deviation D1 (PREREGISTRATION §13 log, Matthew 2026-11-06): the column may instead be a readout of exactly the
+# 200 disclosed sessions (scripts/v04_disclosed_sessions.py). Sessions are read out one by one, so the class at a
+# disclosed window is the same as in a full val readout.
+DISCLOSED_SESSIONS = REPO / "datasets" / "v0_4" / "DISCLOSED_SESSIONS.txt"
+DISCLOSED_SESSIONS_SHA256 = "778ed4971cd7101ea6c8e7dd343c8e9dc9016bed7d7a977677b3324e3f92815c"
 FIELDS = {
     "prefix": ("the rendered log of blocks 0..t joined with newlines; the line '### window start' (not log text: "
                "remove it before tokenising) stands immediately before block t-7, the window's first block; block "
@@ -221,7 +226,8 @@ def column_edit_hash(meta: Mapping[str, Any]) -> str | None:
 
 def check_column(meta: Mapping[str, Any], edit_state_sha256: str, *, interface_spec_sha256: str | None = None,
                  model_pins: Mapping[str, Any] | None = None, build_record_sha256: str | None = None) -> None:
-    """The WSP-A column is a full val readout of exactly the archived edit, on MPS in fp32 (PREREGISTRATION §7.1),
+    """The WSP-A column is a full val readout (or, deviation D1, a readout of exactly the disclosed sessions,
+    :data:`DISCLOSED_SESSIONS`) of exactly the archived edit, on MPS in fp32 (PREREGISTRATION §7.1),
     with the frozen interface and (when given) the pinned model (``meta["model"]`` = ``registry.model_pins``:
     id, revision, file_sha256) and the archive's ``BUILD_RECORD.json`` sha256 (``meta["edit"]``, written by
     ``hypaqwen.run_readout --edit ARCHIVE``)."""
@@ -234,6 +240,9 @@ def check_column(meta: Mapping[str, Any], edit_state_sha256: str, *, interface_s
         problems.append("does not name the archive's BUILD_RECORD.json (hypaqwen.run_readout --edit ARCHIVE)")
     if meta.get("split") != "val" or meta.get("limit") is not None:
         problems.append(f"not a full val readout (split {meta.get('split')!r}, limit {meta.get('limit')!r})")
+    subset = meta.get("subset")
+    if subset is not None and subset.get("sha256") != DISCLOSED_SESSIONS_SHA256:
+        problems.append(f"a subset readout ({subset.get('file')!r}) other than {DISCLOSED_SESSIONS.name}")
     if meta.get("device") != COLUMN_DEVICE or meta.get("dtype") != COLUMN_DTYPE:
         problems.append(f"read out on {meta.get('device')!r}/{meta.get('dtype')!r}, not {COLUMN_DEVICE}/{COLUMN_DTYPE}")
     got = column_edit_hash(meta)

@@ -244,4 +244,6 @@ No weight author has seen a val number, so the WSP columns were not fitted to va
 
 Any other revision is a deviation from this pre-registration and is reported as one.
 
-**Log.** None yet.
+**Log.**
+
+- **D1, 2026-11-06, deviation (not pre-registered).** Matthew chose to go straight to WSP-B without waiting for WSP-A's full val readout (about 7.5 h): "I'd rather go straight to WSP-B and get a number for that", then "Shortcut, report deviation". The §7.1 `network_class` now comes from a WSP-A readout of exactly the 200 disclosed sessions (`datasets/v0_4/DISCLOSED_SESSIONS.txt`, sha256 `778ed497…`, written by `scripts/v04_disclosed_sessions.py` from `BUDGETS.json` `disclosed_200w`), not from a full val readout. Each session is read out on its own, so the class at every disclosed window is the one a full val readout would give. What is disclosed, the selection, the prefixes and the format are unchanged. Changed: `src/agent_loop_lab/v04/disclosure.py` (`check_column` also accepts that subset, pinned by sha256) and `scripts/v04_build_disclosure.py` (rows outside the subset get no prediction). Added: `scripts/v04_disclosed_sessions.py`. WSP-A's full val readout, its result of record, still follows.
