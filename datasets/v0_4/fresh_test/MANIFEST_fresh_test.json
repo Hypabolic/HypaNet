@@ -1,0 +1,110 @@
+{
+ "code_sha256": {
+  "oracle_config.v0_2.yaml": "03a049d67ab0a46d2eb1b92300549e2605da98a812c303d97ab6659a99a023eb",
+  "scripts/v04_seal_fresh_test.py": "cc04271c4900a4715719e25c05847a3e8a2febef8c00939c6618ce84985c6ac0",
+  "src/agent_loop_lab/datasets/build.py": "6957d65e664d41c0b0de7add99e4fed604db8d04eaea95c4dbfbc38d5a422d7c",
+  "src/agent_loop_lab/encode.py": "2b8a76934ba7fa74eed3543ee3172f40612d5ef7cff1e35bec8028a82f009998",
+  "src/agent_loop_lab/eval/collisions.py": "83984324d6de5fa5e0f3fc53931d84f4272f6c3312b5318e629f3d79b251fc39",
+  "src/agent_loop_lab/fingerprint.py": "d28a80ed0ae2f9c4b9338193440e1c1b76c35c1f43cbfbcd629eedcfc4c53612",
+  "src/agent_loop_lab/oracle_config.py": "1142bc3b7dec777c44fad7c95da2e4e9bbec74674e1a095e35fdf6bf3541aa8b",
+  "src/agent_loop_lab/schema.py": "e23c679c48dfafb816a22ef4a4e5e0aaa44e68c6b3c34eb728c3bb9d1fe84c85",
+  "src/agent_loop_lab/v03/build_raw.py": "ab20f988746a1b2014e5f0c6dad03de03e755e3a37b31a4f7d5b0bc63c61223f",
+  "src/agent_loop_lab/v03/rawop.py": "bb2a9d0051f0c76ef625ec434d1daea5797739a7e42792079cac0d0320e06184",
+  "src/agent_loop_lab/v03/sealed.py": "0b1cdf06124b577cc85b1b117d1af15293bd9be0b230b667d3a53549af5d36b0",
+  "src/agent_loop_lab/v04/fresh_test.py": "2d32d9b1c45cb9d9e84010831ae8f01227e68f89141acae7bf5468a7faeaf9e2",
+  "src/agent_loop_lab/windows.py": "bcaea09301b57d82cff22bb5eb15f1969d33727f5d74905c8455b373817bd9b4"
+ },
+ "dataset": "v0_4-fresh-test",
+ "environment": {
+  "platform": "macOS-27.0.1-arm64-arm-64bit",
+  "python": "3.12.16"
+ },
+ "events": 114384,
+ "extends": {
+  "datasets/v0_2/MANIFEST.json": "693ba89f42f0e5a40ced967960a04d80443e8c406203fe0dc80f6a0d2433181f",
+  "datasets/v0_2/OOD_MANIFEST.json": "ed1a668538a61c38315dde6fb4694482f094973fa878b7fbd8ac21474c9300f1",
+  "datasets/v0_2/splits.json": "bfa40d06e3cd032a8a59608e9d080fb1ce6abc3e8c2dbe33cc231b4df6130b38",
+  "datasets/v0_3/MANIFEST_v0_3.json": "26efaf324bd0d2e684549bc802f8936d7e0378afbc68ab387ff89f7880dbcb63"
+ },
+ "family_sessions": {
+  "abab_oscillation": 333,
+  "bounded_retry": 333,
+  "cosmetic_churn": 333,
+  "exploration": 333,
+  "improving_tests": 333,
+  "incremental_repair": 333,
+  "polling_recovery": 333,
+  "repeated_test_failure": 333,
+  "rising_cost": 333,
+  "tool_oscillation": 333,
+  "transient_external": 333,
+  "under_instrumented": 333
+ },
+ "files": {
+  "standard/test.events.jsonl.gz": {
+   "bytes": 8157924,
+   "content_sha256": "c6438b12cd1e966f1ccabf2daf497f5a585815e4b6aaa7e69a8b09aa4fa4bce5",
+   "lines": 3996,
+   "sha256": "5ff5540a7b5da8c9193e0d81bb2b49f8bb1adef0557c68c34b93f9d2c457f37c"
+  },
+  "standard/test.oracle.jsonl.gz": {
+   "bytes": 3783299,
+   "content_sha256": "e1b75045e5de171b2248e76e9336fd2fd34c15a015224caacbefb52a353d152e",
+   "lines": 3996,
+   "sha256": "ef4b9040264f211db116a866bc135d1a8a3b413bbbb3f2a3ddfb576610bfa3c5"
+  },
+  "test.raw.jsonl.gz": {
+   "bytes": 5294339,
+   "content_sha256": "c4442ae63b2d822b0838f1ac70bee01a26226b911b01c23c157794484e3ad6eb",
+   "lines": 3996,
+   "sha256": "20b6a8902c97c177f041f0c8bff8705bb7f81502f9d71f5076cb6d87232aad94"
+  }
+ },
+ "format": "v04-fresh-test/1",
+ "generator": {
+  "generator_version": "0.2.0",
+  "synth_sources_sha256": "9799c3e63b0cbee78187d31a468bae21b729a83d5e4154c65d233e932b5afb7b",
+  "v02_frozen_files": {
+   "oracle_config.v0_2.yaml": "03a049d67ab0a46d2eb1b92300549e2605da98a812c303d97ab6659a99a023eb",
+   "src/agent_loop_lab/encode.py": "2b8a76934ba7fa74eed3543ee3172f40612d5ef7cff1e35bec8028a82f009998",
+   "src/agent_loop_lab/fingerprint.py": "d28a80ed0ae2f9c4b9338193440e1c1b76c35c1f43cbfbcd629eedcfc4c53612",
+   "src/agent_loop_lab/oracle_config.py": "1142bc3b7dec777c44fad7c95da2e4e9bbec74674e1a095e35fdf6bf3541aa8b",
+   "src/agent_loop_lab/schema.py": "e23c679c48dfafb816a22ef4a4e5e0aaa44e68c6b3c34eb728c3bb9d1fe84c85",
+   "src/agent_loop_lab/windows.py": "bcaea09301b57d82cff22bb5eb15f1969d33727f5d74905c8455b373817bd9b4"
+  }
+ },
+ "gzip": {
+  "compresslevel": 6,
+  "header_filename": "",
+  "mtime": 0
+ },
+ "identity": {
+  "gate_passed": 83874,
+  "rows_definition": "v03.sealed.rows_sha256 over [session_id, family, endpoint, label, gate_passed] per window_endpoints row, file order",
+  "rows_sha256": "ee7d2dd25d074f80cdcc7530257bf497fb4b23937be6bfbb6c0d86337e1f0962",
+  "windows": 86412
+ },
+ "label_statistics": "none recorded (sealed)",
+ "line_format": {
+  "events": "{\"session_id\", \"events\": [CanonicalEvent.to_dict()...]}; canonical JSON",
+  "oracle": "OracleRecord.to_dict(); canonical JSON; line i matches events line i",
+  "raw": "{\"session_id\", \"raw\": [RawOp.to_dict()...]}; canonical JSON; line i matches events line i"
+ },
+ "master_seed": 20261106,
+ "per_family": 333,
+ "raw_ops": 114384,
+ "rebuild": {
+  "child_pythonhashseed": "20261106",
+  "files_and_identity_identical": true,
+  "parent_pythonhashseed": "random"
+ },
+ "registration": {
+  "commit": "6a778d1ac41469d802bf4ca817a891beeab1ef21",
+  "path": "experiments/v0_4/fresh_test/REGISTRATION.json",
+  "sha256": "cc76e05bd0db7db7fdb39e4c1f16b57237001e6121cdb6f38180c4250e5858a9"
+ },
+ "seed_formula": "int.from_bytes(sha256(f\"{master_seed}:{family}:{k}\").digest()[:8], \"big\")",
+ "session_id_format": "s-{seed:016x}",
+ "session_ids_sha256": "a5d4982b5a17d14eeb6a575e833483926da071054f328967b76772a9f1772d01",
+ "sessions": 3996
+}
