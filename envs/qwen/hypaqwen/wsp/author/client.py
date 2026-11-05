@@ -185,12 +185,17 @@ _cache: dict[str, Any] = {}
 
 
 def connect(path: Path | str | None = None) -> KernelClient:
-    """(Re)open the module's connection, e.g. to a socket other than the default."""
+    """(Re)open the module's connection, e.g. to a socket other than the default.
+
+    The server's metadata is fetched again; ``tok`` is kept: it comes from the packet, and the ``./py``
+    launcher builds it before the guard, which refuses the tokenizer's file read afterwards.
+    """
     global _client
     if _client is not None:
         _client.close()
     _client = KernelClient(path)
-    _cache.clear()
+    for k in [k for k in _cache if k != "tok"]:
+        del _cache[k]
     return _client
 
 

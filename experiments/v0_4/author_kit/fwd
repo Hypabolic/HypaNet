@@ -1,0 +1,10 @@
+#!/bin/sh
+# ./fwd REQUEST.json (docs/V04_WSP_KERNEL.md §1, §3): one metered forward pass through the model server's
+# forward socket. tools/hn_kernel/fwd.py runs unguarded, so it scrubs sys.path and loads its sibling by
+# path; this wrapper refuses to run it from a writable tools directory. Output: output/<phase>/fwd/<call id>/.
+here="$(cd "$(dirname "$0")" && pwd -P)"
+for d in "$here" "$here/tools" "$here/tools/hn_kernel"; do
+  if [ -w "$d" ] || [ -L "$d" ]; then echo "./fwd: refusing: ${d#"$here"/} is writable or a link" >&2; exit 2; fi
+done
+HN_AUTHOR_DIR="$here" HN_FWD_SOCKET="$here/.kernel/fwd.sock" PYTHONDONTWRITEBYTECODE=1 \
+  exec "$here/.venv/bin/python" -I -B "$here/tools/hn_kernel/fwd.py" "$@"

@@ -1,11 +1,13 @@
 """``./fwd request.json``: one metered forward pass (docs/V04_WSP_KERNEL.md §1 principle 2, §3 ``forward``).
 
-Installed as ``tools/hn_kernel/fwd.py`` (read-only, checked by ``hypaqwen.wsp.install.verify`` before
-every run); imports only the standard library and numpy. ``./fwd`` runs without the ``./py`` guard,
+Installed as ``tools/hn_kernel/fwd.py`` (read-only, checked by ``hypaqwen.wsp.install.verify_tools``
+before every session and in the audit; the ``./fwd`` wrapper refuses to run if ``tools/`` is
+writable); imports only the standard library and numpy. ``./fwd`` runs without the ``./py`` guard,
 so it never imports anything from an author-writable directory: the kernel dir and the author dir
 are removed from ``sys.path`` before the first non-builtin import, and ``protocol`` is loaded by
 explicit file path from this file's own directory after its standard-library imports are loaded.
-The launcher runs it as ``python -I -B``.
+The interpreter install stays on ``sys.path`` even inside the author dir (the read-only author venv,
+``AUTHOR_DIR/.venv``). The ``./fwd`` wrapper runs it as ``.venv/bin/python -I -B``.
 
 1. Reads ``request.json``, which must be a regular file (no symlink anywhere below the author dir)
    under the author dir and at most ``MAX_REQUEST_BYTES``, and validates it with the server's own
@@ -44,10 +46,22 @@ def _inside(path: str, root: str) -> bool:
 
 
 def _scrub_sys_path() -> None:
-    """Drop '' (the cwd), the kernel dir and the author dir from sys.path: nothing author-writable is importable."""
+    """Drop '' (the cwd), the kernel dir and the author dir from sys.path: nothing author-writable is importable.
+
+    The interpreter install is kept even when it lies inside the author dir: the author venv is
+    ``AUTHOR_DIR/.venv`` (read-only), and its site-packages holds numpy.
+    """
     author = _author_dir()
-    sys.path[:] = [p for p in sys.path if p and not _inside(os.path.realpath(p), _HERE)
-                   and not _inside(os.path.realpath(p), author)]
+    installs = [os.path.realpath(p) for p in (sys.prefix, sys.base_prefix, sys.exec_prefix, sys.base_exec_prefix)
+                if p and os.path.realpath(p) != os.sep]
+
+    def keep(p: str) -> bool:
+        r = os.path.realpath(p)
+        if _inside(r, _HERE):
+            return False
+        return not _inside(r, author) or any(_inside(r, i) for i in installs)
+
+    sys.path[:] = [p for p in sys.path if p and keep(p)]
 
 
 if not __package__:  # run as the ./fwd script (as a package module, the harness's own sys.path is left alone)

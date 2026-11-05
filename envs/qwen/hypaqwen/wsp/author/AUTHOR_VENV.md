@@ -19,7 +19,7 @@ The versions are those of `envs/qwen/uv.lock`; the script refuses if they drift 
 ## How it is used
 
 - Every interpreter runs as `python -I -B`: no `PYTHONPATH`, no user site, no script directory on the path, no bytecode.
-- The launcher puts `tools/` on the path, builds `tok`, then calls `hn_guard.install("KERNEL_CLIENT", author_dir=..., phase=..., kernel_endpoint=...)` before any author code runs.
+- The `./py` launcher (`tools/hn_kernel/run_py.py`) never puts an author-dir directory on `sys.path`. It loads the client, `wsp` and `hn_guard` by explicit file path, builds `tok`, then calls `hn_guard.install("KERNEL_CLIENT", author_dir=..., phase=..., kernel_endpoint=...)` before any author code runs. `./fwd` and `./py` keep only the venv itself (the interpreter install, read-only) from the author dir on `sys.path`.
 - The build runner's child does the same with `install("BUILD_EDIT", author_dir=..., phase=..., consts_path=...)`.
 - Reads under the venv are allowed because it is the interpreter install (`sys.prefix`, `sys.base_prefix`). The source directories of `torch.func`, `torch.optim`, `torch._dynamo`, `torch.export` and the other forbidden modules stay unreadable even there.
 
