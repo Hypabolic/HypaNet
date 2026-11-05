@@ -1,7 +1,7 @@
 # Agent Doom Loop Detector — Weight-Space Programming of Qwen3.5-0.8B
 
 **Specification:** v0.4 (successor to v0.3; every v0.3 and v0.2 result stays as reported)
-**Status:** DRAFT r2, 2026-11-06 (r1 2026-11-05). r2 records Matthew's direct decision of 2026-11-06, taken before G1, to drop the training baselines and all cloud compute (D3, D12, §11). It is written from `agent_doom_loop_detector_plan_v0_4.md` (every recommendation accepted, including its "Revisions after M0") and the WSP kernel contract `docs/V04_WSP_KERNEL.md`. It is frozen at G1 (§16), before any weight author sees it.
+**Status:** DRAFT r3, 2026-11-06 (r2 2026-11-06, r1 2026-11-05). r3 records Matthew's second direct decision of 2026-11-06, taken before G1: "Val only, no sealed" (D15, §9, §10). r2 records his first, to drop the training baselines and all cloud compute (D3, D12, §11). It is written from `agent_doom_loop_detector_plan_v0_4.md` (every recommendation accepted, including its "Revisions after M0") and the WSP kernel contract `docs/V04_WSP_KERNEL.md`. It is frozen at G1 (§16), before any weight author sees it.
 **Purpose:** Measure whether a reasoning LLM can **edit a pretrained model's weights**, with no optimiser, no search and no labelled examples, so that Qwen3.5-0.8B, read through a fixed one-word prompt, classifies an AI coding agent's recent behaviour into the four v0.2 patterns; and compare that edit with building a network from zero (v0.3), and with the model as it comes. (The comparison with ordinary fine-tuning was dropped before G1: §11.)
 
 Sections marked **[packet]** go into the authoring packet. All other sections are withheld from the weight author.
@@ -17,29 +17,30 @@ Sections marked **[packet]** go into the authoring packet. All other sections ar
 | 3 | Input | v0.3 word-level tokeniser, `BOS`/`EOE`, event ordinals | The same rendered text (§4), read by Qwen's own tokeniser behind a fixed prompt (§5) |
 | 4 | Readout | 4-way head at each `EOE` | Verbaliser: the four label-word logits after a fixed suffix, one pass per session with cache branching (§5) |
 | 5 | Forward passes | Free, inside author scripts | A separate, metered tool, one request per Bash call, 2,000,000 tokens per phase (§7) |
-| 6 | Reference policy | `reference_policy.py`, H2 fidelity | None. Q5 (mechanism check on counterfactual pairs) replaces H2 |
+| 6 | Reference policy | `reference_policy.py`, H2 fidelity | None. Q5 (mechanism check on counterfactual pairs, not run in v0.4: D15) replaces H2 |
 | 7 | Labels, windows, gate, metrics | — | Unchanged: the same sessions, oracle labels, gate, scored-window set and metric code |
-| 8 | Primary sealed set | v0.3 test | A **fresh sealed test set** (§9); v0.3 test and OOD are secondary |
-| 9 | Trained baselines | Phase C transformers on CPU | None new: no Qwen-probe or Qwen-LoRA. The trained v0.3 C and v0.2 C-all columns are cited, and re-scored on the fresh set as PREREGISTRATION §1 states (§11) |
+| 8 | Primary sealed set | v0.3 test | **None in v0.4** (D15): the result is on val, harness-only, with a quick look on a fixed 1,000-session val subset first. The **fresh sealed test set** (§9), v0.3 test, OOD and counterfactual stay sealed for a later version |
+| 9 | Trained baselines | Phase C transformers on CPU | None new: no Qwen-probe or Qwen-LoRA. The trained v0.3 C columns are re-scored on val, and v0.2 C-all is cited, as PREREGISTRATION §1 states (§11) |
 
-### 0.1 Decisions (accepted 2026-11-05; D3 and D12 changed by Matthew on 2026-11-06)
+### 0.1 Decisions (accepted 2026-11-05; D3 and D12 changed by Matthew on 2026-11-06, and D7, D13 and D15 by his second decision that day)
 
 | # | Decision | Value |
 |---|---|---|
 | D1 | Base model | `Qwen/Qwen3.5-0.8B` at revision `2fc06364715b967f1860aea9cf38778875588b17`; every file's sha256 pinned (`envs/qwen/hypaqwen/model.py` `FILE_SHA256`); offline load; SDPA attention; fp32 |
 | D2 | Environment | `envs/qwen`, a separate uv project: Python 3.12, torch 2.14.1, transformers 5.22.1. The root v0.3 environment (torch 2.2.2) stays frozen. Neither environment imports the other's packages |
-| D3 | Machine | Apple M4 Pro, 24 GB. Everything runs here, on local MPS in fp32 (about 445 tok/s): the author's forward server, the harness-only val runs and every sealed scoring run. The CPU replay check runs on this Mac's CPU. Nothing is rented (Matthew, 2026-11-06) |
+| D3 | Machine | Apple M4 Pro, 24 GB. Everything runs here, on local MPS in fp32 (about 445 tok/s): the author's forward server and the harness-only val runs (there is no sealed scoring run, D15). The CPU replay check runs on this Mac's CPU. Nothing is rented (Matthew, 2026-11-06) |
 | D4 | Interface | `w1-state-full`, chosen with no labels by the pre-registered prompt choice as revised (`experiments/v0_4/prompt_choice/README.md`, Revision 1); frozen as `hypaqwen.interface.FROZEN`, `spec_sha256` `5922eb4500122921ac7d07e3d35599b95cb10b462c4f50b89e5d6bb989437879` |
 | D5 | Label words | ` productive`, ` recovering`, ` stalled`, ` looping` (each one Qwen token; ` oscillating` is two) |
 | D6 | Label-word rows | The embedding is tied to the LM head. Editing the four label rows is allowed and reported, with the input-side effect flagged (§7.4) |
-| D7 | Fresh sealed test | 3,996 sessions, 333 per family, master seed 20261106, v0.2 generator unchanged; registration `6a778d1`, manifest `8475556` |
-| D8 | OOD | v0.3's OOD set is reused; no OOD-2 |
+| D7 | Fresh sealed test | 3,996 sessions, 333 per family, master seed 20261106, v0.2 generator unchanged; registration `6a778d1`, manifest `8475556`. Built and sealed; not opened or scored in v0.4 (D15), so it stays available to a later version |
+| D8 | OOD | No OOD-2. v0.3's OOD set stays sealed and is not scored in v0.4 (D15) |
 | D9 | Weight author | A fresh `claude-fable-5-1` session (fallback `claude-opus-5-5`), effort max, headless `claude -p`, in a new directory `../HypaNet-v04-author`; it has never seen generator, oracle or dataset code |
 | D10 | Caps | Session cost: WSP-A US$500, WSP-B US$250, WSP-F US$250, accounted by session-id delta of the cumulative `total_cost_usd` (§13). Forward budget: 2,000,000 tokens per phase, 50,000 per request |
 | D11 | WSP-F | Included as a separate, clearly labelled column after WSP-B; never instead of it |
 | D12 | Trained baselines | None (Matthew, 2026-11-06: "Drop the training baselines"). There is no Qwen-probe or Qwen-LoRA column at any budget; this replaces the plan's accepted LoRA budgets (32 / 128 / 512 / 2,048 / all, plus 200 windows) |
-| D13 | Re-scoring v0.3 on arm64 | The v0.3 val dry run matched every official check exactly on this machine, so v0.3 artefacts are re-scored locally with no tolerance |
+| D13 | Re-scoring v0.3 on arm64 | The v0.3 val dry run matched every official check exactly on this machine, so the v0.3 A, B and C networks and the constant priors are re-scored on val locally with no tolerance (PREREGISTRATION §1) |
 | D14 | v0.3 cost | Corrected to US$64.62 (A $42.73, B $21.89); `scripts/v03_cost.py` double-counted resumed sessions |
+| D15 | Sealed scoring | None in v0.4 (Matthew, 2026-11-06: "Val only, no sealed"; "I need a quick answer to how the base qwen vs modified qwen performs, not 90 hours"). The result is base Qwen against the WSP edits on val, excluding the 200 disclosed sessions, harness-only. Each edit is first read out and scored paired against Qwen-0 on the quick-look subset `datasets/v0_4/VAL_QUICK.txt` (1,000 val sessions by hash key, fixed before any edit existed), reported beside, never instead of, full val. The fresh test set, v0.3 test, v0.3 OOD and the counterfactual split are not opened. Q2-OOD and the Q5 verdict are not tested |
 
 The adjudicator may reverse any decision. Reversing one after G1 creates a new registered version.
 
@@ -76,11 +77,11 @@ Each is a research target, not a pass/fail gate, as in v0.3. Comparisons are alw
 
 | ID | Question | What would support it |
 |---|---|---|
-| Q1 | Can Qwen do the task as it comes? | Qwen-0 clearly above the constant prior (v0.3 test 0.136); its gap to v0.3 A (0.744) is the value of hand-building |
-| Q2 | Does WSP on Qwen beat building from zero? | WSP-B above v0.3 B (test 0.957, OOD 0.908) at the same 200 labelled windows; WSP-A against v0.3 A (0 labels) |
+| Q1 | Can Qwen do the task as it comes? | Qwen-0 clearly above the constant prior on val; its gap to v0.3 A on val is the value of hand-building |
+| Q2 | Does WSP on Qwen beat building from zero? | WSP-B above v0.3 B on val (excluding the disclosed sessions) at the same 200 labelled windows; WSP-A against v0.3 A (0 labels). The OOD comparison (v0.3 B 0.908) is not tested in v0.4 (D15) |
 | Q3 | Does WSP beat ordinary fine-tuning of the same model? | Not tested in v0.4: the training baselines were dropped before G1 (§11) |
 | Q4 | Does pretraining fix the trained models' OOD collapse? | Not tested in v0.4: the training baselines were dropped before G1 (§11) |
-| Q5 | Is a WSP edit explainable and small? | The edit touches a reported, small fraction of weights, and each mechanism EDIT.md claims passes the pre-registered counterfactual check (§10.4) |
+| Q5 | Is a WSP edit explainable and small? | Not tested in v0.4: the counterfactual check (§10.4) needs the sealed counterfactual split (D15). The size of every edit, and which of its claimed mechanisms are eligible for the check, are reported |
 
 ### 2.2 Arms
 
@@ -88,11 +89,11 @@ Every Qwen arm starts from the same checkpoint (D1) and uses the verbaliser read
 
 | Arm | Built by | Labelled data | Answers |
 |---|---|---|---|
-| **Qwen-0** | Nobody: the released weights and the frozen prompt | 0 | Q1 |
-| **WSP-A** | The weight author edits the weights in a sealed session; forward passes only on its own texts | 0 | Q2 (vs v0.3 A), Q5 |
-| **WSP-B** | One revision of WSP-A after the same 200 disclosed windows as v0.3 Phase B (§14.1) | 200 windows | Q2 (vs v0.3 B), Q5 |
+| **Qwen-0** | Nobody: the released weights and the frozen prompt | 0 | Q1; the base every edit is compared with |
+| **WSP-A** | The weight author edits the weights in a sealed session; forward passes only on its own texts | 0 | Reported against Qwen-0 and v0.3 A; size |
+| **WSP-B** | One revision of WSP-A after the same 200 disclosed windows as v0.3 Phase B (§14.1) | 200 windows | Q2 (vs v0.3 B); reported against Qwen-0; size |
 | **WSP-F** (separate column) | WSP-B plus a labelled forward-pass budget on dev with accept or reject, as in the blog's Exp 8 (§14.2) | 200 windows + the budget | Matches the published method; reported beside WSP-B, never instead of it |
-| Cited | v0.3 A / B / C, v0.2 columns, rules engine, constant prior | as reported | Baselines |
+| v0.3 and cited | v0.3 A / B / C and the constant priors, re-scored on val; v0.2 columns and the rules engine, cited | as reported | Baselines |
 
 The v0.3 reference policy (H1) and H2 fidelity have no v0.4 counterpart: Qwen's edited weights have no written reference policy. Q5 replaces H2.
 
@@ -237,7 +238,7 @@ The interface is fixed. `packet/INTERFACE.md` gives the exact strings and token 
 
 ## 6. Windows, gate, labels
 
-These are unchanged from v0.3 §6 (v0.2 §5–§6). Windows, the scored mask, labels and populations are v0.3's, row for row: the readout after block *t* is the prediction for the window ending at *t*. Every Qwen column is scored on exactly the 87,176 val, 87,148 v0.3 test and 83,011 OOD windows the v0.3 report used, and on every scored window of the fresh test set (§9).
+These are unchanged from v0.3 §6 (v0.2 §5–§6). Windows, the scored mask, labels and populations are v0.3's, row for row: the readout after block *t* is the prediction for the window ending at *t*. Every Qwen column is scored on exactly the 87,176 val windows the v0.3 report used (a quick look on the windows of its 1,000 sessions). No other split is scored in v0.4 (§9).
 
 **[packet]**
 
@@ -343,11 +344,11 @@ A rejected build returns only the harness's error text.
 ## 9. Data, splits and sealing
 
 - **Training and disclosure data are unchanged.** Dev (12,000 sessions) trains no v0.4 arm: only WSP-F reads its labels, in aggregate and on the holdout (§14.2). Val (4,004 sessions) is for harness-only validation, with the 200 disclosed sessions left out of the primary population.
-- **Task export** (`scripts/v04_export_tasks.py`, root environment). `datasets/v0_4/{split}.tasks.jsonl.gz` holds rendered blocks and window positions with no labels; `datasets/v0_4/{split}.labels.npz` holds the window rows, built exactly as v0.3's scoring rows. Only dev and val can be exported before the sealed evaluation.
-- **Fresh sealed test set** (D7, `experiments/v0_4/fresh_test/REGISTRATION.json`, `datasets/v0_4/fresh_test/MANIFEST_fresh_test.json`): 86,412 windows, 83,874 gate-passing. It was rebuilt byte-identically under a second PYTHONHASHSEED. The manifest holds no label statistics. It is the primary result.
-- **v0.3 test and OOD** are secondary results, for continuity. No author has seen them, but we who design v0.4 know the v0.3 results on them.
-- **Sealing.** Nobody opens, lists or decompresses `datasets/**/test.*`, `datasets/**/ood.*`, `datasets/**/counterfactual.*` or anything under `datasets/v0_4/fresh_test/` before the sealed evaluation. Val labels and dev labels are read only by harness scoring code. No val number is ever shown to the weight author. No Qwen output is compared with a label before G1.
-- **Every sealed set is scored once,** after G2, by a pre-registered script, as in v0.3 (E7). Counterfactual is scored before the sealed attempt.
+- **Task export** (`scripts/v04_export_tasks.py`, root environment). `datasets/v0_4/{split}.tasks.jsonl.gz` holds rendered blocks and window positions with no labels; `datasets/v0_4/{split}.labels.npz` holds the window rows, built exactly as v0.3's scoring rows. Only dev and val can be exported; v0.4 exports no other split.
+- **Fresh sealed test set** (D7, `experiments/v0_4/fresh_test/REGISTRATION.json`, `datasets/v0_4/fresh_test/MANIFEST_fresh_test.json`): 86,412 windows, 83,874 gate-passing. It was rebuilt byte-identically under a second PYTHONHASHSEED. The manifest holds no label statistics. It is **not scored in v0.4** (D15) and stays sealed for a later version.
+- **v0.3 test, OOD and counterfactual** stay sealed and are not scored in v0.4 either. The counterfactual split, which v0.3 scored before its sealed attempt, is sealed here.
+- **Sealing.** Nobody opens, lists or decompresses `datasets/**/test.*`, `datasets/**/ood.*`, `datasets/**/counterfactual.*` or anything under `datasets/v0_4/fresh_test/` in v0.4; for the fresh set, v0.4 reads only the committed `REGISTRATION.json` and `MANIFEST_fresh_test.json` (the scoring bridge checks they are committed unchanged) and never its data files. Val labels and dev labels are read only by harness scoring code. No val number is ever shown to the weight author. No Qwen output is compared with a label before G1.
+- **The result is on val** (D15): `excluding_disclosed` is primary, `all_val` beside. **Quick look:** `datasets/v0_4/VAL_QUICK.txt`, the 1,000 val sessions with the smallest `sha256("20261106:v04-val-quick:{session_id}")` after the 200 disclosed sessions are removed, chosen before any edit existed. Every edit is scored on it first, paired against Qwen-0, then on full val; the full-val numbers are the result of record. Val is not a sealed set (the harness reads models out on it, v0.3 used it for early stopping and the Phase B disclosure), so the v0.4 result is weaker evidence than a sealed one. A later version may score the archived v0.4 edits on the sealed sets under its own pre-registration.
 
 ---
 
@@ -355,37 +356,38 @@ A rejected build returns only the harness's error text.
 
 ### 10.1 Bridge
 
-`src/agent_loop_lab/v04/scoring.py` turns Qwen logits into the v0.3 report. Val rows are checked against v0.3's `rows_sha256`; columns are aligned strictly; metrics come from `eval.m4.score_columns`, as v0.3 Phase C. H2 is not applicable.
+`src/agent_loop_lab/v04/scoring.py` turns Qwen logits into the v0.3 report. Val rows are checked against v0.3's `rows_sha256`; columns are aligned strictly; metrics come from `eval.m4.score_columns`, as v0.3 Phase C. H2 is not applicable. The constant priors and the v0.3 networks re-scored on val (`scripts/v04_v03_val_columns.py`, exact against the v0.3 report column by column; a column that does not reproduce is cited without a paired CI, PREREGISTRATION §1) join the same call after the bridge re-checks them against the v0.3 report, and the bridge reports paired macro-F1 differences over the shared bootstrap draws, the §9 pairs built in. The scoring script refuses unless `scripts/v04_freeze.py --check` passes and records the registry's freeze hashes. A column read out on a subset is accepted only when its subset is `VAL_QUICK.txt` by sha256 and its sessions are exactly that file's; all Qwen columns of one report cover the same sessions.
 
 ### 10.2 Metrics
 
-v0.2 §10.1 as used by v0.3: macro-F1, per-class precision and recall, false-loop alarm rate, confusion, counterfactual consistency and session-bootstrap CIs. Also: tokens per session, readout latency, and for WSP the changed fraction of weights and the per-tensor relative Frobenius norm.
+v0.2 §10.1 as used by v0.3: macro-F1, per-class precision and recall, false-loop alarm rate, confusion and session-bootstrap CIs (counterfactual consistency is not computed in v0.4: it needs the sealed counterfactual split). Also: tokens per session, readout latency, and for WSP the changed fraction of weights and the per-tensor relative Frobenius norm.
 
 ### 10.3 Backend
 
-Every Qwen run is local and fp32 on this Mac's MPS: the harness-only val runs, the author's forward server and every sealed column, fixed at G1. torch's deterministic-algorithms mode is no guarantee on MPS, so the harness also replays 100 val sessions on this Mac's CPU for Qwen-0 and WSP-B and reports how many argmaxes agree with MPS.
+Every Qwen run is local and fp32 on this Mac's MPS: the harness-only val runs and the author's forward server, fixed at G1. torch's deterministic-algorithms mode is no guarantee on MPS, so the harness also replays 100 val sessions on this Mac's CPU for Qwen-0 and WSP-B and reports how many argmaxes agree with MPS.
 
 ### 10.4 Q5 mechanism check
 
-For each mechanism `EDIT.md` claims, the harness checks it on the counterfactual pairs with the edit applied and then ablated (the claimed tensors reverted to the original). The pass statistic is pre-registered at G1.
+For each mechanism `EDIT.md` claims, the check runs on the counterfactual pairs with the edit applied and then ablated (the claimed tensors reverted to the original). The pass statistic is pre-registered at G1, but it is **not run in v0.4** (D15): the counterfactual split stays sealed. v0.4 reports each edit's size and which claimed mechanisms are eligible, with no Q5 verdict.
 
 ### 10.5 Validation before WSP-B
 
-Val scores of WSP-A are computed for the harness only and are never shown to the author. The first archived WSP-A artefact is the WSP-A result; a later relaunch is a new registered version, reported alongside the first with the number of prior launches.
+Val scores of WSP-A are computed for the harness only and are never shown to the author: first the quick look on `VAL_QUICK.txt`, then full val. The first archived WSP-A artefact is the WSP-A result; a later relaunch is a new registered version, reported alongside the first with the number of prior launches.
 
 ---
 
 ## 11. Trained baselines
 
-Removed before G1 (Matthew, 2026-11-06: "Drop the training baselines"). There is no Qwen-probe and no Qwen-LoRA column at any budget, and no cloud GPU. Q3 and Q4 are not tested. The trained columns of the report are the cited v0.3 C and v0.2 C-all (PREREGISTRATION §1). The heading stays so that section numbers do not move.
+Removed before G1 (Matthew, 2026-11-06: "Drop the training baselines"). There is no Qwen-probe and no Qwen-LoRA column at any budget, and no cloud GPU. Q3 and Q4 are not tested. The trained columns of the report are the v0.3 C columns, re-scored on val, and v0.2 C-all, cited (PREREGISTRATION §1). The heading stays so that section numbers do not move.
 
 ---
 
 ## 12. Compute
 
 - **Forward server** (WSP): local MPS, fp32, about 445 tok/s. The 2M-token budget is about 75 min of model time.
-- **Harness-only val runs:** local MPS; one full val pass takes about 5 h (7.87M readout tokens; 1,726 tokens per session with the prefix).
-- **Sealed scoring:** local MPS, fp32, the same as the val runs. Each Qwen column takes hours per sealed set, so the one attempt is several days of MPS time.
+- **Harness-only val runs:** local MPS; one full val pass takes about 5 h (7.87M readout tokens; 1,726 tokens per session with the prefix), a quick look on the 1,000-session subset about a quarter of that.
+- **v0.3 columns on val:** this Mac's CPU, in the frozen v0.3 environment.
+- **Sealed scoring:** none in v0.4 (D15).
 - **CPU replay check:** this Mac's CPU, fp32.
 - **Nothing is rented** (Matthew, 2026-11-06).
 - **Build runner:** CPU, one thread, deterministic algorithms, RLIMIT_CPU 300 s, wall timeout 600 s.
@@ -427,7 +429,7 @@ The same 200 windows and oracle labels as v0.3 Phase B (the selection rule never
 
 ### 14.2 WSP-F (blog-style, separate column)
 
-WSP-B plus 50 `score_dev` calls of at most 128 dev sessions each, with accept or reject. A final paired check on 500 dev sessions picked by hash key, outside the v0.3 Phase C 2,048-session budget subset, held by the harness (`holdout_check`, once). Cost cap US$250. Dev labels live only in the WSP-F server. G2 waits for the WSP-F archive.
+WSP-B plus 50 `score_dev` calls of at most 128 dev sessions each, with accept or reject. A final paired check on 500 dev sessions picked by hash key, outside the v0.3 Phase C 2,048-session budget subset, held by the harness (`holdout_check`, once). Cost cap US$250. Dev labels live only in the WSP-F server. The WSP-F archive is the last v0.4 artefact; no sealed evaluation waits on it (D15).
 
 ---
 
@@ -448,12 +450,12 @@ WSP-B plus 50 `score_dev` calls of at most 128 dev sessions each, with accept or
 | Milestone | Contents |
 |---|---|
 | **M0** | Environment, readout, token audit, fresh sealed test set, prompt choice, scoring bridge, WSP kernel |
-| **G1** | Pre-registration frozen and committed: this spec, the interface, the WSP rules, the Q5 statistic, the backend (local MPS, fp32), the packet hash (`registry_v0_4.yaml`) |
-| **M1** | Qwen-0 on val, harness-only |
-| **M2** | WSP-A: sealed session; edit archived and scored on val; the 200-window disclosure refreshed |
-| **M3** | WSP-B, then WSP-F; archived before any sealed scoring |
-| **G2** | WSP-B and WSP-F archived |
-| **M4** | Sealed evaluation on local MPS, run once: fresh test primary, v0.3 test and OOD secondary |
-| **M5** | Report: one joint table with v0.2 and v0.3 |
+| **G1** | Pre-registration frozen and committed: this spec, the interface, the WSP rules, the Q5 statistic (not run in v0.4), the quick-look subset, the backend (local MPS, fp32), the packet hash (`registry_v0_4.yaml`) |
+| **M1** | Qwen-0 on val (quick-look subset and full), harness-only |
+| **M2** | WSP-A: sealed session; edit archived; quick look, then full val; the 200-window disclosure refreshed |
+| **M3** | WSP-B, then WSP-F; each archived, then quick look and full val |
+| **G2** | Removed (D15): no sealed evaluation waits on the archives |
+| **M4** | Removed (D15): no sealed evaluation in v0.4; the sealed sets stay sealed for a later version |
+| **M5** | Report on val: one joint table with v0.3 (re-scored on val) and v0.2 (cited) |
 
 A poor result is still a result, provided it is attributed to the interface, the edit, capacity or distribution shift.

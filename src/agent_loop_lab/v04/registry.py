@@ -126,7 +126,6 @@ REQUIRED_FILES: tuple[str, ...] = (
     f"{SRC}/v03/renderer.py",
     f"{SRC}/baselines/phase_c_v03.py",  # budget_subset (the WSP-F holdout excludes the 2,048 subset, §7.3)
     f"{SRC}/baselines/phase_c.py",  # macro_f1
-    f"{SRC}/synth/counterfactual.py",  # INTENDED (the Q5 pair kinds)
     # Harness scripts whose names the contract and this file fix.
     "scripts/v04_export_tasks.py",
     "scripts/v04_score_validation.py",
@@ -148,6 +147,7 @@ REQUIRED_FILES: tuple[str, ...] = (
     "datasets/v0_3/MANIFEST_v0_3.json",
     "datasets/v0_4/EXPORT_MANIFEST.json",
     "datasets/v0_4/BUDGETS.json",  # disclosed windows, WSP-F holdout (§7); its budget lists and ES set are unused
+    "datasets/v0_4/VAL_QUICK.txt",  # the quick-look subset (§3.5), fixed by hash key before any edit existed
     "datasets/v0_4/fresh_test/MANIFEST_fresh_test.json",
     "experiments/v0_4/fresh_test/REGISTRATION.json",
     "experiments/v0_4/prompt_choice/README.md",

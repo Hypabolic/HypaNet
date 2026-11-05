@@ -16,8 +16,8 @@ The rows are built exactly as ``v03.scoring._build_val`` and ``baselines.phase_c
 build them, so a Qwen column is scored on the same windows as every v0.3 column.
 
 **Splits.** Only ``dev`` and ``val`` (:data:`ALLOWED_SPLITS`). The check runs before any dataset
-module is imported or any file is opened. Test, counterfactual and OOD stay sealed until the v0.4
-sealed evaluation, which exports them itself.
+module is imported or any file is opened. v0.4 exports only dev and val: test, counterfactual and
+OOD are not exported in v0.4 and stay sealed for a later version (PREREGISTRATION §3.4).
 """
 
 from __future__ import annotations

@@ -5,7 +5,7 @@ Usage:
 
 Runs in the frozen v0.3 environment. Writes OUT/{split}.tasks.jsonl.gz (rendered blocks and window
 positions, no labels) and OUT/{split}.labels.npz (window rows), then OUT/EXPORT_MANIFEST.json.
-Only dev and val are allowed; the sealed splits are exported by the v0.4 sealed evaluation.
+Only dev and val are allowed; v0.4 exports no sealed split (they stay sealed, PREREGISTRATION §3.4).
 """
 
 from __future__ import annotations
