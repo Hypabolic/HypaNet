@@ -1,0 +1,58 @@
+{
+ "assignment": "every k in 0..per_family-1 of every family goes to test (no split shuffle)",
+ "code_sha256": {
+  "oracle_config.v0_2.yaml": "03a049d67ab0a46d2eb1b92300549e2605da98a812c303d97ab6659a99a023eb",
+  "scripts/v04_seal_fresh_test.py": "cc04271c4900a4715719e25c05847a3e8a2febef8c00939c6618ce84985c6ac0",
+  "src/agent_loop_lab/datasets/build.py": "6957d65e664d41c0b0de7add99e4fed604db8d04eaea95c4dbfbc38d5a422d7c",
+  "src/agent_loop_lab/encode.py": "2b8a76934ba7fa74eed3543ee3172f40612d5ef7cff1e35bec8028a82f009998",
+  "src/agent_loop_lab/eval/collisions.py": "83984324d6de5fa5e0f3fc53931d84f4272f6c3312b5318e629f3d79b251fc39",
+  "src/agent_loop_lab/fingerprint.py": "d28a80ed0ae2f9c4b9338193440e1c1b76c35c1f43cbfbcd629eedcfc4c53612",
+  "src/agent_loop_lab/oracle_config.py": "1142bc3b7dec777c44fad7c95da2e4e9bbec74674e1a095e35fdf6bf3541aa8b",
+  "src/agent_loop_lab/schema.py": "e23c679c48dfafb816a22ef4a4e5e0aaa44e68c6b3c34eb728c3bb9d1fe84c85",
+  "src/agent_loop_lab/v03/build_raw.py": "ab20f988746a1b2014e5f0c6dad03de03e755e3a37b31a4f7d5b0bc63c61223f",
+  "src/agent_loop_lab/v03/rawop.py": "bb2a9d0051f0c76ef625ec434d1daea5797739a7e42792079cac0d0320e06184",
+  "src/agent_loop_lab/v03/sealed.py": "0b1cdf06124b577cc85b1b117d1af15293bd9be0b230b667d3a53549af5d36b0",
+  "src/agent_loop_lab/v04/fresh_test.py": "2d32d9b1c45cb9d9e84010831ae8f01227e68f89141acae7bf5468a7faeaf9e2",
+  "src/agent_loop_lab/windows.py": "bcaea09301b57d82cff22bb5eb15f1969d33727f5d74905c8455b373817bd9b4"
+ },
+ "disjoint_from": {
+  "datasets/v0_2/splits.json": "bfa40d06e3cd032a8a59608e9d080fb1ce6abc3e8c2dbe33cc231b4df6130b38",
+  "overlap": 0
+ },
+ "families": [
+  "incremental_repair",
+  "exploration",
+  "transient_external",
+  "bounded_retry",
+  "repeated_test_failure",
+  "cosmetic_churn",
+  "abab_oscillation",
+  "tool_oscillation",
+  "improving_tests",
+  "polling_recovery",
+  "rising_cost",
+  "under_instrumented"
+ ],
+ "file_order": "FAMILY_NAMES order, then k",
+ "format": "v04-fresh-test/1",
+ "generator": {
+  "generator_version": "0.2.0",
+  "synth_sources_sha256": "9799c3e63b0cbee78187d31a468bae21b729a83d5e4154c65d233e932b5afb7b",
+  "v02_frozen_files": {
+   "oracle_config.v0_2.yaml": "03a049d67ab0a46d2eb1b92300549e2605da98a812c303d97ab6659a99a023eb",
+   "src/agent_loop_lab/encode.py": "2b8a76934ba7fa74eed3543ee3172f40612d5ef7cff1e35bec8028a82f009998",
+   "src/agent_loop_lab/fingerprint.py": "d28a80ed0ae2f9c4b9338193440e1c1b76c35c1f43cbfbcd629eedcfc4c53612",
+   "src/agent_loop_lab/oracle_config.py": "1142bc3b7dec777c44fad7c95da2e4e9bbec74674e1a095e35fdf6bf3541aa8b",
+   "src/agent_loop_lab/schema.py": "e23c679c48dfafb816a22ef4a4e5e0aaa44e68c6b3c34eb728c3bb9d1fe84c85",
+   "src/agent_loop_lab/windows.py": "bcaea09301b57d82cff22bb5eb15f1969d33727f5d74905c8455b373817bd9b4"
+  }
+ },
+ "master_seed": 20261106,
+ "per_family": 333,
+ "seed_choice": "20261106 is used nowhere else in the tree: 20261104 is the v0.2 master/bootstrap/disclosure seed and 20261105 prefixes the v0.3 disclosure, budget and ES keys. Chosen before any generation; never re-rolled.",
+ "seed_formula": "int.from_bytes(sha256(f\"{master_seed}:{family}:{k}\").digest()[:8], \"big\")",
+ "session_id_format": "s-{seed:016x}",
+ "session_ids_sha256": "a5d4982b5a17d14eeb6a575e833483926da071054f328967b76772a9f1772d01",
+ "sessions": 3996,
+ "what": "v0.4 fresh sealed test set: registration (committed before any generation)"
+}
