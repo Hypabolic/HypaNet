@@ -1,0 +1,51 @@
+{
+  "author_dir": "/Users/matthew/Development/hypabolic/HypaNet-v04-author",
+  "kit": {
+    "fwd": "4c8f99f181f6e853d1a40313d65a989e596105d0849a9805419368fde310d8a8",
+    "hook_bash.py": "415ea9c46daa25179c8cec659aee23558b0705f2c3867d6607e8ab77608b568b",
+    "prompt_continue.md": "72a75a6de83fed494f2a32c38b05aa70c4e52a7c75f3c5aed847387fea36e431",
+    "prompt_resubmit.md": "a144ed9724d3f7e92184e6c7ec3c382159219d5e6ae1fee9a3fd7ede857b859e",
+    "prompt_wsp_a.md": "1772a010161e78286167230dcb9600758cd6b11035669d0e72614b84b4fc83a2",
+    "prompt_wsp_b.md": "d25bcee3e620fb28b47643617454f573b8563f62ee6c9320abee04b650a8b2bb",
+    "py": "50b4270c7c3d1dfd32a10ba56d85d39d97da5673321d01600ec2c18cabab996b",
+    "settings_wsp_a.json": "e06c06c44b95343ab634ce99e31cbda96d1ff712a90099bdd703adbbd4009b11",
+    "settings_wsp_b.json": "29c03224b1d5f917bbb77782930f361a3912f68cb9e261ef7e4c4102dc73b297"
+  },
+  "packet_files": {
+    "AUTHOR_INSTRUCTIONS.md": "be789d249a1bc7725ed2b623c240fe5da39b18813c0d8e5457adce51f8526a31",
+    "GRAMMAR_SHEET.md": "13341c152f837c8b047cde4900a83a33ca75ad7242e7447f3113b067e7488dd8",
+    "INTERFACE.md": "14a0169b53c04ed1e4468e905f833b49b47f4dcb6953ecd42800f94903b72e35",
+    "PACKET_MANIFEST.json": "b55829aff319d68466189a27d09b02b3838156a8f57b76e9a63388937a9ba3db",
+    "SPEC.md": "ea119f9d767b73e26efe06c9cdadd083759d41ffd79dc39f3095c5d674179318",
+    "qwen/config.json": "b90b86f35c8e6925ef74ee04d0e758f0a845c83a42089ad82bbaa948de9b4204",
+    "qwen/tokenizer.json": "5f9e4d4901a92b997e463c1f46055088b6cca5ca61a6522d1b9f64c4bb81cb42",
+    "qwen/tokenizer_config.json": "49e2b6e395f959f077f1e992b338919c0d4a9732fc6e613995e06557f843500c",
+    "renderer.py": "b5451f7fe65152cb7c6c8401b8ee2bcb927e87c41985b379c6b5caf993ff920b",
+    "tokenizer.py": "dc26886cb75db9cebacdb9c68e31fcbb3072434e48ae19892d89707db57d614d"
+  },
+  "packet_sha256": "b55829aff319d68466189a27d09b02b3838156a8f57b76e9a63388937a9ba3db",
+  "phase": "wsp-a",
+  "registry_sha256": "fec506dbfbfe7496853fda827e55f2ea373d19a6e3b35794250930c98c0d2980",
+  "tools": {
+    "tools/hn_guard/__init__.py": "23a78a13f13855b033a2251ea746c5d62c89fcedded50c3b14b4cf5a88d2bec5",
+    "tools/hn_guard/guards_v04.py": "6daba5a45a1c9e4b0d54d4771cb4618d57471f386d3025d0b8854be83390886c",
+    "tools/hn_hook/hook_bash.py": "415ea9c46daa25179c8cec659aee23558b0705f2c3867d6607e8ab77608b568b",
+    "tools/hn_kernel/client.py": "697e8beb8ed5d92ff0923ac69324ca3b6b73b3d20b72947d5703cecb9f64eaf3",
+    "tools/hn_kernel/fwd.py": "484b41780fee2314031fdb8661e8e20bb265e8bbf3800a32d3723e5ea7df43cf",
+    "tools/hn_kernel/protocol.py": "47f0befdbfe03c9db30e9b58b398208c7c24e8928a71d76c8c572ec638788cc3",
+    "tools/hn_kernel/run_py.py": "29ef7dfaf71108a6d10df8c387035c55d30214509ad993b19dd6d51fb27d11fa",
+    "tools/hn_kernel/wsp.py": "0e70cd6e6564a75559d971680add936930c4565a3b4eadddb5f1a30982106dfc"
+  },
+  "unfrozen_kit_test_dir": false,
+  "venv": {
+    "numpy": "2.5.4",
+    "python": "3.12.16",
+    "safetensors": "0.8.0",
+    "tokenizers": "0.23.3",
+    "torch": "2.14.1"
+  },
+  "wrappers": {
+    "fwd": "4c8f99f181f6e853d1a40313d65a989e596105d0849a9805419368fde310d8a8",
+    "py": "50b4270c7c3d1dfd32a10ba56d85d39d97da5673321d01600ec2c18cabab996b"
+  }
+}

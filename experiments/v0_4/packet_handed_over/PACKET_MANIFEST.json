@@ -1,0 +1,43 @@
+{
+  "files": {
+    "AUTHOR_INSTRUCTIONS.md": "be789d249a1bc7725ed2b623c240fe5da39b18813c0d8e5457adce51f8526a31",
+    "GRAMMAR_SHEET.md": "13341c152f837c8b047cde4900a83a33ca75ad7242e7447f3113b067e7488dd8",
+    "INTERFACE.md": "14a0169b53c04ed1e4468e905f833b49b47f4dcb6953ecd42800f94903b72e35",
+    "SPEC.md": "ea119f9d767b73e26efe06c9cdadd083759d41ffd79dc39f3095c5d674179318",
+    "qwen/config.json": "b90b86f35c8e6925ef74ee04d0e758f0a845c83a42089ad82bbaa948de9b4204",
+    "qwen/tokenizer.json": "5f9e4d4901a92b997e463c1f46055088b6cca5ca61a6522d1b9f64c4bb81cb42",
+    "qwen/tokenizer_config.json": "49e2b6e395f959f077f1e992b338919c0d4a9732fc6e613995e06557f843500c",
+    "renderer.py": "b5451f7fe65152cb7c6c8401b8ee2bcb927e87c41985b379c6b5caf993ff920b",
+    "tokenizer.py": "dc26886cb75db9cebacdb9c68e31fcbb3072434e48ae19892d89707db57d614d"
+  },
+  "interface": {
+    "label_ids": [
+      25399,
+      39923,
+      65552,
+      60477
+    ],
+    "name": "w1-state-full",
+    "prefix_tokens": 167,
+    "spec_sha256": "5922eb4500122921ac7d07e3d35599b95cb10b462c4f50b89e5d6bb989437879",
+    "suffix_tokens": 11
+  },
+  "packet_format_version": 1,
+  "qwen": {
+    "files": {
+      "config.json": "b90b86f35c8e6925ef74ee04d0e758f0a845c83a42089ad82bbaa948de9b4204",
+      "tokenizer.json": "5f9e4d4901a92b997e463c1f46055088b6cca5ca61a6522d1b9f64c4bb81cb42",
+      "tokenizer_config.json": "49e2b6e395f959f077f1e992b338919c0d4a9732fc6e613995e06557f843500c"
+    },
+    "model_id": "Qwen/Qwen3.5-0.8B",
+    "revision": "2fc06364715b967f1860aea9cf38778875588b17"
+  },
+  "sources": {
+    "spec_v0_2": "0695c9322698b526ba991c063a54de2e61407e1686ae5ffe775468c6981c7cef",
+    "spec_v0_4": "4621fcf66a2fae48aa79721311b1c00932fb741b79df31cfaa99b1a82a0a29a5",
+    "v03/renderer.py": "b5451f7fe65152cb7c6c8401b8ee2bcb927e87c41985b379c6b5caf993ff920b",
+    "v03/tokenizer.py": "dc26886cb75db9cebacdb9c68e31fcbb3072434e48ae19892d89707db57d614d"
+  },
+  "spec_sections": "v0.4 [packet] sections; v0.2 ### 6.1, ### 6.2, ### 6.3, ### 7.1",
+  "spec_version": "0.4"
+}
