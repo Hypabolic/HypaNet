@@ -1,0 +1,64 @@
+[04:32:10] dev: 12000 sessions (cached, 0.2s)
+[04:32:12] val: ES set 500 sessions, 9350 windows (1.5s)
+[04:32:12] budget 32 seed 0: 32 sessions, pool 32, cap 60 epochs, ES at epochs [6, 12, 18, 24, 30, 36, 42, 48, 54, 60]
+[04:32:21] epoch 1/60: loss 1.3839, 4 steps, 8.7s
+[04:32:30] epoch 2/60: loss 1.3278, 4 steps, 8.6s
+[04:32:41] epoch 3/60: loss 1.3269, 4 steps, 10.8s
+[04:32:50] epoch 4/60: loss 1.3241, 4 steps, 9.7s
+[04:33:00] epoch 5/60: loss 1.3118, 4 steps, 10.0s
+[04:34:20] epoch 6/60: loss 1.3132, 4 steps, 9.2s; ES macro-F1 0.1417 (70.4s)
+[04:34:29] epoch 7/60: loss 1.3008, 4 steps, 9.2s
+[04:34:38] epoch 8/60: loss 1.2977, 4 steps, 8.8s
+[04:34:48] epoch 9/60: loss 1.2935, 4 steps, 10.0s
+[04:34:57] epoch 10/60: loss 1.2858, 4 steps, 9.2s
+[04:35:07] epoch 11/60: loss 1.2793, 4 steps, 10.1s
+[04:36:25] epoch 12/60: loss 1.2719, 4 steps, 9.0s; ES macro-F1 0.1514 (68.8s)
+[04:36:35] epoch 13/60: loss 1.2512, 4 steps, 10.1s
+[04:36:45] epoch 14/60: loss 1.2401, 4 steps, 9.7s
+[04:36:54] epoch 15/60: loss 1.2336, 4 steps, 9.0s
+[04:37:04] epoch 16/60: loss 1.1978, 4 steps, 10.2s
+[04:37:14] epoch 17/60: loss 1.1360, 4 steps, 9.5s
+[04:38:32] epoch 18/60: loss 1.1151, 4 steps, 9.0s; ES macro-F1 0.2610 (69.9s)
+[04:38:41] epoch 19/60: loss 1.0032, 4 steps, 9.1s
+[04:38:51] epoch 20/60: loss 1.0746, 4 steps, 9.3s
+[04:39:00] epoch 21/60: loss 0.9053, 4 steps, 9.5s
+[04:39:11] epoch 22/60: loss 0.9608, 4 steps, 10.6s
+[04:39:21] epoch 23/60: loss 0.8140, 4 steps, 9.7s
+[04:40:40] epoch 24/60: loss 0.7409, 4 steps, 9.2s; ES macro-F1 0.2821 (69.9s)
+[04:40:48] epoch 25/60: loss 0.7258, 4 steps, 8.2s
+[04:40:57] epoch 26/60: loss 0.6305, 4 steps, 9.1s
+[04:41:06] epoch 27/60: loss 0.5901, 4 steps, 9.4s
+[04:41:16] epoch 28/60: loss 0.5358, 4 steps, 9.2s
+[04:41:24] epoch 29/60: loss 0.5379, 4 steps, 8.8s
+[04:42:41] epoch 30/60: loss 0.4933, 4 steps, 9.2s; ES macro-F1 0.2431 (67.5s)
+[04:42:53] epoch 31/60: loss 0.4357, 4 steps, 12.1s
+[04:43:03] epoch 32/60: loss 0.4100, 4 steps, 10.1s
+[04:43:14] epoch 33/60: loss 0.3809, 4 steps, 10.6s
+[04:43:23] epoch 34/60: loss 0.3616, 4 steps, 9.6s
+[04:43:34] epoch 35/60: loss 0.3681, 4 steps, 10.6s
+[04:44:59] epoch 36/60: loss 0.3076, 4 steps, 10.0s; ES macro-F1 0.3252 (74.8s)
+[04:45:09] epoch 37/60: loss 0.2764, 4 steps, 10.2s
+[04:45:20] epoch 38/60: loss 0.2770, 4 steps, 11.1s
+[04:45:30] epoch 39/60: loss 0.2472, 4 steps, 10.3s
+[04:45:41] epoch 40/60: loss 0.2524, 4 steps, 10.3s
+[04:45:51] epoch 41/60: loss 0.2509, 4 steps, 9.9s
+[04:47:11] epoch 42/60: loss 0.2784, 4 steps, 9.9s; ES macro-F1 0.3202 (71.0s)
+[04:47:21] epoch 43/60: loss 0.2265, 4 steps, 10.0s
+[04:47:31] epoch 44/60: loss 0.3262, 4 steps, 9.7s
+[04:47:41] epoch 45/60: loss 0.2258, 4 steps, 10.2s
+[04:47:51] epoch 46/60: loss 0.2151, 4 steps, 9.7s
+[04:48:01] epoch 47/60: loss 0.2540, 4 steps, 9.6s
+[04:49:24] epoch 48/60: loss 0.3101, 4 steps, 10.0s; ES macro-F1 0.2811 (72.9s)
+[04:49:34] epoch 49/60: loss 0.2164, 4 steps, 10.1s
+[04:49:44] epoch 50/60: loss 0.1873, 4 steps, 10.5s
+[04:49:54] epoch 51/60: loss 0.1690, 4 steps, 10.1s
+[04:50:04] epoch 52/60: loss 0.1700, 4 steps, 9.5s
+[04:50:14] epoch 53/60: loss 0.1510, 4 steps, 10.2s
+[04:51:37] epoch 54/60: loss 0.1638, 4 steps, 11.0s; ES macro-F1 0.3436 (71.9s)
+[04:51:47] epoch 55/60: loss 0.1568, 4 steps, 10.2s
+[04:51:58] epoch 56/60: loss 0.2034, 4 steps, 10.5s
+[04:52:08] epoch 57/60: loss 0.2042, 4 steps, 10.3s
+[04:52:19] epoch 58/60: loss 0.1395, 4 steps, 10.5s
+[04:52:28] epoch 59/60: loss 0.1509, 4 steps, 9.4s
+[04:53:49] epoch 60/60: loss 0.1290, 4 steps, 9.7s; ES macro-F1 0.3251 (71.1s)
+[04:53:49] done: best epoch 54, ES macro-F1 0.3436, 240 steps, 1297.0s -> /Users/matthew/Development/hypabolic/HypaNet/experiments/phase-c-trained/v0_3/32/seed0

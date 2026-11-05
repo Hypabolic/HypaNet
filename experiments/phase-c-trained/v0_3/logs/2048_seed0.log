@@ -1,0 +1,11 @@
+[09:01:41] dev: 12000 sessions (cached, 0.2s)
+[09:01:42] val: ES set 500 sessions, 9350 windows (1.5s)
+[09:01:43] budget 2048 seed 0: 2048 sessions, pool 2027, cap 4 epochs, ES at epochs [1, 2, 3, 4]
+[09:17:54] dev: 12000 sessions (cached, 0.2s)
+[09:17:55] val: ES set 500 sessions, 9350 windows (1.6s)
+[09:17:56] budget 2048 seed 0: 2048 sessions, pool 2027, cap 4 epochs, ES at epochs [1, 2, 3, 4]
+[09:32:48] epoch 1/4: loss 1.2509, 254 steps, 813.1s; ES macro-F1 0.5019 (78.6s)
+[09:48:17] epoch 2/4: loss 0.8174, 254 steps, 834.7s; ES macro-F1 0.7257 (94.1s)
+[10:05:30] epoch 3/4: loss 0.5457, 254 steps, 932.1s; ES macro-F1 0.7225 (100.8s)
+[10:21:23] epoch 4/4: loss 0.3708, 254 steps, 866.9s; ES macro-F1 0.7981 (86.2s)
+[10:21:24] done: best epoch 4, ES macro-F1 0.7981, 1016 steps, 3807.4s -> /Users/matthew/Development/hypabolic/HypaNet/experiments/phase-c-trained/v0_3/2048/seed0

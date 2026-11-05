@@ -1,6 +1,6 @@
 # Status (updated as results land)
 
-_Last update: 2026-11-05 12:15. v0.3 Phases A and B are archived and scored on val. Phase C all/seed0 is running._
+_Last update: 2026-11-05 14:10. v0.3 Phases A and B are archived and scored on val. The Phase C schedule is complete. Next: the one-time v0.3 sealed evaluation (E7, V4)._
 
 ## v0.2: small MLP on engineered features (complete)
 
@@ -94,4 +94,12 @@ Costs: Phase A about $59, Phase B $40, all `claude-fable-5-1`.
 
 1. v0.3 Phase A. Then the harness build, validation scoring (harness only), the Phase B disclosure and Phase B.
 2. v0.2 M4: Phase C MLPs and the sealed evaluation.
-3. v0.3 Phase C, the trained transformers. 9 of 11 runs are done (32, 128 and 512 × 3 seeds). The runner was killed at 09:01 and restarted at 09:17, and 2048 seed 0 is running again from scratch. Still to run: 2048 seed 0 and all seed 0.
+3. **v0.3 Phase C, the trained transformers, is complete** (11 runs, 14:06). The table gives each run's best early-stopping macro-F1. That is measured on the 500-session ES subset of val, which is not the population used for the A/B val numbers. Full scoring happens in the sealed evaluation.
+
+   | Budget | Seeds | ES macro-F1 |
+   |---|---|---|
+   | 32 | 3 | 0.344 / 0.292 / 0.372 |
+   | 128 | 3 | 0.404 / 0.450 / 0.468 |
+   | 512 | 3 | 0.732 / 0.729 / 0.724 |
+   | 2048 | 1 | 0.798 (still improving at the 4-epoch cap) |
+   | all (11,864 sessions) | 1 | 0.934 (3-epoch cap) |

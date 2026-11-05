@@ -1,0 +1,16 @@
+[07:36:27] dev: 12000 sessions (cached, 0.2s)
+[07:36:29] val: ES set 500 sessions, 9350 windows (1.5s)
+[07:36:29] budget 512 seed 1: 512 sessions, pool 509, cap 12 epochs, ES at epochs [2, 4, 6, 8, 10, 12]
+[07:39:17] epoch 1/12: loss 1.3649, 64 steps, 167.2s
+[07:43:27] epoch 2/12: loss 1.3079, 64 steps, 175.8s; ES macro-F1 0.2577 (74.1s)
+[07:46:13] epoch 3/12: loss 1.1588, 64 steps, 166.3s
+[07:50:12] epoch 4/12: loss 0.8870, 64 steps, 164.2s; ES macro-F1 0.5763 (74.5s)
+[07:53:05] epoch 5/12: loss 0.7054, 64 steps, 173.0s
+[07:57:16] epoch 6/12: loss 0.5494, 64 steps, 177.6s; ES macro-F1 0.5749 (73.7s)
+[08:00:11] epoch 7/12: loss 0.4154, 64 steps, 174.4s
+[08:04:21] epoch 8/12: loss 0.3484, 64 steps, 175.7s; ES macro-F1 0.6489 (75.1s)
+[08:07:18] epoch 9/12: loss 0.2551, 64 steps, 177.0s
+[08:11:34] epoch 10/12: loss 0.2336, 64 steps, 179.6s; ES macro-F1 0.6743 (76.5s)
+[08:14:27] epoch 11/12: loss 0.2086, 64 steps, 172.4s
+[08:18:39] epoch 12/12: loss 0.1818, 64 steps, 174.8s; ES macro-F1 0.7286 (77.6s)
+[08:18:40] done: best epoch 12, ES macro-F1 0.7286, 768 steps, 2530.5s -> /Users/matthew/Development/hypabolic/HypaNet/experiments/phase-c-trained/v0_3/512/seed1

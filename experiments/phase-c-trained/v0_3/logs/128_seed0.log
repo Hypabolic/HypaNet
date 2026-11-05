@@ -1,0 +1,25 @@
+[05:36:30] dev: 12000 sessions (cached, 0.2s)
+[05:36:32] val: ES set 500 sessions, 9350 windows (1.5s)
+[05:36:32] budget 128 seed 0: 128 sessions, pool 126, cap 30 epochs, ES at epochs [3, 6, 9, 12, 15, 18, 21, 24, 27, 30]
+[05:37:16] epoch 1/30: loss 1.3910, 16 steps, 44.0s
+[05:37:59] epoch 2/30: loss 1.3207, 16 steps, 42.4s
+[05:40:00] epoch 3/30: loss 1.3020, 16 steps, 42.9s; ES macro-F1 0.1417 (78.0s)
+[05:40:43] epoch 4/30: loss 1.2957, 16 steps, 43.2s
+[05:41:25] epoch 5/30: loss 1.2742, 16 steps, 41.8s
+[05:43:22] epoch 6/30: loss 1.2350, 16 steps, 43.5s; ES macro-F1 0.2401 (73.4s)
+[05:44:06] epoch 7/30: loss 1.1397, 16 steps, 44.5s
+[05:44:48] epoch 8/30: loss 1.0098, 16 steps, 41.9s
+[05:46:45] epoch 9/30: loss 0.9968, 16 steps, 42.9s; ES macro-F1 0.3148 (74.4s)
+[05:47:28] epoch 10/30: loss 0.8071, 16 steps, 42.2s
+[05:48:13] epoch 11/30: loss 0.8002, 16 steps, 45.1s
+[05:50:13] epoch 12/30: loss 0.6751, 16 steps, 43.7s; ES macro-F1 0.4037 (76.6s)
+[05:50:58] epoch 13/30: loss 0.6331, 16 steps, 44.8s
+[05:51:43] epoch 14/30: loss 0.7782, 16 steps, 44.9s
+[05:53:38] epoch 15/30: loss 0.5733, 16 steps, 42.4s; ES macro-F1 0.3882 (73.3s)
+[05:54:23] epoch 16/30: loss 0.4409, 16 steps, 44.6s
+[05:55:06] epoch 17/30: loss 0.3798, 16 steps, 42.8s
+[05:57:05] epoch 18/30: loss 0.4668, 16 steps, 43.8s; ES macro-F1 0.3783 (74.7s)
+[05:57:47] epoch 19/30: loss 0.4278, 16 steps, 42.7s
+[05:58:31] epoch 20/30: loss 0.3242, 16 steps, 43.8s
+[06:00:28] epoch 21/30: loss 0.3605, 16 steps, 43.1s; ES macro-F1 0.3590 (73.7s)
+[06:00:28] done: best epoch 12, ES macro-F1 0.4037, 336 steps, 1436.1s -> /Users/matthew/Development/hypabolic/HypaNet/experiments/phase-c-trained/v0_3/128/seed0
