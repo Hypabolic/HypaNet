@@ -19,7 +19,8 @@ cells reads the extra cells as part of its claim. The delimiter row is GFM's (``
 first
 :data:`MAX_EVALUATED` eligible rows in table order are evaluated, later ones are not. No table, an empty table
 or no eligible row means the edit cannot support Q5. ``scripts/v04_run_build.py`` writes this as a preview
-(``ARCHIVE/MECHANISMS.json``) and never refuses a build over it; the Q5 verdict is §8's, at the sealed attempt.
+(``ARCHIVE/MECHANISMS.json``, the eligibility report of PREREGISTRATION §8) and never refuses a build over it.
+v0.4 gives no Q5 verdict: the statistic needs the sealed counterfactual split (§8).
 """
 
 from __future__ import annotations

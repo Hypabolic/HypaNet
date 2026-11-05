@@ -1,15 +1,26 @@
 # v0.4 status
 
-_Last update: 2026-11-06 02:00. Plan: `agent_doom_loop_detector_plan_v0_4.md`. Matthew accepted every recommendation in it, and the post-M0 revisions are in its "Revisions after M0" section. On 6 Nov, before G1, he dropped the training baselines and all cloud compute (below; plan revision 12). No Qwen output has been compared with a label._
+_Last update: 2026-11-06. Plan: `agent_doom_loop_detector_plan_v0_4.md`. Matthew accepted every recommendation in it, and the post-M0 revisions are in its "Revisions after M0" section. On 6 Nov, before G1, he dropped the training baselines and all cloud compute (plan revision 12), and then took sealed scoring out of v0.4 (plan revision 13). No Qwen output has been compared with a label._
+
+## Second decision of 6 Nov 2026: val only, no sealed scoring
+
+Matthew decided directly: "Val only, no sealed". His context: "I need a quick answer to how the base qwen vs modified qwen performs, not 90 hours".
+
+- **No sealed set is opened or scored in v0.4**: not the fresh test set, v0.3 test, v0.3 OOD or the counterfactual split. They stay sealed and available to a later version. There is no sealed attempt, no G2 and no sealed-eval script (PREREGISTRATION §3.4; pre-registered revision 1 removed, §13).
+- **The result is Qwen-0 against the WSP edits on val**, `excluding_disclosed` primary, harness-only. Val numbers are still never shown to the weight author.
+- **Quick look first** (PREREGISTRATION §3.5). Each edit (WSP-A, then WSP-B, then WSP-F) is read out first on `datasets/v0_4/VAL_QUICK.txt` (1,000 val sessions by hash key, chosen before any edit existed; sha256 `b77f7415…`) and scored paired against Qwen-0 on the same sessions → `artifacts/reports/v04_val_quick_<arm>.json`. The full val readout follows → `v04_val_<arm>.json`, the result of record.
+- **Hypotheses on val** (§9): Q1 = Qwen-0 − dev-majority prior; Q2 = WSP-B − v0.3 B. Reported: WSP-A − Qwen-0, WSP-B − Qwen-0, WSP-A − v0.3 A, WSP-F beside WSP-B. Q2-OOD, Q3, Q4 and the Q5 verdict are not tested; the edit size and Mechanisms-table eligibility are still reported (§8). Val is not a sealed set, so these are weaker evidence, and the report says so.
+- **v0.3 columns on val**: `scripts/v04_v03_val_columns.py` recomputes the v0.3 A, B and C networks on val in the frozen v0.3 environment and refuses unless every block equals `v03_sealed.json` exactly. It has not been run yet (CPU, several workers; run it when the MPS readout is not competing).
+- **Scoring bridge**: accepts subset columns (VAL_QUICK by sha256, exact session ids), refuses mixed coverage, adds the constant priors and the v0.3 columns, and reports paired macro-F1 differences with 95% CIs over the shared bootstrap draws.
 
 ## Decision of 6 Nov 2026: no training baselines, everything local
 
 Matthew decided directly: "Drop the training baselines", and "I’ve never planned on renting a h100".
 
 - **No Qwen-probe and no Qwen-LoRA** column at any budget (32, 128, 512, 2,048, all or 200 windows). WSP-A, WSP-B and WSP-F are compared with Qwen-0 and the cited v0.3 and v0.2 columns only.
-- **Q3 and Q4 are not tested.** Q1, Q2, Q2-OOD and Q5 are unchanged.
-- **Nothing is rented.** The author's forward server, the harness-only val readouts and every sealed scoring run (fresh test, v0.3 test, v0.3 OOD, counterfactual and the Q5 readouts) use local MPS, fp32. The CPU replay check runs on this Mac's CPU, Qwen-0 and WSP-B against MPS (PREREGISTRATION §3.1, §3.3).
-- **Time instead of money.** One Qwen column over val takes about 5 h on MPS, so the sealed attempt takes several days; an interrupted attempt resumes from per-split, per-column checkpoints and no score is computed until every readout is done (PREREGISTRATION §3.4). The CPU replay takes several hours per column; its tool is written after G1 as pre-registered revision 3 (§3.3, §13).
+- **Q3 and Q4 are not tested.** Q1, Q2, Q2-OOD and Q5 were unchanged by this decision (the second decision, above, then dropped Q2-OOD and the Q5 verdict).
+- **Nothing is rented.** The author's forward server and the harness-only val readouts use local MPS, fp32 (the sealed scoring runs this bullet first listed were removed by the second decision, above). The CPU replay check runs on this Mac's CPU, Qwen-0 and WSP-B against MPS (PREREGISTRATION §3.1, §3.3).
+- **Time instead of money.** One Qwen column over val takes about 5 h on MPS, a quick look about 1.25 h. The CPU replay takes several hours per column; its tool is written after G1 as pre-registered revision 3 (§3.3, §13).
 - **Code removed.** The probe, LoRA and cloud-runner code merged earlier (`hypaqwen/{probe, lora, cloud, backend, columns, budgets}.py`, `envs/qwen/scripts/cloud_run.sh`, and their tests) is deleted, and `peft` is out of `envs/qwen`. It stays in git history at `0540341`. `datasets/v0_4/BUDGETS.json` is kept unchanged: v0.4 uses its 200 disclosed windows and its WSP-F holdout.
 - **Updated before G1:** PREREGISTRATION (§1, §3, §9 to §13; §4, §5 and §7.2 are stubs, so section numbers do not move; §8 now defines the "Small" yardstick itself), the spec's non-packet sections, the plan (revision 12) and the freeze's required components.
 
@@ -33,11 +44,10 @@ Matthew decided directly: "Drop the training baselines", and "I’ve never plann
 | **Session harness** | `scripts/v04_{prepare_author_dir,launch,kit_tests}.sh`, `v04_{cost,audit_session,run_build}.py`, `experiments/v0_4/author_kit/` | `./py` launcher under the KERNEL_CLIENT guard; command hook; settings; session-id cost accounting, which also charges killed launches; AST audit plus ledger cross-check; watchdog. Reviewed (7 findings, all fixed). The kit test passed end to end on a scratch dir (Haiku, server on CPU) |
 | **G1 pre-registration (draft)** | `experiments/v0_4/PREREGISTRATION.md`, `scripts/v04_freeze.py` | Backends, Q5 statistic and hypotheses (the probe and LoRA recipes were dropped on 6 Nov). The freeze covers every v0.4 tree and the root-env import closure, and refuses until the WSP-B pieces exist. Reviewed (8 findings, all fixed) |
 
-## Running (night of 5–6 Nov)
+## Running (6 Nov)
 
-- **Qwen-0 val readout** on MPS (`experiments/v0_4/columns/qwen0.val.npz`, label-free), ETA about 04:00. Scored only after the G1 freeze.
-- **Workflow: the last G1 components.** The WSP-B disclosure builder and prompt, and the Mechanisms table in EDIT.md. Each is reviewed before the freeze. The probe, LoRA and cloud-runner pieces were merged and then removed after the 6 Nov decision.
-- **Then:** freeze G1 → prepare `../HypaNet-v04-author` → kit tests → score Qwen-0 on val (harness only) → launch WSP-A (Fable, cap US$500), as Matthew asked.
+- **Qwen-0 readout of the quick-look subset** on MPS (`run_readout --split val --sessions datasets/v0_4/VAL_QUICK.txt`, label-free), from the main checkout. Scored only after the G1 freeze.
+- **Then:** freeze G1 → prepare `../HypaNet-v04-author` → kit tests → launch WSP-A (Fable, cap US$500), as Matthew asked → WSP-A quick look (subset readout, scored paired against Qwen-0) → full val readouts. The v0.3 val columns (`scripts/v04_v03_val_columns.py`) run on CPU when the MPS readout is not competing.
 
 ## Kernel rules added beyond the contract (fold into `docs/V04_WSP_KERNEL.md` at G1)
 
@@ -58,11 +68,11 @@ The unofficial v0.3 val dry run (`scripts/v03_sealed_eval.py --dry-run-val`) ran
 - the disclosure rule;
 - the two priors, overall and per family.
 
-So the frozen v0.3 artefacts can be re-scored on the fresh test set here with no tolerance (plan revision 10). The first attempt stopped because the Phase C `model.pt` files were Git LFS pointers. `git lfs install --local && git lfs pull` fixed that, and the hashes match.
+So the frozen v0.3 artefacts can be re-scored here with no tolerance (plan revision 10); after the second 6 Nov decision they are re-scored on val only. The first attempt stopped because the Phase C `model.pt` files were Git LFS pointers. `git lfs install --local && git lfs pull` fixed that, and the hashes match.
 
 ## Next
 
-1. **Qwen-0 val logits** (label-free, about 5 h on MPS): `hypaqwen.run_readout --split val`. They are scored only after G1.
+1. **Qwen-0 val logits** (label-free): the quick-look subset first (about 1.25 h on MPS, running), then full val (about 5 h). They are scored only after G1.
 2. Build the session harness: prepare script, launch with a tool allow-list and command hook, audit, cost by session delta, packet, kit tests.
 3. Write the v0.4 spec with `[packet]` sections.
 4. ~~Write the probe and LoRA recipes and the cloud-GPU scripts.~~ Dropped on 6 Nov (no training baselines).

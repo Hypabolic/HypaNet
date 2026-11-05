@@ -133,13 +133,13 @@ def test_check_catches_missing_file(root: Path) -> None:
 
 def test_check_catches_added_file(root: Path) -> None:
     R.write_registry(root)
-    _put(root, "scripts/v04_sealed_eval.py", "# written after G1\n")
+    _put(root, "scripts/v04_cpu_replay.py", "# written after G1\n")
     _put(root, "envs/qwen/hypaqwen/recipes/constants.json", "{}\n")  # non-.py data under hypaqwen
     _put(root, "src/agent_loop_lab/v04/sub/mod.py", "# a v04 subpackage\n")
     _put(root, "scripts/v04_notes.yaml", "note: 1\n")
     assert _check(root) == ["not in registry: envs/qwen/hypaqwen/recipes/constants.json",
+                            "not in registry: scripts/v04_cpu_replay.py",
                             "not in registry: scripts/v04_notes.yaml",
-                            "not in registry: scripts/v04_sealed_eval.py",
                             "not in registry: src/agent_loop_lab/v04/sub/mod.py"]
 
 
@@ -300,10 +300,10 @@ def test_import_closure_refuses_unresolved_import(root: Path) -> None:
 
 def test_revise_adds_files_and_chains(root: Path) -> None:
     _, g1 = R.write_registry(root)
-    _put(root, "scripts/v04_sealed_eval.py", "# written after G1 against §3.4\n")
-    _, rec = R.revise_registry(root, reason="sealed evaluation script (§3.4)", date="2026-11-20")
+    _put(root, "scripts/v04_cpu_replay.py", "# written after G1 against §3.3\n")
+    _, rec = R.revise_registry(root, reason="CPU replay tool (§3.3)", date="2026-11-20")
     rev = rec["revisions"][-1]
-    assert rev["added"] == {"scripts/v04_sealed_eval.py": R._sha256(b"# written after G1 against \xc2\xa73.4\n")}
+    assert rev["added"] == {"scripts/v04_cpu_replay.py": R._sha256(b"# written after G1 against \xc2\xa73.3\n")}
     assert rev["changed"] == {} and rev["previous_freeze_sha256"] == g1["freeze_sha256"]
     assert _check(root) == []
     assert R.g1_freeze_sha256(rec) == g1["freeze_sha256"]
@@ -363,8 +363,8 @@ def test_revise_is_deterministic(root: Path, tmp_path: Path) -> None:
     copy = tmp_path / "copy"
     shutil.copytree(root, copy)
     for base in (root, copy):
-        _put(base, "scripts/v04_sealed_eval.py", "# same\n")
-        R.revise_registry(base, reason="sealed eval", date="2026-11-20")
+        _put(base, "scripts/v04_cpu_replay.py", "# same\n")
+        R.revise_registry(base, reason="CPU replay tool", date="2026-11-20")
     assert (root / R.REGISTRY_RELPATH).read_bytes() == (copy / R.REGISTRY_RELPATH).read_bytes()
 
 
@@ -397,7 +397,8 @@ def test_repo_pins_and_globs() -> None:
                 "src/agent_loop_lab/baselines/phase_c_v03.py", "src/agent_loop_lab/baselines/phase_c.py",
                 "src/agent_loop_lab/synth/counterfactual.py", "src/agent_loop_lab/synth/families/abab_oscillation.py",
                 "datasets/v0_4/EXPORT_MANIFEST.json", "datasets/v0_2/splits.json", "datasets/v0_3/MANIFEST_v0_3.json",
-                "artifacts/reports/v03_sealed.json", "experiments/v0_3/phase_c/README.md",
+                "datasets/v0_4/VAL_QUICK.txt", "scripts/v04_val_quick_subset.py", "src/agent_loop_lab/v04/v03_val.py",
+                "scripts/v04_v03_val_columns.py", "artifacts/reports/v03_sealed.json", "experiments/v0_3/phase_c/README.md",
                 "envs/qwen/tests/test_wsp_server.py"):
         assert rel in files, rel
     assert "_hn_v04_frozen_interface" not in sys.modules

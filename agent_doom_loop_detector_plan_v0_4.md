@@ -250,6 +250,24 @@ The sections above stay as written; the pre-registration and the spec carry the 
     - The cost is time. One Qwen column over val takes about 5 h on MPS, so the sealed attempt takes several days and the CPU replay several hours per column.
     - The probe, LoRA and cloud-runner code merged before this decision has been removed. It stays in git history at commit `0540341`.
 
+## Second revision of 6 Nov 2026 (before G1)
+
+Matthew decided this directly too: "Val only, no sealed". His context: "I need a quick answer to how the base qwen vs modified qwen performs, not 90 hours". It overrides everything above that assumes a sealed evaluation, in particular:
+
+- the "Data, splits and sealing" recommendation (the fresh sealed test set as the primary result, v0.3 test and OOD as secondary, every sealed set scored once after the WSP-B archive);
+- milestones 7 (G2) and 8 (M4, the sealed evaluation);
+- revision 2's use of the fresh test set (it was built and sealed; it is not scored), revision 8's counterfactual pass, and revision 10's re-scoring of v0.3 artefacts on the fresh set (they are re-scored on val instead);
+- revision 12's sealed scoring runs and its "several days" for the sealed attempt.
+
+13. **No sealed scoring in v0.4.**
+    - The fresh test set, v0.3 test, v0.3 OOD and the counterfactual split are not opened or scored in v0.4. They stay sealed and available to a later version, which may score the archived v0.4 edits on them under its own pre-registration.
+    - The v0.4 result is base Qwen (Qwen-0) against the WSP edits on val, `excluding_disclosed` primary, harness-only. Val numbers are still never shown to Fable.
+    - **Quick look first.** Each edit (WSP-A, then WSP-B, then WSP-F) is read out first on `datasets/v0_4/VAL_QUICK.txt`, 1,000 val sessions chosen by hash key before any edit existed, and scored paired against Qwen-0 on the same sessions with the same bootstrap draws. Its full val readout follows, and the full-val numbers are the result of record. The quick look is reported beside, never instead of, the full result.
+    - The v0.3 A, B and C networks and the constant priors are re-scored on val in the frozen v0.3 environment (`scripts/v04_v03_val_columns.py`), exactly against the v0.3 report, so WSP-B − v0.3 B (Q2) has a paired CI on val. The rules engine and the v0.2 columns are cited.
+    - Q1 and Q2 are tested on val. Q2-OOD and the Q5 verdict are not, because they need v0.3 OOD and the counterfactual split. The size of every edit and the eligibility of its claimed mechanisms are still reported.
+    - Val is not a sealed set: the harness reads models out on it, v0.3 used it for early stopping and the Phase B disclosure, and WSP-B sees 200 of its windows (`excluding_disclosed` removes their sessions). So a v0.4 result is weaker evidence than a sealed one, and the report says so.
+    - Time: four full val readouts take about 20 h of MPS, and a quick look about 1.25 h, against several days for the sealed attempt.
+
 ## Sources
 
 - "Sparks of Weight-Space Programming", Takehi, Teoh, Zhang and Khattab, 2 Nov 2026: https://rikiyat.github.io/blog/weight-space-programming/ and logs at https://github.com/RikiyaT/lm_understand-logs
