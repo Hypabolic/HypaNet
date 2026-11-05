@@ -23,7 +23,8 @@ from hypaqwen.wsp import install as I
 
 AUTHOR_DIR = Path(C.__file__).parent
 ALLOWED_AUTHOR_IMPORTS = {"__future__", "argparse", "atexit", "json", "os", "re", "sys", "contextlib", "socket",
-                          "struct", "pathlib", "typing", "numpy", "torch", "tokenizers", "math", "stat", "importlib"}
+                          "struct", "pathlib", "typing", "numpy", "torch", "tokenizers", "math", "stat", "importlib",
+                          "runpy", "traceback", "safetensors"}  # the last three: run_py.py, the ./py launcher
 
 
 def test_author_side_imports_only_stdlib_numpy_torch():

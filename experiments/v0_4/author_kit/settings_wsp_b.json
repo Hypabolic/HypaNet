@@ -1,0 +1,57 @@
+{
+  "autoMemoryEnabled": false,
+  "disableBypassPermissionsMode": "disable",
+  "env": {
+    "HN_PHASE": "wsp-b"
+  },
+  "permissions": {
+    "defaultMode": "dontAsk",
+    "allow": [
+      "Read(./**)",
+      "Glob(./**)",
+      "Grep(./**)",
+      "Write(./output/wsp-b/**)",
+      "Edit(./output/wsp-b/**)",
+      "Bash(./py:*)",
+      "Bash(./fwd:*)"
+    ],
+    "deny": [
+      "WebFetch",
+      "WebSearch",
+      "Read(./.kernel/**)",
+      "Edit(./.kernel/**)",
+      "Write(./.kernel/**)",
+      "Edit(./tools/**)",
+      "Write(./tools/**)",
+      "Edit(./packet/**)",
+      "Write(./packet/**)",
+      "Edit(./.venv/**)",
+      "Write(./.venv/**)",
+      "Edit(./py)",
+      "Write(./py)",
+      "Edit(./fwd)",
+      "Write(./fwd)",
+      "Edit(./output/wsp-b/fwd/**)",
+      "Write(./output/wsp-b/fwd/**)",
+      "Edit(./output/wsp-a/**)",
+      "Write(./output/wsp-a/**)",
+      "Edit(./disclosure/**)",
+      "Write(./disclosure/**)",
+      "@DENY_ROOTS@"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/.venv/bin/python -I -B \"$CLAUDE_PROJECT_DIR\"/tools/hn_hook/hook_bash.py wsp-b",
+            "timeout": 30
+          }
+        ]
+      }
+    ]
+  }
+}

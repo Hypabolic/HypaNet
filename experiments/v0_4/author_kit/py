@@ -1,0 +1,12 @@
+#!/bin/sh
+# ./py SCRIPT [ARGS] (docs/V04_WSP_KERNEL.md §4-5): one author script under the KERNEL_CLIENT guard, in the
+# private venv in isolated mode (-I: no PYTHONPATH, user site or script directory on the path; -B: no
+# bytecode). tools/hn_kernel/run_py.py loads the kernel client, wsp and hn_guard by explicit path, builds
+# the tokenizer, installs the guard, then runs the script. The phase comes from HN_PHASE (the launcher's
+# environment and the session settings), else from the single output/<phase>/ directory.
+here="$(cd "$(dirname "$0")" && pwd -P)"
+for d in "$here" "$here/tools" "$here/tools/hn_kernel" "$here/tools/hn_guard"; do
+  if [ -w "$d" ] || [ -L "$d" ]; then echo "./py: refusing: ${d#"$here"/} is writable or a link" >&2; exit 2; fi
+done
+HN_AUTHOR_DIR="$here" HN_KERNEL_SOCKET="$here/.kernel/kernel.sock" PYTHONDONTWRITEBYTECODE=1 \
+  exec "$here/.venv/bin/python" -I -B "$here/tools/hn_kernel/run_py.py" "$@"
