@@ -1,0 +1,212 @@
+[
+ {
+  "id": "k0p",
+  "n": 24,
+  "pair": "k0",
+  "feat": "NF1",
+  "sign": 1
+ },
+ {
+  "id": "k0n",
+  "n": 24,
+  "pair": "k0",
+  "feat": "NF1",
+  "sign": -1
+ },
+ {
+  "id": "k1p",
+  "n": 25,
+  "pair": "k1",
+  "feat": "NF2",
+  "sign": 1
+ },
+ {
+  "id": "k1n",
+  "n": 25,
+  "pair": "k1",
+  "feat": "NF2",
+  "sign": -1
+ },
+ {
+  "id": "k2p",
+  "n": 26,
+  "pair": "k2",
+  "feat": "REPF",
+  "sign": 1
+ },
+ {
+  "id": "k2n",
+  "n": 26,
+  "pair": "k2",
+  "feat": "REPF",
+  "sign": -1
+ },
+ {
+  "id": "k3p",
+  "n": 27,
+  "pair": "k3",
+  "feat": "OSCOK",
+  "sign": 1
+ },
+ {
+  "id": "k3n",
+  "n": 27,
+  "pair": "k3",
+  "feat": "OSCOK",
+  "sign": -1
+ },
+ {
+  "id": "k4p",
+  "n": 28,
+  "pair": "k4",
+  "feat": "RESH",
+  "sign": 1
+ },
+ {
+  "id": "k4n",
+  "n": 28,
+  "pair": "k4",
+  "feat": "RESH",
+  "sign": -1
+ },
+ {
+  "id": "k5p",
+  "n": 29,
+  "pair": "k5",
+  "feat": "PEND",
+  "sign": 1
+ },
+ {
+  "id": "k5n",
+  "n": 29,
+  "pair": "k5",
+  "feat": "PEND",
+  "sign": -1
+ },
+ {
+  "id": "k6p",
+  "n": 30,
+  "pair": "k6",
+  "feat": "REPH",
+  "sign": 1
+ },
+ {
+  "id": "k6n",
+  "n": 30,
+  "pair": "k6",
+  "feat": "REPH",
+  "sign": -1
+ },
+ {
+  "id": "k7p",
+  "n": 31,
+  "pair": "k7",
+  "feat": "REPP",
+  "sign": 1
+ },
+ {
+  "id": "k7n",
+  "n": 31,
+  "pair": "k7",
+  "feat": "REPP",
+  "sign": -1
+ },
+ {
+  "id": "k8p",
+  "n": 32,
+  "pair": "k8",
+  "feat": "NF3",
+  "sign": 1
+ },
+ {
+  "id": "k8n",
+  "n": 32,
+  "pair": "k8",
+  "feat": "NF3",
+  "sign": -1
+ },
+ {
+  "id": "k9p",
+  "n": 33,
+  "pair": "k9",
+  "feat": "RDS",
+  "sign": 1
+ },
+ {
+  "id": "k9n",
+  "n": 33,
+  "pair": "k9",
+  "feat": "RDS",
+  "sign": -1
+ },
+ {
+  "id": "k10p",
+  "n": 27,
+  "pair": "k10",
+  "feat": "NF1",
+  "sign": 1
+ },
+ {
+  "id": "k10n",
+  "n": 27,
+  "pair": "k10",
+  "feat": "NF1",
+  "sign": -1
+ },
+ {
+  "id": "k11p",
+  "n": 28,
+  "pair": "k11",
+  "feat": "NF2",
+  "sign": 1
+ },
+ {
+  "id": "k11n",
+  "n": 28,
+  "pair": "k11",
+  "feat": "NF2",
+  "sign": -1
+ },
+ {
+  "id": "k12p",
+  "n": 29,
+  "pair": "k12",
+  "feat": "REPF",
+  "sign": 1
+ },
+ {
+  "id": "k12n",
+  "n": 29,
+  "pair": "k12",
+  "feat": "REPF",
+  "sign": -1
+ },
+ {
+  "id": "k13p",
+  "n": 30,
+  "pair": "k13",
+  "feat": "OSCOK",
+  "sign": 1
+ },
+ {
+  "id": "k13n",
+  "n": 30,
+  "pair": "k13",
+  "feat": "OSCOK",
+  "sign": -1
+ },
+ {
+  "id": "k14p",
+  "n": 31,
+  "pair": "k14",
+  "feat": "RESH",
+  "sign": 1
+ },
+ {
+  "id": "k14n",
+  "n": 31,
+  "pair": "k14",
+  "feat": "RESH",
+  "sign": -1
+ }
+]

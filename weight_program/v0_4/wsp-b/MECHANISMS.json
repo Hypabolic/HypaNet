@@ -1,0 +1,53 @@
+{
+ "edit_md_sha256": "39844e31a6bd9f792c8db7d90ae41b3631564b49e2cd246cb3b4fdddf5423abb",
+ "evaluated": 3,
+ "found": true,
+ "note": "eligibility preview only; v0.4 gives no Q5 verdict (PREREGISTRATION \u00a78); never refuses a build",
+ "problems": [],
+ "q5_possible": true,
+ "rows": [
+  {
+   "claim": "Unit 1046 fires on repeated edit-type blocks (A/B edits, edit/revert, write/revert cycles) with or without validation failures and without reads, and adds its activation to the ` looping` logit only, so edit cycles are named looping instead of productive or recovering.",
+   "id": "M1",
+   "row": 1,
+   "status": "evaluated",
+   "target_class": "OSCILLATING",
+   "tensors": [
+    "model.language_model.layers.23.mlp.gate_proj.weight",
+    "model.language_model.layers.23.mlp.up_proj.weight",
+    "model.language_model.layers.23.mlp.down_proj.weight"
+   ]
+  },
+  {
+   "claim": "Unit 1613 fires when identical failing tests or long failure chains dominate the window without reads, edits, pending polls or http retries, and adds its activation to the ` stalled` logit only, so repeated identical failures are named stalled instead of productive or recovering.",
+   "id": "M2",
+   "row": 2,
+   "status": "evaluated",
+   "target_class": "STALLED",
+   "tensors": [
+    "model.language_model.layers.22.mlp.gate_proj.weight",
+    "model.language_model.layers.22.mlp.up_proj.weight",
+    "model.language_model.layers.22.mlp.down_proj.weight"
+   ]
+  },
+  {
+   "claim": "The ` productive` row gains the measured productive deficit plus reads-present minus repeated-failure directions (and the ` recovering` row a linear retry/poll/resolution term), so windows with investigation and no repeated identical failures are named productive instead of recovering.",
+   "id": "M3",
+   "row": 3,
+   "status": "evaluated",
+   "target_class": "PRODUCTIVE",
+   "tensors": [
+    "label rows"
+   ]
+  }
+ ],
+ "units": [
+  "label rows",
+  "model.language_model.layers.22.mlp.down_proj.weight",
+  "model.language_model.layers.22.mlp.gate_proj.weight",
+  "model.language_model.layers.22.mlp.up_proj.weight",
+  "model.language_model.layers.23.mlp.down_proj.weight",
+  "model.language_model.layers.23.mlp.gate_proj.weight",
+  "model.language_model.layers.23.mlp.up_proj.weight"
+ ]
+}

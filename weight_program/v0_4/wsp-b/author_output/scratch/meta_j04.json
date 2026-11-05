@@ -1,0 +1,226 @@
+[
+ {
+  "id": "j50p",
+  "n": 24,
+  "pair": "j50",
+  "feat": "NF1",
+  "sign": 1
+ },
+ {
+  "id": "j50n",
+  "n": 24,
+  "pair": "j50",
+  "feat": "NF1",
+  "sign": -1
+ },
+ {
+  "id": "j51p",
+  "n": 25,
+  "pair": "j51",
+  "feat": "NF2",
+  "sign": 1
+ },
+ {
+  "id": "j51n",
+  "n": 25,
+  "pair": "j51",
+  "feat": "NF2",
+  "sign": -1
+ },
+ {
+  "id": "j52p",
+  "n": 26,
+  "pair": "j52",
+  "feat": "REPF",
+  "sign": 1
+ },
+ {
+  "id": "j52n",
+  "n": 26,
+  "pair": "j52",
+  "feat": "REPF",
+  "sign": -1
+ },
+ {
+  "id": "j53p",
+  "n": 27,
+  "pair": "j53",
+  "feat": "OSCOK",
+  "sign": 1
+ },
+ {
+  "id": "j53n",
+  "n": 27,
+  "pair": "j53",
+  "feat": "OSCOK",
+  "sign": -1
+ },
+ {
+  "id": "j54p",
+  "n": 28,
+  "pair": "j54",
+  "feat": "RESH",
+  "sign": 1
+ },
+ {
+  "id": "j54n",
+  "n": 28,
+  "pair": "j54",
+  "feat": "RESH",
+  "sign": -1
+ },
+ {
+  "id": "j55p",
+  "n": 29,
+  "pair": "j55",
+  "feat": "PEND",
+  "sign": 1
+ },
+ {
+  "id": "j55n",
+  "n": 29,
+  "pair": "j55",
+  "feat": "PEND",
+  "sign": -1
+ },
+ {
+  "id": "j56p",
+  "n": 30,
+  "pair": "j56",
+  "feat": "REPH",
+  "sign": 1
+ },
+ {
+  "id": "j56n",
+  "n": 30,
+  "pair": "j56",
+  "feat": "REPH",
+  "sign": -1
+ },
+ {
+  "id": "j57p",
+  "n": 31,
+  "pair": "j57",
+  "feat": "REPP",
+  "sign": 1
+ },
+ {
+  "id": "j57n",
+  "n": 31,
+  "pair": "j57",
+  "feat": "REPP",
+  "sign": -1
+ },
+ {
+  "id": "j58p",
+  "n": 32,
+  "pair": "j58",
+  "feat": "NF3",
+  "sign": 1
+ },
+ {
+  "id": "j58n",
+  "n": 32,
+  "pair": "j58",
+  "feat": "NF3",
+  "sign": -1
+ },
+ {
+  "id": "j59p",
+  "n": 33,
+  "pair": "j59",
+  "feat": "RDS",
+  "sign": 1
+ },
+ {
+  "id": "j59n",
+  "n": 33,
+  "pair": "j59",
+  "feat": "RDS",
+  "sign": -1
+ },
+ {
+  "id": "j60p",
+  "n": 23,
+  "pair": "j60",
+  "feat": "NF1",
+  "sign": 1
+ },
+ {
+  "id": "j60n",
+  "n": 23,
+  "pair": "j60",
+  "feat": "NF1",
+  "sign": -1
+ },
+ {
+  "id": "j61p",
+  "n": 24,
+  "pair": "j61",
+  "feat": "NF2",
+  "sign": 1
+ },
+ {
+  "id": "j61n",
+  "n": 24,
+  "pair": "j61",
+  "feat": "NF2",
+  "sign": -1
+ },
+ {
+  "id": "j62p",
+  "n": 25,
+  "pair": "j62",
+  "feat": "REPF",
+  "sign": 1
+ },
+ {
+  "id": "j62n",
+  "n": 25,
+  "pair": "j62",
+  "feat": "REPF",
+  "sign": -1
+ },
+ {
+  "id": "j63p",
+  "n": 26,
+  "pair": "j63",
+  "feat": "OSCOK",
+  "sign": 1
+ },
+ {
+  "id": "j63n",
+  "n": 26,
+  "pair": "j63",
+  "feat": "OSCOK",
+  "sign": -1
+ },
+ {
+  "id": "j64p",
+  "n": 27,
+  "pair": "j64",
+  "feat": "RESH",
+  "sign": 1
+ },
+ {
+  "id": "j64n",
+  "n": 27,
+  "pair": "j64",
+  "feat": "RESH",
+  "sign": -1
+ },
+ {
+  "id": "j65p",
+  "n": 28,
+  "pair": "j65",
+  "feat": "PEND",
+  "sign": 1
+ },
+ {
+  "id": "j65n",
+  "n": 28,
+  "pair": "j65",
+  "feat": "PEND",
+  "sign": -1
+ }
+]

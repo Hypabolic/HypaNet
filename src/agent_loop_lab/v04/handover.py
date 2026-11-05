@@ -9,7 +9,7 @@ Used by ``scripts/v04_prepare_phase_b.sh``, ``scripts/v04_launch.sh`` and ``scri
   so each WSP archive names the registry it ran under.
 * **Fail closed.** ``ARCHIVE/FREEZE.json`` must be frozen and consistent with at least one launch
   (``disclosure.check_freeze_record``), and its build and launch freezes must be the current registry's G1
-  kernel freeze: the G1 freeze or one after an additive revision only (:func:`kernel_freezes`,
+  kernel freeze: the G1 freeze or one after an additive (or, D1, kernel-neutral) revision only (:func:`kernel_freezes`,
   :func:`check_archive_freeze`). ``consistent`` in :func:`freeze_record` means the same: at least one launch,
   every launch under one of those freezes.
 * **WSP-B inputs** (:func:`wsp_b_inputs`): the archived WSP-A build (``disclosure.check_wsp_a_archive``) and the
@@ -92,16 +92,28 @@ def freeze_info(registry: Path = REGISTRY) -> dict[str, Any]:
             "g1_freeze_sha256": g1, "revisions": len(revs), "kernel_freezes": kernel_freezes(rec)}
 
 
+# Deviation D1 (PREREGISTRATION §13 log): existing files a revision may change and still run the G1 kernel. None
+# is run by the author session, the model server, the guard or the hook; they only describe the run or build
+# and check the WSP-B handover, which wsp_b_inputs re-checks on every launch.
+KERNEL_NEUTRAL_FILES = frozenset({
+    "experiments/v0_4/PREREGISTRATION.md",
+    "src/agent_loop_lab/v04/disclosure.py",
+    "scripts/v04_build_disclosure.py",
+    "src/agent_loop_lab/v04/handover.py",
+})
+
+
 def kernel_freezes(rec: Mapping[str, Any]) -> list[str]:
     """The freezes that ran the G1 kernel (PREREGISTRATION §7.3, §13): the G1 freeze and the freeze after each
-    revision, in order, up to the first revision that changed an existing file (the WSP-F ops revision), which
-    is excluded with everything after it. Each revision's ``previous_freeze_sha256`` names the freeze it revised
-    (``scripts/v04_freeze.py --check`` verifies that chain); the last freeze is the record's own."""
+    revision, in order, up to the first revision that changed an existing file outside
+    :data:`KERNEL_NEUTRAL_FILES` (the WSP-F ops revision), which is excluded with everything after it. Each
+    revision's ``previous_freeze_sha256`` names the freeze it revised (``scripts/v04_freeze.py --check`` verifies
+    that chain); the last freeze is the record's own."""
     revs = list(rec.get("revisions") or [])
     chain = [r.get("previous_freeze_sha256") for r in revs] + [rec.get("freeze_sha256")]
     out = [chain[0]]
     for k, r in enumerate(revs):
-        if r.get("changed"):
+        if set(r.get("changed") or {}) - KERNEL_NEUTRAL_FILES:
             break
         out.append(chain[k + 1])
     return out

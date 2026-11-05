@@ -1,0 +1,198 @@
+[
+ {
+  "id": "k66p",
+  "n": 29,
+  "pair": "k66",
+  "feat": "REPH",
+  "sign": 1
+ },
+ {
+  "id": "k66n",
+  "n": 29,
+  "pair": "k66",
+  "feat": "REPH",
+  "sign": -1
+ },
+ {
+  "id": "k67p",
+  "n": 30,
+  "pair": "k67",
+  "feat": "REPP",
+  "sign": 1
+ },
+ {
+  "id": "k67n",
+  "n": 30,
+  "pair": "k67",
+  "feat": "REPP",
+  "sign": -1
+ },
+ {
+  "id": "k68p",
+  "n": 31,
+  "pair": "k68",
+  "feat": "NF3",
+  "sign": 1
+ },
+ {
+  "id": "k68n",
+  "n": 31,
+  "pair": "k68",
+  "feat": "NF3",
+  "sign": -1
+ },
+ {
+  "id": "k69p",
+  "n": 32,
+  "pair": "k69",
+  "feat": "RDS",
+  "sign": 1
+ },
+ {
+  "id": "k69n",
+  "n": 32,
+  "pair": "k69",
+  "feat": "RDS",
+  "sign": -1
+ },
+ {
+  "id": "k70p",
+  "n": 23,
+  "pair": "k70",
+  "feat": "NF1",
+  "sign": 1
+ },
+ {
+  "id": "k70n",
+  "n": 23,
+  "pair": "k70",
+  "feat": "NF1",
+  "sign": -1
+ },
+ {
+  "id": "k71p",
+  "n": 24,
+  "pair": "k71",
+  "feat": "NF2",
+  "sign": 1
+ },
+ {
+  "id": "k71n",
+  "n": 24,
+  "pair": "k71",
+  "feat": "NF2",
+  "sign": -1
+ },
+ {
+  "id": "k72p",
+  "n": 25,
+  "pair": "k72",
+  "feat": "REPF",
+  "sign": 1
+ },
+ {
+  "id": "k72n",
+  "n": 25,
+  "pair": "k72",
+  "feat": "REPF",
+  "sign": -1
+ },
+ {
+  "id": "k73p",
+  "n": 26,
+  "pair": "k73",
+  "feat": "OSCOK",
+  "sign": 1
+ },
+ {
+  "id": "k73n",
+  "n": 26,
+  "pair": "k73",
+  "feat": "OSCOK",
+  "sign": -1
+ },
+ {
+  "id": "k74p",
+  "n": 27,
+  "pair": "k74",
+  "feat": "RESH",
+  "sign": 1
+ },
+ {
+  "id": "k74n",
+  "n": 27,
+  "pair": "k74",
+  "feat": "RESH",
+  "sign": -1
+ },
+ {
+  "id": "k75p",
+  "n": 28,
+  "pair": "k75",
+  "feat": "PEND",
+  "sign": 1
+ },
+ {
+  "id": "k75n",
+  "n": 28,
+  "pair": "k75",
+  "feat": "PEND",
+  "sign": -1
+ },
+ {
+  "id": "k76p",
+  "n": 29,
+  "pair": "k76",
+  "feat": "REPH",
+  "sign": 1
+ },
+ {
+  "id": "k76n",
+  "n": 29,
+  "pair": "k76",
+  "feat": "REPH",
+  "sign": -1
+ },
+ {
+  "id": "k77p",
+  "n": 30,
+  "pair": "k77",
+  "feat": "REPP",
+  "sign": 1
+ },
+ {
+  "id": "k77n",
+  "n": 30,
+  "pair": "k77",
+  "feat": "REPP",
+  "sign": -1
+ },
+ {
+  "id": "k78p",
+  "n": 31,
+  "pair": "k78",
+  "feat": "NF3",
+  "sign": 1
+ },
+ {
+  "id": "k78n",
+  "n": 31,
+  "pair": "k78",
+  "feat": "NF3",
+  "sign": -1
+ },
+ {
+  "id": "k79p",
+  "n": 32,
+  "pair": "k79",
+  "feat": "RDS",
+  "sign": 1
+ },
+ {
+  "id": "k79n",
+  "n": 32,
+  "pair": "k79",
+  "feat": "RDS",
+  "sign": -1
+ }
+]

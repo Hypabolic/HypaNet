@@ -1,0 +1,7 @@
+{
+ "BIAS_PROD": 4.2, "A_NFR": 1.5, "A_REPX": 1.0,
+ "A_SLOPE": 3.0, "TARGET_GAIN": 5.0, "CAP": 3.0,
+ "W_E": 1.5, "W_NF": 1.0,
+ "W_RF": 1.0, "W_PD": 1.0, "W_RH": 0.5, "W_NFS": 1.0, "W_TT": 1.0,
+ "W_RS2": 0.5
+}

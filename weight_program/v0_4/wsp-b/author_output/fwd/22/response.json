@@ -1,0 +1,3095 @@
+{
+ "call_id": 22,
+ "phase": "wsp-b",
+ "model": "original",
+ "edit_hash": "74576466ac6d22c6cc6d7545e4162a0ae2daf38a6049624e232caf635910079a",
+ "tokens": 45538,
+ "budget": {
+  "tokens_used": 947092,
+  "tokens_left": 1052908,
+  "requests": 22
+ },
+ "class_names": [
+  "PRODUCTIVE",
+  "RECOVERY",
+  "STALLED",
+  "OSCILLATING"
+ ],
+ "sessions": [
+  {
+   "id": "k50p",
+   "windows": [
+    23,
+    24
+   ],
+   "original": {
+    "label_logits": [
+     [
+      14.442920684814453,
+      16.637907028198242,
+      18.675369262695312,
+      17.99332046508789
+     ],
+     [
+      13.905232429504395,
+      16.73226547241211,
+      18.750885009765625,
+      18.28358268737793
+     ]
+    ],
+    "logsumexp": [
+     19.394588470458984,
+     19.51315689086914
+    ],
+    "label_argmax": [
+     2,
+     2
+    ],
+    "argmax": [
+     65552,
+     65552
+    ],
+    "topk": [
+     [
+      65552,
+      60477,
+      39923
+     ],
+     [
+      65552,
+      60477,
+      39923
+     ]
+    ]
+   }
+  },
+  {
+   "id": "k50n",
+   "windows": [
+    23,
+    24
+   ],
+   "original": {
+    "label_logits": [
+     [
+      14.475299835205078,
+      16.718528747558594,
+      18.608497619628906,
+      18.02394676208496
+     ],
+     [
+      13.7146635055542,
+      16.635913848876953,
+      18.72100257873535,
+      18.350303649902344
+     ]
+    ],
+    "logsumexp": [
+     19.376399993896484,
+     19.510543823242188
+    ],
+    "label_argmax": [
+     2,
+     2
+    ],
+    "argmax": [
+     65552,
+     65552
+    ],
+    "topk": [
+     [
+      65552,
+      60477,
+      39923
+     ],
+     [
+      65552,
+      60477,
+      39923
+     ]
+    ]
+   }
+  },
+  {
+   "id": "k51p",
+   "windows": [
+    24,
+    25
+   ],
+   "original": {
+    "label_logits": [
+     [
+      13.45910930633545,
+      17.35480499267578,
+      18.45241928100586,
+      19.261890411376953
+     ],
+     [
+      14.070379257202148,
+      17.667621612548828,
+      18.595693588256836,
+      19.011127471923828
+     ]
+    ],
+    "logsumexp": [
+     19.92554473876953,
+     19.87961196899414
+    ],
+    "label_argmax": [
+     3,
+     3
+    ],
+    "argmax": [
+     60477,
+     60477
+    ],
+    "topk": [
+     [
+      60477,
+      65552,
+      39923
+     ],
+     [
+      60477,
+      65552,
+      39923
+     ]
+    ]
+   }
+  },
+  {
+   "id": "k51n",
+   "windows": [
+    24,
+    25
+   ],
+   "original": {
+    "label_logits": [
+     [
+      13.847804069519043,
+      17.810840606689453,
+      18.423368453979492,
+      19.108108520507812
+     ],
+     [
+      14.551071166992188,
+      18.027393341064453,
+      18.54727554321289,
+      18.96538734436035
+     ]
+    ],
+    "logsumexp": [
+     19.903181076049805,
+     19.91227149963379
+    ],
+    "label_argmax": [
+     3,
+     3
+    ],
+    "argmax": [
+     60477,
+     60477
+    ],
+    "topk": [
+     [
+      60477,
+      65552,
+      39923
+     ],
+     [
+      60477,
+      65552,
+      39923
+     ]
+    ]
+   }
+  },
+  {
+   "id": "k52p",
+   "windows": [
+    25,
+    26
+   ],
+   "original": {
+    "label_logits": [
+     [
+      12.323835372924805,
+      16.78455352783203,
+      18.577253341674805,
+      19.280014038085938
+     ],
+     [
+      12.25075912475586,
+      16.77105140686035,
+      18.693523406982422,
+      19.320083618164062
+     ]
+    ],
+    "logsumexp": [
+     19.904104232788086,
+     19.956382751464844
+    ],
+    "label_argmax": [
+     3,
+     3
+    ],
+    "argmax": [
+     60477,
+     60477
+    ],
+    "topk": [
+     [
+      60477,
+      65552,
+      6136
+     ],
+     [
+      60477,
+      65552,
+      6136
+     ]
+    ]
+   }
+  },
+  {
+   "id": "k52n",
+   "windows": [
+    25,
+    26
+   ],
+   "original": {
+    "label_logits": [
+     [
+      12.576443672180176,
+      17.34657096862793,
+      18.615543365478516,
+      19.442541122436523
+     ],
+     [
+      12.227945327758789,
+      17.145471572875977,
+      18.679641723632812,
+      19.41438102722168
+     ]
+    ],
+    "logsumexp": [
+     20.06439781188965,
+     20.045257568359375
+    ],
+    "label_argmax": [
+     3,
+     3
+    ],
+    "argmax": [
+     60477,
+     60477
+    ],
+    "topk": [
+     [
+      60477,
+      65552,
+      39923
+     ],
+     [
+      60477,
+      65552,
+      6136
+     ]
+    ]
+   }
+  },
+  {
+   "id": "k53p",
+   "windows": [
+    26,
+    27
+   ],
+   "original": {
+    "label_logits": [
+     [
+      18.008352279663086,
+      19.091550827026367,
+      18.181154251098633,
+      17.915042877197266
+     ],
+     [
+      17.998016357421875,
+      18.930747985839844,
+      18.248056411743164,
+      17.996200561523438
+     ]
+    ],
+    "logsumexp": [
+     20.05319595336914,
+     20.01832389831543
+    ],
+    "label_argmax": [
+     1,
+     1
+    ],
+    "argmax": [
+     39923,
+     39923
+    ],
+    "topk": [
+     [
+      39923,
+      65552,
+      25399
+     ],
+     [
+      39923,
+      65552,
+      25399
+     ]
+    ]
+   }
+  },
+  {
+   "id": "k53n",
+   "windows": [
+    26,
+    27
+   ],
+   "original": {
+    "label_logits": [
+     [
+      18.628395080566406,
+      18.94937515258789,
+      17.91958999633789,
+      17.58022689819336
+     ],
+     [
+      18.228084564208984,
+      18.919153213500977,
+      18.18386459350586,
+      17.75248908996582
+     ]
+    ],
+    "logsumexp": [
+     20.03792381286621,
+     20.00105857849121
+    ],
+    "label_argmax": [
+     1,
+     1
+    ],
+    "argmax": [
+     39923,
+     39923
+    ],
+    "topk": [
+     [
+      39923,
+      25399,
+      65552
+     ],
+     [
+      39923,
+      25399,
+      65552
+     ]
+    ]
+   }
+  },
+  {
+   "id": "k54p",
+   "windows": [
+    27,
+    28
+   ],
+   "original": {
+    "label_logits": [
+     [
+      14.325189590454102,
+      18.500221252441406,
+      18.53520965576172,
+      18.517988204956055
+     ],
+     [
+      14.427393913269043,
+      18.362316131591797,
+      18.566368103027344,
+      18.46537971496582
+     ]
+    ],
+    "logsumexp": [
+     19.84417152404785,
+     19.80595588684082
+    ],
+    "label_argmax": [
+     2,
+     2
+    ],
+    "argmax": [
+     65552,
+     65552
+    ],
+    "topk": [
+     [
+      65552,
+      60477,
+      39923
+     ],
+     [
+      65552,
+      60477,
+      39923
+     ]
+    ]
+   }
+  },
+  {
+   "id": "k54n",
+   "windows": [
+    27,
+    28
+   ],
+   "original": {
+    "label_logits": [
+     [
+      14.08667278289795,
+      18.15544319152832,
+      18.45331382751465,
+      18.40947151184082
+     ],
+     [
+      14.31730842590332,
+      18.32317352294922,
+      18.49569320678711,
+      18.52222442626953
+     ]
+    ],
+    "logsumexp": [
+     19.689638137817383,
+     19.78909683227539
+    ],
+    "label_argmax": [
+     2,
+     3
+    ],
+    "argmax": [
+     65552,
+     60477
+    ],
+    "topk": [
+     [
+      65552,
+      60477,
+      39923
+     ],
+     [
+      60477,
+      65552,
+      39923
+     ]
+    ]
+   }
+  },
+  {
+   "id": "k55p",
+   "windows": [
+    28,
+    29
+   ],
+   "original": {
+    "label_logits": [
+     [
+      14.336788177490234,
+      18.389820098876953,
+      18.692790985107422,
+      18.93675994873047
+     ],
+     [
+      15.050397872924805,
+      18.778038024902344,
+      18.700489044189453,
+      19.023529052734375
+     ]
+    ],
+    "logsumexp": [
+     20.01354217529297,
+     20.160799026489258
+    ],
+    "label_argmax": [
+     3,
+     3
+    ],
+    "argmax": [
+     60477,
+     60477
+    ],
+    "topk": [
+     [
+      60477,
+      65552,
+      39923
+     ],
+     [
+      60477,
+      39923,
+      65552
+     ]
+    ]
+   }
+  },
+  {
+   "id": "k55n",
+   "windows": [
+    28,
+    29
+   ],
+   "original": {
+    "label_logits": [
+     [
+      15.731657028198242,
+      18.840312957763672,
+      18.446533203125,
+      18.53067398071289
+     ],
+     [
+      16.14476776123047,
+      19.002201080322266,
+      18.5435791015625,
+      18.421157836914062
+     ]
+    ],
+    "logsumexp": [
+     19.998260498046875,
+     20.073694229125977
+    ],
+    "label_argmax": [
+     1,
+     1
+    ],
+    "argmax": [
+     39923,
+     39923
+    ],
+    "topk": [
+     [
+      39923,
+      60477,
+      65552
+     ],
+     [
+      39923,
+      65552,
+      60477
+     ]
+    ]
+   }
+  },
+  {
+   "id": "k56p",
+   "windows": [
+    29,
+    30
+   ],
+   "original": {
+    "label_logits": [
+     [
+      15.127237319946289,
+      17.38488006591797,
+      18.13578224182129,
+      18.11870574951172
+     ],
+     [
+      15.256181716918945,
+      17.44396209716797,
+      18.288410186767578,
+      18.1012020111084
+     ]
+    ],
+    "logsumexp": [
+     19.313093185424805,
+     19.387287139892578
+    ],
+    "label_argmax": [
+     2,
+     2
+    ],
+    "argmax": [
+     65552,
+     65552
+    ],
+    "topk": [
+     [
+      65552,
+      60477,
+      39923
+     ],
+     [
+      65552,
+      60477,
+      39923
+     ]
+    ]
+   }
+  },
+  {
+   "id": "k56n",
+   "windows": [
+    29,
+    30
+   ],
+   "original": {
+    "label_logits": [
+     [
+      15.193881034851074,
+      17.284093856811523,
+      18.06666374206543,
+      18.121646881103516
+     ],
+     [
+      15.312880516052246,
+      17.610069274902344,
+      18.277870178222656,
+      18.131820678710938
+     ]
+    ],
+    "logsumexp": [
+     19.28334617614746,
+     19.430278778076172
+    ],
+    "label_argmax": [
+     3,
+     2
+    ],
+    "argmax": [
+     60477,
+     65552
+    ],
+    "topk": [
+     [
+      60477,
+      65552,
+      39923
+     ],
+     [
+      65552,
+      60477,
+      39923
+     ]
+    ]
+   }
+  },
+  {
+   "id": "k57p",
+   "windows": [
+    30,
+    31
+   ],
+   "original": {
+    "label_logits": [
+     [
+      15.876543998718262,
+      17.593782424926758,
+      18.763750076293945,
+      16.79616355895996
+     ],
+     [
+      16.139583587646484,
+      17.758928298950195,
+      18.723299026489258,
+      17.039657592773438
+     ]
+    ],
+    "logsumexp": [
+     19.417278289794922,
+     19.47321319580078
+    ],
+    "label_argmax": [
+     2,
+     2
+    ],
+    "argmax": [
+     65552,
+     65552
+    ],
+    "topk": [
+     [
+      65552,
+      39923,
+      60477
+     ],
+     [
+      65552,
+      39923,
+      60477
+     ]
+    ]
+   }
+  },
+  {
+   "id": "k57n",
+   "windows": [
+    30,
+    31
+   ],
+   "original": {
+    "label_logits": [
+     [
+      16.596393585205078,
+      17.724571228027344,
+      18.43376922607422,
+      16.779081344604492
+     ],
+     [
+      16.560497283935547,
+      17.62328338623047,
+      18.43671226501465,
+      17.010509490966797
+     ]
+    ],
+    "logsumexp": [
+     19.340473175048828,
+     19.33648681640625
+    ],
+    "label_argmax": [
+     2,
+     2
+    ],
+    "argmax": [
+     65552,
+     65552
+    ],
+    "topk": [
+     [
+      65552,
+      39923,
+      60477
+     ],
+     [
+      65552,
+      39923,
+      60477
+     ]
+    ]
+   }
+  },
+  {
+   "id": "k58p",
+   "windows": [
+    31,
+    32
+   ],
+   "original": {
+    "label_logits": [
+     [
+      13.273174285888672,
+      17.233482360839844,
+      18.33098793029785,
+      19.348203659057617
+     ],
+     [
+      13.206193923950195,
+      17.2135009765625,
+      18.306812286376953,
+      19.32964324951172
+     ]
+    ],
+    "logsumexp": [
+     19.91316795349121,
+     19.89420509338379
+    ],
+    "label_argmax": [
+     3,
+     3
+    ],
+    "argmax": [
+     60477,
+     60477
+    ],
+    "topk": [
+     [
+      60477,
+      65552,
+      39923
+     ],
+     [
+      60477,
+      65552,
+      39923
+     ]
+    ]
+   }
+  },
+  {
+   "id": "k58n",
+   "windows": [
+    31,
+    32
+   ],
+   "original": {
+    "label_logits": [
+     [
+      13.547948837280273,
+      17.583358764648438,
+      18.40851402282715,
+      19.314104080200195
+     ],
+     [
+      13.484472274780273,
+      17.780715942382812,
+      18.478282928466797,
+      19.383041381835938
+     ]
+    ],
+    "logsumexp": [
+     19.94872283935547,
+     20.035175323486328
+    ],
+    "label_argmax": [
+     3,
+     3
+    ],
+    "argmax": [
+     60477,
+     60477
+    ],
+    "topk": [
+     [
+      60477,
+      65552,
+      39923
+     ],
+     [
+      60477,
+      65552,
+      39923
+     ]
+    ]
+   }
+  },
+  {
+   "id": "k59p",
+   "windows": [
+    32,
+    33
+   ],
+   "original": {
+    "label_logits": [
+     [
+      16.749183654785156,
+      18.293006896972656,
+      18.242778778076172,
+      18.34855079650879
+     ],
+     [
+      17.075286865234375,
+      18.616241455078125,
+      18.186786651611328,
+      18.109378814697266
+     ]
+    ],
+    "logsumexp": [
+     19.777990341186523,
+     19.817964553833008
+    ],
+    "label_argmax": [
+     3,
+     1
+    ],
+    "argmax": [
+     60477,
+     39923
+    ],
+    "topk": [
+     [
+      60477,
+      39923,
+      65552
+     ],
+     [
+      39923,
+      65552,
+      60477
+     ]
+    ]
+   }
+  },
+  {
+   "id": "k59n",
+   "windows": [
+    32,
+    33
+   ],
+   "original": {
+    "label_logits": [
+     [
+      16.797138214111328,
+      18.39006805419922,
+      18.194530487060547,
+      18.35334014892578
+     ],
+     [
+      17.134422302246094,
+      18.72278594970703,
+      18.145978927612305,
+      18.109935760498047
+     ]
+    ],
+    "logsumexp": [
+     19.80116081237793,
+     19.85284996032715
+    ],
+    "label_argmax": [
+     1,
+     1
+    ],
+    "argmax": [
+     39923,
+     39923
+    ],
+    "topk": [
+     [
+      39923,
+      60477,
+      65552
+     ],
+     [
+      39923,
+      65552,
+      60477
+     ]
+    ]
+   }
+  },
+  {
+   "id": "k60p",
+   "windows": [
+    21,
+    22
+   ],
+   "original": {
+    "label_logits": [
+     [
+      12.589966773986816,
+      17.779808044433594,
+      18.69729995727539,
+      19.31420135498047
+     ],
+     [
+      12.856934547424316,
+      17.919025421142578,
+      18.76038360595703,
+      19.036266326904297
+     ]
+    ],
+    "logsumexp": [
+     20.030420303344727,
+     19.9381046295166
+    ],
+    "label_argmax": [
+     3,
+     3
+    ],
+    "argmax": [
+     60477,
+     60477
+    ],
+    "topk": [
+     [
+      60477,
+      65552,
+      39923
+     ],
+     [
+      60477,
+      65552,
+      39923
+     ]
+    ]
+   }
+  },
+  {
+   "id": "k60n",
+   "windows": [
+    21,
+    22
+   ],
+   "original": {
+    "label_logits": [
+     [
+      12.605894088745117,
+      17.636688232421875,
+      18.68406867980957,
+      19.393104553222656
+     ],
+     [
+      13.042499542236328,
+      17.857776641845703,
+      18.762611389160156,
+      19.178852081298828
+     ]
+    ],
+    "logsumexp": [
+     20.054702758789062,
+     19.995912551879883
+    ],
+    "label_argmax": [
+     3,
+     3
+    ],
+    "argmax": [
+     60477,
+     60477
+    ],
+    "topk": [
+     [
+      60477,
+      65552,
+      39923
+     ],
+     [
+      60477,
+      65552,
+      39923
+     ]
+    ]
+   }
+  },
+  {
+   "id": "k61p",
+   "windows": [
+    22,
+    23
+   ],
+   "original": {
+    "label_logits": [
+     [
+      13.993638038635254,
+      18.304468154907227,
+      18.513120651245117,
+      18.72933578491211
+     ],
+     [
+      13.13166618347168,
+      18.002925872802734,
+      18.4459285736084,
+      19.178518295288086
+     ]
+    ],
+    "logsumexp": [
+     19.80850601196289,
+     19.917972564697266
+    ],
+    "label_argmax": [
+     3,
+     3
+    ],
+    "argmax": [
+     60477,
+     60477
+    ],
+    "topk": [
+     [
+      60477,
+      65552,
+      39923
+     ],
+     [
+      60477,
+      65552,
+      39923
+     ]
+    ]
+   }
+  },
+  {
+   "id": "k61n",
+   "windows": [
+    22,
+    23
+   ],
+   "original": {
+    "label_logits": [
+     [
+      14.51744556427002,
+      19.08065414428711,
+      18.754892349243164,
+      18.837495803833008
+     ],
+     [
+      13.52398681640625,
+      18.459564208984375,
+      18.689233779907227,
+      19.16626739501953
+     ]
+    ],
+    "logsumexp": [
+     20.183692932128906,
+     20.082361221313477
+    ],
+    "label_argmax": [
+     1,
+     3
+    ],
+    "argmax": [
+     39923,
+     60477
+    ],
+    "topk": [
+     [
+      39923,
+      60477,
+      65552
+     ],
+     [
+      60477,
+      65552,
+      39923
+     ]
+    ]
+   }
+  },
+  {
+   "id": "k62p",
+   "windows": [
+    23,
+    24
+   ],
+   "original": {
+    "label_logits": [
+     [
+      15.14007568359375,
+      17.749509811401367,
+      18.708534240722656,
+      18.10370445251465
+     ],
+     [
+      14.951845169067383,
+      17.629045486450195,
+      18.7834529876709,
+      18.11722183227539
+     ]
+    ],
+    "logsumexp": [
+     19.5778751373291,
+     19.586984634399414
+    ],
+    "label_argmax": [
+     2,
+     2
+    ],
+    "argmax": [
+     65552,
+     65552
+    ],
+    "topk": [
+     [
+      65552,
+      60477,
+      39923
+     ],
+     [
+      65552,
+      60477,
+      39923
+     ]
+    ]
+   }
+  },
+  {
+   "id": "k62n",
+   "windows": [
+    23,
+    24
+   ],
+   "original": {
+    "label_logits": [
+     [
+      14.568331718444824,
+      17.833011627197266,
+      18.68437957763672,
+      18.456130981445312
+     ],
+     [
+      14.838470458984375,
+      17.617767333984375,
+      18.684865951538086,
+      18.306747436523438
+     ]
+    ],
+    "logsumexp": [
+     19.68592071533203,
+     19.605974197387695
+    ],
+    "label_argmax": [
+     2,
+     2
+    ],
+    "argmax": [
+     65552,
+     65552
+    ],
+    "topk": [
+     [
+      65552,
+      60477,
+      39923
+     ],
+     [
+      65552,
+      60477,
+      39923
+     ]
+    ]
+   }
+  },
+  {
+   "id": "k63p",
+   "windows": [
+    24,
+    25
+   ],
+   "original": {
+    "label_logits": [
+     [
+      16.392736434936523,
+      19.221357345581055,
+      18.284454345703125,
+      17.78188133239746
+     ],
+     [
+      16.40472984313965,
+      19.062532424926758,
+      18.398757934570312,
+      17.89604949951172
+     ]
+    ],
+    "logsumexp": [
+     19.947002410888672,
+     19.914710998535156
+    ],
+    "label_argmax": [
+     1,
+     1
+    ],
+    "argmax": [
+     39923,
+     39923
+    ],
+    "topk": [
+     [
+      39923,
+      65552,
+      60477
+     ],
+     [
+      39923,
+      65552,
+      60477
+     ]
+    ]
+   }
+  },
+  {
+   "id": "k63n",
+   "windows": [
+    24,
+    25
+   ],
+   "original": {
+    "label_logits": [
+     [
+      16.601585388183594,
+      19.081422805786133,
+      18.231021881103516,
+      17.720928192138672
+     ],
+     [
+      16.311054229736328,
+      19.029857635498047,
+      18.39098358154297,
+      17.661773681640625
+     ]
+    ],
+    "logsumexp": [
+     19.862688064575195,
+     19.856340408325195
+    ],
+    "label_argmax": [
+     1,
+     1
+    ],
+    "argmax": [
+     39923,
+     39923
+    ],
+    "topk": [
+     [
+      39923,
+      65552,
+      60477
+     ],
+     [
+      39923,
+      65552,
+      60477
+     ]
+    ]
+   }
+  },
+  {
+   "id": "k64p",
+   "windows": [
+    25,
+    26
+   ],
+   "original": {
+    "label_logits": [
+     [
+      13.717347145080566,
+      17.657609939575195,
+      17.875574111938477,
+      19.825481414794922
+     ],
+     [
+      14.246532440185547,
+      17.995460510253906,
+      18.099199295043945,
+      19.79047393798828
+     ]
+    ],
+    "logsumexp": [
+     20.19636344909668,
+     20.247283935546875
+    ],
+    "label_argmax": [
+     3,
+     3
+    ],
+    "argmax": [
+     60477,
+     60477
+    ],
+    "topk": [
+     [
+      60477,
+      65552,
+      39923
+     ],
+     [
+      60477,
+      65552,
+      39923
+     ]
+    ]
+   }
+  },
+  {
+   "id": "k64n",
+   "windows": [
+    25,
+    26
+   ],
+   "original": {
+    "label_logits": [
+     [
+      13.721282958984375,
+      17.503692626953125,
+      17.911640167236328,
+      19.860519409179688
+     ],
+     [
+      13.976394653320312,
+      17.647911071777344,
+      18.128616333007812,
+      19.790088653564453
+     ]
+    ],
+    "logsumexp": [
+     20.216005325317383,
+     20.212203979492188
+    ],
+    "label_argmax": [
+     3,
+     3
+    ],
+    "argmax": [
+     60477,
+     60477
+    ],
+    "topk": [
+     [
+      60477,
+      65552,
+      39923
+     ],
+     [
+      60477,
+      65552,
+      39923
+     ]
+    ]
+   }
+  },
+  {
+   "id": "k65p",
+   "windows": [
+    26,
+    27
+   ],
+   "original": {
+    "label_logits": [
+     [
+      15.075730323791504,
+      19.00525665283203,
+      19.072355270385742,
+      17.47180938720703
+     ],
+     [
+      14.963577270507812,
+      18.940763473510742,
+      19.016197204589844,
+      17.38064193725586
+     ]
+    ],
+    "logsumexp": [
+     20.055017471313477,
+     19.999128341674805
+    ],
+    "label_argmax": [
+     2,
+     2
+    ],
+    "argmax": [
+     65552,
+     65552
+    ],
+    "topk": [
+     [
+      65552,
+      39923,
+      60477
+     ],
+     [
+      65552,
+      39923,
+      60477
+     ]
+    ]
+   }
+  },
+  {
+   "id": "k65n",
+   "windows": [
+    26,
+    27
+   ],
+   "original": {
+    "label_logits": [
+     [
+      15.6690034866333,
+      18.909210205078125,
+      18.95602035522461,
+      17.160568237304688
+     ],
+     [
+      15.608465194702148,
+      18.89535903930664,
+      18.952552795410156,
+      17.336544036865234
+     ]
+    ],
+    "logsumexp": [
+     19.970430374145508,
+     19.970956802368164
+    ],
+    "label_argmax": [
+     2,
+     2
+    ],
+    "argmax": [
+     65552,
+     65552
+    ],
+    "topk": [
+     [
+      65552,
+      39923,
+      24530
+     ],
+     [
+      65552,
+      39923,
+      24530
+     ]
+    ]
+   }
+  }
+ ],
+ "request_file": "output/wsp-b/scratch/req_k04.json",
+ "arrays": {
+  "original.s0.hidden.L21": {
+   "file": "original.s0.hidden.L21.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s0.hidden.L22": {
+   "file": "original.s0.hidden.L22.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s0.hidden.L23": {
+   "file": "original.s0.hidden.L23.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s0.hidden.L24": {
+   "file": "original.s0.hidden.L24.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s0.mlp_act.L21": {
+   "file": "original.s0.mlp_act.L21.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s0.mlp_act.L22": {
+   "file": "original.s0.mlp_act.L22.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s0.mlp_act.L23": {
+   "file": "original.s0.mlp_act.L23.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s1.hidden.L21": {
+   "file": "original.s1.hidden.L21.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s1.hidden.L22": {
+   "file": "original.s1.hidden.L22.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s1.hidden.L23": {
+   "file": "original.s1.hidden.L23.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s1.hidden.L24": {
+   "file": "original.s1.hidden.L24.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s1.mlp_act.L21": {
+   "file": "original.s1.mlp_act.L21.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s1.mlp_act.L22": {
+   "file": "original.s1.mlp_act.L22.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s1.mlp_act.L23": {
+   "file": "original.s1.mlp_act.L23.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s2.hidden.L21": {
+   "file": "original.s2.hidden.L21.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s2.hidden.L22": {
+   "file": "original.s2.hidden.L22.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s2.hidden.L23": {
+   "file": "original.s2.hidden.L23.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s2.hidden.L24": {
+   "file": "original.s2.hidden.L24.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s2.mlp_act.L21": {
+   "file": "original.s2.mlp_act.L21.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s2.mlp_act.L22": {
+   "file": "original.s2.mlp_act.L22.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s2.mlp_act.L23": {
+   "file": "original.s2.mlp_act.L23.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s3.hidden.L21": {
+   "file": "original.s3.hidden.L21.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s3.hidden.L22": {
+   "file": "original.s3.hidden.L22.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s3.hidden.L23": {
+   "file": "original.s3.hidden.L23.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s3.hidden.L24": {
+   "file": "original.s3.hidden.L24.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s3.mlp_act.L21": {
+   "file": "original.s3.mlp_act.L21.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s3.mlp_act.L22": {
+   "file": "original.s3.mlp_act.L22.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s3.mlp_act.L23": {
+   "file": "original.s3.mlp_act.L23.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s4.hidden.L21": {
+   "file": "original.s4.hidden.L21.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s4.hidden.L22": {
+   "file": "original.s4.hidden.L22.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s4.hidden.L23": {
+   "file": "original.s4.hidden.L23.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s4.hidden.L24": {
+   "file": "original.s4.hidden.L24.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s4.mlp_act.L21": {
+   "file": "original.s4.mlp_act.L21.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s4.mlp_act.L22": {
+   "file": "original.s4.mlp_act.L22.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s4.mlp_act.L23": {
+   "file": "original.s4.mlp_act.L23.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s5.hidden.L21": {
+   "file": "original.s5.hidden.L21.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s5.hidden.L22": {
+   "file": "original.s5.hidden.L22.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s5.hidden.L23": {
+   "file": "original.s5.hidden.L23.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s5.hidden.L24": {
+   "file": "original.s5.hidden.L24.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s5.mlp_act.L21": {
+   "file": "original.s5.mlp_act.L21.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s5.mlp_act.L22": {
+   "file": "original.s5.mlp_act.L22.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s5.mlp_act.L23": {
+   "file": "original.s5.mlp_act.L23.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s6.hidden.L21": {
+   "file": "original.s6.hidden.L21.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s6.hidden.L22": {
+   "file": "original.s6.hidden.L22.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s6.hidden.L23": {
+   "file": "original.s6.hidden.L23.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s6.hidden.L24": {
+   "file": "original.s6.hidden.L24.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s6.mlp_act.L21": {
+   "file": "original.s6.mlp_act.L21.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s6.mlp_act.L22": {
+   "file": "original.s6.mlp_act.L22.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s6.mlp_act.L23": {
+   "file": "original.s6.mlp_act.L23.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s7.hidden.L21": {
+   "file": "original.s7.hidden.L21.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s7.hidden.L22": {
+   "file": "original.s7.hidden.L22.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s7.hidden.L23": {
+   "file": "original.s7.hidden.L23.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s7.hidden.L24": {
+   "file": "original.s7.hidden.L24.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s7.mlp_act.L21": {
+   "file": "original.s7.mlp_act.L21.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s7.mlp_act.L22": {
+   "file": "original.s7.mlp_act.L22.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s7.mlp_act.L23": {
+   "file": "original.s7.mlp_act.L23.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s8.hidden.L21": {
+   "file": "original.s8.hidden.L21.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s8.hidden.L22": {
+   "file": "original.s8.hidden.L22.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s8.hidden.L23": {
+   "file": "original.s8.hidden.L23.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s8.hidden.L24": {
+   "file": "original.s8.hidden.L24.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s8.mlp_act.L21": {
+   "file": "original.s8.mlp_act.L21.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s8.mlp_act.L22": {
+   "file": "original.s8.mlp_act.L22.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s8.mlp_act.L23": {
+   "file": "original.s8.mlp_act.L23.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s9.hidden.L21": {
+   "file": "original.s9.hidden.L21.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s9.hidden.L22": {
+   "file": "original.s9.hidden.L22.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s9.hidden.L23": {
+   "file": "original.s9.hidden.L23.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s9.hidden.L24": {
+   "file": "original.s9.hidden.L24.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s9.mlp_act.L21": {
+   "file": "original.s9.mlp_act.L21.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s9.mlp_act.L22": {
+   "file": "original.s9.mlp_act.L22.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s9.mlp_act.L23": {
+   "file": "original.s9.mlp_act.L23.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s10.hidden.L21": {
+   "file": "original.s10.hidden.L21.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s10.hidden.L22": {
+   "file": "original.s10.hidden.L22.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s10.hidden.L23": {
+   "file": "original.s10.hidden.L23.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s10.hidden.L24": {
+   "file": "original.s10.hidden.L24.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s10.mlp_act.L21": {
+   "file": "original.s10.mlp_act.L21.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s10.mlp_act.L22": {
+   "file": "original.s10.mlp_act.L22.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s10.mlp_act.L23": {
+   "file": "original.s10.mlp_act.L23.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s11.hidden.L21": {
+   "file": "original.s11.hidden.L21.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s11.hidden.L22": {
+   "file": "original.s11.hidden.L22.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s11.hidden.L23": {
+   "file": "original.s11.hidden.L23.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s11.hidden.L24": {
+   "file": "original.s11.hidden.L24.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s11.mlp_act.L21": {
+   "file": "original.s11.mlp_act.L21.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s11.mlp_act.L22": {
+   "file": "original.s11.mlp_act.L22.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s11.mlp_act.L23": {
+   "file": "original.s11.mlp_act.L23.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s12.hidden.L21": {
+   "file": "original.s12.hidden.L21.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s12.hidden.L22": {
+   "file": "original.s12.hidden.L22.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s12.hidden.L23": {
+   "file": "original.s12.hidden.L23.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s12.hidden.L24": {
+   "file": "original.s12.hidden.L24.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s12.mlp_act.L21": {
+   "file": "original.s12.mlp_act.L21.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s12.mlp_act.L22": {
+   "file": "original.s12.mlp_act.L22.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s12.mlp_act.L23": {
+   "file": "original.s12.mlp_act.L23.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s13.hidden.L21": {
+   "file": "original.s13.hidden.L21.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s13.hidden.L22": {
+   "file": "original.s13.hidden.L22.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s13.hidden.L23": {
+   "file": "original.s13.hidden.L23.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s13.hidden.L24": {
+   "file": "original.s13.hidden.L24.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s13.mlp_act.L21": {
+   "file": "original.s13.mlp_act.L21.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s13.mlp_act.L22": {
+   "file": "original.s13.mlp_act.L22.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s13.mlp_act.L23": {
+   "file": "original.s13.mlp_act.L23.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s14.hidden.L21": {
+   "file": "original.s14.hidden.L21.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s14.hidden.L22": {
+   "file": "original.s14.hidden.L22.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s14.hidden.L23": {
+   "file": "original.s14.hidden.L23.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s14.hidden.L24": {
+   "file": "original.s14.hidden.L24.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s14.mlp_act.L21": {
+   "file": "original.s14.mlp_act.L21.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s14.mlp_act.L22": {
+   "file": "original.s14.mlp_act.L22.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s14.mlp_act.L23": {
+   "file": "original.s14.mlp_act.L23.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s15.hidden.L21": {
+   "file": "original.s15.hidden.L21.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s15.hidden.L22": {
+   "file": "original.s15.hidden.L22.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s15.hidden.L23": {
+   "file": "original.s15.hidden.L23.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s15.hidden.L24": {
+   "file": "original.s15.hidden.L24.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s15.mlp_act.L21": {
+   "file": "original.s15.mlp_act.L21.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s15.mlp_act.L22": {
+   "file": "original.s15.mlp_act.L22.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s15.mlp_act.L23": {
+   "file": "original.s15.mlp_act.L23.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s16.hidden.L21": {
+   "file": "original.s16.hidden.L21.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s16.hidden.L22": {
+   "file": "original.s16.hidden.L22.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s16.hidden.L23": {
+   "file": "original.s16.hidden.L23.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s16.hidden.L24": {
+   "file": "original.s16.hidden.L24.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s16.mlp_act.L21": {
+   "file": "original.s16.mlp_act.L21.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s16.mlp_act.L22": {
+   "file": "original.s16.mlp_act.L22.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s16.mlp_act.L23": {
+   "file": "original.s16.mlp_act.L23.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s17.hidden.L21": {
+   "file": "original.s17.hidden.L21.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s17.hidden.L22": {
+   "file": "original.s17.hidden.L22.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s17.hidden.L23": {
+   "file": "original.s17.hidden.L23.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s17.hidden.L24": {
+   "file": "original.s17.hidden.L24.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s17.mlp_act.L21": {
+   "file": "original.s17.mlp_act.L21.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s17.mlp_act.L22": {
+   "file": "original.s17.mlp_act.L22.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s17.mlp_act.L23": {
+   "file": "original.s17.mlp_act.L23.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s18.hidden.L21": {
+   "file": "original.s18.hidden.L21.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s18.hidden.L22": {
+   "file": "original.s18.hidden.L22.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s18.hidden.L23": {
+   "file": "original.s18.hidden.L23.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s18.hidden.L24": {
+   "file": "original.s18.hidden.L24.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s18.mlp_act.L21": {
+   "file": "original.s18.mlp_act.L21.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s18.mlp_act.L22": {
+   "file": "original.s18.mlp_act.L22.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s18.mlp_act.L23": {
+   "file": "original.s18.mlp_act.L23.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s19.hidden.L21": {
+   "file": "original.s19.hidden.L21.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s19.hidden.L22": {
+   "file": "original.s19.hidden.L22.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s19.hidden.L23": {
+   "file": "original.s19.hidden.L23.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s19.hidden.L24": {
+   "file": "original.s19.hidden.L24.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s19.mlp_act.L21": {
+   "file": "original.s19.mlp_act.L21.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s19.mlp_act.L22": {
+   "file": "original.s19.mlp_act.L22.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s19.mlp_act.L23": {
+   "file": "original.s19.mlp_act.L23.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s20.hidden.L21": {
+   "file": "original.s20.hidden.L21.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s20.hidden.L22": {
+   "file": "original.s20.hidden.L22.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s20.hidden.L23": {
+   "file": "original.s20.hidden.L23.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s20.hidden.L24": {
+   "file": "original.s20.hidden.L24.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s20.mlp_act.L21": {
+   "file": "original.s20.mlp_act.L21.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s20.mlp_act.L22": {
+   "file": "original.s20.mlp_act.L22.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s20.mlp_act.L23": {
+   "file": "original.s20.mlp_act.L23.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s21.hidden.L21": {
+   "file": "original.s21.hidden.L21.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s21.hidden.L22": {
+   "file": "original.s21.hidden.L22.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s21.hidden.L23": {
+   "file": "original.s21.hidden.L23.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s21.hidden.L24": {
+   "file": "original.s21.hidden.L24.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s21.mlp_act.L21": {
+   "file": "original.s21.mlp_act.L21.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s21.mlp_act.L22": {
+   "file": "original.s21.mlp_act.L22.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s21.mlp_act.L23": {
+   "file": "original.s21.mlp_act.L23.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s22.hidden.L21": {
+   "file": "original.s22.hidden.L21.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s22.hidden.L22": {
+   "file": "original.s22.hidden.L22.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s22.hidden.L23": {
+   "file": "original.s22.hidden.L23.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s22.hidden.L24": {
+   "file": "original.s22.hidden.L24.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s22.mlp_act.L21": {
+   "file": "original.s22.mlp_act.L21.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s22.mlp_act.L22": {
+   "file": "original.s22.mlp_act.L22.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s22.mlp_act.L23": {
+   "file": "original.s22.mlp_act.L23.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s23.hidden.L21": {
+   "file": "original.s23.hidden.L21.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s23.hidden.L22": {
+   "file": "original.s23.hidden.L22.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s23.hidden.L23": {
+   "file": "original.s23.hidden.L23.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s23.hidden.L24": {
+   "file": "original.s23.hidden.L24.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s23.mlp_act.L21": {
+   "file": "original.s23.mlp_act.L21.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s23.mlp_act.L22": {
+   "file": "original.s23.mlp_act.L22.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s23.mlp_act.L23": {
+   "file": "original.s23.mlp_act.L23.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s24.hidden.L21": {
+   "file": "original.s24.hidden.L21.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s24.hidden.L22": {
+   "file": "original.s24.hidden.L22.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s24.hidden.L23": {
+   "file": "original.s24.hidden.L23.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s24.hidden.L24": {
+   "file": "original.s24.hidden.L24.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s24.mlp_act.L21": {
+   "file": "original.s24.mlp_act.L21.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s24.mlp_act.L22": {
+   "file": "original.s24.mlp_act.L22.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s24.mlp_act.L23": {
+   "file": "original.s24.mlp_act.L23.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s25.hidden.L21": {
+   "file": "original.s25.hidden.L21.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s25.hidden.L22": {
+   "file": "original.s25.hidden.L22.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s25.hidden.L23": {
+   "file": "original.s25.hidden.L23.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s25.hidden.L24": {
+   "file": "original.s25.hidden.L24.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s25.mlp_act.L21": {
+   "file": "original.s25.mlp_act.L21.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s25.mlp_act.L22": {
+   "file": "original.s25.mlp_act.L22.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s25.mlp_act.L23": {
+   "file": "original.s25.mlp_act.L23.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s26.hidden.L21": {
+   "file": "original.s26.hidden.L21.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s26.hidden.L22": {
+   "file": "original.s26.hidden.L22.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s26.hidden.L23": {
+   "file": "original.s26.hidden.L23.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s26.hidden.L24": {
+   "file": "original.s26.hidden.L24.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s26.mlp_act.L21": {
+   "file": "original.s26.mlp_act.L21.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s26.mlp_act.L22": {
+   "file": "original.s26.mlp_act.L22.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s26.mlp_act.L23": {
+   "file": "original.s26.mlp_act.L23.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s27.hidden.L21": {
+   "file": "original.s27.hidden.L21.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s27.hidden.L22": {
+   "file": "original.s27.hidden.L22.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s27.hidden.L23": {
+   "file": "original.s27.hidden.L23.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s27.hidden.L24": {
+   "file": "original.s27.hidden.L24.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s27.mlp_act.L21": {
+   "file": "original.s27.mlp_act.L21.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s27.mlp_act.L22": {
+   "file": "original.s27.mlp_act.L22.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s27.mlp_act.L23": {
+   "file": "original.s27.mlp_act.L23.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s28.hidden.L21": {
+   "file": "original.s28.hidden.L21.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s28.hidden.L22": {
+   "file": "original.s28.hidden.L22.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s28.hidden.L23": {
+   "file": "original.s28.hidden.L23.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s28.hidden.L24": {
+   "file": "original.s28.hidden.L24.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s28.mlp_act.L21": {
+   "file": "original.s28.mlp_act.L21.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s28.mlp_act.L22": {
+   "file": "original.s28.mlp_act.L22.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s28.mlp_act.L23": {
+   "file": "original.s28.mlp_act.L23.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s29.hidden.L21": {
+   "file": "original.s29.hidden.L21.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s29.hidden.L22": {
+   "file": "original.s29.hidden.L22.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s29.hidden.L23": {
+   "file": "original.s29.hidden.L23.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s29.hidden.L24": {
+   "file": "original.s29.hidden.L24.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s29.mlp_act.L21": {
+   "file": "original.s29.mlp_act.L21.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s29.mlp_act.L22": {
+   "file": "original.s29.mlp_act.L22.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s29.mlp_act.L23": {
+   "file": "original.s29.mlp_act.L23.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s30.hidden.L21": {
+   "file": "original.s30.hidden.L21.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s30.hidden.L22": {
+   "file": "original.s30.hidden.L22.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s30.hidden.L23": {
+   "file": "original.s30.hidden.L23.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s30.hidden.L24": {
+   "file": "original.s30.hidden.L24.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s30.mlp_act.L21": {
+   "file": "original.s30.mlp_act.L21.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s30.mlp_act.L22": {
+   "file": "original.s30.mlp_act.L22.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s30.mlp_act.L23": {
+   "file": "original.s30.mlp_act.L23.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s31.hidden.L21": {
+   "file": "original.s31.hidden.L21.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s31.hidden.L22": {
+   "file": "original.s31.hidden.L22.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s31.hidden.L23": {
+   "file": "original.s31.hidden.L23.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s31.hidden.L24": {
+   "file": "original.s31.hidden.L24.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s31.mlp_act.L21": {
+   "file": "original.s31.mlp_act.L21.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s31.mlp_act.L22": {
+   "file": "original.s31.mlp_act.L22.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s31.mlp_act.L23": {
+   "file": "original.s31.mlp_act.L23.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  }
+ }
+}

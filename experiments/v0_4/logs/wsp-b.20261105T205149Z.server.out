@@ -1,0 +1,1 @@
+{"ready": true, "kernel": "/Users/matthew/Development/hypabolic/HypaNet-v04-author/.kernel/kernel.sock", "fwd": "/Users/matthew/Development/hypabolic/HypaNet-v04-author/.kernel/fwd.sock", "phase": "wsp-b", "edit_hash": "74576466ac6d22c6cc6d7545e4162a0ae2daf38a6049624e232caf635910079a", "budget": {"tokens_used": 0, "tokens_left": 2000000, "requests": 0}}

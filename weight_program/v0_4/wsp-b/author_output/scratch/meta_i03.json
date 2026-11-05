@@ -1,0 +1,58 @@
+[
+ {
+  "id": "i36p",
+  "n": 22,
+  "pair": "i36",
+  "feat": "REPH",
+  "sign": 1
+ },
+ {
+  "id": "i36n",
+  "n": 22,
+  "pair": "i36",
+  "feat": "REPH",
+  "sign": -1
+ },
+ {
+  "id": "i37p",
+  "n": 23,
+  "pair": "i37",
+  "feat": "REPP",
+  "sign": 1
+ },
+ {
+  "id": "i37n",
+  "n": 23,
+  "pair": "i37",
+  "feat": "REPP",
+  "sign": -1
+ },
+ {
+  "id": "i38p",
+  "n": 24,
+  "pair": "i38",
+  "feat": "NF3",
+  "sign": 1
+ },
+ {
+  "id": "i38n",
+  "n": 24,
+  "pair": "i38",
+  "feat": "NF3",
+  "sign": -1
+ },
+ {
+  "id": "i39p",
+  "n": 25,
+  "pair": "i39",
+  "feat": "RDS",
+  "sign": 1
+ },
+ {
+  "id": "i39n",
+  "n": 25,
+  "pair": "i39",
+  "feat": "RDS",
+  "sign": -1
+ }
+]

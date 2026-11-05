@@ -1,0 +1,100 @@
+[
+ {
+  "id": "h33p",
+  "n": 28,
+  "pair": "h33",
+  "feat": "OSCOK",
+  "sign": 1
+ },
+ {
+  "id": "h33n",
+  "n": 28,
+  "pair": "h33",
+  "feat": "OSCOK",
+  "sign": -1
+ },
+ {
+  "id": "h34p",
+  "n": 29,
+  "pair": "h34",
+  "feat": "RESH",
+  "sign": 1
+ },
+ {
+  "id": "h34n",
+  "n": 29,
+  "pair": "h34",
+  "feat": "RESH",
+  "sign": -1
+ },
+ {
+  "id": "h35p",
+  "n": 26,
+  "pair": "h35",
+  "feat": "NF1",
+  "sign": 1
+ },
+ {
+  "id": "h35n",
+  "n": 26,
+  "pair": "h35",
+  "feat": "NF1",
+  "sign": -1
+ },
+ {
+  "id": "h36p",
+  "n": 27,
+  "pair": "h36",
+  "feat": "NF2",
+  "sign": 1
+ },
+ {
+  "id": "h36n",
+  "n": 27,
+  "pair": "h36",
+  "feat": "NF2",
+  "sign": -1
+ },
+ {
+  "id": "h37p",
+  "n": 28,
+  "pair": "h37",
+  "feat": "REPF",
+  "sign": 1
+ },
+ {
+  "id": "h37n",
+  "n": 28,
+  "pair": "h37",
+  "feat": "REPF",
+  "sign": -1
+ },
+ {
+  "id": "h38p",
+  "n": 29,
+  "pair": "h38",
+  "feat": "OSCOK",
+  "sign": 1
+ },
+ {
+  "id": "h38n",
+  "n": 29,
+  "pair": "h38",
+  "feat": "OSCOK",
+  "sign": -1
+ },
+ {
+  "id": "h39p",
+  "n": 30,
+  "pair": "h39",
+  "feat": "RESH",
+  "sign": 1
+ },
+ {
+  "id": "h39n",
+  "n": 30,
+  "pair": "h39",
+  "feat": "RESH",
+  "sign": -1
+ }
+]

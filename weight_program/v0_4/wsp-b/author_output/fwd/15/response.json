@@ -1,0 +1,3191 @@
+{
+ "call_id": 15,
+ "phase": "wsp-b",
+ "model": "original",
+ "edit_hash": "74576466ac6d22c6cc6d7545e4162a0ae2daf38a6049624e232caf635910079a",
+ "tokens": 45728,
+ "budget": {
+  "tokens_used": 666028,
+  "tokens_left": 1333972,
+  "requests": 15
+ },
+ "class_names": [
+  "PRODUCTIVE",
+  "RECOVERY",
+  "STALLED",
+  "OSCILLATING"
+ ],
+ "sessions": [
+  {
+   "id": "h16n",
+   "windows": [
+    19,
+    20
+   ],
+   "original": {
+    "label_logits": [
+     [
+      14.757235527038574,
+      17.0674991607666,
+      18.939023971557617,
+      18.17319107055664
+     ],
+     [
+      14.723946571350098,
+      17.060894012451172,
+      19.108489990234375,
+      18.328697204589844
+     ]
+    ],
+    "logsumexp": [
+     19.612937927246094,
+     19.742826461791992
+    ],
+    "label_argmax": [
+     2,
+     2
+    ],
+    "argmax": [
+     65552,
+     65552
+    ],
+    "topk": [
+     [
+      65552,
+      60477,
+      39923
+     ],
+     [
+      65552,
+      60477,
+      39923
+     ]
+    ]
+   }
+  },
+  {
+   "id": "h17p",
+   "windows": [
+    20,
+    21
+   ],
+   "original": {
+    "label_logits": [
+     [
+      12.105929374694824,
+      17.254180908203125,
+      18.80054473876953,
+      19.173294067382812
+     ],
+     [
+      11.830334663391113,
+      17.160579681396484,
+      18.758930206298828,
+      19.200632095336914
+     ]
+    ],
+    "logsumexp": [
+     19.912811279296875,
+     19.90716552734375
+    ],
+    "label_argmax": [
+     3,
+     3
+    ],
+    "argmax": [
+     60477,
+     60477
+    ],
+    "topk": [
+     [
+      60477,
+      65552,
+      39923
+     ],
+     [
+      60477,
+      65552,
+      39923
+     ]
+    ]
+   }
+  },
+  {
+   "id": "h17n",
+   "windows": [
+    20,
+    21
+   ],
+   "original": {
+    "label_logits": [
+     [
+      13.212282180786133,
+      18.166202545166016,
+      18.95594024658203,
+      19.097549438476562
+     ],
+     [
+      13.116188049316406,
+      17.945049285888672,
+      19.041759490966797,
+      19.010135650634766
+     ]
+    ],
+    "logsumexp": [
+     20.08252716064453,
+     20.043485641479492
+    ],
+    "label_argmax": [
+     3,
+     2
+    ],
+    "argmax": [
+     60477,
+     65552
+    ],
+    "topk": [
+     [
+      60477,
+      65552,
+      39923
+     ],
+     [
+      65552,
+      60477,
+      39923
+     ]
+    ]
+   }
+  },
+  {
+   "id": "h18p",
+   "windows": [
+    21,
+    22
+   ],
+   "original": {
+    "label_logits": [
+     [
+      16.39031982421875,
+      19.29907989501953,
+      18.871448516845703,
+      17.502025604248047
+     ],
+     [
+      16.71226692199707,
+      19.20348358154297,
+      18.83280372619629,
+      17.68331527709961
+     ]
+    ],
+    "logsumexp": [
+     20.121902465820312,
+     20.1013240814209
+    ],
+    "label_argmax": [
+     1,
+     1
+    ],
+    "argmax": [
+     39923,
+     39923
+    ],
+    "topk": [
+     [
+      39923,
+      65552,
+      60477
+     ],
+     [
+      39923,
+      65552,
+      60477
+     ]
+    ]
+   }
+  },
+  {
+   "id": "h18n",
+   "windows": [
+    21,
+    22
+   ],
+   "original": {
+    "label_logits": [
+     [
+      17.941814422607422,
+      19.560955047607422,
+      18.07663917541504,
+      17.903162002563477
+     ],
+     [
+      17.974838256835938,
+      19.478614807128906,
+      18.195056915283203,
+      17.975662231445312
+     ]
+    ],
+    "logsumexp": [
+     20.24460792541504,
+     20.22422981262207
+    ],
+    "label_argmax": [
+     1,
+     1
+    ],
+    "argmax": [
+     39923,
+     39923
+    ],
+    "topk": [
+     [
+      39923,
+      65552,
+      25399
+     ],
+     [
+      39923,
+      65552,
+      60477
+     ]
+    ]
+   }
+  },
+  {
+   "id": "h19p",
+   "windows": [
+    22,
+    23
+   ],
+   "original": {
+    "label_logits": [
+     [
+      14.897201538085938,
+      18.524869918823242,
+      18.615421295166016,
+      18.522193908691406
+     ],
+     [
+      15.1031494140625,
+      18.48473358154297,
+      18.697898864746094,
+      18.548768997192383
+     ]
+    ],
+    "logsumexp": [
+     19.86943244934082,
+     19.890424728393555
+    ],
+    "label_argmax": [
+     2,
+     2
+    ],
+    "argmax": [
+     65552,
+     65552
+    ],
+    "topk": [
+     [
+      65552,
+      39923,
+      60477
+     ],
+     [
+      65552,
+      60477,
+      39923
+     ]
+    ]
+   }
+  },
+  {
+   "id": "h19n",
+   "windows": [
+    22,
+    23
+   ],
+   "original": {
+    "label_logits": [
+     [
+      13.630258560180664,
+      18.229053497314453,
+      18.65987205505371,
+      18.686397552490234
+     ],
+     [
+      14.321578025817871,
+      18.598407745361328,
+      18.904518127441406,
+      18.649784088134766
+     ]
+    ],
+    "logsumexp": [
+     19.845632553100586,
+     20.026649475097656
+    ],
+    "label_argmax": [
+     3,
+     2
+    ],
+    "argmax": [
+     60477,
+     65552
+    ],
+    "topk": [
+     [
+      60477,
+      65552,
+      39923
+     ],
+     [
+      65552,
+      60477,
+      39923
+     ]
+    ]
+   }
+  },
+  {
+   "id": "h20p",
+   "windows": [
+    24,
+    25
+   ],
+   "original": {
+    "label_logits": [
+     [
+      12.305362701416016,
+      16.8563232421875,
+      18.802457809448242,
+      19.58218002319336
+     ],
+     [
+      12.431600570678711,
+      16.664093017578125,
+      18.82329559326172,
+      19.40666389465332
+     ]
+    ],
+    "logsumexp": [
+     20.14727783203125,
+     20.03127098083496
+    ],
+    "label_argmax": [
+     3,
+     3
+    ],
+    "argmax": [
+     60477,
+     60477
+    ],
+    "topk": [
+     [
+      60477,
+      65552,
+      6136
+     ],
+     [
+      60477,
+      65552,
+      6136
+     ]
+    ]
+   }
+  },
+  {
+   "id": "h20n",
+   "windows": [
+    24,
+    25
+   ],
+   "original": {
+    "label_logits": [
+     [
+      12.984264373779297,
+      17.1219482421875,
+      18.831863403320312,
+      18.69565200805664
+     ],
+     [
+      13.064555168151855,
+      17.17042350769043,
+      18.735111236572266,
+      18.586929321289062
+     ]
+    ],
+    "logsumexp": [
+     19.731712341308594,
+     19.652183532714844
+    ],
+    "label_argmax": [
+     2,
+     2
+    ],
+    "argmax": [
+     65552,
+     65552
+    ],
+    "topk": [
+     [
+      65552,
+      60477,
+      39923
+     ],
+     [
+      65552,
+      60477,
+      39923
+     ]
+    ]
+   }
+  },
+  {
+   "id": "h21p",
+   "windows": [
+    25,
+    26
+   ],
+   "original": {
+    "label_logits": [
+     [
+      14.354133605957031,
+      16.411720275878906,
+      18.30602264404297,
+      18.885141372680664
+     ],
+     [
+      13.530974388122559,
+      16.407682418823242,
+      18.4346923828125,
+      19.214805603027344
+     ]
+    ],
+    "logsumexp": [
+     19.604698181152344,
+     19.81134796142578
+    ],
+    "label_argmax": [
+     3,
+     3
+    ],
+    "argmax": [
+     60477,
+     60477
+    ],
+    "topk": [
+     [
+      60477,
+      65552,
+      6136
+     ],
+     [
+      60477,
+      65552,
+      6136
+     ]
+    ]
+   }
+  },
+  {
+   "id": "h21n",
+   "windows": [
+    25,
+    26
+   ],
+   "original": {
+    "label_logits": [
+     [
+      14.191205024719238,
+      18.29842758178711,
+      18.736248016357422,
+      19.02107048034668
+     ],
+     [
+      13.319391250610352,
+      17.659337997436523,
+      18.711166381835938,
+      19.26374053955078
+     ]
+    ],
+    "logsumexp": [
+     20.036746978759766,
+     20.024126052856445
+    ],
+    "label_argmax": [
+     3,
+     3
+    ],
+    "argmax": [
+     60477,
+     60477
+    ],
+    "topk": [
+     [
+      60477,
+      65552,
+      39923
+     ],
+     [
+      60477,
+      65552,
+      39923
+     ]
+    ]
+   }
+  },
+  {
+   "id": "h22p",
+   "windows": [
+    26,
+    27
+   ],
+   "original": {
+    "label_logits": [
+     [
+      13.841192245483398,
+      17.662363052368164,
+      18.65532684326172,
+      18.049213409423828
+     ],
+     [
+      13.863703727722168,
+      17.669300079345703,
+      18.704204559326172,
+      18.003664016723633
+     ]
+    ],
+    "logsumexp": [
+     19.52852439880371,
+     19.542068481445312
+    ],
+    "label_argmax": [
+     2,
+     2
+    ],
+    "argmax": [
+     65552,
+     65552
+    ],
+    "topk": [
+     [
+      65552,
+      60477,
+      39923
+     ],
+     [
+      65552,
+      60477,
+      39923
+     ]
+    ]
+   }
+  },
+  {
+   "id": "h22n",
+   "windows": [
+    26,
+    27
+   ],
+   "original": {
+    "label_logits": [
+     [
+      13.006219863891602,
+      17.318675994873047,
+      18.532135009765625,
+      19.108264923095703
+     ],
+     [
+      13.1508150100708,
+      17.330162048339844,
+      18.61555290222168,
+      19.079090118408203
+     ]
+    ],
+    "logsumexp": [
+     19.850736618041992,
+     19.87009048461914
+    ],
+    "label_argmax": [
+     3,
+     3
+    ],
+    "argmax": [
+     60477,
+     60477
+    ],
+    "topk": [
+     [
+      60477,
+      65552,
+      39923
+     ],
+     [
+      60477,
+      65552,
+      39923
+     ]
+    ]
+   }
+  },
+  {
+   "id": "h23p",
+   "windows": [
+    27,
+    28
+   ],
+   "original": {
+    "label_logits": [
+     [
+      15.741180419921875,
+      18.59854507446289,
+      18.421749114990234,
+      18.833038330078125
+     ],
+     [
+      16.028043746948242,
+      18.61102294921875,
+      18.378158569335938,
+      18.73141860961914
+     ]
+    ],
+    "logsumexp": [
+     19.98876953125,
+     19.956302642822266
+    ],
+    "label_argmax": [
+     3,
+     3
+    ],
+    "argmax": [
+     60477,
+     60477
+    ],
+    "topk": [
+     [
+      60477,
+      39923,
+      65552
+     ],
+     [
+      60477,
+      39923,
+      65552
+     ]
+    ]
+   }
+  },
+  {
+   "id": "h23n",
+   "windows": [
+    27,
+    28
+   ],
+   "original": {
+    "label_logits": [
+     [
+      16.055370330810547,
+      18.544029235839844,
+      18.696563720703125,
+      17.746883392333984
+     ],
+     [
+      16.155527114868164,
+      18.56768798828125,
+      18.660083770751953,
+      17.703460693359375
+     ]
+    ],
+    "logsumexp": [
+     19.77815818786621,
+     19.774742126464844
+    ],
+    "label_argmax": [
+     2,
+     2
+    ],
+    "argmax": [
+     65552,
+     65552
+    ],
+    "topk": [
+     [
+      65552,
+      39923,
+      60477
+     ],
+     [
+      65552,
+      39923,
+      60477
+     ]
+    ]
+   }
+  },
+  {
+   "id": "h24p",
+   "windows": [
+    28,
+    29
+   ],
+   "original": {
+    "label_logits": [
+     [
+      15.175029754638672,
+      17.76871681213379,
+      18.534404754638672,
+      18.634883880615234
+     ],
+     [
+      15.309188842773438,
+      17.98910903930664,
+      18.597076416015625,
+      18.699485778808594
+     ]
+    ],
+    "logsumexp": [
+     19.713762283325195,
+     19.812152862548828
+    ],
+    "label_argmax": [
+     3,
+     3
+    ],
+    "argmax": [
+     60477,
+     60477
+    ],
+    "topk": [
+     [
+      60477,
+      65552,
+      39923
+     ],
+     [
+      60477,
+      65552,
+      39923
+     ]
+    ]
+   }
+  },
+  {
+   "id": "h24n",
+   "windows": [
+    28,
+    29
+   ],
+   "original": {
+    "label_logits": [
+     [
+      13.732669830322266,
+      17.868993759155273,
+      18.52047348022461,
+      18.90460968017578
+     ],
+     [
+      13.731353759765625,
+      18.070762634277344,
+      18.584552764892578,
+      18.94998550415039
+     ]
+    ],
+    "logsumexp": [
+     19.81724739074707,
+     19.89853286743164
+    ],
+    "label_argmax": [
+     3,
+     3
+    ],
+    "argmax": [
+     60477,
+     60477
+    ],
+    "topk": [
+     [
+      60477,
+      65552,
+      39923
+     ],
+     [
+      60477,
+      65552,
+      39923
+     ]
+    ]
+   }
+  },
+  {
+   "id": "h25p",
+   "windows": [
+    23,
+    24
+   ],
+   "original": {
+    "label_logits": [
+     [
+      14.345279693603516,
+      16.951793670654297,
+      18.958568572998047,
+      18.26709747314453
+     ],
+     [
+      13.620997428894043,
+      16.774860382080078,
+      18.898643493652344,
+      18.35732078552246
+     ]
+    ],
+    "logsumexp": [
+     19.647869110107422,
+     19.613981246948242
+    ],
+    "label_argmax": [
+     2,
+     2
+    ],
+    "argmax": [
+     65552,
+     65552
+    ],
+    "topk": [
+     [
+      65552,
+      60477,
+      39923
+     ],
+     [
+      65552,
+      60477,
+      39923
+     ]
+    ]
+   }
+  },
+  {
+   "id": "h25n",
+   "windows": [
+    23,
+    24
+   ],
+   "original": {
+    "label_logits": [
+     [
+      13.01991081237793,
+      16.817092895507812,
+      18.864887237548828,
+      18.804920196533203
+     ],
+     [
+      12.84694766998291,
+      16.626052856445312,
+      18.83521270751953,
+      19.06167984008789
+     ]
+    ],
+    "logsumexp": [
+     19.75638771057129,
+     19.846708297729492
+    ],
+    "label_argmax": [
+     2,
+     3
+    ],
+    "argmax": [
+     65552,
+     60477
+    ],
+    "topk": [
+     [
+      65552,
+      60477,
+      39923
+     ],
+     [
+      60477,
+      65552,
+      39923
+     ]
+    ]
+   }
+  },
+  {
+   "id": "h26p",
+   "windows": [
+    24,
+    25
+   ],
+   "original": {
+    "label_logits": [
+     [
+      13.224853515625,
+      16.862808227539062,
+      18.848217010498047,
+      18.572790145874023
+     ],
+     [
+      13.6923828125,
+      16.955673217773438,
+      18.71544647216797,
+      18.20532989501953
+     ]
+    ],
+    "logsumexp": [
+     19.66242027282715,
+     19.487611770629883
+    ],
+    "label_argmax": [
+     2,
+     2
+    ],
+    "argmax": [
+     65552,
+     65552
+    ],
+    "topk": [
+     [
+      65552,
+      60477,
+      39923
+     ],
+     [
+      65552,
+      60477,
+      39923
+     ]
+    ]
+   }
+  },
+  {
+   "id": "h26n",
+   "windows": [
+    24,
+    25
+   ],
+   "original": {
+    "label_logits": [
+     [
+      12.493382453918457,
+      17.35810661315918,
+      18.829387664794922,
+      19.21855926513672
+     ],
+     [
+      13.161907196044922,
+      17.735286712646484,
+      18.903486251831055,
+      19.10034942626953
+     ]
+    ],
+    "logsumexp": [
+     19.992332458496094,
+     20.005937576293945
+    ],
+    "label_argmax": [
+     3,
+     3
+    ],
+    "argmax": [
+     60477,
+     60477
+    ],
+    "topk": [
+     [
+      60477,
+      65552,
+      39923
+     ],
+     [
+      60477,
+      65552,
+      39923
+     ]
+    ]
+   }
+  },
+  {
+   "id": "h27p",
+   "windows": [
+    25,
+    26
+   ],
+   "original": {
+    "label_logits": [
+     [
+      12.900763511657715,
+      17.496747970581055,
+      18.69489288330078,
+      19.020301818847656
+     ],
+     [
+      12.708451271057129,
+      17.134016036987305,
+      18.68523406982422,
+      18.985265731811523
+     ]
+    ],
+    "logsumexp": [
+     19.863048553466797,
+     19.798315048217773
+    ],
+    "label_argmax": [
+     3,
+     3
+    ],
+    "argmax": [
+     60477,
+     60477
+    ],
+    "topk": [
+     [
+      60477,
+      65552,
+      39923
+     ],
+     [
+      60477,
+      65552,
+      39923
+     ]
+    ]
+   }
+  },
+  {
+   "id": "h27n",
+   "windows": [
+    25,
+    26
+   ],
+   "original": {
+    "label_logits": [
+     [
+      13.575420379638672,
+      17.62640380859375,
+      18.69296646118164,
+      19.348447799682617
+     ],
+     [
+      13.492752075195312,
+      17.367029190063477,
+      18.67736053466797,
+      19.24248504638672
+     ]
+    ],
+    "logsumexp": [
+     20.062850952148438,
+     19.973081588745117
+    ],
+    "label_argmax": [
+     3,
+     3
+    ],
+    "argmax": [
+     60477,
+     60477
+    ],
+    "topk": [
+     [
+      60477,
+      65552,
+      39923
+     ],
+     [
+      60477,
+      65552,
+      39923
+     ]
+    ]
+   }
+  },
+  {
+   "id": "h28p",
+   "windows": [
+    26,
+    27
+   ],
+   "original": {
+    "label_logits": [
+     [
+      16.42792510986328,
+      19.090198516845703,
+      18.53111457824707,
+      17.86334991455078
+     ],
+     [
+      16.65453338623047,
+      18.831642150878906,
+      18.43437957763672,
+      17.94115447998047
+     ]
+    ],
+    "logsumexp": [
+     20.002256393432617,
+     19.892927169799805
+    ],
+    "label_argmax": [
+     1,
+     1
+    ],
+    "argmax": [
+     39923,
+     39923
+    ],
+    "topk": [
+     [
+      39923,
+      65552,
+      60477
+     ],
+     [
+      39923,
+      65552,
+      60477
+     ]
+    ]
+   }
+  },
+  {
+   "id": "h28n",
+   "windows": [
+    26,
+    27
+   ],
+   "original": {
+    "label_logits": [
+     [
+      17.450881958007812,
+      18.55831527709961,
+      18.199424743652344,
+      18.32391357421875
+     ],
+     [
+      17.2733211517334,
+      18.48095703125,
+      18.286277770996094,
+      18.39546775817871
+     ]
+    ],
+    "logsumexp": [
+     19.876728057861328,
+     19.872879028320312
+    ],
+    "label_argmax": [
+     1,
+     1
+    ],
+    "argmax": [
+     39923,
+     39923
+    ],
+    "topk": [
+     [
+      39923,
+      60477,
+      65552
+     ],
+     [
+      39923,
+      60477,
+      65552
+     ]
+    ]
+   }
+  },
+  {
+   "id": "h29p",
+   "windows": [
+    27,
+    28
+   ],
+   "original": {
+    "label_logits": [
+     [
+      13.285003662109375,
+      18.427059173583984,
+      18.324039459228516,
+      18.307613372802734
+     ],
+     [
+      13.921911239624023,
+      18.533592224121094,
+      18.430335998535156,
+      18.347230911254883
+     ]
+    ],
+    "logsumexp": [
+     19.672462463378906,
+     19.761810302734375
+    ],
+    "label_argmax": [
+     1,
+     1
+    ],
+    "argmax": [
+     39923,
+     39923
+    ],
+    "topk": [
+     [
+      39923,
+      65552,
+      60477
+     ],
+     [
+      39923,
+      65552,
+      60477
+     ]
+    ]
+   }
+  },
+  {
+   "id": "h29n",
+   "windows": [
+    27,
+    28
+   ],
+   "original": {
+    "label_logits": [
+     [
+      13.898852348327637,
+      17.822519302368164,
+      18.4769229888916,
+      18.764060974121094
+     ],
+     [
+      14.423787117004395,
+      18.07007598876953,
+      18.604633331298828,
+      18.794830322265625
+     ]
+    ],
+    "logsumexp": [
+     19.753997802734375,
+     19.863862991333008
+    ],
+    "label_argmax": [
+     3,
+     3
+    ],
+    "argmax": [
+     60477,
+     60477
+    ],
+    "topk": [
+     [
+      60477,
+      65552,
+      39923
+     ],
+     [
+      60477,
+      65552,
+      39923
+     ]
+    ]
+   }
+  },
+  {
+   "id": "h30p",
+   "windows": [
+    23,
+    24
+   ],
+   "original": {
+    "label_logits": [
+     [
+      12.291712760925293,
+      17.584129333496094,
+      18.91121482849121,
+      19.027019500732422
+     ],
+     [
+      12.727174758911133,
+      17.727319717407227,
+      18.895191192626953,
+      18.768491744995117
+     ]
+    ],
+    "logsumexp": [
+     19.925649642944336,
+     19.83848762512207
+    ],
+    "label_argmax": [
+     3,
+     2
+    ],
+    "argmax": [
+     60477,
+     65552
+    ],
+    "topk": [
+     [
+      60477,
+      65552,
+      39923
+     ],
+     [
+      65552,
+      60477,
+      39923
+     ]
+    ]
+   }
+  },
+  {
+   "id": "h30n",
+   "windows": [
+    23,
+    24
+   ],
+   "original": {
+    "label_logits": [
+     [
+      12.980977058410645,
+      18.210105895996094,
+      18.619434356689453,
+      18.857439041137695
+     ],
+     [
+      13.378066062927246,
+      18.060409545898438,
+      18.606706619262695,
+      18.741775512695312
+     ]
+    ],
+    "logsumexp": [
+     19.877601623535156,
+     19.790491104125977
+    ],
+    "label_argmax": [
+     3,
+     3
+    ],
+    "argmax": [
+     60477,
+     60477
+    ],
+    "topk": [
+     [
+      60477,
+      65552,
+      39923
+     ],
+     [
+      60477,
+      65552,
+      39923
+     ]
+    ]
+   }
+  },
+  {
+   "id": "h31p",
+   "windows": [
+    24,
+    25
+   ],
+   "original": {
+    "label_logits": [
+     [
+      13.196905136108398,
+      18.074337005615234,
+      18.813701629638672,
+      19.193321228027344
+     ],
+     [
+      12.455297470092773,
+      17.571918487548828,
+      18.712562561035156,
+      19.196510314941406
+     ]
+    ],
+    "logsumexp": [
+     20.049823760986328,
+     19.93445587158203
+    ],
+    "label_argmax": [
+     3,
+     3
+    ],
+    "argmax": [
+     60477,
+     60477
+    ],
+    "topk": [
+     [
+      60477,
+      65552,
+      39923
+     ],
+     [
+      60477,
+      65552,
+      39923
+     ]
+    ]
+   }
+  },
+  {
+   "id": "h31n",
+   "windows": [
+    24,
+    25
+   ],
+   "original": {
+    "label_logits": [
+     [
+      14.701054573059082,
+      18.834884643554688,
+      18.882322311401367,
+      18.88656234741211
+     ],
+     [
+      13.784708023071289,
+      18.477508544921875,
+      18.998680114746094,
+      19.134429931640625
+     ]
+    ],
+    "logsumexp": [
+     20.181581497192383,
+     20.1979923248291
+    ],
+    "label_argmax": [
+     3,
+     3
+    ],
+    "argmax": [
+     60477,
+     60477
+    ],
+    "topk": [
+     [
+      60477,
+      65552,
+      39923
+     ],
+     [
+      60477,
+      65552,
+      39923
+     ]
+    ]
+   }
+  },
+  {
+   "id": "h32p",
+   "windows": [
+    25,
+    26
+   ],
+   "original": {
+    "label_logits": [
+     [
+      16.094417572021484,
+      17.670747756958008,
+      18.636051177978516,
+      16.760234832763672
+     ],
+     [
+      15.880569458007812,
+      17.530258178710938,
+      18.618392944335938,
+      16.809242248535156
+     ]
+    ],
+    "logsumexp": [
+     19.366771697998047,
+     19.307865142822266
+    ],
+    "label_argmax": [
+     2,
+     2
+    ],
+    "argmax": [
+     65552,
+     65552
+    ],
+    "topk": [
+     [
+      65552,
+      39923,
+      60477
+     ],
+     [
+      65552,
+      39923,
+      60477
+     ]
+    ]
+   }
+  },
+  {
+   "id": "h32n",
+   "windows": [
+    25,
+    26
+   ],
+   "original": {
+    "label_logits": [
+     [
+      14.321718215942383,
+      18.496604919433594,
+      18.76530647277832,
+      17.715133666992188
+     ],
+     [
+      14.505996704101562,
+      18.367389678955078,
+      18.80634307861328,
+      17.617464065551758
+     ]
+    ],
+    "logsumexp": [
+     19.722597122192383,
+     19.687864303588867
+    ],
+    "label_argmax": [
+     2,
+     2
+    ],
+    "argmax": [
+     65552,
+     65552
+    ],
+    "topk": [
+     [
+      65552,
+      39923,
+      60477
+     ],
+     [
+      65552,
+      39923,
+      60477
+     ]
+    ]
+   }
+  }
+ ],
+ "request_file": "output/wsp-b/scratch/req_h02.json",
+ "arrays": {
+  "original.s0.hidden.L21": {
+   "file": "original.s0.hidden.L21.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s0.hidden.L22": {
+   "file": "original.s0.hidden.L22.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s0.hidden.L23": {
+   "file": "original.s0.hidden.L23.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s0.hidden.L24": {
+   "file": "original.s0.hidden.L24.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s0.mlp_act.L21": {
+   "file": "original.s0.mlp_act.L21.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s0.mlp_act.L22": {
+   "file": "original.s0.mlp_act.L22.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s0.mlp_act.L23": {
+   "file": "original.s0.mlp_act.L23.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s1.hidden.L21": {
+   "file": "original.s1.hidden.L21.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s1.hidden.L22": {
+   "file": "original.s1.hidden.L22.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s1.hidden.L23": {
+   "file": "original.s1.hidden.L23.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s1.hidden.L24": {
+   "file": "original.s1.hidden.L24.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s1.mlp_act.L21": {
+   "file": "original.s1.mlp_act.L21.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s1.mlp_act.L22": {
+   "file": "original.s1.mlp_act.L22.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s1.mlp_act.L23": {
+   "file": "original.s1.mlp_act.L23.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s2.hidden.L21": {
+   "file": "original.s2.hidden.L21.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s2.hidden.L22": {
+   "file": "original.s2.hidden.L22.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s2.hidden.L23": {
+   "file": "original.s2.hidden.L23.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s2.hidden.L24": {
+   "file": "original.s2.hidden.L24.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s2.mlp_act.L21": {
+   "file": "original.s2.mlp_act.L21.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s2.mlp_act.L22": {
+   "file": "original.s2.mlp_act.L22.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s2.mlp_act.L23": {
+   "file": "original.s2.mlp_act.L23.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s3.hidden.L21": {
+   "file": "original.s3.hidden.L21.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s3.hidden.L22": {
+   "file": "original.s3.hidden.L22.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s3.hidden.L23": {
+   "file": "original.s3.hidden.L23.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s3.hidden.L24": {
+   "file": "original.s3.hidden.L24.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s3.mlp_act.L21": {
+   "file": "original.s3.mlp_act.L21.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s3.mlp_act.L22": {
+   "file": "original.s3.mlp_act.L22.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s3.mlp_act.L23": {
+   "file": "original.s3.mlp_act.L23.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s4.hidden.L21": {
+   "file": "original.s4.hidden.L21.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s4.hidden.L22": {
+   "file": "original.s4.hidden.L22.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s4.hidden.L23": {
+   "file": "original.s4.hidden.L23.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s4.hidden.L24": {
+   "file": "original.s4.hidden.L24.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s4.mlp_act.L21": {
+   "file": "original.s4.mlp_act.L21.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s4.mlp_act.L22": {
+   "file": "original.s4.mlp_act.L22.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s4.mlp_act.L23": {
+   "file": "original.s4.mlp_act.L23.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s5.hidden.L21": {
+   "file": "original.s5.hidden.L21.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s5.hidden.L22": {
+   "file": "original.s5.hidden.L22.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s5.hidden.L23": {
+   "file": "original.s5.hidden.L23.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s5.hidden.L24": {
+   "file": "original.s5.hidden.L24.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s5.mlp_act.L21": {
+   "file": "original.s5.mlp_act.L21.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s5.mlp_act.L22": {
+   "file": "original.s5.mlp_act.L22.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s5.mlp_act.L23": {
+   "file": "original.s5.mlp_act.L23.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s6.hidden.L21": {
+   "file": "original.s6.hidden.L21.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s6.hidden.L22": {
+   "file": "original.s6.hidden.L22.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s6.hidden.L23": {
+   "file": "original.s6.hidden.L23.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s6.hidden.L24": {
+   "file": "original.s6.hidden.L24.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s6.mlp_act.L21": {
+   "file": "original.s6.mlp_act.L21.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s6.mlp_act.L22": {
+   "file": "original.s6.mlp_act.L22.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s6.mlp_act.L23": {
+   "file": "original.s6.mlp_act.L23.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s7.hidden.L21": {
+   "file": "original.s7.hidden.L21.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s7.hidden.L22": {
+   "file": "original.s7.hidden.L22.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s7.hidden.L23": {
+   "file": "original.s7.hidden.L23.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s7.hidden.L24": {
+   "file": "original.s7.hidden.L24.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s7.mlp_act.L21": {
+   "file": "original.s7.mlp_act.L21.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s7.mlp_act.L22": {
+   "file": "original.s7.mlp_act.L22.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s7.mlp_act.L23": {
+   "file": "original.s7.mlp_act.L23.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s8.hidden.L21": {
+   "file": "original.s8.hidden.L21.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s8.hidden.L22": {
+   "file": "original.s8.hidden.L22.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s8.hidden.L23": {
+   "file": "original.s8.hidden.L23.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s8.hidden.L24": {
+   "file": "original.s8.hidden.L24.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s8.mlp_act.L21": {
+   "file": "original.s8.mlp_act.L21.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s8.mlp_act.L22": {
+   "file": "original.s8.mlp_act.L22.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s8.mlp_act.L23": {
+   "file": "original.s8.mlp_act.L23.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s9.hidden.L21": {
+   "file": "original.s9.hidden.L21.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s9.hidden.L22": {
+   "file": "original.s9.hidden.L22.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s9.hidden.L23": {
+   "file": "original.s9.hidden.L23.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s9.hidden.L24": {
+   "file": "original.s9.hidden.L24.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s9.mlp_act.L21": {
+   "file": "original.s9.mlp_act.L21.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s9.mlp_act.L22": {
+   "file": "original.s9.mlp_act.L22.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s9.mlp_act.L23": {
+   "file": "original.s9.mlp_act.L23.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s10.hidden.L21": {
+   "file": "original.s10.hidden.L21.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s10.hidden.L22": {
+   "file": "original.s10.hidden.L22.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s10.hidden.L23": {
+   "file": "original.s10.hidden.L23.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s10.hidden.L24": {
+   "file": "original.s10.hidden.L24.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s10.mlp_act.L21": {
+   "file": "original.s10.mlp_act.L21.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s10.mlp_act.L22": {
+   "file": "original.s10.mlp_act.L22.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s10.mlp_act.L23": {
+   "file": "original.s10.mlp_act.L23.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s11.hidden.L21": {
+   "file": "original.s11.hidden.L21.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s11.hidden.L22": {
+   "file": "original.s11.hidden.L22.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s11.hidden.L23": {
+   "file": "original.s11.hidden.L23.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s11.hidden.L24": {
+   "file": "original.s11.hidden.L24.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s11.mlp_act.L21": {
+   "file": "original.s11.mlp_act.L21.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s11.mlp_act.L22": {
+   "file": "original.s11.mlp_act.L22.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s11.mlp_act.L23": {
+   "file": "original.s11.mlp_act.L23.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s12.hidden.L21": {
+   "file": "original.s12.hidden.L21.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s12.hidden.L22": {
+   "file": "original.s12.hidden.L22.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s12.hidden.L23": {
+   "file": "original.s12.hidden.L23.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s12.hidden.L24": {
+   "file": "original.s12.hidden.L24.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s12.mlp_act.L21": {
+   "file": "original.s12.mlp_act.L21.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s12.mlp_act.L22": {
+   "file": "original.s12.mlp_act.L22.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s12.mlp_act.L23": {
+   "file": "original.s12.mlp_act.L23.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s13.hidden.L21": {
+   "file": "original.s13.hidden.L21.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s13.hidden.L22": {
+   "file": "original.s13.hidden.L22.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s13.hidden.L23": {
+   "file": "original.s13.hidden.L23.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s13.hidden.L24": {
+   "file": "original.s13.hidden.L24.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s13.mlp_act.L21": {
+   "file": "original.s13.mlp_act.L21.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s13.mlp_act.L22": {
+   "file": "original.s13.mlp_act.L22.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s13.mlp_act.L23": {
+   "file": "original.s13.mlp_act.L23.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s14.hidden.L21": {
+   "file": "original.s14.hidden.L21.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s14.hidden.L22": {
+   "file": "original.s14.hidden.L22.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s14.hidden.L23": {
+   "file": "original.s14.hidden.L23.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s14.hidden.L24": {
+   "file": "original.s14.hidden.L24.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s14.mlp_act.L21": {
+   "file": "original.s14.mlp_act.L21.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s14.mlp_act.L22": {
+   "file": "original.s14.mlp_act.L22.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s14.mlp_act.L23": {
+   "file": "original.s14.mlp_act.L23.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s15.hidden.L21": {
+   "file": "original.s15.hidden.L21.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s15.hidden.L22": {
+   "file": "original.s15.hidden.L22.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s15.hidden.L23": {
+   "file": "original.s15.hidden.L23.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s15.hidden.L24": {
+   "file": "original.s15.hidden.L24.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s15.mlp_act.L21": {
+   "file": "original.s15.mlp_act.L21.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s15.mlp_act.L22": {
+   "file": "original.s15.mlp_act.L22.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s15.mlp_act.L23": {
+   "file": "original.s15.mlp_act.L23.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s16.hidden.L21": {
+   "file": "original.s16.hidden.L21.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s16.hidden.L22": {
+   "file": "original.s16.hidden.L22.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s16.hidden.L23": {
+   "file": "original.s16.hidden.L23.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s16.hidden.L24": {
+   "file": "original.s16.hidden.L24.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s16.mlp_act.L21": {
+   "file": "original.s16.mlp_act.L21.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s16.mlp_act.L22": {
+   "file": "original.s16.mlp_act.L22.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s16.mlp_act.L23": {
+   "file": "original.s16.mlp_act.L23.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s17.hidden.L21": {
+   "file": "original.s17.hidden.L21.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s17.hidden.L22": {
+   "file": "original.s17.hidden.L22.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s17.hidden.L23": {
+   "file": "original.s17.hidden.L23.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s17.hidden.L24": {
+   "file": "original.s17.hidden.L24.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s17.mlp_act.L21": {
+   "file": "original.s17.mlp_act.L21.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s17.mlp_act.L22": {
+   "file": "original.s17.mlp_act.L22.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s17.mlp_act.L23": {
+   "file": "original.s17.mlp_act.L23.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s18.hidden.L21": {
+   "file": "original.s18.hidden.L21.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s18.hidden.L22": {
+   "file": "original.s18.hidden.L22.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s18.hidden.L23": {
+   "file": "original.s18.hidden.L23.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s18.hidden.L24": {
+   "file": "original.s18.hidden.L24.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s18.mlp_act.L21": {
+   "file": "original.s18.mlp_act.L21.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s18.mlp_act.L22": {
+   "file": "original.s18.mlp_act.L22.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s18.mlp_act.L23": {
+   "file": "original.s18.mlp_act.L23.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s19.hidden.L21": {
+   "file": "original.s19.hidden.L21.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s19.hidden.L22": {
+   "file": "original.s19.hidden.L22.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s19.hidden.L23": {
+   "file": "original.s19.hidden.L23.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s19.hidden.L24": {
+   "file": "original.s19.hidden.L24.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s19.mlp_act.L21": {
+   "file": "original.s19.mlp_act.L21.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s19.mlp_act.L22": {
+   "file": "original.s19.mlp_act.L22.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s19.mlp_act.L23": {
+   "file": "original.s19.mlp_act.L23.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s20.hidden.L21": {
+   "file": "original.s20.hidden.L21.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s20.hidden.L22": {
+   "file": "original.s20.hidden.L22.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s20.hidden.L23": {
+   "file": "original.s20.hidden.L23.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s20.hidden.L24": {
+   "file": "original.s20.hidden.L24.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s20.mlp_act.L21": {
+   "file": "original.s20.mlp_act.L21.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s20.mlp_act.L22": {
+   "file": "original.s20.mlp_act.L22.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s20.mlp_act.L23": {
+   "file": "original.s20.mlp_act.L23.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s21.hidden.L21": {
+   "file": "original.s21.hidden.L21.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s21.hidden.L22": {
+   "file": "original.s21.hidden.L22.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s21.hidden.L23": {
+   "file": "original.s21.hidden.L23.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s21.hidden.L24": {
+   "file": "original.s21.hidden.L24.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s21.mlp_act.L21": {
+   "file": "original.s21.mlp_act.L21.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s21.mlp_act.L22": {
+   "file": "original.s21.mlp_act.L22.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s21.mlp_act.L23": {
+   "file": "original.s21.mlp_act.L23.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s22.hidden.L21": {
+   "file": "original.s22.hidden.L21.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s22.hidden.L22": {
+   "file": "original.s22.hidden.L22.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s22.hidden.L23": {
+   "file": "original.s22.hidden.L23.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s22.hidden.L24": {
+   "file": "original.s22.hidden.L24.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s22.mlp_act.L21": {
+   "file": "original.s22.mlp_act.L21.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s22.mlp_act.L22": {
+   "file": "original.s22.mlp_act.L22.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s22.mlp_act.L23": {
+   "file": "original.s22.mlp_act.L23.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s23.hidden.L21": {
+   "file": "original.s23.hidden.L21.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s23.hidden.L22": {
+   "file": "original.s23.hidden.L22.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s23.hidden.L23": {
+   "file": "original.s23.hidden.L23.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s23.hidden.L24": {
+   "file": "original.s23.hidden.L24.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s23.mlp_act.L21": {
+   "file": "original.s23.mlp_act.L21.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s23.mlp_act.L22": {
+   "file": "original.s23.mlp_act.L22.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s23.mlp_act.L23": {
+   "file": "original.s23.mlp_act.L23.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s24.hidden.L21": {
+   "file": "original.s24.hidden.L21.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s24.hidden.L22": {
+   "file": "original.s24.hidden.L22.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s24.hidden.L23": {
+   "file": "original.s24.hidden.L23.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s24.hidden.L24": {
+   "file": "original.s24.hidden.L24.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s24.mlp_act.L21": {
+   "file": "original.s24.mlp_act.L21.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s24.mlp_act.L22": {
+   "file": "original.s24.mlp_act.L22.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s24.mlp_act.L23": {
+   "file": "original.s24.mlp_act.L23.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s25.hidden.L21": {
+   "file": "original.s25.hidden.L21.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s25.hidden.L22": {
+   "file": "original.s25.hidden.L22.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s25.hidden.L23": {
+   "file": "original.s25.hidden.L23.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s25.hidden.L24": {
+   "file": "original.s25.hidden.L24.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s25.mlp_act.L21": {
+   "file": "original.s25.mlp_act.L21.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s25.mlp_act.L22": {
+   "file": "original.s25.mlp_act.L22.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s25.mlp_act.L23": {
+   "file": "original.s25.mlp_act.L23.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s26.hidden.L21": {
+   "file": "original.s26.hidden.L21.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s26.hidden.L22": {
+   "file": "original.s26.hidden.L22.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s26.hidden.L23": {
+   "file": "original.s26.hidden.L23.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s26.hidden.L24": {
+   "file": "original.s26.hidden.L24.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s26.mlp_act.L21": {
+   "file": "original.s26.mlp_act.L21.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s26.mlp_act.L22": {
+   "file": "original.s26.mlp_act.L22.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s26.mlp_act.L23": {
+   "file": "original.s26.mlp_act.L23.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s27.hidden.L21": {
+   "file": "original.s27.hidden.L21.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s27.hidden.L22": {
+   "file": "original.s27.hidden.L22.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s27.hidden.L23": {
+   "file": "original.s27.hidden.L23.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s27.hidden.L24": {
+   "file": "original.s27.hidden.L24.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s27.mlp_act.L21": {
+   "file": "original.s27.mlp_act.L21.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s27.mlp_act.L22": {
+   "file": "original.s27.mlp_act.L22.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s27.mlp_act.L23": {
+   "file": "original.s27.mlp_act.L23.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s28.hidden.L21": {
+   "file": "original.s28.hidden.L21.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s28.hidden.L22": {
+   "file": "original.s28.hidden.L22.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s28.hidden.L23": {
+   "file": "original.s28.hidden.L23.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s28.hidden.L24": {
+   "file": "original.s28.hidden.L24.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s28.mlp_act.L21": {
+   "file": "original.s28.mlp_act.L21.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s28.mlp_act.L22": {
+   "file": "original.s28.mlp_act.L22.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s28.mlp_act.L23": {
+   "file": "original.s28.mlp_act.L23.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s29.hidden.L21": {
+   "file": "original.s29.hidden.L21.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s29.hidden.L22": {
+   "file": "original.s29.hidden.L22.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s29.hidden.L23": {
+   "file": "original.s29.hidden.L23.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s29.hidden.L24": {
+   "file": "original.s29.hidden.L24.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s29.mlp_act.L21": {
+   "file": "original.s29.mlp_act.L21.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s29.mlp_act.L22": {
+   "file": "original.s29.mlp_act.L22.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s29.mlp_act.L23": {
+   "file": "original.s29.mlp_act.L23.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s30.hidden.L21": {
+   "file": "original.s30.hidden.L21.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s30.hidden.L22": {
+   "file": "original.s30.hidden.L22.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s30.hidden.L23": {
+   "file": "original.s30.hidden.L23.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s30.hidden.L24": {
+   "file": "original.s30.hidden.L24.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s30.mlp_act.L21": {
+   "file": "original.s30.mlp_act.L21.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s30.mlp_act.L22": {
+   "file": "original.s30.mlp_act.L22.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s30.mlp_act.L23": {
+   "file": "original.s30.mlp_act.L23.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s31.hidden.L21": {
+   "file": "original.s31.hidden.L21.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s31.hidden.L22": {
+   "file": "original.s31.hidden.L22.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s31.hidden.L23": {
+   "file": "original.s31.hidden.L23.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s31.hidden.L24": {
+   "file": "original.s31.hidden.L24.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s31.mlp_act.L21": {
+   "file": "original.s31.mlp_act.L21.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s31.mlp_act.L22": {
+   "file": "original.s31.mlp_act.L22.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s31.mlp_act.L23": {
+   "file": "original.s31.mlp_act.L23.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s32.hidden.L21": {
+   "file": "original.s32.hidden.L21.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s32.hidden.L22": {
+   "file": "original.s32.hidden.L22.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s32.hidden.L23": {
+   "file": "original.s32.hidden.L23.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s32.hidden.L24": {
+   "file": "original.s32.hidden.L24.npy",
+   "shape": [
+    2,
+    1024
+   ]
+  },
+  "original.s32.mlp_act.L21": {
+   "file": "original.s32.mlp_act.L21.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s32.mlp_act.L22": {
+   "file": "original.s32.mlp_act.L22.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  },
+  "original.s32.mlp_act.L23": {
+   "file": "original.s32.mlp_act.L23.npy",
+   "shape": [
+    2,
+    3584
+   ]
+  }
+ }
+}

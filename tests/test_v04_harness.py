@@ -994,6 +994,18 @@ def test_kernel_freezes_follow_additive_revisions_only(tmp_path):
     assert H.kernel_freezes({"freeze_sha256": "x", "revisions": []}) == ["x"]
 
 
+def test_kernel_neutral_changes_keep_the_g1_kernel():
+    """D1: a revision that changes only harness-side files the session never runs keeps the chain; one more file
+    (any kernel file) ends it."""
+    neutral = {p: {"before": "0" * 64, "after": "1" * 64} for p in H.KERNEL_NEUTRAL_FILES}
+    rec = {"freeze_sha256": "f2", "revisions": [
+        {"previous_freeze_sha256": "g1", "changed": neutral},
+        {"previous_freeze_sha256": "f1", "changed": {"envs/qwen/hypaqwen/wsp/server.py": {}}}]}
+    assert H.kernel_freezes(rec) == ["g1", "f1"]
+    rec["revisions"][0]["changed"] = {**neutral, "experiments/v0_4/author_kit/py": {}}
+    assert H.kernel_freezes(rec) == ["g1"]
+
+
 def test_archive_freeze_must_be_the_registry_g1_kernel(tmp_path):
     reg = tmp_path / "registry_v0_4.yaml"
     sha = fake_registry(reg, ("add",))

@@ -52,7 +52,7 @@ files:
   envs/qwen/tests/test_wsp_server.py: 46597a72d3f918ed898b1b36d4a5ce223c0dcf2c9886a183415452ab4706b7b3
   envs/qwen/uv.lock: 3dd9cc4ff523ba668fdab21d5566647892b05e73c852c919c23b92adcf2aecb0
   experiments/v0_3/phase_c/README.md: 93834484869db2546123d45c3dc21f6bea24bca9903a6ee65576cbfd1fbbbfa8
-  experiments/v0_4/PREREGISTRATION.md: 172749cbc76018895a609880daf27f003f47b9825ac9aa9f31a612a6c0a5df5b
+  experiments/v0_4/PREREGISTRATION.md: 322d6ef61302c58fb0ee8250d98d3f07bed99376e4a8e5ac86ca5fd6a2af1176
   experiments/v0_4/author_kit/fwd: 4c8f99f181f6e853d1a40313d65a989e596105d0849a9805419368fde310d8a8
   experiments/v0_4/author_kit/hook_bash.py: 415ea9c46daa25179c8cec659aee23558b0705f2c3867d6607e8ab77608b568b
   experiments/v0_4/author_kit/prompt_continue.md: 72a75a6de83fed494f2a32c38b05aa70c4e52a7c75f3c5aed847387fea36e431
@@ -144,7 +144,7 @@ files:
   src/agent_loop_lab/v04/disclosure.py: 6d952b5285654a41e808f0cfe7e1ae73754540cf2a97b542833dd57591e33104
   src/agent_loop_lab/v04/export.py: 83849e981b1efaa3038146c199f9c35cad71f7e11f8dfd312d22bacfc4a97b67
   src/agent_loop_lab/v04/fresh_test.py: 2d32d9b1c45cb9d9e84010831ae8f01227e68f89141acae7bf5468a7faeaf9e2
-  src/agent_loop_lab/v04/handover.py: bb0ae248b0861f86ca5c003c3a13efbb40e696cc1233e90a36d4021e84102b8f
+  src/agent_loop_lab/v04/handover.py: eb659fedf370166729cc0c9883af1a265a5fd8377e7efd3f712a53714e3adb2f
   src/agent_loop_lab/v04/kit.py: 7ef48a0995f0985c3addf8080f900dc60c68f496846fc63b36b102061994cda2
   src/agent_loop_lab/v04/mechanisms.py: 7929bbc747d81f2048cf9ff26fca31b2e5405fe916eebce99050c1dff076aabb
   src/agent_loop_lab/v04/packet.py: a70866cf40bff700f7d209557c23af843540463299254222b4d0922def0e2a24
@@ -153,7 +153,7 @@ files:
   src/agent_loop_lab/v04/v03_val.py: 38d4967d18d8cd3a757a00b4c9a4bb6c7144dd194f6394fb5382d3ddcc01746a
   src/agent_loop_lab/windows.py: bcaea09301b57d82cff22bb5eb15f1969d33727f5d74905c8455b373817bd9b4
   uv.lock: d6e4c7522c352faa074eb4d627bd3c7b9d89fa13fa4b233fbec52b7dc5b25fc4
-freeze_sha256: f654d2c9bfb60d71863b9018161f9f3def1a34406fcc65c8e54bd43d9c7a79d0
+freeze_sha256: 4b7da6a121becb2f263c5bed3a412e3e323b8f8d5fb3e7979644261255ee5256
 globs:
 - envs/qwen/**/*
 - experiments/v0_4/author_kit/**/*
@@ -193,4 +193,20 @@ revisions:
   - src/agent_loop_lab/v04/**/*
   previous_freeze_sha256: 494db5e3a07b623c459d5fe7f0fe3d93a5db32500a400aac2df2e8d920d1d61f
   reason: 'D1 (deviation, Matthew 2026-11-06): WSP-B disclosure from a WSP-A readout of the 200 disclosed sessions'
+- added: {}
+  changed:
+    experiments/v0_4/PREREGISTRATION.md:
+      after: 322d6ef61302c58fb0ee8250d98d3f07bed99376e4a8e5ac86ca5fd6a2af1176
+      before: 172749cbc76018895a609880daf27f003f47b9825ac9aa9f31a612a6c0a5df5b
+    src/agent_loop_lab/v04/handover.py:
+      after: eb659fedf370166729cc0c9883af1a265a5fd8377e7efd3f712a53714e3adb2f
+      before: bb0ae248b0861f86ca5c003c3a13efbb40e696cc1233e90a36d4021e84102b8f
+  date: '2026-11-06'
+  globs_before:
+  - envs/qwen/**/*
+  - experiments/v0_4/author_kit/**/*
+  - scripts/v04_*
+  - src/agent_loop_lab/v04/**/*
+  previous_freeze_sha256: f654d2c9bfb60d71863b9018161f9f3def1a34406fcc65c8e54bd43d9c7a79d0
+  reason: 'D1 follow-on: kernel-neutral revisions keep the G1 kernel (handover.kernel_freezes)'
 spec_version: '0.4'

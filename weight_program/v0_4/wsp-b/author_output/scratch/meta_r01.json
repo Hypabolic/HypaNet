@@ -1,0 +1,177 @@
+[
+ {
+  "id": "r_prod0_0",
+  "n": 29,
+  "label": "PRODUCTIVE"
+ },
+ {
+  "id": "r_prod0_2",
+  "n": 20,
+  "label": "PRODUCTIVE"
+ },
+ {
+  "id": "r_prod1_1",
+  "n": 25,
+  "label": "PRODUCTIVE"
+ },
+ {
+  "id": "r_prod1_3",
+  "n": 25,
+  "label": "PRODUCTIVE"
+ },
+ {
+  "id": "r_prod2_2",
+  "n": 28,
+  "label": "PRODUCTIVE"
+ },
+ {
+  "id": "r_prod2_0",
+  "n": 26,
+  "label": "PRODUCTIVE"
+ },
+ {
+  "id": "r_prod3_3",
+  "n": 26,
+  "label": "PRODUCTIVE"
+ },
+ {
+  "id": "r_prod3_1",
+  "n": 26,
+  "label": "PRODUCTIVE"
+ },
+ {
+  "id": "r_prod4_0",
+  "n": 23,
+  "label": "PRODUCTIVE"
+ },
+ {
+  "id": "r_prod4_2",
+  "n": 26,
+  "label": "PRODUCTIVE"
+ },
+ {
+  "id": "r_prod5_1",
+  "n": 19,
+  "label": "PRODUCTIVE"
+ },
+ {
+  "id": "r_prod5_3",
+  "n": 25,
+  "label": "PRODUCTIVE"
+ },
+ {
+  "id": "r_prod6_2",
+  "n": 27,
+  "label": "PRODUCTIVE"
+ },
+ {
+  "id": "r_prod6_0",
+  "n": 28,
+  "label": "PRODUCTIVE"
+ },
+ {
+  "id": "r_prod7_3",
+  "n": 24,
+  "label": "PRODUCTIVE"
+ },
+ {
+  "id": "r_prod7_1",
+  "n": 20,
+  "label": "PRODUCTIVE"
+ },
+ {
+  "id": "r_reco0_0",
+  "n": 30,
+  "label": "RECOVERY"
+ },
+ {
+  "id": "r_reco0_2",
+  "n": 24,
+  "label": "RECOVERY"
+ },
+ {
+  "id": "r_reco1_1",
+  "n": 24,
+  "label": "RECOVERY"
+ },
+ {
+  "id": "r_reco1_3",
+  "n": 25,
+  "label": "RECOVERY"
+ },
+ {
+  "id": "r_reco2_2",
+  "n": 27,
+  "label": "RECOVERY"
+ },
+ {
+  "id": "r_reco2_0",
+  "n": 26,
+  "label": "RECOVERY"
+ },
+ {
+  "id": "r_reco3_3",
+  "n": 22,
+  "label": "RECOVERY"
+ },
+ {
+  "id": "r_reco3_1",
+  "n": 18,
+  "label": "RECOVERY"
+ },
+ {
+  "id": "r_reco4_0",
+  "n": 29,
+  "label": "RECOVERY"
+ },
+ {
+  "id": "r_reco4_2",
+  "n": 30,
+  "label": "RECOVERY"
+ },
+ {
+  "id": "r_reco5_1",
+  "n": 28,
+  "label": "RECOVERY"
+ },
+ {
+  "id": "r_reco5_3",
+  "n": 19,
+  "label": "RECOVERY"
+ },
+ {
+  "id": "r_reco6_2",
+  "n": 22,
+  "label": "RECOVERY"
+ },
+ {
+  "id": "r_reco6_0",
+  "n": 26,
+  "label": "RECOVERY"
+ },
+ {
+  "id": "r_reco7_3",
+  "n": 26,
+  "label": "RECOVERY"
+ },
+ {
+  "id": "r_reco7_1",
+  "n": 28,
+  "label": "RECOVERY"
+ },
+ {
+  "id": "r_stal0_0",
+  "n": 24,
+  "label": "STALLED"
+ },
+ {
+  "id": "r_stal0_2",
+  "n": 24,
+  "label": "STALLED"
+ },
+ {
+  "id": "r_stal1_1",
+  "n": 28,
+  "label": "STALLED"
+ }
+]

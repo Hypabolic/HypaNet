@@ -1,0 +1,254 @@
+[
+ {
+  "id": "i0p",
+  "n": 24,
+  "pair": "i0",
+  "feat": "PEND",
+  "sign": 1
+ },
+ {
+  "id": "i0n",
+  "n": 24,
+  "pair": "i0",
+  "feat": "PEND",
+  "sign": -1
+ },
+ {
+  "id": "i1p",
+  "n": 25,
+  "pair": "i1",
+  "feat": "REPH",
+  "sign": 1
+ },
+ {
+  "id": "i1n",
+  "n": 25,
+  "pair": "i1",
+  "feat": "REPH",
+  "sign": -1
+ },
+ {
+  "id": "i2p",
+  "n": 26,
+  "pair": "i2",
+  "feat": "REPP",
+  "sign": 1
+ },
+ {
+  "id": "i2n",
+  "n": 26,
+  "pair": "i2",
+  "feat": "REPP",
+  "sign": -1
+ },
+ {
+  "id": "i3p",
+  "n": 27,
+  "pair": "i3",
+  "feat": "NF3",
+  "sign": 1
+ },
+ {
+  "id": "i3n",
+  "n": 27,
+  "pair": "i3",
+  "feat": "NF3",
+  "sign": -1
+ },
+ {
+  "id": "i4p",
+  "n": 28,
+  "pair": "i4",
+  "feat": "RDS",
+  "sign": 1
+ },
+ {
+  "id": "i4n",
+  "n": 28,
+  "pair": "i4",
+  "feat": "RDS",
+  "sign": -1
+ },
+ {
+  "id": "i5p",
+  "n": 26,
+  "pair": "i5",
+  "feat": "PEND",
+  "sign": 1
+ },
+ {
+  "id": "i5n",
+  "n": 26,
+  "pair": "i5",
+  "feat": "PEND",
+  "sign": -1
+ },
+ {
+  "id": "i6p",
+  "n": 27,
+  "pair": "i6",
+  "feat": "REPH",
+  "sign": 1
+ },
+ {
+  "id": "i6n",
+  "n": 27,
+  "pair": "i6",
+  "feat": "REPH",
+  "sign": -1
+ },
+ {
+  "id": "i7p",
+  "n": 28,
+  "pair": "i7",
+  "feat": "REPP",
+  "sign": 1
+ },
+ {
+  "id": "i7n",
+  "n": 28,
+  "pair": "i7",
+  "feat": "REPP",
+  "sign": -1
+ },
+ {
+  "id": "i8p",
+  "n": 29,
+  "pair": "i8",
+  "feat": "NF3",
+  "sign": 1
+ },
+ {
+  "id": "i8n",
+  "n": 29,
+  "pair": "i8",
+  "feat": "NF3",
+  "sign": -1
+ },
+ {
+  "id": "i9p",
+  "n": 30,
+  "pair": "i9",
+  "feat": "RDS",
+  "sign": 1
+ },
+ {
+  "id": "i9n",
+  "n": 30,
+  "pair": "i9",
+  "feat": "RDS",
+  "sign": -1
+ },
+ {
+  "id": "i10p",
+  "n": 20,
+  "pair": "i10",
+  "feat": "PEND",
+  "sign": 1
+ },
+ {
+  "id": "i10n",
+  "n": 20,
+  "pair": "i10",
+  "feat": "PEND",
+  "sign": -1
+ },
+ {
+  "id": "i11p",
+  "n": 21,
+  "pair": "i11",
+  "feat": "REPH",
+  "sign": 1
+ },
+ {
+  "id": "i11n",
+  "n": 21,
+  "pair": "i11",
+  "feat": "REPH",
+  "sign": -1
+ },
+ {
+  "id": "i12p",
+  "n": 22,
+  "pair": "i12",
+  "feat": "REPP",
+  "sign": 1
+ },
+ {
+  "id": "i12n",
+  "n": 22,
+  "pair": "i12",
+  "feat": "REPP",
+  "sign": -1
+ },
+ {
+  "id": "i13p",
+  "n": 23,
+  "pair": "i13",
+  "feat": "NF3",
+  "sign": 1
+ },
+ {
+  "id": "i13n",
+  "n": 23,
+  "pair": "i13",
+  "feat": "NF3",
+  "sign": -1
+ },
+ {
+  "id": "i14p",
+  "n": 24,
+  "pair": "i14",
+  "feat": "RDS",
+  "sign": 1
+ },
+ {
+  "id": "i14n",
+  "n": 24,
+  "pair": "i14",
+  "feat": "RDS",
+  "sign": -1
+ },
+ {
+  "id": "i15p",
+  "n": 25,
+  "pair": "i15",
+  "feat": "PEND",
+  "sign": 1
+ },
+ {
+  "id": "i15n",
+  "n": 25,
+  "pair": "i15",
+  "feat": "PEND",
+  "sign": -1
+ },
+ {
+  "id": "i16p",
+  "n": 26,
+  "pair": "i16",
+  "feat": "REPH",
+  "sign": 1
+ },
+ {
+  "id": "i16n",
+  "n": 26,
+  "pair": "i16",
+  "feat": "REPH",
+  "sign": -1
+ },
+ {
+  "id": "i17p",
+  "n": 27,
+  "pair": "i17",
+  "feat": "REPP",
+  "sign": 1
+ },
+ {
+  "id": "i17n",
+  "n": 27,
+  "pair": "i17",
+  "feat": "REPP",
+  "sign": -1
+ }
+]

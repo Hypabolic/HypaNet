@@ -1,0 +1,198 @@
+[
+ {
+  "id": "j66p",
+  "n": 29,
+  "pair": "j66",
+  "feat": "REPH",
+  "sign": 1
+ },
+ {
+  "id": "j66n",
+  "n": 29,
+  "pair": "j66",
+  "feat": "REPH",
+  "sign": -1
+ },
+ {
+  "id": "j67p",
+  "n": 30,
+  "pair": "j67",
+  "feat": "REPP",
+  "sign": 1
+ },
+ {
+  "id": "j67n",
+  "n": 30,
+  "pair": "j67",
+  "feat": "REPP",
+  "sign": -1
+ },
+ {
+  "id": "j68p",
+  "n": 31,
+  "pair": "j68",
+  "feat": "NF3",
+  "sign": 1
+ },
+ {
+  "id": "j68n",
+  "n": 31,
+  "pair": "j68",
+  "feat": "NF3",
+  "sign": -1
+ },
+ {
+  "id": "j69p",
+  "n": 32,
+  "pair": "j69",
+  "feat": "RDS",
+  "sign": 1
+ },
+ {
+  "id": "j69n",
+  "n": 32,
+  "pair": "j69",
+  "feat": "RDS",
+  "sign": -1
+ },
+ {
+  "id": "j70p",
+  "n": 19,
+  "pair": "j70",
+  "feat": "NF1",
+  "sign": 1
+ },
+ {
+  "id": "j70n",
+  "n": 19,
+  "pair": "j70",
+  "feat": "NF1",
+  "sign": -1
+ },
+ {
+  "id": "j71p",
+  "n": 20,
+  "pair": "j71",
+  "feat": "NF2",
+  "sign": 1
+ },
+ {
+  "id": "j71n",
+  "n": 20,
+  "pair": "j71",
+  "feat": "NF2",
+  "sign": -1
+ },
+ {
+  "id": "j72p",
+  "n": 21,
+  "pair": "j72",
+  "feat": "REPF",
+  "sign": 1
+ },
+ {
+  "id": "j72n",
+  "n": 21,
+  "pair": "j72",
+  "feat": "REPF",
+  "sign": -1
+ },
+ {
+  "id": "j73p",
+  "n": 22,
+  "pair": "j73",
+  "feat": "OSCOK",
+  "sign": 1
+ },
+ {
+  "id": "j73n",
+  "n": 22,
+  "pair": "j73",
+  "feat": "OSCOK",
+  "sign": -1
+ },
+ {
+  "id": "j74p",
+  "n": 23,
+  "pair": "j74",
+  "feat": "RESH",
+  "sign": 1
+ },
+ {
+  "id": "j74n",
+  "n": 23,
+  "pair": "j74",
+  "feat": "RESH",
+  "sign": -1
+ },
+ {
+  "id": "j75p",
+  "n": 24,
+  "pair": "j75",
+  "feat": "PEND",
+  "sign": 1
+ },
+ {
+  "id": "j75n",
+  "n": 24,
+  "pair": "j75",
+  "feat": "PEND",
+  "sign": -1
+ },
+ {
+  "id": "j76p",
+  "n": 25,
+  "pair": "j76",
+  "feat": "REPH",
+  "sign": 1
+ },
+ {
+  "id": "j76n",
+  "n": 25,
+  "pair": "j76",
+  "feat": "REPH",
+  "sign": -1
+ },
+ {
+  "id": "j77p",
+  "n": 26,
+  "pair": "j77",
+  "feat": "REPP",
+  "sign": 1
+ },
+ {
+  "id": "j77n",
+  "n": 26,
+  "pair": "j77",
+  "feat": "REPP",
+  "sign": -1
+ },
+ {
+  "id": "j78p",
+  "n": 27,
+  "pair": "j78",
+  "feat": "NF3",
+  "sign": 1
+ },
+ {
+  "id": "j78n",
+  "n": 27,
+  "pair": "j78",
+  "feat": "NF3",
+  "sign": -1
+ },
+ {
+  "id": "j79p",
+  "n": 28,
+  "pair": "j79",
+  "feat": "RDS",
+  "sign": 1
+ },
+ {
+  "id": "j79n",
+  "n": 28,
+  "pair": "j79",
+  "feat": "RDS",
+  "sign": -1
+ }
+]

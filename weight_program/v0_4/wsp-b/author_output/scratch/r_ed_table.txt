@@ -1,0 +1,128 @@
+r_prod0_0    prev PROD orig=OSCI rev=OSCI le=[20.3 17.1 18.3 21.4] a22= -0.19 a23=  0.38
+r_prod0_0    last PROD orig=OSCI rev=OSCI le=[20.7 16.5 18.3 22.2] a22= -0.15 a23=  0.53
+r_prod0_2    prev PROD orig=OSCI rev=OSCI le=[18.8 15.6 19.2 19.9] a22=  1.82 a23=  0.17
+r_prod0_2    last PROD orig=OSCI rev=OSCI le=[19.1 15.8 18.4 20. ] a22= -0.29 a23=  0.15
+r_prod1_1    prev PROD orig=STAL rev=RECO le=[17.9 21.8 18.7 19.7] a22= -0.56 a23=  0.24
+r_prod1_1    last PROD orig=STAL rev=RECO le=[18.  22.  18.8 19.8] a22= -0.30 a23=  0.28
+r_prod1_3    prev PROD orig=OSCI rev=PROD le=[19.3 18.3 18.4 19.3] a22= -0.10 a23=  0.09
+r_prod1_3    last PROD orig=OSCI rev=PROD le=[19.4 18.  18.4 19. ] a22= -0.16 a23=  0.08
+r_prod2_2    prev PROD orig=STAL rev=PROD le=[18.8 17.  18.6 18.3] a22= -0.08 a23=  0.01
+r_prod2_2    last PROD orig=STAL rev=OSCI le=[18.8 16.7 18.6 18.8] a22= -0.12 a23=  0.10
+r_prod2_0    prev PROD orig=STAL rev=PROD le=[20.5 16.3 19.4 20.5] a22=  2.07 a23=  0.43
+r_prod2_0    last PROD orig=STAL rev=OSCI le=[20.5 17.  18.5 20.5] a22= -0.34 a23=  0.42
+r_prod3_3    prev PROD orig=RECO rev=OSCI le=[17.8 20.3 18.7 21.4] a22=  0.01 a23=  0.61
+r_prod3_3    last PROD orig=RECO rev=OSCI le=[18.  19.7 18.7 20.9] a22=  0.03 a23=  0.58
+r_prod3_1    prev PROD orig=OSCI rev=RECO le=[19.3 19.4 18.6 19.2] a22= -0.26 a23=  0.02
+r_prod3_1    last PROD orig=OSCI rev=OSCI le=[19.1 19.1 19.  19.2] a22=  0.89 a23=  0.07
+r_prod4_0    prev PROD orig=OSCI rev=OSCI le=[17.  19.  18.1 22.6] a22= -0.88 a23=  0.60
+r_prod4_0    last PROD orig=OSCI rev=OSCI le=[17.4 18.2 18.4 22.2] a22= -0.58 a23=  0.55
+r_prod4_2    prev PROD orig=OSCI rev=OSCI le=[17.7 18.4 18.9 20.2] a22=  0.53 a23=  0.21
+r_prod4_2    last PROD orig=OSCI rev=OSCI le=[17.7 18.2 18.7 23.8] a22=  0.60 a23=  0.94
+r_prod5_1    prev PROD orig=STAL rev=PROD le=[20.2 18.1 18.7 17.5] a22= -0.07 a23=  0.04
+r_prod5_1    last PROD orig=RECO rev=PROD le=[20.2 18.1 18.7 17.6] a22= -0.10 a23=  0.10
+r_prod5_3    prev PROD orig=RECO rev=PROD le=[19.9 17.8 18.3 18.2] a22= -0.04 a23=  0.01
+r_prod5_3    last PROD orig=RECO rev=PROD le=[20.1 17.7 18.3 18.4] a22= -0.02 a23=  0.07
+r_prod6_2    prev PROD orig=STAL rev=PROD le=[19.4 18.  18.5 17.6] a22= -0.03 a23= -0.09
+r_prod6_2    last PROD orig=STAL rev=PROD le=[19.7 17.5 18.5 18.6] a22= -0.01 a23=  0.11
+r_prod6_0    prev PROD orig=RECO rev=OSCI le=[18.  18.1 17.  33.9] a22= -0.00 a23=  2.99
+r_prod6_0    last PROD orig=RECO rev=OSCI le=[19.1 17.8 17.4 25.5] a22= -0.00 a23=  1.34
+r_prod7_3    prev PROD orig=RECO rev=OSCI le=[19.6 18.7 18.5 20.8] a22=  0.01 a23=  0.55
+r_prod7_3    last PROD orig=OSCI rev=OSCI le=[18.6 17.1 18.7 19.5] a22=  1.01 a23=  0.03
+r_prod7_1    prev PROD orig=STAL rev=PROD le=[23.2 11.8 18.  20.6] a22= -0.64 a23=  0.56
+r_prod7_1    last PROD orig=STAL rev=PROD le=[22.3 16.6 18.5 19.6] a22= -0.58 a23=  0.31
+r_reco0_0    prev RECO orig=OSCI rev=OSCI le=[17.4 19.4 20.4 21. ] a22=  4.31 a23=  0.40
+r_reco0_0    last RECO orig=STAL rev=STAL le=[17.1 17.4 22.8 20.3] a22= 10.62 a23=  0.38
+r_reco0_2    prev RECO orig=OSCI rev=STAL le=[17.1 17.  20.6 19. ] a22=  5.20 a23=  0.04
+r_reco0_2    last RECO orig=OSCI rev=STAL le=[17.6 16.3 20.7 20. ] a22=  5.24 a23=  0.24
+r_reco1_1    prev RECO orig=STAL rev=RECO le=[18.6 19.9 19.  18.7] a22= -0.12 a23=  0.16
+r_reco1_1    last RECO orig=STAL rev=RECO le=[19.  19.7 18.9 18.1] a22= -0.00 a23=  0.05
+r_reco1_3    prev RECO orig=RECO rev=PROD le=[19.  17.4 18.3 18.4] a22= -0.03 a23=  0.00
+r_reco1_3    last RECO orig=RECO rev=PROD le=[18.6 18.5 18.4 18.6] a22= -0.01 a23=  0.01
+r_reco2_2    prev RECO orig=STAL rev=RECO le=[17.7 18.9 18.6 18.3] a22= -0.55 a23= -0.10
+r_reco2_2    last RECO orig=OSCI rev=OSCI le=[18.1 18.7 18.5 21.6] a22= -0.03 a23=  0.54
+r_reco2_0    prev RECO orig=OSCI rev=RECO le=[17.1 22.5 18.8 20.3] a22= -0.09 a23=  0.19
+r_reco2_0    last RECO orig=OSCI rev=RECO le=[17.3 23.1 18.7 19.3] a22=  0.00 a23=  0.04
+r_reco3_3    prev RECO orig=RECO rev=RECO le=[17.3 21.2 18.9 18.1] a22= -0.08 a23= -0.09
+r_reco3_3    last RECO orig=RECO rev=RECO le=[17.5 21.5 18.9 18.2] a22= -0.02 a23= -0.07
+r_reco3_1    prev RECO orig=STAL rev=PROD le=[20.9 15.6 18.5 19.4] a22= -0.02 a23=  0.29
+r_reco3_1    last RECO orig=STAL rev=PROD le=[20.6 16.4 18.6 18.6] a22= -0.01 a23=  0.12
+r_reco4_0    prev RECO orig=OSCI rev=RECO le=[16.5 21.2 20.5 19.9] a22=  5.78 a23=  0.12
+r_reco4_0    last RECO orig=OSCI rev=RECO le=[16.8 21.  20.5 19.8] a22=  5.80 a23=  0.12
+r_reco4_2    prev RECO orig=OSCI rev=OSCI le=[17.5 20.6 19.  20.9] a22=  1.32 a23=  0.32
+r_reco4_2    last RECO orig=OSCI rev=OSCI le=[17.7 20.4 18.4 21.1] a22= -0.00 a23=  0.33
+r_reco5_1    prev RECO orig=STAL rev=OSCI le=[19.3 17.9 18.5 20. ] a22= -0.50 a23=  0.25
+r_reco5_1    last RECO orig=STAL rev=OSCI le=[19.6 18.5 18.4 20.1] a22= -0.55 a23=  0.31
+r_reco5_3    prev RECO orig=RECO rev=RECO le=[16.6 21.9 18.6 19.9] a22= -0.03 a23=  0.20
+r_reco5_3    last RECO orig=RECO rev=OSCI le=[19.4 17.7 17.8 20.4] a22= -0.01 a23=  0.40
+r_reco6_2    prev RECO orig=OSCI rev=OSCI le=[18.3 16.6 18.1 19.8] a22= -0.37 a23=  0.19
+r_reco6_2    last RECO orig=OSCI rev=OSCI le=[20.  13.2 19.2 20.8] a22=  2.23 a23=  0.39
+r_reco6_0    prev RECO orig=OSCI rev=OSCI le=[20.2 16.  18.4 21. ] a22= -0.11 a23=  0.39
+r_reco6_0    last RECO orig=OSCI rev=PROD le=[21.6 13.6 18.2 21.1] a22= -0.43 a23=  0.42
+r_reco7_3    prev RECO orig=OSCI rev=OSCI le=[17.4 17.  19.7 20.8] a22=  2.84 a23=  0.35
+r_reco7_3    last RECO orig=OSCI rev=STAL le=[16.4 18.  21.1 20.7] a22=  6.64 a23=  0.34
+r_reco7_1    prev RECO orig=STAL rev=RECO le=[16.9 23.7 19.2 19.8] a22=  0.51 a23=  0.26
+r_reco7_1    last RECO orig=STAL rev=RECO le=[16.  24.7 20.1 19.8] a22=  2.90 a23=  0.25
+r_stal0_0    prev STAL orig=OSCI rev=STAL le=[14.6 14.7 30.  17.6] a22= 30.54 a23=  0.24
+r_stal0_0    last STAL orig=OSCI rev=STAL le=[14.1 14.3 30.9 17.3] a22= 33.60 a23=  0.25
+r_stal0_2    prev STAL orig=OSCI rev=STAL le=[17.2 12.3 27.4 19.2] a22= 23.28 a23=  0.38
+r_stal0_2    last STAL orig=OSCI rev=STAL le=[16.  10.8 30.3 18. ] a22= 32.34 a23=  0.38
+r_stal1_1    prev STAL orig=OSCI rev=RECO le=[19.  21.  18.5 18.9] a22= -0.06 a23=  0.02
+r_stal1_1    last STAL orig=OSCI rev=RECO le=[18.5 21.2 19.  19. ] a22=  1.05 a23=  0.01
+r_stal1_3    prev STAL orig=RECO rev=OSCI le=[16.8 20.1 18.4 20.6] a22= -0.54 a23=  0.55
+r_stal1_3    last STAL orig=STAL rev=OSCI le=[16.8 19.3 20.1 20.2] a22=  3.46 a23=  0.51
+r_stal2_2    prev STAL orig=OSCI rev=STAL le=[15.2 19.3 23.6 18.1] a22= 13.05 a23= -0.08
+r_stal2_2    last STAL orig=OSCI rev=STAL le=[15.3 20.  22.8 18.7] a22= 10.93 a23=  0.00
+r_stal2_0    prev STAL orig=OSCI rev=STAL le=[15.6 20.3 24.  19.5] a22= 14.04 a23=  0.24
+r_stal2_0    last STAL orig=OSCI rev=STAL le=[15.6 20.8 23.8 19.7] a22= 13.46 a23=  0.27
+r_stal3_3    prev STAL orig=RECO rev=RECO le=[18.7 20.2 18.7 16.9] a22= -0.01 a23= -0.20
+r_stal3_3    last STAL orig=RECO rev=RECO le=[18.7 20.2 18.6 17.4] a22= -0.01 a23= -0.10
+r_stal3_1    prev STAL orig=STAL rev=PROD le=[20.8 15.  18.4 17.6] a22= -0.25 a23=  0.01
+r_stal3_1    last STAL orig=STAL rev=PROD le=[20.7 15.4 18.5 17.9] a22= -0.17 a23=  0.08
+r_stal4_0    prev STAL orig=RECO rev=RECO le=[17.7 22.2 18.9 18. ] a22= -0.00 a23=  0.03
+r_stal4_0    last STAL orig=STAL rev=OSCI le=[19.  18.2 18.6 21.3] a22= -0.17 a23=  0.54
+r_stal4_2    prev STAL orig=STAL rev=OSCI le=[18.5 17.6 18.7 20.3] a22=  0.28 a23=  0.48
+r_stal4_2    last STAL orig=STAL rev=OSCI le=[19.  16.7 19.9 20.9] a22=  3.37 a23=  0.61
+r_stal5_1    prev STAL orig=STAL rev=STAL le=[17.  18.8 22.8 19.5] a22= 11.08 a23=  0.28
+r_stal5_1    last STAL orig=STAL rev=STAL le=[16.7 18.4 23.5 19.5] a22= 13.29 a23=  0.30
+r_stal5_3    prev STAL orig=OSCI rev=STAL le=[16.3 16.8 24.5 19.1] a22= 15.95 a23=  0.29
+r_stal5_3    last STAL orig=OSCI rev=STAL le=[14.5 15.  28.9 17.5] a22= 28.61 a23=  0.22
+r_stal6_2    prev STAL orig=PROD rev=OSCI le=[20.  14.2 15.9 36.8] a22= -0.18 a23=  3.64
+r_stal6_2    last STAL orig=PROD rev=OSCI le=[16.2 11.3 12.9 62. ] a22=  0.22 a23= 10.60
+r_stal6_0    prev STAL orig=RECO rev=OSCI le=[19.3 17.6 18.3 21.7] a22= -0.00 a23=  0.61
+r_stal6_0    last STAL orig=RECO rev=OSCI le=[19.1 17.9 17.9 29.2] a22= -0.00 a23=  2.01
+r_stal7_3    prev STAL orig=STAL rev=RECO le=[17.8 19.7 19.  18.4] a22=  0.71 a23=  0.01
+r_stal7_3    last STAL orig=STAL rev=RECO le=[18.  19.4 19.1 18.3] a22=  0.90 a23= -0.01
+r_stal7_1    prev STAL orig=STAL rev=RECO le=[17.6 20.2 19.2 18.9] a22=  0.50 a23=  0.05
+r_stal7_1    last STAL orig=STAL rev=RECO le=[17.6 19.9 19.5 18.6] a22=  1.10 a23=  0.03
+r_osc0_0     prev OSCI orig=OSCI rev=PROD le=[21.1 15.6 18.2 19.2] a22= -0.06 a23=  0.15
+r_osc0_0     last OSCI orig=OSCI rev=PROD le=[21.1 15.5 18.1 19.2] a22= -0.11 a23=  0.15
+r_osc0_2     prev OSCI orig=STAL rev=OSCI le=[19.4 16.6 18.3 20.2] a22= -0.37 a23=  0.33
+r_osc0_2     last OSCI orig=STAL rev=OSCI le=[19.4 16.3 18.2 22.8] a22= -0.36 a23=  0.81
+r_osc1_1     prev OSCI orig=OSCI rev=OSCI le=[18.  19.5 20.2 21.2] a22=  4.02 a23=  0.48
+r_osc1_1     last OSCI orig=STAL rev=OSCI le=[18.2 19.6 19.9 20.7] a22=  3.03 a23=  0.43
+r_osc1_3     prev OSCI orig=RECO rev=OSCI le=[19.  18.6 18.5 20.6] a22= -0.15 a23=  0.62
+r_osc1_3     last OSCI orig=RECO rev=OSCI le=[18.8 18.4 18.6 19.4] a22= -0.01 a23=  0.43
+r_osc2_2     prev OSCI orig=RECO rev=OSCI le=[18.1 16.3 17.3 38.7] a22= -0.01 a23=  4.10
+r_osc2_2     last OSCI orig=RECO rev=OSCI le=[18.7 16.2 17.4 36.8] a22= -0.00 a23=  3.67
+r_osc2_0     prev OSCI orig=OSCI rev=OSCI le=[19.6 18.1 18.2 27.4] a22= -0.01 a23=  1.57
+r_osc2_0     last OSCI orig=OSCI rev=PROD le=[20.5 17.5 18.5 19.7] a22= -0.06 a23=  0.17
+r_osc3_3     prev OSCI orig=RECO rev=PROD le=[21.6 13.1 17.7 18.1] a22= -0.02 a23=  0.04
+r_osc3_3     last OSCI orig=RECO rev=PROD le=[21.4 13.6 17.8 18. ] a22= -0.01 a23=  0.04
+r_osc3_1     prev OSCI orig=RECO rev=PROD le=[20.4 18.6 18.1 15.7] a22= -0.00 a23= -0.35
+r_osc3_1     last OSCI orig=RECO rev=OSCI le=[19.  17.5 17.  38.5] a22= -0.00 a23=  4.06
+r_osc4_0     prev OSCI orig=RECO rev=OSCI le=[18.9 20.9 18.3 23.5] a22=  0.01 a23=  0.97
+r_osc4_0     last OSCI orig=RECO rev=OSCI le=[18.7 21.  18.  26.6] a22=  0.01 a23=  1.56
+r_osc4_2     prev OSCI orig=RECO rev=OSCI le=[17.1 20.4 17.  39.9] a22=  0.00 a23=  4.24
+r_osc4_2     last OSCI orig=RECO rev=OSCI le=[16.1 19.1 15.6 52.1] a22=  0.00 a23=  7.44
+r_osc5_1     prev OSCI orig=RECO rev=OSCI le=[16.4 20.9 17.4 41.8] a22=  0.03 a23=  4.85
+r_osc5_1     last OSCI orig=RECO rev=OSCI le=[17.  20.5 17.5 40.1] a22=  0.01 a23=  4.46
+r_osc5_3     prev OSCI orig=RECO rev=OSCI le=[14.6 20.3 16.1 51. ] a22=  0.19 a23=  7.13
+r_osc5_3     last OSCI orig=RECO rev=OSCI le=[15.6 20.6 16.8 43.9] a22=  0.11 a23=  5.21
+r_osc6_2     prev OSCI orig=RECO rev=OSCI le=[18.5 16.9 17.8 29.9] a22=  0.26 a23=  2.21
+r_osc6_2     last OSCI orig=RECO rev=OSCI le=[18.8 17.3 18.1 25.1] a22=  0.17 a23=  1.30
+r_osc6_0     prev OSCI orig=RECO rev=OSCI le=[15.5 14.5 13.5 62.5] a22=  0.00 a23= 10.90
+r_osc6_0     last OSCI orig=RECO rev=OSCI le=[15.6 14.7 13.7 61.7] a22=  0.00 a23= 10.57
+r_osc7_3     prev OSCI orig=STAL rev=PROD le=[20.8 15.9 18.1 19.5] a22= -0.56 a23=  0.36
+r_osc7_3     last OSCI orig=STAL rev=PROD le=[20.7 15.7 18.  19.7] a22= -0.78 a23=  0.38
+r_osc7_1     prev OSCI orig=STAL rev=OSCI le=[19.3 18.8 20.3 20.3] a22=  4.48 a23=  0.42
+r_osc7_1     last OSCI orig=STAL rev=OSCI le=[18.7 19.4 19.8 19.9] a22=  3.04 a23=  0.32

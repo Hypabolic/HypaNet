@@ -1,0 +1,18 @@
+{
+ "consistent": true,
+ "freeze_sha256": "4b7da6a121becb2f263c5bed3a412e3e323b8f8d5fb3e7979644261255ee5256",
+ "g1_freeze_sha256": "494db5e3a07b623c459d5fe7f0fe3d93a5db32500a400aac2df2e8d920d1d61f",
+ "kernel_freezes": [
+  "494db5e3a07b623c459d5fe7f0fe3d93a5db32500a400aac2df2e8d920d1d61f",
+  "f654d2c9bfb60d71863b9018161f9f3def1a34406fcc65c8e54bd43d9c7a79d0",
+  "4b7da6a121becb2f263c5bed3a412e3e323b8f8d5fb3e7979644261255ee5256"
+ ],
+ "launches": {
+  "wsp-b": "f654d2c9bfb60d71863b9018161f9f3def1a34406fcc65c8e54bd43d9c7a79d0"
+ },
+ "phase": "wsp-b",
+ "registry": "experiments/registry_v0_4.yaml",
+ "registry_sha256": "1957f8c9ddd1d7691013da0fac1cef108ee45d9698521722d22c0e38b2f74aca",
+ "revisions": 2,
+ "unfrozen": false
+}
