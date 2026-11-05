@@ -215,22 +215,32 @@ def test_paired_diff_of_a_column_with_itself_is_zero(full, tmp_path):
     assert d["value"] == 0.0 and d["ci95"] == [0.0, 0.0] and d["ci95_above_0"] is False
 
 
-def test_explicit_diff_and_unknown_column(full, tmp_path):
+def test_explicit_diff_adds_to_the_defaults_and_unknown_column(full, tmp_path):
     _, lab, rows, disclosed = full
     a = write_column(tmp_path / "q0.npz", lab, seed=1)
     b = write_column(tmp_path / "wa.npz", lab, seed=2)
     rep = _build(rows, lab, disclosed, {"Qwen-0": a, "WSP-A": b},
                  pairs={"WSP-A - prior always-PRODUCTIVE": ("WSP-A", "prior always-PRODUCTIVE")})
-    assert list(rep["excluding_disclosed"]["paired_macro_f1"]) == ["WSP-A - prior always-PRODUCTIVE"]
+    assert list(rep["excluding_disclosed"]["paired_macro_f1"]) == [
+        "WSP-A - Qwen-0", "Qwen-0 - prior dev-majority", "WSP-A - prior always-PRODUCTIVE"]
     with pytest.raises(scoring.ScoringError, match="unknown"):
         _build(rows, lab, disclosed, {"Qwen-0": a}, pairs={"x": ("WSP-A", "Qwen-0")})
 
 
 def test_default_pairs():
+    priors = list(scoring.PRIOR_COLUMNS)
     assert scoring.default_pairs(["WSP-A"]) == {}
-    assert scoring.default_pairs(["Qwen-0", "WSP-A", "WSP-B"]) == {
+    assert scoring.default_pairs(["Qwen-0", "WSP-A", "WSP-B"], priors) == {
         "WSP-A - Qwen-0": ("WSP-A", "Qwen-0"), "WSP-B - Qwen-0": ("WSP-B", "Qwen-0"),
         "Qwen-0 - prior dev-majority": ("Qwen-0", "prior dev-majority")}
+    # the §9 comparisons with the v0.3 columns are built in whenever both columns are present
+    v03 = ["v0.3 A network", "v0.3 B network", "v0.3 C-32 seed0"]
+    assert scoring.default_pairs(["WSP-B"], priors + v03) == {"WSP-B - v0.3 B network": ("WSP-B", "v0.3 B network")}
+    assert scoring.default_pairs(["Qwen-0", "WSP-A", "WSP-B", "WSP-F"], priors + v03) == {
+        "WSP-A - Qwen-0": ("WSP-A", "Qwen-0"), "WSP-B - Qwen-0": ("WSP-B", "Qwen-0"),
+        "WSP-F - Qwen-0": ("WSP-F", "Qwen-0"), "Qwen-0 - prior dev-majority": ("Qwen-0", "prior dev-majority"),
+        "WSP-B - v0.3 B network": ("WSP-B", "v0.3 B network"), "WSP-A - v0.3 A network": ("WSP-A", "v0.3 A network"),
+        "Qwen-0 - v0.3 A network": ("Qwen-0", "v0.3 A network"), "WSP-F - WSP-B": ("WSP-F", "WSP-B")}
 
 
 def test_priors_follow_the_gate(full):
@@ -248,46 +258,140 @@ def test_priors_follow_the_gate(full):
 # ---------------------------------------------------------------------------
 
 
-def _v03_file(tmp_path, rows, *, match=True, rows_sha=scoring.VAL_ROWS_SHA256):
+V03_GROUPS = {"v0.3 C-32": ["v0.3 C-32 seed0", "v0.3 C-32 seed1"]}
+
+
+def _v03_preds(rows):
     rng = np.random.default_rng(7)
-    preds = {"v0.3 B network": rng.integers(0, 4, len(rows)), "v0.3 C-32 seed0": rng.integers(0, 4, len(rows)),
-             "v0.3 C-32 seed1": rng.integers(0, 4, len(rows))}
-    meta = {"format": v03_val.FORMAT, "val_rows_sha256": rows_sha,
-            "groups": {"v0.3 C-32": ["v0.3 C-32 seed0", "v0.3 C-32 seed1"]}, "reproduction": {"match": match}}
+    return {n: rng.integers(0, 4, len(rows)) for n in
+            ("v0.3 A network", "v0.3 B network", "v0.3 C-32 seed0", "v0.3 C-32 seed1")}
+
+
+def _recorded(rows, disclosed, preds, groups=V03_GROUPS):
+    """A stand-in for v03_sealed.json splits.val.populations: the blocks of ``preds`` and the priors."""
+    allp = {**preds, **scoring.prior_columns(rows, 0)}
+    excl = np.flatnonzero([r.session_id not in disclosed for r in rows])
+    rec = {"excluding_disclosed": m4.score_columns([rows[i] for i in excl], {k: v[excl] for k, v in allp.items()}, {},
+                                                  groups, n_resamples=NR),
+           "all_val": m4.score_columns(rows, allp, {}, groups, n_resamples=NR)}
+    return json.loads(json.dumps(rec))  # as read back from the report
+
+
+def _v03_file(tmp_path, rows, preds, *, names=None, groups=V03_GROUPS, rows_sha=scoring.VAL_ROWS_SHA256, match=True):
+    names = list(preds) if names is None else names
+    meta = {"format": v03_val.FORMAT, "val_rows_sha256": rows_sha, "groups": groups, "reproduction": {"match": match}}
     p = tmp_path / "v03.val.npz"
-    v03_val.save(p, list(preds), preds, meta)
-    return p, preds
+    v03_val.save(p, names, preds, meta)
+    return p
 
 
 def test_v03_columns_enter_the_shared_draws(full, tmp_path):
     ids, lab, rows, disclosed = full
-    p, v3 = _v03_file(tmp_path, rows)
+    v3 = _v03_preds(rows)
+    recorded = _recorded(rows, disclosed, v3)
+    p = _v03_file(tmp_path, rows, v3)
     q = write_column(tmp_path / "wb.npz", lab, seed=2)
-    rep = _build(rows, lab, disclosed, {"WSP-B": q}, v03_columns=p,
-                 pairs={"WSP-B - v0.3 B network": ("WSP-B", "v0.3 B network")})
+    rep = _build(rows, lab, disclosed, {"WSP-B": q}, v03_columns=p, v03_recorded=recorded)
     cols = rep["excluding_disclosed"]["overall"]["columns"]
     assert {"WSP-B", "v0.3 B network", "v0.3 C-32 seed0", *scoring.PRIOR_COLUMNS} <= set(cols)
     assert "v0.3 C-32" in rep["excluding_disclosed"]["overall"]["groups"]
+    # Q2 is built in: no --diff needed
     d = rep["excluding_disclosed"]["paired_macro_f1"]["WSP-B - v0.3 B network"]
     assert d["value"] == pytest.approx(cols["WSP-B"]["macro_f1"]["value"] - cols["v0.3 B network"]["macro_f1"]["value"])
-    # on a subset the v0.3 columns are restricted to the subset's rows
+    assert rep["inputs"]["v03_columns"]["reproduction_rechecked"]["match"] is True
+    assert "v03_cited" not in rep
+    # the v0.3 blocks of the report equal the recorded ones on full val
+    assert rep["all_val"]["overall"]["columns"]["v0.3 B network"] == recorded["all_val"]["overall"]["columns"]["v0.3 B network"]
+    # on a subset the v0.3 columns are re-checked on the full rows, then restricted to the subset's rows
     rec = write_subset(tmp_path / "SUB.txt", ids[20:30])
     _, sublab, mask = scoring.restrict(rows, lab, ids[20:30])
     qs = write_column(tmp_path / "wbs.npz", sublab, subset=rec)
-    reps = _build(rows, lab, disclosed, {"WSP-B": qs}, v03_columns=p, subset_file=tmp_path / "SUB.txt")
+    reps = _build(rows, lab, disclosed, {"WSP-B": qs}, v03_columns=p, subset_file=tmp_path / "SUB.txt",
+                  v03_recorded=recorded)
     sub_rows = [r for r, m in zip(rows, mask) if m]
     direct = m4.score_columns(sub_rows, {"v0.3 B network": v3["v0.3 B network"][mask]}, fidelity_pairs={},
                               n_resamples=NR)
     assert reps["all_val"]["overall"]["columns"]["v0.3 B network"] == direct["overall"]["columns"]["v0.3 B network"]
+    assert reps["inputs"]["v03_columns"]["reproduction_rechecked"]["match"] is True
 
 
-@pytest.mark.parametrize("bad", ["rows", "match"])
+@pytest.mark.parametrize("bad", ["rows", "tampered", "tampered_subset", "stray_group", "prior_in_file"])
 def test_v03_file_refused(full, tmp_path, bad):
-    _, lab, rows, disclosed = full
-    p, _ = _v03_file(tmp_path, rows, **({"rows_sha": "f" * 64} if bad == "rows" else {"match": False}))
+    ids, lab, rows, disclosed = full
+    v3 = _v03_preds(rows)
+    recorded = _recorded(rows, disclosed, v3)
     q = write_column(tmp_path / "wb.npz", lab)
+    cols, kw = {"WSP-B": q}, {}
+    if bad == "rows":
+        p = _v03_file(tmp_path, rows, v3, rows_sha="f" * 64)
+    elif bad.startswith("tampered"):
+        # edited after the tool ran, still claiming an exact reproduction: the bridge's re-check refuses it
+        t = dict(v3)
+        t["v0.3 B network"] = v3["v0.3 B network"].copy()
+        t["v0.3 B network"][:5] = (t["v0.3 B network"][:5] + 1) % 4
+        p = _v03_file(tmp_path, rows, t, match=True)
+        if bad == "tampered_subset":
+            rec = write_subset(tmp_path / "SUB.txt", ids[20:30])
+            _, sublab, _ = scoring.restrict(rows, lab, ids[20:30])
+            cols, kw = {"WSP-B": write_column(tmp_path / "wbs.npz", sublab, subset=rec)}, {"subset_file": tmp_path / "SUB.txt"}
+    elif bad == "stray_group":
+        p = _v03_file(tmp_path, rows, {k: v for k, v in v3.items() if k != "v0.3 C-32 seed1"})
+    else:
+        p = _v03_file(tmp_path, rows, {**v3, "prior dev-majority": scoring.prior_columns(rows, 0)["prior dev-majority"]})
     with pytest.raises(scoring.ScoringError):
-        _build(rows, lab, disclosed, {"WSP-B": q}, v03_columns=p)
+        _build(rows, lab, disclosed, cols, v03_columns=p, v03_recorded=recorded, **kw)
+
+
+def test_v03_file_match_flag_is_not_trusted_either_way(full, tmp_path):
+    _, lab, rows, disclosed = full
+    v3 = _v03_preds(rows)
+    p = _v03_file(tmp_path, rows, v3, match=False)  # the flag says nothing; the re-check decides
+    rep = _build(rows, lab, disclosed, {"WSP-B": write_column(tmp_path / "wb.npz", lab)}, v03_columns=p,
+                 v03_recorded=_recorded(rows, disclosed, v3))
+    assert rep["inputs"]["v03_columns"]["reproduction_rechecked"]["match"] is True
+
+
+def test_v03_columns_not_reproduced_are_cited(full, tmp_path):
+    _, lab, rows, disclosed = full
+    v3 = _v03_preds(rows)
+    recorded = _recorded(rows, disclosed, v3)
+    # the tool left out v0.3 A and one C-32 seed (so the C-32 group too): they are cited, not paired
+    kept = {k: v for k, v in v3.items() if k in ("v0.3 B network", "v0.3 C-32 seed0")}
+    p = _v03_file(tmp_path, rows, kept, groups={})
+    q0 = write_column(tmp_path / "q0.npz", lab, seed=1)
+    wb = write_column(tmp_path / "wb.npz", lab, seed=2)
+    rep = _build(rows, lab, disclosed, {"Qwen-0": q0, "WSP-B": wb}, v03_columns=p, v03_recorded=recorded)
+    assert rep["inputs"]["v03_columns"]["cited_not_paired"] == ["v0.3 A network", "v0.3 C-32 seed1"]
+    assert rep["inputs"]["v03_columns"]["groups_cited_not_paired"] == ["v0.3 C-32"]
+    for pop in ("excluding_disclosed", "all_val"):
+        assert rep["v03_cited"][pop]["columns"]["v0.3 A network"] == recorded[pop]["overall"]["columns"]["v0.3 A network"]
+        assert "v0.3 A network" not in rep[pop]["overall"]["columns"]
+        assert "WSP-B - v0.3 B network" in rep[pop]["paired_macro_f1"]
+        assert "Qwen-0 - v0.3 A network" not in rep[pop]["paired_macro_f1"]
+
+
+def test_v03_per_column_rule(full):
+    _, _, rows, disclosed = full
+    v3 = _v03_preds(rows)
+    recorded = _recorded(rows, disclosed, v3)
+    priors = scoring.prior_columns(rows, 0)
+    bad = dict(v3)
+    bad["v0.3 C-32 seed1"] = (v3["v0.3 C-32 seed1"] + 1) % 4
+    diffs = v03_val.compare(rows, {**bad, **priors}, V03_GROUPS, disclosed, recorded, n_resamples=NR)
+    assert diffs["columns"]["v0.3 C-32 seed1"] is not None and diffs["columns"]["v0.3 B network"] is None
+    names, groups, not_rep, not_grp = v03_val.select_reproduced(diffs, V03_GROUPS, list(priors))
+    assert names == ["v0.3 A network", "v0.3 B network", "v0.3 C-32 seed0"] and groups == {}
+    assert list(not_rep) == ["v0.3 C-32 seed1"] and list(not_grp) == ["v0.3 C-32"]
+    # a prior that differs means the bridge's rows differ from v0.3's: nothing is written
+    wrong = {**v3, **scoring.prior_columns(rows, 2)}
+    d2 = v03_val.compare(rows, wrong, V03_GROUPS, disclosed, recorded, n_resamples=NR)
+    with pytest.raises(v03_val.ReproductionError, match="priors"):
+        v03_val.select_reproduced(d2, V03_GROUPS, list(priors))
+    # no network reproduces: nothing is written
+    none = {k: (v + 1) % 4 for k, v in v3.items()}
+    d3 = v03_val.compare(rows, {**none, **priors}, V03_GROUPS, disclosed, recorded, n_resamples=NR)
+    with pytest.raises(v03_val.ReproductionError, match="no v0.3 network"):
+        v03_val.select_reproduced(d3, V03_GROUPS, list(priors))
 
 
 def test_reserved_names_refused(full, tmp_path):
@@ -295,6 +399,35 @@ def test_reserved_names_refused(full, tmp_path):
     q = write_column(tmp_path / "wb.npz", lab)
     with pytest.raises(scoring.ScoringError, match="reserved"):
         _build(rows, lab, disclosed, {"prior dev-majority": q})
+
+
+def test_fresh_test_check_reads_only_committed_json(monkeypatch):
+    """The bridge's fresh-test check opens the committed MANIFEST and REGISTRATION only, never a data file."""
+    import sys
+
+    from agent_loop_lab.v04 import fresh_test
+
+    def no_data(*a, **k):
+        raise AssertionError("the fresh-test data files must not be read")
+
+    monkeypatch.setattr(fresh_test, "verify_files", no_data)
+    monkeypatch.setattr(fresh_test, "require_sealed", no_data)
+    opened: list[str] = []
+    active = [True]
+
+    def hook(event, args):
+        if active[0] and event == "open" and args and isinstance(args[0], (str, Path)):
+            opened.append(str(args[0]))
+
+    sys.addaudithook(hook)
+    try:
+        out = scoring.fresh_test_committed()
+    finally:
+        active[0] = False
+    fresh_dir = str(fresh_test.FRESH_DIR.resolve())
+    touched = {Path(o).resolve() for o in opened if str(Path(o).resolve()).startswith(fresh_dir)}
+    assert touched <= {fresh_test.MANIFEST.resolve()}
+    assert out["sessions"] == 3996 and len(out["manifest_sha256"]) == 64
 
 
 def test_v03_reproduction_check(full):
@@ -339,6 +472,30 @@ def test_script_names_and_diffs():
     assert s._diffs(["WSP-A,Qwen-0"]) == {"WSP-A - Qwen-0": ("WSP-A", "Qwen-0")}
     with pytest.raises(SystemExit):
         s._diffs(["WSP-A"])
+
+
+def test_script_refuses_without_an_intact_registry(full, tmp_path, monkeypatch):
+    from agent_loop_lab.v04 import registry
+
+    _, lab, _, _ = full
+    a = write_column(tmp_path / "q0.npz", lab)
+    monkeypatch.setattr(registry, "check_registry", lambda root=".", **k: ["frozen file modified: x"])
+    monkeypatch.setattr(scoring, "report", lambda *a, **k: pytest.fail("scored without an intact registry"))
+    for extra in ([], ["--report-dir", str(tmp_path / "out")]):  # official and unofficial alike
+        with pytest.raises(SystemExit, match="v04_freeze.py --check"):
+            _script().main(["--arm", "x", "--column", f"Qwen-0={a}", *extra])
+
+
+def test_script_registry_record(monkeypatch, tmp_path):
+    from agent_loop_lab.v04 import registry
+
+    s = _script()
+    monkeypatch.setattr(registry, "check_registry", lambda root=".", **k: [])
+    (tmp_path / "experiments").mkdir()
+    (tmp_path / registry.REGISTRY_RELPATH).write_text("freeze_sha256: " + "a" * 64 + "\nrevisions: []\n")
+    rec = s.registry_record(tmp_path)
+    assert rec == {"path": registry.REGISTRY_RELPATH, "check": "passed", "problems": [], "freeze_sha256": "a" * 64,
+                   "g1_freeze_sha256": "a" * 64, "revisions": 0}
 
 
 def test_script_refuses_mixed_coverage_before_scoring(full, tmp_path):

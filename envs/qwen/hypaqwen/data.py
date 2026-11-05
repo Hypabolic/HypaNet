@@ -22,7 +22,7 @@ class Task(NamedTuple):
 
 def _check(split: str) -> None:
     if split not in ALLOWED_SPLITS:
-        raise ValueError(f"only {sorted(ALLOWED_SPLITS)} are exported before the sealed evaluation, not {split!r}")
+        raise ValueError(f"only {sorted(ALLOWED_SPLITS)} are exported in v0.4 (no sealed split), not {split!r}")
 
 
 def iter_tasks(split: str, data_dir: Path = V04_DATA) -> Iterator[Task]:

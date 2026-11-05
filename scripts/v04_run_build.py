@@ -197,7 +197,7 @@ def write_records(archive: Path, freeze: dict) -> dict:
     rec = json.loads((archive / "BUILD_RECORD.json").read_text(encoding="utf-8"))
     edit_md = archive / "author_output" / "EDIT.md"
     text = edit_md.read_text(encoding="utf-8", errors="replace") if edit_md.is_file() else ""
-    prev = {"note": "preview only (PREREGISTRATION §8 decides Q5 at the sealed attempt); never refuses a build",
+    prev = {"note": "eligibility preview only; v0.4 gives no Q5 verdict (PREREGISTRATION §8); never refuses a build",
             "edit_md_sha256": _sha(edit_md) if edit_md.is_file() else None,
             **mechanisms.preview(text, rec.get("tensors", {}))}
     (archive / "MECHANISMS.json").write_text(json.dumps(prev, indent=1, sort_keys=True) + "\n")

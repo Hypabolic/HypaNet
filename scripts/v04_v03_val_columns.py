@@ -3,9 +3,11 @@
 Usage:
     uv run python scripts/v04_v03_val_columns.py [--out experiments/v0_4/columns/v03.val.npz] [--workers W] [--force]
 
-Val only: no sealed split and no counterfactual file is opened. Every v0.3 column must reproduce
-its val block in artifacts/reports/v03_sealed.json exactly, or nothing is written. Pass the file to
-scripts/v04_score_validation.py --v03. Harness only.
+Val only: no sealed split and no counterfactual file is opened. Per-column rule (PREREGISTRATION §1):
+a v0.3 network column is written only if every val block equals artifacts/reports/v03_sealed.json
+exactly; one that differs is left out and named (it is cited, with no paired CI). Nothing is written
+if the priors differ or no network reproduces. Pass the file to scripts/v04_score_validation.py
+--v03, which re-checks it. Harness only.
 """
 
 from __future__ import annotations
@@ -36,8 +38,10 @@ def main(argv: list[str] | None = None) -> int:
     t0 = time.time()
     meta = v03_val.export(a.out, workers=a.workers,
                           progress=lambda m: print(f"[{time.time() - t0:7.0f}s] {m}", file=sys.stderr, flush=True))
-    print(f"wrote {a.out}: {len(meta['columns_info'])} v0.3 networks, "
-          f"{meta['reproduction']['column_blocks_compared']} blocks equal to v03_sealed.json", file=sys.stderr)
+    print(f"wrote {a.out}: {len(meta['columns_info'])} v0.3 networks reproduced exactly "
+          f"({meta['reproduction']['column_blocks_compared']} column blocks compared)", file=sys.stderr)
+    for name, d in {**meta["not_reproduced"], **{f"group {g}": d for g, d in meta["groups_not_reproduced"].items()}}.items():
+        print(f"  NOT REPRODUCED (left out, cited without a paired CI): {name}: {d}", file=sys.stderr)
     return 0
 
 

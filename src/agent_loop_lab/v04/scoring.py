@@ -12,12 +12,17 @@ module runs in the frozen v0.3 environment and:
   v0.3 ``model.predict``;
 * adds the two constant priors (``prior dev-majority`` from the dev prior the v0.3 sealed run
   recorded, and ``prior always-PRODUCTIVE``) and, when given, the v0.3 columns re-scored on val
-  (:mod:`.v03_val`), so every column of a report shares the same bootstrap draws;
+  (:mod:`.v03_val`), so every column of a report shares the same bootstrap draws. A v0.3 columns
+  file is not taken on its own say-so: its columns and the priors are re-scored on the full val
+  rows and must equal ``v03_sealed.json`` exactly (``v03_val.reproduction_check``), on a subset
+  report too; the v0.3 columns the file does not hold (not reproduced, PREREGISTRATION §1) are
+  cited from ``v03_sealed.json`` on full val;
 * scores with ``eval.m4.score_columns`` (as v0.3 scored Phase C), with no fidelity pairs. H2 has
   no meaning without a reference policy, and Q5 is not tested in v0.4;
 * reports both v0.3 populations: ``excluding_disclosed`` (primary) and ``all_val``, and in each the
   paired macro-F1 differences (``paired_macro_f1``): the difference of two columns over the same
-  bootstrap draws ``score_columns`` uses, with its 95% percentile interval.
+  bootstrap draws ``score_columns`` uses, with its 95% percentile interval. The §9 pairs are built
+  in (:func:`default_pairs`, each when both its columns are present); extra pairs add to them.
 
 **Coverage** (PREREGISTRATION §3.5). A column whose ``meta["subset"]`` is set (``run_readout
 --sessions``) is accepted only when the subset file's sha256 equals that record and the column's
@@ -27,10 +32,11 @@ sessions (a mix of full and subset columns, or of two subsets, is refused); the 
 priors and the v0.3 columns are then restricted to those sessions. The report records the subset
 (``file``, ``sha256``, ``sessions``).
 
-It refuses unless the v0.4 fresh test manifest is committed (``fresh_test.require_sealed``,
-which re-hashes the sealed files' bytes and decodes nothing), because scoring is the first time a
-Qwen output meets a label. No sealed set is scored in v0.4. Val numbers are never shown to the
-weight author.
+It refuses unless the fresh-test ``MANIFEST_fresh_test.json`` and ``REGISTRATION.json`` are committed
+unchanged and the manifest cites that registration (:func:`fresh_test_committed`). It touches only
+those two committed files: the fresh-test data files are not opened, listed or hashed, and no
+sealed set is scored in v0.4 (PREREGISTRATION §3.4). Val numbers are never shown to the weight
+author.
 """
 
 from __future__ import annotations
@@ -53,8 +59,8 @@ from . import export, fresh_test
 __all__ = [
     "SPLIT", "VAL_ROWS_SHA256", "VAL_QUICK", "VAL_QUICK_SHA256", "PRIOR_COLUMNS", "ScoringError",
     "rows_from_labels", "load_rows", "checked_disclosed", "read_subset", "restrict", "column_meta", "coverage",
-    "load_column", "recorded_dev_prior", "prior_columns", "load_v03_columns", "default_pairs", "paired_macro_f1",
-    "diagnostics", "score", "build_report", "report",
+    "load_column", "recorded_dev_prior", "recorded_val_blocks", "prior_columns", "load_v03_columns", "V03_PAIRS",
+    "default_pairs", "paired_macro_f1", "diagnostics", "score", "build_report", "fresh_test_committed", "report",
 ]
 
 SPLIT = "val"
@@ -65,6 +71,14 @@ VAL_QUICK = export.V04_DATA / "VAL_QUICK.txt"
 VAL_QUICK_SHA256 = "b77f74150ecc19edf51ed57b5bc77f9e9eacd51b1992c0467ab4a4bce6cfd556"
 PRIOR_COLUMNS = v03_sealed.PRIOR_COLUMNS  # ("prior dev-majority", "prior always-PRODUCTIVE")
 BASE_COLUMN = "Qwen-0"
+# The §9 comparisons with columns other than Qwen-0 (PREREGISTRATION §9; exact column names).
+V03_A, V03_B = "v0.3 A network", "v0.3 B network"
+V03_PAIRS: tuple[tuple[str, str], ...] = (
+    ("WSP-B", V03_B),  # Q2 (primary)
+    ("WSP-A", V03_A),
+    (BASE_COLUMN, V03_A),  # reported with Q1: the value of hand-building
+    ("WSP-F", "WSP-B"),
+)
 _LABELS = tuple(OracleLabel)
 H2_NOT_APPLICABLE = {"applicable": False, "reason": "no reference policy for a Qwen column; H2 has no v0.4 counterpart"}
 VISIBILITY = "harness only: never shown to the weight author (PREREGISTRATION §3.2)"
@@ -218,6 +232,11 @@ def recorded_dev_prior(path: Path | None = None) -> dict[str, Any]:
     return json.loads(Path(v03_sealed.SEALED_REPORT if path is None else path).read_text())["dev_prior"]
 
 
+def recorded_val_blocks(path: Path | None = None) -> dict[str, Any]:
+    """``splits.val.populations`` of the v0.3 sealed report (both populations' val blocks)."""
+    return json.loads(Path(v03_sealed.SEALED_REPORT if path is None else path).read_text())["splits"]["val"]["populations"]
+
+
 def prior_columns(rows: Sequence[WindowRow], majority_index: int) -> dict[str, np.ndarray]:
     """The two constant priors as v0.3 built them (``v03.sealed.predict_split``): a class on gate-passing windows."""
     gate = np.array([r.gate_passed for r in rows], dtype=bool)
@@ -225,8 +244,12 @@ def prior_columns(rows: Sequence[WindowRow], majority_index: int) -> dict[str, n
             PRIOR_COLUMNS[1]: np.where(gate, 0, -1).astype(np.int64)}
 
 
-def load_v03_columns(path: Path, n_rows: int) -> tuple[dict[str, np.ndarray], dict[str, list[str]], dict[str, Any]]:
-    """``(preds, groups, record)`` from a :mod:`.v03_val` file, checked against the val rows."""
+def load_v03_columns(path: Path, rows: Sequence[WindowRow], disclosed: frozenset[str], majority_index: int, *,
+                     recorded: Mapping[str, Any] | None = None, n_resamples: int = M.BOOTSTRAP_RESAMPLES
+                     ) -> tuple[dict[str, np.ndarray], dict[str, list[str]], dict[str, Any]]:
+    """``(preds, groups, record)`` from a :mod:`.v03_val` file, aligned to the full val ``rows`` and
+    re-checked: its columns and the priors are re-scored on ``rows`` (both populations) and must equal
+    ``recorded`` (default :func:`recorded_val_blocks`) exactly, whatever the file says about itself."""
     from . import v03_val
 
     with np.load(path) as z:
@@ -236,15 +259,40 @@ def load_v03_columns(path: Path, n_rows: int) -> tuple[dict[str, np.ndarray], di
         raise ScoringError(f"{Path(path).name}: format {meta.get('format')!r}, not {v03_val.FORMAT}")
     if meta.get("val_rows_sha256") != VAL_ROWS_SHA256:
         raise ScoringError(f"{Path(path).name}: computed on other val rows ({meta.get('val_rows_sha256')})")
-    if pred.shape != (len(names), n_rows):
-        raise ScoringError(f"{Path(path).name}: pred shape {pred.shape}, expected ({len(names)}, {n_rows})")
-    if not (meta.get("reproduction") or {}).get("match"):
-        raise ScoringError(f"{Path(path).name}: no exact reproduction of the v0.3 val blocks recorded")
+    if pred.shape != (len(names), len(rows)):
+        raise ScoringError(f"{Path(path).name}: pred shape {pred.shape}, expected ({len(names)}, {len(rows)})")
+    reserved = sorted(set(names) & set(PRIOR_COLUMNS))
+    if reserved:
+        raise ScoringError(f"{Path(path).name}: holds prior columns {reserved}; the bridge builds the priors")
     preds = {n: pred[j].astype(np.int64) for j, n in enumerate(names)}
     groups = {g: list(m) for g, m in meta["groups"].items()}
+    stray = sorted({m for ms in groups.values() for m in ms} - set(names))
+    if stray:
+        raise ScoringError(f"{Path(path).name}: groups name columns the file does not hold: {stray}")
+    recorded = recorded_val_blocks() if recorded is None else recorded
+    try:
+        check = v03_val.reproduction_check(rows, {**preds, **prior_columns(rows, majority_index)}, groups, disclosed,
+                                           recorded, n_resamples=n_resamples)
+    except v03_val.ReproductionError as exc:
+        raise ScoringError(f"{Path(path).name}: does not reproduce the v0.3 val blocks: {exc}") from None
+    rec_cols = set(recorded["excluding_disclosed"]["overall"]["columns"])
+    rec_groups = set(recorded["excluding_disclosed"]["overall"].get("groups", {}))
+    missing = sorted(c for c in rec_cols - set(names) - set(PRIOR_COLUMNS) if c.endswith(" network") or " seed" in c)
     record = {"file": Path(path).name, "sha256": _sha256_file(Path(path)), "columns": names,
-              "reproduction": meta["reproduction"]}
+              "reproduction_recorded": meta.get("reproduction"), "reproduction_rechecked": check,
+              "not_reproduced": meta.get("not_reproduced", {}), "groups_not_reproduced": meta.get("groups_not_reproduced", {}),
+              "cited_not_paired": missing, "groups_cited_not_paired": sorted(rec_groups - set(groups))}
     return preds, groups, record
+
+
+def cited_v03(recorded: Mapping[str, Any], columns: Sequence[str], groups: Sequence[str]) -> dict[str, Any]:
+    """The v0.3 val blocks of columns and groups the report does not re-score (cited, no paired CI)."""
+    out: dict[str, Any] = {}
+    for pop in ("excluding_disclosed", "all_val"):
+        ov = recorded[pop]["overall"]
+        out[pop] = {"columns": {c: ov["columns"][c] for c in columns},
+                    "groups": {g: ov["groups"][g] for g in groups}}
+    return out
 
 
 # ---------------------------------------------------------------------------
@@ -256,12 +304,20 @@ def pair_name(a: str, b: str) -> str:
     return f"{a} - {b}"
 
 
-def default_pairs(qwen_columns: Sequence[str]) -> dict[str, tuple[str, str]]:
-    """Every Qwen column minus Qwen-0, and Qwen-0 minus the dev-majority prior (§9), when Qwen-0 is present."""
-    if BASE_COLUMN not in qwen_columns:
-        return {}
-    out = {pair_name(c, BASE_COLUMN): (c, BASE_COLUMN) for c in qwen_columns if c != BASE_COLUMN}
-    out[pair_name(BASE_COLUMN, PRIOR_COLUMNS[0])] = (BASE_COLUMN, PRIOR_COLUMNS[0])
+def default_pairs(qwen_columns: Sequence[str], other_columns: Sequence[str] = ()) -> dict[str, tuple[str, str]]:
+    """The §9 comparisons, each when both its columns are present: every Qwen column minus Qwen-0,
+    Qwen-0 minus the dev-majority prior (Q1), and :data:`V03_PAIRS` (WSP-B − v0.3 B network for Q2,
+    WSP-A − v0.3 A network, Qwen-0 − v0.3 A network, WSP-F − WSP-B)."""
+    qwen = list(qwen_columns)
+    present = set(qwen) | set(other_columns)
+    out: dict[str, tuple[str, str]] = {}
+    if BASE_COLUMN in qwen:
+        out.update({pair_name(c, BASE_COLUMN): (c, BASE_COLUMN) for c in qwen if c != BASE_COLUMN})
+        if PRIOR_COLUMNS[0] in present:
+            out[pair_name(BASE_COLUMN, PRIOR_COLUMNS[0])] = (BASE_COLUMN, PRIOR_COLUMNS[0])
+    for a, b in V03_PAIRS:
+        if a in qwen and b in present:
+            out[pair_name(a, b)] = (a, b)
     return out
 
 
@@ -357,8 +413,10 @@ def build_report(arm: str, columns: Mapping[str, Path], rows: Sequence[WindowRow
                  disclosed: frozenset[str], groups: Mapping[str, Sequence[str]] | None = None, *,
                  v03_columns: Path | None = None, subset_file: Path | None = None,
                  pairs: Mapping[str, tuple[str, str]] | None = None, majority_index: int | None = None,
+                 v03_recorded: Mapping[str, Any] | None = None,
                  n_resamples: int = M.BOOTSTRAP_RESAMPLES, official: bool = True) -> dict[str, Any]:
-    """The report body from already-checked full val ``rows``/``lab`` and the disclosed set (:func:`report`)."""
+    """The report body from already-checked full val ``rows``/``lab`` and the disclosed set (:func:`report`).
+    ``pairs`` are added to :func:`default_pairs`, never instead of them."""
     metas = {name: column_meta(p) for name, p in columns.items()}
     sub = coverage(metas, subset_file)
     if sub is None:
@@ -377,17 +435,21 @@ def build_report(arm: str, columns: Mapping[str, Path], rows: Sequence[WindowRow
         majority_index = int(recorded_dev_prior()["majority_index"])
     extra = prior_columns(rows_s, majority_index)
     all_groups = {k: list(v) for k, v in (groups or {}).items()}
-    v03_record = None
+    v03_record, v03_cited = None, None
     if v03_columns is not None:
-        v3, v3_groups, v03_record = load_v03_columns(v03_columns, len(rows))
+        recorded = recorded_val_blocks() if v03_recorded is None else v03_recorded
+        v3, v3_groups, v03_record = load_v03_columns(v03_columns, rows, disclosed, majority_index, recorded=recorded,
+                                                     n_resamples=n_resamples)
         extra.update({k: (v if row_mask is None else v[row_mask]) for k, v in v3.items()})
         for g, m in v3_groups.items():
             all_groups.setdefault(g, m)
+        if sub is None and (v03_record["cited_not_paired"] or v03_record["groups_cited_not_paired"]):
+            v03_cited = cited_v03(recorded, v03_record["cited_not_paired"], v03_record["groups_cited_not_paired"])
     clash = sorted(set(qwen) & set(extra))
     if clash:
         raise ScoringError(f"column names {clash} are reserved for the priors and the v0.3 columns")
     preds.update(extra)
-    pairs = default_pairs(qwen) if pairs is None else dict(pairs)
+    pairs = {**default_pairs(qwen, list(extra)), **dict(pairs or {})}
     body = score(rows_s, preds, all_groups or None, pairs=pairs, disclosed=disclosed, n_resamples=n_resamples)
     subset = None if sub is None else {k: sub[k] for k in ("file", "sha256", "sessions")}
     kind = "v04_val" if sub is None else ("v04_val_quick" if sub["val_quick"] else "v04_val_subset")
@@ -415,24 +477,50 @@ def build_report(arm: str, columns: Mapping[str, Path], rows: Sequence[WindowRow
                         "paired_macro_f1": ("macro-F1(minuend) - macro-F1(subtrahend) over the shared session-bootstrap "
                                             "draws of score_columns; 95% percentile interval; overall only")},
         "readout_diagnostics": diag,
+        **({"v03_cited": {"source": "artifacts/reports/v03_sealed.json splits.val (not reproduced on this Mac; "
+                                    "cited beside, no paired CI; PREREGISTRATION §1)", **v03_cited}}
+           if v03_cited is not None else {}),
         **body,
     }
 
 
+def fresh_test_committed() -> dict[str, Any]:
+    """Refuse unless the fresh-test manifest and registration are committed unchanged at HEAD and the
+    manifest cites that registration. Reads only those two committed JSON files: the fresh-test data
+    files are not opened, listed or hashed (PREREGISTRATION §3.4)."""
+    for path in (fresh_test.MANIFEST, fresh_test.REGISTRATION):
+        if not path.is_file() or not fresh_test.committed_unchanged(path):
+            raise ScoringError(f"{path.relative_to(fresh_test.REPO)} must be committed unchanged before any v0.4 scoring")
+    man = json.loads(fresh_test.MANIFEST.read_text(encoding="utf-8"))
+    reg_sha = _sha256_file(fresh_test.REGISTRATION)
+    if man["registration"]["sha256"] != reg_sha:
+        raise ScoringError("REGISTRATION.json differs from the one the fresh-test manifest cites")
+    return {"manifest_sha256": _sha256_file(fresh_test.MANIFEST), "registration_sha256": reg_sha,
+            "sessions": man["sessions"],
+            "status": "sealed: data files not opened, listed or hashed, not scored in v0.4 (PREREGISTRATION §3.4)"}
+
+
 def report(arm: str, columns: Mapping[str, Path], groups: Mapping[str, Sequence[str]] | None = None, *,
            v03_columns: Path | None = None, subset_file: Path | None = None,
-           pairs: Mapping[str, tuple[str, str]] | None = None,
+           pairs: Mapping[str, tuple[str, str]] | None = None, registry: Mapping[str, Any] | None = None,
            n_resamples: int = M.BOOTSTRAP_RESAMPLES, official: bool = True) -> dict[str, Any]:
-    fresh = fresh_test.require_sealed()
+    """The report on the real val export. ``registry`` (the freeze record the script checked) goes into ``inputs``."""
+    fresh = fresh_test_committed()
     rows, lab = load_rows()
     disclosed = checked_disclosed(rows)
     rep = build_report(arm, columns, rows, lab, disclosed, groups, v03_columns=v03_columns, subset_file=subset_file,
                        pairs=pairs, n_resamples=n_resamples, official=official)
     rep["inputs"].update({
         "export_manifest_sha256": _sha256_file(export.V04_DATA / "EXPORT_MANIFEST.json"),
-        "fresh_test_manifest_sha256": _sha256_file(fresh_test.MANIFEST),
-        "fresh_test_sessions": fresh["sessions"],
-        "fresh_test": "sealed: not opened or scored in v0.4 (PREREGISTRATION §3.4)",
-        "scoring_code_sha256": {Path(f).name: _sha256_file(Path(f)) for f in (__file__, m4.__file__, M.__file__)},
+        "fresh_test": fresh,
+        "registry": None if registry is None else dict(registry),
+        "scoring_code_sha256": {Path(f).name: _sha256_file(Path(f))
+                                for f in (__file__, m4.__file__, M.__file__, _v03_val_file())},
     })
     return rep
+
+
+def _v03_val_file() -> str:
+    from . import v03_val
+
+    return v03_val.__file__

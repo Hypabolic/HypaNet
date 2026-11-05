@@ -10,10 +10,17 @@ unofficial v0.3 val dry run, without its counterfactual pass):
   policies are not columns of the v0.4 report and are cited from the v0.3 report);
 * the two constant priors as the v0.4 bridge builds them (``scoring.prior_columns``).
 
-Every column's val block (overall and per family, both populations) and every Phase C group block
-must equal ``artifacts/reports/v03_sealed.json`` exactly, or nothing is written (no tolerance: plan
-revision 10). The file holds the network columns' class per val row (format :data:`FORMAT`), read
-by ``scoring.load_v03_columns``. It holds no label and no score.
+**Per-column rule** (PREREGISTRATION §1, fixed before this tool first ran; no tolerance, plan
+revision 10). Each network column whose every val block (overall and per family, both populations)
+equals ``artifacts/reports/v03_sealed.json`` exactly is written; a column that differs anywhere is
+not written and is recorded in ``meta["not_reproduced"]`` with the path of its first difference
+(the report cites it from ``v03_sealed.json``, with no paired CI). A Phase C group is written only
+when every seed of it is written and its group blocks equal the record; otherwise it is recorded in
+``meta["groups_not_reproduced"]``. The two priors must reproduce, or nothing is written (they are
+built by the v0.4 bridge, so a difference means the bridge's rows or gate differ from v0.3's); so
+must at least one network. The file holds the written columns' class per val row (format
+:data:`FORMAT`), read by ``scoring.load_v03_columns``, which re-runs :func:`reproduction_check` on
+it before it enters a report. It holds no label and no score.
 """
 
 from __future__ import annotations
@@ -31,7 +38,8 @@ from ..eval.collisions import WindowRow
 from ..v03 import sealed as S
 from . import scoring
 
-__all__ = ["FORMAT", "DEFAULT_OUT", "ReproductionError", "reproduction_check", "save", "export"]
+__all__ = ["FORMAT", "DEFAULT_OUT", "ReproductionError", "compare", "reproduction_check", "select_reproduced", "save",
+           "export"]
 
 FORMAT = "v04-v03-val-columns/1"
 DEFAULT_OUT = S.REPO / "experiments" / "v0_4" / "columns" / "v03.val.npz"
@@ -42,12 +50,16 @@ class ReproductionError(RuntimeError):
     pass
 
 
-def reproduction_check(rows: Sequence[WindowRow], preds: Mapping[str, np.ndarray], groups: Mapping[str, Sequence[str]],
-                       disclosed: frozenset[str], recorded: Mapping[str, Any], *,
-                       n_resamples: int = scoring.M.BOOTSTRAP_RESAMPLES) -> dict[str, Any]:
+def compare(rows: Sequence[WindowRow], preds: Mapping[str, np.ndarray], groups: Mapping[str, Sequence[str]],
+            disclosed: frozenset[str], recorded: Mapping[str, Any], *,
+            n_resamples: int = scoring.M.BOOTSTRAP_RESAMPLES) -> dict[str, Any]:
     """Score ``preds`` on both val populations and compare every column and group block with ``recorded``
-    (``v03_sealed.json`` ``splits.val.populations``) exactly; raise :class:`ReproductionError` on any difference."""
+    (``v03_sealed.json`` ``splits.val.populations``) exactly. Returns, per column and per group, the path of
+    the first difference (``None`` when every block is equal); raises :class:`ReproductionError` only when
+    the report has no such column or group, or other families."""
     excl = np.array([r.session_id not in disclosed for r in rows], dtype=bool)
+    col_diff: dict[str, str | None] = {c: None for c in preds}
+    grp_diff: dict[str, str | None] = {g: None for g in groups}
     compared = 0
     for pop, mask in (("excluding_disclosed", excl), ("all_val", np.ones(len(rows), dtype=bool))):
         idx = np.flatnonzero(mask)
@@ -64,15 +76,55 @@ def reproduction_check(rows: Sequence[WindowRow], preds: Mapping[str, np.ndarray
                 if name not in b["columns"]:
                     raise ReproductionError(f"val {pop} {where}: {name} is not in the v0.3 report")
                 d = S.first_difference(S.canon(a["columns"][name]), S.canon(b["columns"][name]))
-                if d is not None:
-                    raise ReproductionError(f"val {pop} {where}: {name} differs from the v0.3 report at {d}")
+                if d is not None and col_diff[name] is None:
+                    col_diff[name] = f"val {pop} {where}{d}"
                 compared += 1
             for g in groups:
+                if g not in b.get("groups", {}):
+                    raise ReproductionError(f"val {pop} {where}: group {g} is not in the v0.3 report")
                 d = S.first_difference(S.canon(a["groups"][g]), S.canon(b["groups"][g]))
-                if d is not None:
-                    raise ReproductionError(f"val {pop} {where}: group {g} differs from the v0.3 report at {d}")
-    return {"match": True, "populations": list(POPULATIONS), "column_blocks_compared": compared,
+                if d is not None and grp_diff[g] is None:
+                    grp_diff[g] = f"val {pop} {where}{d}"
+    return {"columns": col_diff, "groups": grp_diff, "column_blocks_compared": compared}
+
+
+def reproduction_check(rows: Sequence[WindowRow], preds: Mapping[str, np.ndarray], groups: Mapping[str, Sequence[str]],
+                       disclosed: frozenset[str], recorded: Mapping[str, Any], *,
+                       n_resamples: int = scoring.M.BOOTSTRAP_RESAMPLES) -> dict[str, Any]:
+    """:func:`compare`, strict: raise :class:`ReproductionError` on any difference."""
+    out = compare(rows, preds, groups, disclosed, recorded, n_resamples=n_resamples)
+    for kind in ("columns", "groups"):
+        for name, d in out[kind].items():
+            if d is not None:
+                raise ReproductionError(f"{'group ' if kind == 'groups' else ''}{name} differs from the v0.3 report at {d}")
+    return {"match": True, "populations": list(POPULATIONS), "column_blocks_compared": out["column_blocks_compared"],
             "columns": list(preds), "groups": sorted(groups)}
+
+
+def select_reproduced(diffs: Mapping[str, Any], groups: Mapping[str, Sequence[str]], required: Sequence[str]
+                      ) -> tuple[list[str], dict[str, list[str]], dict[str, str], dict[str, str]]:
+    """The per-column rule (module docstring) on a :func:`compare` result: ``(columns, groups,
+    not_reproduced, groups_not_reproduced)``. The ``required`` columns (the priors) must all reproduce,
+    and at least one other column must, or :class:`ReproductionError` is raised."""
+    col, grp = diffs["columns"], diffs["groups"]
+    bad_required = {c: col[c] for c in required if col.get(c) is not None}
+    if bad_required:
+        raise ReproductionError(f"the priors do not reproduce ({bad_required}); the bridge's rows or gate differ "
+                                "from v0.3's, so nothing is written")
+    kept = [c for c in col if c not in required and col[c] is None]
+    if not kept:
+        raise ReproductionError("no v0.3 network column reproduces its val blocks; nothing is written")
+    not_rep = {c: d for c, d in col.items() if c not in required and d is not None}
+    kept_groups, not_grp = {}, {}
+    for g, members in groups.items():
+        missing = [m for m in members if m not in kept]
+        if missing:
+            not_grp[g] = f"seeds not reproduced: {missing}"
+        elif grp.get(g) is not None:
+            not_grp[g] = grp[g]
+        else:
+            kept_groups[g] = list(members)
+    return kept, kept_groups, not_rep, not_grp
 
 
 def save(out: Path, names: Sequence[str], preds: Mapping[str, np.ndarray], meta: Mapping[str, Any]) -> None:
@@ -109,19 +161,26 @@ def export(out: Path = DEFAULT_OUT, *, workers: int = S.DEFAULT_WORKERS,
         if np.any(net[gate] < 0):
             raise ReproductionError(f"val: a gate-passing window has no {spec.name} prediction")
         preds[spec.name] = net
-    names = list(preds)
     prior = scoring.recorded_dev_prior()
-    checked = {**preds, **scoring.prior_columns(rows, int(prior["majority_index"]))}
-    rec = json.loads(Path(S.SEALED_REPORT).read_text())
+    priors = scoring.prior_columns(rows, int(prior["majority_index"]))
+    recorded = json.loads(Path(S.SEALED_REPORT).read_text())["splits"]["val"]["populations"]
     say("val: comparing every block with artifacts/reports/v03_sealed.json")
-    repro = reproduction_check(rows, checked, cols.groups, disclosed, rec["splits"]["val"]["populations"])
+    diffs = compare(rows, {**preds, **priors}, cols.groups, disclosed, recorded)
+    names, groups, not_rep, not_grp = select_reproduced(diffs, cols.groups, list(priors))
+    for name, d in {**not_rep, **{f"group {g}": d for g, d in not_grp.items()}}.items():
+        say(f"val: {name} not reproduced ({d}); cited from v03_sealed.json, no paired CI")
+    preds = {n: preds[n] for n in names}
+    repro = {"match": True, "populations": list(POPULATIONS), "columns": names + list(priors), "groups": sorted(groups),
+             "column_blocks_compared": diffs["column_blocks_compared"]}
     repro["report_sha256"] = S.sha256_file(Path(S.SEALED_REPORT))
     meta = {
         "format": FORMAT,
         "split": "val",
         "val_rows_sha256": got,
-        "groups": cols.groups,
+        "groups": groups,
         "reproduction": repro,
+        "not_reproduced": not_rep,
+        "groups_not_reproduced": not_grp,
         "inputs": cols.inputs,
         "columns_info": {n: cols.info[n] for n in names},
         "environment": {"platform": platform.platform(), "python": platform.python_version(),

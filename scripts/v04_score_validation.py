@@ -13,10 +13,19 @@ v04_val_subset_<arm>.json). Every Qwen column of one report must cover the same 
 With --report-dir DIR the report goes to DIR and is unofficial. Refuses to overwrite an official
 report without --force.
 
-The two constant priors are always added; --v03 adds the v0.3 columns (scripts/v04_v03_val_columns.py).
-Paired macro-F1 differences: each --diff "A,B" is A - B over the shared bootstrap draws; without
---diff, every Qwen column minus Qwen-0 and Qwen-0 minus the dev-majority prior. The differences
-are printed to stderr. Harness only: these numbers are never shown to a weight author.
+Registry: `scripts/v04_freeze.py --check` must pass before every scoring run (PREREGISTRATION
+front matter), so every report, official or not, refuses unless `registry.check_registry()` finds
+no problem (this also keeps any Qwen output from meeting a label before G1), and records the
+registry's freeze_sha256 (after revisions), its G1 freeze_sha256 and the revision count in
+`inputs.registry`.
+
+The two constant priors are always added; --v03 adds the v0.3 columns (scripts/v04_v03_val_columns.py),
+re-checked against artifacts/reports/v03_sealed.json before they enter the report.
+Paired macro-F1 differences over the shared bootstrap draws: the PREREGISTRATION §9 pairs are built
+in, each when both its columns are present (every Qwen column - "Qwen-0", "Qwen-0 - prior dev-majority",
+"WSP-B - v0.3 B network", "WSP-A - v0.3 A network", "Qwen-0 - v0.3 A network", "WSP-F - WSP-B");
+each --diff "A,B" adds A - B to them. The differences are printed to stderr. Harness only: these
+numbers are never shown to a weight author.
 """
 
 from __future__ import annotations
@@ -33,7 +42,7 @@ try:
 except ImportError:  # pragma: no cover
     sys.path.insert(0, str(REPO_ROOT / "src"))
 
-from agent_loop_lab.v04 import scoring  # noqa: E402
+from agent_loop_lab.v04 import registry, scoring  # noqa: E402
 
 OFFICIAL_DIR = REPO_ROOT / "artifacts" / "reports"
 
@@ -57,6 +66,21 @@ def _diffs(items: list[str]) -> dict[str, tuple[str, str]] | None:
         if not sep or not a.strip() or not b.strip():
             raise SystemExit(f"--diff must be MINUEND,SUBTRAHEND, got {it!r}")
         out[scoring.pair_name(a.strip(), b.strip())] = (a.strip(), b.strip())
+    return out
+
+
+def registry_record(root: Path = REPO_ROOT) -> dict:
+    """``scripts/v04_freeze.py --check`` in process: the problems and, when the registry loads, its freeze hashes."""
+    problems = registry.check_registry(root)
+    out: dict = {"path": registry.REGISTRY_RELPATH, "check": "passed" if not problems else "failed",
+                 "problems": problems}
+    path = root / registry.REGISTRY_RELPATH
+    try:
+        data = registry._load(path)
+        out.update({"freeze_sha256": data.get("freeze_sha256"), "g1_freeze_sha256": registry.g1_freeze_sha256(data),
+                    "revisions": len(data.get("revisions") or [])})
+    except (registry.RegistryError, OSError, KeyError, TypeError) as exc:
+        out["load_error"] = str(exc)
     return out
 
 
@@ -92,8 +116,13 @@ def main(argv: list[str] | None = None) -> int:
     if official and out.exists() and not a.force:
         raise SystemExit(f"{out} exists; pass --force to replace an official report")
     groups = {k: [c.strip() for c in v.split(",")] for k, v in _pairs(a.group, "group").items()}
+    reg = registry_record()
+    if reg["problems"]:
+        print(registry.problems_text(reg["problems"]), file=sys.stderr)
+        raise SystemExit(f"refusing: scripts/v04_freeze.py --check fails ({len(reg['problems'])} problem(s)); "
+                         "every scoring run needs an intact registry")
     rep = scoring.report(a.arm, columns, groups or None, v03_columns=a.v03, subset_file=a.subset,
-                         pairs=_diffs(a.diff), official=official)
+                         pairs=_diffs(a.diff), registry=reg, official=official)
     out_dir.mkdir(parents=True, exist_ok=True)
     out.write_text(json.dumps(rep, indent=1, sort_keys=True) + "\n")
     print(f"wrote {out} ({rep['coverage']})", file=sys.stderr)
