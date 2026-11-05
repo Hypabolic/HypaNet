@@ -11,3 +11,6 @@ authoring_packet/
 .pytest_tmp/
 datasets/**/*.encoded.pt
 datasets/**/*.encoded.pt.tmp
+
+# Claude Code workflow worktrees
+.claude/worktrees/

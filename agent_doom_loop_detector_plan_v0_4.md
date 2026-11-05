@@ -198,6 +198,37 @@ Each item has a recommendation.
 - [x] **LoRA budgets.** Recommended: all five (32 / 128 / 512 / 2,048 / all), seeds as v0.3 E8. On a GPU the cost difference is small.
 - [x] **Label-word rows.** Qwen ties its embedding and LM head, so editing the four label words' readout rows also changes how those words are read as input. Recommended: allow it, and report it.
 
+## Revisions after M0 (5 Nov 2026)
+
+These follow the M0 build and an independent review of the v0.3 harness. Matthew asked for the recommendations to be taken, so each item below is decided. G1 writes them into the pre-registration.
+
+1. **Machine.** The work runs on an Apple M4 Pro (24 GB), not the Intel Mac this plan's "Compute and environment" section measured. On this machine:
+   - The Mac GPU works (MPS). Pip ships current torch, so no conda environment is needed (`envs/qwen`, a uv project).
+   - The readout runs at about 445 tok/s on MPS. It is compute-bound, and each call has a fixed cost of 40–70 ms. One full val pass takes about 5 h; Fable's 2M-token budget takes about 75 min.
+   - CPU is far slower for the readout's many short calls: under 10 tok/s measured while another job shared the machine.
+   - Fable's forward server and the harness-only val runs use local MPS. LoRA, probe features on dev, and every sealed scoring run use one CUDA GPU (cap US$100). The CPU replay check runs on that cloud machine (CPU against CUDA), not on this Mac.
+2. **Fresh sealed test set** (`experiments/v0_4/fresh_test/REGISTRATION.json`, `datasets/v0_4/fresh_test/MANIFEST_fresh_test.json`).
+   - It has 3,996 sessions, 333 per family, from master seed 20261106 with the v0.2 generator unchanged: 86,412 windows, 83,874 of them gate-passing.
+   - The seed was committed before generation. The manifest holds no label statistics.
+   - Every v0.4 column is scored on it as the primary result, alongside v0.3 A/B/C, the rules engine and the constant prior. v0.2 B and C-all are added if the frozen v0.2 feature path can be run without touching the spent v0.2 sealed driver.
+3. **Prompt and label words are chosen without labels** (`experiments/v0_4/prompt_choice/README.md`). The rule picks the highest median label-word probability mass over 12 candidates on 100 hash-picked dev sessions. That keeps Qwen-0 and WSP-A zero-label; choosing on dev labels, as first planned, would not have. ` oscillating` is two Qwen tokens, so no candidate uses it.
+4. **WSP kernel design** (`docs/V04_WSP_KERNEL.md`).
+   - The forward pass is a separate metered tool, one request per Bash call. It is not a function inside Fable's scripts, so a keep-the-best loop cannot be written as a script.
+   - The meter, edit journal and ledger live in a harness process that never runs author code.
+   - Edits are in scope only for the text-model tensors, minus the final norm. In `embed_tokens`, only the four label rows may change.
+   - WSP-B's forward passes on the 200 disclosed windows return label logits only, with no activations, so they cannot be turned into a centroid probe.
+5. **WSP-B disclosure.** The same 200 windows and oracle labels. `network_class` comes from WSP-A's verbaliser. `reference_policy_class` is dropped, because no reference policy exists. The format tag is `v04-wsp-b-disclosure/1`.
+6. **WSP-F.**
+   - **Cost cap:** US$250.
+   - **Labelled budget:** 50 `score_dev` calls of at most 128 dev sessions each.
+   - **Holdout:** a final paired check on 500 dev sessions picked by hash key and disjoint from every LoRA/probe budget subset. The harness holds it.
+   - **Gate:** G2 waits for the WSP-F archive too.
+7. **Matched budget for Q3.** Add **LoRA-200w** and **probe-200w** columns trained on exactly the 200 disclosed windows, alongside the 32 to all budgets. That gives WSP-B a like-for-like comparison.
+8. **Q5 protocol.** For each mechanism EDIT.md claims, the harness checks it on the counterfactual pairs, with the edit applied and then ablated. The pass statistic is pre-registered at G1. Counterfactual is scored before the sealed attempt, as in v0.3.
+9. **Scoring bridge.** It uses `eval.m4.score_columns`, as v0.3 Phase C did. H2 is not applicable without a reference policy.
+10. **Re-scoring v0.3 artefacts on arm64.** v0.3's reproduction checks require exact equality, and the artefacts were scored on x86. Before G1, the unofficial v0.3 val dry run is repeated on this machine and diffed against the official reports. If it matches, local re-scoring is valid. If not, G1 pre-registers a tolerance.
+11. **v0.3 cost correction.** `total_cost_usd` in Claude Code's stream is cumulative across resumed launches of one session, so `scripts/v03_cost.py` double-counted. v0.3's hand-written work cost US$64.62 in total, not US$122.24: Phase A $42.73 and Phase B $21.89. The v0.4 cost script accounts by session-id delta.
+
 ## Sources
 
 - "Sparks of Weight-Space Programming", Takehi, Teoh, Zhang and Khattab, 2 Nov 2026: https://rikiyat.github.io/blog/weight-space-programming/ and logs at https://github.com/RikiyaT/lm_understand-logs

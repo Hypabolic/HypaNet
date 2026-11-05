@@ -1,71 +1,47 @@
 # v0.4 status
 
-_Last update: 2026-11-05 20:30. Plan: `agent_doom_loop_detector_plan_v0_4.md` (draft). Nothing has been scored. No Qwen output has been compared with a label._
+_Last update: 2026-11-05 21:30. Plan: `agent_doom_loop_detector_plan_v0_4.md`. Matthew accepted every recommendation in it, and the post-M0 revisions are in its "Revisions after M0" section. No Qwen output has been compared with a label._
 
-## M0 setup (in progress)
+## Done
 
-**Machine.** The work now runs on an Apple M4 Pro (24 GB, 12 cores), not the Intel Mac the plan's feasibility tests used. Two of the plan's compute findings do not hold here:
-
-- the Mac GPU works (MPS);
-- pip ships current torch for this machine, so no conda environment is needed.
-
-**Data.** All datasets were rebuilt from the scripts and match the committed manifests: every canonical v0.2 file is byte-identical, and every v0.3 raw file matches its sha256. The source-hash fields in the manifests now differ because the code grew after v0.2. The committed manifests are kept unchanged.
-
-**Qwen environment.** `envs/qwen` is a separate uv project with Python 3.12, torch 2.14.1 and transformers 5.22.1. The model is `Qwen/Qwen3.5-0.8B` at revision `2fc06364715b967f1860aea9cf38778875588b17` (text model, 752M parameters with tied embeddings; vision encoder unused). The frozen v0.3 environment at the repo root is unchanged.
-
-**Task export.** `scripts/v04_export_tasks.py` runs in the frozen environment and writes `datasets/v0_4/{dev,val}.tasks.jsonl.gz` and `{split}.labels.npz` (gitignored), plus `EXPORT_MANIFEST.json`.
-
-- The tasks file holds rendered blocks and window positions only. It has no labels, families or gate results.
-- val has 4,004 sessions and 87,176 windows (75,078 scored). dev has 12,000 sessions and 259,290 windows (223,930 scored). These are the v0.3 counts.
-- `tests/test_v04_export.py` checks the rows against `v03.scoring.load_val` and that test, OOD and counterfactual are refused.
-
-**Verbaliser readout.** `envs/qwen/hypaqwen/readout.py` makes one pass per session. At each window end it snapshots the cache (full-attention KV plus the DeltaNet conv and recurrent states), runs the suffix, reads the four label-word logits, then restores the cache. `transformers`' `Cache.crop` cannot do this, because it does not roll back the DeltaNet recurrent state.
-
-`envs/qwen/tests/test_readout.py` checks the readout against a separate prompt per window on 3 dev sessions (first, middle and last windows):
-
-- logits agree within 2e-3 and every argmax is the same;
-- a label never changes when later blocks are removed;
-- passes on MPS and on CPU.
-
-**Interface (DRAFT, not frozen).** `envs/qwen/hypaqwen/interface.py`:
-
-- Qwen chat format, thinking off;
-- the four class definitions from spec v0.3 §2;
-- suffix `State:`;
-- label words ` productive`, ` recovering`, ` stalled`, ` looping`.
-
-` oscillating` is two tokens in Qwen's vocabulary, so the plan's example word list cannot be used as written. ` looping` is the single-token stand-in. G1 freezes the final text under a written choice rule on dev.
-
-**Token audit** (`artifacts/reports/v04_token_audit.json`, draft interface):
-
-| Split | Tokens per session, mean (p95, max) | vs v0.3 tokeniser | Readout tokens, total |
-| --- | --- | --- | --- |
-| val | 1,726 (3,478, 6,849) | 1.97× | 7.87M |
-| dev | 1,721 (3,505, 6,522) | 1.98× | 23.5M |
-
-The counts include the 167-token prefix. Without it, val averages 1,559 tokens, as the plan measured. The 11 suffix tokens per window add 14%.
-
-**Throughput on this Mac** (fp32, draft interface, 30 dev sessions):
-
-| Backend | Readout tok/s | One full val pass |
+| Step | Where | Result |
 | --- | --- | --- |
-| MPS | 445 | about 5 h |
-| CPU (12 threads) | see below | — |
+| Data rebuilt on this Mac | datasets/ (gitignored) | Every canonical v0.2 file is byte-identical; every v0.3 raw file matches its manifest |
+| Qwen environment | `envs/qwen` | torch 2.14.1 and transformers 5.22.1. Qwen3.5-0.8B pinned at revision `2fc06364`; every file's sha256 is checked; offline load; SDPA attention |
+| Task export (dev, val) | `scripts/v04_export_tasks.py` | Rendered blocks with no labels, plus a separate labels file. val: 87,176 windows (the v0.3 rows) |
+| Verbaliser readout | `hypaqwen/readout.py` | One pass per session with cache snapshot and restore. Equals a separate prompt per window on MPS and CPU. Label-row edits reach the readout |
+| Token audit | `artifacts/reports/v04_token_audit.json` | val: 1,726 tokens per session with the prefix (1,559 without), 1.97× v0.3; 7.87M readout tokens |
+| **Fresh sealed test set** | registration `6a778d1`, manifest `8475556` | Seed 20261106, 3,996 sessions, 86,412 windows (83,874 gate-passing). Rebuilt byte-identically under a second PYTHONHASHSEED. No label statistics recorded |
+| Prompt choice, pre-registered | `experiments/v0_4/prompt_choice/README.md` | 12 candidates and a label-free rule (median label-word mass, 100 dev sessions) |
+| Scoring bridge | `src/agent_loop_lab/v04/scoring.py` | Val rows checked against v0.3's `rows_sha256`. Strict column alignment. `m4.score_columns`, with H2 not applicable |
+| WSP kernel contract | `docs/V04_WSP_KERNEL.md` | Two processes; forward as a separate metered tool; edit scope; guards; build runner |
 
-The plan assumed 215 tok/s and about 20 h on CPU. MPS is compute-bound here: batching 8 sequences costs about 8×. Each forward call also has a fixed 40–70 ms overhead from the pure-PyTorch DeltaNet fallback, and an 11-token suffix costs about as much as a 50-token block. A smaller DeltaNet chunk size gives only about 15%, so stock transformers is kept. Dev-scale work (probe features on 23.5M tokens, LoRA) still belongs on a CUDA GPU with the fused kernels.
+## Running
+
+- **Prompt choice** on MPS, 12 × 100 dev sessions, label-free. The report goes to `artifacts/reports/v04_prompt_choice.json`.
+- **WSP kernel build**, as a workflow in three worktrees: server/client/`./fwd`, guards on torch 2.14.1, and the build runner. Each part is reviewed and fixed before it is merged.
+- **v0.3 val dry run on arm64** (unofficial; report in the session scratchpad). It checks whether v0.3's exact-equality reproduction checks still hold on this machine. The first attempt stopped because the Phase C `model.pt` files were Git LFS pointers. `git lfs install --local && git lfs pull` fixed that, and the hashes match.
 
 ## Next
 
-1. Matthew's decisions (plan, "Decisions needed"). The fresh sealed test set blocks the rest of M0.
-2. Fable kernel: the plan's tools, a token-budget meter, and v0.3's guards against autograd and optimisers.
-3. The prompt choice rule and candidate prompts, judged on dev only. Then the G1 pre-registration.
-4. Scoring bridge: Qwen logits to `metrics.score_report` in the frozen environment.
+1. Freeze the chosen interface text in `hypaqwen/interface.py`.
+2. Build the session harness: prepare script, launch with a tool allow-list and command hook, audit, cost by session delta, packet, kit tests.
+3. Write the v0.4 spec with `[packet]` sections.
+4. Write the probe and LoRA recipes and the cloud-GPU scripts.
+5. Write the G1 pre-registration and the `registry_v0_4.yaml` freeze.
+
+## Measurements on this Mac
+
+| Backend | Verbaliser readout | Note |
+| --- | --- | --- |
+| MPS, fp32 | 445 tok/s | Compute-bound; a fixed 40–70 ms per call. One val pass takes about 5 h; 2M tokens take about 75 min |
+| CPU, fp32 | under 10 tok/s | Measured with other jobs running. The 100-session CPU replay check moves to the cloud machine |
+
+## Corrections to earlier notes
+
+- An earlier version of this file said the bridge would call `metrics.score_report`. It calls `m4.score_columns`: `score_report` needs a reference policy and accepts val only.
+- v0.3's cost was over-counted. `total_cost_usd` is cumulative across resumed launches, so v0.3's hand-written work cost US$64.62 in total, not US$122.24.
 
 ## Known pre-existing test failures (not v0.4)
 
-Two older tests fail on this machine because pytest's temp directory is under `/private/var`, outside the repo:
-
-- `tests/test_m4_eval.py::test_sealed_script_refuses_second_run` (path not under the repo root);
-- `tests/test_v03_runner.py::test_side_table_is_unreachable_at_run_time[absolute]` (the guard's message includes the temp path).
-
-The first fails with the v0.4 changes stashed too; the second is in v0.3 runner code that v0.4 does not touch. Every other test passes.
+`tests/test_m4_eval.py::test_sealed_script_refuses_second_run` and `tests/test_v03_runner.py::test_side_table_is_unreachable_at_run_time[absolute]` fail on this machine. pytest's temp directory is under `/private/var`, outside the repo. Every other test passes.
