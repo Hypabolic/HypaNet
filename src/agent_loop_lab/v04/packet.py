@@ -765,6 +765,32 @@ ids of the forward passes it was derived from, and how.
   component reads, what it writes, and what the readout should do differently on which kind of
   window.
 - For every vector or constant, the ledger call ids behind it.
+- It **ends with a section headed exactly `## Mechanisms`**: one Markdown table with exactly these
+  four columns, in this order, and one row per mechanism you claim:
+
+  ```text
+  ## Mechanisms
+
+  | id | tensors | target class | claim |
+  | --- | --- | --- | --- |
+  | M1 | model.language_model.layers.20.mlp.down_proj.weight | STALLED | One sentence: what it makes the readout do on which windows. |
+  | M2 | label rows | OSCILLATING | One sentence. |
+  ```
+
+  - `id`: a short unique id (`M1`, `M2`, ...).
+  - `tensors`: the full names (as in `NAMES`) of the edited tensors that implement the mechanism,
+    comma-separated, or `label rows` for the four label-word rows of the embedding.
+  - `target class`: exactly one of `PRODUCTIVE`, `RECOVERY`, `STALLED`, `OSCILLATING`: the class
+    the mechanism makes the model recognise.
+  - `claim`: one sentence.
+
+  The harness checks each row on its own: with your whole edit the model should name the target
+  class on windows of that class more often than the original model does, without naming it more
+  often on windows of other classes; with only that row's tensors reverted to the original weights,
+  most of that improvement should go away. A row is checked only if every tensor it names is edited,
+  it does not name the whole edit, and it shares no tensor with any other row. So give each mechanism
+  its own tensors, give every edited tensor to at most one row, and note that an edit of a single
+  tensor (or of the label rows alone) leaves no row that can be checked.
 
 ### `ITERATIONS.md`
 

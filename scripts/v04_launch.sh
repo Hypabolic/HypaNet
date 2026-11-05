@@ -4,10 +4,29 @@
 #   scripts/v04_launch.sh wsp-a                 [AUTHOR_DIR]   # new session (refuses if one exists)
 #   scripts/v04_launch.sh continue K            [AUTHOR_DIR]   # technical continuation K (1..9), fixed prompt
 #   scripts/v04_launch.sh resubmit N ERROR_FILE [AUTHOR_DIR]   # build rejection N (1..3): runner error text only
-#   scripts/v04_launch.sh wsp-b                 [AUTHOR_DIR]   # refused until the WSP-B disclosure exists
+#   scripts/v04_launch.sh wsp-b                 [AUTHOR_DIR]   # WSP-B: resumes the same session (one revision)
 #
 # continue / resubmit apply to the current phase: wsp-b once LOGDIR/wsp-b.stream.jsonl exists, else wsp-a
 # (override with V04_PHASE). AUTHOR_DIR defaults to ../HypaNet-v04-author (scripts/v04_prepare_author_dir.sh).
+#
+# WSP-B (PREREGISTRATION §6, §7.1; after scripts/v04_build_disclosure.py and scripts/v04_prepare_phase_b.sh):
+# every launch of the phase (wsp-b, its continuations and resubmissions) checks, with
+# agent_loop_lab.v04.handover wsp-b-inputs, the WSP-A archive (weight_program/v0_4/wsp-a/: BUILD_RECORD.json
+# against BUILD_RECORD.sha256, a journal-checked build, FREEZE.json), the disclosure
+# (experiments/v0_4/disclosure/DISCLOSURE.json against DISCLOSURE.sha256 and DISCLOSURE_PRIVATE.json, which
+# must name that archive; the server file experiments/v0_4/DISCLOSED_WINDOWS.json against the private record),
+# the author dir's read-only disclosure/ copy and the WSP-B journal seeded from the WSP-A journal. output/wsp-a/
+# and disclosure/ must not be writable. The server starts with --phase wsp-b --disclosed DISCLOSED_WINDOWS.json;
+# on the first wsp-b launch its ready line must show the archived WSP-A edit hash. The mode wsp-b resumes
+# experiments/v0_4/SESSION_ID with prompt_wsp_b.md, its {A_SHA256}, {A_EDIT_HASH} and {DISCLOSURE_SHA256}
+# filled in. The archive's FREEZE.json must be frozen and consistent under the registry's G1 kernel freeze
+# (wsp-b-inputs --registry). Kit sessions: a kit WSP-B launch needs V04_WSP_A_ARCHIVE and V04_DISCLOSURE_ROOT
+# (never the real archive or disclosure root) and is checked against the registry when it exists, else with
+# --kit-unfrozen (scripts/v04_prepare_phase_b.sh with V04_KIT=1 prepares such a kit handover).
+#
+# Freeze (PREREGISTRATION §7.3): after scripts/v04_freeze.py --check, the registry's freeze_sha256
+# (agent_loop_lab.v04.handover freeze-sha) goes into the launch record and LAUNCHES.jsonl; a kit launch
+# records it when a registry exists, else null. scripts/v04_run_build.py copies those into ARCHIVE/FREEZE.json.
 #
 # Before claude: the cost cap (scripts/v04_cost.py, by session-id delta: WSP-A US$500, WSP-B US$250), no
 # harness scratch (pytest-of-$USER) in the temp roots, the freeze registry and the handover record, the tools
@@ -80,6 +99,16 @@ if [ "$KIT_MODE" = 1 ]; then
   EFFORT="${V04_EFFORT:-low}"
   BUDGET_TOKENS="${V04_BUDGET_TOKENS:-2000000}"
   REQUEST_CAP="${V04_REQUEST_CAP:-50000}"
+  # WSP-B kit sessions: a kit archive and disclosure, never the real ones (checked where the phase is known)
+  A_ARCHIVE="${V04_WSP_A_ARCHIVE:-}"
+  DISC_ROOT="${V04_DISCLOSURE_ROOT:-}"
+  FREEZE_JSON=null
+  REG_ARGS="--kit-unfrozen"
+  if [ -f "$REPO/experiments/registry_v0_4.yaml" ]; then
+    FREEZE_JSON="\"$(cd "$REPO" && uv run python -m agent_loop_lab.v04.handover freeze-sha experiments/registry_v0_4.yaml)\"" \
+      || die "the registry's freeze_sha256 does not match its record"
+    REG_ARGS="--registry $REPO/experiments/registry_v0_4.yaml"
+  fi
 else
   LOGDIR="$REAL_LOGDIR"
   SID_FILE="$REPO/experiments/v0_4/SESSION_ID"
@@ -90,6 +119,12 @@ else
   REQUEST_CAP=50000
   [ -f "$REPO/experiments/registry_v0_4.yaml" ] || die "experiments/registry_v0_4.yaml missing (G1 not frozen)"
   (cd "$REPO" && uv run python scripts/v04_freeze.py --check) || die "freeze registry check failed"
+  FREEZE_SHA="$(cd "$REPO" && uv run python -m agent_loop_lab.v04.handover freeze-sha experiments/registry_v0_4.yaml)" \
+    || die "the registry's freeze_sha256 does not match its record"
+  FREEZE_JSON="\"$FREEZE_SHA\""
+  A_ARCHIVE="$REPO/weight_program/v0_4/wsp-a"
+  DISC_ROOT="$REPO/experiments/v0_4"
+  REG_ARGS="--registry $REPO/experiments/registry_v0_4.yaml"
   uv run --project "$REPO" python - "$REPO/experiments/v0_4/HANDOVER.json" "$AUTHOR_DIR" <<'EOF' || die "handover record does not match this author dir"
 import json, sys
 h = json.load(open(sys.argv[1]))
@@ -112,6 +147,17 @@ for t in "$SYS_TMP" "${TMPDIR:-/tmp}" "$USER_TMP" /tmp /private/tmp; do
   fi
 done
 
+case "$REPO" in *" "*) die "the repo path may not contain a space";; esac
+# check_kit_wsp_b: a kit WSP-B launch names its own archive and disclosure root, never the real ones
+check_kit_wsp_b() {
+  [ "$KIT_MODE" = 1 ] || return 0
+  [ -n "$A_ARCHIVE" ] && [ -n "$DISC_ROOT" ] || die "V04_KIT=1 wsp-b needs V04_WSP_A_ARCHIVE and V04_DISCLOSURE_ROOT"
+  A_ARCHIVE="$(cd "$A_ARCHIVE" 2>/dev/null && pwd -P)" || die "V04_WSP_A_ARCHIVE is not a directory"
+  DISC_ROOT="$(cd "$DISC_ROOT" 2>/dev/null && pwd -P)" || die "V04_DISCLOSURE_ROOT is not a directory"
+  [ "$A_ARCHIVE" = "$REPO/weight_program/v0_4/wsp-a" ] && die "V04_KIT=1 may not use the real WSP-A archive"
+  [ "$DISC_ROOT" = "$REPO/experiments/v0_4" ] && die "V04_KIT=1 may not use the real disclosure root"
+  return 0
+}
 current_phase() {
   if [ -n "${V04_PHASE:-}" ]; then echo "$V04_PHASE"
   elif [ -e "$LOGDIR/wsp-b.stream.jsonl" ]; then echo "wsp-b"
@@ -136,7 +182,15 @@ case "$MODE" in
     SESSION_ARGS="--session-id $SID"
     ;;
   wsp-b)
-    die "WSP-B is not ready: it needs the WSP-A archive, the disclosure copy (disclosure/ in the author dir, the server's --disclosed file), prompt_wsp_b.md and a prepare step for output/wsp-b/; none exists yet"
+    TARGET="wsp-b"; NAME="$TARGET"
+    [ -s "$SID_FILE" ] || die "no WSP-A session to resume ($SID_FILE)"
+    SID="$(cat "$SID_FILE")"
+    check_kit_wsp_b
+    # shellcheck disable=SC2086
+    PROMPT="$(cd "$REPO" && uv run python -m agent_loop_lab.v04.handover render-wsp-b-prompt \
+      --template "$KIT/prompt_wsp_b.md" --archive "$A_ARCHIVE" --disclosure-root "$DISC_ROOT" $REG_ARGS)" \
+      || die "prompt_wsp_b.md could not be rendered (WSP-B inputs missing or inconsistent; see above)"
+    SESSION_ARGS="--resume $SID"
     ;;
   continue)
     TARGET="$(current_phase)"
@@ -175,6 +229,25 @@ PYEOF
     ;;
 esac
 [ -d "$AUTHOR_DIR/output/$TARGET" ] || die "$AUTHOR_DIR/output/$TARGET missing"
+# WSP-B inputs, on every launch of the phase (header): the archive, the disclosure, the copy, the seeded journal
+DISCLOSED_ARGS=""
+B_A_SHA=""; B_A_EDIT=""; B_D_SHA=""
+if [ "$TARGET" = wsp-b ]; then
+  check_kit_wsp_b
+  # shellcheck disable=SC2086
+  B_INPUTS="$(cd "$REPO" && uv run python -m agent_loop_lab.v04.handover wsp-b-inputs --archive "$A_ARCHIVE" \
+    --disclosure-root "$DISC_ROOT" $REG_ARGS --author-dir "$AUTHOR_DIR" --logs "$LOGDIR")" \
+    || die "WSP-B inputs missing or inconsistent (see above; scripts/v04_prepare_phase_b.sh)"
+  B_A_SHA="$(echo "$B_INPUTS" | sed -n 's/^ *"A_SHA256": "\([0-9a-f]\{64\}\)",*$/\1/p')"
+  B_A_EDIT="$(echo "$B_INPUTS" | sed -n 's/^ *"A_EDIT_HASH": "\([0-9a-f]\{64\}\)",*$/\1/p')"
+  B_D_SHA="$(echo "$B_INPUTS" | sed -n 's/^ *"DISCLOSURE_SHA256": "\([0-9a-f]\{64\}\)",*$/\1/p')"
+  [ "${#B_A_SHA}" -eq 64 ] && [ "${#B_A_EDIT}" -eq 64 ] && [ "${#B_D_SHA}" -eq 64 ] || die "WSP-B inputs: unreadable hashes"
+  DISCLOSED="$DISC_ROOT/DISCLOSED_WINDOWS.json"
+  DISCLOSED_ARGS="--disclosed $DISCLOSED"
+  case "$DISCLOSED" in *" "*) die "the disclosed-windows path may not contain a space: $DISCLOSED";; esac
+  [ -z "$(find "$AUTHOR_DIR/output/wsp-a" "$AUTHOR_DIR/disclosure" -perm -u+w -print -quit)" ] \
+    || die "output/wsp-a/ or disclosure/ in $AUTHOR_DIR is writable (scripts/v04_prepare_phase_b.sh makes them read-only)"
+fi
 LOG="$LOGDIR/$NAME.stream.jsonl"
 [ -e "$LOG" ] && die "$LOG exists (sessions are not re-run silently)"
 REMAINING="$(remaining_cap "$TARGET")"
@@ -238,8 +311,9 @@ stop_all() {
 }
 trap stop_all EXIT
 trap 'stop_all; exit 130' INT TERM
+# shellcheck disable=SC2086
 (cd "$QWEN" && exec env -u PYTHONPATH "$QPY" -m hypaqwen.wsp.server --phase "$TARGET" --author-dir "$AUTHOR_DIR" \
-  --log-dir "$LOGDIR" --device "$DEVICE" --budget "$BUDGET_TOKENS" --request-cap "$REQUEST_CAP") \
+  --log-dir "$LOGDIR" --device "$DEVICE" --budget "$BUDGET_TOKENS" --request-cap "$REQUEST_CAP" $DISCLOSED_ARGS) \
   > "$READY" 2> "$SERVER_ERR" &
 SERVER_PID=$!
 if command -v caffeinate > /dev/null 2>&1; then
@@ -256,6 +330,10 @@ until grep -q '"ready": true' "$READY" 2>/dev/null; do
 done
 head -n 1 "$READY"
 [ -S "$AUTHOR_DIR/.kernel/kernel.sock" ] && [ -S "$AUTHOR_DIR/.kernel/fwd.sock" ] || die "the server's sockets are missing"
+if [ "$MODE" = wsp-b ]; then
+  # the first WSP-B launch starts in the archived WSP-A edit state (the seeded journal, replayed by the server)
+  grep -q "\"edit_hash\": \"$B_A_EDIT\"" "$READY" || die "the WSP-B server did not start in the archived WSP-A edit state ($B_A_EDIT)"
+fi
 
 # a clean environment for the session: nothing that links it to a parent Claude Code session
 for v in CLAUDECODE CLAUDE_CODE_ENTRYPOINT CLAUDE_CODE_CHILD_SESSION CLAUDE_CODE_MESSAGING_SOCKET \
@@ -272,10 +350,13 @@ if [ "$KIT_MODE" = 1 ]; then WALL="${V04_WALL_SECONDS:-1800}"; else WALL="${V04_
 case "$WALL" in ''|*[!0-9]*) die "V04_WALL_SECONDS must be a number of seconds";; esac
 KIT_JSON="$([ "$KIT_MODE" = 1 ] && echo true || echo false)"
 START="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
-# the launch record: written before claude starts, so a killed launch is still charged its ceiling
-printf '{"name": "%s", "attempt": "%s", "phase": "%s", "mode": "%s", "session_id": "%s", "model": "%s", "fallback": "%s", "effort": "%s", "max_budget_usd": %s, "wall_seconds": %s, "utc_start": "%s", "settings": "%s", "kit": %s}\n' \
+json_or_null() { if [ -n "$1" ]; then printf '"%s"' "$1"; else printf null; fi; }
+# the launch record: written before claude starts, so a killed launch is still charged its ceiling; it names
+# the registry freeze the launch runs under (PREREGISTRATION §7.3) and, for WSP-B, the archive and disclosure
+printf '{"name": "%s", "attempt": "%s", "phase": "%s", "mode": "%s", "session_id": "%s", "model": "%s", "fallback": "%s", "effort": "%s", "max_budget_usd": %s, "wall_seconds": %s, "utc_start": "%s", "settings": "%s", "kit": %s, "freeze_sha256": %s, "wsp_a_build_record_sha256": %s, "disclosure_sha256": %s}\n' \
   "$NAME" "$ATTEMPT" "$TARGET" "$MODE" "$SID" "$MODEL" "$FALLBACK" "$EFFORT" "$REMAINING" "$WALL" "$START" \
-  "$(basename "$SETTINGS")" "$KIT_JSON" > "$LOGDIR/$NAME.launch.json"
+  "$(basename "$SETTINGS")" "$KIT_JSON" "$FREEZE_JSON" "$(json_or_null "$B_A_SHA")" "$(json_or_null "$B_D_SHA")" \
+  > "$LOGDIR/$NAME.launch.json"
 if [ "$MODE" = resubmit ]; then
   mkdir -p "$RESUB"
   cp "$ERROR_FILE" "$RESUB/$TARGET.r$N.error.txt"
@@ -338,9 +419,9 @@ if [ "$SID_RECORDED" = 0 ]; then
   echo "Nothing was recorded as a launch; fix the cause and re-run the same command." >&2
   exit 1
 fi
-printf '{"name": "%s", "attempt": "%s", "phase": "%s", "mode": "%s", "session_id": "%s", "model": "%s", "fallback": "%s", "effort": "%s", "max_budget_usd": %s, "utc_start": "%s", "utc_end": "%s", "claude_rc": %s, "log": "%s", "started": true, "kit": %s}\n' \
+printf '{"name": "%s", "attempt": "%s", "phase": "%s", "mode": "%s", "session_id": "%s", "model": "%s", "fallback": "%s", "effort": "%s", "max_budget_usd": %s, "utc_start": "%s", "utc_end": "%s", "claude_rc": %s, "log": "%s", "started": true, "kit": %s, "freeze_sha256": %s}\n' \
   "$NAME" "$ATTEMPT" "$TARGET" "$MODE" "$SID" "$MODEL" "$FALLBACK" "$EFFORT" "$REMAINING" "$START" "$END" "$CLAUDE_RC" "$(basename "$LOG")" \
-  "$KIT_JSON" >> "$LOGDIR/LAUNCHES.jsonl"
+  "$KIT_JSON" "$FREEZE_JSON" >> "$LOGDIR/LAUNCHES.jsonl"
 echo "transcript: $LOG"
 (cd "$QWEN" && uv run python -m hypaqwen.wsp.install verify "$AUTHOR_DIR/tools" --hook "$KIT/hook_bash.py") \
   || echo "TOOLS TAMPERED after the session (see above)" >&2

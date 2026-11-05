@@ -2,6 +2,7 @@
 
 Usage:
     uv run python scripts/v04_run_build.py PHASE [--author-dir DIR] [--logs DIR] [--archive DIR] [--force]
+                                                 [--registry FILE]
 
 Runs the build runner of the Qwen environment (``uv run --project envs/qwen python -m hypaqwen.wsp.runner``,
 which this environment never imports) on AUTHOR_DIR/output/PHASE/ against the model server's journal
@@ -26,6 +27,22 @@ the server's ledger (LOGS/PHASE.ledger.jsonl): every fwd/<k>/ must be an ok ledg
 edit hash and token count, and hold only response.json, request.json and .npy files. The result is
 ARCHIVE/author_output_fwd_check.json; a mismatch is printed loudly (the session audit is where it counts).
 The archive is never committed by this script.
+
+Records added after a build (PREREGISTRATION §7.3, §8):
+
+* ARCHIVE/FREEZE.json: the registry freeze this phase ran under (agent_loop_lab.v04.handover.freeze_record):
+  the freeze_sha256 of experiments/registry_v0_4.yaml (or --registry), its G1 freeze and revision count, and
+  the freeze_sha256 every launch record LOGS/PHASE[.k].launch.json names, with ``consistent`` false (printed
+  loudly) when there is no launch record or any launch ran under another freeze than the registry's G1 kernel
+  freeze (the G1 freeze or one after an additive revision). A real build (the real log dir, or an archive under
+  weight_program/v0_4/) refuses to start unless --registry is experiments/registry_v0_4.yaml, scripts/v04_freeze.py
+  --check passes and the phase has at least one launch record, every one consistent; a kit or test build without
+  a registry records ``unfrozen``, and one that is not consistent only warns;
+* ARCHIVE/BUILD_RECORD.sha256 (``"<sha256>  BUILD_RECORD.json"``): the archive's hash, which WSP-B's prompt,
+  disclosure and launcher name;
+* ARCHIVE/MECHANISMS.json: a preview of EDIT.md's ``## Mechanisms`` table against the edited tensors
+  (agent_loop_lab.v04.mechanisms: which rows the Q5 check of PREREGISTRATION §8 could evaluate). It never
+  refuses a build: a missing or unusable table is printed as a warning for the operator.
 """
 
 from __future__ import annotations
@@ -46,9 +63,14 @@ try:
 except ImportError:  # pragma: no cover
     sys.path.insert(0, str(REPO / "src"))
 
+from agent_loop_lab.v04 import mechanisms  # noqa: E402
+from agent_loop_lab.v04.handover import HandoverError, freeze_record  # noqa: E402
 from agent_loop_lab.v04.kit import disclosure_leaks  # noqa: E402
 
 PHASES = ("wsp-a", "wsp-b", "wsp-f")
+REAL_LOGS = REPO / "experiments" / "v0_4" / "logs"
+REAL_ARCHIVES = REPO / "weight_program" / "v0_4"
+REGISTRY = REPO / "experiments" / "registry_v0_4.yaml"
 
 
 def _sha(p: Path) -> str:
@@ -134,6 +156,54 @@ def fwd_crosscheck(out: Path, ledger_path: Path) -> dict:
             "problems": problems, "trust": "untrusted copies (author-dir content), checked against the server ledger"}
 
 
+def is_real_build(logs: Path, archive: Path) -> bool:
+    """The real log dir or an archive under weight_program/v0_4/: the registry is required."""
+    return logs.resolve() == REAL_LOGS.resolve() or REAL_ARCHIVES.resolve() in archive.resolve().parents
+
+
+def freeze_check() -> str | None:
+    """``scripts/v04_freeze.py --check`` (the launcher's check); None when it passes, else its output."""
+    p = subprocess.run([sys.executable, str(REPO / "scripts" / "v04_freeze.py"), "--check"], cwd=REPO,
+                       capture_output=True, text=True)
+    return None if p.returncode == 0 else (p.stdout + p.stderr).strip() or f"exit {p.returncode}"
+
+
+def real_build_freeze(registry: Path, logs: Path, phase: str) -> dict:
+    """A real build's FREEZE.json, or :class:`HandoverError`: the registry is experiments/registry_v0_4.yaml,
+    ``--check`` passes, and the phase has at least one launch record, every one under the registry's G1 kernel
+    freeze (``consistent``)."""
+    if registry.resolve() != REGISTRY.resolve():
+        raise HandoverError(f"a real build records {REGISTRY}, not {registry} (PREREGISTRATION §7.3)")
+    if not registry.is_file():
+        raise HandoverError(f"{registry} missing: a real build records the registry freeze it ran under "
+                            "(PREREGISTRATION §7.3)")
+    problem = freeze_check()
+    if problem is not None:
+        raise HandoverError(f"scripts/v04_freeze.py --check failed:\n{problem}")
+    freeze = freeze_record(logs, phase, registry, required=True)
+    if not freeze["launches"]:
+        raise HandoverError(f"no launch record {phase}[.k].launch.json in {logs}: nothing shows the freeze it ran under")
+    if not freeze["consistent"]:
+        raise HandoverError(f"a launch of {phase} ran under another registry freeze than the G1 kernel's "
+                            f"({freeze['kernel_freezes']}): {freeze['launches']}")
+    return freeze
+
+
+def write_records(archive: Path, freeze: dict) -> dict:
+    """FREEZE.json, BUILD_RECORD.sha256 and MECHANISMS.json after a build (module docstring)."""
+    (archive / "FREEZE.json").write_text(json.dumps(freeze, indent=1, sort_keys=True) + "\n")
+    rec_sha = _sha(archive / "BUILD_RECORD.json")
+    (archive / "BUILD_RECORD.sha256").write_text(f"{rec_sha}  BUILD_RECORD.json\n")
+    rec = json.loads((archive / "BUILD_RECORD.json").read_text(encoding="utf-8"))
+    edit_md = archive / "author_output" / "EDIT.md"
+    text = edit_md.read_text(encoding="utf-8", errors="replace") if edit_md.is_file() else ""
+    prev = {"note": "preview only (PREREGISTRATION §8 decides Q5 at the sealed attempt); never refuses a build",
+            "edit_md_sha256": _sha(edit_md) if edit_md.is_file() else None,
+            **mechanisms.preview(text, rec.get("tensors", {}))}
+    (archive / "MECHANISMS.json").write_text(json.dumps(prev, indent=1, sort_keys=True) + "\n")
+    return {"build_record_sha256": rec_sha, "mechanisms": prev}
+
+
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("phase", choices=PHASES)
@@ -141,6 +211,7 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--logs", type=Path, default=REPO / "experiments" / "v0_4" / "logs")
     ap.add_argument("--archive", type=Path, help="default weight_program/v0_4/PHASE")
     ap.add_argument("--force", action="store_true", help="replace an existing archive")
+    ap.add_argument("--registry", type=Path, default=REGISTRY, help="the freeze registry (tests pass a fake)")
     args = ap.parse_args(argv)
     out = args.author_dir.resolve() / "output" / args.phase
     archive = (args.archive or REPO / "weight_program" / "v0_4" / args.phase).resolve()
@@ -150,6 +221,14 @@ def main(argv: list[str] | None = None) -> int:
         return 2
     if not journal.is_dir():
         print(f"ERROR: no server journal at {journal}", file=sys.stderr)
+        return 2
+    try:
+        if is_real_build(args.logs, archive):
+            freeze = real_build_freeze(args.registry, args.logs.resolve(), args.phase)
+        else:
+            freeze = freeze_record(args.logs.resolve(), args.phase, args.registry, required=False)
+    except HandoverError as exc:
+        print(f"ERROR: {exc}", file=sys.stderr)
         return 2
     archive.mkdir(parents=True, exist_ok=True)
     before = attempt_files(archive / "attempts")
@@ -183,12 +262,25 @@ def main(argv: list[str] | None = None) -> int:
     for prob in fwd["problems"]:
         print(f"  FWD RECORD MISMATCH: {prob}", file=sys.stderr)
     rec = json.loads((archive / "BUILD_RECORD.json").read_text())
+    extra = write_records(archive, freeze)
+    print(f"freeze:          {freeze['freeze_sha256']} ({'unfrozen' if freeze['unfrozen'] else freeze['registry']}); "
+          f"{len(freeze['launches'])} launch records")
+    if not freeze["consistent"]:
+        print(f"  FREEZE MISMATCH: no launch of {args.phase}, or one ran under another registry freeze: "
+              f"{freeze['launches']} (WSP-B and the disclosure refuse this archive)", file=sys.stderr)
+    mech = extra["mechanisms"]
+    print(f"mechanisms:      {len(mech['rows'])} rows, {mech['evaluated']} the Q5 check could evaluate "
+          f"(preview: {archive / 'MECHANISMS.json'})")
+    if not mech["q5_possible"]:
+        print("  WARNING: no row of EDIT.md's ## Mechanisms table is eligible for the Q5 check: "
+              + "; ".join(mech["problems"] + [f"{r['id']}: {r.get('reason', r['status'])}" for r in mech["rows"]]),
+              file=sys.stderr)
     o = rec["overall"]
     print(f"author output:   {sum(1 for m in manifest.values() if m.get('copied'))} files copied, "
           f"{len(manifest)} hashed -> {archive / 'author_output'}")
     print(f"edit hash:       {rec.get('edit_state_sha256')}")
     print(f"changed entries: {o['changed_entries']} / {o['text_model_params']}")
-    print(f"record:          {archive / 'BUILD_RECORD.json'}")
+    print(f"record:          {archive / 'BUILD_RECORD.json'} (sha256 {extra['build_record_sha256']})")
     return 0
 
 
