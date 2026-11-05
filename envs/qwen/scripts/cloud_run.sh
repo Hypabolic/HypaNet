@@ -15,9 +15,15 @@
 # https://pypi.org/simple, sha256 23011fe29a99b591eabb3a31a25080c62e2c2f0690a3c798744e5489dae50451),
 # which is the CUDA 13.0 build (its locked dependencies: cuda-toolkit 13.0.3.0, nvidia-cudnn-cu13
 # 9.24.0.43, nvidia-nccl-cu13, triton 3.8.0). It needs an NVIDIA driver for CUDA 13.0 (R580 or
-# later). The runner records torch.version.cuda, cuDNN, the device name and the driver, and refuses
-# a torch without CUDA 13.0, a GPU other than an H100 80GB (unless --allow-other-gpu, which marks
+# later), checked in step 1 before anything is downloaded. The runner records torch.version.cuda,
+# cuDNN, the device name and the driver, and refuses a torch without CUDA 13.0, anything but one
+# H100 80GB SXM ("H100 80GB HBM3"; PCIe and NVL are refused unless --allow-other-gpu, which marks
 # the run unofficial), and an importable flash-linear-attention or causal-conv1d.
+#
+# Cost (§3.1, US$100 cap): `run` refuses when spent + the estimate of the jobs left exceeds the cap
+# (--accept-estimate-over-cap starts anyway), and stops launching jobs once spent + its elapsed
+# hours x --usd-per-hour reaches it (the rest end as not_run_cap). Spent is the out dir's SPEND.json
+# ledger, or --spent-usd (the provider's figure, which also counts setup time).
 #
 # Settings (§3.1): CUBLAS_WORKSPACE_CONFIG=:4096:8 here; every job then runs through
 # `python -m hypaqwen.cloud exec`, which sets torch.use_deterministic_algorithms(True), TF32 off,
@@ -26,6 +32,12 @@
 # is checked before any job.
 set -euo pipefail
 die() { echo "cloud_run: refusing: $*" >&2; exit 2; }
+MIN_DRIVER_MAJOR=580
+check_driver() {  # $1: nvidia-smi's driver_version, e.g. 580.65.06
+  local major="${1%%.*}"
+  [[ "$major" =~ ^[0-9]+$ ]] || die "cannot read the NVIDIA driver version (got '$1')"
+  (( major >= MIN_DRIVER_MAJOR )) || die "driver $1 < $MIN_DRIVER_MAJOR: the lock's torch 2.14.1 is the CUDA 13.0 build"
+}
 
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"   # envs/qwen
 UV_VERSION=0.12.23
@@ -48,8 +60,13 @@ case "${1:-}" in
     cd "$HERE"
     exec uv run --frozen python -m hypaqwen.cloud bundle --out "$OUT"
     ;;
+  --check-driver)  # (tests) only the driver rule of step 1
+    check_driver "${2:-}"
+    echo "driver $2 ok"
+    exit 0
+    ;;
   -h|--help)
-    sed -n '2,27p' "${BASH_SOURCE[0]}"
+    sed -n '2,32p' "${BASH_SOURCE[0]}"
     exit 0
     ;;
 esac
@@ -58,6 +75,7 @@ esac
 [[ "$(uname -s)" == Linux && "$(uname -m)" == x86_64 ]] || die "run on the rented Linux x86_64 GPU machine (or use --dry-run)"
 command -v nvidia-smi >/dev/null || die "nvidia-smi not found"
 nvidia-smi --query-gpu=name,memory.total,driver_version --format=csv,noheader
+check_driver "$(nvidia-smi --query-gpu=driver_version --format=csv,noheader | head -n 1 | tr -d '[:space:]')"
 
 # 2. uv at the pinned version.
 if ! command -v uv >/dev/null || [[ "$(uv --version | awk '{print $2}')" != "$UV_VERSION" ]]; then

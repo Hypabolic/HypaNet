@@ -26,8 +26,12 @@ before the job's own code and checks them after:
 The runner never reads a label and computes no score. It writes ``RUN_MANIFEST.json`` (source commit,
 the registry's ``freeze_sha256`` when present, environment and GPU, settings, model and data hashes,
 each job's record with its outputs' sha256) and ``COPY_BACK.json`` (what to bring home). A job whose
-record is ``ok`` and whose outputs still hash as recorded is not rerun; a failed job is not retried
-unless asked (§10: a diverged LoRA run is reported as failed, never re-run with other settings).
+record is ``ok`` for the same argv and the same dependency outputs, and whose outputs still hash as
+recorded, is not rerun; a failed job is not retried unless asked (§10: a diverged LoRA run is reported
+as failed, never re-run with other settings). The machine must be one H100 80GB SXM with an R580+
+driver (else ``--allow-other-gpu``, an unofficial run). §3.1's US$100 cap: ``run`` refuses when spent
+(``SPEND.json`` or ``--spent-usd``) plus the estimate of the jobs left exceeds it, unless
+``--accept-estimate-over-cap``, and launches nothing once spent plus elapsed hours reaches it.
 
 CLIs (``python -m hypaqwen.cloud ...``): ``plan`` (the dry run: jobs and a cost estimate), ``run``,
 ``exec`` (internal), ``replay-subset``, ``replay-report``, ``readout-edit``, ``compare``, ``env``,
@@ -75,8 +79,9 @@ REPLAY_ARMS = ("qwen0", "wsp-b", "lora-all", "probe-all")
 AGREEMENT_CAVEAT = 0.995
 CUBLAS_WORKSPACE_CONFIG = ":4096:8"
 EXPECTED_CUDA_PREFIX = "13.0"  # uv.lock's torch 2.14.1 manylinux_2_28_x86_64 wheel (PyPI) depends on cuda-toolkit 13.0
-GPU_NAME = "H100"
-GPU_MIN_MEMORY_GIB = 79
+GPU_NAME = "H100 80GB HBM3"  # the SXM part (§3.1); PCIe is "H100 PCIe", NVL is "H100 NVL"
+GPU_MEMORY_GIB = (79.0, 81.0)  # an 80 GB SXM card reports 79.65 GiB
+MIN_DRIVER_MAJOR = 580  # CUDA 13.0 (the lock's torch wheel) needs an R580 or later driver
 BANNED_MODULES = ("fla", "causal_conv1d")  # flash-linear-attention, causal-conv1d (§3.1)
 JOB_MODULES = frozenset({"hypaqwen.probe", "hypaqwen.lora", "hypaqwen.run_readout", "hypaqwen.cloud"})
 CLOUD_SUBCOMMANDS = frozenset({"replay-subset", "replay-report", "readout-edit"})  # what `exec` may run of this module
@@ -199,6 +204,7 @@ def settings() -> dict[str, Any]:
     return {
         "CUBLAS_WORKSPACE_CONFIG": os.environ.get("CUBLAS_WORKSPACE_CONFIG"),
         "deterministic_algorithms": torch.are_deterministic_algorithms_enabled(),
+        "deterministic_warn_only": torch.is_deterministic_algorithms_warn_only_enabled(),
         "matmul_allow_tf32": torch.backends.cuda.matmul.allow_tf32,
         "cudnn_allow_tf32": torch.backends.cudnn.allow_tf32,
         "cudnn_benchmark": torch.backends.cudnn.benchmark,
@@ -212,7 +218,9 @@ def settings() -> dict[str, Any]:
 
 
 REQUIRED_SETTINGS = {"CUBLAS_WORKSPACE_CONFIG": CUBLAS_WORKSPACE_CONFIG, "deterministic_algorithms": True,
-                     "matmul_allow_tf32": False, "cudnn_allow_tf32": False, "float32_matmul_precision": "highest",
+                     "deterministic_warn_only": False,  # warn_only=True would let a non-deterministic op run
+                     "matmul_allow_tf32": False, "cudnn_allow_tf32": False, "cudnn_benchmark": False,
+                     "cudnn_deterministic": True, "float32_matmul_precision": "highest",
                      "sdpa": {"flash": False, "mem_efficient": False, "cudnn": False, "math": True}}
 
 
@@ -271,19 +279,49 @@ def env_record() -> dict[str, Any]:
     }
 
 
+def driver_major(nvidia_smi: str | None) -> int | None:
+    """The driver's major version from ``nvidia-smi --query-gpu=...,driver_version`` (last field, first GPU)."""
+    if not nvidia_smi:
+        return None
+    m = re.match(r"\s*(\d+)\.", nvidia_smi.splitlines()[0].split(",")[-1])
+    return int(m.group(1)) if m else None
+
+
+def check_driver(nvidia_smi: str | None) -> None:
+    major = driver_major(nvidia_smi)
+    if major is not None and major < MIN_DRIVER_MAJOR:
+        raise CloudError(f"driver {major} < {MIN_DRIVER_MAJOR}: the lock's torch 2.14.1 is the CUDA "
+                         f"{EXPECTED_CUDA_PREFIX} build (rent an image with an R{MIN_DRIVER_MAJOR}+ driver)")
+
+
+def gpu_problems(g: Mapping[str, Any]) -> list[str]:
+    """Why ``g`` (:func:`gpu_record`) is not §3.1's one H100 80GB SXM; empty when it is."""
+    out = []
+    if g.get("device_count") != 1:
+        out.append(f"{g.get('device_count')} visible GPUs, want 1")
+    if GPU_NAME not in str(g.get("name")):
+        out.append(f"GPU {g.get('name')!r} is not the SXM part ({GPU_NAME!r})")
+    mem = g.get("total_memory_gib")
+    if mem is None or not GPU_MEMORY_GIB[0] <= mem <= GPU_MEMORY_GIB[1]:
+        out.append(f"{mem} GiB, want {GPU_MEMORY_GIB[0]}-{GPU_MEMORY_GIB[1]}")
+    return out
+
+
 def preflight(*, allow_other_gpu: bool = False) -> dict[str, Any]:
-    """Refuse unless this is the §3.1 machine: CUDA build of the lock's torch on one H100 80GB."""
+    """Refuse unless this is the §3.1 machine: CUDA build of the lock's torch on one H100 80GB SXM."""
     import torch
 
+    check_driver(_run_text(["nvidia-smi", "--query-gpu=name,memory.total,driver_version", "--format=csv,noheader"]))
     if torch.version.cuda is None or not torch.cuda.is_available():
         raise CloudError(f"no CUDA (torch {torch.__version__}, torch.version.cuda={torch.version.cuda}); "
                          "the cloud runner runs on the rented H100 only (the dry run is `plan`)")
     if not str(torch.version.cuda).startswith(EXPECTED_CUDA_PREFIX):
         raise CloudError(f"torch.version.cuda {torch.version.cuda} is not the lock's CUDA {EXPECTED_CUDA_PREFIX} wheel")
     g = gpu_record()
-    if not allow_other_gpu and (GPU_NAME not in g["name"] or g["total_memory_gib"] < GPU_MIN_MEMORY_GIB):
-        raise CloudError(f"GPU {g['name']} ({g['total_memory_gib']} GiB) is not one H100 80GB (§3.1); "
-                         "--allow-other-gpu runs it unofficially")
+    problems = gpu_problems(g)
+    if problems and not allow_other_gpu:
+        raise CloudError(f"not one H100 80GB SXM (§3.1): {'; '.join(problems)}; --allow-other-gpu runs it unofficially")
+    g["problems"] = problems
     check_banned()
     return g
 
@@ -510,17 +548,37 @@ def job_record_path(out: Path, name: str) -> Path:
     return out / "jobs" / f"{name}.json"
 
 
+def _read_record(out: Path, name: str) -> dict[str, Any] | None:
+    p = job_record_path(out, name)
+    return json.loads(p.read_text()) if p.is_file() else None
+
+
+def deps_digest(out: Path, job: Job) -> dict[str, str | None]:
+    """sha256 of each dependency's recorded outputs (None: no ok record), as the job saw them."""
+    got: dict[str, str | None] = {}
+    for d in job.deps:
+        rec = _read_record(out, d)
+        ok = rec is not None and rec.get("status") == "ok" and "outputs" in rec
+        got[d] = hashlib.sha256(json.dumps(rec["outputs"], sort_keys=True).encode()).hexdigest() if ok else None
+    return got
+
+
 def is_done(out: Path, job: Job) -> bool:
-    p = job_record_path(out, job.name)
-    if not p.is_file():
+    """The job's record is ok, for this exact argv, made from its dependencies' current outputs, and its
+    outputs still hash as recorded. (A changed argv, e.g. replay-report gaining the WSP-B arm or the MPS
+    columns, or a dependency that ran again, makes it run again.)"""
+    rec = _read_record(out, job.name)
+    if rec is None or rec.get("status") != "ok" or rec.get("argv") != job.argv():
         return False
-    rec = json.loads(p.read_text())
-    if rec.get("status") != "ok":
+    if rec.get("deps") != deps_digest(out, job):
         return False
     try:
         return outputs_sha256(out, job.outputs) == rec.get("outputs")
     except CloudError:
         return False
+
+
+NOT_RUN_CAP = "not_run_cap"
 
 
 @dataclass
@@ -537,11 +595,12 @@ class Scheduler:
     cpu_slots: int = 1
     poll_s: float = 5.0
     status: dict[str, str] = field(default_factory=dict)
+    may_launch: Callable[[], bool] = lambda: True  # False: the cap is reached, launch nothing more
 
     def run(self, done: Callable[[Job], bool] = lambda j: False) -> dict[str, str]:
         pending = [j for j in self.jobs if j.name not in self.status]
-        for j in pending:
-            if done(j):
+        for j in pending:  # plan order is dependency order: a job is cached only when all its deps are
+            if done(j) and all(self.status.get(d) == "cached" for d in j.deps):
                 self.status[j.name] = "cached"
         pending = [j for j in pending if j.name not in self.status]
         running: dict[str, tuple[Job, Any]] = {}
@@ -563,6 +622,11 @@ class Scheduler:
                 busy = sum(1 for j, _ in running.values() if (j.device == "cuda") == gpu)
                 if busy >= (self.gpu_slots if gpu else self.cpu_slots):
                     continue
+                if not self.may_launch():
+                    for j in pending:
+                        self.status[j.name] = NOT_RUN_CAP
+                    pending = []
+                    break
                 running[job.name] = (job, self.launch(job))
                 pending.remove(job)
             if pending and not running:  # nothing runs and nothing can start: a dependency outside the plan
@@ -612,19 +676,22 @@ class _Proc:
 
 
 def run_jobs(jobs: Sequence[Job], out: Path, *, gpu_slots: int, cpu_slots: int = 1, retry_failed: bool = False,
-             poll_s: float = 5.0, on_change: Callable[[], None] | None = None) -> dict[str, str]:
+             poll_s: float = 5.0, on_change: Callable[[], None] | None = None,
+             may_launch: Callable[[], bool] = lambda: True) -> dict[str, str]:
     validate_plan(jobs)
     (out / "logs").mkdir(parents=True, exist_ok=True)
     started: dict[str, float] = {}
+    deps_seen: dict[str, dict[str, str | None]] = {}
 
     def launch(job: Job) -> _Proc:
         started[job.name] = time.time()
+        deps_seen[job.name] = deps_digest(out, job)
         print(f"[cloud] start {job.name}", flush=True)
         return _Proc(exec_command(job, out), _job_cwd(job, out), _job_env(job), out / "logs" / f"{job.name}.log")
 
     def finish(job: Job, rc: int) -> str:
-        rec: dict[str, Any] = {"name": job.name, "argv": job.argv(), "device": job.device, "root": job.root,
-                               "returncode": rc, "seconds": round(time.time() - started[job.name], 1),
+        rec: dict[str, Any] = {"name": job.name, "argv": job.argv(), "deps": deps_seen[job.name],
+                               "device": job.device, "root": job.root, "returncode": rc, "seconds": round(time.time() - started[job.name], 1),
                                "estimate_hours": round(job.hours, 3)}
         ex = out / "jobs" / f"{job.name}.exec.json"
         if ex.is_file():
@@ -642,7 +709,8 @@ def run_jobs(jobs: Sequence[Job], out: Path, *, gpu_slots: int, cpu_slots: int =
             on_change()
         return status
 
-    sched = Scheduler(jobs, launch, finish, gpu_slots=gpu_slots, cpu_slots=cpu_slots, poll_s=poll_s)
+    sched = Scheduler(jobs, launch, finish, gpu_slots=gpu_slots, cpu_slots=cpu_slots, poll_s=poll_s,
+                      may_launch=may_launch)
     if not retry_failed:  # §10: a failed job (e.g. a diverged LoRA run) is reported, not silently re-run
         for j in jobs:
             p = job_record_path(out, j.name)
@@ -652,8 +720,52 @@ def run_jobs(jobs: Sequence[Job], out: Path, *, gpu_slots: int, cpu_slots: int =
     return {j.name: status.get(j.name, "blocked") for j in jobs}
 
 
+def cached_jobs(out: Path, jobs: Sequence[Job]) -> set[str]:
+    """What :meth:`Scheduler.run` will skip: done, and every dependency skipped too."""
+    got: set[str] = set()
+    for j in jobs:
+        if is_done(out, j) and all(d in got for d in j.deps):
+            got.add(j.name)
+    return got
+
+
+# §3.1's US$100 cap. SPEND.json in the out dir is the ledger of this runner's wall time on the rented
+# machine (one entry per `run`, updated as jobs finish); --spent-usd replaces it with the provider's
+# figure (which also counts setup time and other machines).
+SPEND_FILE = "SPEND.json"
+
+
+def ledger_spent(out: Path) -> float:
+    p = out / SPEND_FILE
+    return round(sum(r["usd"] for r in json.loads(p.read_text())["runs"]), 4) if p.is_file() else 0.0
+
+
+def record_spend(out: Path, started: str, hours: float, usd_per_hour: float) -> None:
+    p = out / SPEND_FILE
+    runs = [r for r in (json.loads(p.read_text())["runs"] if p.is_file() else []) if r["started"] != started]
+    runs.append({"started": started, "hours": round(hours, 4), "usd_per_hour": usd_per_hour,
+                 "usd": round(hours * usd_per_hour, 4)})
+    _write_json(p, {"runs": runs, "usd": round(sum(r["usd"] for r in runs), 4)})
+
+
+def check_cap(spent: float, est: Mapping[str, Any], r: Rates, *, accept_over_cap: bool) -> None:
+    """Refuse a run that the cap has no room for, or whose estimate would pass it (unless accepted)."""
+    if spent >= r.cap_usd:
+        raise CloudError(f"US${spent} already spent reaches the US${r.cap_usd} cap (§3.1): no launch")
+    if spent + est["usd"] > r.cap_usd and not accept_over_cap:
+        raise CloudError(f"spent US${spent} + estimated US${est['usd']} for the jobs left exceeds the US${r.cap_usd} "
+                         "cap (§3.1); select fewer jobs (--jobs), or pass --accept-estimate-over-cap (the runner "
+                         "still stops launching at the cap)")
+
+
+def cap_guard(spent: float, r: Rates, clock: Callable[[], float] = time.monotonic) -> Callable[[], bool]:
+    """True while spent + this run's elapsed hours x usd_per_hour is below the cap."""
+    t0 = clock()
+    return lambda: spent + (clock() - t0) / 3600 * r.usd_per_hour < r.cap_usd
+
+
 def copy_back(out: Path, jobs: Sequence[Job]) -> dict[str, Any]:
-    req = ["RUN_MANIFEST.json", "COPY_BACK.json", "jobs", "logs"]
+    req = ["RUN_MANIFEST.json", "COPY_BACK.json", SPEND_FILE, "jobs", "logs"]
     large: list[str] = []
     for j in jobs:
         for rel in j.outputs:
@@ -970,6 +1082,10 @@ def main(argv: Sequence[str] | None = None) -> int:
     p.add_argument("--allow-other-gpu", action="store_true", help="unofficial run on another GPU")
     p.add_argument("--mps-column", action="append", default=[], metavar="ARM=PATH",
                    help="a local MPS val column (qwen0, wsp-b) for the MPS-vs-CUDA replay comparison")
+    p.add_argument("--spent-usd", type=float, default=None,
+                   help="cloud spend so far (the provider's figure); default: the out dir's SPEND.json ledger")
+    p.add_argument("--accept-estimate-over-cap", action="store_true",
+                   help="start although spent + estimate exceeds the cap (launches still stop at the cap)")
     p = sub.add_parser("exec")
     p.add_argument("--device", choices=("cuda", "cpu", "none"), required=True)
     p.add_argument("--record", type=Path, default=None)
@@ -1060,33 +1176,46 @@ def _dispatch(a: argparse.Namespace) -> int:
     raise CloudError(f"unknown command {a.cmd}")
 
 
+def _apply_mps(jobs: Sequence[Job], items: Sequence[str]) -> None:
+    for arm, path in _pairs(items).items():
+        for j in jobs:
+            if j.name == "replay-report":
+                j.args += ["--mps", f"{arm}={path.resolve()}"]
+
+
 def _run(a: argparse.Namespace, jobs: list[Job], r: Rates) -> int:
     out = a.out.resolve()
     gpu = preflight(allow_other_gpu=a.allow_other_gpu)  # before anything is read: refuses off the rented H100
+    _apply_mps(jobs, a.mps_column)  # before the cap check: the cache key is each job's argv
+    spent = a.spent_usd if a.spent_usd is not None else ledger_spent(out)
+    skip = cached_jobs(out, jobs)
+    est = estimate([j for j in jobs if j.name not in skip], r)
+    check_cap(spent, est, r, accept_over_cap=a.accept_estimate_over_cap)
     data = check_data_tree(REPO)
     from . import model as qmodel
 
     qmodel.verify_files()
     s = apply_determinism()
-    if a.mps_column:
-        mps = _pairs(a.mps_column)
-        for j in jobs:
-            if j.name == "replay-report":
-                for arm, path in mps.items():
-                    j.args += ["--mps", f"{arm}={path.resolve()}"]
-    header = {"format": FORMAT, "official": not a.allow_other_gpu, "started": time.strftime("%Y-%m-%dT%H:%M:%SZ",
-                                                                                           time.gmtime()),
+    started = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
+    header = {"format": FORMAT, "official": not gpu["problems"], "started": started,
               "source": source_record(), "environment": env_record(), "gpu": gpu, "settings": s,
               "model": {"id": MODEL_ID, "revision": MODEL_REVISION, "file_sha256": qmodel.FILE_SHA256, "verified": True},
-              "data_sha256": data, "estimate": estimate(jobs, r), "selected": [j.name for j in jobs]}
+              "data_sha256": data, "estimate": est, "estimate_all_selected": estimate(jobs, r),
+              "selected": [j.name for j in jobs], "cached_at_start": sorted(skip),
+              "cap": {"cap_usd": r.cap_usd, "usd_per_hour": r.usd_per_hour, "spent_usd_at_start": spent,
+                      "spent_from": "--spent-usd" if a.spent_usd is not None else SPEND_FILE,
+                      "accept_estimate_over_cap": a.accept_estimate_over_cap}}
     out.mkdir(parents=True, exist_ok=True)
     status: dict[str, str] = {}
+    t0 = time.monotonic()
 
     def snapshot() -> None:
+        record_spend(out, started, (time.monotonic() - t0) / 3600, r.usd_per_hour)
         write_manifest(out, jobs, status, header)
 
-    status = run_jobs(jobs, out, gpu_slots=r.parallel, retry_failed=a.retry_failed, on_change=snapshot)
-    write_manifest(out, jobs, status, header)
+    status = run_jobs(jobs, out, gpu_slots=r.parallel, retry_failed=a.retry_failed, on_change=snapshot,
+                      may_launch=cap_guard(spent, r))
+    snapshot()
     bad = {k: v for k, v in status.items() if v not in ("ok", "cached")}
     print(json.dumps({"status": status, "not_ok": bad}, indent=1))
     print(f"copy back: {out / 'COPY_BACK.json'}")

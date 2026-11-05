@@ -373,6 +373,8 @@ def test_outputs_and_done(tmp_path):
     outs = C.outputs_sha256(tmp_path, job.outputs)
     assert set(outs) == {"probe/32/w.pt", "columns/c.npz"}
     C._write_json(C.job_record_path(tmp_path, "j"), {"status": "ok", "outputs": outs})
+    assert not C.is_done(tmp_path, job)  # no argv in the record
+    C._write_json(C.job_record_path(tmp_path, "j"), {"status": "ok", "argv": job.argv(), "deps": {}, "outputs": outs})
     assert C.is_done(tmp_path, job)
     (tmp_path / "columns/c.npz").write_bytes(b"changed")
     assert not C.is_done(tmp_path, job)
@@ -521,3 +523,172 @@ def test_readout_edit_column_format(tmp_path):
         iface = build_interface(tok)
         ref = Verbaliser(model, iface).session(iface.block_ids(tok, tasks[0].blocks), [0, 1])
         assert np.array_equal(z["label_logits"][:2], ref.label_logits.numpy())
+
+
+# ---------------------------------------------------------------- review fixes: cache key, GPU, cap, settings, driver
+
+
+def _finish_all(out: Path, jobs):
+    """Write each job's outputs and an ok record as run_jobs would (plan order)."""
+    for j in jobs:
+        for rel in j.outputs:
+            p = out / rel
+            if not p.exists():
+                p.parent.mkdir(parents=True, exist_ok=True)
+                p.write_bytes(rel.encode())
+        C._write_json(C.job_record_path(out, j.name), {"status": "ok", "argv": j.argv(), "deps": C.deps_digest(out, j),
+                                                       "outputs": C.outputs_sha256(out, j.outputs)})
+
+
+def test_rerun_with_wsp_b_and_mps_reruns_replay_report(tmp_path):
+    out = tmp_path / "o"
+    first = C.plan_jobs(out)
+    _finish_all(out, first)
+    assert C.cached_jobs(out, first) == {j.name for j in first}
+    second = C.plan_jobs(out, wsp_b_archive=tmp_path / "wsp_b.tar")
+    rep = _by(second)["replay-report"]
+    assert "wsp-b" in " ".join(rep.args) and not C.is_done(out, rep)
+    assert "replay-report" not in C.cached_jobs(out, second)
+    assert {"replay-wsp-b-cuda", "replay-wsp-b-cpu"}.isdisjoint(C.cached_jobs(out, second))
+    third = C.plan_jobs(out)
+    C._apply_mps(third, ["qwen0=" + str(tmp_path / "mps.npz")])
+    assert not C.is_done(out, _by(third)["replay-report"])
+    assert "probe-fit-32" in C.cached_jobs(out, third)
+
+
+def test_a_rerun_dependency_invalidates_its_dependents(tmp_path):
+    out = tmp_path / "o"
+    jobs = C.select(C.plan_jobs(out), ["probe-predict-32-val"])
+    _finish_all(out, jobs)
+    by = _by(jobs)
+    assert C.is_done(out, by["probe-predict-32-val"])
+    dep = by["probe-fit-32"]
+    for rel in dep.outputs:  # probe-fit-32 ran again and wrote other weights
+        p = out / rel
+        (p if p.is_file() else next(x for x in p.rglob("*") if x.is_file())).write_bytes(b"other")
+    C._write_json(C.job_record_path(out, dep.name), {"status": "ok", "argv": dep.argv(), "deps": C.deps_digest(out, dep),
+                                                     "outputs": C.outputs_sha256(out, dep.outputs)})
+    assert C.is_done(out, dep) and not C.is_done(out, by["probe-predict-32-val"])
+    rec = json.loads(C.job_record_path(out, "probe-fit-32").read_text())
+    del rec["argv"]  # a record without its argv is never reused
+    C._write_json(C.job_record_path(out, "probe-fit-32"), rec)
+    assert not C.is_done(out, dep)
+
+
+def test_scheduler_does_not_cache_a_job_whose_dependency_runs():
+    J = C.Job
+    jobs = [J("a", "hypaqwen.probe", [], "cuda"), J("b", "hypaqwen.probe", [], "cuda", deps=("a",))]
+    s, order, _ = _sched(jobs)
+    status = s.run(done=lambda j: j.name == "b")
+    assert order == ["a", "b"] and status == {"a": "ok", "b": "ok"}
+
+
+def _gpu(name="NVIDIA H100 80GB HBM3", mem=79.65, n=1):
+    return {"name": name, "total_memory_gib": mem, "device_count": n}
+
+
+@pytest.mark.parametrize("g,ok", [
+    (_gpu(), True), (_gpu("NVIDIA H100 PCIe", 79.65), False), (_gpu("NVIDIA H100 NVL", 93.0), False),
+    (_gpu(n=2), False), (_gpu("NVIDIA A100-SXM4-80GB", 79.15), False), (_gpu(mem=93.0), False),
+])
+def test_gpu_must_be_one_h100_sxm(g, ok):
+    assert (C.gpu_problems(g) == []) is ok
+
+
+@pytest.mark.parametrize("smi,major", [("NVIDIA H100 80GB HBM3, 81559 MiB, 580.65.06", 580),
+                                       ("NVIDIA H100 80GB HBM3, 81559 MiB, 570.86.15\nX, 1 MiB, 570.86.15", 570),
+                                       (None, None), ("garbage", None)])
+def test_driver_major(smi, major):
+    assert C.driver_major(smi) == major
+
+
+def test_preflight_refuses_an_old_driver_first(monkeypatch):
+    monkeypatch.setattr(C, "_run_text", lambda cmd, cwd=None: "NVIDIA H100 80GB HBM3, 81559 MiB, 570.86.15")
+    with pytest.raises(C.CloudError, match="driver 570 < 580"):
+        C.preflight()
+    C.check_driver("NVIDIA H100 80GB HBM3, 81559 MiB, 580.65.06")
+
+
+@pytest.mark.parametrize("version,ok", [("580.65.06", True), ("590.1", True), ("570.86.15", False),
+                                        ("550.54.15", False), ("", False), ("N/A", False)])
+def test_cloud_run_sh_checks_the_driver(version, ok):
+    r = subprocess.run(["bash", str(SCRIPT), "--check-driver", version], capture_output=True, text=True)
+    assert (r.returncode == 0) is ok, r.stderr
+    if not ok and version[:1].isdigit():
+        assert f"driver {version} < 580" in r.stderr and "CUDA 13.0" in r.stderr
+    text = SCRIPT.read_text()
+    assert text.index('\ncheck_driver "$(nvidia-smi') < text.index("\nuv sync --frozen")  # before any download
+
+
+def test_check_cap():
+    r = C.Rates()
+    C.check_cap(0.0, {"usd": 99.0}, r, accept_over_cap=False)
+    with pytest.raises(C.CloudError, match="exceeds"):
+        C.check_cap(0.0, {"usd": 139.86}, r, accept_over_cap=False)
+    with pytest.raises(C.CloudError, match="exceeds"):
+        C.check_cap(60.0, {"usd": 41.0}, r, accept_over_cap=False)
+    C.check_cap(60.0, {"usd": 41.0}, r, accept_over_cap=True)
+    with pytest.raises(C.CloudError, match="reaches"):
+        C.check_cap(100.0, {"usd": 1.0}, r, accept_over_cap=True)
+
+
+def test_cap_guard_and_spend_ledger(tmp_path):
+    r = C.Rates(usd_per_hour=4.0)
+    now = [0.0]
+    guard = C.cap_guard(90.0, r, clock=lambda: now[0])
+    assert guard()
+    now[0] = 2.4 * 3600  # 90 + 9.6
+    assert guard()
+    now[0] = 2.5 * 3600  # 90 + 10
+    assert not guard()
+    assert C.ledger_spent(tmp_path) == 0.0
+    C.record_spend(tmp_path, "t1", 1.0, 3.0)
+    C.record_spend(tmp_path, "t1", 2.0, 3.0)  # the same run, updated
+    C.record_spend(tmp_path, "t2", 0.5, 4.0)
+    assert C.ledger_spent(tmp_path) == 8.0
+
+
+def test_scheduler_stops_launching_at_the_cap():
+    J = C.Job
+    jobs = [J("a", "hypaqwen.probe", [], "cuda"), J("b", "hypaqwen.probe", [], "cuda"),
+            J("c", "hypaqwen.probe", [], "cuda", deps=("a",))]
+    s, order, _ = _sched(jobs, gpu=1)
+    budget = iter([True])
+    s.may_launch = lambda: next(budget, False)
+    status = s.run()
+    assert order == ["a"] and status == {"a": "ok", "b": C.NOT_RUN_CAP, "c": C.NOT_RUN_CAP}
+
+
+def test_run_refuses_an_estimate_over_the_cap(monkeypatch, tmp_path, capsys):
+    monkeypatch.setattr(C, "preflight", lambda allow_other_gpu=False: {"problems": []})
+
+    class Walked(Exception):
+        pass
+
+    def walked(root):
+        raise Walked
+
+    monkeypatch.setattr(C, "check_data_tree", walked)
+    out = tmp_path / "o"
+    assert C.main(["run", "--out", str(out)]) == 2  # the default full plan (~US$140)
+    assert "cap" in capsys.readouterr().err and not out.exists()
+    assert C.main(["run", "--out", str(out), "--jobs", "probe-fit-32", "--spent-usd", "99.9"]) == 2
+    assert "exceeds" in capsys.readouterr().err
+    with pytest.raises(Walked):  # accepted: goes on to the data check
+        C.main(["run", "--out", str(out), "--accept-estimate-over-cap"])
+    with pytest.raises(Walked):
+        C.main(["run", "--out", str(out), "--jobs", "probe-fit-32"])
+
+
+def test_settings_check_catches_warn_only_and_benchmark(monkeypatch, torch_state, tmp_path):
+    monkeypatch.setenv("CUBLAS_WORKSPACE_CONFIG", C.CUBLAS_WORKSPACE_CONFIG)
+    C.apply_determinism()
+    torch.use_deterministic_algorithms(True, warn_only=True)
+    assert any("deterministic_warn_only" in p for p in C.settings_problems(C.settings()))
+    C.apply_determinism()
+    torch.backends.cudnn.benchmark = True
+    assert any("cudnn_benchmark" in p for p in C.settings_problems(C.settings()))
+    monkeypatch.setattr(C.runpy, "run_module", lambda *a, **k: torch.use_deterministic_algorithms(True, warn_only=True))
+    rec = tmp_path / "exec.json"
+    assert C.exec_job("hypaqwen.cloud", ["replay-subset", "--out", "x"], device="none", record=rec) == 4
+    assert "deterministic_warn_only" in json.loads(rec.read_text())["settings_changed"][0]
