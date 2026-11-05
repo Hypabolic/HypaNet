@@ -1,0 +1,59 @@
+{
+  "launches": {
+    "wsp-a": {
+      "charged_as": "result delta",
+      "cost_usd": 0.013076,
+      "log": "wsp-a.stream.jsonl",
+      "max_budget_usd": 1.0,
+      "models": [
+        "claude-haiku-5-5"
+      ],
+      "phase": "wsp-a",
+      "resolved": true,
+      "result_events": 1,
+      "session_totals_usd": {
+        "59f4bf29-41aa-496a-9554-f7772c6d5743": 0.013076
+      },
+      "turns_after_last_result": 0
+    }
+  },
+  "method": "per-session-id delta of the cumulative total_cost_usd; unresolved launches at an operator figure, their --max-budget-usd ceiling, or a lower bound",
+  "phases": {
+    "wsp-a": {
+      "cap_usd": 500.0,
+      "launches": [
+        "wsp-a"
+      ],
+      "lower_bound_only": [],
+      "overshoot_usd": 0.0,
+      "reached": false,
+      "remaining_usd": 499.986924,
+      "total_usd": 0.013076,
+      "unresolved": []
+    },
+    "wsp-b": {
+      "cap_usd": 250.0,
+      "launches": [],
+      "lower_bound_only": [],
+      "overshoot_usd": 0.0,
+      "reached": false,
+      "remaining_usd": 250.0,
+      "total_usd": 0.0,
+      "unresolved": []
+    },
+    "wsp-f": {
+      "cap_usd": 250.0,
+      "launches": [],
+      "lower_bound_only": [],
+      "overshoot_usd": 0.0,
+      "reached": false,
+      "remaining_usd": 250.0,
+      "total_usd": 0.0,
+      "unresolved": []
+    }
+  },
+  "sessions": [
+    "59f4bf29-41aa-496a-9554-f7772c6d5743"
+  ],
+  "total_usd": 0.013076
+}

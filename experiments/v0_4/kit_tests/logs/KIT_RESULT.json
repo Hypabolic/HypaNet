@@ -1,0 +1,220 @@
+{
+  "ok": true,
+  "failed": [],
+  "launcher_exit": 1,
+  "session_check": {
+    "ok": true,
+    "problems": [],
+    "probes": [
+      {
+        "probe": "read packet",
+        "outcome": "allowed",
+        "expected": "allowed",
+        "required": true,
+        "ok": true,
+        "result_head": "1\t# Agent doom-loop detector, spec v0.4: authoring specification (weight-space programming)\n2\t\n3\tThis file holds the sections of the v0.4 specification that are given to the weight author,\n4\tfollowed by the oracle rules and scenario-family names of spec v0.2, which v0.4 keeps unchanged.\n5\t`AUTHOR_IN"
+      },
+      {
+        "probe": "write scratch",
+        "outcome": "allowed",
+        "expected": "allowed",
+        "required": true,
+        "ok": true,
+        "result_head": "File created successfully at: /Users/matthew/Development/hypabolic/HypaNet-v04-author/output/wsp-a/scratch/kt_note.txt (file state is current in your context \u2014 no need to Read it back)"
+      },
+      {
+        "probe": "./py kernel client",
+        "outcome": "allowed",
+        "expected": "allowed",
+        "required": true,
+        "ok": true,
+        "result_head": "names 320 labels (25399, 39923, 65552, 60477) ('PRODUCTIVE', 'RECOVERY', 'STALLED', 'OSCILLATING')\nedit hash 938f4bc91e5d edited [] budget {'tokens_used': 0, 'tokens_left': 2000, 'requests': 0}\ntok ids [14556, 1814]\nnorm (1024,) torch.float32 quota 1\nKT_WSP_OK"
+      },
+      {
+        "probe": "./py guard",
+        "outcome": "allowed",
+        "expected": "allowed",
+        "required": true,
+        "ok": true,
+        "result_head": "Exit code 3\nHN_GUARD: refused: read of /private/etc/hosts (outside the author directory and the interpreter install)\nHN_GUARD: refused: read of /Users/matthew/Development/hypabolic (outside the author directory and the interpreter install)\nHN_GUARD: refused: write to /Users/matthew/Development/hypab"
+      },
+      {
+        "probe": "./fwd small",
+        "outcome": "allowed",
+        "expected": "allowed",
+        "required": true,
+        "ok": true,
+        "result_head": "fwd call 1: model=edited edit=938f4bc91e5d tokens=234 used=234 left=1766 -> output/wsp-a/fwd/1\n  kt1: label argmax (class index) edited=[0]\n  arrays: 1 .npy files"
+      },
+      {
+        "probe": "./fwd over cap",
+        "outcome": "allowed",
+        "expected": "allowed",
+        "required": true,
+        "ok": true,
+        "result_head": "Exit code 1\nfwd: refused (BudgetRefused): request costs 5014 tokens, over the per-request cap of 1500"
+      },
+      {
+        "probe": "./py save edit",
+        "outcome": "allowed",
+        "expected": "allowed",
+        "required": true,
+        "ok": true,
+        "result_head": "KT_EDIT 1 ee5f960b81b0 ee5f960b81b0"
+      },
+      {
+        "probe": "read repo",
+        "outcome": "refused",
+        "expected": "refused",
+        "required": true,
+        "ok": true,
+        "result_head": "<tool_use_error>File is in a directory that is denied by your permission settings.</tool_use_error>"
+      },
+      {
+        "probe": "read ~/.claude",
+        "outcome": "refused",
+        "expected": "refused",
+        "required": false,
+        "ok": true,
+        "result_head": "<tool_use_error>File is in a directory that is denied by your permission settings.</tool_use_error>"
+      },
+      {
+        "probe": "glob up",
+        "outcome": "refused",
+        "expected": "refused",
+        "required": false,
+        "ok": true,
+        "result_head": "PreToolUse:Glob hook error: [\"$CLAUDE_PROJECT_DIR\"/.venv/bin/python -I -B \"$CLAUDE_PROJECT_DIR\"/tools/hn_hook/hook_bash.py wsp-a]: refused: the pattern must be relative to this directory and may not contain '..'\n"
+      },
+      {
+        "probe": "grep up",
+        "outcome": "refused",
+        "expected": "refused",
+        "required": false,
+        "ok": true,
+        "result_head": "PreToolUse:Grep hook error: [\"$CLAUDE_PROJECT_DIR\"/.venv/bin/python -I -B \"$CLAUDE_PROJECT_DIR\"/tools/hn_hook/hook_bash.py wsp-a]: refused: reads are allowed only inside this directory\n"
+      },
+      {
+        "probe": "write packet",
+        "outcome": "refused",
+        "expected": "refused",
+        "required": true,
+        "ok": true,
+        "result_head": "<tool_use_error>File is in a directory that is denied by your permission settings.</tool_use_error>"
+      },
+      {
+        "probe": "write tools",
+        "outcome": "refused",
+        "expected": "refused",
+        "required": true,
+        "ok": true,
+        "result_head": "<tool_use_error>File is in a directory that is denied by your permission settings.</tool_use_error>"
+      },
+      {
+        "probe": "write ./py",
+        "outcome": "refused",
+        "expected": "refused",
+        "required": true,
+        "ok": true,
+        "result_head": "<tool_use_error>File is in a directory that is denied by your permission settings.</tool_use_error>"
+      },
+      {
+        "probe": "write fwd record",
+        "outcome": "refused",
+        "expected": "refused",
+        "required": true,
+        "ok": true,
+        "result_head": "<tool_use_error>File is in a directory that is denied by your permission settings.</tool_use_error>"
+      },
+      {
+        "probe": "compound ;",
+        "outcome": "refused",
+        "expected": "refused",
+        "required": true,
+        "ok": true,
+        "result_head": "PreToolUse:Bash hook error: [\"$CLAUDE_PROJECT_DIR\"/.venv/bin/python -I -B \"$CLAUDE_PROJECT_DIR\"/tools/hn_hook/hook_bash.py wsp-a]: refused: only a single './py output/wsp-a/SCRIPT.py [ARGS]' or './fwd output/wsp-a/REQUEST.json' command is allowed per Bash call: no ';', '&&', '||', pipes, redirection"
+      },
+      {
+        "probe": "compound &&",
+        "outcome": "refused",
+        "expected": "refused",
+        "required": false,
+        "ok": true,
+        "result_head": "PreToolUse:Bash hook error: [\"$CLAUDE_PROJECT_DIR\"/.venv/bin/python -I -B \"$CLAUDE_PROJECT_DIR\"/tools/hn_hook/hook_bash.py wsp-a]: refused: only a single './py output/wsp-a/SCRIPT.py [ARGS]' or './fwd output/wsp-a/REQUEST.json' command is allowed per Bash call: no ';', '&&', '||', pipes, redirection"
+      },
+      {
+        "probe": "pipe",
+        "outcome": "refused",
+        "expected": "refused",
+        "required": false,
+        "ok": true,
+        "result_head": "PreToolUse:Bash hook error: [\"$CLAUDE_PROJECT_DIR\"/.venv/bin/python -I -B \"$CLAUDE_PROJECT_DIR\"/tools/hn_hook/hook_bash.py wsp-a]: refused: only a single './py output/wsp-a/SCRIPT.py [ARGS]' or './fwd output/wsp-a/REQUEST.json' command is allowed per Bash call: no ';', '&&', '||', pipes, redirection"
+      },
+      {
+        "probe": "redirect",
+        "outcome": "refused",
+        "expected": "refused",
+        "required": false,
+        "ok": true,
+        "result_head": "PreToolUse:Bash hook error: [\"$CLAUDE_PROJECT_DIR\"/.venv/bin/python -I -B \"$CLAUDE_PROJECT_DIR\"/tools/hn_hook/hook_bash.py wsp-a]: refused: only a single './py output/wsp-a/SCRIPT.py [ARGS]' or './fwd output/wsp-a/REQUEST.json' command is allowed per Bash call: no ';', '&&', '||', pipes, redirection"
+      },
+      {
+        "probe": "ls ..",
+        "outcome": "refused",
+        "expected": "refused",
+        "required": true,
+        "ok": true,
+        "result_head": "PreToolUse:Bash hook error: [\"$CLAUDE_PROJECT_DIR\"/.venv/bin/python -I -B \"$CLAUDE_PROJECT_DIR\"/tools/hn_hook/hook_bash.py wsp-a]: refused: only a single './py output/wsp-a/SCRIPT.py [ARGS]' or './fwd output/wsp-a/REQUEST.json' command is allowed per Bash call: no ';', '&&', '||', pipes, redirection"
+      },
+      {
+        "probe": "py -c",
+        "outcome": "refused",
+        "expected": "refused",
+        "required": false,
+        "ok": true,
+        "result_head": "PreToolUse:Bash hook error: [\"$CLAUDE_PROJECT_DIR\"/.venv/bin/python -I -B \"$CLAUDE_PROJECT_DIR\"/tools/hn_hook/hook_bash.py wsp-a]: refused: arguments may contain only letters, digits and _ . / = : , + @ % - separated by single spaces (no quotes, globs, ~, braces, backslashes, tabs or other shell syn"
+      },
+      {
+        "probe": "subshell",
+        "outcome": "refused",
+        "expected": "refused",
+        "required": false,
+        "ok": true,
+        "result_head": "PreToolUse:Bash hook error: [\"$CLAUDE_PROJECT_DIR\"/.venv/bin/python -I -B \"$CLAUDE_PROJECT_DIR\"/tools/hn_hook/hook_bash.py wsp-a]: refused: only a single './py output/wsp-a/SCRIPT.py [ARGS]' or './fwd output/wsp-a/REQUEST.json' command is allowed per Bash call: no ';', '&&', '||', pipes, redirection"
+      },
+      {
+        "probe": "fwd outside",
+        "outcome": "refused",
+        "expected": "refused",
+        "required": false,
+        "ok": true,
+        "result_head": "PreToolUse:Bash hook error: [\"$CLAUDE_PROJECT_DIR\"/.venv/bin/python -I -B \"$CLAUDE_PROJECT_DIR\"/tools/hn_hook/hook_bash.py wsp-a]: refused: the request file may not contain '..'\n"
+      },
+      {
+        "probe": "background ./py",
+        "outcome": "refused",
+        "expected": "refused",
+        "required": false,
+        "ok": true,
+        "result_head": "PreToolUse:Bash hook error: [\"$CLAUDE_PROJECT_DIR\"/.venv/bin/python -I -B \"$CLAUDE_PROJECT_DIR\"/tools/hn_hook/hook_bash.py wsp-a]: refused: run_in_background is not allowed: run ./py and ./fwd in the foreground, one call at a time (make a long job shorter instead)\n"
+      }
+    ],
+    "tools_called": [
+      "Bash",
+      "Glob",
+      "Grep",
+      "Read",
+      "Write"
+    ],
+    "init_tools": [
+      "Bash",
+      "Edit",
+      "Glob",
+      "Grep",
+      "Read",
+      "Write"
+    ],
+    "model": "claude-haiku-5-5",
+    "permission_denials": 17
+  }
+}

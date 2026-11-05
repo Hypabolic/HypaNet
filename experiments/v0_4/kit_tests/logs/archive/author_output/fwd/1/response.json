@@ -1,0 +1,62 @@
+{
+ "call_id": 1,
+ "phase": "wsp-a",
+ "model": "edited",
+ "edit_hash": "938f4bc91e5d0dc466f3215d3dfd86f24be5c50d1316c1f419889cee7b91d482",
+ "tokens": 234,
+ "budget": {
+  "tokens_used": 234,
+  "tokens_left": 1766,
+  "requests": 1
+ },
+ "class_names": [
+  "PRODUCTIVE",
+  "RECOVERY",
+  "STALLED",
+  "OSCILLATING"
+ ],
+ "sessions": [
+  {
+   "id": "kt1",
+   "windows": [
+    1
+   ],
+   "edited": {
+    "label_logits": [
+     [
+      19.296051025390625,
+      18.615100860595703,
+      17.13028335571289,
+      16.777999877929688
+     ]
+    ],
+    "logsumexp": [
+     19.99254035949707
+    ],
+    "label_argmax": [
+     0
+    ],
+    "argmax": [
+     25399
+    ],
+    "topk": [
+     [
+      25399,
+      39923,
+      65552
+     ]
+    ]
+   }
+  }
+ ],
+ "request_file": "output/wsp-a/scratch/kt_req.json",
+ "arrays": {
+  "edited.s0.hidden.L24": {
+   "file": "edited.s0.hidden.L24.npy",
+   "shape": [
+    1,
+    1024
+   ]
+  }
+ }
+}

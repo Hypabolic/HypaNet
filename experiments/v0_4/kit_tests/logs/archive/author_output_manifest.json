@@ -1,0 +1,62 @@
+{
+ "EDIT.md": {
+  "bytes": 90,
+  "copied": true,
+  "sha256": "65381d92dafa1e880c13a5be33418ccf81df9318f5e4b3e45c8de6c22648ddf2"
+ },
+ "ITERATIONS.md": {
+  "bytes": 71,
+  "copied": true,
+  "sha256": "932e2c80df29e1321c7192dd707f80baf4bc58051d2b5a193647fc7ce5aa5a87"
+ },
+ "build_edit.py": {
+  "bytes": 157,
+  "copied": true,
+  "sha256": "69bcd12b50b1c4a8d3bd340de0e136f14fe7c6d12633bc9c5c91413fe32c53fe"
+ },
+ "fwd/1/edited.s0.hidden.L24.npy": {
+  "bytes": 4224,
+  "copied": false,
+  "sha256": "a9e4be1e6b6084ffcc36bdaac8c1700e68649e86f62eaf2a10d67237a125f9bb"
+ },
+ "fwd/1/request.json": {
+  "bytes": 320,
+  "copied": true,
+  "sha256": "31e21acfc878bf4d41e64743225b6f4d8153412f39f1e7c2c0c9527d1babebf0"
+ },
+ "fwd/1/response.json": {
+  "bytes": 917,
+  "copied": true,
+  "sha256": "fa05413eb151a155e6047095cdf27de018979c93c33dc48305d614456ee18538"
+ },
+ "scratch/kt_edit.py": {
+  "bytes": 255,
+  "copied": true,
+  "sha256": "1d496f7e0ba76bd0f220d8caed816a4e151f6940c48ddd0ebd544975d2638838"
+ },
+ "scratch/kt_guard.py": {
+  "bytes": 985,
+  "copied": true,
+  "sha256": "445802c95c4a37efade753a0bc48ac55bfe6a0435aeec165461ef78658bcf902"
+ },
+ "scratch/kt_note.txt": {
+  "bytes": 3,
+  "copied": true,
+  "sha256": "cbc8a597a67c465497550c4a4a7eebdb138442c06be06a78cc1ee8715658ff44"
+ },
+ "scratch/kt_req.json": {
+  "bytes": 320,
+  "copied": true,
+  "sha256": "31e21acfc878bf4d41e64743225b6f4d8153412f39f1e7c2c0c9527d1babebf0"
+ },
+ "scratch/kt_req_big.json": {
+  "bytes": 4142,
+  "copied": true,
+  "sha256": "27f677e810b188582f3149df1cc10423f35eb1db0203cf46097431369ee78cb7"
+ },
+ "scratch/kt_wsp.py": {
+  "bytes": 491,
+  "copied": true,
+  "sha256": "51b571860b99f0c171e1a4035546a95c4a1c702b8160771127af3cf853e62967"
+ }
+}

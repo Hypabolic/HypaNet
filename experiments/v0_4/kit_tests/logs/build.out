@@ -1,0 +1,13 @@
+running: uv run --project /Users/matthew/Development/hypabolic/HypaNet/envs/qwen python -m hypaqwen.wsp.runner --author-output /Users/matthew/Development/hypabolic/HypaNet-v04-author/output/wsp-a --archive /Users/matthew/Development/hypabolic/HypaNet/experiments/v0_4/kit_tests/logs/archive --journal /Users/matthew/Development/hypabolic/HypaNet/experiments/v0_4/kit_tests/logs/wsp-a/journal --phase wsp-a
+wsp-a archived in /Users/matthew/Development/hypabolic/HypaNet/experiments/v0_4/kit_tests/logs/archive
+tensors edited:  1 (label rows edited: False)
+changed entries: 1 / 752393024 (1.329e-09)
+rebuild check:   byte-identical edit (sha256 c75e8fe487fe9a9973a53f2f5e083efa11966cf8f23f21d9c955fb0a371ded2e) in a second fresh interpreter (PYTHONHASHSEED 1; the build ran with 0)
+journal:         equal tensor for tensor, byte for byte, to the journalled edit state; edit-state hash equal to the journal's final edit hash
+fwd records:     1 checked against 1 ok ledger calls, 0 problems
+freeze:          494db5e3a07b623c459d5fe7f0fe3d93a5db32500a400aac2df2e8d920d1d61f (experiments/registry_v0_4.yaml); 1 launch records
+mechanisms:      0 rows, 0 the Q5 check could evaluate (preview: /Users/matthew/Development/hypabolic/HypaNet/experiments/v0_4/kit_tests/logs/archive/MECHANISMS.json)
+author output:   11 files copied, 12 hashed -> /Users/matthew/Development/hypabolic/HypaNet/experiments/v0_4/kit_tests/logs/archive/author_output
+edit hash:       ee5f960b81b09a31b67709d49133da373713c7cc68106dd6816df0c8fba96485
+changed entries: 1 / 752393024
+record:          /Users/matthew/Development/hypabolic/HypaNet/experiments/v0_4/kit_tests/logs/archive/BUILD_RECORD.json (sha256 ae42275c854cbe9941131a4e3442e3e59432a85807c70530126d0edf507e02a3)

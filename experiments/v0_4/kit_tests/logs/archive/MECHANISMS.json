@@ -1,0 +1,14 @@
+{
+ "edit_md_sha256": "65381d92dafa1e880c13a5be33418ccf81df9318f5e4b3e45c8de6c22648ddf2",
+ "evaluated": 0,
+ "found": false,
+ "note": "eligibility preview only; v0.4 gives no Q5 verdict (PREREGISTRATION \u00a78); never refuses a build",
+ "problems": [
+  "no '## Mechanisms' section"
+ ],
+ "q5_possible": false,
+ "rows": [],
+ "units": [
+  "model.language_model.layers.0.input_layernorm.weight"
+ ]
+}

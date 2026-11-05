@@ -1,0 +1,22 @@
+{
+ "model": "edited",
+ "sessions": [
+  {
+   "id": "kt1",
+   "blocks": [
+    "[12:00:01] tool: read_file path=src/app.py -> ok (120 lines)",
+    "[12:00:01] tool: read_file path=src/app.py -> ok (120 lines)"
+   ],
+   "windows": [
+    1
+   ]
+  }
+ ],
+ "return": {
+  "hidden": [
+   24
+  ],
+  "mlp_act": [],
+  "topk": 3
+ }
+}

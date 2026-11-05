@@ -1,0 +1,10 @@
+{"seq": 1, "utc": "2026-11-05T16:05:14.086+00:00", "conn": 1, "role": "kernel", "op": "names", "bytes_in": 0, "status": "ok", "bytes_out": 0}
+{"seq": 2, "utc": "2026-11-05T16:05:14.086+00:00", "conn": 1, "role": "kernel", "op": "arch", "bytes_in": 0, "status": "ok", "bytes_out": 0}
+{"seq": 3, "utc": "2026-11-05T16:05:14.087+00:00", "conn": 1, "role": "kernel", "op": "edit_hash", "bytes_in": 0, "status": "ok", "bytes_out": 0}
+{"seq": 4, "utc": "2026-11-05T16:05:14.087+00:00", "conn": 1, "role": "kernel", "op": "edited", "bytes_in": 0, "status": "ok", "bytes_out": 0}
+{"seq": 5, "utc": "2026-11-05T16:05:14.087+00:00", "conn": 1, "role": "kernel", "op": "budget", "bytes_in": 0, "status": "ok", "bytes_out": 0}
+{"seq": 6, "utc": "2026-11-05T16:05:14.088+00:00", "conn": 1, "role": "kernel", "op": "load_original", "name": "model.language_model.layers.0.input_layernorm.weight", "bytes_in": 0, "quota": true, "quota_used": 4096, "status": "ok", "bytes_out": 4096}
+{"seq": 7, "utc": "2026-11-05T16:05:14.089+00:00", "conn": 1, "role": "kernel", "op": "load_quota", "bytes_in": 0, "status": "ok", "bytes_out": 0}
+{"seq": 8, "utc": "2026-11-05T16:05:29.189+00:00", "conn": 4, "role": "kernel", "op": "load_original", "name": "model.language_model.layers.0.input_layernorm.weight", "bytes_in": 0, "quota": true, "quota_used": 4096, "status": "ok", "bytes_out": 4096}
+{"seq": 9, "utc": "2026-11-05T16:05:29.199+00:00", "conn": 4, "role": "kernel", "op": "save_edit", "name": "model.language_model.layers.0.input_layernorm.weight", "bytes_in": 4096, "status": "ok", "bytes_out": 0}
+{"seq": 10, "utc": "2026-11-05T16:05:29.199+00:00", "conn": 4, "role": "kernel", "op": "edit_hash", "bytes_in": 0, "status": "ok", "bytes_out": 0}
