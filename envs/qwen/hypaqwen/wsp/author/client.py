@@ -447,12 +447,52 @@ def diff_means(a: Any, b: Any) -> torch.Tensor:
     return _f32(a).mean(0) - _f32(b).mean(0)
 
 
+# Where the guard's control_normal lives: the install layout (tools/hn_kernel/ next to tools/hn_guard/),
+# then the source layout (author/client.py next to author/hn_guard/).
+_GUARD_KEYS = ("hn_guard.guards_v04", "hypaqwen.wsp.author.hn_guard.guards_v04", "hn_kernel_guards_v04")
+
+
+def _control_normal():
+    """The guard's ``control_normal`` (the only RNG either guard allows; ``torch.Generator`` is refused).
+
+    Reuses the guard module already loaded (the ``./py`` wrapper installs it before the script runs);
+    else loads ``hn_guard/guards_v04.py`` by explicit path, never through sys.path. Loading it does not
+    install anything.
+    """
+    for key in _GUARD_KEYS:
+        mod = sys.modules.get(key)
+        if mod is not None and hasattr(mod, "control_normal"):
+            return mod.control_normal
+    if __package__:
+        from .hn_guard.guards_v04 import control_normal
+
+        return control_normal
+    import importlib.util
+
+    here = Path(__file__).resolve().parent
+    path = here.parent / "hn_guard" / "guards_v04.py"
+    if not path.is_file():
+        path = here / "hn_guard" / "guards_v04.py"
+    key = _GUARD_KEYS[-1]
+    spec = importlib.util.spec_from_file_location(key, path)
+    mod = importlib.util.module_from_spec(spec)
+    sys.modules[key] = mod
+    try:
+        spec.loader.exec_module(mod)
+    except BaseException:
+        del sys.modules[key]
+        raise
+    return mod.control_normal
+
+
 def control_direction(seed: int, like: Any) -> torch.Tensor:
-    """A seeded Gaussian tensor with ``like``'s shape and Frobenius norm: the only randomness allowed."""
+    """A seeded Gaussian tensor with ``like``'s shape and Frobenius norm: the only randomness allowed.
+
+    Built on the guard's ``control_normal(seed, shape)`` (SHAKE-256, bit-identical everywhere), so it
+    runs under KERNEL_CLIENT and BUILD_EDIT alike.
+    """
     like = _f32(like)
-    g = torch.Generator(device="cpu")
-    g.manual_seed(int(seed))
-    v = torch.randn(like.shape, generator=g, dtype=torch.float32)
+    v = _control_normal()(int(seed), tuple(like.shape)).to(torch.float32)
     return v * (torch.linalg.vector_norm(like) / torch.linalg.vector_norm(v))
 
 
