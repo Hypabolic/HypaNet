@@ -1,0 +1,46 @@
+{
+  "author_dir": "/Users/matthew/Development/hypabolic/HypaNet-v04-author",
+  "disclosed_windows_sha256": "c61dd0f111bc3580bedaf95665819fbe1c8ed123dd830fe2a55cbdbfd0a4297d",
+  "disclosure_dir": "disclosure",
+  "disclosure_sha256": "d8c75fbcd909b78213aba4110a7d42d6039ffa04d9ca72f1538ff0fb86097cef",
+  "disclosure_sha256_file_sha256": "d76769de727d19a28e8690e672bb5d5e35ffca6d28908fe128ecf459245a1034",
+  "journal": {
+    "entries": 37,
+    "final_edit_hash": "74576466ac6d22c6cc6d7545e4162a0ae2daf38a6049624e232caf635910079a",
+    "seeded": "now",
+    "wsp_a_entries": 37,
+    "wsp_a_final_edit_hash": "74576466ac6d22c6cc6d7545e4162a0ae2daf38a6049624e232caf635910079a"
+  },
+  "kit": {
+    "hook_bash.py": "415ea9c46daa25179c8cec659aee23558b0705f2c3867d6607e8ab77608b568b",
+    "prompt_continue.md": "72a75a6de83fed494f2a32c38b05aa70c4e52a7c75f3c5aed847387fea36e431",
+    "prompt_resubmit.md": "a144ed9724d3f7e92184e6c7ec3c382159219d5e6ae1fee9a3fd7ede857b859e",
+    "prompt_wsp_b.md": "d25bcee3e620fb28b47643617454f573b8563f62ee6c9320abee04b650a8b2bb",
+    "settings_wsp_b.json": "29c03224b1d5f917bbb77782930f361a3912f68cb9e261ef7e4c4102dc73b297"
+  },
+  "output_dir": "output/wsp-b",
+  "packet_sha256": "b55829aff319d68466189a27d09b02b3838156a8f57b76e9a63388937a9ba3db",
+  "phase": "wsp-b",
+  "registry_freeze_sha256": "f654d2c9bfb60d71863b9018161f9f3def1a34406fcc65c8e54bd43d9c7a79d0",
+  "registry_sha256": "72badc386bb1314637bd4106ac50eeda28b3b21cfb2811b5822ed83409551eaa",
+  "tools": {
+    "tools/hn_guard/__init__.py": "23a78a13f13855b033a2251ea746c5d62c89fcedded50c3b14b4cf5a88d2bec5",
+    "tools/hn_guard/guards_v04.py": "6daba5a45a1c9e4b0d54d4771cb4618d57471f386d3025d0b8854be83390886c",
+    "tools/hn_hook/hook_bash.py": "415ea9c46daa25179c8cec659aee23558b0705f2c3867d6607e8ab77608b568b",
+    "tools/hn_kernel/client.py": "697e8beb8ed5d92ff0923ac69324ca3b6b73b3d20b72947d5703cecb9f64eaf3",
+    "tools/hn_kernel/fwd.py": "484b41780fee2314031fdb8661e8e20bb265e8bbf3800a32d3723e5ea7df43cf",
+    "tools/hn_kernel/protocol.py": "47f0befdbfe03c9db30e9b58b398208c7c24e8928a71d76c8c572ec638788cc3",
+    "tools/hn_kernel/run_py.py": "29ef7dfaf71108a6d10df8c387035c55d30214509ad993b19dd6d51fb27d11fa",
+    "tools/hn_kernel/wsp.py": "0e70cd6e6564a75559d971680add936930c4565a3b4eadddb5f1a30982106dfc"
+  },
+  "unfrozen": false,
+  "unfrozen_kit_test_dir": false,
+  "wrappers": {
+    "fwd": "4c8f99f181f6e853d1a40313d65a989e596105d0849a9805419368fde310d8a8",
+    "py": "50b4270c7c3d1dfd32a10ba56d85d39d97da5673321d01600ec2c18cabab996b"
+  },
+  "wsp_a_build_record_sha256": "bc15cef664a26ce6fab0840dd3a6329cbd66af080cfad0028538461d56094e77",
+  "wsp_a_edit_state_sha256": "74576466ac6d22c6cc6d7545e4162a0ae2daf38a6049624e232caf635910079a",
+  "wsp_a_freeze_json_sha256": "6cb8c4b02ae9a5cd0576deed9b0530e9be8fd13ce74278092ed28a4143f96ed4",
+  "wsp_a_freeze_sha256": "494db5e3a07b623c459d5fe7f0fe3d93a5db32500a400aac2df2e8d920d1d61f"
+}
