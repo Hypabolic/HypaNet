@@ -199,7 +199,7 @@ A block has at most 64 header tokens, then for each of up to 6 body lines at mos
 
 ### 4.7 Word-level tokens (`packet/tokenizer.py`)
 
-The budgets above count the tokens of the frozen v0.3 tokeniser, which the renderer imports for this purpose only. It scans a block left to right, dropping spaces and tabs: a newline followed by `@`, `!` or `[` is one line-marker token; any other newline is one token; a word (`[A-Za-z_][A-Za-z0-9_.\-/]*`) is one token; a run of digits is split left to right into groups of three, one token each; any other printable character is one token. `packet/GRAMMAR_SHEET.md` shows these tokens for one invented block per tool.
+The budgets above count the tokens of the frozen v0.3 tokeniser, which the renderer imports for this purpose only. It scans a block left to right, dropping spaces and tabs: a newline followed by `@`, `!` or `[` is one line-marker token; any other newline is one token; a word (`[A-Za-z_][A-Za-z0-9_.\-/]*`) is one token; a run of digits is split left to right into groups of three, one token each; any other printable character is one token. `packet/GRAMMAR_SHEET.md` shows these tokens for one invented block per tool. It is v0.3's sheet, unchanged: its `BOS`, `EOE`, `event_ord` and network-readout sentences describe v0.3's model and do not apply here; only the block text and the word-level truncation budgets matter. Block strings sent to `./fwd` contain no `EOE`.
 
 **Qwen does not read these tokens.** Qwen reads each block's text through its own tokeniser (§5). The word-level tokens only fix where the renderer truncates.
 
@@ -288,7 +288,7 @@ These are unchanged from v0.3 §6 (v0.2 §5–§6). Windows, the scored mask, la
 
 - **Phase budget:** 2,000,000 tokens of forward passes. **Per request:** at most 50,000 tokens. A request that would exceed either is refused before it runs and costs nothing; so does an invalid request.
 - The model runs at roughly 450 tokens per second, plus a fixed cost of tens of milliseconds per window, so the whole budget is a little over an hour of model time.
-- **Ledger.** Every request, run or refused, gets a ledger line in the harness: call id, time, tokens, cumulative tokens, the edit hash, the sha256 of each session's token ids and windows, the layers requested and the request file. Cite call ids in `EDIT.md` and `ITERATIONS.md`.
+- **Ledger.** Every request that reaches the model server, run or refused, gets a ledger line in the harness: call id, time, tokens, cumulative tokens, the edit hash, the sha256 of each session's token ids and windows, the layers requested and the request file. Cite call ids in `EDIT.md` and `ITERATIONS.md`. A request file `./fwd` rejects as invalid (exit status 2) is not sent: it costs nothing, has no call id and appears only in your session log.
 - **Audit.** The harness reviews the ledger, every script you ran and the edit journal. It counts how many distinct edit states were run on the same set of texts; more than three goes to the adjudicator as possible search.
 
 ### 7.6 Method: banned and allowed

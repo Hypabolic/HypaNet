@@ -404,7 +404,8 @@ suffix token, `{vocab.piece(SUFFIX_IDS[-1])}` (id {SUFFIX_IDS[-1]}).
   position: `h = x · rsqrt(mean(x²) + 1e-6) · (1 + w_norm)`, `x` the residual after layer 23.
 - Class = argmax over the four label logits; ties go to the first index (PRODUCTIVE).
 - One pass per session: after each window's last block the cache is branched, the suffix is run and
-  read on the branch, and the branch is discarded. The result equals the separate prompt above.
+  read on the branch, and the branch is discarded. The result equals the separate prompt above up
+  to floating-point reassociation (not bit for bit).
 - A forward request costs, per session, {len(PREFIX_IDS)} prefix tokens, plus the tokens of every block
   up to its last window, plus {len(SUFFIX_IDS)} per window; twice that for `"model": "both"`.
 """
@@ -442,7 +443,7 @@ the frozen prompt and its token ids.
 | `packet/SPEC.md`, `packet/INTERFACE.md` | The task and the frozen prompt |
 | `packet/renderer.py` | The frozen log renderer (`render_session`, `render_event`); it reads plain dicts (below) |
 | `packet/tokenizer.py` | The renderer's word-level tokenizer, used only for its truncation budgets (not Qwen's) |
-| `packet/GRAMMAR_SHEET.md` | One invented example block per tool, with its word-level tokens |
+| `packet/GRAMMAR_SHEET.md` | One invented example block per tool, with its word-level tokens. It is v0.3's: its `BOS`, `EOE`, `event_ord` and network-readout sentences describe v0.3's model and do not apply here; only the block text and the word-level truncation budgets matter. Block strings sent to `./fwd` contain no `EOE` |
 | `packet/qwen/` | Qwen3.5-0.8B's `config.json`, `tokenizer.json` and `tokenizer_config.json`. No weights: the kernel serves them |
 | `tools/hn_kernel/` | The kernel client (`wsp`), the `./fwd` tool and the `./py` launcher (read-only) |
 | `tools/hn_guard/` | The guard every `./py` script runs under (read-only) |
@@ -495,7 +496,7 @@ loop: every forward pass is its own, visible tool call.
   even if your code catches the error):
   - autograd: grad mode, `.backward()`, `torch.autograd.grad`, `requires_grad_(True)`, forward-mode
     AD, `torch.func` and `torch.vmap`; optimisers (`torch.optim`); compilers (`torch.compile`,
-    TorchScript, `torch.export`);
+    TorchScript, `torch.export`), and `torch.use_deterministic_algorithms`, which imports one;
   - least squares and pseudo-inverses (`torch.linalg.lstsq`, `pinv`, `numpy.linalg.lstsq`, ...);
   - random numbers (`random`, `numpy.random`, `torch.rand*`, `torch.randn`, `torch.normal`,
     `torch.Generator`, ...). The renderer's own seeded per-event noise source is exempt; for a random
@@ -644,9 +645,11 @@ The result goes to `output/{PHASE}/fwd/<call id>/`: `response.json`, `request.js
 - `./fwd` prints a short summary (call id, tokens, budget, class indices); it never prints vocabulary
   strings. Exit status 0 on success, 1 if the server refused the request, 2 if the request file was
   invalid.
-- The harness's ledger records every request, run or refused: call id, time, tokens, cumulative
-  tokens, edit hash, the sha256 of each session's token ids and windows, the layers requested and the
-  request file. Cite call ids in `EDIT.md` and `ITERATIONS.md`.
+- The harness's ledger records every request that reaches the model server, run or refused: call
+  id, time, tokens, cumulative tokens, edit hash, the sha256 of each session's token ids and
+  windows, the layers requested and the request file. Cite call ids in `EDIT.md` and
+  `ITERATIONS.md`. A request file `./fwd` rejects as invalid (exit status 2) is not sent: it costs
+  nothing, has no call id and appears only in your session log.
 - Scoring runs the same readout in fp32, possibly on another device: do not rely on label-logit
   margins of a few thousandths.
 """
@@ -713,8 +716,7 @@ def build(orig, consts):
   from wsp import NAMES, edited, drop_edit, load_original, save_edit, save_label_rows, LABEL_IDS
   import build_edit
 
-  torch.set_num_threads(1)
-  torch.use_deterministic_algorithms(True)
+  torch.set_num_threads(1)  # the build's thread count
 
 
   class Orig(Mapping):  # like the harness's orig: every name, a fresh original copy per access
@@ -742,8 +744,12 @@ def build(orig, consts):
           save_edit(name, t)
   ```
 
-  Results that depend on thread count or summation order are fragile: prefer elementwise
-  arithmetic and `torch.outer`, or accumulate in float64 and cast to fp32 at the end.
+  Do not add `torch.use_deterministic_algorithms(True)` to this script: the `./py` guard refuses it
+  (above). On CPU that mode does not change matrix products, `torch.linalg` or elementwise
+  arithmetic, but it fills the memory of `torch.empty` and the other `empty*` constructors with
+  NaN, so never read a tensor's entries before writing them. Results that depend on thread count
+  or summation order are fragile: prefer elementwise arithmetic and `torch.outer`, or accumulate in
+  float64 and cast to fp32 at the end.
 
 ### `edit_constants.safetensors` (optional)
 

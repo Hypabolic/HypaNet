@@ -677,6 +677,61 @@ def test_control_normal_statistics_and_chunks():
         G.control_normal(1.5, (2,))
 
 
+KERNEL_SRC = GUARD_SRC.parent
+CLIENT_HELPERS = r'''
+import json, os, sys, importlib.util
+AD, PHASE, HOW = {ad!r}, {phase!r}, {how!r}
+sys.path.insert(0, os.path.join(AD, "tools", "hn_kernel"))
+import torch
+import wsp  # as the ./py wrapper does: the client is loaded before the guard
+if HOW == "package":
+    sys.path.insert(1, os.path.join(AD, "tools"))
+    from hn_guard import guards_v04 as g
+else:  # a launcher that loads the guard under a key the client does not know
+    spec = importlib.util.spec_from_file_location("launcher_guard", os.path.join(AD, "tools", "hn_guard", "guards_v04.py"))
+    g = importlib.util.module_from_spec(spec)
+    sys.modules["launcher_guard"] = g
+    spec.loader.exec_module(g)
+g.install("KERNEL_CLIENT", author_dir=AD, phase=PHASE, kernel_endpoint=os.path.join(AD, ".kernel", "k.sock"))
+like = torch.full((4, 3), 2.0)
+W = torch.arange(12.0).reshape(4, 3)
+out = {{
+    "control": wsp.control_direction(7, like).tolist(),
+    "control_again": wsp.control_direction(7, like).tolist(),
+    "control_other": wsp.control_direction(8, like).tolist(),
+    "project_out": wsp.project_out(W, torch.ones(4)).tolist(),
+    "rank1": wsp.rank1(W, torch.ones(4), torch.ones(3)).tolist(),
+    "diff_means": wsp.diff_means(W, W + 1.0).tolist(),
+}}
+print("RESULT " + json.dumps(out), flush=True)
+'''
+
+
+@pytest.mark.parametrize("how", ["package", "by_path"])
+def test_client_helpers_run_under_the_kernel_client_guard(env, how):
+    """The packet names ``control_direction`` as the allowed RNG: it must run under KERNEL_CLIENT (no
+    ``torch.Generator``), give the guard's ``control_normal`` scaled to ``like``'s norm, and so must the
+    other weight-only helpers that need no kernel."""
+    kdir = env["ad"] / "tools" / "hn_kernel"
+    if not kdir.exists():
+        kdir.mkdir()
+        for name in ("client.py", "protocol.py", "wsp.py"):
+            shutil.copyfile(KERNEL_SRC / name, kdir / name)
+    script = CLIENT_HELPERS.format(ad=str(env["ad"]), phase=PHASE, how=how)
+    proc = subprocess.run([CHILD_PYTHON, "-I", "-B", "-c", script], cwd=str(env["ad"]),
+                          capture_output=True, text=True, timeout=300)
+    r = {"rc": proc.returncode, "stdout": proc.stdout, "stderr": proc.stderr}
+    assert proc.returncode == 0 and "HN_GUARD" not in proc.stderr, _show(r)
+    res = json.loads(next(line[7:] for line in proc.stdout.splitlines() if line.startswith("RESULT ")))
+    like = torch.full((4, 3), 2.0)
+    z = G.control_normal(7, (4, 3))
+    want = z * (torch.linalg.vector_norm(like) / torch.linalg.vector_norm(z))
+    got = torch.tensor(res["control"])
+    assert torch.equal(got, want) and res["control_again"] == res["control"] != res["control_other"]
+    assert torch.isclose(got.norm(), like.norm())
+    assert res["diff_means"] == [-1.0, -1.0, -1.0]
+
+
 def test_lists_cover_the_section_5_imports():
     for name in ("transformers", "hypaqwen", "peft", "accelerate", "agent_loop_lab", "sklearn", "torch._dynamo",
                  "torch.compile", "torch.export", "torch.func", "torch.optim"):

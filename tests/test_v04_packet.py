@@ -343,10 +343,148 @@ def test_cli_build_and_verify_only(packet, tmp_path):
     script = REPO / "scripts" / "v04_build_packet.py"
     r = subprocess.run([sys.executable, str(script), "--out", str(packet), "--verify-only"], capture_output=True,
                        text=True)
-    assert r.returncode == 0 and P.packet_sha256(packet) in r.stdout
+    assert r.returncode == 0 and r.stdout.splitlines()[-1] == f"packet sha256: {P.packet_sha256(packet)}"
     src = tmp_path / "src"
     src.mkdir()
     shutil.copy(SRC / "tokenizer.py", src / "tokenizer.py")
     r = subprocess.run([sys.executable, str(script), "--out", str(tmp_path / "p2"), "--source-dir", str(src)],
                        capture_output=True, text=True)
     assert r.returncode == 1 and "renderer.py" in r.stderr
+
+
+# -- packet promises the kernel must keep (review fixes) -----------------------------------------
+
+
+def test_interface_md_one_pass_is_equal_only_up_to_reassociation(packet):
+    """INTERFACE.md overrides SPEC §5, so it must not claim bit-exact equality with a separate prompt."""
+    text = (packet / "INTERFACE.md").read_text()
+    assert "up\n  to floating-point reassociation (not bit for bit)" in text
+    assert "equals the separate prompt above.\n" not in text
+    assert "per window up to floating-point reassociation" in (packet / "SPEC.md").read_text()
+
+
+def test_ledger_promise_matches_fwd(packet):
+    """./fwd rejects an invalid request file (exit 2) before sending it, so only requests that reach the
+    server are ledgered; the packet must say so (fwd.py main: validate -> return 2 before _send)."""
+    src = (WSP / "author" / "fwd.py").read_text()
+    main = src[src.index("def main("):]
+    assert main.index("return 2") < main.index("_send(")
+    for name in ("SPEC.md", "AUTHOR_INSTRUCTIONS.md"):
+        flat = " ".join((packet / name).read_text().split())
+        assert "every request, run or refused" not in flat.lower(), name
+        assert "request that reaches the model server, run or refused" in flat, name
+        assert "rejects as invalid (exit status 2) is not sent: it costs nothing, has no call id" in flat, name
+
+
+def test_grammar_sheet_v03_readout_is_flagged(packet):
+    """GRAMMAR_SHEET.md stays v0.3's bytes (BOS, EOE, event_ord, readout at EOE); SPEC and the
+    instructions say those parts do not apply and that ./fwd blocks carry no EOE."""
+    assert "read at that block's `EOE`" in (packet / "GRAMMAR_SHEET.md").read_text()
+    for name in ("SPEC.md", "AUTHOR_INSTRUCTIONS.md"):
+        flat = " ".join((packet / name).read_text().split())
+        assert "`BOS`, `EOE`, `event_ord` and network-readout sentences describe v0.3's model and do not apply" \
+            in flat, name
+        assert "Block strings sent to `./fwd` contain no `EOE`" in flat, name
+
+
+QWEN_PY = REPO / "envs" / "qwen" / ".venv" / "bin" / "python"
+GUARD_DIR = WSP / "author" / "hn_guard"
+
+_STUB_WSP = '''\
+"""A kernel-free stand-in for tools/hn_kernel/wsp.py: the names the save recipe imports."""
+import torch
+
+EMBED = "model.language_model.embed_tokens.weight"
+DOWN = "model.language_model.layers.0.mlp.down_proj.weight"
+NAMES = (EMBED, DOWN, "model.language_model.norm.weight")
+LABEL_IDS = (1, 3)
+_ORIG = {EMBED: torch.arange(20.0).reshape(5, 4), DOWN: torch.ones(4, 6), NAMES[2]: torch.zeros(4)}
+EDIT = {"stale": torch.zeros(1)}
+
+
+def load_original(name):
+    return _ORIG[name].clone()
+
+
+def edited():
+    return sorted(EDIT)
+
+
+def drop_edit(name):
+    return EDIT.pop(name, None) is not None
+
+
+def save_edit(name, t):
+    EDIT[name] = t.clone()
+
+
+def save_label_rows(rows):
+    EDIT[EMBED] = rows.clone()
+'''
+
+_STUB_BUILD = '''\
+import torch
+
+
+def build(orig, consts):
+    W = orig["model.language_model.layers.0.mlp.down_proj.weight"]
+    E = orig["model.language_model.embed_tokens.weight"]
+    E[[1, 3]] = E[[1, 3]] + torch.outer(torch.ones(2), consts["u"])
+    return {"model.language_model.layers.0.mlp.down_proj.weight": W + torch.outer(consts["u"], torch.ones(6)),
+            "model.language_model.embed_tokens.weight": E}
+'''
+
+_LAUNCH = r'''
+import os, runpy, sys
+AD, SCRIPT = sys.argv[1], sys.argv[2]
+sys.path[:0] = [os.path.join(AD, "tools", "hn_kernel"), os.path.join(AD, "packet"), os.path.dirname(SCRIPT),
+                os.path.dirname(os.path.dirname(SCRIPT))]
+import torch, safetensors.torch
+safetensors.torch.save_file({"u": torch.full((4,), 0.5)}, os.path.join(AD, "output", "wsp-a", "edit_constants.safetensors"))
+import wsp
+sys.path.insert(0, os.path.join(AD, "tools"))
+from hn_guard import guards_v04 as g
+g.install("KERNEL_CLIENT", author_dir=AD, phase="wsp-a", kernel_endpoint=os.path.join(AD, ".kernel", "kernel.sock"))
+runpy.run_path(SCRIPT, run_name="__main__")
+print("EDITED " + " ".join(f"{k}:{float(v.sum())}" for k, v in sorted(wsp.EDIT.items())), flush=True)
+'''
+
+
+def _save_recipe(text: str) -> str:
+    """The ``./py`` script AUTHOR_INSTRUCTIONS gives for applying the final edit through build()."""
+    start = text.index("It must reproduce the server's edit exactly")
+    block = text[text.index("  ```python\n", start) + len("  ```python\n"):]
+    block = block[:block.index("  ```\n")]
+    return "\n".join(line[2:] for line in block.splitlines()) + "\n"
+
+
+@pytest.mark.skipif(not QWEN_PY.exists(), reason="the envs/qwen venv (torch 2.14.1) is not built")
+def test_save_recipe_runs_under_the_kernel_client_guard(packet):
+    """The documented final-save script must not trip the ./py guard (torch.use_deterministic_algorithms
+    imports torch._inductor, which KERNEL_CLIENT refuses: exit 3)."""
+    text = (packet / "AUTHOR_INSTRUCTIONS.md").read_text()
+    recipe = _save_recipe(text)
+    assert "torch.set_num_threads(1)" in recipe and "use_deterministic_algorithms" not in recipe
+    assert "`torch.use_deterministic_algorithms`" in text.split("**Refused, and fatal to the run**")[1][:1200]
+    import os
+    import tempfile
+
+    root = Path(os.path.realpath(tempfile.mkdtemp(prefix="hnr", dir="/tmp")))  # short AF_UNIX-safe path
+    try:
+        ad = root / "a"
+        scratch = ad / "output" / "wsp-a" / "scratch"
+        for d in (ad / "tools" / "hn_kernel", ad / "packet", ad / ".kernel", scratch):
+            d.mkdir(parents=True)
+        shutil.copytree(GUARD_DIR, ad / "tools" / "hn_guard", ignore=shutil.ignore_patterns("__pycache__"))
+        (ad / "tools" / "hn_kernel" / "wsp.py").write_text(_STUB_WSP)
+        (ad / "output" / "wsp-a" / "build_edit.py").write_text(_STUB_BUILD)
+        (scratch / "save_final.py").write_text(recipe)
+        r = subprocess.run([str(QWEN_PY), "-I", "-B", "-c", _LAUNCH, str(ad), str(scratch / "save_final.py")],
+                           cwd=str(ad), capture_output=True, text=True, timeout=300)
+        assert r.returncode == 0 and "HN_GUARD" not in r.stderr, r.stdout[-2000:] + r.stderr[-3000:]
+        down = 6.0 * 4 + 0.5 * 6 * 4
+        rows = float(sum(range(4, 8)) + sum(range(12, 16))) + 0.5 * 8
+        assert r.stdout.splitlines()[-1] == (f"EDITED model.language_model.embed_tokens.weight:{rows} "
+                                             f"model.language_model.layers.0.mlp.down_proj.weight:{down}")
+    finally:
+        shutil.rmtree(root, ignore_errors=True)

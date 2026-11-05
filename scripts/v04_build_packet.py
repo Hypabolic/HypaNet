@@ -50,7 +50,8 @@ def main(argv: list[str] | None = None) -> int:
             print(f"PROBLEM: {p}", file=sys.stderr)
         if problems:
             return 1
-        print(f"packet OK, sha256 {packet_sha256(args.out)}")
+        print("packet OK")
+        print(f"packet sha256: {packet_sha256(args.out)}")  # the last line, as for a build
         return 0
     try:
         manifest = build_packet(args.spec, args.v02_spec, args.source_dir, args.out,
