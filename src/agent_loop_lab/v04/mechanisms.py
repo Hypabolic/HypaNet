@@ -12,7 +12,11 @@ holding one Markdown table with the columns :data:`COLUMNS`, in that order, one 
 :func:`parse` reads it; :func:`eligibility` applies §8's rules against the units the edit changes (from
 ``BUILD_RECORD.json``: each edited tensor, the embedding as the one unit ``label rows``): a row is eligible
 when its class is a class name, it names at least one unit, every unit is edited, its units are a **strict**
-subset of the edit's and share no unit with any other row's (overlapping rows are all ineligible); the first
+subset of the edit's and share no unit with any other row's (overlapping rows are all ineligible; a malformed
+row is ineligible itself but its tensors still count for the overlap rule, so dropping it cannot credit a
+row it overlaps). Cells split on unescaped pipes only (``\\|`` is a pipe inside a cell); a row with too many
+cells reads the extra cells as part of its claim. The delimiter row is GFM's (``-``, ``---``, ``:-:``...); the
+first
 :data:`MAX_EVALUATED` eligible rows in table order are evaluated, later ones are not. No table, an empty table
 or no eligible row means the edit cannot support Q5. ``scripts/v04_run_build.py`` writes this as a preview
 (``ARCHIVE/MECHANISMS.json``) and never refuses a build over it; the Q5 verdict is §8's, at the sealed attempt.
@@ -33,7 +37,8 @@ COLUMNS = ("id", "tensors", "target class", "claim")
 LABEL_ROWS = "label rows"
 EMBED = "model.language_model.embed_tokens.weight"
 MAX_EVALUATED = 8  # PREREGISTRATION §8: each evaluated row costs one counterfactual readout
-_SEP_CELL = re.compile(r"^:?-{3,}:?$")
+_SEP_CELL = re.compile(r"^:?-+:?$")  # GFM: one or more dashes, optional alignment colons
+_PIPE = re.compile(r"(?<!\\)\|")  # a cell boundary: a pipe not escaped as \|
 
 
 def _unit(name: str) -> str:
@@ -47,10 +52,11 @@ def edit_units(tensor_names: Iterable[str]) -> list[str]:
 
 
 def _cells(line: str) -> list[str] | None:
+    """The cells of a ``| a | b |`` row, split on unescaped pipes only (``\\|`` is a literal pipe in a cell)."""
     s = line.strip()
-    if not (s.startswith("|") and s.endswith("|") and len(s) > 1):
+    if not (s.startswith("|") and s.endswith("|") and not s.endswith("\\|") and len(s) > 1):
         return None
-    return [c.strip() for c in s[1:-1].split("|")]
+    return [c.strip().replace("\\|", "|") for c in _PIPE.split(s[1:-1])]
 
 
 def parse(edit_md: str) -> dict[str, Any]:
@@ -77,13 +83,18 @@ def parse(edit_md: str) -> dict[str, Any]:
                                                                     f"{list(COLUMNS)}"]}
     rows = []
     for n, cells in enumerate(table[2:], start=1):
-        if len(cells) != len(COLUMNS):
+        malformed = None
+        if len(cells) > len(COLUMNS):  # an unescaped pipe in the claim: the rest of the row is the claim
+            problems.append(f"row {n}: {len(cells)} cells, not {len(COLUMNS)}; cells 4.. read as the claim")
+            cells = cells[:3] + [" | ".join(cells[3:])]
+        elif len(cells) < len(COLUMNS):  # kept, so its tensors still count for the overlap rule
             problems.append(f"row {n}: {len(cells)} cells, not {len(COLUMNS)}")
-            continue
+            malformed = f"{len(cells)} cells, not {len(COLUMNS)}"
+            cells = cells + [""] * (len(COLUMNS) - len(cells))
         rid, tensors, cls, claim = cells
         units = [] if not tensors.strip() else [_unit(t) for t in tensors.split(",") if t.strip()]
         rows.append({"row": n, "id": rid.strip("`"), "tensors": units, "target_class": cls.strip("`*").strip().upper(),
-                     "claim": claim})
+                     "claim": claim, **({"malformed": malformed} if malformed else {})})
     ids = [r["id"] for r in rows]
     if len(set(ids)) != len(ids):
         problems.append("duplicate mechanism ids")
@@ -98,7 +109,9 @@ def eligibility(rows: Sequence[Mapping[str, Any]], units: Iterable[str]) -> list
     for k, (r, t) in enumerate(zip(rows, sets)):
         overlap = [rows[j]["id"] for j, s in enumerate(sets) if j != k and s & t]
         reason = None
-        if r["target_class"] not in CLASS_NAMES:
+        if r.get("malformed"):
+            reason = f"malformed row ({r['malformed']})"
+        elif r["target_class"] not in CLASS_NAMES:
             reason = f"target class {r['target_class']!r} is not one of {list(CLASS_NAMES)}"
         elif not t:
             reason = "names no tensor"

@@ -19,7 +19,10 @@
 # and disclosure/ must not be writable. The server starts with --phase wsp-b --disclosed DISCLOSED_WINDOWS.json;
 # on the first wsp-b launch its ready line must show the archived WSP-A edit hash. The mode wsp-b resumes
 # experiments/v0_4/SESSION_ID with prompt_wsp_b.md, its {A_SHA256}, {A_EDIT_HASH} and {DISCLOSURE_SHA256}
-# filled in. Kit sessions only: V04_WSP_A_ARCHIVE and V04_DISCLOSURE_ROOT replace those two locations.
+# filled in. The archive's FREEZE.json must be frozen and consistent under the registry's G1 kernel freeze
+# (wsp-b-inputs --registry). Kit sessions: a kit WSP-B launch needs V04_WSP_A_ARCHIVE and V04_DISCLOSURE_ROOT
+# (never the real archive or disclosure root) and is checked against the registry when it exists, else with
+# --kit-unfrozen (scripts/v04_prepare_phase_b.sh with V04_KIT=1 prepares such a kit handover).
 #
 # Freeze (PREREGISTRATION §7.3): after scripts/v04_freeze.py --check, the registry's freeze_sha256
 # (agent_loop_lab.v04.handover freeze-sha) goes into the launch record and LAUNCHES.jsonl; a kit launch
@@ -96,12 +99,15 @@ if [ "$KIT_MODE" = 1 ]; then
   EFFORT="${V04_EFFORT:-low}"
   BUDGET_TOKENS="${V04_BUDGET_TOKENS:-2000000}"
   REQUEST_CAP="${V04_REQUEST_CAP:-50000}"
-  A_ARCHIVE="${V04_WSP_A_ARCHIVE:-$REPO/weight_program/v0_4/wsp-a}"
-  DISC_ROOT="${V04_DISCLOSURE_ROOT:-$REPO/experiments/v0_4}"
+  # WSP-B kit sessions: a kit archive and disclosure, never the real ones (checked where the phase is known)
+  A_ARCHIVE="${V04_WSP_A_ARCHIVE:-}"
+  DISC_ROOT="${V04_DISCLOSURE_ROOT:-}"
   FREEZE_JSON=null
+  REG_ARGS="--kit-unfrozen"
   if [ -f "$REPO/experiments/registry_v0_4.yaml" ]; then
     FREEZE_JSON="\"$(cd "$REPO" && uv run python -m agent_loop_lab.v04.handover freeze-sha experiments/registry_v0_4.yaml)\"" \
       || die "the registry's freeze_sha256 does not match its record"
+    REG_ARGS="--registry $REPO/experiments/registry_v0_4.yaml"
   fi
 else
   LOGDIR="$REAL_LOGDIR"
@@ -118,6 +124,7 @@ else
   FREEZE_JSON="\"$FREEZE_SHA\""
   A_ARCHIVE="$REPO/weight_program/v0_4/wsp-a"
   DISC_ROOT="$REPO/experiments/v0_4"
+  REG_ARGS="--registry $REPO/experiments/registry_v0_4.yaml"
   uv run --project "$REPO" python - "$REPO/experiments/v0_4/HANDOVER.json" "$AUTHOR_DIR" <<'EOF' || die "handover record does not match this author dir"
 import json, sys
 h = json.load(open(sys.argv[1]))
@@ -140,6 +147,17 @@ for t in "$SYS_TMP" "${TMPDIR:-/tmp}" "$USER_TMP" /tmp /private/tmp; do
   fi
 done
 
+case "$REPO" in *" "*) die "the repo path may not contain a space";; esac
+# check_kit_wsp_b: a kit WSP-B launch names its own archive and disclosure root, never the real ones
+check_kit_wsp_b() {
+  [ "$KIT_MODE" = 1 ] || return 0
+  [ -n "$A_ARCHIVE" ] && [ -n "$DISC_ROOT" ] || die "V04_KIT=1 wsp-b needs V04_WSP_A_ARCHIVE and V04_DISCLOSURE_ROOT"
+  A_ARCHIVE="$(cd "$A_ARCHIVE" 2>/dev/null && pwd -P)" || die "V04_WSP_A_ARCHIVE is not a directory"
+  DISC_ROOT="$(cd "$DISC_ROOT" 2>/dev/null && pwd -P)" || die "V04_DISCLOSURE_ROOT is not a directory"
+  [ "$A_ARCHIVE" = "$REPO/weight_program/v0_4/wsp-a" ] && die "V04_KIT=1 may not use the real WSP-A archive"
+  [ "$DISC_ROOT" = "$REPO/experiments/v0_4" ] && die "V04_KIT=1 may not use the real disclosure root"
+  return 0
+}
 current_phase() {
   if [ -n "${V04_PHASE:-}" ]; then echo "$V04_PHASE"
   elif [ -e "$LOGDIR/wsp-b.stream.jsonl" ]; then echo "wsp-b"
@@ -167,8 +185,10 @@ case "$MODE" in
     TARGET="wsp-b"; NAME="$TARGET"
     [ -s "$SID_FILE" ] || die "no WSP-A session to resume ($SID_FILE)"
     SID="$(cat "$SID_FILE")"
+    check_kit_wsp_b
+    # shellcheck disable=SC2086
     PROMPT="$(cd "$REPO" && uv run python -m agent_loop_lab.v04.handover render-wsp-b-prompt \
-      --template "$KIT/prompt_wsp_b.md" --archive "$A_ARCHIVE" --disclosure-root "$DISC_ROOT")" \
+      --template "$KIT/prompt_wsp_b.md" --archive "$A_ARCHIVE" --disclosure-root "$DISC_ROOT" $REG_ARGS)" \
       || die "prompt_wsp_b.md could not be rendered (WSP-B inputs missing or inconsistent; see above)"
     SESSION_ARGS="--resume $SID"
     ;;
@@ -213,8 +233,10 @@ esac
 DISCLOSED_ARGS=""
 B_A_SHA=""; B_A_EDIT=""; B_D_SHA=""
 if [ "$TARGET" = wsp-b ]; then
+  check_kit_wsp_b
+  # shellcheck disable=SC2086
   B_INPUTS="$(cd "$REPO" && uv run python -m agent_loop_lab.v04.handover wsp-b-inputs --archive "$A_ARCHIVE" \
-    --disclosure-root "$DISC_ROOT" --author-dir "$AUTHOR_DIR" --logs "$LOGDIR")" \
+    --disclosure-root "$DISC_ROOT" $REG_ARGS --author-dir "$AUTHOR_DIR" --logs "$LOGDIR")" \
     || die "WSP-B inputs missing or inconsistent (see above; scripts/v04_prepare_phase_b.sh)"
   B_A_SHA="$(echo "$B_INPUTS" | sed -n 's/^ *"A_SHA256": "\([0-9a-f]\{64\}\)",*$/\1/p')"
   B_A_EDIT="$(echo "$B_INPUTS" | sed -n 's/^ *"A_EDIT_HASH": "\([0-9a-f]\{64\}\)",*$/\1/p')"

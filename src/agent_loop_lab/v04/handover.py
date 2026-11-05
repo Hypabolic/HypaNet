@@ -7,10 +7,16 @@ Used by ``scripts/v04_prepare_phase_b.sh``, ``scripts/v04_launch.sh`` and ``scri
   into every launch record after ``scripts/v04_freeze.py --check``, and the build script writes
   :func:`freeze_record` (the registry's freeze and every launch record of the phase) to ``ARCHIVE/FREEZE.json``,
   so each WSP archive names the registry it ran under.
+* **Fail closed.** ``ARCHIVE/FREEZE.json`` must be frozen and consistent with at least one launch
+  (``disclosure.check_freeze_record``), and its build and launch freezes must be the current registry's G1
+  kernel freeze: the G1 freeze or one after an additive revision only (:func:`kernel_freezes`,
+  :func:`check_archive_freeze`). ``consistent`` in :func:`freeze_record` means the same: at least one launch,
+  every launch under one of those freezes.
 * **WSP-B inputs** (:func:`wsp_b_inputs`): the archived WSP-A build (``disclosure.check_wsp_a_archive``) and the
   disclosure files (``DISCLOSURE.json`` against ``DISCLOSURE.sha256`` and the private record; the server's
-  ``DISCLOSED_WINDOWS.json`` against the private record; the private record against the archive), and, when
-  given, the author dir's read-only copy. Its values fill ``prompt_wsp_b.md`` (:func:`render_prompt`).
+  ``DISCLOSED_WINDOWS.json`` against the private record; the private record against the archive, its
+  ``FREEZE.json`` bytes included), and, when given, the author dir's read-only copy. Its values fill
+  ``prompt_wsp_b.md`` (:func:`render_prompt`).
 * **WSP-B starts from the archived WSP-A edit** (PREREGISTRATION §6). The model server replays its phase
   journal on start, so the WSP-B journal is seeded with a byte-identical copy of the WSP-A journal
   (:func:`seed_journal`), whose final edit hash must equal the archive's ``edit_state_sha256``. The server then
@@ -19,9 +25,11 @@ Used by ``scripts/v04_prepare_phase_b.sh``, ``scripts/v04_launch.sh`` and ``scri
 CLI (root env)::
 
     python -m agent_loop_lab.v04.handover freeze-sha REGISTRY
-    python -m agent_loop_lab.v04.handover wsp-b-inputs --archive A --disclosure-root R [--author-dir D] [--logs L]
+    python -m agent_loop_lab.v04.handover wsp-b-inputs --archive A --disclosure-root R (--registry REG | --kit-unfrozen)
+                                                        [--author-dir D] [--logs L]
     python -m agent_loop_lab.v04.handover seed-journal --logs L --edit-hash H
     python -m agent_loop_lab.v04.handover render-wsp-b-prompt --template T --archive A --disclosure-root R
+                                                        (--registry REG | --kit-unfrozen)
 """
 
 from __future__ import annotations
@@ -36,7 +44,8 @@ from typing import Any, Mapping
 
 from . import disclosure as D
 
-__all__ = ["HandoverError", "freeze_info", "launch_freezes", "freeze_record", "journal_final", "seed_journal",
+__all__ = ["HandoverError", "freeze_info", "kernel_freezes", "check_archive_freeze", "launch_freezes",
+           "freeze_record", "journal_final", "seed_journal",
            "check_seeded_journal", "wsp_b_inputs", "render_prompt", "PROMPT_KEYS"]
 
 REPO = Path(__file__).resolve().parents[3]
@@ -64,7 +73,7 @@ def freeze_info(registry: Path = REGISTRY) -> dict[str, Any]:
     """The registry's freeze, self-checked (not the full ``--check``, which the launcher runs before it)."""
     import yaml
 
-    from .registry import freeze_digest, g1_freeze_sha256
+    from .registry import RegistryError, freeze_digest, g1_freeze_sha256
 
     registry = Path(registry)
     if not registry.is_file():
@@ -72,8 +81,50 @@ def freeze_info(registry: Path = REGISTRY) -> dict[str, Any]:
     rec = yaml.safe_load(registry.read_text(encoding="utf-8"))
     if not isinstance(rec, dict) or rec.get("freeze_sha256") != freeze_digest(rec):
         raise HandoverError(f"{registry}: freeze_sha256 does not match its record")
+    revs = rec.get("revisions") or []
+    if not isinstance(revs, list) or not all(isinstance(r, dict) for r in revs):
+        raise HandoverError(f"{registry}: revisions is not a list of records")
+    try:
+        g1 = g1_freeze_sha256(rec)
+    except (RegistryError, KeyError, TypeError) as exc:
+        raise HandoverError(f"{registry}: the revision chain does not undo to a G1 record ({exc})") from None
     return {"registry": D._rel(registry), "registry_sha256": _sha(registry), "freeze_sha256": rec["freeze_sha256"],
-            "g1_freeze_sha256": g1_freeze_sha256(rec), "revisions": len(rec.get("revisions") or [])}
+            "g1_freeze_sha256": g1, "revisions": len(revs), "kernel_freezes": kernel_freezes(rec)}
+
+
+def kernel_freezes(rec: Mapping[str, Any]) -> list[str]:
+    """The freezes that ran the G1 kernel (PREREGISTRATION §7.3, §13): the G1 freeze and the freeze after each
+    revision, in order, up to the first revision that changed an existing file (the WSP-F ops revision), which
+    is excluded with everything after it. Each revision's ``previous_freeze_sha256`` names the freeze it revised
+    (``scripts/v04_freeze.py --check`` verifies that chain); the last freeze is the record's own."""
+    revs = list(rec.get("revisions") or [])
+    chain = [r.get("previous_freeze_sha256") for r in revs] + [rec.get("freeze_sha256")]
+    out = [chain[0]]
+    for k, r in enumerate(revs):
+        if r.get("changed"):
+            break
+        out.append(chain[k + 1])
+    return out
+
+
+def check_archive_freeze(wsp_a: Mapping[str, Any], *, registry: Path | None, allow_unfrozen: bool = False
+                         ) -> dict[str, Any]:
+    """The archive's freeze (``disclosure.check_wsp_a_archive``) against the current registry: the build's freeze
+    and every launch's must be one of :func:`kernel_freezes`. ``registry`` None refuses unless ``allow_unfrozen``
+    (kit tests only) and the archive is unfrozen. Returns the registry's :func:`freeze_info` (or None)."""
+    if registry is None:
+        if allow_unfrozen and wsp_a.get("unfrozen"):
+            return {"freeze_sha256": None, "unfrozen": True}
+        raise HandoverError("no registry to check the WSP-A archive's freeze against (PREREGISTRATION §7.3)")
+    info = freeze_info(Path(registry))
+    ok = set(info["kernel_freezes"])
+    names = {"the build": wsp_a.get("freeze_sha256"), **{f"launch {k}": v for k, v in
+                                                          (wsp_a.get("freeze_launches") or {}).items()}}
+    bad = sorted(k for k, v in names.items() if v not in ok)
+    if bad or len(names) < 2:
+        raise HandoverError(f"the WSP-A archive's freeze is not the registry's G1 kernel freeze ({info['freeze_sha256']} "
+                            f"or an additive ancestor): {bad or 'no launch records'} (PREREGISTRATION §7.3)")
+    return info
 
 
 def launch_freezes(logs: Path, phase: str) -> dict[str, Any]:
@@ -96,8 +147,9 @@ def freeze_record(logs: Path, phase: str, registry: Path | None, *, required: bo
     else:
         info = {**freeze_info(Path(registry)), "unfrozen": False}
     launches = launch_freezes(logs, phase)
+    ok = set(info.get("kernel_freezes") or [None])
     return {"phase": phase, **info, "launches": launches,
-            "consistent": all(v == info["freeze_sha256"] for v in launches.values())}
+            "consistent": bool(launches) and all(v in ok for v in launches.values())}
 
 
 # -- journal ---------------------------------------------------------------------------------------------------
@@ -157,13 +209,15 @@ def seed_journal(logs: Path, edit_hash: str) -> dict[str, Any]:
 # -- WSP-B inputs ------------------------------------------------------------------------------------------------
 
 
-def wsp_b_inputs(archive: Path, disclosure_root: Path, *, author_dir: Path | None = None,
-                 logs: Path | None = None) -> dict[str, Any]:
-    """The checked WSP-B inputs (module docstring); raises :class:`HandoverError`."""
+def wsp_b_inputs(archive: Path, disclosure_root: Path, *, registry: Path | None, allow_unfrozen: bool = False,
+                 author_dir: Path | None = None, logs: Path | None = None) -> dict[str, Any]:
+    """The checked WSP-B inputs (module docstring); raises :class:`HandoverError`. ``registry`` is the freeze the
+    archive must have run under (:func:`check_archive_freeze`); None needs ``allow_unfrozen`` (kit tests only)."""
     try:
-        a = D.check_wsp_a_archive(Path(archive))
+        a = D.check_wsp_a_archive(Path(archive), allow_unfrozen=allow_unfrozen and registry is None)
     except D.DisclosureError as exc:
         raise HandoverError(str(exc)) from None
+    freeze = check_archive_freeze(a, registry=registry, allow_unfrozen=allow_unfrozen)
     paths = D.output_paths(Path(disclosure_root))
     for k, p in paths.items():
         if not p.is_file():
@@ -183,8 +237,10 @@ def wsp_b_inputs(archive: Path, disclosure_root: Path, *, author_dir: Path | Non
     if private.get("disclosed_windows_sha256") != _sha(paths["windows"]):
         problems.append(f"{D.WINDOWS} is not the one DISCLOSURE_PRIVATE.json records")
     src = (private.get("source") or {}).get("wsp_a") or {}
-    if src.get("build_record_sha256") != a["build_record_sha256"] or src.get("edit_state_sha256") != a["edit_state_sha256"]:
+    if any(src.get(k) != a[k] for k in ("build_record_sha256", "edit_state_sha256", "freeze_sha256")):
         problems.append("the disclosure was built from another WSP-A archive")
+    if src.get("freeze_json_sha256") != a["freeze_json_sha256"]:
+        problems.append("the WSP-A archive's FREEZE.json changed after the disclosure was built")
     if [w["id"] for w in windows.get("windows", [])] != [w["id"] for w in public.get("windows", [])]:
         problems.append(f"{D.WINDOWS} and DISCLOSURE.json list different window ids")
     if author_dir is not None:
@@ -198,7 +254,8 @@ def wsp_b_inputs(archive: Path, disclosure_root: Path, *, author_dir: Path | Non
     out: dict[str, Any] = {"A_SHA256": a["build_record_sha256"], "A_EDIT_HASH": a["edit_state_sha256"],
                            "DISCLOSURE_SHA256": d_sha, "disclosed_windows": str(paths["windows"]),
                            "disclosed_windows_sha256": private.get("disclosed_windows_sha256"),
-                           "windows": len(public.get("windows", [])), "wsp_a": a}
+                           "windows": len(public.get("windows", [])), "wsp_a": a,
+                           "freeze_sha256": freeze["freeze_sha256"]}
     if logs is not None:
         try:
             out["journal"] = check_seeded_journal(Path(logs) / "wsp-a" / "journal", Path(logs) / "wsp-b" / "journal")
@@ -234,28 +291,32 @@ def main(argv: list[str] | None = None) -> int:
     f = sub.add_parser("freeze-sha")
     f.add_argument("registry", type=Path)
     w = sub.add_parser("wsp-b-inputs")
-    w.add_argument("--archive", type=Path, required=True)
-    w.add_argument("--disclosure-root", type=Path, required=True)
+    r = sub.add_parser("render-wsp-b-prompt")
+    r.add_argument("--template", type=Path, required=True)
+    for p in (w, r):
+        p.add_argument("--archive", type=Path, required=True)
+        p.add_argument("--disclosure-root", type=Path, required=True)
+        g = p.add_mutually_exclusive_group(required=True)
+        g.add_argument("--registry", type=Path, help="the freeze registry the archive must have run under")
+        g.add_argument("--kit-unfrozen", action="store_true", help="kit tests only: no registry exists")
     w.add_argument("--author-dir", type=Path)
     w.add_argument("--logs", type=Path)
     s = sub.add_parser("seed-journal")
     s.add_argument("--logs", type=Path, required=True)
     s.add_argument("--edit-hash", required=True)
-    r = sub.add_parser("render-wsp-b-prompt")
-    r.add_argument("--template", type=Path, required=True)
-    r.add_argument("--archive", type=Path, required=True)
-    r.add_argument("--disclosure-root", type=Path, required=True)
     args = ap.parse_args(argv)
     try:
         if args.cmd == "freeze-sha":
             print(freeze_info(args.registry)["freeze_sha256"])
         elif args.cmd == "wsp-b-inputs":
-            print(json.dumps(wsp_b_inputs(args.archive, args.disclosure_root, author_dir=args.author_dir,
+            print(json.dumps(wsp_b_inputs(args.archive, args.disclosure_root, registry=args.registry,
+                                          allow_unfrozen=args.kit_unfrozen, author_dir=args.author_dir,
                                           logs=args.logs), indent=1, sort_keys=True))
         elif args.cmd == "seed-journal":
             print(json.dumps(seed_journal(args.logs, args.edit_hash), sort_keys=True))
         else:
-            vals = wsp_b_inputs(args.archive, args.disclosure_root)
+            vals = wsp_b_inputs(args.archive, args.disclosure_root, registry=args.registry,
+                                allow_unfrozen=args.kit_unfrozen)
             sys.stdout.write(render_prompt(args.template.read_text(encoding="utf-8"), vals))
     except HandoverError as exc:
         print(f"refusing: {exc}", file=sys.stderr)

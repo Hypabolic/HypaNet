@@ -8,13 +8,17 @@
 # weight_program/v0_4/wsp-a/) and scripts/v04_build_disclosure.py has written experiments/v0_4/disclosure/,
 # DISCLOSED_WINDOWS.json and DISCLOSURE_PRIVATE.json (committed). AUTHOR_DIR defaults to ../HypaNet-v04-author
 # (prepared by scripts/v04_prepare_author_dir.sh; never inside the repo). Steps:
-#   1. check the freeze registry (scripts/v04_freeze.py --check) and that the author dir's packet is the
-#      registered one; without experiments/registry_v0_4.yaml refuse unless V04_PREPARE_UNFROZEN=1 (kit tests
-#      only: V04_WSP_A_ARCHIVE, V04_DISCLOSURE_ROOT, V04_LOGDIR and V04_HANDOVER then replace the real
-#      locations, and the handover record may not go into the repo);
+#   1. the real handover needs experiments/registry_v0_4.yaml and refuses unless experiments/v0_4/HANDOVER.json
+#      names AUTHOR_DIR as the (non-kit) author dir, before anything is written. Kit mode (V04_KIT=1, or
+#      V04_PREPARE_UNFROZEN=1; kit tests only, with or without the registry) needs V04_WSP_A_ARCHIVE,
+#      V04_DISCLOSURE_ROOT and V04_LOGDIR (existing directories, never the real archive, disclosure root or log
+#      dir) and writes its handover record to V04_HANDOVER (default AUTHOR_DIR.wsp_b.handover.json, never
+#      inside the repo). Whenever the registry exists: scripts/v04_freeze.py --check, and the author dir's
+#      packet must be the registered one;
 #   2. check the WSP-A archive and the disclosure files against each other (agent_loop_lab.v04.handover
-#      wsp-b-inputs: BUILD_RECORD.sha256, a journal-checked build, FREEZE.json, DISCLOSURE.sha256, the private
-#      record naming that archive, DISCLOSED_WINDOWS.json);
+#      wsp-b-inputs --registry, or --kit-unfrozen in kit mode without a registry: BUILD_RECORD.sha256, a
+#      journal-checked build, FREEZE.json frozen and consistent under the registry's G1 kernel freeze,
+#      DISCLOSURE.sha256, the private record naming that archive and its FREEZE.json, DISCLOSED_WINDOWS.json);
 #   3. seed the WSP-B journal LOGDIR/wsp-b/journal/ with a byte-identical copy of LOGDIR/wsp-a/journal/, whose
 #      final edit hash must be the archived edit's (handover seed-journal): the model server replays it, so WSP-B
 #      starts from the archived WSP-A edit; refused once WSP-B has a ledger or kernel log, idempotent before;
@@ -45,36 +49,72 @@ done
 for f in "$KIT/prompt_wsp_b.md" "$KIT/settings_wsp_b.json" "$KIT/hook_bash.py" "$KIT/py" "$KIT/fwd"; do
   [ -f "$f" ] || die "kit file $f missing"
 done
+CALLER_PWD="$(pwd -P)"
 cd "$REPO"
 
-# 1. registry and packet
+REAL_ARCHIVE="$REPO/weight_program/v0_4/wsp-a"
+REAL_DISC_ROOT="$REPO/experiments/v0_4"
+REAL_LOGDIR="$REPO/experiments/v0_4/logs"
+# real_path DIR: DIR resolved (a relative DIR against the caller's directory), or empty if it does not exist
+real_path() { (cd "$CALLER_PWD" && cd "$1" 2>/dev/null && pwd -P) || true; }
+
+# 1. mode, registry and packet. Kit mode (V04_KIT=1, or V04_PREPARE_UNFROZEN=1) works with or without the
+# registry and never uses the real archive, disclosure, log dir or handover record; otherwise the registry is
+# required and the author dir must be the one experiments/v0_4/HANDOVER.json hands over (before any write).
+if [ "${V04_KIT:-0}" = 1 ] || [ "${V04_PREPARE_UNFROZEN:-0}" = 1 ]; then
+  KIT_MODE=1
+  A_ARCHIVE="$(real_path "${V04_WSP_A_ARCHIVE:?kit mode needs V04_WSP_A_ARCHIVE}")"
+  DISC_ROOT="$(real_path "${V04_DISCLOSURE_ROOT:?kit mode needs V04_DISCLOSURE_ROOT}")"
+  LOGDIR="$(real_path "${V04_LOGDIR:?kit mode needs V04_LOGDIR}")"
+  [ -n "$A_ARCHIVE" ] && [ -n "$DISC_ROOT" ] && [ -n "$LOGDIR" ] \
+    || die "kit mode: V04_WSP_A_ARCHIVE, V04_DISCLOSURE_ROOT and V04_LOGDIR must be existing directories"
+  [ "$A_ARCHIVE" = "$(real_path "$REAL_ARCHIVE")" ] && die "kit mode may not use the real WSP-A archive"
+  [ "$DISC_ROOT" = "$(real_path "$REAL_DISC_ROOT")" ] && die "kit mode may not use the real disclosure root"
+  [ "$LOGDIR" = "$(real_path "$REAL_LOGDIR")" ] && die "kit mode may not use the real log dir"
+  HANDOVER="${V04_HANDOVER:-$AUTHOR_DIR.wsp_b.handover.json}"
+  case "$HANDOVER" in /*) ;; *) HANDOVER="$CALLER_PWD/$HANDOVER";; esac
+  H_DIR="$(real_path "$(dirname "$HANDOVER")")"
+  [ -n "$H_DIR" ] || die "kit mode: the directory of $HANDOVER does not exist"
+  case "$H_DIR/" in "$REPO"/*) die "a kit handover record may not be written into the repo";; esac
+  if [ -f "$REGISTRY" ]; then
+    UNFROZEN=0
+    REG_ARGS="--registry $REGISTRY"
+  else
+    echo "WARNING: no $REGISTRY: preparing an UNFROZEN WSP-B kit handover (kit tests only)" >&2
+    UNFROZEN=1
+    REG_ARGS="--kit-unfrozen"
+  fi
+elif [ -f "$REGISTRY" ]; then
+  KIT_MODE=0
+  UNFROZEN=0
+  [ -f "$REPO/experiments/v0_4/HANDOVER.json" ] || die "experiments/v0_4/HANDOVER.json missing (scripts/v04_prepare_author_dir.sh)"
+  uv run python - "$REPO/experiments/v0_4/HANDOVER.json" "$AUTHOR_DIR" <<'EOF' || die "experiments/v0_4/HANDOVER.json does not hand over $AUTHOR_DIR (a kit dir needs V04_KIT=1)"
+import json, sys
+h = json.load(open(sys.argv[1]))
+assert h["author_dir"] == sys.argv[2] and h["unfrozen_kit_test_dir"] is False, h["author_dir"]
+EOF
+  A_ARCHIVE="$REAL_ARCHIVE"
+  DISC_ROOT="$REAL_DISC_ROOT"
+  LOGDIR="$REAL_LOGDIR"
+  HANDOVER="$REPO/experiments/v0_4/wsp_b/HANDOVER.json"
+  REG_ARGS="--registry $REGISTRY"
+else
+  die "experiments/registry_v0_4.yaml does not exist (G1 not frozen); set V04_KIT=1 for kit tests only"
+fi
+case "$REGISTRY" in *" "*) die "the registry path may not contain a space";; esac
+case "$LOGDIR" in "$AUTHOR_DIR"|"$AUTHOR_DIR"/*) die "the log dir must be outside the author dir";; esac
 if [ -f "$REGISTRY" ]; then
   uv run python scripts/v04_freeze.py --check || die "freeze registry check failed"
   P_SHA="$(sed -n 's/^packet_sha256:[[:space:]]*\([0-9a-f]\{64\}\)[[:space:]]*$/\1/p' "$REGISTRY")"
   [ "${#P_SHA}" -eq 64 ] || die "no packet_sha256 in $REGISTRY"
   [ "$(sha_of "$AUTHOR_DIR/packet/PACKET_MANIFEST.json")" = "$P_SHA" ] \
     || die "the author dir's packet is not the registered one ($P_SHA)"
-  A_ARCHIVE="$REPO/weight_program/v0_4/wsp-a"
-  DISC_ROOT="$REPO/experiments/v0_4"
-  LOGDIR="$REPO/experiments/v0_4/logs"
-  HANDOVER="$REPO/experiments/v0_4/wsp_b/HANDOVER.json"
-  UNFROZEN=0
-elif [ "${V04_PREPARE_UNFROZEN:-0}" = 1 ]; then
-  echo "WARNING: no $REGISTRY: preparing an UNFROZEN WSP-B handover (kit tests only)" >&2
-  A_ARCHIVE="${V04_WSP_A_ARCHIVE:?V04_PREPARE_UNFROZEN=1 needs V04_WSP_A_ARCHIVE}"
-  DISC_ROOT="${V04_DISCLOSURE_ROOT:?V04_PREPARE_UNFROZEN=1 needs V04_DISCLOSURE_ROOT}"
-  LOGDIR="${V04_LOGDIR:?V04_PREPARE_UNFROZEN=1 needs V04_LOGDIR}"
-  HANDOVER="${V04_HANDOVER:-$AUTHOR_DIR.wsp_b.handover.json}"
-  case "$HANDOVER" in "$REPO"/*) die "an unfrozen handover record may not be written into the repo";; esac
-  [ "$(cd "$LOGDIR" 2>/dev/null && pwd -P)" = "$REPO/experiments/v0_4/logs" ] && die "an unfrozen handover may not use the real log dir"
-  UNFROZEN=1
-else
-  die "experiments/registry_v0_4.yaml does not exist (G1 not frozen); set V04_PREPARE_UNFROZEN=1 for kit tests only"
 fi
-case "$LOGDIR" in "$AUTHOR_DIR"|"$AUTHOR_DIR"/*) die "the log dir must be outside the author dir";; esac
 
 # 2. archive and disclosure
-INPUTS="$(uv run python -m agent_loop_lab.v04.handover wsp-b-inputs --archive "$A_ARCHIVE" --disclosure-root "$DISC_ROOT")" \
+# shellcheck disable=SC2086
+INPUTS="$(uv run python -m agent_loop_lab.v04.handover wsp-b-inputs --archive "$A_ARCHIVE" --disclosure-root "$DISC_ROOT" \
+  $REG_ARGS)" \
   || die "WSP-B inputs missing or inconsistent (see above)"
 A_EDIT="$(echo "$INPUTS" | sed -n 's/^ *"A_EDIT_HASH": "\([0-9a-f]\{64\}\)",*$/\1/p')"
 D_SHA="$(echo "$INPUTS" | sed -n 's/^ *"DISCLOSURE_SHA256": "\([0-9a-f]\{64\}\)",*$/\1/p')"
@@ -140,22 +180,26 @@ rm -rf "$TMP_DIR"
 
 # 7. handover record (hashes only; committed before the launch)
 mkdir -p "$(dirname "$HANDOVER")"
-uv run python - "$AUTHOR_DIR" "$HANDOVER" "$UNFROZEN" "$INPUTS" "$JOURNAL_JSON" <<'EOF'
+uv run python - "$AUTHOR_DIR" "$HANDOVER" "$KIT_MODE" "$UNFROZEN" "$INPUTS" "$JOURNAL_JSON" <<'EOF'
 import hashlib, json, sys
 from pathlib import Path
-d, out, unfrozen, inputs, journal = Path(sys.argv[1]), Path(sys.argv[2]), sys.argv[3] == "1", \
-    json.loads(sys.argv[4]), json.loads(sys.argv[5])
+d, out, kit_mode, unfrozen = Path(sys.argv[1]), Path(sys.argv[2]), sys.argv[3] == "1", sys.argv[4] == "1"
+inputs, journal = json.loads(sys.argv[5]), json.loads(sys.argv[6])
 kit = Path("experiments/v0_4/author_kit")
 sha = lambda p: hashlib.sha256(p.read_bytes()).hexdigest()
 reg = Path("experiments/registry_v0_4.yaml")
 rec = {
     "author_dir": str(d),
     "phase": "wsp-b",
-    "unfrozen_kit_test_dir": unfrozen,
+    "unfrozen_kit_test_dir": kit_mode,
+    "unfrozen": unfrozen,
     "packet_sha256": sha(d / "packet" / "PACKET_MANIFEST.json"),
     "registry_sha256": sha(reg) if reg.is_file() else None,
     "wsp_a_build_record_sha256": inputs["A_SHA256"],
     "wsp_a_edit_state_sha256": inputs["A_EDIT_HASH"],
+    "wsp_a_freeze_sha256": inputs["wsp_a"]["freeze_sha256"],
+    "wsp_a_freeze_json_sha256": inputs["wsp_a"]["freeze_json_sha256"],
+    "registry_freeze_sha256": inputs["freeze_sha256"],
     "disclosure_dir": "disclosure",
     "disclosure_sha256": inputs["DISCLOSURE_SHA256"],
     "disclosure_sha256_file_sha256": sha(d / "disclosure" / "DISCLOSURE.sha256"),

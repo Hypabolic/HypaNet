@@ -137,7 +137,18 @@ def test_v03_disclosure_files_agree():
 # -- the WSP-A archive and column -----------------------------------------------------------------------------
 
 
-def fake_archive(d: Path, *, phase: str = "wsp-a", stub: bool = False, freeze: bool = True) -> Path:
+FREEZE_SHA = "f" * 64
+
+
+def freeze_json(freeze_sha: str | None = FREEZE_SHA, **over) -> dict:
+    """What scripts/v04_run_build.py writes (handover.freeze_record) for a WSP-A build with two launches."""
+    rec = {"phase": "wsp-a", "freeze_sha256": freeze_sha, "unfrozen": freeze_sha is None, "consistent": True,
+           "launches": {"wsp-a": freeze_sha, "wsp-a.c1": freeze_sha}}
+    return {**rec, **over}
+
+
+def fake_archive(d: Path, *, phase: str = "wsp-a", stub: bool = False, freeze: bool = True,
+                 freeze_sha: str | None = FREEZE_SHA) -> Path:
     d.mkdir(parents=True, exist_ok=True)
     files = {}
     for name in D.EDIT_FILES:
@@ -149,13 +160,15 @@ def fake_archive(d: Path, *, phase: str = "wsp-a", stub: bool = False, freeze: b
     (d / D.RECORD_FILE).write_text(json.dumps(rec))
     (d / D.RECORD_SHA_FILE).write_text(f"{_sha((d / D.RECORD_FILE).read_bytes())}  {D.RECORD_FILE}\n")
     if freeze:
-        (d / D.FREEZE_FILE).write_text(json.dumps({"freeze_sha256": "f" * 64}))
+        (d / D.FREEZE_FILE).write_text(json.dumps(freeze_json(freeze_sha)))
     return d
 
 
 def test_wsp_a_archive_check(tmp_path):
     info = D.check_wsp_a_archive(fake_archive(tmp_path / "a"))
-    assert info["edit_state_sha256"] == EDIT_HASH and info["freeze_sha256"] == "f" * 64
+    assert info["edit_state_sha256"] == EDIT_HASH and info["freeze_sha256"] == FREEZE_SHA
+    assert info["freeze_launches"] == {"wsp-a": FREEZE_SHA, "wsp-a.c1": FREEZE_SHA} and info["unfrozen"] is False
+    assert info["freeze_json_sha256"] == _sha((tmp_path / "a" / D.FREEZE_FILE).read_bytes())
     assert info["build_record_sha256"] == _sha((tmp_path / "a" / D.RECORD_FILE).read_bytes())
     for kw, why in (({"phase": "wsp-b"}, "phase"), ({"stub": True}, "real guard"), ({"freeze": False}, "FREEZE.json")):
         with pytest.raises(D.DisclosureError, match=why):
@@ -172,7 +185,38 @@ def test_wsp_a_archive_check(tmp_path):
         D.check_wsp_a_archive(tmp_path / "none")
 
 
-META = {"split": "val", "limit": None, "device": "mps", "dtype": "fp32", "edit": {"edit_state_sha256": EDIT_HASH},
+@pytest.mark.parametrize("text, why", [
+    ("{}", "phase"), ("[]", "not a freeze record"), ('"x"', "not a freeze record"), ("not json", "unreadable"),
+    (json.dumps(freeze_json(None)), "no registry freeze_sha256"),
+    (json.dumps(freeze_json(unfrozen=True)), "built unfrozen"),
+    (json.dumps(freeze_json(consistent=False)), "another freeze"),
+    (json.dumps({**freeze_json(), "consistent": None}), "another freeze"),
+    (json.dumps(freeze_json(launches={})), "no launch records"),
+    (json.dumps(freeze_json(launches=None)), "no launch records"),
+    (json.dumps(freeze_json(launches={"wsp-a": None})), "without a freeze_sha256"),
+    (json.dumps(freeze_json(phase="wsp-b")), "phase"),
+])
+def test_freeze_record_fails_closed(tmp_path, text, why):
+    """PREREGISTRATION §7.3: an archive whose FREEZE.json does not show a frozen, consistent run is refused."""
+    d = fake_archive(tmp_path / "a")
+    (d / D.FREEZE_FILE).write_text(text)
+    with pytest.raises(D.DisclosureError, match=why):
+        D.check_wsp_a_archive(d)
+
+
+def test_unfrozen_archive_only_in_kit_mode(tmp_path):
+    d = fake_archive(tmp_path / "a", freeze_sha=None)
+    with pytest.raises(D.DisclosureError, match="no registry freeze_sha256"):
+        D.check_wsp_a_archive(d)
+    assert D.check_wsp_a_archive(d, allow_unfrozen=True)["unfrozen"] is True
+    (d / D.FREEZE_FILE).write_text("{}")
+    with pytest.raises(D.DisclosureError):  # still a record, even in kit mode
+        D.check_wsp_a_archive(d, allow_unfrozen=True)
+
+
+PINS = {"id": "Qwen/Qwen3.5-0.8B", "revision": "r" * 40, "file_sha256": {"model.safetensors": "m" * 64}}
+META = {"split": "val", "limit": None, "device": "mps", "dtype": "fp32", "model": PINS,
+        "edit": {"edit_state_sha256": EDIT_HASH, "build_record_sha256": "b" * 64},
         "interface": {"spec_sha256": "i" * 64}}
 
 
@@ -185,6 +229,29 @@ def test_column_must_be_the_archived_edit_on_mps_fp32():
             D.check_column({**META, **bad}, EDIT_HASH)
     with pytest.raises(D.DisclosureError, match="frozen interface"):
         D.check_column(META, EDIT_HASH, interface_spec_sha256="j" * 64)
+
+
+def test_column_must_name_the_pinned_model_and_the_archive():
+    D.check_column(META, EDIT_HASH, model_pins=PINS, build_record_sha256="b" * 64)
+    for meta in ({**META, "model": {**PINS, "revision": "s" * 40}}, {k: v for k, v in META.items() if k != "model"}):
+        with pytest.raises(D.DisclosureError, match="pinned"):
+            D.check_column(meta, EDIT_HASH, model_pins=PINS)
+    with pytest.raises(D.DisclosureError, match="BUILD_RECORD.json"):
+        D.check_column(META, EDIT_HASH, build_record_sha256="c" * 64)
+    with pytest.raises(D.DisclosureError, match="BUILD_RECORD.json"):  # only the fallback hash: no archive named
+        D.check_column({**{k: v for k, v in META.items() if k != "edit"}, "edit_state_sha256": EDIT_HASH}, EDIT_HASH,
+                       build_record_sha256="b" * 64)
+
+
+def test_the_cli_checks_the_column_against_the_real_model_pins():
+    """The builder passes registry.model_pins: the meta hypaqwen.run_readout writes (its "model" key) must match."""
+    from agent_loop_lab.v04 import registry as R
+
+    src = (REPO / "scripts" / "v04_build_disclosure.py").read_text()
+    assert "model_pins=R.model_pins(REPO)" in src and 'build_record_sha256=wsp_a["build_record_sha256"]' in src
+    run_readout = (REPO / "envs" / "qwen" / "hypaqwen" / "run_readout.py").read_text()
+    assert '"model": {"id": MODEL_ID, "revision": MODEL_REVISION, "file_sha256": qmodel.FILE_SHA256}' in run_readout
+    assert set(R.model_pins(REPO)) == {"id", "revision", "file_sha256"}
 
 
 # -- CLI ------------------------------------------------------------------------------------------------------
@@ -223,3 +290,59 @@ def test_cli_writes_once_then_needs_force(v03, tmp_path, monkeypatch, capsys):
     assert {k: p.read_bytes() for k, p in D.output_paths(out).items()} == first
     monkeypatch.setattr(m, "load_inputs", lambda args: (_ for _ in ()).throw(D.DisclosureError("WSP-A column: x")))
     assert m.main(argv + ["--force"]) == 2 and "refusing: WSP-A column" in capsys.readouterr().err
+
+
+def test_cli_refuses_scoring_and_freeze_errors_without_a_traceback(tmp_path, monkeypatch, capsys):
+    from agent_loop_lab.v04 import handover as H
+    from agent_loop_lab.v04.scoring import ScoringError
+
+    m = _cli()
+    col = tmp_path / "col.npz"
+    col.write_bytes(b"fake")
+    argv = ["--column", str(col), "--out-dir", str(tmp_path / "o")]
+    for exc in (ScoringError("col.npz: not a full val run (split=val, limit=20)"), H.HandoverError("freeze x")):
+        monkeypatch.setattr(m, "load_inputs", lambda args, exc=exc: (_ for _ in ()).throw(exc))
+        assert m.main(argv) == 2 and f"refusing: {exc}" in capsys.readouterr().err
+    assert not (tmp_path / "o").exists()
+
+
+def test_cli_refuses_a_limited_column_before_anything_is_written(tmp_path, monkeypatch, capsys):
+    """The real load path: scoring.load_column's ScoringError (a column with limit=20) is a refusal, exit 2."""
+    m = _cli()
+    from agent_loop_lab.v04 import scoring as S
+
+    monkeypatch.setattr(m, "check_archive", lambda *a, **k: ({"edit_state_sha256": EDIT_HASH,
+                                                               "build_record_sha256": "b" * 64}, {"freeze_sha256": None}))
+    lab = {"session_ids": np.array(["s1"]), "row_pos": np.array([3])}
+    monkeypatch.setattr(S, "load_rows", lambda data_dir: ([], lab))
+    col = tmp_path / "col.npz"
+    np.savez(col, label_logits=np.zeros((1, 4)), logsumexp=np.zeros(1), session_ids=np.array(["s1"]),
+             row_pos=np.array([3]), meta=json.dumps({"split": "val", "limit": 20}))
+    assert m.main(["--column", str(col), "--out-dir", str(tmp_path / "o")]) == 2
+    assert "refusing: col.npz: not a full val run" in capsys.readouterr().err and not (tmp_path / "o").exists()
+
+
+def test_cli_archive_freeze_policy(tmp_path, monkeypatch):
+    """Without the registry only --kit-unfrozen (with --out-dir, a kit archive) accepts an unfrozen archive; with
+    a registry the archive's freezes must be its G1 kernel freeze (handover.check_archive_freeze)."""
+    from agent_loop_lab.v04 import handover as H
+
+    m = _cli()
+    none = tmp_path / "none.yaml"
+    unfrozen = fake_archive(tmp_path / "u", freeze_sha=None)
+    with pytest.raises(D.DisclosureError, match="no registry freeze_sha256"):
+        m.check_archive(unfrozen, registry=none)
+    assert m.check_archive(unfrozen, registry=none, kit_unfrozen=True)[1]["unfrozen"] is True
+    with pytest.raises(H.HandoverError, match="no registry"):
+        m.check_archive(fake_archive(tmp_path / "f"), registry=none, kit_unfrozen=True)
+    col = tmp_path / "col.npz"
+    col.write_bytes(b"x")
+    for argv in (["--kit-unfrozen"], ["--kit-unfrozen", "--out-dir", str(tmp_path / "o"), "--wsp-a-archive",
+                                      str(D.WSP_A_ARCHIVE)]):
+        with pytest.raises(SystemExit):
+            m.main(["--column", str(col)] + argv)
+    monkeypatch.setattr(m, "REGISTRY", tmp_path / "registry_v0_4.yaml")
+    m.REGISTRY.write_text("x")
+    with pytest.raises(SystemExit):  # refused once a registry exists
+        m.main(["--column", str(col), "--kit-unfrozen", "--out-dir", str(tmp_path / "o"), "--wsp-a-archive",
+                str(unfrozen)])

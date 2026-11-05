@@ -59,3 +59,29 @@ def test_only_the_first_eight_eligible_rows_are_evaluated():
     st = [s for _, s in statuses(text, units)]
     assert st == ["evaluated"] * 8 + ["not evaluated"] * 2 + ["ineligible"]
     assert M.MAX_EVALUATED == 8
+
+
+def test_escaped_pipes_and_extra_cells_keep_the_row_for_the_overlap_rule():
+    """Review finding: a claim with a pipe split the row, parse() dropped it, and a row it overlapped was then
+    credited. ``\\|`` is a pipe inside a cell; extra cells are read as the claim; a short row is ineligible but
+    its tensors still count for the overlap rule."""
+    edit = [A, B, C]
+    escaped = md(f"| M1 | {A}, {B} | STALLED | A \\| B |", f"| M2 | {B} | STALLED | y |")
+    p = M.parse(escaped)
+    assert p["problems"] == [] and p["rows"][0]["claim"] == "A | B"
+    assert statuses(escaped, edit) == [("M1", "ineligible"), ("M2", "ineligible")]
+    extra = md(f"| M1 | {A}, {B} | STALLED | A | B |", f"| M2 | {B} | STALLED | y |")
+    p = M.parse(extra)
+    assert p["rows"][0]["claim"] == "A | B" and any("5 cells" in x for x in p["problems"])
+    assert statuses(extra, edit) == [("M1", "ineligible"), ("M2", "ineligible")]
+    short = M.preview(md(f"| M1 | {A}, {B} |", f"| M2 | {B} | STALLED | y |", f"| M3 | {C} | RECOVERY | z |"), edit)
+    assert [(r["id"], r["status"]) for r in short["rows"]] == [("M1", "ineligible"), ("M2", "ineligible"),
+                                                               ("M3", "evaluated")]
+    assert "malformed" in short["rows"][0]["reason"] and "shares tensors with ['M1']" in short["rows"][1]["reason"]
+
+
+def test_any_gfm_delimiter_row_is_a_table():
+    for sep in ("|-|-|-|-|", "| - | :- | -: | :-: |", "|:---|---:|:---:|----|"):
+        text = M.HEADING + "\n\n| id | tensors | target class | claim |\n" + sep + f"\n| M1 | {A} | STALLED | x |\n"
+        assert M.parse(text)["found"] and M.preview(text, [A, B])["q5_possible"], sep
+    assert not M.parse(M.HEADING + "\n\n| id | tensors | target class | claim |\n| x | - | - | - |\n")["found"]

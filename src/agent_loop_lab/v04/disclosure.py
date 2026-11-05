@@ -25,9 +25,13 @@ Three files come out of :func:`build`:
 The WSP-A archive (``weight_program/v0_4/wsp-a/``, written by ``scripts/v04_run_build.py``) is checked by
 :func:`check_wsp_a_archive`: ``BUILD_RECORD.json`` matches ``BUILD_RECORD.sha256``, the record is a phase
 ``wsp-a`` build checked against the server journal under the real guard, its edit files match the record,
-and ``FREEZE.json`` names the registry it ran under. The column must carry that archive's edit-state hash in
-its ``meta`` (:func:`check_column`). Every output is canonical JSON (sorted keys), so a rebuild from the same
-inputs is byte-identical.
+and ``FREEZE.json`` is a frozen, consistent record with at least one launch (:func:`check_freeze_record`; that
+its freezes are the current registry's, or an additive ancestor's, is checked by
+``agent_loop_lab.v04.handover.check_archive_freeze``). The private record keeps the sha256 of ``FREEZE.json``, so
+a later edit of it is refused at the WSP-B handover. The column must carry that archive's edit-state hash and
+``BUILD_RECORD.json`` sha256 in ``meta["edit"]`` (``hypaqwen.run_readout --edit ARCHIVE``) and the pinned model in
+``meta["model"]`` (:func:`check_column`). Every output is canonical JSON (sorted keys), so a rebuild from the
+same inputs is byte-identical.
 """
 
 from __future__ import annotations
@@ -54,6 +58,7 @@ __all__ = [
     "DisclosureError",
     "output_paths",
     "check_wsp_a_archive",
+    "check_freeze_record",
     "check_column",
     "check_v03_disclosure",
     "read_tasks",
@@ -131,8 +136,10 @@ def sha_field(path: Path) -> str:
 # -- inputs ----------------------------------------------------------------------------------------------------
 
 
-def check_wsp_a_archive(archive: Path) -> dict[str, Any]:
-    """The archived WSP-A build the disclosure (and WSP-B) starts from, checked; raises :class:`DisclosureError`."""
+def check_wsp_a_archive(archive: Path, *, allow_unfrozen: bool = False) -> dict[str, Any]:
+    """The archived WSP-A build the disclosure (and WSP-B) starts from, checked; raises :class:`DisclosureError`.
+
+    ``allow_unfrozen`` is for kit tests only (:func:`check_freeze_record`)."""
     archive = Path(archive)
     rec_path = archive / RECORD_FILE
     if not rec_path.is_file():
@@ -153,13 +160,55 @@ def check_wsp_a_archive(archive: Path) -> dict[str, Any]:
     h = rec.get("edit_state_sha256")
     if not isinstance(h, str) or len(h) != 64:
         raise DisclosureError(f"{rec_path}: no edit_state_sha256")
+    freeze_path = archive / FREEZE_FILE
     try:
-        freeze = json.loads((archive / FREEZE_FILE).read_text(encoding="utf-8"))
-    except (OSError, json.JSONDecodeError):
-        raise DisclosureError(f"{archive / FREEZE_FILE} missing or unreadable (PREREGISTRATION §7.3: every WSP "
+        freeze_bytes = freeze_path.read_bytes()
+        freeze = json.loads(freeze_bytes.decode("utf-8"))
+    except (OSError, UnicodeDecodeError, json.JSONDecodeError):
+        raise DisclosureError(f"{freeze_path} missing or unreadable (PREREGISTRATION §7.3: every WSP "
                               "archive records the registry freeze it ran under)") from None
+    launches = check_freeze_record(freeze, freeze_path, allow_unfrozen=allow_unfrozen)
     return {"archive": _rel(archive), "build_record_sha256": rec_sha, "edit_state_sha256": h,
-            "freeze_sha256": freeze.get("freeze_sha256"), "tensors_edited": sorted(rec.get("tensors", {}))}
+            "freeze_sha256": freeze.get("freeze_sha256"), "freeze_json_sha256": _sha256_bytes(freeze_bytes),
+            "freeze_launches": launches, "unfrozen": freeze.get("freeze_sha256") is None,
+            "tensors_edited": sorted(rec.get("tensors", {}))}
+
+
+def _is_sha256(v: Any) -> bool:
+    return isinstance(v, str) and len(v) == 64 and all(c in "0123456789abcdef" for c in v)
+
+
+def check_freeze_record(freeze: Any, path: Path, *, allow_unfrozen: bool = False) -> dict[str, Any]:
+    """``ARCHIVE/FREEZE.json`` (``agent_loop_lab.v04.handover.freeze_record``) is a frozen WSP-A record whose every
+    launch ran under its freeze: a mapping with phase ``wsp-a``, a sha256 ``freeze_sha256``, ``unfrozen`` false,
+    ``consistent`` true and at least one launch, each naming a sha256. Returns ``launches``. Whether those freezes
+    are the current registry's (or an additive ancestor's) is :func:`agent_loop_lab.v04.handover.check_archive_freeze`.
+
+    ``allow_unfrozen`` (kit tests only: no registry existed) accepts a record with ``unfrozen`` true and no freeze."""
+    if not isinstance(freeze, dict):
+        raise DisclosureError(f"{path}: not a freeze record (a JSON object)")
+    if freeze.get("phase") != SOURCE_PHASE:
+        raise DisclosureError(f"{path}: phase {freeze.get('phase')!r}, not {SOURCE_PHASE!r}")
+    launches = freeze.get("launches")
+    if not isinstance(launches, dict):
+        raise DisclosureError(f"{path}: no launch records")
+    if allow_unfrozen and freeze.get("unfrozen") is True and freeze.get("freeze_sha256") is None:
+        return dict(launches)
+    problems = []
+    if not _is_sha256(freeze.get("freeze_sha256")):
+        problems.append("no registry freeze_sha256")
+    if freeze.get("unfrozen") is not False:
+        problems.append("built unfrozen (no registry)")
+    if freeze.get("consistent") is not True:
+        problems.append("a launch ran under another freeze (consistent is not true)")
+    if not launches:
+        problems.append("no launch records (the launcher writes one per launch)")
+    bad = sorted(k for k, v in launches.items() if not _is_sha256(v))
+    if bad:
+        problems.append(f"launches without a freeze_sha256: {bad}")
+    if problems:
+        raise DisclosureError(f"{path}: " + "; ".join(problems) + " (PREREGISTRATION §7.3)")
+    return dict(launches)
 
 
 def column_edit_hash(meta: Mapping[str, Any]) -> str | None:
@@ -170,9 +219,19 @@ def column_edit_hash(meta: Mapping[str, Any]) -> str | None:
     return meta.get("edit_state_sha256")
 
 
-def check_column(meta: Mapping[str, Any], edit_state_sha256: str, *, interface_spec_sha256: str | None = None) -> None:
-    """The WSP-A column is a full val readout of exactly the archived edit, on MPS in fp32 (PREREGISTRATION §7.1)."""
+def check_column(meta: Mapping[str, Any], edit_state_sha256: str, *, interface_spec_sha256: str | None = None,
+                 model_pins: Mapping[str, Any] | None = None, build_record_sha256: str | None = None) -> None:
+    """The WSP-A column is a full val readout of exactly the archived edit, on MPS in fp32 (PREREGISTRATION §7.1),
+    with the frozen interface and (when given) the pinned model (``meta["model"]`` = ``registry.model_pins``:
+    id, revision, file_sha256) and the archive's ``BUILD_RECORD.json`` sha256 (``meta["edit"]``, written by
+    ``hypaqwen.run_readout --edit ARCHIVE``)."""
     problems = []
+    if model_pins is not None and dict(meta.get("model") or {}) != dict(model_pins):
+        problems.append(f"read out with model {meta.get('model')!r}, not the pinned {dict(model_pins)!r}")
+    edit = meta.get("edit")
+    if build_record_sha256 is not None and (not isinstance(edit, Mapping)
+                                            or edit.get("build_record_sha256") != build_record_sha256):
+        problems.append("does not name the archive's BUILD_RECORD.json (hypaqwen.run_readout --edit ARCHIVE)")
     if meta.get("split") != "val" or meta.get("limit") is not None:
         problems.append(f"not a full val readout (split {meta.get('split')!r}, limit {meta.get('limit')!r})")
     if meta.get("device") != COLUMN_DEVICE or meta.get("dtype") != COLUMN_DTYPE:
