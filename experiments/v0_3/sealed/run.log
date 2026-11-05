@@ -1,0 +1,185 @@
+[16:05:43] checking inputs: archives, Phase C runs, manifests, unsealed data files
+[16:05:44] inputs ok: 13 networks, 2 policies (2s)
+[16:05:46] val: 4004 sessions, 87176 windows (1s)
+[16:05:56] val: identity with v0.2 rows ok
+[16:13:00] val networks: 105/1053 jobs (424s)
+[16:18:48] val networks: 210/1053 jobs (772s)
+[16:22:56] val networks: 315/1053 jobs (1020s)
+[16:25:53] val networks: 420/1053 jobs (1197s)
+[16:28:38] val networks: 525/1053 jobs (1362s)
+[16:31:10] val networks: 630/1053 jobs (1514s)
+[16:33:29] val networks: 735/1053 jobs (1653s)
+[16:35:30] val networks: 840/1053 jobs (1774s)
+[16:37:30] val networks: 945/1053 jobs (1894s)
+[16:39:10] val networks: 1050/1053 jobs (1994s)
+[16:39:12] val networks: 1053/1053 jobs (1996s)
+[16:39:18] val v0.3 A reference_policy: policy chunk 1/41 (6s)
+[16:40:21] val v0.3 A reference_policy: policy chunk 18/41 (68s)
+[16:41:25] val v0.3 A reference_policy: policy chunk 33/41 (133s)
+[16:41:42] val v0.3 A reference_policy: 84679 calls, 0 failures in 149s
+[16:41:48] val v0.3 B reference_policy: policy chunk 1/41 (7s)
+[16:42:49] val v0.3 B reference_policy: policy chunk 15/41 (67s)
+[16:43:57] val v0.3 B reference_policy: policy chunk 22/41 (136s)
+[16:44:58] val v0.3 B reference_policy: policy chunk 33/41 (196s)
+[16:45:21] val v0.3 B reference_policy: 84679 calls, 0 failures in 219s
+[16:45:21] val: predictions done (2365s)
+[16:45:58] val: scored and checked (37s)
+[16:46:07] counterfactual: 1800 sessions, 20220 windows, 900 pairs (9s)
+[16:47:19] counterfactual networks: 46/468 jobs (69s)
+[16:48:25] counterfactual networks: 92/468 jobs (135s)
+[16:49:29] counterfactual networks: 138/468 jobs (199s)
+[16:50:25] counterfactual networks: 184/468 jobs (255s)
+[16:51:13] counterfactual networks: 230/468 jobs (303s)
+[16:52:00] counterfactual networks: 276/468 jobs (350s)
+[16:52:45] counterfactual networks: 322/468 jobs (395s)
+[16:53:23] counterfactual networks: 368/468 jobs (432s)
+[16:53:59] counterfactual networks: 414/468 jobs (469s)
+[16:54:35] counterfactual networks: 460/468 jobs (505s)
+[16:54:40] counterfactual networks: 468/468 jobs (509s)
+[16:54:43] counterfactual v0.3 A reference_policy: policy chunk 1/18 (4s)
+[16:55:16] counterfactual v0.3 A reference_policy: 20220 calls, 0 failures in 36s
+[16:55:20] counterfactual v0.3 B reference_policy: policy chunk 1/18 (5s)
+[16:56:00] counterfactual v0.3 B reference_policy: 20220 calls, 0 failures in 45s
+[16:56:00] counterfactual: predictions done (590s)
+[16:59:44] isolated latency: 13 networks x 100 sessions (210s)
+[16:59:44] attempt record written: artifacts/reports/v03_sealed.started.json (no sealed file opened before this)
+[16:59:44] sealed files match their manifests
+[17:00:14] test: 3996 sessions, 87148 windows (30s)
+[17:00:24] test: identity with v0.2 ok
+[17:00:48] ood: 2000 sessions, 83011 windows (24s)
+[17:00:58] ood: identity with v0.2 ok
+[17:07:48] test networks: 104/1040 jobs (410s)
+[17:13:18] test networks: 208/1040 jobs (740s)
+[17:17:24] test networks: 312/1040 jobs (986s)
+[17:20:45] test networks: 416/1040 jobs (1187s)
+[17:23:34] test networks: 520/1040 jobs (1357s)
+[17:26:14] test networks: 624/1040 jobs (1516s)
+[17:28:34] test networks: 728/1040 jobs (1656s)
+[17:31:11] test networks: 832/1040 jobs (1813s)
+[17:33:19] test networks: 936/1040 jobs (1941s)
+[17:35:15] test networks: 1040/1040 jobs (2057s)
+[17:35:21] test v0.3 A reference_policy: policy chunk 1/40 (5s)
+[17:36:26] test v0.3 A reference_policy: policy chunk 18/40 (70s)
+[17:37:26] test v0.3 A reference_policy: policy chunk 33/40 (131s)
+[17:37:44] test v0.3 A reference_policy: 84584 calls, 0 failures in 148s
+[17:37:50] test v0.3 B reference_policy: policy chunk 1/40 (7s)
+[17:38:53] test v0.3 B reference_policy: policy chunk 15/40 (69s)
+[17:39:55] test v0.3 B reference_policy: policy chunk 21/40 (132s)
+[17:41:00] test v0.3 B reference_policy: policy chunk 33/40 (196s)
+[17:41:26] test v0.3 B reference_policy: 84584 calls, 0 failures in 223s
+[17:41:26] test: predictions done (2429s)
+[17:41:40] test: scored (13s)
+[17:46:30] ood networks: 52/520 jobs (290s)
+[17:50:55] ood networks: 104/520 jobs (555s)
+[17:54:44] ood networks: 156/520 jobs (785s)
+[17:58:15] ood networks: 208/520 jobs (995s)
+[18:01:16] ood networks: 260/520 jobs (1177s)
+[18:04:05] ood networks: 312/520 jobs (1345s)
+[18:06:53] ood networks: 364/520 jobs (1513s)
+[18:09:34] ood networks: 416/520 jobs (1674s)
+[18:12:06] ood networks: 468/520 jobs (1826s)
+[18:14:06] ood networks: 520/520 jobs (1946s)
+[18:14:21] ood v0.3 A reference_policy: policy chunk 1/20 (15s)
+[18:15:29] ood v0.3 A reference_policy: policy chunk 11/20 (83s)
+[18:16:37] ood v0.3 A reference_policy: policy chunk 19/20 (150s)
+[18:16:39] ood v0.3 A reference_policy: 80211 calls, 0 failures in 153s
+[18:17:03] ood v0.3 B reference_policy: policy chunk 1/20 (24s)
+[18:18:03] ood v0.3 B reference_policy: policy chunk 7/20 (85s)
+[18:19:16] ood v0.3 B reference_policy: policy chunk 13/20 (158s)
+[18:20:23] ood v0.3 B reference_policy: policy chunk 17/20 (224s)
+[18:20:52] ood v0.3 B reference_policy: 80211 calls, 0 failures in 253s
+[18:20:52] ood: predictions done (2352s)
+[18:21:03] ood: scored (11s)
+[18:21:05] wrote /Users/matthew/Development/hypabolic/HypaNet/artifacts/reports/v03_sealed.json
+== test [all]
+  v0.3 A network                     F1 0.7441 [0.7343375466499225, 0.7537804283569581]  FA 0.0188  fid 1.0000
+  v0.3 A reference_policy            F1 0.7441 [0.7343658593531119, 0.7538334211452941]  FA 0.0188
+  v0.3 B network                     F1 0.9571 [0.953324367172626, 0.9606065801081611]  FA 0.0246  fid 0.9995
+  v0.3 B reference_policy            F1 0.9576 [0.9537805316267189, 0.9610699859823248]  FA 0.0246
+  v0.3 C-32 seed0                    F1 0.3410 [0.3295576183880683, 0.35194482001033256]  FA 0.1717
+  v0.3 C-32 seed1                    F1 0.3167 [0.30501301448788987, 0.3281592125692105]  FA 0.3467
+  v0.3 C-32 seed2                    F1 0.3834 [0.3714116168693313, 0.39548791074962475]  FA 0.1641
+  v0.3 C-128 seed0                   F1 0.4213 [0.40901070016348695, 0.43323071348062275]  FA 0.1099
+  v0.3 C-128 seed1                   F1 0.4406 [0.429232216955255, 0.45157969992729186]  FA 0.1573
+  v0.3 C-128 seed2                   F1 0.4885 [0.47440664164964086, 0.5017963581396113]  FA 0.0990
+  v0.3 C-512 seed0                   F1 0.7162 [0.7044211723851026, 0.7278288911586299]  FA 0.1302
+  v0.3 C-512 seed1                   F1 0.6999 [0.686818056998803, 0.7124795981199844]  FA 0.0513
+  v0.3 C-512 seed2                   F1 0.7050 [0.6919709358993023, 0.7175764325485954]  FA 0.0886
+  v0.3 C-2048 seed0                  F1 0.7551 [0.7428503447335146, 0.7666672899635736]  FA 0.0436
+  v0.3 C-all seed0                   F1 0.9235 [0.9180768237342133, 0.9285143268040948]  FA 0.0606
+  prior dev-majority                 F1 0.1356 [0.13227094033121867, 0.1387930473837247]  FA 0.0000
+  prior always-PRODUCTIVE            F1 0.1356 [0.13227094033121867, 0.1387930473837247]  FA 0.0000
+  v0.3 C-32 mean±sd                  F1 0.3470 ± 0.0338
+  v0.3 C-128 mean±sd                 F1 0.4501 ± 0.0346
+  v0.3 C-512 mean±sd                 F1 0.7070 ± 0.0084
+  v0.3 C-2048 mean±sd                F1 0.7551 ± n/a
+  v0.3 C-all mean±sd                 F1 0.9235 ± n/a
+== ood [all]
+  v0.3 A network                     F1 0.8148 [0.8056950056259693, 0.8234298111035487]  FA 0.0399  fid 1.0000
+  v0.3 A reference_policy            F1 0.8148 [0.8056950056259693, 0.8234298111035487]  FA 0.0399
+  v0.3 B network                     F1 0.9082 [0.9048879449968986, 0.9115834428921114]  FA 0.0676  fid 1.0000
+  v0.3 B reference_policy            F1 0.9082 [0.9048879449968986, 0.9115834428921114]  FA 0.0676
+  v0.3 C-32 seed0                    F1 0.2965 [0.29002758391648703, 0.30322248268126073]  FA 0.4497
+  v0.3 C-32 seed1                    F1 0.1877 [0.18192439125217885, 0.1934600258407509]  FA 0.6150
+  v0.3 C-32 seed2                    F1 0.2386 [0.2315281309929732, 0.24539153523636217]  FA 0.4709
+  v0.3 C-128 seed0                   F1 0.2743 [0.26807592674230635, 0.28053152611142457]  FA 0.3463
+  v0.3 C-128 seed1                   F1 0.2615 [0.25537284804327115, 0.267722154612799]  FA 0.4369
+  v0.3 C-128 seed2                   F1 0.3267 [0.3193775891165857, 0.3339040782911906]  FA 0.3511
+  v0.3 C-512 seed0                   F1 0.2975 [0.2873902183865069, 0.3072043238592322]  FA 0.7980
+  v0.3 C-512 seed1                   F1 0.3424 [0.3338166937358412, 0.3510217598206526]  FA 0.4937
+  v0.3 C-512 seed2                   F1 0.2755 [0.2650955970597296, 0.28580227901335353]  FA 0.7674
+  v0.3 C-2048 seed0                  F1 0.4000 [0.3912754970360934, 0.40857946886266266]  FA 0.5041
+  v0.3 C-all seed0                   F1 0.4879 [0.4783434340190163, 0.4969199130021296]  FA 0.3455
+  prior dev-majority                 F1 0.1810 [0.17988064984780405, 0.1821183861316505]  FA 0.0000
+  prior always-PRODUCTIVE            F1 0.1810 [0.17988064984780405, 0.1821183861316505]  FA 0.0000
+  v0.3 C-32 mean±sd                  F1 0.2409 ± 0.0545
+  v0.3 C-128 mean±sd                 F1 0.2875 ± 0.0345
+  v0.3 C-512 mean±sd                 F1 0.3051 ± 0.0341
+  v0.3 C-2048 mean±sd                F1 0.4000 ± n/a
+  v0.3 C-all mean±sd                 F1 0.4879 ± n/a
+== val [excluding_disclosed]
+  v0.3 A network                     F1 0.7497 [0.7397058987334425, 0.7597013261560558]  FA 0.0199  fid 1.0000
+  v0.3 A reference_policy            F1 0.7497 [0.7397058987334425, 0.7597013261560558]  FA 0.0199
+  v0.3 B network                     F1 0.9541 [0.9499931245631865, 0.9581311979536028]  FA 0.0242  fid 0.9997
+  v0.3 B reference_policy            F1 0.9544 [0.950276268422886, 0.9584221660618164]  FA 0.0242
+  v0.3 C-32 seed0                    F1 0.3494 [0.3377093462321265, 0.36086688975491243]  FA 0.1634
+  v0.3 C-32 seed1                    F1 0.3163 [0.30470194872595646, 0.32760834119358706]  FA 0.3334
+  v0.3 C-32 seed2                    F1 0.3931 [0.38036874091203626, 0.40570620480162306]  FA 0.1420
+  v0.3 C-128 seed0                   F1 0.4112 [0.39848754685944177, 0.4236043978506611]  FA 0.0953
+  v0.3 C-128 seed1                   F1 0.4402 [0.4284499330257817, 0.4518521763325197]  FA 0.1434
+  v0.3 C-128 seed2                   F1 0.4822 [0.4673501128087697, 0.4963086224671533]  FA 0.0923
+  v0.3 C-512 seed0                   F1 0.7205 [0.7082783499334903, 0.7324795933895468]  FA 0.1279
+  v0.3 C-512 seed1                   F1 0.7088 [0.6958344106999158, 0.7213576168757198]  FA 0.0512
+  v0.3 C-512 seed2                   F1 0.7119 [0.6989620914295407, 0.7246326734946723]  FA 0.0873
+  v0.3 C-2048 seed0                  F1 0.7690 [0.757022115389481, 0.7805814292935519]  FA 0.0409
+  v0.3 C-all seed0                   F1 0.9257 [0.9203414994243111, 0.9305664222242022]  FA 0.0576
+  prior dev-majority                 F1 0.1394 [0.13601603009004937, 0.14295221882210388]  FA 0.0000
+  prior always-PRODUCTIVE            F1 0.1394 [0.13601603009004937, 0.14295221882210388]  FA 0.0000
+  v0.3 C-32 mean±sd                  F1 0.3529 ± 0.0385
+  v0.3 C-128 mean±sd                 F1 0.4446 ± 0.0357
+  v0.3 C-512 mean±sd                 F1 0.7137 ± 0.0061
+  v0.3 C-2048 mean±sd                F1 0.7690 ± n/a
+  v0.3 C-all mean±sd                 F1 0.9257 ± n/a
+== val [all_val]
+  v0.3 A network                     F1 0.7479 [0.7384524478222689, 0.757463309481735]  FA 0.0203  fid 1.0000
+  v0.3 A reference_policy            F1 0.7479 [0.7384524478222689, 0.757463309481735]  FA 0.0203
+  v0.3 B network                     F1 0.9548 [0.9509932915391007, 0.9586099545739941]  FA 0.0252  fid 0.9997
+  v0.3 B reference_policy            F1 0.9551 [0.9512596818565547, 0.958857717220955]  FA 0.0252
+  v0.3 C-32 seed0                    F1 0.3535 [0.342183308222515, 0.36454162127054474]  FA 0.1614
+  v0.3 C-32 seed1                    F1 0.3168 [0.30599241834710256, 0.3277573251120062]  FA 0.3311
+  v0.3 C-32 seed2                    F1 0.3935 [0.3813117597302982, 0.4054765310613873]  FA 0.1404
+  v0.3 C-128 seed0                   F1 0.4119 [0.39989689959018887, 0.4238183162183979]  FA 0.0955
+  v0.3 C-128 seed1                   F1 0.4398 [0.42824098798052757, 0.45071458542751064]  FA 0.1428
+  v0.3 C-128 seed2                   F1 0.4828 [0.4682937487750081, 0.49680368559293303]  FA 0.0932
+  v0.3 C-512 seed0                   F1 0.7185 [0.7065763669478037, 0.7300770712274424]  FA 0.1283
+  v0.3 C-512 seed1                   F1 0.7068 [0.6943901756661421, 0.7188903624118783]  FA 0.0515
+  v0.3 C-512 seed2                   F1 0.7100 [0.6975719974200529, 0.7220298766476053]  FA 0.0873
+  v0.3 C-2048 seed0                  F1 0.7694 [0.757768595069334, 0.7805516521825279]  FA 0.0410
+  v0.3 C-all seed0                   F1 0.9261 [0.9213022054906667, 0.9308059965879784]  FA 0.0588
+  prior dev-majority                 F1 0.1372 [0.1338409759898039, 0.1404094396117871]  FA 0.0000
+  prior always-PRODUCTIVE            F1 0.1372 [0.1338409759898039, 0.1404094396117871]  FA 0.0000
+  v0.3 C-32 mean±sd                  F1 0.3546 ± 0.0384
+  v0.3 C-128 mean±sd                 F1 0.4448 ± 0.0358
+  v0.3 C-512 mean±sd                 F1 0.7118 ± 0.0060
+  v0.3 C-2048 mean±sd                F1 0.7694 ± n/a
+  v0.3 C-all mean±sd                 F1 0.9261 ± n/a
