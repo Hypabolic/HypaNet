@@ -1,6 +1,6 @@
 # v0.4 status
 
-_Last update: 2026-11-05 23:30. Plan: `agent_doom_loop_detector_plan_v0_4.md`. Matthew accepted every recommendation in it, and the post-M0 revisions are in its "Revisions after M0" section. No Qwen output has been compared with a label._
+_Last update: 2026-11-06 00:40. Plan: `agent_doom_loop_detector_plan_v0_4.md`. Matthew accepted every recommendation in it, and the post-M0 revisions are in its "Revisions after M0" section. No Qwen output has been compared with a label._
 
 ## Done
 
@@ -17,6 +17,16 @@ _Last update: 2026-11-05 23:30. Plan: `agent_doom_loop_detector_plan_v0_4.md`. M
 | **WSP kernel** (§3–6) | `envs/qwen/hypaqwen/wsp/` | Model server with a kernel socket and a forward socket, author client, `./fwd`, guards on torch 2.14.1 (KERNEL_CLIENT, BUILD_EDIT), build runner. Built in three worktrees, then adversarially reviewed: 19 findings, all fixed. At merge, the server and runner were given one shared rescaling rule and edit hash (`wsp/edit_state.py`), and the runner was moved to the real guard |
 | Scoring bridge | `src/agent_loop_lab/v04/scoring.py` | Val rows checked against v0.3's `rows_sha256`. Strict column alignment. `m4.score_columns`, with H2 not applicable |
 | WSP kernel contract | `docs/V04_WSP_KERNEL.md` | Two processes; forward as a separate metered tool; edit scope; guards; build runner |
+
+| **v0.4 spec and author packet** | `agent_doom_loop_detector_spec_v0_4.md`, `scripts/v04_build_packet.py` | `[packet]` sections, plus the v0.2 labelling rules exactly as v0.3 A saw them; the interface and Qwen tokenizer files; leakage checks; deterministic. Reviewed (6 findings, 5 fixed, 1 accepted at G1: the tool files name WSP-B mechanics) |
+| **Session harness** | `scripts/v04_{prepare_author_dir,launch,kit_tests}.sh`, `v04_{cost,audit_session,run_build}.py`, `experiments/v0_4/author_kit/` | `./py` launcher under the KERNEL_CLIENT guard; command hook; settings; session-id cost accounting, which also charges killed launches; AST audit plus ledger cross-check; watchdog. Reviewed (7 findings, all fixed). The kit test passed end to end on a scratch dir (Haiku, server on CPU) |
+| **G1 pre-registration (draft)** | `experiments/v0_4/PREREGISTRATION.md`, `scripts/v04_freeze.py` | Probe and LoRA recipes, backends, Q5 statistic and hypotheses. The freeze covers every v0.4 tree and the root-env import closure, and refuses until the recipes and WSP-B pieces exist. Reviewed (8 findings, all fixed) |
+
+## Running (night of 5–6 Nov)
+
+- **Qwen-0 val readout** on MPS (`experiments/v0_4/columns/qwen0.val.npz`, label-free), ETA about 04:00. Scored only after the G1 freeze.
+- **Workflow: the last G1 components.** Probe and LoRA code, the budget export and cloud runner, the WSP-B disclosure builder and prompt, and the Mechanisms table in EDIT.md. Each is reviewed before the freeze.
+- **Then:** freeze G1 → prepare `../HypaNet-v04-author` → kit tests → score Qwen-0 on val (harness only) → launch WSP-A (Fable, cap US$500), as Matthew asked.
 
 ## Kernel rules added beyond the contract (fold into `docs/V04_WSP_KERNEL.md` at G1)
 
