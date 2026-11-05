@@ -2,3 +2,4 @@
 * text=auto eol=lf
 # Model artefacts are raw float32 payloads; never touch their bytes.
 *.dlw binary
+*.pt filter=lfs diff=lfs merge=lfs -text
