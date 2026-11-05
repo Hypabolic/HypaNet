@@ -57,11 +57,14 @@ class Verbaliser:
         self.iface = iface
         self.hidden_layers = tuple(hidden_layers)
         self.device = next(model.parameters()).device
-        emb = model.get_input_embeddings().weight
-        if model.get_output_embeddings().weight.data_ptr() != emb.data_ptr():
+        self._label_index = torch.tensor(list(iface.label_ids), dtype=torch.long, device=self.device)
+        self._check_tied()
+
+    def _check_tied(self) -> torch.Tensor:
+        emb = self.model.get_input_embeddings().weight
+        if self.model.get_output_embeddings().weight.data_ptr() != emb.data_ptr():
             raise ValueError("expected tied input and output embeddings")
-        self.lm_head = emb  # [V, d]
-        self.label_rows = emb[list(iface.label_ids)]  # [4, d]
+        return emb
 
     def _run(self, ids: Sequence[int], cache, *, hidden: bool = False):
         x = torch.tensor([list(ids)], dtype=torch.long, device=self.device)
@@ -69,9 +72,11 @@ class Verbaliser:
                                 output_hidden_states=hidden and bool(self.hidden_layers))
 
     def _read(self, out, logits4, lse, hid) -> None:
+        # Read the (tied) embedding at read time, so an edit to the label-word rows reaches the readout.
+        emb = self._check_tied()  # [V, d]
         h = out.last_hidden_state[0, -1]  # final norm applied
-        logits4.append((self.label_rows @ h).float())
-        lse.append(torch.logsumexp((self.lm_head @ h).float(), dim=0))
+        logits4.append((emb.index_select(0, self._label_index) @ h).float())
+        lse.append(torch.logsumexp((emb @ h).float(), dim=0))
         for layer in self.hidden_layers:
             hid[layer].append(out.hidden_states[layer][0, -1].float())
 

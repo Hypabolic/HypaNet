@@ -63,3 +63,23 @@ def test_label_never_sees_later_blocks(setup):
     full = verb.session(bids, task.window_pos)
     cut = verb.session(bids[: t + 1], [t])
     assert torch.equal(full.label_logits[0], cut.label_logits[0])
+
+
+def test_label_row_edit_reaches_readout(setup):
+    """Embeddings are tied: an in-place edit to a label word's row must change that label's logit."""
+    tok, iface, verb = setup
+    task = _tasks(1)[0]
+    bids = iface.block_ids(tok, task.blocks)
+    t = task.window_pos[0]
+    before = verb.reference_window(bids, t)
+    emb = verb.model.get_input_embeddings().weight
+    row = iface.label_ids[2]
+    saved = emb.data[row].clone()
+    try:
+        emb.data[row] += 0.01 * torch.ones_like(saved)
+        after = verb.reference_window(bids, t)
+    finally:
+        emb.data[row] = saved
+    assert after.label_logits[0, 2] != before.label_logits[0, 2]
+    # The other three label rows are untouched, but the edit also changes the input embedding
+    # wherever the token occurs, so their logits may move too; only the edited one is asserted.
