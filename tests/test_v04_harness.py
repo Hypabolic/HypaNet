@@ -1,9 +1,12 @@
 """v0.4 session harness (docs/V04_WSP_KERNEL.md §7): the PreToolUse hook, cost by session-id delta, the session
-audit, the settings templates and the kit-transcript check. No model, no claude and no envs/qwen import: the
-hook and the kernel sources are read or loaded by file path only."""
+audit, the settings templates and the kit-transcript check; at G1 also the freeze records, the WSP-B handover
+(agent_loop_lab.v04.handover, scripts/v04_prepare_phase_b.sh) and the launcher's wsp-b mode, statically and on
+fakes. No model, no claude and no envs/qwen import: the hook and the kernel sources are read or loaded by file
+path only."""
 
 from __future__ import annotations
 
+import hashlib
 import importlib.util
 import json
 import os
@@ -881,3 +884,257 @@ def test_fwd_records_are_cross_checked_against_the_ledger(author, tmp_path):
     probs = m.fwd_crosscheck(out, tmp_path / f"{PHASE}.ledger.jsonl")["problems"]
     assert any("fwd/2" in x and "edit_hash" in x for x in probs) and any("fwd/7" in x and "no ok ledger" in x for x in probs)
     assert any("hidden_helper.py" in x for x in probs)
+
+
+# -- G1: freeze records, WSP-B handover and launch (PREREGISTRATION §6, §7.1, §7.3) -----------------------------
+
+from agent_loop_lab.v04 import disclosure as D  # noqa: E402
+from agent_loop_lab.v04 import handover as H  # noqa: E402
+from agent_loop_lab.v04.registry import freeze_digest  # noqa: E402
+
+from tests.test_v04_disclosure import EDIT_HASH, V03, _inputs, fake_archive  # noqa: E402
+
+
+def fake_registry(path: Path) -> str:
+    import yaml
+
+    rec = {"spec_version": "0.4", "files": {"a": "0" * 64}, "revisions": []}
+    rec["freeze_sha256"] = freeze_digest(rec)
+    path.write_text(yaml.safe_dump(rec))
+    return rec["freeze_sha256"]
+
+
+def test_freeze_info_and_record(tmp_path):
+    reg = tmp_path / "registry_v0_4.yaml"
+    sha = fake_registry(reg)
+    info = H.freeze_info(reg)
+    assert info["freeze_sha256"] == info["g1_freeze_sha256"] == sha and info["revisions"] == 0
+    logs = tmp_path / "logs"
+    logs.mkdir()
+    for name, f in (("wsp-a", sha), ("wsp-a.c1", sha), ("wsp-a.r1", sha), ("wsp-b", "x" * 64)):
+        (logs / f"{name}.launch.json").write_text(json.dumps({"name": name, "freeze_sha256": f}))
+    (logs / "wsp-a.20261106T000000Z.noinit.launch.json").write_text(json.dumps({"freeze_sha256": "y"}))
+    rec = H.freeze_record(logs, "wsp-a", reg, required=True)
+    assert rec["launches"] == {"wsp-a": sha, "wsp-a.c1": sha, "wsp-a.r1": sha} and rec["consistent"] is True
+    assert H.freeze_record(logs, "wsp-b", reg, required=True)["consistent"] is False
+    with pytest.raises(H.HandoverError, match="missing"):
+        H.freeze_record(logs, "wsp-a", tmp_path / "none.yaml", required=True)
+    assert H.freeze_record(logs, "wsp-a", tmp_path / "none.yaml", required=False)["unfrozen"] is True
+    reg.write_text(reg.read_text().replace("spec_version: '0.4'", "spec_version: '0.5'"))
+    with pytest.raises(H.HandoverError, match="does not match"):
+        H.freeze_info(reg)
+    p = subprocess.run([sys.executable, "-m", "agent_loop_lab.v04.handover", "freeze-sha", str(reg)], cwd=REPO,
+                       capture_output=True, text=True)
+    assert p.returncode == 2 and "refusing" in p.stderr
+
+
+def _journal(d: Path, hashes: list[str]) -> None:
+    d.mkdir(parents=True, exist_ok=True)
+    lines = []
+    for n, h in enumerate(hashes, start=1):
+        (d / f"{n:06d}.safetensors").write_bytes(f"t{n}".encode())
+        lines.append(json.dumps({"seq": n, "op": "save", "name": "x", "edit_hash": h, "file": f"{n:06d}.safetensors"}))
+    (d / "journal.jsonl").write_text("".join(x + "\n" for x in lines))
+
+
+def test_seed_journal_starts_wsp_b_in_the_wsp_a_state(tmp_path):
+    logs = tmp_path / "logs"
+    _journal(logs / "wsp-a" / "journal", ["h1", EDIT_HASH])
+    with pytest.raises(H.HandoverError, match="not the archived edit"):
+        H.seed_journal(logs, "other")
+    got = H.seed_journal(logs, EDIT_HASH)
+    assert got["seeded"] == "now" and got["final_edit_hash"] == EDIT_HASH and got["entries"] == 2
+    assert H.seed_journal(logs, EDIT_HASH)["seeded"] == "already"
+    b = logs / "wsp-b" / "journal"
+    assert (b / "journal.jsonl").read_bytes() == (logs / "wsp-a" / "journal" / "journal.jsonl").read_bytes()
+    with open(b / "journal.jsonl", "a") as f:  # a WSP-B save after the seed: still seeded, never re-seeded
+        f.write(json.dumps({"seq": 3, "op": "drop", "name": "x", "edit_hash": "h3"}) + "\n")
+    assert H.check_seeded_journal(logs / "wsp-a" / "journal", b)["final_edit_hash"] == "h3"
+    with pytest.raises(H.HandoverError, match="WSP-B entries"):
+        H.seed_journal(logs, EDIT_HASH)
+    (b / "000001.safetensors").write_bytes(b"forged")
+    with pytest.raises(H.HandoverError, match="differs"):
+        H.check_seeded_journal(logs / "wsp-a" / "journal", b)
+    logs2 = tmp_path / "logs2"
+    _journal(logs2 / "wsp-a" / "journal", [EDIT_HASH])
+    (logs2 / "wsp-b.ledger.jsonl").write_text("{}\n")
+    with pytest.raises(H.HandoverError, match="WSP-B has started"):
+        H.seed_journal(logs2, EDIT_HASH)
+
+
+@pytest.fixture
+def wsp_b(tmp_path):
+    """A fake WSP-A archive and a disclosure built from v0.3's 200 windows against it."""
+    arch = fake_archive(tmp_path / "archive")
+    info = D.check_wsp_a_archive(arch)
+    v03 = (json.loads((V03 / "disclosure" / "DISCLOSURE.json").read_text()),
+           json.loads((V03 / "DISCLOSURE_PRIVATE.json").read_text()))
+    rows, pos, pred, blocks, wpos, _ = _inputs(v03)
+    root = tmp_path / "disc"
+    D.write_outputs(root, *D.build(rows, pos, pred, blocks, wpos, *v03, {"wsp_a": info}))
+    logs = tmp_path / "logs"
+    _journal(logs / "wsp-a" / "journal", ["h1", EDIT_HASH])
+    return arch, root, logs
+
+
+def test_wsp_b_inputs(wsp_b, tmp_path):
+    arch, root, logs = wsp_b
+    got = H.wsp_b_inputs(arch, root)
+    assert got["A_EDIT_HASH"] == EDIT_HASH and got["windows"] == 200
+    assert got["A_SHA256"] == hashlib.sha256((arch / "BUILD_RECORD.json").read_bytes()).hexdigest()
+    assert got["DISCLOSURE_SHA256"] == D.sha_field(root / "disclosure" / "DISCLOSURE.sha256")
+    author = tmp_path / "author"
+    (author / "disclosure").mkdir(parents=True)
+    with pytest.raises(H.HandoverError, match="byte-identical copy"):
+        H.wsp_b_inputs(arch, root, author_dir=author)
+    for n in ("DISCLOSURE.json", "DISCLOSURE.sha256"):
+        shutil.copy(root / "disclosure" / n, author / "disclosure" / n)
+    H.wsp_b_inputs(arch, root, author_dir=author)
+    with pytest.raises(H.HandoverError, match="seeds it"):
+        H.wsp_b_inputs(arch, root, author_dir=author, logs=logs)
+    H.seed_journal(logs, EDIT_HASH)
+    assert H.wsp_b_inputs(arch, root, author_dir=author, logs=logs)["journal"]["wsp_a_final_edit_hash"] == EDIT_HASH
+    (author / "disclosure" / "extra.txt").write_text("x")
+    with pytest.raises(H.HandoverError, match="other files"):
+        H.wsp_b_inputs(arch, root, author_dir=author)
+
+
+def test_wsp_b_inputs_refuse_mismatches(wsp_b, tmp_path):
+    arch, root, _ = wsp_b
+    w = root / "DISCLOSED_WINDOWS.json"
+    w.write_bytes(w.read_bytes().replace(b'"pos": 8', b'"pos": 9', 1))
+    with pytest.raises(H.HandoverError, match="DISCLOSED_WINDOWS.json is not the one"):
+        H.wsp_b_inputs(arch, root)
+    other = fake_archive(tmp_path / "other")
+    rec = json.loads((other / "BUILD_RECORD.json").read_text())
+    (other / "BUILD_RECORD.json").write_text(json.dumps({**rec, "edit_state_sha256": "d" * 64}))
+    (other / "BUILD_RECORD.sha256").write_text(hashlib.sha256((other / "BUILD_RECORD.json").read_bytes()).hexdigest())
+    with pytest.raises(H.HandoverError, match="another WSP-A archive"):
+        H.wsp_b_inputs(other, root)
+    (root / "disclosure" / "DISCLOSURE.sha256").write_text("0" * 64 + "  DISCLOSURE.json\n")
+    with pytest.raises(H.HandoverError, match="does not match"):
+        H.wsp_b_inputs(arch, root)
+
+
+def test_wsp_b_prompt_renders_every_placeholder(wsp_b):
+    arch, root, _ = wsp_b
+    tmpl = (K.KIT_DIR / "prompt_wsp_b.md").read_text()
+    p = subprocess.run([sys.executable, "-m", "agent_loop_lab.v04.handover", "render-wsp-b-prompt", "--template",
+                        str(K.KIT_DIR / "prompt_wsp_b.md"), "--archive", str(arch), "--disclosure-root", str(root)],
+                       cwd=REPO, capture_output=True, text=True)
+    assert p.returncode == 0, p.stderr
+    out = p.stdout
+    vals = H.wsp_b_inputs(arch, root)
+    for k in H.PROMPT_KEYS:
+        assert "{" + k + "}" in tmpl and "{" + k + "}" not in out and vals[k] in out
+    assert K.disclosure_leaks(out, Path("/nonexistent/HypaNet-v04-author")) == []
+    with pytest.raises(H.HandoverError, match="no value"):
+        H.render_prompt(tmpl, {**vals, "A_EDIT_HASH": None})
+    with pytest.raises(H.HandoverError, match="placeholder"):
+        H.render_prompt(tmpl.replace("{DISCLOSURE_SHA256}", "x"), vals)
+
+
+def test_wsp_b_prompt_states_the_v04_rules():
+    p = (K.KIT_DIR / "prompt_wsp_b.md").read_text()
+    for need in ("disclosure/DISCLOSURE.json", "output/wsp-b/", "output/wsp-a/", "REVISION.md", "EDIT.md",
+                 "build_edit.py", "**one revision**", "2 distinct edit states", '"disclosed_windows"',
+                 "label-word logits and their argmax **only**", "`Vnnn`", "## Mechanisms",
+                 "| id | tensors | target class | claim |", "validation", "oracle_label", "network_class",
+                 "final", "./fwd output/wsp-b/"):
+        assert need in p, need
+    assert "reference_policy" not in p and str(REPO) not in p and "/" + "Users" not in p
+    for name in ("prompt_wsp_a.md", "prompt_wsp_b.md"):
+        text = (K.KIT_DIR / name).read_text()
+        assert "## Mechanisms" in text and "| id | tensors | target class | claim |" in text
+        assert "`label rows`" in text and "`PRODUCTIVE`, `RECOVERY`, `STALLED`, `OSCILLATING`" in text
+
+
+def test_packet_and_spec_state_the_mechanisms_table():
+    from agent_loop_lab.v04 import mechanisms as MECH
+    from agent_loop_lab.v04 import packet as P
+
+    text = P.AUTHOR_INSTRUCTIONS
+    assert "## Mechanisms" in text and "| id | tensors | target class | claim |" in text
+    example = text[text.index("```text\n  ## Mechanisms"):]
+    example = "\n".join(x[2:] for x in example.split("\n")[1:8])
+    rows = MECH.parse(example)["rows"]  # the packet's own example parses
+    assert [r["target_class"] for r in rows] == ["STALLED", "OSCILLATING"] and rows[1]["tensors"] == ["label rows"]
+    spec = (REPO / "agent_doom_loop_detector_spec_v0_4.md").read_text()
+    s8 = spec[spec.index("## 8. Deliverables and build checks [packet]"):spec.index("## 9. ")]
+    assert "## Mechanisms" in s8 and "`id | tensors | target class | claim`" in s8
+
+
+def test_launcher_wsp_b_mode_is_real():
+    text = (REPO / "scripts" / "v04_launch.sh").read_text()
+    assert subprocess.run(["sh", "-n", str(REPO / "scripts" / "v04_launch.sh")]).returncode == 0
+    assert "WSP-B is not ready" not in text
+    pos = lambda needle: text.index(needle)  # noqa: E731
+    case_b = text[pos('  wsp-b)\n    TARGET="wsp-b"'):pos('  continue)\n    TARGET')]
+    assert 'SESSION_ARGS="--resume $SID"' in case_b and "render-wsp-b-prompt" in case_b and "prompt_wsp_b.md" in case_b
+    assert "--session-id" not in case_b
+    # every launch of the phase checks the inputs before the server starts, and the server gets --disclosed
+    assert pos('if [ "$TARGET" = wsp-b ]; then\n  B_INPUTS=') < pos("hypaqwen.wsp.server --phase")
+    assert "wsp-b-inputs --archive" in text and '--logs "$LOGDIR"' in text
+    assert 'DISCLOSED_ARGS="--disclosed $DISCLOSED"' in text and '"$REQUEST_CAP" $DISCLOSED_ARGS)' in text
+    assert pos('grep -q "\\"edit_hash\\": \\"$B_A_EDIT\\""') > pos("until grep -q '\"ready\": true'")
+    assert "-perm -u+w" in text and "output/wsp-a" in text
+    # the freeze: read after --check (real) and written into the launch record before claude starts
+    assert pos("scripts/v04_freeze.py --check") < pos('FREEZE_SHA="$(cd "$REPO" && uv run python -m '
+                                                      'agent_loop_lab.v04.handover freeze-sha')
+    assert '"freeze_sha256": %s' in text and text.count('"$FREEZE_JSON"') == 2
+    assert pos('> "$LOGDIR/$NAME.launch.json"') < pos('claude -p "$PROMPT"')
+    real = text[pos('  LOGDIR="$REAL_LOGDIR"'):pos("DEVICE=")]
+    assert "V04_WSP_A_ARCHIVE" in text and "V04_WSP_A_ARCHIVE" not in real  # kit-only overrides
+    assert "V04_DISCLOSURE_ROOT" in text and "V04_DISCLOSURE_ROOT" not in real
+
+
+def test_prepare_phase_b_script():
+    path = REPO / "scripts" / "v04_prepare_phase_b.sh"
+    text = path.read_text()
+    assert subprocess.run(["sh", "-n", str(path)]).returncode == 0 and os.access(path, os.X_OK)
+    text = text[text.index("\nset -eu\n"):]  # the code, after the header comment
+    pos = lambda needle: text.index(needle)  # noqa: E731
+    order = ["scripts/v04_freeze.py --check", "wsp-b-inputs --archive", "seed-journal --logs",
+             'cp "$SRC/DISCLOSURE.json" "$SRC/DISCLOSURE.sha256" "$DST/"', 'chmod -R a-w "$AUTHOR_DIR/output/wsp-a"',
+             'mkdir -p "$OUT_B/scratch"', "hypaqwen.wsp.install verify", "hook-selftest --phase wsp-b",
+             'HANDOVER="$REPO/experiments/v0_4/wsp_b/HANDOVER.json"']
+    assert [pos(x) for x in order[:-1]] == sorted(pos(x) for x in order[:-1]) and order[-1] in text
+    assert "install install" not in text  # the tools are the same files in every phase: verified only
+    assert text.count("\ncp ") + text.count(" cp ") == 1  # only the two disclosure files go into the author dir
+    assert 'chmod 444 "$DST/DISCLOSURE.json" "$DST/DISCLOSURE.sha256"' in text and 'chmod 555 "$DST"' in text
+    assert "trap 'chmod 555" in text and "V04_PREPARE_UNFROZEN" in text
+
+
+def test_run_build_freeze_and_archive_records(tmp_path):
+    m = _run_build_module()
+    assert m.is_real_build(m.REAL_LOGS, tmp_path) and m.is_real_build(tmp_path, m.REAL_ARCHIVES / "wsp-a")
+    assert not m.is_real_build(tmp_path / "logs", tmp_path / "archive")
+    arch = tmp_path / "archive"
+    (arch / "author_output").mkdir(parents=True)
+    tensors = {"model.language_model.layers.3.mlp.down_proj.weight": {}, "model.language_model.embed_tokens.weight": {}}
+    (arch / "BUILD_RECORD.json").write_text(json.dumps({"tensors": tensors}))
+    (arch / "author_output" / "EDIT.md").write_text(
+        "# Edit\n\n## Mechanisms\n\n| id | tensors | target class | claim |\n| --- | --- | --- | --- |\n"
+        "| M1 | `model.language_model.layers.3.mlp.down_proj.weight` | STALLED | x |\n| M2 | label rows | RECOVERY | y |\n")
+    reg = tmp_path / "registry_v0_4.yaml"
+    sha = fake_registry(reg)
+    freeze = H.freeze_record(tmp_path, "wsp-a", reg, required=True)
+    extra = m.write_records(arch, freeze)
+    assert json.loads((arch / "FREEZE.json").read_text())["freeze_sha256"] == sha
+    assert D.sha_field(arch / "BUILD_RECORD.sha256") == extra["build_record_sha256"] \
+        == hashlib.sha256((arch / "BUILD_RECORD.json").read_bytes()).hexdigest()
+    mech = json.loads((arch / "MECHANISMS.json").read_text())
+    assert mech["evaluated"] == 2 and mech["q5_possible"]
+    assert mech["units"] == ["label rows", "model.language_model.layers.3.mlp.down_proj.weight"]
+
+
+def test_run_build_refuses_a_real_build_without_the_registry(tmp_path, capsys):
+    m = _run_build_module()
+    author = tmp_path / "author"
+    (author / "output" / "wsp-a").mkdir(parents=True)
+    logs = tmp_path / "logs"
+    (logs / "wsp-a" / "journal").mkdir(parents=True)
+    target = m.REAL_ARCHIVES / "test-never-created"
+    assert m.main(["wsp-a", "--author-dir", str(author), "--logs", str(logs), "--archive", str(target),
+                   "--registry", str(tmp_path / "none.yaml")]) == 2
+    assert "PREREGISTRATION §7.3" in capsys.readouterr().err and not target.exists()

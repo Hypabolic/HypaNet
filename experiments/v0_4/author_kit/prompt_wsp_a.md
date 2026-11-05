@@ -14,7 +14,19 @@ Deliverables, all in `output/wsp-a/`:
   original weights;
 - `edit_constants.safetensors` (optional, at most 8 MB): activation-derived vectors `build_edit.py` uses;
 - `EDIT.md`: what you changed, in which tensors, the mechanism you claim, and the ledger call ids behind
-  every constant vector;
+  every constant vector. It must end with a section headed exactly `## Mechanisms`: one Markdown table
+  with exactly the columns `| id | tensors | target class | claim |`, in that order, and one row per
+  mechanism you claim (the format, an example and the rules are in `packet/AUTHOR_INSTRUCTIONS.md`,
+  "`EDIT.md`"):
+  - `id`: a short unique id (`M1`, `M2`, ...);
+  - `tensors`: the full names of the edited tensors that implement the mechanism, comma-separated, or
+    `label rows` for the four label-word rows of the embedding;
+  - `target class`: exactly one of `PRODUCTIVE`, `RECOVERY`, `STALLED`, `OSCILLATING`;
+  - `claim`: one sentence.
+
+  Each row is checked on its own, by reverting exactly its tensors to the original weights. A row is
+  checked only if every tensor it names is edited, it does not name the whole edit, and it shares no
+  tensor with any other row;
 - `ITERATIONS.md`: every iteration, logged as you go.
 
 WSP-A rules:
