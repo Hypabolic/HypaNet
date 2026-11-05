@@ -1,0 +1,73 @@
+{
+ "model": {
+  "id": "Qwen/Qwen3.5-0.8B",
+  "revision": "2fc06364715b967f1860aea9cf38778875588b17"
+ },
+ "interface": {
+  "status": "DRAFT (not frozen; G1 freezes it)",
+  "source_sha256": "db7865a92818d0c19f353b326cba8968fa14917e587bf333513c84e671e6dc4b",
+  "prefix_tokens": 167,
+  "suffix_tokens": 11,
+  "label_words": [
+   " productive",
+   " recovering",
+   " stalled",
+   " looping"
+  ],
+  "label_token_ids": [
+   25399,
+   39923,
+   65552,
+   60477
+  ]
+ },
+ "definition": "tokens_per_session = prefix + every block piece (block text + newline), no suffix; readout tokens add one suffix per window; percentiles are numpy linear",
+ "splits": {
+  "val": {
+   "sessions": 4004,
+   "windows": 87176,
+   "tokens_per_session": {
+    "mean": 1726.44,
+    "p50": 1500.0,
+    "p95": 3477.85,
+    "p99": 4357.95,
+    "max": 6849
+   },
+   "tokens_per_block": {
+    "mean": 54.2,
+    "p50": 46.0,
+    "p95": 100.0,
+    "p99": 125.0,
+    "max": 165
+   },
+   "total_session_tokens": 6912664,
+   "total_readout_tokens": 7871600,
+   "readout_over_session": 1.139,
+   "v03_tokens_per_session_mean": 875.91,
+   "qwen_over_v03_mean": 1.971
+  },
+  "dev": {
+   "sessions": 12000,
+   "windows": 259290,
+   "tokens_per_session": {
+    "mean": 1720.91,
+    "p50": 1494.0,
+    "p95": 3505.0,
+    "p99": 4251.0,
+    "max": 6522
+   },
+   "tokens_per_block": {
+    "mean": 54.32,
+    "p50": 46.0,
+    "p95": 99.0,
+    "p99": 126.0,
+    "max": 170
+   },
+   "total_session_tokens": 20650926,
+   "total_readout_tokens": 23503116,
+   "readout_over_session": 1.138,
+   "v03_tokens_per_session_mean": 870.2,
+   "qwen_over_v03_mean": 1.978
+  }
+ }
+}

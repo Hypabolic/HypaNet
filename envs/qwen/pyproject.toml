@@ -1,0 +1,26 @@
+# v0.4 Qwen environment (plan v0.4, Compute). Separate from the frozen v0.3 environment at the
+# repo root, which pins torch 2.2.2 and cannot run Qwen3.5 (transformers >= 5.2 needs torch >= 2.4).
+# Reads only the task exports written by the v0.3 environment; never imports the generators or oracle.
+[project]
+name = "hypanet-qwen"
+version = "0.4.0"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "torch==2.14.1",
+    "transformers==5.22.1",
+    "accelerate==1.15.0",
+    "peft==0.21.2",
+    "safetensors==0.8.0",
+    "numpy>=2,<3",
+]
+
+[dependency-groups]
+dev = ["pytest>=8"]
+
+[tool.uv]
+package = false
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
+addopts = "-q"

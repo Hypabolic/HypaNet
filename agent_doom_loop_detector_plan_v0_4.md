@@ -186,15 +186,17 @@ The work runs in six steps with two gates. LoRA training runs in parallel on a c
 
 ## Decisions needed from Matthew
 
+**Decided 5 Nov 2026: Matthew accepted every recommendation below as written.** Separately, `" oscillating"` is two Qwen tokens, so it cannot be a label word. The draft interface uses `" looping"`; G1 fixes the final words (see `experiments/v0_4/STATUS.md`).
+
 Each item has a recommendation.
 
-- [ ] **Fresh sealed test set.** Recommended: yes. It is about 4,000 new sessions from a new seed, and v0.4's primary result is scored on it.
-- [ ] **OOD-2.** Recommended: reuse v0.3's OOD for now. Commissioning a new independently written generator costs a separate Codex or Grok session and about a day.
-- [ ] **Cloud GPU.** Recommended: RunPod or Modal, H100 or A100, with a compute cap of US$100 for all Qwen evaluation and LoRA. The estimate is under US$50.
-- [ ] **WSP-F (blog-style labelled forward passes).** Recommended: include it as a separate, clearly labelled column after WSP-B.
-- [ ] **Fable caps.** Recommended: US$500 for WSP-A and US$250 for WSP-B, as in v0.3.
-- [ ] **LoRA budgets.** Recommended: all five (32 / 128 / 512 / 2,048 / all), seeds as v0.3 E8. On a GPU the cost difference is small.
-- [ ] **Label-word rows.** Qwen ties its embedding and LM head, so editing the four label words' readout rows also changes how those words are read as input. Recommended: allow it, and report it.
+- [x] **Fresh sealed test set.** Recommended: yes. It is about 4,000 new sessions from a new seed, and v0.4's primary result is scored on it.
+- [x] **OOD-2.** Recommended: reuse v0.3's OOD for now. Commissioning a new independently written generator costs a separate Codex or Grok session and about a day.
+- [x] **Cloud GPU.** Recommended: RunPod or Modal, H100 or A100, with a compute cap of US$100 for all Qwen evaluation and LoRA. The estimate is under US$50.
+- [x] **WSP-F (blog-style labelled forward passes).** Recommended: include it as a separate, clearly labelled column after WSP-B.
+- [x] **Fable caps.** Recommended: US$500 for WSP-A and US$250 for WSP-B, as in v0.3.
+- [x] **LoRA budgets.** Recommended: all five (32 / 128 / 512 / 2,048 / all), seeds as v0.3 E8. On a GPU the cost difference is small.
+- [x] **Label-word rows.** Qwen ties its embedding and LM head, so editing the four label words' readout rows also changes how those words are read as input. Recommended: allow it, and report it.
 
 ## Sources
 
