@@ -1,6 +1,6 @@
 # Status (updated as results land)
 
-_Last update: 2026-11-05 11:10. v0.3 Phase A is archived and scored on val. The Phase B Fable session is running (launched 10:54)._
+_Last update: 2026-11-05 12:15. v0.3 Phases A and B are archived and scored on val. Phase C all/seed0 is running._
 
 ## v0.2: small MLP on engineered features (complete)
 
@@ -67,6 +67,28 @@ Costs: Phase A about $59, Phase B $40, all `claude-fable-5-1`.
 
     - The main weakness, as in v0.2, is STALLED recall: stalls are mostly called PRODUCTIVE.
 - **Phase B:** the disclosure (200 windows, sha256 `27c8deb0…`) was handed over and Fable resumed at 10:54 (`scripts/v03_launch.sh phase-b`). Cost cap US$250.
+  - **Submitted final at 11:53.** The session cost $64.62 and the audit is clean. v0.3 hand-written work has cost $122.24 in total.
+  - **Fable's self-report:** Phase A's policy got 141/200 on the disclosure, and the revised policy gets 199/200 (V053 left deliberately). The changes are listed in `REVISION.md`:
+    - repetition is judged over the whole session;
+    - failed validations are treated as episodes, with retries and resolutions;
+    - repeated identical validations count as stall evidence;
+    - progress means a new high in passed tests.
+  - **Archived at 11:54** in `weight_program/v0_3/phase-b/`:
+    - sha256 `e2c9aeff4bb18244395ab17a9f9ac59dd7b10404944098d414d94c5e965492a0`;
+    - built on the first attempt, with a byte-identical rebuild;
+    - 156,501 parameters are non-zero.
+  - **Validation (harness only)** is in `artifacts/reports/v03_val_v03-phase-b.json`. On `excluding_disclosed` the network scores macro-F1 **0.954** [0.950, 0.958], with a 2.4% false-alarm rate. The policy scores 0.954. For all of val it is 0.955.
+    - This is above v0.2 Phase B on val (0.936), on raw logs.
+    - Per-class F1:
+
+      | Class | F1 | Recall |
+      |---|---|---|
+      | STALLED | 0.966 | 0.95 (up from 0.37) |
+      | OSCILLATING | 0.964 | — |
+      | PRODUCTIVE | 0.955 | — |
+      | RECOVERY | 0.931 | — |
+
+  - **H2 fidelity is 0.9997, not 1.000.** On all of val, 25 of 84,679 gate-passing windows disagree, all in the `abab_oscillation` family (25 of its 9,706). This is a small compilation gap in the Phase B circuit, which Fable's 4,484-prefix check did not reach.
 
 ## Waiting on
 
