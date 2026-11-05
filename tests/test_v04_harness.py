@@ -109,6 +109,20 @@ def test_hook_bash_rule(author, command, allowed):
     assert (why is None) == allowed, why
 
 
+def test_hook_refuses_background_bash_and_fwd_records_in_any_case(author):
+    """Review findings: claude -p waits for background tasks; APFS resolves FWD/ to fwd/."""
+    cmd = f"./py {OUT}/scratch/x.py"
+    assert HOOK.decide(_ev(author, "Bash", command=cmd), str(author), PHASE) is None
+    for flag in (True, "true", 1):
+        why = HOOK.decide(_ev(author, "Bash", command=cmd, run_in_background=flag), str(author), PHASE)
+        assert why and "run_in_background" in why
+    assert HOOK.decide(_ev(author, "Bash", command=cmd, run_in_background=False), str(author), PHASE) is None
+    for d in ("fwd", "FWD", "Fwd"):
+        why = HOOK.check_write(str(author / OUT / d / "1" / "response.json"), str(author), PHASE)
+        assert why and "fwd/" in why, d
+    assert HOOK.check_write(str(author / OUT / "fwd_notes.md"), str(author), PHASE) is None
+
+
 def test_hook_regex_is_the_contract_regex():
     assert HOOK.COMMAND_RE.pattern == r"\./(py|fwd) [^;&|<>`$\n]+"
     # fullmatch, not match with $: a trailing newline must not slip through
@@ -253,6 +267,28 @@ def test_kit_wrappers_and_prompts():
     assert "{ERROR_TEXT}" in (K.KIT_DIR / "prompt_resubmit.md").read_text()
 
 
+def test_launcher_records_are_per_attempt_and_written_in_order():
+    """Review findings: a failure before claude blocked the launch name for good; a killed launcher recorded
+    no ceiling; a background job or a hung server kept everything alive."""
+    text = (REPO / "scripts" / "v04_launch.sh").read_text()
+    assert subprocess.run(["sh", "-n", str(REPO / "scripts" / "v04_launch.sh")]).returncode == 0
+    pos = lambda needle: text.index(needle)  # noqa: E731
+    for side in ('SETTINGS="$LOGDIR/$ATTEMPT.settings.json"', 'READY="$LOGDIR/$ATTEMPT.server.out"',
+                 'SERVER_ERR="$LOGDIR/$ATTEMPT.server.log"'):
+        assert side in text
+    assert "$NAME.settings.json" not in text and "$NAME.server.out" not in text
+    ready_wait = pos("until grep -q '\"ready\": true'")
+    launch_record = pos('> "$LOGDIR/$NAME.launch.json"')
+    resub_copy = pos('cp "$ERROR_FILE" "$RESUB/$TARGET.r$N.error.txt"')
+    claude = pos('claude -p "$PROMPT"')
+    assert ready_wait < launch_record < claude and ready_wait < resub_copy < claude
+    assert pos("check-disclosure") < pos('SID="$(cat "$SID_FILE")"\n    RESUB=')
+    assert text.count('echo "$SID" > "$SID_FILE"') == 1 and pos('echo "$SID" > "$SID_FILE"') > pos("record_session() {")
+    assert "ATTEMPT.noinit.stream.log" in text and '"started": false' in text
+    assert "V04_WALL_SECONDS" in text and "stop_pid \"$SERVER_PID\" TERM 60" in text and "kill -KILL" in text
+    assert '--max-budget-usd "$REMAINING"' in text and '"max_budget_usd": %s' in text
+
+
 def test_kit_requests_follow_the_forward_schema():
     files = K.kit_files(PHASE)
     for name in (f"{OUT}/scratch/kt_req.json", f"{OUT}/scratch/kt_req_big.json"):
@@ -298,18 +334,86 @@ def test_cost_multiple_results_in_one_launch_take_the_last(tmp_path):
     assert s["launches"]["wsp-a"]["cost_usd"] == 3.0 and s["launches"]["wsp-a.c1"]["cost_usd"] == 1.0
 
 
-def test_cost_cap_and_unresolved_launches(tmp_path):
+def _killed(logs: Path, name: str, *, model: str = "claude-fable-5-1", turns: int = 3, ceiling: float | None = None,
+            after_result: tuple[str, float] | None = None) -> None:
+    """A launch SIGKILLed mid-session: assistant turns with per-message usage, no (final) result event."""
+    lines = [{"type": "system", "subtype": "init", "session_id": "T"}]
+    if after_result:
+        lines.append({"type": "result", "session_id": after_result[0], "total_cost_usd": after_result[1]})
+    for i in range(turns):
+        usage = {"input_tokens": 10, "cache_read_input_tokens": 100_000, "output_tokens": 5,
+                 "cache_creation": {"ephemeral_5m_input_tokens": 0, "ephemeral_1h_input_tokens": 1000}}
+        for _ in range(2):  # one message spans several assistant events with the same id and usage
+            lines.append({"type": "assistant", "message": {"id": f"m{i}", "model": model, "usage": usage, "content": []}})
+    (logs / f"{name}.stream.jsonl").write_text("".join(json.dumps(x) + "\n" for x in lines))
+    if ceiling is not None:
+        (logs / f"{name}.launch.json").write_text(json.dumps({"name": name, "max_budget_usd": ceiling}) + "\n")
+
+
+def test_cost_cap(tmp_path):
     _launch(tmp_path, "wsp-b", ("S", 250.0))
     assert C.check(C.summary(tmp_path), "wsp-b")[0] == C.EXIT_CAP
+
+
+def test_killed_launch_is_charged_its_ceiling_and_a_resume_does_not_cover_it(tmp_path):
+    """Review finding: a resumed launch reports only its own turns, so a killed launch must be charged itself."""
     _launch(tmp_path, "wsp-a", ("T", 100.0))
-    _launch(tmp_path, "wsp-a.c1")  # killed: no result event
+    _killed(tmp_path, "wsp-a.c1", ceiling=400.0)  # the launcher wrote the record before claude started
+    _launch(tmp_path, "wsp-a.c2", ("T", 100.3))  # the resume restarts from the last saved total
     s = C.summary(tmp_path)
-    assert s["phases"]["wsp-a"]["unresolved"] == ["wsp-a.c1"]
-    assert C.check(s, "wsp-a")[0] == C.EXIT_UNRESOLVED
+    c1 = s["launches"]["wsp-a.c1"]
+    assert not c1["resolved"] and c1["cost_usd"] == 400.0 and c1["charged_as"] == "max_budget_usd ceiling"
+    assert s["launches"]["wsp-a.c2"]["cost_usd"] == pytest.approx(0.3)
+    assert s["phases"]["wsp-a"]["unresolved"] == ["wsp-a.c1"] and s["phases"]["wsp-a"]["total_usd"] == pytest.approx(500.3)
+    assert C.check(s, "wsp-a")[0] == C.EXIT_CAP  # never "US$0 and carry on"
+
+
+def test_killed_launch_without_a_record_is_a_lower_bound_never_zero(tmp_path):
+    _launch(tmp_path, "wsp-a", ("T", 10.0))
+    _killed(tmp_path, "wsp-a.c1", turns=3)
+    s = C.summary(tmp_path)
+    c1 = s["launches"]["wsp-a.c1"]
+    # input side only, per distinct message: 10 x $10 + 1000 x $20 (1 h write) + 100,000 x $0.25, per MTok
+    assert c1["cost_usd"] == pytest.approx(3 * (10 * 10 + 1000 * 20 + 100_000 * 0.25) / 1e6)
+    assert c1["charged_as"].startswith("lower bound") and s["phases"]["wsp-a"]["lower_bound_only"] == ["wsp-a.c1"]
+    code, msg = C.check(s, "wsp-a")
+    assert code == C.EXIT_UNRESOLVED and "lower bound" in msg
     assert C.check(s, "wsp-a", accept_unresolved=True)[0] == 0
-    _launch(tmp_path, "wsp-a.c2", ("T", 180.0))  # the next resumed launch carries the killed one's spend
+    assert s["phases"]["wsp-a"]["total_usd"] > 10.0
+    (tmp_path / C.OVERRIDES).write_text(json.dumps({"wsp-a.c1": {"usd": 37.5, "reason": "console usage page"}}))
     s = C.summary(tmp_path)
-    assert s["launches"]["wsp-a.c2"]["cost_usd"] == 80.0 and s["phases"]["wsp-a"]["total_usd"] == 180.0
+    assert s["launches"]["wsp-a.c1"]["cost_usd"] == 37.5 and C.check(s, "wsp-a")[0] == 0
+    assert s["phases"]["wsp-a"]["unresolved"] == ["wsp-a.c1"]  # still listed
+
+
+def test_turns_after_the_last_result_make_a_launch_unresolved(tmp_path):
+    _killed(tmp_path, "wsp-a", turns=2, ceiling=50.0, after_result=("T", 4.0))
+    s = C.summary(tmp_path)
+    rec = s["launches"]["wsp-a"]
+    assert not rec["resolved"] and rec["turns_after_last_result"] == 2 and rec["cost_usd"] == 50.0
+    _killed(tmp_path, "wsp-a", turns=2, ceiling=1.0, after_result=("T", 4.0))
+    assert C.summary(tmp_path)["launches"]["wsp-a"]["cost_usd"] == 4.0  # never below what the results say
+
+
+def test_cost_script_exits_4_on_a_lower_bound(tmp_path):
+    _killed(tmp_path, "wsp-a", turns=1)
+    run = lambda *a: subprocess.run([sys.executable, str(REPO / "scripts" / "v04_cost.py"), "--logs", str(tmp_path), *a],  # noqa: E731
+                                    capture_output=True, text=True)
+    assert run("--phase", "wsp-a", "--remaining").returncode == 4
+    p = run("--phase", "wsp-a", "--remaining", "--accept-unresolved")
+    assert p.returncode == 0 and float(p.stdout) < 500.0
+
+
+@pytest.mark.skipif(not (REPO / "experiments" / "v0_3" / "logs" / "v03-phase-b.stream.jsonl").is_file(),
+                    reason="v0.3 transcripts absent")
+def test_price_table_reproduces_logged_costs():
+    for log in sorted((REPO / "experiments" / "v0_3" / "logs").glob("*.stream.jsonl")):
+        for ev in C._events(log):
+            for model, u in (ev.get("modelUsage") or {}).items() if ev.get("type") == "result" else ():
+                p = C.PRICES_PER_MTOK[model]
+                est = (u["inputTokens"] * p[0] + u["outputTokens"] * p[1] + u["cacheCreationEphemeral5mInputTokens"] * p[2]
+                       + u["cacheCreationEphemeral1hInputTokens"] * p[3] + u["cacheReadInputTokens"] * p[4]) / 1e6
+                assert est == pytest.approx(u["costUSD"], rel=1e-6), (log.name, model)
 
 
 def test_cost_script_remaining_and_check(tmp_path):
@@ -405,6 +509,71 @@ def test_audit_flags_on_a_synthetic_transcript(author, tmp_path):
     assert f"{OUT}/scratch/ok.py" in rep["scanned_files"] and not rep["file_findings"]
 
 
+def test_audit_executed_then_deleted_script_and_transcript_versions(author, tmp_path):
+    """Review finding: a script run and then deleted was skipped silently."""
+    _install_fake_tools(author)
+    gone = f"{OUT}/scratch/gone.py"
+    calls = [
+        ("Write", {"file_path": str(author / gone), "content": LOOP_BAD}, False),
+        ("Bash", {"command": f"./py {gone}"}, False),
+        ("Write", {"file_path": str(author / OUT / "scratch" / "kept.py"), "content": "print(1)\n"}, False),
+        ("Edit", {"file_path": str(author / OUT / "scratch" / "kept.py"), "old_string": "print(1)",
+                  "new_string": "exec('print(2)')"}, False),
+        ("Bash", {"command": f"./py {OUT}/scratch/kept.py"}, False),
+    ]
+    (author / OUT / "scratch" / "kept.py").write_text("print(1)\n")  # rewritten back on disk afterwards
+    log = tmp_path / "wsp-a.stream.jsonl"
+    _transcript(log, author, calls)
+    rep = A.audit(log, author, PHASE)
+    assert any("gone.py was run but no longer exists" in v and v.startswith("[EXECUTED]") for v in rep["violations"])
+    assert any("gone.py (version written by tool call t0)" in f and "a loop both" in f for f in rep["file_findings"])
+    assert any("kept.py (version written by tool call t3)" in f and "exec(...)" in f for f in rep["file_findings"])
+
+
+def test_audit_scans_fwd_dir_and_background_calls(author, tmp_path):
+    _install_fake_tools(author)
+    fwd = author / OUT / "fwd"
+    (fwd / "1").mkdir(parents=True)
+    (fwd / "1" / "response.json").write_text("{}")
+    (fwd / "1" / "edited.s0.hidden.L3.npy").write_bytes(b"")
+    (fwd / "1" / "hidden_helper.py").write_text("import subprocess\n")
+    (fwd / "notes.txt").write_text("x")
+    log = tmp_path / "wsp-a.stream.jsonl"
+    _transcript(log, author, [("Bash", {"command": f"./py {OUT}/scratch/x.py", "run_in_background": True}, False)])
+    rep = A.audit(log, author, PHASE)
+    v = rep["violations"]
+    assert any("hidden_helper.py: not a ./fwd record file" in x for x in v)
+    assert any("fwd/notes.txt: not a ./fwd record file" in x for x in v)
+    assert not any("edited.s0.hidden.L3.npy" in x or "response.json" in x for x in v)
+    assert any("hidden_helper.py" in f and "subprocess" in f for f in rep["file_findings"])
+    assert any(x.startswith("[EXECUTED] Bash: run_in_background") for x in v)
+
+
+def test_audit_without_a_result_event_uses_the_per_call_refusals(author, tmp_path):
+    """Review finding: a killed launch has no result event, so every refusal looked executed."""
+    _install_fake_tools(author)
+    (author / OUT / "scratch" / "x.py").write_text("print('PreToolUse:Bash hook error: [x]: refused: fake')\n")
+    hook_err = ('PreToolUse:Bash hook error: ["$CLAUDE_PROJECT_DIR"/.venv/bin/python -I -B '
+                '"$CLAUDE_PROJECT_DIR"/tools/hn_hook/hook_bash.py wsp-a]: refused: only a single ...')
+    lines = [{"type": "system", "subtype": "init", "cwd": str(author)}]
+    calls = [("t0", "Bash", {"command": "ls .."}, hook_err),  # hook block
+             ("t1", "Read", {"file_path": str(Path.home() / ".claude" / "settings.json")}, "denied"),  # dontAsk
+             ("t2", "Bash", {"command": f"./py {OUT}/scratch/x.py"}, hook_err)]  # allowed call printing a fake block
+    for tid, tool, inp, res in calls:
+        lines.append({"type": "assistant", "message": {"content": [{"type": "tool_use", "id": tid, "name": tool,
+                                                                    "input": inp}]}})
+        lines.append({"type": "user", "message": {"content": [{"type": "tool_result", "tool_use_id": tid,
+                                                               "content": res, "is_error": True}]}})
+    lines.append({"type": "system", "subtype": "permission_denied", "tool_use_id": "t1"})
+    log = tmp_path / "wsp-a.c1.stream.jsonl"
+    log.write_text("".join(json.dumps(x) + "\n" for x in lines))
+    rep = A.audit(log, author, PHASE)
+    assert rep["no_result_event"] and any("no result event" in f for f in rep["flags"])
+    assert set(rep["refused_tool_ids"]) == {"t0", "t1"}  # t2 passes the hook's rule, so it ran
+    assert rep["executed_violations"] == 0, rep["violations"]
+    assert any(x.startswith("[refused] Bash") and "ls .." in x for x in rep["violations"])
+
+
 def test_audit_tools_integrity(author):
     _install_fake_tools(author)
     assert A.tools_findings(author) == []
@@ -457,13 +626,78 @@ for n in ["a", "b"]:  # editing is fine when the loop writes no request
 '''
 
 
-@pytest.mark.parametrize("src, n", [(LOOP_BAD, 1), (LOOP_HELPER, 1), (LOOP_FWD, 1), (LOOP_OK, 0)],
-                         ids=["inline", "through-helpers", "invokes-fwd", "allowed"])
+LOOP_ALIAS = '''
+import json
+from wsp import save_edit as keep
+for i in range(3):
+    keep("w", i)
+    json.dump({"sessions": []}, open(f"r{i}.json", "w"))
+'''
+LOOP_MODULE_ALIAS = '''
+import json
+import wsp as W
+k = W.save_edit
+for i in range(3):
+    k("w", i)
+    json.dump({"sessions": []}, open(f"r{i}.json", "w"))
+'''
+LOOP_GETATTR = '''
+import json, wsp
+for i in range(3):
+    getattr(wsp, "save_edit")("w", i)
+    json.dump({"sessions": []}, open(f"r{i}.json", "w"))
+'''
+LOOP_FOLDED_KEY = '''
+import json
+from wsp import save_edit
+K = "sess" + "ions"
+for i in range(3):
+    save_edit("w", i)
+    json.dump({K: []}, open(f"r{i}.json", "w"))
+'''
+
+
+@pytest.mark.parametrize("src, n", [(LOOP_BAD, 1), (LOOP_HELPER, 1), (LOOP_FWD, 1), (LOOP_OK, 0), (LOOP_ALIAS, 1),
+                                    (LOOP_MODULE_ALIAS, 1), (LOOP_GETATTR, 1), (LOOP_FOLDED_KEY, 1)],
+                         ids=["inline", "through-helpers", "invokes-fwd", "allowed", "import-alias", "module-alias",
+                              "getattr", "folded-key"])
 def test_ast_loop_rule(src, n):
     import ast
 
     found = A.loop_findings(ast.parse(src))
     assert len(found) == n, found
+
+
+def test_loop_rule_follows_helpers_in_sibling_modules():
+    """Review finding: the closure stayed inside one file, while ./py resolves sibling helpers at run time."""
+    import ast
+
+    helper = ast.parse("import json\nfrom wsp import save_edit as s\n"
+                       "def step(i):\n    s('w', i)\n    json.dump({'sessions': []}, open(f'r{i}.json', 'w'))\n")
+    main = ast.parse("from helper import step as go\nimport helper\nfor i in range(3):\n    go(i)\n"
+                     "while False:\n    helper.step(1)\n")
+    code = A.AuthorCode({"helper": [helper], "main": [main]})
+    assert len(A.loop_findings(main, code, "main")) == 2
+    assert A.loop_findings(main) == []  # without the module table the helper is invisible (the old behaviour)
+
+
+def test_loop_rule_computed_keys_are_flagged_for_the_adjudicator():
+    import ast
+
+    tree = ast.parse("import json\nfrom wsp import save_edit\nfor i, k in enumerate(KEYS):\n    save_edit('w', i)\n"
+                     "    json.dump({k: []}, open(f'r{i}.json', 'w'))\n")
+    assert A.loop_findings(tree) == [] and len(A.loop_suspicions(tree)) == 1
+
+
+def test_dynamic_code_is_a_finding(tmp_path):
+    p = tmp_path / "dyn.py"
+    p.write_text("import importlib\nexec(open('output/wsp-a/scratch/payload.txt').read())\n"
+                 "m = importlib.import_module('sub' + 'process')\n__import__('socket')\n"
+                 "open('output/wsp-a/scratch/gen.py', 'w').write('x')\n"
+                 "import importlib.util\nspec = importlib.util.spec_from_file_location('g', 'g.py')\n")
+    found = A.script_findings(p)
+    for need in ("exec(...)", "computed module name", "__import__('socket')", "writes a .py file", "spec_from_file_location"):
+        assert any(need in f for f in found), (need, found)
 
 
 def test_static_scan_of_author_scripts(tmp_path):
@@ -507,6 +741,17 @@ def test_ledger_cross_check(tmp_path):
     assert s["quota_tensors_loaded"] == 1 and s["quota_bytes_used"] == 4096
     s = A.ledger_summary(tmp_path, PHASE, budget=500, request_cap=99)
     assert s["over_budget"] and len(s["requests_over_cap"]) == 6
+
+
+def test_ledger_overlap_clusters_catch_one_swapped_session_per_request(tmp_path):
+    """Review finding: changing one session per request split the exact-set grouping."""
+    sets = [["a", "b", "c", "d"], ["a", "b", "c", "e"], ["a", "b", "f", "e"], ["a", "g", "f", "e"], ["x", "y"]]
+    _ledger(tmp_path, PHASE, [{"edit_hash": f"e{i}", "session_sha256": s} for i, s in enumerate(sets)])
+    s = A.ledger_summary(tmp_path, PHASE)
+    assert s["text_sets_over_edit_limit"] == {}
+    (c,) = s["overlap_clusters_over_edit_limit"]
+    assert c["distinct_edit_hashes"] == 4 and c["calls"] == [1, 2, 3, 4]
+    assert s["max_edit_states_per_session_text"] == 4
 
 
 def test_audit_script_end_to_end(author, tmp_path):
@@ -578,10 +823,61 @@ def test_kit_prompt_names_every_required_probe(author):
         assert need in text
 
 
-def test_run_build_error_text():
+def _run_build_module():
     spec = importlib.util.spec_from_file_location("v04_run_build", REPO / "scripts" / "v04_run_build.py")
     m = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(m)
-    assert m.runner_error_text("warning: uv\nERROR: build() raised KeyError at line 3\n  detail\n") == \
-        "build() raised KeyError at line 3\n  detail"
-    assert m.runner_error_text("Traceback (most recent call last):\n  boom\n") == ""
+    return m
+
+
+def test_run_build_error_text_comes_from_the_attempt_record(tmp_path):
+    """Review finding: stderr after the runner's ERROR: line (uv / interpreter warnings) is never disclosed."""
+    m = _run_build_module()
+    att = tmp_path / "attempts"
+    att.mkdir()
+    (att / "0001.json").write_text(json.dumps({"attempt": 1, "error": "old rejection"}))
+    before = m.attempt_files(att)
+    assert m.attempt_error_text(att, before) is None  # the runner wrote nothing this time
+    (att / "0002.json").write_text(json.dumps({"attempt": 2, "error": "build() raised KeyError at line 3 ",
+                                               "operator_detail": f"{REPO}/envs/qwen/.venv/lib/x.py warning"}))
+    assert m.attempt_error_text(att, before) == "build() raised KeyError at line 3"
+
+
+def test_disclosure_screen(author, tmp_path):
+    clean = "build() raised KeyError at line 3 of <author>/build_edit.py"
+    assert K.disclosure_leaks(clean, author) == []
+    assert K.disclosure_leaks(f"see {author}/output/wsp-a/build_edit.py and HypaNet-v04-author", author) == []
+    for bad in (f"ResourceWarning in {REPO}/envs/qwen/.venv/lib/python3.12/site-packages/x.py",
+                f"{Path.home()}/.cache/huggingface/hub", "/private/tmp/claude-501/x/tasks/1.output",
+                "/var/folders/ab/T/pytest-of-matthew", "datasets/v0_4/val.jsonl", f"{author.parent}/HypaNet/README.md"):
+        assert K.disclosure_leaks(bad, author), bad
+    f = tmp_path / "err.txt"
+    f.write_text(f"warning: {REPO}/envs/qwen\n")
+    p = subprocess.run([sys.executable, "-m", "agent_loop_lab.v04.kit", "check-disclosure", str(f), "--author-dir",
+                        str(author)], capture_output=True, text=True, cwd=REPO)
+    assert p.returncode == 1 and "DISCLOSURE LEAK" in p.stderr
+    f.write_text(clean + "\n")
+    p = subprocess.run([sys.executable, "-m", "agent_loop_lab.v04.kit", "check-disclosure", str(f), "--author-dir",
+                        str(author)], capture_output=True, text=True, cwd=REPO)
+    assert p.returncode == 0, p.stderr
+
+
+def test_fwd_records_are_cross_checked_against_the_ledger(author, tmp_path):
+    m = _run_build_module()
+    _ledger(tmp_path, PHASE, [{"edit_hash": "e0"}, {"edit_hash": "e1"}])
+    out = author / OUT
+    for k, h in ((1, "e0"), (2, "e1")):
+        (out / "fwd" / str(k)).mkdir(parents=True)
+        (out / "fwd" / str(k) / "response.json").write_text(json.dumps(
+            {"call_id": k, "model": "edited", "edit_hash": h, "tokens": 100}))
+        (out / "fwd" / str(k) / "request.json").write_text("{}")
+    rep = m.fwd_crosscheck(out, tmp_path / f"{PHASE}.ledger.jsonl")
+    assert rep["records_checked"] == 2 and rep["problems"] == []
+    (out / "fwd" / "2" / "response.json").write_text(json.dumps({"call_id": 2, "model": "edited", "edit_hash": "FORGED",
+                                                                  "tokens": 100}))
+    (out / "fwd" / "7").mkdir()
+    (out / "fwd" / "7" / "response.json").write_text(json.dumps({"forged": True}))
+    (out / "fwd" / "1" / "hidden_helper.py").write_text("x = 1\n")
+    probs = m.fwd_crosscheck(out, tmp_path / f"{PHASE}.ledger.jsonl")["problems"]
+    assert any("fwd/2" in x and "edit_hash" in x for x in probs) and any("fwd/7" in x and "no ok ledger" in x for x in probs)
+    assert any("hidden_helper.py" in x for x in probs)

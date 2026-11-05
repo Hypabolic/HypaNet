@@ -24,7 +24,9 @@ v0.3 ``AUTHOR_RUN`` / ``BUILD`` guards.
 * RNG is refused (v0.3 list) except :func:`control_normal`, a hash-derived generator, and the
   packet renderer's seeded ``random.Random`` (``packet/renderer.py``, the v0.3 exemption).
 * I/O allow-list: reads under the author dir and the interpreter install; writes and filesystem
-  changes under ``output/<phase>/``; one AF_UNIX connection target, the kernel endpoint. No other
+  changes under ``output/<phase>/`` except ``output/<phase>/fwd/`` (the ``./fwd`` tool's records,
+  written only by the unguarded ``fwd.py``; compared case-insensitively, as APFS resolves ``FWD/``
+  to ``fwd/``); one AF_UNIX connection target, the kernel endpoint. No other
   socket, no subprocess, thread, signal to another process, ``ctypes``, ``mmap``, sub-interpreter
   or ``setrlimit``.
 
@@ -206,6 +208,7 @@ RUNNER_PACKAGES: tuple[str, ...] = ("hypaqwen", "agent_loop_lab")
 
 RENDERER_RELPATH = "packet/renderer.py"  # KERNEL_CLIENT: may build its seeded random.Random (v0.3 rule)
 BUILD_FILE = "build_edit.py"
+FWD_DIR = "fwd"  # KERNEL_CLIENT: output/<phase>/fwd/ holds the ./fwd records; no guarded write there
 CODE_SUFFIXES = (".py", ".pyc", ".so", ".dylib", ".pth")
 
 
@@ -601,9 +604,12 @@ def _make_audit_hook(
     *, mode: str, read_roots: tuple[str, ...], read_exact: frozenset[str], code_roots: tuple[str, ...],
     write_roots: tuple[str, ...], endpoint: str | None, endpoint_is_dir: bool, forbid_paths: tuple[str, ...],
     forbidden: tuple[str, ...], snapshot: frozenset[str], modules: dict[str, Any], counter: Any, err_fd: int,
-    protected: frozenset[int],
+    protected: frozenset[int], nowrite_roots: tuple[str, ...] = (),
 ) -> tuple[Callable[[str, tuple[Any, ...]], None], Callable[[], None]]:
     """The audit hook and the atexit check, closures over immutable values and C builtins only.
+
+    ``nowrite_roots`` (lower-cased realpaths) are carved out of ``write_roots``: no write or filesystem
+    change under them, whatever the case of the path (a case-insensitive volume maps ``FWD`` to ``fwd``).
 
     Markers go to ``err_fd`` (a private duplicate of stderr); ``counter`` is shared with the actions
     hook and the monitor. The hook holds no exit or close function: a frame of it seen on a traceback
@@ -622,6 +628,8 @@ def _make_audit_hook(
     w_flags = posix.O_WRONLY | posix.O_RDWR | posix.O_APPEND | posix.O_CREAT | posix.O_TRUNC
     label = "KERNEL_CLIENT" if is_client else "BUILD_EDIT"
     stdout, stderr = sys.__stdout__, sys.__stderr__
+    lower = str.lower
+    nowrite = tuple(lower(r) for r in nowrite_roots)
 
     def hook(event: str, args: tuple[Any, ...]) -> None:
         if event == "hn_guard.violation":
@@ -675,6 +683,8 @@ def _make_audit_hook(
                     if is_write:
                         if not (is_client and (kernel or under(rp, write_roots))):
                             msg = "write to " + rp[:200] + (" (writes go under output/<phase>/)" if is_client else " (no writes in build_edit.py)")
+                        elif not kernel and under(lower(rp), nowrite):
+                            msg = "write to " + rp[:200] + " (output/<phase>/fwd/ is written only by ./fwd)"
                     elif is_client:
                         if not (kernel or under(rp, read_roots)):
                             msg = "read of " + rp[:200] + " (outside the author directory and the interpreter install)"
@@ -696,6 +706,8 @@ def _make_audit_hook(
                         rp = realpath(p, getcwd(), lstat, readlink) if type_(p) is str_t else None
                         if rp is None or not under(rp, write_roots):
                             msg = event + " on " + (rp or repr_(type_(args[i])))[:200] + " (outside output/<phase>/)"
+                        elif under(lower(rp), nowrite):
+                            msg = event + " on " + rp[:200] + " (output/<phase>/fwd/ is written only by ./fwd)"
         elif event.startswith("socket."):
             if is_client and event == "socket.__new__" and len_(args) > 1 and args[1] == af_unix:
                 return None
@@ -1579,6 +1591,7 @@ def install(
         counter=counter,
         err_fd=err_fd,
         protected=protected,
+        nowrite_roots=(os.path.join(out_root, FWD_DIR),) if mode == KERNEL_CLIENT else (),
     )
     sys.addaudithook(hook)
     sys.addaudithook(_make_actions_hook(counter=counter, err_fd=err_fd, protected=protected, originals=originals))

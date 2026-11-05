@@ -42,7 +42,10 @@ How to work here:
   `./fwd output/wsp-a/scratch/req_01.json`; read the results from `output/wsp-a/fwd/<call id>/`.
 - Run exactly one command per Bash call, and only commands that start with `./py ` or `./fwd `. Compound
   commands are refused: no `;`, `&&`, `||`, pipes, redirection, backticks, `$`, quotes, globs or newlines.
-  Write files with the file-writing tool, not with shell commands.
+  Write files with the file-writing tool, not with shell commands. Run every command in the foreground
+  (`run_in_background` is refused); keep each script short enough to finish within a Bash call.
+- Keep every script you run, unchanged, under `output/wsp-a/` (edit a copy instead of rewriting one you
+  have run); the harness audits all of them.
 - Keep printed output short; write large results to files in `output/wsp-a/scratch/` and read those.
 - Write each deliverable with its own tool call as soon as its design is settled, rather than composing
   everything in a single response.

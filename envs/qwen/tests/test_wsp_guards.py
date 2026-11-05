@@ -89,6 +89,8 @@ def env():
     safetensors.torch.save_file({"u": torch.ones(4)}, str(ad / "output" / PHASE / "edit_constants.safetensors"))
     (ad / "output" / PHASE / "build_edit.py").write_text("def build(orig, consts):\n    return {}\n")
     (ad / "output" / PHASE / "a.txt").write_text("a")
+    (ad / "output" / PHASE / "fwd" / "1").mkdir(parents=True)
+    (ad / "output" / PHASE / "fwd" / "1" / "response.json").write_text("{}")
     (ad / "packet" / "renderer.py").write_text("import random\n\ndef draw(seed):\n    return random.Random(seed).random()\n")
     (outside / "secret.txt").write_text("sealed")
     safetensors.torch.save_file({"w": torch.ones(2)}, str(outside / "x.safetensors"))
@@ -262,6 +264,15 @@ REFUSED: dict[str, tuple[str, str]] = {
     # writes outside output/<phase>/
     "kc_write_author_dir": (KC, "attempt(lambda: open(os.path.join(AD, 'x.txt'), 'w'))"),
     "kc_write_other_phase": (KC, "attempt(lambda: open(os.path.join(AD, 'output', 'p2', 'x.txt'), 'w'))"),
+    # output/<phase>/fwd/ is ./fwd's: no guarded write, mkdir, rename or remove there, in any letter case
+    "kc_write_fwd_record": (KC, "attempt(lambda: open(os.path.join(OUT, 'fwd', '1', 'response.json'), 'w'))"),
+    "kc_write_fwd_new_call": (KC, "attempt(lambda: open(os.path.join(OUT, 'fwd', '7', 'response.json'), 'w'))"),
+    "kc_write_fwd_upper_case": (KC, "attempt(lambda: open(os.path.join(OUT, 'FWD', '1', 'response.json'), 'w'))"),
+    "kc_write_fwd_helper_py": (KC, "attempt(lambda: open(os.path.join(OUT, 'Fwd', 'hidden_helper.py'), 'x'))"),
+    "kc_mkdir_fwd_call": (KC, "attempt(lambda: os.makedirs(os.path.join(OUT, 'fwd', '8')))"),
+    "kc_remove_fwd_record": (KC, "attempt(lambda: os.remove(os.path.join(OUT, 'fwd', '1', 'response.json')))"),
+    "kc_rename_into_fwd": (KC, "attempt(lambda: os.rename(os.path.join(OUT, 'a.txt'), os.path.join(OUT, 'fwd', 'a.txt')))"),
+    "kc_rename_fwd_away": (KC, "attempt(lambda: os.rename(os.path.join(OUT, 'fwd'), os.path.join(OUT, 'old_fwd')))"),
     "kc_write_outside": (KC, "attempt(lambda: open(os.path.join(OUTSIDE, 'x.txt'), 'a'))"),
     "kc_remove_outside_phase": (KC, "attempt(lambda: os.remove(os.path.join(AD, 'data.safetensors')))"),
     "kc_rename_out_of_phase": (KC, "attempt(lambda: os.rename(os.path.join(OUT, 'a.txt'), os.path.join(AD, 'a.txt')))"),
@@ -384,6 +395,8 @@ ALLOWED: dict[str, tuple[str, str]] = {
         "            torch.load(os.path.join(OUT, 'v.pt'))['v'].sum().item(), float(np.load(os.path.join(OUT, 'v.npy')).sum())]\n"
         "attempt(f)"
     )),
+    "kc_read_fwd_record": (KC, "attempt(lambda: open(os.path.join(OUT, 'fwd', '1', 'response.json')).read())"),
+    "kc_write_beside_fwd": (KC, "attempt(lambda: open(os.path.join(OUT, 'fwd_notes.txt'), 'w').write('x'))"),
     "kc_kernel_socket": (KC, (
         "import socket\n"
         "def f():\n"
@@ -486,6 +499,10 @@ def test_refused_actions_left_no_trace(runs, env):
               ad / "output" / PHASE / "l2", ad / "output" / PHASE / "tok.json", ad / "output" / PHASE / "x.txt"):
         assert not os.path.lexists(p), p
     assert (ad / "data.safetensors").exists() and (ad / "output" / PHASE / "a.txt").exists()
+    fwd = ad / "output" / PHASE / "fwd"
+    for p in (fwd / "7", fwd / "8", fwd / "a.txt", fwd / "hidden_helper.py", ad / "output" / PHASE / "old_fwd"):
+        assert not os.path.lexists(p), p
+    assert (fwd / "1" / "response.json").read_text() == "{}"
 
 
 def test_swallowed_violation_fails_finish(env):

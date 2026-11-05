@@ -11,10 +11,21 @@
 #
 # Before claude: the cost cap (scripts/v04_cost.py, by session-id delta: WSP-A US$500, WSP-B US$250), no
 # harness scratch (pytest-of-$USER) in the temp roots, the freeze registry and the handover record, the tools
-# and wrappers (hypaqwen.wsp.install verify, kit hashes), the settings rendered for this launch
-# (LOGDIR/NAME.settings.json, never overwritten) and the hook self-test on them. Then the model server starts
-# in the background (python -m hypaqwen.wsp.server, envs/qwen, sockets in AUTHOR_DIR/.kernel/, ledger and
-# journal in LOGDIR) and the launcher waits for its ready line; caffeinate keeps the Mac awake while it runs.
+# and wrappers (hypaqwen.wsp.install verify, kit hashes), the resubmission error text (length and leak screen,
+# agent_loop_lab.v04.kit check-disclosure), the settings rendered for this attempt and the hook self-test on
+# them. Then the model server starts in the background (python -m hypaqwen.wsp.server, envs/qwen, sockets in
+# AUTHOR_DIR/.kernel/, ledger and journal in LOGDIR) and the launcher waits for its ready line; caffeinate
+# keeps the Mac awake while it runs.
+#
+# Records. Only the transcript LOGDIR/NAME.stream.jsonl marks a launch as done (never re-run). Everything
+# written before claude starts is per attempt, ATTEMPT = NAME.<utc>: ATTEMPT.settings.json, ATTEMPT.server.out
+# and ATTEMPT.server.log, so a failure before claude (server not ready, self-test, cost refusal) leaves the
+# launch re-runnable. Just before claude starts: LOGDIR/NAME.launch.json (the --max-budget-usd ceiling that
+# scripts/v04_cost.py charges if this launch is killed before its result event) and, for resubmit, the
+# resubmissions/ copy of the error text. experiments/v0_4/SESSION_ID (wsp-a) is written once the session's
+# init event is in the transcript. If claude exits without an init event (no session was created, nothing
+# was spent: an auth or start-up failure), the transcript and those records are moved aside as
+# ATTEMPT.noinit.* and the launch can be re-run.
 #
 # claude -p, headless: --model/--fallback-model/--effort max, --session-id (new) or --resume, --settings <rendered>
 # --setting-sources project, --restricted (file tools confined to the working directory; the settings' hook
@@ -24,9 +35,13 @@
 # environment is scrubbed of the variables that would link the session to a parent Claude Code session;
 # CLAUDE_CODE_DISABLE_AUTO_MEMORY=1, CLAUDE_CODE_MAX_OUTPUT_TOKENS=128000, HN_PHASE=<phase>.
 #
-# After claude exits: SIGTERM to the server (exit 143 expected) and wait, the session audit
+# claude runs in the background under a wall-clock watchdog (V04_WALL_SECONDS, default 172800 = 48 h; kit
+# sessions 1800): on expiry SIGINT, then SIGTERM after 60 s, then SIGKILL after 30 s more. A launch stopped
+# that way usually has no result event: scripts/v04_cost.py then charges its ceiling (or an operator figure).
+#
+# After claude exits: SIGTERM to the server (exit 143 expected; SIGKILL after 60 s) and wait, the session audit
 # (scripts/v04_audit_session.py) and the cost (scripts/v04_cost.py). The build is NOT run: the build command is
-# printed. Transcripts go to LOGDIR (never overwritten); every launch is appended to LOGDIR/LAUNCHES.jsonl.
+# printed. Transcripts go to LOGDIR (never overwritten); every attempt is appended to LOGDIR/LAUNCHES.jsonl.
 #
 # Kit tests only (scripts/v04_kit_tests.sh): V04_KIT=1 requires V04_LOGDIR (not experiments/v0_4/logs) and then
 # honours V04_MODEL, V04_FALLBACK_MODEL, V04_EFFORT, V04_PROMPT_FILE, V04_BUDGET_TOKENS, V04_REQUEST_CAP,
@@ -107,7 +122,7 @@ COST_ARGS=""
 remaining_cap() {
   # shellcheck disable=SC2086
   (cd "$REPO" && uv run python scripts/v04_cost.py --logs "$LOGDIR" --phase "$1" --remaining $COST_ARGS) \
-    || die "cost check refused a launch of $1 (scripts/v04_cost.py: cap reached, or a launch without a result event)"
+    || die "cost check refused a launch of $1 (scripts/v04_cost.py: cap reached, or a killed launch with no launch record is charged only a lower bound: put its figure in $LOGDIR/COST_OVERRIDES.json, or V04_ACCEPT_UNRESOLVED_COST=1 to charge the lower bound)"
 }
 
 case "$MODE" in
@@ -139,6 +154,8 @@ case "$MODE" in
     # Disclosed verbatim: the runner's capped author-facing text (BuildError / attempts/NNNN.json "error",
     # at most 2000 characters, scripts/v04_run_build.py's last_error.txt), never "operator_detail".
     [ "$(wc -c < "$ERROR_FILE")" -le 2100 ] || die "resubmit: $ERROR_FILE is longer than the runner's error cap (2000 characters)"
+    (cd "$REPO" && uv run python -m agent_loop_lab.v04.kit check-disclosure "$ERROR_FILE" --author-dir "$AUTHOR_DIR") \
+      || die "resubmit: $ERROR_FILE names a harness path or marker (see above); it is never disclosed"
     echo "--- error text to be disclosed (review it before the session starts) ---" >&2
     cat "$ERROR_FILE" >&2
     echo "---" >&2
@@ -146,9 +163,7 @@ case "$MODE" in
     SID="$(cat "$SID_FILE")"
     RESUB="$REPO/experiments/v0_4/resubmissions"
     [ "$KIT_MODE" = 1 ] && RESUB="$LOGDIR/resubmissions"
-    mkdir -p "$RESUB"
     [ -e "$RESUB/$TARGET.r$N.error.txt" ] && die "resubmission $N already recorded"
-    cp "$ERROR_FILE" "$RESUB/$TARGET.r$N.error.txt"
     PROMPT="$(uv run --project "$REPO" python - "$KIT/prompt_resubmit.md" "$TARGET" "$N" "$RESUBMIT_CAP" "$ERROR_FILE" <<'PYEOF'
 import sys
 t, phase, n, cap, err = sys.argv[1:6]
@@ -176,7 +191,11 @@ for p in "$AUTHOR_DIR" "$AUTHOR_DIR/py" "$AUTHOR_DIR/fwd" "$AUTHOR_DIR/packet" "
   [ -w "$p" ] && die "$p is writable (the prepare script makes it read-only)"
 done
 [ -w "$AUTHOR_DIR/output/$TARGET" ] || die "$AUTHOR_DIR/output/$TARGET is not writable"
-SETTINGS="$LOGDIR/$NAME.settings.json"
+ATTEMPT="$NAME.$(date -u +%Y%m%dT%H%M%SZ)"
+for f in "$ATTEMPT.settings.json" "$ATTEMPT.server.out" "$ATTEMPT.server.log" "$NAME.launch.json"; do
+  [ -e "$LOGDIR/$f" ] && die "$LOGDIR/$f exists"
+done
+SETTINGS="$LOGDIR/$ATTEMPT.settings.json"
 (cd "$REPO" && uv run python -m agent_loop_lab.v04.kit render-settings --phase "$TARGET" --author-dir "$AUTHOR_DIR" --out "$SETTINGS") \
   || die "settings render failed"
 (cd "$REPO" && uv run python -m agent_loop_lab.v04.kit hook-selftest --phase "$TARGET" --author-dir "$AUTHOR_DIR" --settings "$SETTINGS") \
@@ -184,24 +203,41 @@ SETTINGS="$LOGDIR/$NAME.settings.json"
 
 # model server
 QPY="$(cd "$QWEN" && uv run python -c 'import sys; print(sys.executable)')"
-READY="$LOGDIR/$NAME.server.out"
-SERVER_ERR="$LOGDIR/$NAME.server.log"
-[ -e "$READY" ] && die "$READY exists"
+READY="$LOGDIR/$ATTEMPT.server.out"
+SERVER_ERR="$LOGDIR/$ATTEMPT.server.log"
 SERVER_PID=""
 CAFF_PID=""
+CLAUDE_PID=""
+# stop_pid PID SIGNAL GRACE: send SIGNAL, then SIGKILL if PID is still alive after GRACE seconds
+stop_pid() {
+  pid="$1"; grace="$3"
+  kill -"$2" "$pid" 2>/dev/null || true
+  t=0
+  while kill -0 "$pid" 2>/dev/null && [ "$t" -lt "$grace" ]; do sleep 1; t=$((t + 1)); done
+  if kill -0 "$pid" 2>/dev/null; then
+    echo "pid $pid ignored SIG$2 for ${grace}s; sending SIGKILL" >&2
+    kill -KILL "$pid" 2>/dev/null || true
+  fi
+}
 stop_server() {
   if [ -n "$SERVER_PID" ] && kill -0 "$SERVER_PID" 2>/dev/null; then
-    kill -TERM "$SERVER_PID" 2>/dev/null || true
+    stop_pid "$SERVER_PID" TERM 60
     SERVER_RC=0
     wait "$SERVER_PID" 2>/dev/null || SERVER_RC=$?
-    echo "model server stopped (exit $SERVER_RC; 143 is the SIGTERM exit)"
+    echo "model server stopped (exit $SERVER_RC; 143 is the SIGTERM exit, 137 SIGKILL)"
   fi
   SERVER_PID=""
   [ -n "$CAFF_PID" ] && kill "$CAFF_PID" 2>/dev/null || true
   CAFF_PID=""
 }
-trap stop_server EXIT
-trap 'stop_server; exit 130' INT TERM
+stop_all() {
+  # a background claude ignores the terminal's SIGINT (POSIX: async lists in a non-interactive shell)
+  if [ -n "$CLAUDE_PID" ] && kill -0 "$CLAUDE_PID" 2>/dev/null; then stop_pid "$CLAUDE_PID" TERM 30; fi
+  CLAUDE_PID=""
+  stop_server
+}
+trap stop_all EXIT
+trap 'stop_all; exit 130' INT TERM
 (cd "$QWEN" && exec env -u PYTHONPATH "$QPY" -m hypaqwen.wsp.server --phase "$TARGET" --author-dir "$AUTHOR_DIR" \
   --log-dir "$LOGDIR" --device "$DEVICE" --budget "$BUDGET_TOKENS" --request-cap "$REQUEST_CAP") \
   > "$READY" 2> "$SERVER_ERR" &
@@ -232,10 +268,20 @@ done
 export CLAUDE_CODE_DISABLE_AUTO_MEMORY=1
 export CLAUDE_CODE_MAX_OUTPUT_TOKENS="${V04_MAX_OUTPUT_TOKENS:-128000}"
 export HN_PHASE="$TARGET"
+if [ "$KIT_MODE" = 1 ]; then WALL="${V04_WALL_SECONDS:-1800}"; else WALL="${V04_WALL_SECONDS:-172800}"; fi
+case "$WALL" in ''|*[!0-9]*) die "V04_WALL_SECONDS must be a number of seconds";; esac
+KIT_JSON="$([ "$KIT_MODE" = 1 ] && echo true || echo false)"
 START="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
-[ "$MODE" = wsp-a ] && echo "$SID" > "$SID_FILE"
+# the launch record: written before claude starts, so a killed launch is still charged its ceiling
+printf '{"name": "%s", "attempt": "%s", "phase": "%s", "mode": "%s", "session_id": "%s", "model": "%s", "fallback": "%s", "effort": "%s", "max_budget_usd": %s, "wall_seconds": %s, "utc_start": "%s", "settings": "%s", "kit": %s}\n' \
+  "$NAME" "$ATTEMPT" "$TARGET" "$MODE" "$SID" "$MODEL" "$FALLBACK" "$EFFORT" "$REMAINING" "$WALL" "$START" \
+  "$(basename "$SETTINGS")" "$KIT_JSON" > "$LOGDIR/$NAME.launch.json"
+if [ "$MODE" = resubmit ]; then
+  mkdir -p "$RESUB"
+  cp "$ERROR_FILE" "$RESUB/$TARGET.r$N.error.txt"
+fi
 cd "$AUTHOR_DIR"
-echo "launching $NAME: model=$MODEL fallback=$FALLBACK effort=$EFFORT max_budget_usd=$REMAINING session=$SID dir=$AUTHOR_DIR"
+echo "launching $NAME ($ATTEMPT): model=$MODEL fallback=$FALLBACK effort=$EFFORT max_budget_usd=$REMAINING wall=${WALL}s session=$SID dir=$AUTHOR_DIR"
 CLAUDE_RC=0
 # shellcheck disable=SC2086
 claude -p "$PROMPT" \
@@ -248,15 +294,53 @@ claude -p "$PROMPT" \
   --disable-slash-commands \
   --max-budget-usd "$REMAINING" \
   --output-format stream-json --verbose \
-  < /dev/null > "$LOG" 2> "$LOGDIR/$NAME.stderr.log" || CLAUDE_RC=$?
+  < /dev/null > "$LOG" 2> "$LOGDIR/$NAME.stderr.log" &
+CLAUDE_PID=$!
+has_init() { grep -q '"type":"system","subtype":"init"' "$LOG" 2>/dev/null; }
+SID_RECORDED=0
+record_session() {
+  if [ "$SID_RECORDED" = 0 ] && has_init; then
+    [ "$MODE" = wsp-a ] && echo "$SID" > "$SID_FILE"
+    SID_RECORDED=1
+  fi
+}
+elapsed=0
+while kill -0 "$CLAUDE_PID" 2>/dev/null; do
+  record_session
+  if [ "$elapsed" -ge "$WALL" ]; then
+    echo "WATCHDOG: $NAME ran ${WALL}s; stopping claude (the launch may end without a result event)" >&2
+    kill -INT "$CLAUDE_PID" 2>/dev/null || true
+    t=0
+    while kill -0 "$CLAUDE_PID" 2>/dev/null && [ "$t" -lt 60 ]; do sleep 1; t=$((t + 1)); done
+    kill -0 "$CLAUDE_PID" 2>/dev/null && stop_pid "$CLAUDE_PID" TERM 30
+    break
+  fi
+  sleep 5
+  elapsed=$((elapsed + 5))
+done
+wait "$CLAUDE_PID" || CLAUDE_RC=$?
+CLAUDE_PID=""
+record_session
 [ "$CLAUDE_RC" = 0 ] || echo "claude exited $CLAUDE_RC (see $LOGDIR/$NAME.stderr.log)" >&2
 cd "$REPO"
 stop_server
 trap - EXIT INT TERM
 END="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
-printf '{"name": "%s", "phase": "%s", "mode": "%s", "session_id": "%s", "model": "%s", "fallback": "%s", "effort": "%s", "max_budget_usd": %s, "utc_start": "%s", "utc_end": "%s", "claude_rc": %s, "log": "%s", "kit": %s}\n' \
-  "$NAME" "$TARGET" "$MODE" "$SID" "$MODEL" "$FALLBACK" "$EFFORT" "$REMAINING" "$START" "$END" "$CLAUDE_RC" "$(basename "$LOG")" \
-  "$([ "$KIT_MODE" = 1 ] && echo true || echo false)" >> "$LOGDIR/LAUNCHES.jsonl"
+if [ "$SID_RECORDED" = 0 ]; then
+  # no init event: no session was created and nothing was spent; keep the evidence, free the launch name
+  mv "$LOG" "$LOGDIR/$ATTEMPT.noinit.stream.log"
+  mv "$LOGDIR/$NAME.stderr.log" "$LOGDIR/$ATTEMPT.noinit.stderr.log" 2>/dev/null || true
+  mv "$LOGDIR/$NAME.launch.json" "$LOGDIR/$ATTEMPT.noinit.launch.json"
+  [ "$MODE" = resubmit ] && mv "$RESUB/$TARGET.r$N.error.txt" "$RESUB/$ATTEMPT.noinit.error.txt"
+  printf '{"name": "%s", "attempt": "%s", "phase": "%s", "mode": "%s", "utc_start": "%s", "utc_end": "%s", "claude_rc": %s, "started": false, "kit": %s}\n' \
+    "$NAME" "$ATTEMPT" "$TARGET" "$MODE" "$START" "$END" "$CLAUDE_RC" "$KIT_JSON" >> "$LOGDIR/LAUNCHES.jsonl"
+  echo "claude exited $CLAUDE_RC without starting a session (no init event; see $LOGDIR/$ATTEMPT.noinit.stderr.log)." >&2
+  echo "Nothing was recorded as a launch; fix the cause and re-run the same command." >&2
+  exit 1
+fi
+printf '{"name": "%s", "attempt": "%s", "phase": "%s", "mode": "%s", "session_id": "%s", "model": "%s", "fallback": "%s", "effort": "%s", "max_budget_usd": %s, "utc_start": "%s", "utc_end": "%s", "claude_rc": %s, "log": "%s", "started": true, "kit": %s}\n' \
+  "$NAME" "$ATTEMPT" "$TARGET" "$MODE" "$SID" "$MODEL" "$FALLBACK" "$EFFORT" "$REMAINING" "$START" "$END" "$CLAUDE_RC" "$(basename "$LOG")" \
+  "$KIT_JSON" >> "$LOGDIR/LAUNCHES.jsonl"
 echo "transcript: $LOG"
 (cd "$QWEN" && uv run python -m hypaqwen.wsp.install verify "$AUTHOR_DIR/tools" --hook "$KIT/hook_bash.py") \
   || echo "TOOLS TAMPERED after the session (see above)" >&2

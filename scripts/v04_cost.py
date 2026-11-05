@@ -7,10 +7,13 @@ Usage:
 Reads every ``*.stream.jsonl`` in DIR (default experiments/v0_4/logs/). ``total_cost_usd`` is cumulative
 per session id across resumed launches, so each launch is charged its last total minus the previous
 launch's total for the same session id (agent_loop_lab.v04.cost); v0.3's script summed the totals and
-double-counted. Prints JSON. With --check and --phase: exit 3 once that phase's cap is reached (WSP-A
-US$500, WSP-B US$250, WSP-F US$250), exit 4 while a launch of the phase has no result event (its cost is
-unknown until the session is resumed) unless --accept-unresolved. --remaining prints only the remaining
-cap in US$ (two decimals, rounded down), or exits like --check.
+double-counted. A launch killed before its result event is never covered by a later resume: it is charged
+the operator's figure in DIR/COST_OVERRIDES.json, else the --max-budget-usd ceiling from DIR/NAME.launch.json
+(written by the launcher before claude starts), else only a lower bound. Prints JSON. With --check and
+--phase: exit 3 once that phase's cap is reached (WSP-A US$500, WSP-B US$250, WSP-F US$250), exit 4 while a
+launch of the phase is charged only a lower bound, unless --accept-unresolved (which charges that lower
+bound, never US$0). --remaining prints only the remaining cap in US$ (two decimals, rounded down), or exits
+like --check.
 """
 
 from __future__ import annotations
@@ -38,7 +41,7 @@ def main(argv: list[str] | None = None) -> int:
     mode.add_argument("--check", action="store_true")
     mode.add_argument("--remaining", action="store_true")
     ap.add_argument("--accept-unresolved", action="store_true",
-                    help="allow a launch although an earlier one has no result event (operator decision)")
+                    help="charge a killed launch without a launch record its lower bound and allow the launch (operator decision)")
     args = ap.parse_args(argv)
     s = summary(args.logs)
     if (args.check or args.remaining) and not args.phase:

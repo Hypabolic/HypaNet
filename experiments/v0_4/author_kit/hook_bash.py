@@ -24,9 +24,13 @@ Rules (every rule is also checked by the session audit, which loads this file by
   tabs or carriage returns), no word has a ``..`` component or is absolute, and
   - ``./fwd REQUEST.json``: exactly one argument, a ``.json`` file inside ``output/<phase>/``;
   - ``./py SCRIPT.py [ARGS]``: the script is a ``.py`` file inside ``output/<phase>/``;
-    ``./py -m py_compile FILE.py`` likewise; ``./py -c`` and any other ``-m`` are refused.
+    ``./py -m py_compile FILE.py`` likewise; ``./py -c`` and any other ``-m`` are refused;
+  - ``run_in_background`` is refused: ``claude -p`` waits for background tasks, so one long ``./py`` would
+    keep the session, the model server and ``caffeinate`` alive, and a background ``./py`` editor would run
+    beside the session's ``./fwd`` calls.
 * ``Write`` / ``Edit`` / ``MultiEdit`` / ``NotebookEdit``: the target, after resolving symlinks, lies inside
-  ``output/<phase>/`` and not inside ``output/<phase>/fwd/`` (the forward tool's records).
+  ``output/<phase>/`` and not inside ``output/<phase>/fwd/`` (the forward tool's records; compared
+  case-insensitively, since APFS resolves ``FWD/`` to ``fwd/``).
 * ``Read`` / ``Glob`` / ``Grep``: every path argument, after resolving symlinks, lies inside the author
   dir and not inside ``.kernel/``; a ``Glob`` pattern or ``Grep`` glob is relative and has no ``..``.
 * The session's ``cwd`` must be the author dir. Any other tool is refused.
@@ -112,7 +116,7 @@ def check_write(path, author, phase):
     target = _real(path, author)
     if not _inside(target, phase_dir) or target == phase_dir:
         return f"writes are allowed only inside output/{phase}/"
-    if _inside(target, os.path.join(phase_dir, "fwd")):
+    if _inside(target.casefold(), os.path.join(phase_dir, "fwd").casefold()):
         return f"output/{phase}/fwd/ holds the forward tool's records and is written only by ./fwd"
     return None
 
@@ -153,6 +157,9 @@ def decide(event, author, phase):
     if not isinstance(inp, dict):
         return "hook input has no tool_input object"
     if tool == "Bash":
+        if inp.get("run_in_background"):
+            return ("run_in_background is not allowed: run ./py and ./fwd in the foreground, one call at a time "
+                    "(make a long job shorter instead)")
         return check_bash(inp.get("command"), author, phase)
     if tool in WRITE_TOOLS:
         return check_write(inp.get("file_path") or inp.get("notebook_path"), author, phase)

@@ -162,6 +162,33 @@ def test_a_caught_violation_still_exits_3(author):
     assert "caught" in p.stdout and "HN_GUARD: refused" in p.stderr
 
 
+def test_fwd_records_are_not_writable_from_py(author):
+    """Review finding: ./py could forge output/<phase>/fwd/ records and hide helper modules there."""
+    rec = author / "output" / PHASE / "fwd" / "1"
+    rec.mkdir(parents=True)
+    (rec / "response.json").write_text('{"call_id": 1}')
+    rel = script(author, f"output/{PHASE}/scratch/forge.py", (
+        "import os\n"
+        "def attempt(label, fn):\n"
+        "    try:\n"
+        "        fn()\n"
+        "    except Exception as e:\n"
+        "        print(label, 'refused', type(e).__name__)\n"
+        "    else:\n"
+        "        print(label, 'ALLOWED')\n"
+        f"attempt('overwrite', lambda: open('output/{PHASE}/fwd/1/response.json', 'w').write('{{\"forged\": true}}'))\n"
+        f"attempt('new_call', lambda: os.makedirs('output/{PHASE}/fwd/7'))\n"
+        f"attempt('upper_case', lambda: open('output/{PHASE}/FWD/1/hidden_helper.py', 'w'))\n"
+        f"attempt('rename_in', lambda: os.rename('output/{PHASE}/scratch/forge.py', 'output/{PHASE}/fwd/f.py'))\n"
+        f"print('read', open('output/{PHASE}/fwd/1/response.json').read())\n"
+        f"open('output/{PHASE}/scratch/notes.txt', 'w').write('fine')\n"))
+    p = run(author, rel)
+    assert p.returncode == 3, (p.returncode, p.stderr)
+    assert "ALLOWED" not in p.stdout and p.stdout.count("refused") == 4, p.stdout
+    assert 'read {"call_id": 1}' in p.stdout and (author / "output" / PHASE / "scratch" / "notes.txt").exists()
+    assert sorted(os.listdir(author / "output" / PHASE / "fwd")) == ["1"] and sorted(os.listdir(rec)) == ["response.json"]
+
+
 def test_exit_status_and_tracebacks(author):
     assert run(author, script(author, f"output/{PHASE}/scratch/five.py", "raise SystemExit(5)\n")).returncode == 5
     p = run(author, script(author, f"output/{PHASE}/scratch/boom.py", "1 / 0\n"))

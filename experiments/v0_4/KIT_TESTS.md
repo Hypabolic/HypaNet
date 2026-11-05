@@ -17,17 +17,17 @@ Run by the launcher on every launch, kit or real:
 - **Tools.** `hypaqwen.wsp.install verify` checks that `tools/` holds exactly `hn_kernel/` (client, fwd, protocol, run_py, wsp), `hn_guard/` and `hn_hook/hook_bash.py`. Every file and directory must be read-only and match the harness sources by sha256.
   - `./py` and `./fwd` must equal the kit copies.
   - The author dir, `packet/`, `.venv/` and `output/` must not be writable; `output/wsp-a/` must be.
-- **Settings.** The phase template (`author_kit/settings_wsp_a.json`) is rendered for this launch into `LOGDIR/NAME.settings.json`. Its `@DENY_ROOTS@` entry expands to Read/Glob/Grep/Edit/Write deny rules for:
+- **Settings.** The phase template (`author_kit/settings_wsp_a.json`) is rendered for this attempt into `LOGDIR/NAME.<utc>.settings.json` (per attempt, so a launch that fails before claude starts can be re-run; only the transcript `NAME.stream.jsonl` marks a launch as done). Its `@DENY_ROOTS@` entry expands to Read/Glob/Grep/Edit/Write deny rules for:
   - the repo;
   - every sibling of every ancestor of the author dir, up to `~`;
   - `~/.claude`, `~/.cache`, `~/.config`, `~/.local` and `~/Library`;
   - `/tmp`, `/private/tmp`, `/var/folders`, `/private/var/folders` and the system temp dir.
 
   The launcher also checks that the rendered file holds the required allow and deny rules (`agent_loop_lab.v04.kit.required_rules`).
-- **Hook self-test.** The exact hook command from the rendered settings runs under `sh -c` with `CLAUDE_PROJECT_DIR` set, through the author venv's Python and the installed `tools/hn_hook/hook_bash.py`, on 30 cases:
+- **Hook self-test.** The exact hook command from the rendered settings runs under `sh -c` with `CLAUDE_PROJECT_DIR` set, through the author venv's Python and the installed `tools/hn_hook/hook_bash.py`, on 33 cases:
   - It allows `./py` scripts, `./fwd` requests, `-m py_compile`, Write/Edit of the deliverables and reads inside the dir.
-  - It refuses `;`, `&&`, a pipe, redirection, a newline, a trailing newline, `$(...)`, backticks, `./py -c`, other programs, scripts outside `output/wsp-a/`, `..` and globs.
-  - It refuses writes to `packet/`, `tools/`, `./py` and `output/wsp-a/fwd/`, and reads of siblings and of `~/.claude`.
+  - It refuses `;`, `&&`, a pipe, redirection, a newline, a trailing newline, `$(...)`, backticks, `./py -c`, other programs, scripts outside `output/wsp-a/`, `..`, globs and `run_in_background` (claude -p waits for background tasks, so one would keep the session, the server and `caffeinate` alive).
+  - It refuses writes to `packet/`, `tools/`, `./py` and `output/wsp-a/fwd/` (also spelled `FWD/`: APFS is case-insensitive), and reads of siblings and of `~/.claude`.
   - It refuses other tools, the wrong cwd, garbage stdin and empty stdin.
 - **Harness scratch.** No `pytest-of-$USER` may exist in the temp roots, including the real per-user temp dir (`getconf DARWIN_USER_TEMP_DIR`). A kit launch only warns.
 
@@ -54,6 +54,7 @@ Run by the launcher on every launch, kit or real:
   - reading `/etc/hosts`;
   - listing `..`;
   - writing at the author-dir root;
+  - writing into `output/wsp-a/fwd/` (only `./fwd` writes its records);
   - connecting to `.kernel/fwd.sock`;
   - running a subprocess;
   - importing `torch.optim`;
@@ -70,6 +71,7 @@ Run by the launcher on every launch, kit or real:
   - writing `packet/SPEC.md`, `tools/hn_kernel/kt.py`, `./py` and `output/wsp-a/fwd/kt.json`;
   - `./py ... ; ls ..`, `./py ... && cat ...`, `./py ... | cat` and `./py ... > file`;
   - `ls ..`, `./py -c print(1)`, `./py $(...)` and `./fwd ../kt.json`;
+  - a `./py` call with `run_in_background` (optional: the model may not set the flag);
 - by being absent: no tool outside the kit is called.
 
 The session audit (`scripts/v04_audit_session.py`, run by the launcher) must report:
@@ -107,6 +109,8 @@ These were measured with throwaway `claude-haiku-5-5` sessions in the session sc
 - **A hook that exits with any status other than 0 or 2 fails open.** For example, an exit of 1 let the command run. So `hook_bash.py` turns every internal error into exit 2, and the launcher self-tests it before each session.
 - **`--tools Read,Glob,Grep,Write,Edit,Bash`** gives exactly those six tools in the init event.
 - **`--restricted` keeps `--settings` hooks working.** A Read outside the cwd is refused under `dontAsk`.
+- **A killed launch's spend is lost to later launches.** A launch SIGKILLed before its result event (seven turns) was followed by a `--resume` launch whose `total_cost_usd` covered only its own turn: the cumulative total restarts from the cost saved at the last normal exit (review probe, 5 Nov 2026). Per-message `usage` does not recover it, since its `output_tokens` is the stream's opening count. So the launcher writes `LOGDIR/NAME.launch.json` with the `--max-budget-usd` ceiling before claude starts, and `scripts/v04_cost.py` charges a launch without a result event that ceiling (or an operator figure from `LOGDIR/COST_OVERRIDES.json`), never US$0 and never a later resume's total.
+- **`claude -p` waits for background Bash tasks** before it exits, and starts a new turn from their notification (review probe), hence the hook's `run_in_background` refusal and the launcher's wall-clock watchdog.
 - **`total_cost_usd` is cumulative per session across resumed launches.** Three launches of one session reported 0.00119, 0.00134 and 0.00144 for one-word replies, which is why `scripts/v04_cost.py` uses deltas. `--max-budget-usd 0.0013` did not stop a resumed launch whose session total was already 0.00134, so the flag appears to bound the launch's own spend. The launcher passes the phase's remaining cap.
 - **Delta accounting on v0.3's own transcripts** gives Phase A US$42.73 and Phase B US$21.89, the corrected figures of plan revision 11.
 - **In `-p` mode Claude Code silently ignores a settings file that fails validation.** So the kit session checks that the hook and the rules really apply, not only that the file exists.
