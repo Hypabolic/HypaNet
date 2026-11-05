@@ -44,20 +44,21 @@ Matthew decided directly: "Drop the training baselines", and "I’ve never plann
 | **Session harness** | `scripts/v04_{prepare_author_dir,launch,kit_tests}.sh`, `v04_{cost,audit_session,run_build}.py`, `experiments/v0_4/author_kit/` | `./py` launcher under the KERNEL_CLIENT guard; command hook; settings; session-id cost accounting, which also charges killed launches; AST audit plus ledger cross-check; watchdog. Reviewed (7 findings, all fixed). The kit test passed end to end on a scratch dir (Haiku, server on CPU) |
 | **G1 pre-registration (draft)** | `experiments/v0_4/PREREGISTRATION.md`, `scripts/v04_freeze.py` | Backends, Q5 statistic and hypotheses (the probe and LoRA recipes were dropped on 6 Nov). The freeze covers every v0.4 tree and the root-env import closure, and refuses until the WSP-B pieces exist. Reviewed (8 findings, all fixed) |
 
-## Quick-look result (6 Nov): base Qwen vs WSP-A, 1,000 val sessions (18,222 windows, harness-only)
+## Quick-look results (6 Nov): base Qwen vs WSP-A and WSP-B, 1,000 val sessions (18,222 windows, harness-only)
 
 | Column | Macro-F1 [95% CI] | Accuracy | False-loop alarm rate |
 | --- | --- | --- | --- |
 | prior dev-majority (always PRODUCTIVE) | 0.137 [0.131, 0.144] | 0.379 | 0.000 |
 | Qwen-0 | 0.223 [0.202, 0.243] | 0.242 | 0.687 |
 | **WSP-A** (Fable, edit `74576466`, US$32.58) | **0.330 [0.309, 0.350]** | 0.351 | 0.553 |
+| **WSP-B** (Fable + 200 labelled val windows, edit `0ea2eb77`, US$29.81) | **0.419 [0.397, 0.441]** | 0.437 | 0.476 |
 
-WSP-A − Qwen-0 macro-F1 **+0.107 [+0.083, +0.130]** (paired, shared bootstrap draws), `artifacts/reports/v04_val_quick_wspa.json`. Per-class F1 Qwen-0 → WSP-A: OSCILLATING 0.22 → 0.41, STALLED 0.37 → 0.54, RECOVERY 0.25 → 0.28, PRODUCTIVE 0.05 → 0.09 (recall 0.03 → 0.06: still the weak spot). WSP-A audit: one benign executed finding, adjudicated in `experiments/v0_4/logs/wsp-a.ADJUDICATION.md`.
+WSP-A − Qwen-0 macro-F1 **+0.107 [+0.083, +0.130]** (paired, shared bootstrap draws), `artifacts/reports/v04_val_quick_wspa.json`. Per-class F1 Qwen-0 → WSP-A: OSCILLATING 0.22 → 0.41, STALLED 0.37 → 0.54, RECOVERY 0.25 → 0.28, PRODUCTIVE 0.05 → 0.09 (recall 0.03 → 0.06: still the weak spot). WSP-B − Qwen-0 **+0.196 [+0.165, +0.226]**, WSP-B − WSP-A **+0.089 [+0.065, +0.113]** (`v04_val_quick_wspb.json`). WSP-B per-class F1: OSCILLATING 0.31, STALLED 0.67, RECOVERY 0.40, PRODUCTIVE 0.29 (recall 0.18, precision 0.69); it gave back some OSCILLATING (0.41 → 0.31) for the rest. WSP-B's disclosure came from a 200-session WSP-A readout (deviation D1, registry revisions 1–2). WSP-A audit: one benign executed finding, adjudicated in `experiments/v0_4/logs/wsp-a.ADJUDICATION.md`.
 
 ## Next
 
 - Full val readouts (Qwen-0, WSP-A) with checkpoints, the result of record. The v0.3 val columns (`scripts/v04_v03_val_columns.py`) on CPU when MPS is free.
-- WSP-B (disclosure, prepare_phase_b, launch, cap US$250) → quick look → full val; then WSP-F.
+- WSP-B full val; WSP-A full val (the 200-session column does not replace it); then WSP-F (check the hn_guard shutil gap first).
 
 ## Kernel rules added beyond the contract (fold into `docs/V04_WSP_KERNEL.md` at G1)
 
