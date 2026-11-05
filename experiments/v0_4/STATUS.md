@@ -4,14 +4,14 @@ _Last update: 2026-11-06 02:00. Plan: `agent_doom_loop_detector_plan_v0_4.md`. M
 
 ## Decision of 6 Nov 2026: no training baselines, everything local
 
-Matthew decided directly: "Drop the training baselines". He never planned to rent a GPU.
+Matthew decided directly: "Drop the training baselines", and "I’ve never planned on renting a h100".
 
 - **No Qwen-probe and no Qwen-LoRA** column at any budget (32, 128, 512, 2,048, all or 200 windows). WSP-A, WSP-B and WSP-F are compared with Qwen-0 and the cited v0.3 and v0.2 columns only.
 - **Q3 and Q4 are not tested.** Q1, Q2, Q2-OOD and Q5 are unchanged.
 - **Nothing is rented.** The author's forward server, the harness-only val readouts and every sealed scoring run (fresh test, v0.3 test, v0.3 OOD, counterfactual and the Q5 readouts) use local MPS, fp32. The CPU replay check runs on this Mac's CPU, Qwen-0 and WSP-B against MPS (PREREGISTRATION §3.1, §3.3).
-- **Time instead of money.** One Qwen column over val takes about 5 h on MPS, so the sealed attempt takes several days. The CPU replay takes several hours per column.
+- **Time instead of money.** One Qwen column over val takes about 5 h on MPS, so the sealed attempt takes several days; an interrupted attempt resumes from per-split, per-column checkpoints and no score is computed until every readout is done (PREREGISTRATION §3.4). The CPU replay takes several hours per column; its tool is written after G1 as pre-registered revision 3 (§3.3, §13).
 - **Code removed.** The probe, LoRA and cloud-runner code merged earlier (`hypaqwen/{probe, lora, cloud, backend, columns, budgets}.py`, `envs/qwen/scripts/cloud_run.sh`, and their tests) is deleted, and `peft` is out of `envs/qwen`. It stays in git history at `0540341`. `datasets/v0_4/BUDGETS.json` is kept unchanged: v0.4 uses its 200 disclosed windows and its WSP-F holdout.
-- **Updated before G1:** PREREGISTRATION (§1, §3, §9 to §12; §4, §5 and §7.2 are stubs, so section numbers do not move; §8 now defines the "Small" yardstick itself), the spec's non-packet sections, the plan (revision 12) and the freeze's required components.
+- **Updated before G1:** PREREGISTRATION (§1, §3, §9 to §13; §4, §5 and §7.2 are stubs, so section numbers do not move; §8 now defines the "Small" yardstick itself), the spec's non-packet sections, the plan (revision 12) and the freeze's required components.
 
 ## Done
 

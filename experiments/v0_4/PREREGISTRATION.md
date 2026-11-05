@@ -58,14 +58,22 @@ On this Mac, the 100 val sessions with the smallest `sha256("20261105:v04-cpu-re
 
 - **Why these two columns:** one per verbaliser path, the unedited weights (Qwen-0) and an edited model (WSP-B, which carries the WSP-A edit and its revision). CPU is slow here for the readout's many short calls (under 10 tok/s measured with another job running), so each column is several hours of CPU.
 - Agreement below 99.5% of windows is reported as a numerical-backend caveat beside the affected column. It never changes a score.
+- **Code:** no G1 file selects the 100 sessions or computes the agreement. The replay tool (the selection by the key above, the CPU readouts through `hypaqwen.run_readout` on its session subset, and the agreement report; no labels) is written after G1 against this section only, with a CPU-only test, and committed with an additive registry revision before the replay is run (§13, pre-registered revision 3: new files only, no `--allow-change`, every G1 hash unchanged). **Why after G1:** the replay needs the WSP-B archive, which exists only after G1, and the rule it implements is fixed here.
 
 ### 3.4 Sealed sets
 
 - **Primary:** the fresh test set (`experiments/v0_4/fresh_test/REGISTRATION.json`, seed 20261106; `datasets/v0_4/fresh_test/MANIFEST_fresh_test.json`, 3,996 sessions). **Secondary:** v0.3 test and v0.3 OOD (no OOD-2: plan decision).
-- **Once, after G2**, by the pre-registered script `scripts/v04_sealed_eval.py`. It is written after G1 against this section and §8 only, and committed with an additive registry revision (`scripts/v04_freeze.py --revise`, §13: new files only, no `--allow-change`, every G1 hash unchanged) before any sealed file is opened. It refuses a second official run (as v0.3 E7) and refuses unless `scripts/v04_freeze.py --check` passes.
+- **Once, after G2**, by the pre-registered script `scripts/v04_sealed_eval.py`. It is written after G1 against this section and §8 only, and committed with an additive registry revision (`scripts/v04_freeze.py --revise`, §13: new files only, no `--allow-change`, every G1 hash unchanged) before any sealed file is opened. It refuses a second official run (as v0.3 E7; resuming an interrupted attempt is not one, below) and refuses unless `scripts/v04_freeze.py --check` passes.
 - **Order:** one attempt, one pass per split: counterfactual first (every column's counterfactual consistency, and every Q5 readout of §8: *E*, each *E∖m* and *O*), then the fresh test set, then v0.3 test and OOD. Before the attempt opens any sealed file it records the sha256 of every archived `EDIT.md` and `BUILD_RECORD.json` it reads mechanism tables and sizes from; Q5 uses only those files.
 - **v0.3 artefacts on the fresh set:** re-scored here on arm64 in the v0.3 environment with no tolerance; the unofficial v0.3 val dry run matched every official v0.3 number exactly on this machine (plan revision 10). Their v0.3 test and OOD predictions are recomputed for the paired comparisons and must reproduce the cited sealed numbers exactly, or the attempt stops.
 - **Backend:** the sealed attempt runs on local MPS, fp32 (§3.1). One Qwen column over val takes about 5 h there, so the attempt is several days of MPS time.
+- **Interrupted attempt.** A crash, power loss or restart during the attempt does not end it.
+  - **Checkpoints:** `scripts/v04_sealed_eval.py` checkpoints every readout per split and per column (the logits of every completed session, as `hypaqwen.run_readout` does), with the registry `freeze_sha256`, the readout's arguments and its session ids.
+  - **Resume:** on restart it resumes the same attempt with the same frozen code, only after `scripts/v04_freeze.py --check` passes, and refuses if the checkpoint's `freeze_sha256`, arguments or session ids differ. Completed sessions are kept; the interrupted session is recomputed from its start.
+  - **No score before every readout is done:** no Qwen output is compared with a label, and no score of any column is computed, until every Qwen readout of the attempt (§8's included) is complete. So a resume cannot be steered by a score. Scoring reads only the stored logits; if it is interrupted before its report is written, it is rerun on the same stored logits, with no readout recomputed.
+  - **Record:** each outage is logged in the attempt's record (time, split, column, sessions kept) and reported.
+  - A resume of an incomplete attempt is **not a second official run**. Starting a new attempt, or reading out again a split and column that the attempt completed, is.
+  - **Why:** the attempt is several days of local MPS time, and a full val readout on this Mac has already died once without a traceback or a written output (commit `fbac9f9`, which added checkpoint and resume to `run_readout`). Without this rule, one crash would either void the single attempt or force an unregistered rerun.
 - **G2** waits for the WSP-B and WSP-F archives.
 
 ## 4. Probe recipe (Qwen-probe)
@@ -172,6 +180,7 @@ WSP-F enters no verdict. Every number is reported whatever its direction.
 - **Guard violation, audit finding, tampering** (`KernelTampered`, a non-clean `clean_run`, a forbidden marker, an AST loop flag, more than 3 edit hashes on one text set): to the adjudicator; the run is reported with the finding, never silently dropped.
 - **Cap reached:** no further launch; the last valid archive, if any, is the result.
 - **Infrastructure** (server crash, machine restart): the server is restarted on the same journal and ledger, so neither the budget nor the edits reset; the outage is logged.
+- **Infrastructure during the sealed attempt** (crash, power loss, restart): the attempt resumes from its checkpoints exactly as §3.4 states; each outage is logged and reported, and the resume is not a second official run.
 - **A failed or poor WSP arm is a result** and is reported as such.
 
 ## 11. Not allowed after G1
@@ -180,7 +189,7 @@ WSP-F enters no verdict. Every number is reported whatever its direction.
 - Any tuning on val, test, OOD or counterfactual.
 - Changing the WSP contract, the kernel, guards, runner, budgets, caps, disclosure or WSP-F rules, or the packet (its hash is registered). The one exception is the WSP-F ops revision, limited exactly as §7.3 states.
 - Showing any val, test, OOD or counterfactual number, or any Qwen output compared with a label, to the weight author.
-- Opening a sealed set before G2, or scoring one twice officially.
+- Opening a sealed set before G2, or scoring one twice officially (resuming an interrupted attempt under §3.4 is not scoring it twice).
 - Changing the Q5 eligibility rules, statistic or thresholds, the verdicts of §9 and their conditions, or the backends of §3.1.
 - Adding or removing columns, except v0.2 B and C-all on the fresh set under the condition of §1.
 
@@ -204,6 +213,7 @@ WSP-F enters no verdict. Every number is reported whatever its direction.
 
 1. `scripts/v04_sealed_eval.py` (§3.4, §8): new files only, no `--allow-change`.
 2. The WSP-F ops (§7.3): new files plus the four kernel files listed there.
+3. The CPU replay tool (§3.3): new files only, no `--allow-change`; before the replay is run. It may be committed in the same revision as 1.
 
 Any other revision is a deviation from this pre-registration and is reported as one.
 
