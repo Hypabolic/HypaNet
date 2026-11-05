@@ -46,9 +46,6 @@ def _put(root: Path, rel: str, text: str) -> None:
 
 # One file per required component (their real names belong to the components).
 _COMPONENT_FILES = (
-    "envs/qwen/hypaqwen/recipes/probe.py",
-    "envs/qwen/hypaqwen/recipes/lora.py",
-    "scripts/v04_cloud_run.sh",
     "scripts/v04_build_disclosure.py",
     "scripts/v04_audit_session.py",
     "experiments/v0_4/author_kit/prompt_wsp_b.md",
@@ -139,9 +136,9 @@ def test_check_catches_added_file(root: Path) -> None:
     _put(root, "scripts/v04_sealed_eval.py", "# written after G1\n")
     _put(root, "envs/qwen/hypaqwen/recipes/constants.json", "{}\n")  # non-.py data under hypaqwen
     _put(root, "src/agent_loop_lab/v04/sub/mod.py", "# a v04 subpackage\n")
-    _put(root, "scripts/v04_cloud.yaml", "gpu: h100\n")
+    _put(root, "scripts/v04_notes.yaml", "note: 1\n")
     assert _check(root) == ["not in registry: envs/qwen/hypaqwen/recipes/constants.json",
-                            "not in registry: scripts/v04_cloud.yaml",
+                            "not in registry: scripts/v04_notes.yaml",
                             "not in registry: scripts/v04_sealed_eval.py",
                             "not in registry: src/agent_loop_lab/v04/sub/mod.py"]
 
@@ -208,10 +205,10 @@ def test_write_refuses_empty_glob(root: Path) -> None:
 
 
 @pytest.mark.parametrize("rel, name", [
-    ("envs/qwen/hypaqwen/recipes/lora.py", "LoRA recipe"),
-    ("envs/qwen/hypaqwen/recipes/probe.py", "probe recipe"),
     ("scripts/v04_build_disclosure.py", "WSP-B disclosure builder"),
+    ("scripts/v04_audit_session.py", "session audit"),
     ("experiments/v0_4/author_kit/prompt_wsp_b.md", "WSP-B prompt"),
+    ("experiments/v0_4/author_kit/hook_bash.py", "author-kit command hook"),
 ])
 def test_write_refuses_missing_component(root: Path, rel: str, name: str) -> None:
     (root / rel).unlink()
@@ -243,11 +240,11 @@ def test_write_refuses_symlink(root: Path, tmp_path: Path) -> None:
 
 def test_write_refuses_symlinked_directory(root: Path, tmp_path: Path) -> None:
     outside = tmp_path / "outside"
-    _put(outside, "lora_extra.py", "# outside the tree\n")
+    _put(outside, "outside_extra.py", "# outside the tree\n")
     (root / "envs/qwen/hypaqwen/more").symlink_to(outside, target_is_directory=True)
     files, problems = R.frozen_files(root)
     assert "symlink under a frozen tree: envs/qwen/hypaqwen/more" in problems
-    assert not any("lora_extra" in f for f in files)
+    assert not any("outside_extra" in f for f in files)
     with pytest.raises(R.RegistryError, match="symlink under a frozen tree"):
         R.write_registry(root)
 

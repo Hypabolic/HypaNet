@@ -1,4 +1,4 @@
-"""Write the v0.4 labelled-budget session lists, ``datasets/v0_4/BUDGETS.json`` (PREREGISTRATION.md §4, §5, §7).
+"""Write the v0.4 labelled-budget session lists, ``datasets/v0_4/BUDGETS.json`` (PREREGISTRATION.md §7).
 
 Usage:
     uv run python scripts/v04_export_budgets.py [--out datasets/v0_4/BUDGETS.json] [--data-dir datasets/v0_4]
@@ -6,8 +6,10 @@ Usage:
 
 Runs in the frozen v0.3 environment (``agent_loop_lab.v04.budgets``). Reads the dev and val ids of
 ``datasets/v0_2/splits.json`` and the val window rows of ``DATA_DIR/val.labels.npz`` (for the
-disclosure rule only); writes the probe/LoRA budget subsets, the val ES set, the 200 disclosed
-windows and the WSP-F holdout, each with its sha256. No label is written. The build reproduces v0.3
+disclosure rule only); writes the v0.3 Phase C budget subsets, the val ES set, the 200 disclosed
+windows and the WSP-F holdout, each with its sha256. v0.4 uses the disclosed windows and the holdout
+(defined against the 2,048 subset); the other lists were for the probe and LoRA columns dropped on
+2026-11-06 and are kept unchanged. No label is written. The build reproduces v0.3
 (Phase C logs, DISCLOSURE_PRIVATE.json) or refuses. ``--check`` rebuilds and compares byte for byte.
 """
 
