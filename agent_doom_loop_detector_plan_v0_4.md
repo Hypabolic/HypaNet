@@ -226,7 +226,7 @@ These follow the M0 build and an independent review of the v0.3 harness. Matthew
 7. **Matched budget for Q3.** Add **LoRA-200w** and **probe-200w** columns trained on exactly the 200 disclosed windows, alongside the 32 to all budgets. That gives WSP-B a like-for-like comparison.
 8. **Q5 protocol.** For each mechanism EDIT.md claims, the harness checks it on the counterfactual pairs, with the edit applied and then ablated. The pass statistic is pre-registered at G1. Counterfactual is scored before the sealed attempt, as in v0.3.
 9. **Scoring bridge.** It uses `eval.m4.score_columns`, as v0.3 Phase C did. H2 is not applicable without a reference policy.
-10. **Re-scoring v0.3 artefacts on arm64.** v0.3's reproduction checks require exact equality, and the artefacts were scored on x86. Before G1, the unofficial v0.3 val dry run is repeated on this machine and diffed against the official reports. If it matches, local re-scoring is valid. If not, G1 pre-registers a tolerance.
+10. **Re-scoring v0.3 artefacts on arm64.** v0.3's reproduction checks require exact equality, and the artefacts were scored on x86. Before G1, the unofficial v0.3 val dry run is repeated on this machine and diffed against the official reports. If it matches, local re-scoring is valid. If not, G1 pre-registers a tolerance. **Done 5 Nov: every check matched exactly on arm64, so local re-scoring is valid with no tolerance.**
 11. **v0.3 cost correction.** `total_cost_usd` in Claude Code's stream is cumulative across resumed launches of one session, so `scripts/v03_cost.py` double-counted. v0.3's hand-written work cost US$64.62 in total, not US$122.24: Phase A $42.73 and Phase B $21.89. The v0.4 cost script accounts by session-id delta.
 
 ## Sources

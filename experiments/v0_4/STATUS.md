@@ -20,7 +20,19 @@ _Last update: 2026-11-05 21:30. Plan: `agent_doom_loop_detector_plan_v0_4.md`. M
 
 - **Prompt choice** on MPS, 12 × 100 dev sessions, label-free. The report goes to `artifacts/reports/v04_prompt_choice.json`.
 - **WSP kernel build**, as a workflow in three worktrees: server/client/`./fwd`, guards on torch 2.14.1, and the build runner. Each part is reviewed and fixed before it is merged.
-- **v0.3 val dry run on arm64** (unofficial; report in the session scratchpad). It checks whether v0.3's exact-equality reproduction checks still hold on this machine. The first attempt stopped because the Phase C `model.pt` files were Git LFS pointers. `git lfs install --local && git lfs pull` fixed that, and the hashes match.
+
+## v0.3 reproduces exactly on this Mac
+
+The unofficial v0.3 val dry run (`scripts/v03_sealed_eval.py --dry-run-val`) ran with macOS-27.0.1-arm64, Python 3.12.16, torch 2.2.2, 2 threads and 4 workers. Its report stays in the session scratchpad. Every exact-equality check passed:
+
+- the official v0.3 Phase A and Phase B val reports;
+- all 11 Phase C early-stopping macro-F1 values;
+- the scoring path, for both phases;
+- the val and counterfactual row identity against v0.2;
+- the disclosure rule;
+- the two priors, overall and per family.
+
+So the frozen v0.3 artefacts can be re-scored on the fresh test set here with no tolerance (plan revision 10). The first attempt stopped because the Phase C `model.pt` files were Git LFS pointers. `git lfs install --local && git lfs pull` fixed that, and the hashes match.
 
 ## Next
 
