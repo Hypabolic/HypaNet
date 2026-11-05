@@ -1,0 +1,429 @@
+{
+ "report": "v04_prompt_choice",
+ "rule": "experiments/v0_4/prompt_choice/README.md: highest median label-word mass on the dev subset; ties to the earlier candidate. No labels, gate results or families are read.",
+ "split": "dev",
+ "sessions": 100,
+ "session_ids_sha256": "33cbd2ceb2ff641f19553d919a066250c4caa7af846c2001172d32cb70c80827",
+ "subset_key": "v04-prompt-choice:{session_id}",
+ "model": {
+  "id": "Qwen/Qwen3.5-0.8B",
+  "revision": "2fc06364715b967f1860aea9cf38778875588b17"
+ },
+ "device": "mps",
+ "dtype": "fp32",
+ "torch": "2.14.1",
+ "transformers": "5.22.1",
+ "platform": "macOS-27.0.1-arm64-arm-64bit",
+ "code_sha256": "d1ac43ec0b2d3a359e4526ac06bedf05563b4023d5094f8f2523a0e9bc7b6bc2",
+ "candidates": [
+  {
+   "name": "w1-state-full",
+   "label_words": [
+    " productive",
+    " recovering",
+    " stalled",
+    " looping"
+   ],
+   "answer_cue": "State:",
+   "style": "full",
+   "label_token_ids": [
+    25399,
+    39923,
+    65552,
+    60477
+   ],
+   "prefix_tokens": 167,
+   "suffix_tokens": 11,
+   "windows": 2069,
+   "mass": {
+    "median": 0.8161622285842896,
+    "mean": 0.8171210885047913,
+    "p10": 0.7866799235343933,
+    "p90": 0.8475701808929443
+   },
+   "predicted_share": {
+    "PRODUCTIVE": 0.0725,
+    "RECOVERY": 0.275,
+    "STALLED": 0.3963,
+    "OSCILLATING": 0.2562
+   },
+   "tokens": 188568,
+   "seconds": 448.7
+  },
+  {
+   "name": "w1-state-short",
+   "label_words": [
+    " productive",
+    " recovering",
+    " stalled",
+    " looping"
+   ],
+   "answer_cue": "State:",
+   "style": "short",
+   "label_token_ids": [
+    25399,
+    39923,
+    65552,
+    60477
+   ],
+   "prefix_tokens": 119,
+   "suffix_tokens": 11,
+   "windows": 2069,
+   "mass": {
+    "median": 0.7562013864517212,
+    "mean": 0.7580487132072449,
+    "p10": 0.7056362628936768,
+    "p90": 0.8095065355300903
+   },
+   "predicted_share": {
+    "PRODUCTIVE": 0.1179,
+    "RECOVERY": 0.1493,
+    "STALLED": 0.682,
+    "OSCILLATING": 0.0507
+   },
+   "tokens": 183768,
+   "seconds": 509.5
+  },
+  {
+   "name": "w1-answer-full",
+   "label_words": [
+    " productive",
+    " recovering",
+    " stalled",
+    " looping"
+   ],
+   "answer_cue": "Answer:",
+   "style": "full",
+   "label_token_ids": [
+    25399,
+    39923,
+    65552,
+    60477
+   ],
+   "prefix_tokens": 167,
+   "suffix_tokens": 11,
+   "windows": 2069,
+   "mass": {
+    "median": 0.8627957701683044,
+    "mean": 0.8582577705383301,
+    "p10": 0.8142186403274536,
+    "p90": 0.8962550163269043
+   },
+   "predicted_share": {
+    "PRODUCTIVE": 0.0237,
+    "RECOVERY": 0.0208,
+    "STALLED": 0.3596,
+    "OSCILLATING": 0.5959
+   },
+   "tokens": 188568,
+   "seconds": 450.8
+  },
+  {
+   "name": "w1-answer-short",
+   "label_words": [
+    " productive",
+    " recovering",
+    " stalled",
+    " looping"
+   ],
+   "answer_cue": "Answer:",
+   "style": "short",
+   "label_token_ids": [
+    25399,
+    39923,
+    65552,
+    60477
+   ],
+   "prefix_tokens": 119,
+   "suffix_tokens": 11,
+   "windows": 2069,
+   "mass": {
+    "median": 0.7950903177261353,
+    "mean": 0.7896750569343567,
+    "p10": 0.7364370822906494,
+    "p90": 0.832255482673645
+   },
+   "predicted_share": {
+    "PRODUCTIVE": 0.1112,
+    "RECOVERY": 0.0126,
+    "STALLED": 0.7071,
+    "OSCILLATING": 0.1692
+   },
+   "tokens": 183768,
+   "seconds": 420.0
+  },
+  {
+   "name": "w2-state-full",
+   "label_words": [
+    " productive",
+    " recovering",
+    " stuck",
+    " looping"
+   ],
+   "answer_cue": "State:",
+   "style": "full",
+   "label_token_ids": [
+    25399,
+    39923,
+    15239,
+    60477
+   ],
+   "prefix_tokens": 167,
+   "suffix_tokens": 11,
+   "windows": 2069,
+   "mass": {
+    "median": 0.9468874931335449,
+    "mean": 0.9427063465118408,
+    "p10": 0.9107500314712524,
+    "p90": 0.9656291604042053
+   },
+   "predicted_share": {
+    "PRODUCTIVE": 0.0372,
+    "RECOVERY": 0.0126,
+    "STALLED": 0.9502,
+    "OSCILLATING": 0.0
+   },
+   "tokens": 188568,
+   "seconds": 419.0
+  },
+  {
+   "name": "w2-state-short",
+   "label_words": [
+    " productive",
+    " recovering",
+    " stuck",
+    " looping"
+   ],
+   "answer_cue": "State:",
+   "style": "short",
+   "label_token_ids": [
+    25399,
+    39923,
+    15239,
+    60477
+   ],
+   "prefix_tokens": 119,
+   "suffix_tokens": 11,
+   "windows": 2069,
+   "mass": {
+    "median": 0.9052133560180664,
+    "mean": 0.9002373218536377,
+    "p10": 0.8578575253486633,
+    "p90": 0.9342066049575806
+   },
+   "predicted_share": {
+    "PRODUCTIVE": 0.1,
+    "RECOVERY": 0.013,
+    "STALLED": 0.8869,
+    "OSCILLATING": 0.0
+   },
+   "tokens": 183768,
+   "seconds": 412.4
+  },
+  {
+   "name": "w2-answer-full",
+   "label_words": [
+    " productive",
+    " recovering",
+    " stuck",
+    " looping"
+   ],
+   "answer_cue": "Answer:",
+   "style": "full",
+   "label_token_ids": [
+    25399,
+    39923,
+    15239,
+    60477
+   ],
+   "prefix_tokens": 167,
+   "suffix_tokens": 11,
+   "windows": 2069,
+   "mass": {
+    "median": 0.952390193939209,
+    "mean": 0.9449158906936646,
+    "p10": 0.9013369083404541,
+    "p90": 0.9699289202690125
+   },
+   "predicted_share": {
+    "PRODUCTIVE": 0.001,
+    "RECOVERY": 0.0,
+    "STALLED": 0.9981,
+    "OSCILLATING": 0.001
+   },
+   "tokens": 188568,
+   "seconds": 417.9
+  },
+  {
+   "name": "w2-answer-short",
+   "label_words": [
+    " productive",
+    " recovering",
+    " stuck",
+    " looping"
+   ],
+   "answer_cue": "Answer:",
+   "style": "short",
+   "label_token_ids": [
+    25399,
+    39923,
+    15239,
+    60477
+   ],
+   "prefix_tokens": 119,
+   "suffix_tokens": 11,
+   "windows": 2069,
+   "mass": {
+    "median": 0.9155187010765076,
+    "mean": 0.9057239294052124,
+    "p10": 0.8542330861091614,
+    "p90": 0.9405970573425293
+   },
+   "predicted_share": {
+    "PRODUCTIVE": 0.0962,
+    "RECOVERY": 0.001,
+    "STALLED": 0.9029,
+    "OSCILLATING": 0.0
+   },
+   "tokens": 183768,
+   "seconds": 428.9
+  },
+  {
+   "name": "w3-state-full",
+   "label_words": [
+    " progress",
+    " retry",
+    " stuck",
+    " loop"
+   ],
+   "answer_cue": "State:",
+   "style": "full",
+   "label_token_ids": [
+    4936,
+    21979,
+    15239,
+    6136
+   ],
+   "prefix_tokens": 165,
+   "suffix_tokens": 11,
+   "windows": 2069,
+   "mass": {
+    "median": 0.985894501209259,
+    "mean": 0.9837875962257385,
+    "p10": 0.9744144082069397,
+    "p90": 0.9904447197914124
+   },
+   "predicted_share": {
+    "PRODUCTIVE": 0.0,
+    "RECOVERY": 0.0,
+    "STALLED": 1.0,
+    "OSCILLATING": 0.0
+   },
+   "tokens": 188368,
+   "seconds": 456.9
+  },
+  {
+   "name": "w3-state-short",
+   "label_words": [
+    " progress",
+    " retry",
+    " stuck",
+    " loop"
+   ],
+   "answer_cue": "State:",
+   "style": "short",
+   "label_token_ids": [
+    4936,
+    21979,
+    15239,
+    6136
+   ],
+   "prefix_tokens": 117,
+   "suffix_tokens": 11,
+   "windows": 2069,
+   "mass": {
+    "median": 0.9745051264762878,
+    "mean": 0.9704298377037048,
+    "p10": 0.9553889632225037,
+    "p90": 0.9835869073867798
+   },
+   "predicted_share": {
+    "PRODUCTIVE": 0.0,
+    "RECOVERY": 0.0,
+    "STALLED": 1.0,
+    "OSCILLATING": 0.0
+   },
+   "tokens": 183568,
+   "seconds": 430.9
+  },
+  {
+   "name": "w3-answer-full",
+   "label_words": [
+    " progress",
+    " retry",
+    " stuck",
+    " loop"
+   ],
+   "answer_cue": "Answer:",
+   "style": "full",
+   "label_token_ids": [
+    4936,
+    21979,
+    15239,
+    6136
+   ],
+   "prefix_tokens": 165,
+   "suffix_tokens": 11,
+   "windows": 2069,
+   "mass": {
+    "median": 0.9833235144615173,
+    "mean": 0.9792938232421875,
+    "p10": 0.9623291492462158,
+    "p90": 0.9895266890525818
+   },
+   "predicted_share": {
+    "PRODUCTIVE": 0.0,
+    "RECOVERY": 0.0,
+    "STALLED": 1.0,
+    "OSCILLATING": 0.0
+   },
+   "tokens": 188368,
+   "seconds": 415.7
+  },
+  {
+   "name": "w3-answer-short",
+   "label_words": [
+    " progress",
+    " retry",
+    " stuck",
+    " loop"
+   ],
+   "answer_cue": "Answer:",
+   "style": "short",
+   "label_token_ids": [
+    4936,
+    21979,
+    15239,
+    6136
+   ],
+   "prefix_tokens": 117,
+   "suffix_tokens": 11,
+   "windows": 2069,
+   "mass": {
+    "median": 0.9749531745910645,
+    "mean": 0.9715096950531006,
+    "p10": 0.9589526653289795,
+    "p90": 0.9824656248092651
+   },
+   "predicted_share": {
+    "PRODUCTIVE": 0.0,
+    "RECOVERY": 0.0,
+    "STALLED": 1.0,
+    "OSCILLATING": 0.0
+   },
+   "tokens": 183568,
+   "seconds": 411.5
+  }
+ ],
+ "chosen": "w3-state-full"
+}
