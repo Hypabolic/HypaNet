@@ -229,6 +229,18 @@ These follow the M0 build and an independent review of the v0.3 harness. Matthew
 10. **Re-scoring v0.3 artefacts on arm64.** v0.3's reproduction checks require exact equality, and the artefacts were scored on x86. Before G1, the unofficial v0.3 val dry run is repeated on this machine and diffed against the official reports. If it matches, local re-scoring is valid. If not, G1 pre-registers a tolerance. **Done 5 Nov: every check matched exactly on arm64, so local re-scoring is valid with no tolerance.**
 11. **v0.3 cost correction.** `total_cost_usd` in Claude Code's stream is cumulative across resumed launches of one session, so `scripts/v03_cost.py` double-counted. v0.3's hand-written work cost US$64.62 in total, not US$122.24: Phase A $42.73 and Phase B $21.89. The v0.4 cost script accounts by session-id delta.
 
+## Revision of 6 Nov 2026 (before G1)
+
+Matthew decided this directly. It overrides two recommendations he had accepted above ("Cloud GPU" and "LoRA budgets") and revision 7. The sections above stay as written; the pre-registration and the spec carry the change.
+
+12. **No training baselines and no cloud GPU.** Matthew: "Drop the training baselines". He never planned to rent a GPU.
+    - There is no Qwen-probe and no Qwen-LoRA column at any budget (32, 128, 512, 2,048, all or 200 windows). WSP-A, WSP-B and WSP-F are compared with Qwen-0 and the cited v0.3 and v0.2 columns only.
+    - Q3 and Q4 are not tested, because both needed those columns. Q1, Q2, Q2-OOD and Q5 are unchanged.
+    - Nothing is rented. Fable's forward server, the harness-only val runs and every sealed scoring run, the Q5 readouts included, use local MPS in fp32. The CPU replay check runs on this Mac's CPU and compares Qwen-0 and WSP-B with MPS.
+    - This works because the Mac's GPU works. The "Compute and environment" section assumed it would not. That held for the Intel Mac it measured, but not for the M4 Pro (revision 1).
+    - The cost is time. One Qwen column over val takes about 5 h on MPS, so the sealed attempt takes several days and the CPU replay several hours per column.
+    - The probe, LoRA and cloud-runner code merged before this decision has been removed. It stays in git history at commit `0540341`.
+
 ## Sources
 
 - "Sparks of Weight-Space Programming", Takehi, Teoh, Zhang and Khattab, 2 Nov 2026: https://rikiyat.github.io/blog/weight-space-programming/ and logs at https://github.com/RikiyaT/lm_understand-logs

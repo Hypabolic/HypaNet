@@ -1,15 +1,21 @@
-"""v0.4 labelled-budget session lists (PREREGISTRATION.md §4, §5, §7): ``datasets/v0_4/BUDGETS.json``.
+"""v0.4 labelled-budget session lists (PREREGISTRATION.md §7): ``datasets/v0_4/BUDGETS.json``.
 
 Harness only; runs in the frozen v0.3 environment. The Qwen environment reads the written file (it
-never imports this package), so every probe, LoRA and WSP-F component uses the same lists:
+never imports this package), so the WSP-F server (§7.3, implemented after G1) and any other reader
+use the same lists.
+
+The file was written before G1 for the probe and LoRA columns, which were dropped on 2026-11-06
+(PREREGISTRATION.md header, §4, §5). Its data are unchanged: v0.4 uses ``disclosed_200w`` (§7.1) and
+``wspf_holdout`` (§7.3); ``budgets`` and ``es_val`` are no longer an input of any column, and
+``budgets["2048"]`` is kept because the holdout is defined against it:
 
 * ``budgets`` ``{"32", "128", "512", "2048", "all"}``: exactly the v0.3 Phase C subsets,
   :func:`agent_loop_lab.baselines.phase_c_v03.budget_subset` over the dev ids of
   ``datasets/v0_2/splits.json`` (ascending ``sha256("20261105:v03-phase-c-budget:{id}")``, first
   *k*; ``all`` is every dev id in that order, so each budget is a prefix of ``all``);
-* ``es_val``: the 500-session val early-stopping set (§5),
+* ``es_val``: the 500-session val early-stopping set of v0.3 Phase C,
   :func:`agent_loop_lab.baselines.phase_c_v03.es_session_ids`, disclosed sessions removed first;
-* ``disclosed_200w``: the 200 WSP-B windows (§7.1, §7.2), :func:`agent_loop_lab.v03.scoring.disclosure_selection`
+* ``disclosed_200w``: the 200 WSP-B windows (§7.1), :func:`agent_loop_lab.v03.scoring.disclosure_selection`
   on the val rows of :func:`agent_loop_lab.v04.scoring.load_rows` (which checks them against v0.3's
   ``rows_sha256``), in key order (``V001``-``V200``), each as ``{"session_id", "row_pos"}``;
   ``row_pos`` is the export's row position (``labels.npz`` ``row_pos``: the block index of the

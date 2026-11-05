@@ -1,6 +1,17 @@
 # v0.4 status
 
-_Last update: 2026-11-06 00:40. Plan: `agent_doom_loop_detector_plan_v0_4.md`. Matthew accepted every recommendation in it, and the post-M0 revisions are in its "Revisions after M0" section. No Qwen output has been compared with a label._
+_Last update: 2026-11-06 02:00. Plan: `agent_doom_loop_detector_plan_v0_4.md`. Matthew accepted every recommendation in it, and the post-M0 revisions are in its "Revisions after M0" section. On 6 Nov, before G1, he dropped the training baselines and all cloud compute (below; plan revision 12). No Qwen output has been compared with a label._
+
+## Decision of 6 Nov 2026: no training baselines, everything local
+
+Matthew decided directly: "Drop the training baselines". He never planned to rent a GPU.
+
+- **No Qwen-probe and no Qwen-LoRA** column at any budget (32, 128, 512, 2,048, all or 200 windows). WSP-A, WSP-B and WSP-F are compared with Qwen-0 and the cited v0.3 and v0.2 columns only.
+- **Q3 and Q4 are not tested.** Q1, Q2, Q2-OOD and Q5 are unchanged.
+- **Nothing is rented.** The author's forward server, the harness-only val readouts and every sealed scoring run (fresh test, v0.3 test, v0.3 OOD, counterfactual and the Q5 readouts) use local MPS, fp32. The CPU replay check runs on this Mac's CPU, Qwen-0 and WSP-B against MPS (PREREGISTRATION §3.1, §3.3).
+- **Time instead of money.** One Qwen column over val takes about 5 h on MPS, so the sealed attempt takes several days. The CPU replay takes several hours per column.
+- **Code removed.** The probe, LoRA and cloud-runner code merged earlier (`hypaqwen/{probe, lora, cloud, backend, columns, budgets}.py`, `envs/qwen/scripts/cloud_run.sh`, and their tests) is deleted, and `peft` is out of `envs/qwen`. It stays in git history at `0540341`. `datasets/v0_4/BUDGETS.json` is kept unchanged: v0.4 uses its 200 disclosed windows and its WSP-F holdout.
+- **Updated before G1:** PREREGISTRATION (§1, §3, §9 to §12; §4, §5 and §7.2 are stubs, so section numbers do not move; §8 now defines the "Small" yardstick itself), the spec's non-packet sections, the plan (revision 12) and the freeze's required components.
 
 ## Done
 
@@ -20,12 +31,12 @@ _Last update: 2026-11-06 00:40. Plan: `agent_doom_loop_detector_plan_v0_4.md`. M
 
 | **v0.4 spec and author packet** | `agent_doom_loop_detector_spec_v0_4.md`, `scripts/v04_build_packet.py` | `[packet]` sections, plus the v0.2 labelling rules exactly as v0.3 A saw them; the interface and Qwen tokenizer files; leakage checks; deterministic. Reviewed (6 findings, 5 fixed, 1 accepted at G1: the tool files name WSP-B mechanics) |
 | **Session harness** | `scripts/v04_{prepare_author_dir,launch,kit_tests}.sh`, `v04_{cost,audit_session,run_build}.py`, `experiments/v0_4/author_kit/` | `./py` launcher under the KERNEL_CLIENT guard; command hook; settings; session-id cost accounting, which also charges killed launches; AST audit plus ledger cross-check; watchdog. Reviewed (7 findings, all fixed). The kit test passed end to end on a scratch dir (Haiku, server on CPU) |
-| **G1 pre-registration (draft)** | `experiments/v0_4/PREREGISTRATION.md`, `scripts/v04_freeze.py` | Probe and LoRA recipes, backends, Q5 statistic and hypotheses. The freeze covers every v0.4 tree and the root-env import closure, and refuses until the recipes and WSP-B pieces exist. Reviewed (8 findings, all fixed) |
+| **G1 pre-registration (draft)** | `experiments/v0_4/PREREGISTRATION.md`, `scripts/v04_freeze.py` | Backends, Q5 statistic and hypotheses (the probe and LoRA recipes were dropped on 6 Nov). The freeze covers every v0.4 tree and the root-env import closure, and refuses until the WSP-B pieces exist. Reviewed (8 findings, all fixed) |
 
 ## Running (night of 5–6 Nov)
 
 - **Qwen-0 val readout** on MPS (`experiments/v0_4/columns/qwen0.val.npz`, label-free), ETA about 04:00. Scored only after the G1 freeze.
-- **Workflow: the last G1 components.** Probe and LoRA code, the budget export and cloud runner, the WSP-B disclosure builder and prompt, and the Mechanisms table in EDIT.md. Each is reviewed before the freeze.
+- **Workflow: the last G1 components.** The WSP-B disclosure builder and prompt, and the Mechanisms table in EDIT.md. Each is reviewed before the freeze. The probe, LoRA and cloud-runner pieces were merged and then removed after the 6 Nov decision.
 - **Then:** freeze G1 → prepare `../HypaNet-v04-author` → kit tests → score Qwen-0 on val (harness only) → launch WSP-A (Fable, cap US$500), as Matthew asked.
 
 ## Kernel rules added beyond the contract (fold into `docs/V04_WSP_KERNEL.md` at G1)
@@ -54,7 +65,7 @@ So the frozen v0.3 artefacts can be re-scored on the fresh test set here with no
 1. **Qwen-0 val logits** (label-free, about 5 h on MPS): `hypaqwen.run_readout --split val`. They are scored only after G1.
 2. Build the session harness: prepare script, launch with a tool allow-list and command hook, audit, cost by session delta, packet, kit tests.
 3. Write the v0.4 spec with `[packet]` sections.
-4. Write the probe and LoRA recipes and the cloud-GPU scripts.
+4. ~~Write the probe and LoRA recipes and the cloud-GPU scripts.~~ Dropped on 6 Nov (no training baselines).
 5. Write the G1 pre-registration and the `registry_v0_4.yaml` freeze.
 
 ## Measurements on this Mac
@@ -62,7 +73,7 @@ So the frozen v0.3 artefacts can be re-scored on the fresh test set here with no
 | Backend | Verbaliser readout | Note |
 | --- | --- | --- |
 | MPS, fp32 | 445 tok/s | Compute-bound; a fixed 40–70 ms per call. One val pass takes about 5 h; 2M tokens take about 75 min |
-| CPU, fp32 | under 10 tok/s | Measured with other jobs running. The 100-session CPU replay check moves to the cloud machine |
+| CPU, fp32 | under 10 tok/s | Measured with other jobs running. The 100-session CPU replay check runs here, for Qwen-0 and WSP-B: several hours per column |
 
 ## Corrections to earlier notes
 

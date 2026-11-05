@@ -3,7 +3,7 @@
 Modelled on :mod:`agent_loop_lab.v03.registry`, which stays frozen. Differences:
 
 * **The file list is computed, and its parts are required.** Every path in :data:`REQUIRED_FILES`
-  must exist and every component of :data:`REQUIRED_COMPONENTS` (the recipes, the harness, the
+  must exist and every component of :data:`REQUIRED_COMPONENTS` (the WSP-B disclosure builder, the harness, the
   author kit; named by path patterns where their final file names belong to the components) must
   match at least one file, so a component that is not merged yet makes the freeze refuse instead of
   being frozen later. :data:`FROZEN_GLOBS` then adds everything under the v0.4 trees (all of
@@ -121,10 +121,10 @@ REQUIRED_FILES: tuple[str, ...] = (
     f"{SRC}/eval/m4.py",
     f"{SRC}/eval/metrics.py",
     f"{SRC}/eval/collisions.py",
-    f"{SRC}/v03/scoring.py",  # disclosure_selection (WSP-B, probe-200w, LoRA-200w)
+    f"{SRC}/v03/scoring.py",  # disclosure_selection (the WSP-B disclosure)
     f"{SRC}/v03/sealed.py",
     f"{SRC}/v03/renderer.py",
-    f"{SRC}/baselines/phase_c_v03.py",  # budget_subset, es_session_ids (probe and LoRA subsets)
+    f"{SRC}/baselines/phase_c_v03.py",  # budget_subset (the WSP-F holdout excludes the 2,048 subset, §7.3)
     f"{SRC}/baselines/phase_c.py",  # macro_f1
     f"{SRC}/synth/counterfactual.py",  # INTENDED (the Q5 pair kinds)
     # Harness scripts whose names the contract and this file fix.
@@ -147,7 +147,7 @@ REQUIRED_FILES: tuple[str, ...] = (
     "datasets/v0_2/MANIFEST.json",
     "datasets/v0_3/MANIFEST_v0_3.json",
     "datasets/v0_4/EXPORT_MANIFEST.json",
-    "datasets/v0_4/BUDGETS.json",  # probe/LoRA budgets, ES set, disclosed windows, WSP-F holdout (§4, §5, §7)
+    "datasets/v0_4/BUDGETS.json",  # disclosed windows, WSP-F holdout (§7); its budget lists and ES set are unused
     "datasets/v0_4/fresh_test/MANIFEST_fresh_test.json",
     "experiments/v0_4/fresh_test/REGISTRATION.json",
     "experiments/v0_4/prompt_choice/README.md",
@@ -159,10 +159,6 @@ REQUIRED_FILES: tuple[str, ...] = (
 # Components whose file names are the components' own: each must match at least one file. A
 # component with several patterns is present when any pattern matches.
 REQUIRED_COMPONENTS: tuple[tuple[str, tuple[str, ...]], ...] = (
-    ("probe recipe (PREREGISTRATION §4)", (f"{PKG}/**/probe*.py",)),
-    ("LoRA recipe (PREREGISTRATION §5)", (f"{PKG}/**/lora*.py",)),
-    ("cloud GPU runner for the probe and LoRA (§3.1)",
-     ("scripts/v04_*cloud*", f"{QWEN}/scripts/*cloud*", f"{PKG}/**/cloud*.py")),
     ("WSP-B disclosure builder (§7.1)", ("scripts/v04_*disclos*.py",)),
     ("session audit (§10)", ("scripts/v04_audit*.py",)),
     ("WSP-B prompt (§6)", (f"{KIT}/**/*wsp_b*.md",)),
@@ -170,7 +166,7 @@ REQUIRED_COMPONENTS: tuple[tuple[str, tuple[str, ...]], ...] = (
 )
 # Every match is frozen ("**" spans any number of directories, "*" stays within one).
 FROZEN_GLOBS: tuple[str, ...] = (
-    f"{QWEN}/**/*",  # hypaqwen (interface .. wsp, recipes, any data file), scripts, tests, lock
+    f"{QWEN}/**/*",  # hypaqwen (interface .. wsp, any data file), scripts, tests, lock
     f"{KIT}/**/*",
     "scripts/v04_*",
     f"{SRC}/v04/**/*",

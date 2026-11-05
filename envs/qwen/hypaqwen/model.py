@@ -1,7 +1,7 @@
 """Load Qwen3.5-0.8B (text model only; the vision encoder is not used) at the pinned revision.
 
 Loading is offline from the local Hugging Face cache, and every file the readout depends on is
-checked against its sha256 first, so a cloud machine or a re-download cannot silently change the
+checked against its sha256 first, so another machine or a re-download cannot silently change the
 weights, tokeniser or config. Attention runs through SDPA, fixed rather than left to the default.
 """
 

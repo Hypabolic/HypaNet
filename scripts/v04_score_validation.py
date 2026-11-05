@@ -2,7 +2,7 @@
 
 Usage:
     uv run python scripts/v04_score_validation.py --arm qwen0 --column "Qwen-0=PATH.npz" [--column ...]
-        [--group "LoRA-512=LoRA-512 s0,LoRA-512 s1,LoRA-512 s2"] [--report-dir DIR] [--force]
+        [--group "NAME=COLUMN,COLUMN,..."] [--report-dir DIR] [--force]
 
 Writes artifacts/reports/v04_val_<arm>.json (official), or DIR/v04_val_<arm>.json with --report-dir
 (unofficial). Refuses to overwrite an official report without --force. Harness only: these numbers

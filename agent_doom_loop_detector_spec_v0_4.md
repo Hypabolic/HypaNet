@@ -1,8 +1,8 @@
 # Agent Doom Loop Detector — Weight-Space Programming of Qwen3.5-0.8B
 
 **Specification:** v0.4 (successor to v0.3; every v0.3 and v0.2 result stays as reported)
-**Status:** DRAFT r1, 2026-11-05. It is written from `agent_doom_loop_detector_plan_v0_4.md` (every recommendation accepted, including its "Revisions after M0") and the WSP kernel contract `docs/V04_WSP_KERNEL.md`. It is frozen at G1 (§16), before any weight author sees it.
-**Purpose:** Measure whether a reasoning LLM can **edit a pretrained model's weights**, with no optimiser, no search and no labelled examples, so that Qwen3.5-0.8B, read through a fixed one-word prompt, classifies an AI coding agent's recent behaviour into the four v0.2 patterns; and compare that edit with building a network from zero (v0.3), with the model as it comes, and with ordinary fine-tuning.
+**Status:** DRAFT r2, 2026-11-06 (r1 2026-11-05). r2 records Matthew's direct decision of 2026-11-06, taken before G1, to drop the training baselines and all cloud compute (D3, D12, §11). It is written from `agent_doom_loop_detector_plan_v0_4.md` (every recommendation accepted, including its "Revisions after M0") and the WSP kernel contract `docs/V04_WSP_KERNEL.md`. It is frozen at G1 (§16), before any weight author sees it.
+**Purpose:** Measure whether a reasoning LLM can **edit a pretrained model's weights**, with no optimiser, no search and no labelled examples, so that Qwen3.5-0.8B, read through a fixed one-word prompt, classifies an AI coding agent's recent behaviour into the four v0.2 patterns; and compare that edit with building a network from zero (v0.3), and with the model as it comes. (The comparison with ordinary fine-tuning was dropped before G1: §11.)
 
 Sections marked **[packet]** go into the authoring packet. All other sections are withheld from the weight author.
 
@@ -20,15 +20,15 @@ Sections marked **[packet]** go into the authoring packet. All other sections ar
 | 6 | Reference policy | `reference_policy.py`, H2 fidelity | None. Q5 (mechanism check on counterfactual pairs) replaces H2 |
 | 7 | Labels, windows, gate, metrics | — | Unchanged: the same sessions, oracle labels, gate, scored-window set and metric code |
 | 8 | Primary sealed set | v0.3 test | A **fresh sealed test set** (§9); v0.3 test and OOD are secondary |
-| 9 | Trained baselines | Phase C transformers on CPU | Qwen-probe and Qwen-LoRA on one CUDA GPU (§11) |
+| 9 | Trained baselines | Phase C transformers on CPU | None new: no Qwen-probe or Qwen-LoRA. The trained v0.3 C and v0.2 C-all columns are cited, and re-scored on the fresh set as PREREGISTRATION §1 states (§11) |
 
-### 0.1 Decisions (accepted 2026-11-05)
+### 0.1 Decisions (accepted 2026-11-05; D3 and D12 changed by Matthew on 2026-11-06)
 
 | # | Decision | Value |
 |---|---|---|
 | D1 | Base model | `Qwen/Qwen3.5-0.8B` at revision `2fc06364715b967f1860aea9cf38778875588b17`; every file's sha256 pinned (`envs/qwen/hypaqwen/model.py` `FILE_SHA256`); offline load; SDPA attention; fp32 |
 | D2 | Environment | `envs/qwen`, a separate uv project: Python 3.12, torch 2.14.1, transformers 5.22.1. The root v0.3 environment (torch 2.2.2) stays frozen. Neither environment imports the other's packages |
-| D3 | Machine | Apple M4 Pro, 24 GB. The author's forward server and harness-only val runs use local MPS (about 445 tok/s). LoRA, probe features on dev and every sealed scoring run use one CUDA GPU (cap US$100) |
+| D3 | Machine | Apple M4 Pro, 24 GB. Everything runs here, on local MPS in fp32 (about 445 tok/s): the author's forward server, the harness-only val runs and every sealed scoring run. The CPU replay check runs on this Mac's CPU. Nothing is rented (Matthew, 2026-11-06) |
 | D4 | Interface | `w1-state-full`, chosen with no labels by the pre-registered prompt choice as revised (`experiments/v0_4/prompt_choice/README.md`, Revision 1); frozen as `hypaqwen.interface.FROZEN`, `spec_sha256` `5922eb4500122921ac7d07e3d35599b95cb10b462c4f50b89e5d6bb989437879` |
 | D5 | Label words | ` productive`, ` recovering`, ` stalled`, ` looping` (each one Qwen token; ` oscillating` is two) |
 | D6 | Label-word rows | The embedding is tied to the LM head. Editing the four label rows is allowed and reported, with the input-side effect flagged (§7.4) |
@@ -37,7 +37,7 @@ Sections marked **[packet]** go into the authoring packet. All other sections ar
 | D9 | Weight author | A fresh `claude-fable-5-1` session (fallback `claude-opus-5-5`), effort max, headless `claude -p`, in a new directory `../HypaNet-v04-author`; it has never seen generator, oracle or dataset code |
 | D10 | Caps | Session cost: WSP-A US$500, WSP-B US$250, WSP-F US$250, accounted by session-id delta of the cumulative `total_cost_usd` (§13). Forward budget: 2,000,000 tokens per phase, 50,000 per request |
 | D11 | WSP-F | Included as a separate, clearly labelled column after WSP-B; never instead of it |
-| D12 | LoRA budgets | 32 / 128 / 512 / 2,048 / all dev sessions, seeds as v0.3 E8 (3 / 3 / 3 / 1 / 1), plus a 200-window budget matched to WSP-B |
+| D12 | Trained baselines | None (Matthew, 2026-11-06: "Drop the training baselines"). There is no Qwen-probe or Qwen-LoRA column at any budget; this replaces the plan's accepted LoRA budgets (32 / 128 / 512 / 2,048 / all, plus 200 windows) |
 | D13 | Re-scoring v0.3 on arm64 | The v0.3 val dry run matched every official check exactly on this machine, so v0.3 artefacts are re-scored locally with no tolerance |
 | D14 | v0.3 cost | Corrected to US$64.62 (A $42.73, B $21.89); `scripts/v03_cost.py` double-counted resumed sessions |
 
@@ -78,21 +78,19 @@ Each is a research target, not a pass/fail gate, as in v0.3. Comparisons are alw
 |---|---|---|
 | Q1 | Can Qwen do the task as it comes? | Qwen-0 clearly above the constant prior (v0.3 test 0.136); its gap to v0.3 A (0.744) is the value of hand-building |
 | Q2 | Does WSP on Qwen beat building from zero? | WSP-B above v0.3 B (test 0.957, OOD 0.908) at the same 200 labelled windows; WSP-A against v0.3 A (0 labels) |
-| Q3 | Does WSP beat ordinary fine-tuning of the same model? | WSP-B above LoRA-200w and probe-200w, and above the 512-session budget |
-| Q4 | Does pretraining fix the trained models' OOD collapse? | LoRA OOD well above v0.3 C-all (0.488), with a false-loop alarm rate under 35% |
+| Q3 | Does WSP beat ordinary fine-tuning of the same model? | Not tested in v0.4: the training baselines were dropped before G1 (§11) |
+| Q4 | Does pretraining fix the trained models' OOD collapse? | Not tested in v0.4: the training baselines were dropped before G1 (§11) |
 | Q5 | Is a WSP edit explainable and small? | The edit touches a reported, small fraction of weights, and each mechanism EDIT.md claims passes the pre-registered counterfactual check (§10.4) |
 
 ### 2.2 Arms
 
-Every Qwen arm starts from the same checkpoint (D1). Every arm except the probe uses the verbaliser readout of §5, so they differ only in the weights.
+Every Qwen arm starts from the same checkpoint (D1) and uses the verbaliser readout of §5, so they differ only in the weights.
 
 | Arm | Built by | Labelled data | Answers |
 |---|---|---|---|
 | **Qwen-0** | Nobody: the released weights and the frozen prompt | 0 | Q1 |
-| **Qwen-probe** | A linear 4-class head on the frozen hidden state at the suffix's last token, fitted by logistic regression (§11.1) | 200w / 32 / 128 / 512 / 2,048 / all sessions | How much the frozen model already knows |
-| **Qwen-LoRA** | LoRA fine-tuning with one pre-registered recipe (§11.2) | 200w / 32 / 128 / 512 / 2,048 / all sessions | Q3, Q4 |
 | **WSP-A** | The weight author edits the weights in a sealed session; forward passes only on its own texts | 0 | Q2 (vs v0.3 A), Q5 |
-| **WSP-B** | One revision of WSP-A after the same 200 disclosed windows as v0.3 Phase B (§14.1) | 200 windows | Q2, Q3 (vs v0.3 B), Q5 |
+| **WSP-B** | One revision of WSP-A after the same 200 disclosed windows as v0.3 Phase B (§14.1) | 200 windows | Q2 (vs v0.3 B), Q5 |
 | **WSP-F** (separate column) | WSP-B plus a labelled forward-pass budget on dev with accept or reject, as in the blog's Exp 8 (§14.2) | 200 windows + the budget | Matches the published method; reported beside WSP-B, never instead of it |
 | Cited | v0.3 A / B / C, v0.2 columns, rules engine, constant prior | as reported | Baselines |
 
@@ -344,7 +342,7 @@ A rejected build returns only the harness's error text.
 
 ## 9. Data, splits and sealing
 
-- **Training and disclosure data are unchanged.** Dev (12,000 sessions) trains the probe and LoRA arms. Val (4,004 sessions) is for harness-only validation, with the 200 disclosed sessions left out of the primary population.
+- **Training and disclosure data are unchanged.** Dev (12,000 sessions) trains no v0.4 arm: only WSP-F reads its labels, in aggregate and on the holdout (§14.2). Val (4,004 sessions) is for harness-only validation, with the 200 disclosed sessions left out of the primary population.
 - **Task export** (`scripts/v04_export_tasks.py`, root environment). `datasets/v0_4/{split}.tasks.jsonl.gz` holds rendered blocks and window positions with no labels; `datasets/v0_4/{split}.labels.npz` holds the window rows, built exactly as v0.3's scoring rows. Only dev and val can be exported before the sealed evaluation.
 - **Fresh sealed test set** (D7, `experiments/v0_4/fresh_test/REGISTRATION.json`, `datasets/v0_4/fresh_test/MANIFEST_fresh_test.json`): 86,412 windows, 83,874 gate-passing. It was rebuilt byte-identically under a second PYTHONHASHSEED. The manifest holds no label statistics. It is the primary result.
 - **v0.3 test and OOD** are secondary results, for continuity. No author has seen them, but we who design v0.4 know the v0.3 results on them.
@@ -365,7 +363,7 @@ v0.2 §10.1 as used by v0.3: macro-F1, per-class precision and recall, false-loo
 
 ### 10.3 Backend
 
-Harness-only val runs use local MPS, fp32. Every sealed column is scored in fp32 on one named CUDA GPU type with deterministic kernels, fixed at G1. The harness also replays 100 val sessions on CPU on the cloud machine and reports how many argmaxes agree with CUDA.
+Every Qwen run is local and fp32 on this Mac's MPS: the harness-only val runs, the author's forward server and every sealed column, fixed at G1. torch's deterministic-algorithms mode is no guarantee on MPS, so the harness also replays 100 val sessions on this Mac's CPU for Qwen-0 and WSP-B and reports how many argmaxes agree with MPS.
 
 ### 10.4 Q5 mechanism check
 
@@ -379,13 +377,7 @@ Val scores of WSP-A are computed for the harness only and are never shown to the
 
 ## 11. Trained baselines
 
-### 11.1 Qwen-probe
-
-A linear 4-class head on the frozen hidden state at the suffix's last token (the readout position), fitted by logistic regression. Budgets as D12, with the subsets of v0.3 Phase C plus the 200 disclosed windows (probe-200w). Features on dev are computed on the cloud GPU.
-
-### 11.2 Qwen-LoRA
-
-One pre-registered recipe, fixed at G1: rank, alpha, target modules, learning rate, epochs and batch size; cross-entropy over the four label-word logits at scored windows, through the same verbaliser readout. Budgets and seeds as D12 (LoRA-200w on exactly the 200 disclosed windows). Any tuning uses val only and is reported. Training runs on the cloud GPU.
+Removed before G1 (Matthew, 2026-11-06: "Drop the training baselines"). There is no Qwen-probe and no Qwen-LoRA column at any budget, and no cloud GPU. Q3 and Q4 are not tested. The trained columns of the report are the cited v0.3 C and v0.2 C-all (PREREGISTRATION §1). The heading stays so that section numbers do not move.
 
 ---
 
@@ -393,7 +385,9 @@ One pre-registered recipe, fixed at G1: rank, alpha, target modules, learning ra
 
 - **Forward server** (WSP): local MPS, fp32, about 445 tok/s. The 2M-token budget is about 75 min of model time.
 - **Harness-only val runs:** local MPS; one full val pass takes about 5 h (7.87M readout tokens; 1,726 tokens per session with the prefix).
-- **Cloud:** one CUDA GPU (RunPod or Modal, H100 or A100), cap US$100 for all Qwen evaluation, probe features and LoRA; estimate under US$50.
+- **Sealed scoring:** local MPS, fp32, the same as the val runs. Each Qwen column takes hours per sealed set, so the one attempt is several days of MPS time.
+- **CPU replay check:** this Mac's CPU, fp32.
+- **Nothing is rented** (Matthew, 2026-11-06).
 - **Build runner:** CPU, one thread, deterministic algorithms, RLIMIT_CPU 300 s, wall timeout 600 s.
 
 ---
@@ -433,7 +427,7 @@ The same 200 windows and oracle labels as v0.3 Phase B (the selection rule never
 
 ### 14.2 WSP-F (blog-style, separate column)
 
-WSP-B plus 50 `score_dev` calls of at most 128 dev sessions each, with accept or reject. A final paired check on 500 dev sessions picked by hash key, disjoint from every LoRA and probe budget subset, held by the harness (`holdout_check`, once). Cost cap US$250. Dev labels live only in the WSP-F server. G2 waits for the WSP-F archive.
+WSP-B plus 50 `score_dev` calls of at most 128 dev sessions each, with accept or reject. A final paired check on 500 dev sessions picked by hash key, outside the v0.3 Phase C 2,048-session budget subset, held by the harness (`holdout_check`, once). Cost cap US$250. Dev labels live only in the WSP-F server. G2 waits for the WSP-F archive.
 
 ---
 
@@ -454,13 +448,12 @@ WSP-B plus 50 `score_dev` calls of at most 128 dev sessions each, with accept or
 | Milestone | Contents |
 |---|---|
 | **M0** | Environment, readout, token audit, fresh sealed test set, prompt choice, scoring bridge, WSP kernel |
-| **G1** | Pre-registration frozen and committed: this spec, the interface, the LoRA and probe recipes, the WSP rules, the Q5 statistic, the GPU type, the packet hash (`registry_v0_4.yaml`) |
-| **M1** | Qwen-0 and Qwen-probe on val, harness-only |
+| **G1** | Pre-registration frozen and committed: this spec, the interface, the WSP rules, the Q5 statistic, the backend (local MPS, fp32), the packet hash (`registry_v0_4.yaml`) |
+| **M1** | Qwen-0 on val, harness-only |
 | **M2** | WSP-A: sealed session; edit archived and scored on val; the 200-window disclosure refreshed |
 | **M3** | WSP-B, then WSP-F; archived before any sealed scoring |
-| (parallel) | LoRA and probe budgets on the cloud GPU |
-| **G2** | WSP-B and WSP-F archived and every LoRA run done |
-| **M4** | Sealed evaluation, run once: fresh test primary, v0.3 test and OOD secondary |
+| **G2** | WSP-B and WSP-F archived |
+| **M4** | Sealed evaluation on local MPS, run once: fresh test primary, v0.3 test and OOD secondary |
 | **M5** | Report: one joint table with v0.2 and v0.3 |
 
 A poor result is still a result, provided it is attributed to the interface, the edit, capacity or distribution shift.
