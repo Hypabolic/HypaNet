@@ -1,0 +1,68 @@
+{
+ "edit_md_sha256": "6c94702a8f61120bde086b89048930986178d2978c636c778406891c42f2d2d1",
+ "evaluated": 4,
+ "found": true,
+ "note": "eligibility preview only; v0.4 gives no Q5 verdict (PREREGISTRATION \u00a78); never refuses a build",
+ "problems": [],
+ "q5_possible": true,
+ "rows": [
+  {
+   "claim": "Unit 1046 fires on edit-type repetition (edit/revert blocks recurring) combined with repeated failures and no progress, and adds its activation to the ` looping` logit only, so A/B edit cycles and edit/revert cycles are named looping instead of recovering.",
+   "id": "M1",
+   "row": 1,
+   "status": "evaluated",
+   "target_class": "OSCILLATING",
+   "tensors": [
+    "model.language_model.layers.23.mlp.gate_proj.weight",
+    "model.language_model.layers.23.mlp.up_proj.weight",
+    "model.language_model.layers.23.mlp.down_proj.weight"
+   ]
+  },
+  {
+   "claim": "Unit 1613 fires when identical failing blocks or a long retry chain dominate the window without a resolution, progress or edit repetition, and adds its activation to the ` stalled` logit only, so repeated identical failures are named stalled instead of recovering or looping.",
+   "id": "M2",
+   "row": 2,
+   "status": "evaluated",
+   "target_class": "STALLED",
+   "tensors": [
+    "model.language_model.layers.22.mlp.gate_proj.weight",
+    "model.language_model.layers.22.mlp.up_proj.weight",
+    "model.language_model.layers.22.mlp.down_proj.weight"
+   ]
+  },
+  {
+   "claim": "Unit 1007 reads errors-present times recent-success and moves only the ` recovering` logit, lowering it on stalled windows and raising it in the blocks after a resolution, so recovering is named for resolved or in-policy retries rather than as the default for every error.",
+   "id": "M3",
+   "row": 3,
+   "status": "evaluated",
+   "target_class": "RECOVERY",
+   "tensors": [
+    "model.language_model.layers.21.mlp.gate_proj.weight",
+    "model.language_model.layers.21.mlp.up_proj.weight",
+    "model.language_model.layers.21.mlp.down_proj.weight"
+   ]
+  },
+  {
+   "claim": "The ` productive` row gains the progress-plus-resolution-minus-repeated-failure direction of the final residual, so windows with progress or new investigation are named productive even when error lines are in context.",
+   "id": "M4",
+   "row": 4,
+   "status": "evaluated",
+   "target_class": "PRODUCTIVE",
+   "tensors": [
+    "label rows"
+   ]
+  }
+ ],
+ "units": [
+  "label rows",
+  "model.language_model.layers.21.mlp.down_proj.weight",
+  "model.language_model.layers.21.mlp.gate_proj.weight",
+  "model.language_model.layers.21.mlp.up_proj.weight",
+  "model.language_model.layers.22.mlp.down_proj.weight",
+  "model.language_model.layers.22.mlp.gate_proj.weight",
+  "model.language_model.layers.22.mlp.up_proj.weight",
+  "model.language_model.layers.23.mlp.down_proj.weight",
+  "model.language_model.layers.23.mlp.gate_proj.weight",
+  "model.language_model.layers.23.mlp.up_proj.weight"
+ ]
+}

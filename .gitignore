@@ -14,3 +14,9 @@ datasets/**/*.encoded.pt.tmp
 
 # Claude Code workflow worktrees
 .claude/worktrees/
+
+# v0.4 WSP: large binaries stay local (the edit rebuilds from build_edit.py + constants; hashes are in BUILD_RECORD.json and author_output_manifest.json)
+experiments/v0_4/logs/*/journal/
+weight_program/v0_4/*/edit.safetensors
+weight_program/v0_4/*/author_output/**/*.npz
+experiments/v0_4/columns/*.partial.npz

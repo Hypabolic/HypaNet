@@ -1,0 +1,827 @@
+[
+ {
+  "id": "pA1",
+  "labels": [
+   "AMBIG",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE"
+  ],
+  "effs": [
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "PROGRESS",
+   "PROGRESS",
+   "PROGRESS",
+   "NEW_FACT",
+   "NEW_FACT"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9
+  ],
+  "n": 10
+ },
+ {
+  "id": "pA2",
+  "labels": [
+   "AMBIG",
+   "AMBIG",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE"
+  ],
+  "effs": [
+   "NONE",
+   "NEW_FACT",
+   "PROGRESS",
+   "PROGRESS",
+   "NEW_FACT",
+   "PROGRESS",
+   "PROGRESS",
+   "PROGRESS",
+   "NEW_FACT"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8
+  ],
+  "n": 9
+ },
+ {
+  "id": "pA3",
+  "labels": [
+   "AMBIG",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE"
+  ],
+  "effs": [
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "PROGRESS",
+   "PROGRESS",
+   "PROGRESS",
+   "PROGRESS",
+   "NEW_FACT",
+   "PROGRESS",
+   "PROGRESS"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9
+  ],
+  "n": 10
+ },
+ {
+  "id": "pA4",
+  "labels": [
+   "AMBIG",
+   "AMBIG",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE"
+  ],
+  "effs": [
+   "NONE",
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9
+  ],
+  "n": 10
+ },
+ {
+  "id": "pA5",
+  "labels": [
+   "AMBIG",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE"
+  ],
+  "effs": [
+   "NEW_FACT",
+   "PROGRESS",
+   "PROGRESS",
+   "PROGRESS",
+   "NEW_FACT",
+   "PROGRESS",
+   "PROGRESS",
+   "PROGRESS",
+   "NONE"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8
+  ],
+  "n": 9
+ },
+ {
+  "id": "rA1",
+  "labels": [
+   "AMBIG",
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY",
+   "PRODUCTIVE",
+   "PRODUCTIVE"
+  ],
+  "effs": [
+   "NEW_FACT",
+   "NONE",
+   "IN_POLICY",
+   "RESOLVES",
+   "NEW_FACT",
+   "PROGRESS",
+   "PROGRESS",
+   "NEW_FACT",
+   "NEW_FACT"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8
+  ],
+  "n": 9
+ },
+ {
+  "id": "rA2",
+  "labels": [
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY"
+  ],
+  "effs": [
+   "PROGRESS",
+   "PROGRESS",
+   "NONE",
+   "IN_POLICY",
+   "IN_POLICY",
+   "IN_POLICY",
+   "RESOLVES",
+   "NEW_FACT",
+   "PROGRESS",
+   "NEW_FACT"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9
+  ],
+  "n": 10
+ },
+ {
+  "id": "rA3",
+  "labels": [
+   "PRODUCTIVE",
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY",
+   "PRODUCTIVE",
+   "PRODUCTIVE"
+  ],
+  "effs": [
+   "PROGRESS",
+   "NONE",
+   "NEW_FACT",
+   "PROGRESS",
+   "RESOLVES",
+   "PROGRESS",
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9
+  ],
+  "n": 10
+ },
+ {
+  "id": "rA4",
+  "labels": [
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY",
+   "PRODUCTIVE",
+   "PRODUCTIVE"
+  ],
+  "effs": [
+   "NONE",
+   "NEW_FACT",
+   "PROGRESS",
+   "IN_POLICY",
+   "PROGRESS",
+   "RESOLVES",
+   "PROGRESS",
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9,
+   10
+  ],
+  "n": 11
+ },
+ {
+  "id": "rA5",
+  "labels": [
+   "AMBIG",
+   "PRODUCTIVE",
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY"
+  ],
+  "effs": [
+   "NEW_FACT",
+   "PROGRESS",
+   "NONE",
+   "RESOLVES",
+   "PROGRESS",
+   "NEW_FACT"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5
+  ],
+  "n": 6
+ },
+ {
+  "id": "sA1",
+  "labels": [
+   "AMBIG",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "STALLED"
+  ],
+  "effs": [
+   "NEW_FACT",
+   "PROGRESS",
+   "NONE",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9
+  ],
+  "n": 10
+ },
+ {
+  "id": "sA2",
+  "labels": [
+   "AMBIG",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "AMBIG",
+   "STALLED"
+  ],
+  "effs": [
+   "NEW_FACT",
+   "NEW_FACT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9
+  ],
+  "n": 10
+ },
+ {
+  "id": "sA3",
+  "labels": [
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "STALLED",
+   "STALLED"
+  ],
+  "effs": [
+   "PROGRESS",
+   "NONE",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9
+  ],
+  "n": 10
+ },
+ {
+  "id": "sA4",
+  "labels": [
+   "AMBIG",
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY",
+   "AMBIG",
+   "AMBIG",
+   "AMBIG",
+   "AMBIG",
+   "STALLED",
+   "STALLED"
+  ],
+  "effs": [
+   "NEW_FACT",
+   "NONE",
+   "IN_POLICY",
+   "IN_POLICY",
+   "IN_POLICY",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9,
+   10
+  ],
+  "n": 11
+ },
+ {
+  "id": "sA5",
+  "labels": [
+   "PRODUCTIVE",
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY",
+   "PRODUCTIVE",
+   "AMBIG",
+   "AMBIG",
+   "AMBIG",
+   "STALLED",
+   "STALLED"
+  ],
+  "effs": [
+   "PROGRESS",
+   "NONE",
+   "IN_POLICY",
+   "IN_POLICY",
+   "IN_POLICY",
+   "IN_POLICY",
+   "IN_POLICY",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9,
+   10,
+   11,
+   12
+  ],
+  "n": 13
+ },
+ {
+  "id": "sA6",
+  "labels": [
+   "AMBIG",
+   "AMBIG",
+   "AMBIG",
+   "AMBIG",
+   "AMBIG",
+   "AMBIG",
+   "AMBIG",
+   "AMBIG",
+   "STALLED",
+   "STALLED"
+  ],
+  "effs": [
+   "NEW_FACT",
+   "NONE",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9
+  ],
+  "n": 10
+ },
+ {
+  "id": "oA1",
+  "labels": [
+   "AMBIG",
+   "AMBIG",
+   "AMBIG",
+   "AMBIG",
+   "AMBIG",
+   "OSCILLATING",
+   "OSCILLATING",
+   "OSCILLATING",
+   "OSCILLATING",
+   "OSCILLATING",
+   "OSCILLATING"
+  ],
+  "effs": [
+   "NEW_FACT",
+   "NONE",
+   "NONE",
+   "REVERSION",
+   "REDUNDANT",
+   "REVERSION",
+   "REDUNDANT",
+   "REVERSION",
+   "REDUNDANT",
+   "REVERSION",
+   "REDUNDANT"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9,
+   10
+  ],
+  "n": 11
+ },
+ {
+  "id": "oA2",
+  "labels": [
+   "AMBIG",
+   "AMBIG",
+   "AMBIG",
+   "OSCILLATING",
+   "OSCILLATING",
+   "OSCILLATING",
+   "OSCILLATING",
+   "OSCILLATING"
+  ],
+  "effs": [
+   "NONE",
+   "NONE",
+   "REVERSION",
+   "REVERSION",
+   "REDUNDANT",
+   "REVERSION",
+   "REVERSION",
+   "REVERSION"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7
+  ],
+  "n": 8
+ },
+ {
+  "id": "oA3",
+  "labels": [
+   "AMBIG",
+   "AMBIG",
+   "AMBIG",
+   "AMBIG",
+   "OSCILLATING",
+   "OSCILLATING",
+   "OSCILLATING",
+   "OSCILLATING",
+   "OSCILLATING"
+  ],
+  "effs": [
+   "NONE",
+   "NONE",
+   "NONE",
+   "REVERSION",
+   "REVERSION",
+   "REVERSION",
+   "REDUNDANT",
+   "REVERSION",
+   "REVERSION"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8
+  ],
+  "n": 9
+ },
+ {
+  "id": "oA4",
+  "labels": [
+   "AMBIG",
+   "AMBIG",
+   "AMBIG",
+   "AMBIG",
+   "AMBIG",
+   "OSCILLATING",
+   "OSCILLATING",
+   "OSCILLATING",
+   "OSCILLATING",
+   "OSCILLATING"
+  ],
+  "effs": [
+   "NEW_FACT",
+   "NONE",
+   "NONE",
+   "REVERSION",
+   "NONE",
+   "REVERSION",
+   "REDUNDANT",
+   "REVERSION",
+   "REVERSION",
+   "REVERSION"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9
+  ],
+  "n": 10
+ },
+ {
+  "id": "oA5",
+  "labels": [
+   "AMBIG",
+   "AMBIG",
+   "AMBIG",
+   "AMBIG",
+   "OSCILLATING",
+   "OSCILLATING",
+   "OSCILLATING",
+   "OSCILLATING",
+   "OSCILLATING"
+  ],
+  "effs": [
+   "NONE",
+   "NONE",
+   "NONE",
+   "REVERSION",
+   "REVERSION",
+   "REDUNDANT",
+   "REVERSION",
+   "REVERSION",
+   "REDUNDANT"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8
+  ],
+  "n": 9
+ }
+]

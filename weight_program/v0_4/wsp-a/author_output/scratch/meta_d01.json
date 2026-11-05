@@ -1,0 +1,2378 @@
+[
+ {
+  "id": "d0_osc",
+  "labels": [
+   "AMBIG",
+   "AMBIG",
+   "AMBIG",
+   "AMBIG",
+   "OSCILLATING",
+   "OSCILLATING",
+   "OSCILLATING",
+   "OSCILLATING"
+  ],
+  "effs": [
+   "NONE",
+   "NONE",
+   "REVERSION",
+   "REDUNDANT",
+   "REVERSION",
+   "REDUNDANT",
+   "REVERSION",
+   "REDUNDANT"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7
+  ],
+  "n": 8,
+  "group": "d0",
+  "tag": "osc"
+ },
+ {
+  "id": "d0_stal5",
+  "labels": [
+   "AMBIG",
+   "AMBIG",
+   "AMBIG",
+   "AMBIG",
+   "AMBIG",
+   "STALLED",
+   "STALLED",
+   "STALLED"
+  ],
+  "effs": [
+   "NONE",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7
+  ],
+  "n": 8,
+  "group": "d0",
+  "tag": "stal5"
+ },
+ {
+  "id": "d0_stal6",
+  "labels": [
+   "AMBIG",
+   "AMBIG",
+   "AMBIG",
+   "AMBIG",
+   "AMBIG",
+   "AMBIG",
+   "STALLED",
+   "STALLED"
+  ],
+  "effs": [
+   "NONE",
+   "NONE",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7
+  ],
+  "n": 8,
+  "group": "d0",
+  "tag": "stal6"
+ },
+ {
+  "id": "d1_stal",
+  "labels": [
+   "AMBIG",
+   "AMBIG",
+   "AMBIG",
+   "AMBIG",
+   "AMBIG",
+   "AMBIG",
+   "AMBIG"
+  ],
+  "effs": [
+   "NEW_FACT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6
+  ],
+  "n": 7,
+  "group": "d1",
+  "tag": "stal"
+ },
+ {
+  "id": "d1_stal2",
+  "labels": [
+   "AMBIG",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE"
+  ],
+  "effs": [
+   "NEW_FACT",
+   "NEW_FACT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7
+  ],
+  "n": 8,
+  "group": "d1",
+  "tag": "stal2"
+ },
+ {
+  "id": "d1_prod",
+  "labels": [
+   "AMBIG",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE"
+  ],
+  "effs": [
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6
+  ],
+  "n": 7,
+  "group": "d1",
+  "tag": "prod"
+ },
+ {
+  "id": "d2_osc",
+  "labels": [
+   "AMBIG",
+   "AMBIG",
+   "AMBIG",
+   "AMBIG",
+   "AMBIG",
+   "OSCILLATING",
+   "OSCILLATING",
+   "OSCILLATING"
+  ],
+  "effs": [
+   "NONE",
+   "NONE",
+   "REDUNDANT",
+   "REVERSION",
+   "REDUNDANT",
+   "REVERSION",
+   "REDUNDANT",
+   "REVERSION"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7
+  ],
+  "n": 8,
+  "group": "d2",
+  "tag": "osc"
+ },
+ {
+  "id": "d2_stal6",
+  "labels": [
+   "AMBIG",
+   "AMBIG",
+   "AMBIG",
+   "AMBIG",
+   "AMBIG",
+   "AMBIG",
+   "STALLED",
+   "STALLED"
+  ],
+  "effs": [
+   "NONE",
+   "NONE",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7
+  ],
+  "n": 8,
+  "group": "d2",
+  "tag": "stal6"
+ },
+ {
+  "id": "d2_prod",
+  "labels": [
+   "AMBIG",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE"
+  ],
+  "effs": [
+   "NONE",
+   "PROGRESS",
+   "PROGRESS",
+   "PROGRESS",
+   "PROGRESS",
+   "PROGRESS",
+   "PROGRESS",
+   "PROGRESS"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7
+  ],
+  "n": 8,
+  "group": "d2",
+  "tag": "prod"
+ },
+ {
+  "id": "d3_reco",
+  "labels": [
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY"
+  ],
+  "effs": [
+   "NONE",
+   "IN_POLICY",
+   "IN_POLICY",
+   "IN_POLICY"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3
+  ],
+  "n": 4,
+  "group": "d3",
+  "tag": "reco"
+ },
+ {
+  "id": "d3_stal",
+  "labels": [
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY",
+   "AMBIG",
+   "AMBIG",
+   "AMBIG",
+   "AMBIG",
+   "STALLED",
+   "STALLED"
+  ],
+  "effs": [
+   "NONE",
+   "IN_POLICY",
+   "IN_POLICY",
+   "IN_POLICY",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9
+  ],
+  "n": 10,
+  "group": "d3",
+  "tag": "stal"
+ },
+ {
+  "id": "d4_osc",
+  "labels": [
+   "AMBIG",
+   "AMBIG",
+   "AMBIG",
+   "AMBIG",
+   "OSCILLATING",
+   "OSCILLATING",
+   "OSCILLATING",
+   "OSCILLATING"
+  ],
+  "effs": [
+   "NONE",
+   "NONE",
+   "REVERSION",
+   "REDUNDANT",
+   "REVERSION",
+   "REDUNDANT",
+   "REVERSION",
+   "REDUNDANT"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7
+  ],
+  "n": 8,
+  "group": "d4",
+  "tag": "osc"
+ },
+ {
+  "id": "d4_prod",
+  "labels": [
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE"
+  ],
+  "effs": [
+   "PROGRESS",
+   "PROGRESS",
+   "PROGRESS",
+   "PROGRESS",
+   "PROGRESS",
+   "PROGRESS",
+   "PROGRESS",
+   "PROGRESS"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7
+  ],
+  "n": 8,
+  "group": "d4",
+  "tag": "prod"
+ },
+ {
+  "id": "d5_reco",
+  "labels": [
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY"
+  ],
+  "effs": [
+   "NONE",
+   "IN_POLICY",
+   "IN_POLICY",
+   "IN_POLICY",
+   "IN_POLICY"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4
+  ],
+  "n": 5,
+  "group": "d5",
+  "tag": "reco"
+ },
+ {
+  "id": "d5_stal",
+  "labels": [
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY",
+   "AMBIG",
+   "AMBIG",
+   "AMBIG",
+   "AMBIG",
+   "STALLED",
+   "STALLED"
+  ],
+  "effs": [
+   "NONE",
+   "IN_POLICY",
+   "IN_POLICY",
+   "IN_POLICY",
+   "IN_POLICY",
+   "IN_POLICY",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9,
+   10,
+   11
+  ],
+  "n": 12,
+  "group": "d5",
+  "tag": "stal"
+ },
+ {
+  "id": "d6_reco",
+  "labels": [
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY",
+   "PRODUCTIVE",
+   "PRODUCTIVE"
+  ],
+  "effs": [
+   "NONE",
+   "NEW_FACT",
+   "PROGRESS",
+   "RESOLVES",
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8
+  ],
+  "n": 9,
+  "group": "d6",
+  "tag": "reco"
+ },
+ {
+  "id": "d7_osc",
+  "labels": [
+   "AMBIG",
+   "AMBIG",
+   "OSCILLATING",
+   "OSCILLATING",
+   "OSCILLATING",
+   "OSCILLATING",
+   "OSCILLATING",
+   "OSCILLATING"
+  ],
+  "effs": [
+   "NONE",
+   "REVERSION",
+   "REVERSION",
+   "REVERSION",
+   "REVERSION",
+   "REVERSION",
+   "REVERSION",
+   "REVERSION"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7
+  ],
+  "n": 8,
+  "group": "d7",
+  "tag": "osc"
+ },
+ {
+  "id": "d7_stal",
+  "labels": [
+   "AMBIG",
+   "AMBIG",
+   "AMBIG",
+   "AMBIG",
+   "AMBIG",
+   "AMBIG",
+   "AMBIG",
+   "AMBIG"
+  ],
+  "effs": [
+   "NEW_FACT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7
+  ],
+  "n": 8,
+  "group": "d7",
+  "tag": "stal"
+ },
+ {
+  "id": "d8_osc",
+  "labels": [
+   "AMBIG",
+   "AMBIG",
+   "AMBIG",
+   "AMBIG",
+   "OSCILLATING",
+   "OSCILLATING",
+   "OSCILLATING",
+   "OSCILLATING"
+  ],
+  "effs": [
+   "NONE",
+   "NONE",
+   "REVERSION",
+   "REDUNDANT",
+   "REVERSION",
+   "REDUNDANT",
+   "REVERSION",
+   "REDUNDANT"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7
+  ],
+  "n": 8,
+  "group": "d8",
+  "tag": "osc"
+ },
+ {
+  "id": "d8_stal5",
+  "labels": [
+   "AMBIG",
+   "AMBIG",
+   "AMBIG",
+   "AMBIG",
+   "AMBIG",
+   "STALLED",
+   "STALLED",
+   "STALLED"
+  ],
+  "effs": [
+   "NONE",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7
+  ],
+  "n": 8,
+  "group": "d8",
+  "tag": "stal5"
+ },
+ {
+  "id": "d8_stal6",
+  "labels": [
+   "AMBIG",
+   "AMBIG",
+   "AMBIG",
+   "AMBIG",
+   "AMBIG",
+   "AMBIG",
+   "STALLED",
+   "STALLED"
+  ],
+  "effs": [
+   "NONE",
+   "NONE",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7
+  ],
+  "n": 8,
+  "group": "d8",
+  "tag": "stal6"
+ },
+ {
+  "id": "d9_osc",
+  "labels": [
+   "AMBIG",
+   "AMBIG",
+   "AMBIG",
+   "AMBIG",
+   "OSCILLATING",
+   "OSCILLATING",
+   "OSCILLATING",
+   "OSCILLATING"
+  ],
+  "effs": [
+   "NONE",
+   "NONE",
+   "REVERSION",
+   "REDUNDANT",
+   "REVERSION",
+   "REDUNDANT",
+   "REVERSION",
+   "REDUNDANT"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7
+  ],
+  "n": 8,
+  "group": "d9",
+  "tag": "osc"
+ },
+ {
+  "id": "d9_stal5",
+  "labels": [
+   "AMBIG",
+   "AMBIG",
+   "AMBIG",
+   "AMBIG",
+   "AMBIG",
+   "STALLED",
+   "STALLED",
+   "STALLED"
+  ],
+  "effs": [
+   "NONE",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7
+  ],
+  "n": 8,
+  "group": "d9",
+  "tag": "stal5"
+ },
+ {
+  "id": "d9_stal6",
+  "labels": [
+   "AMBIG",
+   "AMBIG",
+   "AMBIG",
+   "AMBIG",
+   "AMBIG",
+   "AMBIG",
+   "STALLED",
+   "STALLED"
+  ],
+  "effs": [
+   "NONE",
+   "NONE",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7
+  ],
+  "n": 8,
+  "group": "d9",
+  "tag": "stal6"
+ },
+ {
+  "id": "d10_stal",
+  "labels": [
+   "AMBIG",
+   "AMBIG",
+   "AMBIG",
+   "AMBIG",
+   "AMBIG",
+   "AMBIG",
+   "AMBIG"
+  ],
+  "effs": [
+   "NEW_FACT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6
+  ],
+  "n": 7,
+  "group": "d10",
+  "tag": "stal"
+ },
+ {
+  "id": "d10_stal2",
+  "labels": [
+   "AMBIG",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE"
+  ],
+  "effs": [
+   "NEW_FACT",
+   "NEW_FACT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7
+  ],
+  "n": 8,
+  "group": "d10",
+  "tag": "stal2"
+ },
+ {
+  "id": "d10_prod",
+  "labels": [
+   "AMBIG",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE"
+  ],
+  "effs": [
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6
+  ],
+  "n": 7,
+  "group": "d10",
+  "tag": "prod"
+ },
+ {
+  "id": "d11_osc",
+  "labels": [
+   "AMBIG",
+   "AMBIG",
+   "AMBIG",
+   "AMBIG",
+   "AMBIG",
+   "OSCILLATING",
+   "OSCILLATING",
+   "OSCILLATING"
+  ],
+  "effs": [
+   "NONE",
+   "NONE",
+   "REDUNDANT",
+   "REVERSION",
+   "REDUNDANT",
+   "REVERSION",
+   "REDUNDANT",
+   "REVERSION"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7
+  ],
+  "n": 8,
+  "group": "d11",
+  "tag": "osc"
+ },
+ {
+  "id": "d11_stal6",
+  "labels": [
+   "AMBIG",
+   "AMBIG",
+   "AMBIG",
+   "AMBIG",
+   "AMBIG",
+   "AMBIG",
+   "STALLED",
+   "STALLED"
+  ],
+  "effs": [
+   "NONE",
+   "NONE",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7
+  ],
+  "n": 8,
+  "group": "d11",
+  "tag": "stal6"
+ },
+ {
+  "id": "d11_prod",
+  "labels": [
+   "AMBIG",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE"
+  ],
+  "effs": [
+   "NONE",
+   "PROGRESS",
+   "PROGRESS",
+   "PROGRESS",
+   "PROGRESS",
+   "PROGRESS",
+   "PROGRESS",
+   "PROGRESS"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7
+  ],
+  "n": 8,
+  "group": "d11",
+  "tag": "prod"
+ },
+ {
+  "id": "d12_reco",
+  "labels": [
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY"
+  ],
+  "effs": [
+   "NONE",
+   "IN_POLICY",
+   "IN_POLICY",
+   "IN_POLICY"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3
+  ],
+  "n": 4,
+  "group": "d12",
+  "tag": "reco"
+ },
+ {
+  "id": "d12_stal",
+  "labels": [
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY",
+   "AMBIG",
+   "AMBIG",
+   "AMBIG",
+   "AMBIG",
+   "STALLED",
+   "STALLED"
+  ],
+  "effs": [
+   "NONE",
+   "IN_POLICY",
+   "IN_POLICY",
+   "IN_POLICY",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9
+  ],
+  "n": 10,
+  "group": "d12",
+  "tag": "stal"
+ },
+ {
+  "id": "d13_osc",
+  "labels": [
+   "AMBIG",
+   "AMBIG",
+   "AMBIG",
+   "AMBIG",
+   "OSCILLATING",
+   "OSCILLATING",
+   "OSCILLATING",
+   "OSCILLATING"
+  ],
+  "effs": [
+   "NONE",
+   "NONE",
+   "REVERSION",
+   "REDUNDANT",
+   "REVERSION",
+   "REDUNDANT",
+   "REVERSION",
+   "REDUNDANT"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7
+  ],
+  "n": 8,
+  "group": "d13",
+  "tag": "osc"
+ },
+ {
+  "id": "d13_prod",
+  "labels": [
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE"
+  ],
+  "effs": [
+   "PROGRESS",
+   "PROGRESS",
+   "PROGRESS",
+   "PROGRESS",
+   "PROGRESS",
+   "PROGRESS",
+   "PROGRESS",
+   "PROGRESS"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7
+  ],
+  "n": 8,
+  "group": "d13",
+  "tag": "prod"
+ },
+ {
+  "id": "d14_reco",
+  "labels": [
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY"
+  ],
+  "effs": [
+   "NONE",
+   "IN_POLICY",
+   "IN_POLICY",
+   "IN_POLICY",
+   "IN_POLICY"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4
+  ],
+  "n": 5,
+  "group": "d14",
+  "tag": "reco"
+ },
+ {
+  "id": "d14_stal",
+  "labels": [
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY",
+   "AMBIG",
+   "AMBIG",
+   "AMBIG",
+   "AMBIG",
+   "STALLED",
+   "STALLED"
+  ],
+  "effs": [
+   "NONE",
+   "IN_POLICY",
+   "IN_POLICY",
+   "IN_POLICY",
+   "IN_POLICY",
+   "IN_POLICY",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9,
+   10,
+   11
+  ],
+  "n": 12,
+  "group": "d14",
+  "tag": "stal"
+ },
+ {
+  "id": "d15_reco",
+  "labels": [
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY",
+   "PRODUCTIVE",
+   "PRODUCTIVE"
+  ],
+  "effs": [
+   "NONE",
+   "NEW_FACT",
+   "PROGRESS",
+   "RESOLVES",
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8
+  ],
+  "n": 9,
+  "group": "d15",
+  "tag": "reco"
+ },
+ {
+  "id": "d16_osc",
+  "labels": [
+   "AMBIG",
+   "AMBIG",
+   "OSCILLATING",
+   "OSCILLATING",
+   "OSCILLATING",
+   "OSCILLATING",
+   "OSCILLATING",
+   "OSCILLATING"
+  ],
+  "effs": [
+   "NONE",
+   "REVERSION",
+   "REVERSION",
+   "REVERSION",
+   "REVERSION",
+   "REVERSION",
+   "REVERSION",
+   "REVERSION"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7
+  ],
+  "n": 8,
+  "group": "d16",
+  "tag": "osc"
+ },
+ {
+  "id": "d16_stal",
+  "labels": [
+   "AMBIG",
+   "AMBIG",
+   "AMBIG",
+   "AMBIG",
+   "AMBIG",
+   "AMBIG",
+   "AMBIG",
+   "AMBIG"
+  ],
+  "effs": [
+   "NEW_FACT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7
+  ],
+  "n": 8,
+  "group": "d16",
+  "tag": "stal"
+ },
+ {
+  "id": "d17_osc",
+  "labels": [
+   "AMBIG",
+   "AMBIG",
+   "AMBIG",
+   "AMBIG",
+   "OSCILLATING",
+   "OSCILLATING",
+   "OSCILLATING",
+   "OSCILLATING"
+  ],
+  "effs": [
+   "NONE",
+   "NONE",
+   "REVERSION",
+   "REDUNDANT",
+   "REVERSION",
+   "REDUNDANT",
+   "REVERSION",
+   "REDUNDANT"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7
+  ],
+  "n": 8,
+  "group": "d17",
+  "tag": "osc"
+ },
+ {
+  "id": "d17_stal5",
+  "labels": [
+   "AMBIG",
+   "AMBIG",
+   "AMBIG",
+   "AMBIG",
+   "AMBIG",
+   "STALLED",
+   "STALLED",
+   "STALLED"
+  ],
+  "effs": [
+   "NONE",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7
+  ],
+  "n": 8,
+  "group": "d17",
+  "tag": "stal5"
+ },
+ {
+  "id": "d17_stal6",
+  "labels": [
+   "AMBIG",
+   "AMBIG",
+   "AMBIG",
+   "AMBIG",
+   "AMBIG",
+   "AMBIG",
+   "STALLED",
+   "STALLED"
+  ],
+  "effs": [
+   "NONE",
+   "NONE",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7
+  ],
+  "n": 8,
+  "group": "d17",
+  "tag": "stal6"
+ },
+ {
+  "id": "d18_osc",
+  "labels": [
+   "AMBIG",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "OSCILLATING",
+   "OSCILLATING",
+   "OSCILLATING",
+   "OSCILLATING"
+  ],
+  "effs": [
+   "NEW_FACT",
+   "NEW_FACT",
+   "NONE",
+   "NONE",
+   "REVERSION",
+   "REDUNDANT",
+   "REVERSION",
+   "REDUNDANT",
+   "REVERSION",
+   "REDUNDANT"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9
+  ],
+  "n": 10,
+  "group": "d18",
+  "tag": "osc"
+ },
+ {
+  "id": "d18_prod",
+  "labels": [
+   "AMBIG",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE"
+  ],
+  "effs": [
+   "NEW_FACT",
+   "NEW_FACT",
+   "PROGRESS",
+   "PROGRESS",
+   "PROGRESS",
+   "PROGRESS",
+   "PROGRESS",
+   "PROGRESS",
+   "PROGRESS",
+   "PROGRESS"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9
+  ],
+  "n": 10,
+  "group": "d18",
+  "tag": "prod"
+ },
+ {
+  "id": "d19_reco",
+  "labels": [
+   "AMBIG",
+   "PRODUCTIVE",
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY"
+  ],
+  "effs": [
+   "NEW_FACT",
+   "NEW_FACT",
+   "NONE",
+   "IN_POLICY",
+   "IN_POLICY",
+   "IN_POLICY",
+   "IN_POLICY"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6
+  ],
+  "n": 7,
+  "group": "d19",
+  "tag": "reco"
+ },
+ {
+  "id": "d19_stal",
+  "labels": [
+   "AMBIG",
+   "PRODUCTIVE",
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY",
+   "AMBIG",
+   "AMBIG",
+   "AMBIG",
+   "AMBIG",
+   "STALLED",
+   "STALLED"
+  ],
+  "effs": [
+   "NEW_FACT",
+   "NEW_FACT",
+   "NONE",
+   "IN_POLICY",
+   "IN_POLICY",
+   "IN_POLICY",
+   "IN_POLICY",
+   "IN_POLICY",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9,
+   10,
+   11,
+   12,
+   13
+  ],
+  "n": 14,
+  "group": "d19",
+  "tag": "stal"
+ },
+ {
+  "id": "d20_reco",
+  "labels": [
+   "AMBIG",
+   "PRODUCTIVE",
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY",
+   "PRODUCTIVE",
+   "PRODUCTIVE"
+  ],
+  "effs": [
+   "NEW_FACT",
+   "NEW_FACT",
+   "NONE",
+   "NEW_FACT",
+   "PROGRESS",
+   "RESOLVES",
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9,
+   10
+  ],
+  "n": 11,
+  "group": "d20",
+  "tag": "reco"
+ },
+ {
+  "id": "d21_osc",
+  "labels": [
+   "AMBIG",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "OSCILLATING",
+   "OSCILLATING",
+   "OSCILLATING",
+   "OSCILLATING",
+   "OSCILLATING",
+   "OSCILLATING"
+  ],
+  "effs": [
+   "NEW_FACT",
+   "NEW_FACT",
+   "NONE",
+   "REVERSION",
+   "REVERSION",
+   "REVERSION",
+   "REVERSION",
+   "REVERSION",
+   "REVERSION",
+   "REVERSION"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9
+  ],
+  "n": 10,
+  "group": "d21",
+  "tag": "osc"
+ },
+ {
+  "id": "d21_stal",
+  "labels": [
+   "AMBIG",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "AMBIG"
+  ],
+  "effs": [
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9
+  ],
+  "n": 10,
+  "group": "d21",
+  "tag": "stal"
+ },
+ {
+  "id": "d22_osc",
+  "labels": [
+   "AMBIG",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "OSCILLATING",
+   "OSCILLATING",
+   "OSCILLATING",
+   "OSCILLATING"
+  ],
+  "effs": [
+   "NEW_FACT",
+   "NEW_FACT",
+   "NONE",
+   "NONE",
+   "REVERSION",
+   "REDUNDANT",
+   "REVERSION",
+   "REDUNDANT",
+   "REVERSION",
+   "REDUNDANT"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9
+  ],
+  "n": 10,
+  "group": "d22",
+  "tag": "osc"
+ },
+ {
+  "id": "d22_stal5",
+  "labels": [
+   "AMBIG",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "AMBIG",
+   "STALLED"
+  ],
+  "effs": [
+   "NEW_FACT",
+   "NEW_FACT",
+   "NONE",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9
+  ],
+  "n": 10,
+  "group": "d22",
+  "tag": "stal5"
+ },
+ {
+  "id": "d22_stal6",
+  "labels": [
+   "AMBIG",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "AMBIG",
+   "STALLED"
+  ],
+  "effs": [
+   "NEW_FACT",
+   "NEW_FACT",
+   "NONE",
+   "NONE",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9
+  ],
+  "n": 10,
+  "group": "d22",
+  "tag": "stal6"
+ },
+ {
+  "id": "d23_osc",
+  "labels": [
+   "AMBIG",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "OSCILLATING",
+   "OSCILLATING",
+   "OSCILLATING",
+   "OSCILLATING"
+  ],
+  "effs": [
+   "NEW_FACT",
+   "NEW_FACT",
+   "NONE",
+   "NONE",
+   "REVERSION",
+   "REDUNDANT",
+   "REVERSION",
+   "REDUNDANT",
+   "REVERSION",
+   "REDUNDANT"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9
+  ],
+  "n": 10,
+  "group": "d23",
+  "tag": "osc"
+ },
+ {
+  "id": "d23_stal5",
+  "labels": [
+   "AMBIG",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "AMBIG",
+   "STALLED"
+  ],
+  "effs": [
+   "NEW_FACT",
+   "NEW_FACT",
+   "NONE",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9
+  ],
+  "n": 10,
+  "group": "d23",
+  "tag": "stal5"
+ },
+ {
+  "id": "d23_stal6",
+  "labels": [
+   "AMBIG",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "AMBIG",
+   "STALLED"
+  ],
+  "effs": [
+   "NEW_FACT",
+   "NEW_FACT",
+   "NONE",
+   "NONE",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9
+  ],
+  "n": 10,
+  "group": "d23",
+  "tag": "stal6"
+ },
+ {
+  "id": "d24_stal",
+  "labels": [
+   "AMBIG",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE"
+  ],
+  "effs": [
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8
+  ],
+  "n": 9,
+  "group": "d24",
+  "tag": "stal"
+ },
+ {
+  "id": "d24_stal2",
+  "labels": [
+   "AMBIG",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE"
+  ],
+  "effs": [
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9
+  ],
+  "n": 10,
+  "group": "d24",
+  "tag": "stal2"
+ },
+ {
+  "id": "d24_prod",
+  "labels": [
+   "AMBIG",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE"
+  ],
+  "effs": [
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8
+  ],
+  "n": 9,
+  "group": "d24",
+  "tag": "prod"
+ },
+ {
+  "id": "d25_osc",
+  "labels": [
+   "AMBIG",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "OSCILLATING",
+   "OSCILLATING",
+   "OSCILLATING"
+  ],
+  "effs": [
+   "NEW_FACT",
+   "NEW_FACT",
+   "NONE",
+   "NONE",
+   "REDUNDANT",
+   "REVERSION",
+   "REDUNDANT",
+   "REVERSION",
+   "REDUNDANT",
+   "REVERSION"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9
+  ],
+  "n": 10,
+  "group": "d25",
+  "tag": "osc"
+ },
+ {
+  "id": "d25_stal6",
+  "labels": [
+   "AMBIG",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "AMBIG",
+   "STALLED"
+  ],
+  "effs": [
+   "NEW_FACT",
+   "NEW_FACT",
+   "NONE",
+   "NONE",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9
+  ],
+  "n": 10,
+  "group": "d25",
+  "tag": "stal6"
+ },
+ {
+  "id": "d25_prod",
+  "labels": [
+   "AMBIG",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE"
+  ],
+  "effs": [
+   "NEW_FACT",
+   "NEW_FACT",
+   "NONE",
+   "PROGRESS",
+   "PROGRESS",
+   "PROGRESS",
+   "PROGRESS",
+   "PROGRESS",
+   "PROGRESS",
+   "PROGRESS"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9
+  ],
+  "n": 10,
+  "group": "d25",
+  "tag": "prod"
+ },
+ {
+  "id": "d26_reco",
+  "labels": [
+   "AMBIG",
+   "PRODUCTIVE",
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY"
+  ],
+  "effs": [
+   "NEW_FACT",
+   "NEW_FACT",
+   "NONE",
+   "IN_POLICY",
+   "IN_POLICY",
+   "IN_POLICY"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5
+  ],
+  "n": 6,
+  "group": "d26",
+  "tag": "reco"
+ },
+ {
+  "id": "d26_stal",
+  "labels": [
+   "AMBIG",
+   "PRODUCTIVE",
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "AMBIG",
+   "AMBIG",
+   "STALLED",
+   "STALLED"
+  ],
+  "effs": [
+   "NEW_FACT",
+   "NEW_FACT",
+   "NONE",
+   "IN_POLICY",
+   "IN_POLICY",
+   "IN_POLICY",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9,
+   10,
+   11
+  ],
+  "n": 12,
+  "group": "d26",
+  "tag": "stal"
+ }
+]

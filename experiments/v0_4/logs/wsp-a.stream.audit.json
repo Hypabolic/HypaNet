@@ -1,0 +1,116 @@
+{
+  "author_dir": "/Users/matthew/Development/hypabolic/HypaNet-v04-author",
+  "executed_violations": 1,
+  "file_findings": [],
+  "flags": [],
+  "fwd_calls_executed": 28,
+  "ledger": {
+    "budget": 2000000,
+    "cumulative_tokens": 1113610,
+    "forward_requests": 28,
+    "kernel_ops": {
+      "arch": 7,
+      "budget": 1,
+      "edit_hash": 6,
+      "edited": 20,
+      "load": 39,
+      "load_label_rows": 20,
+      "load_original": 125,
+      "load_quota": 1,
+      "names": 6,
+      "save_edit": 33,
+      "save_label_rows": 4,
+      "shapes": 1
+    },
+    "kernel_refused": {},
+    "max_edit_states_per_session_text": 3,
+    "over_budget": false,
+    "overlap_clusters_over_edit_limit": [],
+    "quota_bytes_used": 134234112,
+    "quota_tensors_loaded": 14,
+    "requests_over_cap": [],
+    "status": {
+      "ok": 28
+    },
+    "text_sets": 6,
+    "text_sets_over_edit_limit": {},
+    "tokens_ok": 1113610
+  },
+  "log": "/Users/matthew/Development/hypabolic/HypaNet/experiments/v0_4/logs/wsp-a.stream.jsonl",
+  "models": [
+    "claude-fable-5-1"
+  ],
+  "no_result_event": false,
+  "permission_denials": [
+    {
+      "tool_input": {
+        "content": "placeholder",
+        "file_path": "/Users/wsp-placeholder.py"
+      },
+      "tool_name": "Write",
+      "tool_use_id": "toolu_0125f1KDfCpyNx3sd5uMyxzw"
+    }
+  ],
+  "phase": "wsp-a",
+  "refused_tool_ids": [
+    "toolu_0125f1KDfCpyNx3sd5uMyxzw"
+  ],
+  "result_events": 1,
+  "scanned_files": [
+    "output/wsp-a/build_edit.py",
+    "output/wsp-a/scratch/ana_a02.py",
+    "output/wsp-a/scratch/ana_b.py",
+    "output/wsp-a/scratch/ana_b2.py",
+    "output/wsp-a/scratch/ana_c.py",
+    "output/wsp-a/scratch/ana_c2.py",
+    "output/wsp-a/scratch/ana_c3.py",
+    "output/wsp-a/scratch/ana_c4.py",
+    "output/wsp-a/scratch/ana_c5.py",
+    "output/wsp-a/scratch/ana_d.py",
+    "output/wsp-a/scratch/ana_e.py",
+    "output/wsp-a/scratch/ana_e2.py",
+    "output/wsp-a/scratch/ana_e3.py",
+    "output/wsp-a/scratch/ana_g.py",
+    "output/wsp-a/scratch/apply_build.py",
+    "output/wsp-a/scratch/build_edit_v1c.py",
+    "output/wsp-a/scratch/derive_final.py",
+    "output/wsp-a/scratch/derive_v1.py",
+    "output/wsp-a/scratch/derive_v1b.py",
+    "output/wsp-a/scratch/derive_v2.py",
+    "output/wsp-a/scratch/derive_v3.py",
+    "output/wsp-a/scratch/gen_a01.py",
+    "output/wsp-a/scratch/gen_a02.py",
+    "output/wsp-a/scratch/gen_b01.py",
+    "output/wsp-a/scratch/gen_c01.py",
+    "output/wsp-a/scratch/gen_d01.py",
+    "output/wsp-a/scratch/gen_e01.py",
+    "output/wsp-a/scratch/gen_e02.py",
+    "output/wsp-a/scratch/gen_f01.py",
+    "output/wsp-a/scratch/gen_g01.py",
+    "output/wsp-a/scratch/inspect01.py",
+    "output/wsp-a/scratch/mk.py",
+    "output/wsp-a/scratch/mk1.py",
+    "output/wsp-a/scratch/mk2.py",
+    "output/wsp-a/scratch/scen_a.py",
+    "output/wsp-a/scratch/scen_a1.py",
+    "output/wsp-a/scratch/scen_b.py",
+    "output/wsp-a/scratch/scen_c.py",
+    "output/wsp-a/scratch/scen_d.py",
+    "output/wsp-a/scratch/scen_e.py",
+    "output/wsp-a/scratch/scen_f.py",
+    "output/wsp-a/scratch/scen_g.py",
+    "output/wsp-a/scratch/verify_build.py"
+  ],
+  "tool_calls": {
+    "Bash": 70,
+    "Edit": 1,
+    "Glob": 6,
+    "Read": 14,
+    "Write": 53
+  },
+  "violations": [
+    "[EXECUTED] the session was shown '/.claude/' (tool result toolu_01SbNxvYP5VckDeaxU1Zfrii)",
+    "[refused] Write: absolute path outside the author dir: /Users/wsp-placeholder.py",
+    "[refused] Write: writes are allowed only inside output/wsp-a/: /Users/wsp-placeholder.py"
+  ]
+}

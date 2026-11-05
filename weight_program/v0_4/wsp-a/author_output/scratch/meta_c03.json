@@ -1,0 +1,2596 @@
+[
+ {
+  "id": "c79p",
+  "labels": [
+   "AMBIG",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "OSCILLATING",
+   "OSCILLATING",
+   "OSCILLATING",
+   "OSCILLATING",
+   "OSCILLATING"
+  ],
+  "effs": [
+   "NEW_FACT",
+   "NEW_FACT",
+   "NONE",
+   "REVERSION",
+   "REVERSION",
+   "REVERSION",
+   "REVERSION",
+   "REVERSION",
+   "REVERSION"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8
+  ],
+  "n": 9,
+  "pair": "c79",
+  "feat": "REV",
+  "sign": 1
+ },
+ {
+  "id": "c79n",
+  "labels": [
+   "AMBIG",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE"
+  ],
+  "effs": [
+   "NEW_FACT",
+   "NEW_FACT",
+   "NONE",
+   "NONE",
+   "PROGRESS",
+   "PROGRESS",
+   "PROGRESS",
+   "PROGRESS",
+   "PROGRESS"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8
+  ],
+  "n": 9,
+  "pair": "c79",
+  "feat": "REV",
+  "sign": -1
+ },
+ {
+  "id": "c80p",
+  "labels": [
+   "AMBIG",
+   "PRODUCTIVE",
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY"
+  ],
+  "effs": [
+   "NEW_FACT",
+   "NEW_FACT",
+   "NONE",
+   "IN_POLICY",
+   "IN_POLICY",
+   "RESOLVES",
+   "NEW_FACT",
+   "NEW_FACT"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7
+  ],
+  "n": 8,
+  "pair": "c80",
+  "feat": "RES",
+  "sign": 1
+ },
+ {
+  "id": "c80n",
+  "labels": [
+   "AMBIG",
+   "PRODUCTIVE",
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY"
+  ],
+  "effs": [
+   "NEW_FACT",
+   "NEW_FACT",
+   "NONE",
+   "IN_POLICY",
+   "IN_POLICY",
+   "IN_POLICY",
+   "NEW_FACT",
+   "NEW_FACT"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7
+  ],
+  "n": 8,
+  "pair": "c80",
+  "feat": "RES",
+  "sign": -1
+ },
+ {
+  "id": "c81p",
+  "labels": [
+   "AMBIG",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE"
+  ],
+  "effs": [
+   "NEW_FACT",
+   "NEW_FACT",
+   "NONE",
+   "PROGRESS",
+   "PROGRESS",
+   "PROGRESS",
+   "PROGRESS",
+   "PROGRESS",
+   "PROGRESS"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8
+  ],
+  "n": 9,
+  "pair": "c81",
+  "feat": "PROG",
+  "sign": 1
+ },
+ {
+  "id": "c81n",
+  "labels": [
+   "AMBIG",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "AMBIG"
+  ],
+  "effs": [
+   "NEW_FACT",
+   "NEW_FACT",
+   "NONE",
+   "NONE",
+   "NONE",
+   "NONE",
+   "NONE",
+   "NONE",
+   "NONE"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8
+  ],
+  "n": 9,
+  "pair": "c81",
+  "feat": "PROG",
+  "sign": -1
+ },
+ {
+  "id": "c82p",
+  "labels": [
+   "AMBIG",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE"
+  ],
+  "effs": [
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6
+  ],
+  "n": 7,
+  "pair": "c82",
+  "feat": "REP",
+  "sign": 1
+ },
+ {
+  "id": "c82n",
+  "labels": [
+   "AMBIG",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE"
+  ],
+  "effs": [
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6
+  ],
+  "n": 7,
+  "pair": "c82",
+  "feat": "REP",
+  "sign": -1
+ },
+ {
+  "id": "c83p",
+  "labels": [
+   "AMBIG",
+   "PRODUCTIVE",
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY"
+  ],
+  "effs": [
+   "NEW_FACT",
+   "NEW_FACT",
+   "NONE",
+   "IN_POLICY",
+   "IN_POLICY",
+   "IN_POLICY"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5
+  ],
+  "n": 6,
+  "pair": "c83",
+  "feat": "REP",
+  "sign": 1
+ },
+ {
+  "id": "c83n",
+  "labels": [
+   "AMBIG",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE"
+  ],
+  "effs": [
+   "NEW_FACT",
+   "NEW_FACT",
+   "NONE",
+   "NEW_FACT",
+   "NONE",
+   "NEW_FACT"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5
+  ],
+  "n": 6,
+  "pair": "c83",
+  "feat": "REP",
+  "sign": -1
+ },
+ {
+  "id": "c84p",
+  "labels": [
+   "AMBIG",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "AMBIG",
+   "STALLED"
+  ],
+  "effs": [
+   "NEW_FACT",
+   "NEW_FACT",
+   "NONE",
+   "NONE",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9
+  ],
+  "n": 10,
+  "pair": "c84",
+  "feat": "REP",
+  "sign": 1
+ },
+ {
+  "id": "c84n",
+  "labels": [
+   "AMBIG",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE"
+  ],
+  "effs": [
+   "NEW_FACT",
+   "NEW_FACT",
+   "PROGRESS",
+   "PROGRESS",
+   "PROGRESS",
+   "PROGRESS",
+   "PROGRESS",
+   "PROGRESS",
+   "PROGRESS",
+   "PROGRESS"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9
+  ],
+  "n": 10,
+  "pair": "c84",
+  "feat": "REP",
+  "sign": -1
+ },
+ {
+  "id": "c85p",
+  "labels": [
+   "AMBIG",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "OSCILLATING",
+   "OSCILLATING",
+   "OSCILLATING",
+   "OSCILLATING",
+   "OSCILLATING"
+  ],
+  "effs": [
+   "NEW_FACT",
+   "NEW_FACT",
+   "NONE",
+   "NONE",
+   "REVERSION",
+   "REVERSION",
+   "REVERSION",
+   "REVERSION",
+   "REVERSION",
+   "REVERSION"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9
+  ],
+  "n": 10,
+  "pair": "c85",
+  "feat": "REV",
+  "sign": 1
+ },
+ {
+  "id": "c85n",
+  "labels": [
+   "AMBIG",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE"
+  ],
+  "effs": [
+   "NEW_FACT",
+   "NEW_FACT",
+   "PROGRESS",
+   "PROGRESS",
+   "PROGRESS",
+   "PROGRESS",
+   "PROGRESS",
+   "PROGRESS",
+   "PROGRESS",
+   "PROGRESS"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9
+  ],
+  "n": 10,
+  "pair": "c85",
+  "feat": "REV",
+  "sign": -1
+ },
+ {
+  "id": "c86p",
+  "labels": [
+   "AMBIG",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "OSCILLATING",
+   "OSCILLATING",
+   "OSCILLATING"
+  ],
+  "effs": [
+   "NEW_FACT",
+   "NEW_FACT",
+   "NONE",
+   "NONE",
+   "REVERSION",
+   "REVERSION",
+   "REVERSION",
+   "REVERSION"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7
+  ],
+  "n": 8,
+  "pair": "c86",
+  "feat": "REV",
+  "sign": 1
+ },
+ {
+  "id": "c86n",
+  "labels": [
+   "AMBIG",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE"
+  ],
+  "effs": [
+   "NEW_FACT",
+   "NEW_FACT",
+   "PROGRESS",
+   "PROGRESS",
+   "PROGRESS",
+   "PROGRESS",
+   "PROGRESS",
+   "PROGRESS"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7
+  ],
+  "n": 8,
+  "pair": "c86",
+  "feat": "REV",
+  "sign": -1
+ },
+ {
+  "id": "c87p",
+  "labels": [
+   "AMBIG",
+   "PRODUCTIVE",
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY"
+  ],
+  "effs": [
+   "NEW_FACT",
+   "NEW_FACT",
+   "NONE",
+   "NEW_FACT",
+   "PROGRESS",
+   "RESOLVES"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5
+  ],
+  "n": 6,
+  "pair": "c87",
+  "feat": "RES",
+  "sign": 1
+ },
+ {
+  "id": "c87n",
+  "labels": [
+   "AMBIG",
+   "PRODUCTIVE",
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY"
+  ],
+  "effs": [
+   "NEW_FACT",
+   "NEW_FACT",
+   "NONE",
+   "NEW_FACT",
+   "PROGRESS",
+   "IN_POLICY"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5
+  ],
+  "n": 6,
+  "pair": "c87",
+  "feat": "RES",
+  "sign": -1
+ },
+ {
+  "id": "c88p",
+  "labels": [
+   "AMBIG",
+   "PRODUCTIVE",
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY"
+  ],
+  "effs": [
+   "NEW_FACT",
+   "NEW_FACT",
+   "NONE",
+   "PROGRESS",
+   "RESOLVES"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4
+  ],
+  "n": 5,
+  "pair": "c88",
+  "feat": "RES",
+  "sign": 1
+ },
+ {
+  "id": "c88n",
+  "labels": [
+   "AMBIG",
+   "PRODUCTIVE",
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY"
+  ],
+  "effs": [
+   "NEW_FACT",
+   "NEW_FACT",
+   "NONE",
+   "PROGRESS",
+   "IN_POLICY"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4
+  ],
+  "n": 5,
+  "pair": "c88",
+  "feat": "RES",
+  "sign": -1
+ },
+ {
+  "id": "c89p",
+  "labels": [
+   "AMBIG",
+   "PRODUCTIVE",
+   "PRODUCTIVE"
+  ],
+  "effs": [
+   "NEW_FACT",
+   "NEW_FACT",
+   "NONE"
+  ],
+  "windows": [
+   0,
+   1,
+   2
+  ],
+  "n": 3,
+  "pair": "c89",
+  "feat": "ERR",
+  "sign": 1
+ },
+ {
+  "id": "c89n",
+  "labels": [
+   "AMBIG",
+   "PRODUCTIVE",
+   "PRODUCTIVE"
+  ],
+  "effs": [
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT"
+  ],
+  "windows": [
+   0,
+   1,
+   2
+  ],
+  "n": 3,
+  "pair": "c89",
+  "feat": "ERR",
+  "sign": -1
+ },
+ {
+  "id": "c90p",
+  "labels": [
+   "AMBIG",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE"
+  ],
+  "effs": [
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7
+  ],
+  "n": 8,
+  "pair": "c90",
+  "feat": "REP",
+  "sign": 1
+ },
+ {
+  "id": "c90n",
+  "labels": [
+   "AMBIG",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE"
+  ],
+  "effs": [
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7
+  ],
+  "n": 8,
+  "pair": "c90",
+  "feat": "REP",
+  "sign": -1
+ },
+ {
+  "id": "c91p",
+  "labels": [
+   "AMBIG",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE"
+  ],
+  "effs": [
+   "NEW_FACT",
+   "NEW_FACT",
+   "NONE",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7
+  ],
+  "n": 8,
+  "pair": "c91",
+  "feat": "REP",
+  "sign": 1
+ },
+ {
+  "id": "c91n",
+  "labels": [
+   "AMBIG",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE"
+  ],
+  "effs": [
+   "NEW_FACT",
+   "NEW_FACT",
+   "NONE",
+   "PROGRESS",
+   "NONE",
+   "NONE",
+   "PROGRESS",
+   "NONE"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7
+  ],
+  "n": 8,
+  "pair": "c91",
+  "feat": "REP",
+  "sign": -1
+ },
+ {
+  "id": "c92p",
+  "labels": [
+   "AMBIG",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "OSCILLATING",
+   "OSCILLATING",
+   "OSCILLATING"
+  ],
+  "effs": [
+   "NEW_FACT",
+   "NEW_FACT",
+   "NONE",
+   "REVERSION",
+   "REVERSION",
+   "REVERSION",
+   "REVERSION"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6
+  ],
+  "n": 7,
+  "pair": "c92",
+  "feat": "REV",
+  "sign": 1
+ },
+ {
+  "id": "c92n",
+  "labels": [
+   "AMBIG",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE"
+  ],
+  "effs": [
+   "NEW_FACT",
+   "NEW_FACT",
+   "PROGRESS",
+   "PROGRESS",
+   "PROGRESS",
+   "PROGRESS",
+   "PROGRESS"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6
+  ],
+  "n": 7,
+  "pair": "c92",
+  "feat": "REV",
+  "sign": -1
+ },
+ {
+  "id": "c93p",
+  "labels": [
+   "AMBIG",
+   "PRODUCTIVE",
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY"
+  ],
+  "effs": [
+   "NEW_FACT",
+   "NEW_FACT",
+   "NONE",
+   "IN_POLICY",
+   "RESOLVES",
+   "NEW_FACT"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5
+  ],
+  "n": 6,
+  "pair": "c93",
+  "feat": "RES",
+  "sign": 1
+ },
+ {
+  "id": "c93n",
+  "labels": [
+   "AMBIG",
+   "PRODUCTIVE",
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY"
+  ],
+  "effs": [
+   "NEW_FACT",
+   "NEW_FACT",
+   "NONE",
+   "IN_POLICY",
+   "IN_POLICY",
+   "NEW_FACT"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5
+  ],
+  "n": 6,
+  "pair": "c93",
+  "feat": "RES",
+  "sign": -1
+ },
+ {
+  "id": "c94p",
+  "labels": [
+   "AMBIG",
+   "PRODUCTIVE",
+   "PRODUCTIVE"
+  ],
+  "effs": [
+   "NEW_FACT",
+   "NEW_FACT",
+   "NONE"
+  ],
+  "windows": [
+   0,
+   1,
+   2
+  ],
+  "n": 3,
+  "pair": "c94",
+  "feat": "ERR",
+  "sign": 1
+ },
+ {
+  "id": "c94n",
+  "labels": [
+   "AMBIG",
+   "PRODUCTIVE",
+   "PRODUCTIVE"
+  ],
+  "effs": [
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT"
+  ],
+  "windows": [
+   0,
+   1,
+   2
+  ],
+  "n": 3,
+  "pair": "c94",
+  "feat": "ERR",
+  "sign": -1
+ },
+ {
+  "id": "c95p",
+  "labels": [
+   "AMBIG",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE"
+  ],
+  "effs": [
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "NONE",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7
+  ],
+  "n": 8,
+  "pair": "c95",
+  "feat": "REP",
+  "sign": 1
+ },
+ {
+  "id": "c95n",
+  "labels": [
+   "AMBIG",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE"
+  ],
+  "effs": [
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "NONE",
+   "PROGRESS",
+   "NONE",
+   "NONE"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7
+  ],
+  "n": 8,
+  "pair": "c95",
+  "feat": "REP",
+  "sign": -1
+ },
+ {
+  "id": "c96p",
+  "labels": [
+   "AMBIG",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY"
+  ],
+  "effs": [
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "NONE",
+   "IN_POLICY",
+   "IN_POLICY",
+   "IN_POLICY"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7
+  ],
+  "n": 8,
+  "pair": "c96",
+  "feat": "REP",
+  "sign": 1
+ },
+ {
+  "id": "c96n",
+  "labels": [
+   "AMBIG",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE"
+  ],
+  "effs": [
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "NONE",
+   "NEW_FACT",
+   "NEW_FACT"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7
+  ],
+  "n": 8,
+  "pair": "c96",
+  "feat": "REP",
+  "sign": -1
+ },
+ {
+  "id": "c97p",
+  "labels": [
+   "AMBIG",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "OSCILLATING",
+   "OSCILLATING",
+   "OSCILLATING",
+   "OSCILLATING",
+   "OSCILLATING",
+   "OSCILLATING",
+   "OSCILLATING",
+   "OSCILLATING"
+  ],
+  "effs": [
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "NONE",
+   "NONE",
+   "REVERSION",
+   "REVERSION",
+   "REDUNDANT",
+   "REVERSION",
+   "REVERSION",
+   "REDUNDANT",
+   "REVERSION",
+   "REVERSION",
+   "REDUNDANT"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9,
+   10,
+   11,
+   12,
+   13,
+   14
+  ],
+  "n": 15,
+  "pair": "c97",
+  "feat": "REV",
+  "sign": 1
+ },
+ {
+  "id": "c97n",
+  "labels": [
+   "AMBIG",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE"
+  ],
+  "effs": [
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "NONE",
+   "NONE",
+   "NONE",
+   "PROGRESS",
+   "PROGRESS",
+   "PROGRESS",
+   "PROGRESS",
+   "PROGRESS",
+   "PROGRESS",
+   "PROGRESS",
+   "PROGRESS",
+   "PROGRESS",
+   "PROGRESS"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9,
+   10,
+   11,
+   12,
+   13,
+   14,
+   15,
+   16
+  ],
+  "n": 17,
+  "pair": "c97",
+  "feat": "REV",
+  "sign": -1
+ },
+ {
+  "id": "c98p",
+  "labels": [
+   "AMBIG",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY"
+  ],
+  "effs": [
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "NONE",
+   "IN_POLICY",
+   "IN_POLICY",
+   "RESOLVES"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7
+  ],
+  "n": 8,
+  "pair": "c98",
+  "feat": "RES",
+  "sign": 1
+ },
+ {
+  "id": "c98n",
+  "labels": [
+   "AMBIG",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY"
+  ],
+  "effs": [
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "NONE",
+   "IN_POLICY",
+   "IN_POLICY",
+   "IN_POLICY"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7
+  ],
+  "n": 8,
+  "pair": "c98",
+  "feat": "RES",
+  "sign": -1
+ },
+ {
+  "id": "c99p",
+  "labels": [
+   "AMBIG",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE"
+  ],
+  "effs": [
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "NONE",
+   "PROGRESS",
+   "PROGRESS",
+   "PROGRESS",
+   "PROGRESS",
+   "PROGRESS",
+   "PROGRESS"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9,
+   10
+  ],
+  "n": 11,
+  "pair": "c99",
+  "feat": "PROG",
+  "sign": 1
+ },
+ {
+  "id": "c99n",
+  "labels": [
+   "AMBIG",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "AMBIG"
+  ],
+  "effs": [
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "NONE",
+   "NONE",
+   "NONE",
+   "NONE",
+   "NONE",
+   "NONE",
+   "NONE"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9,
+   10
+  ],
+  "n": 11,
+  "pair": "c99",
+  "feat": "PROG",
+  "sign": -1
+ },
+ {
+  "id": "c100p",
+  "labels": [
+   "AMBIG",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE"
+  ],
+  "effs": [
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8
+  ],
+  "n": 9,
+  "pair": "c100",
+  "feat": "REP",
+  "sign": 1
+ },
+ {
+  "id": "c100n",
+  "labels": [
+   "AMBIG",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE"
+  ],
+  "effs": [
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8
+  ],
+  "n": 9,
+  "pair": "c100",
+  "feat": "REP",
+  "sign": -1
+ },
+ {
+  "id": "c101p",
+  "labels": [
+   "AMBIG",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY",
+   "AMBIG",
+   "AMBIG"
+  ],
+  "effs": [
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "NONE",
+   "IN_POLICY",
+   "IN_POLICY",
+   "IN_POLICY",
+   "IN_POLICY",
+   "IN_POLICY",
+   "REDUNDANT",
+   "REDUNDANT"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9,
+   10,
+   11
+  ],
+  "n": 12,
+  "pair": "c101",
+  "feat": "REP",
+  "sign": 1
+ },
+ {
+  "id": "c101n",
+  "labels": [
+   "AMBIG",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE"
+  ],
+  "effs": [
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "NONE",
+   "NEW_FACT",
+   "NONE",
+   "NEW_FACT",
+   "NONE",
+   "NEW_FACT",
+   "NONE",
+   "NEW_FACT"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9,
+   10,
+   11
+  ],
+  "n": 12,
+  "pair": "c101",
+  "feat": "REP",
+  "sign": -1
+ },
+ {
+  "id": "c102p",
+  "labels": [
+   "AMBIG",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "AMBIG",
+   "STALLED"
+  ],
+  "effs": [
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "NONE",
+   "NONE",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9,
+   10,
+   11
+  ],
+  "n": 12,
+  "pair": "c102",
+  "feat": "REP",
+  "sign": 1
+ },
+ {
+  "id": "c102n",
+  "labels": [
+   "AMBIG",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE"
+  ],
+  "effs": [
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "PROGRESS",
+   "PROGRESS",
+   "PROGRESS",
+   "PROGRESS",
+   "PROGRESS",
+   "PROGRESS",
+   "PROGRESS",
+   "PROGRESS"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9,
+   10,
+   11
+  ],
+  "n": 12,
+  "pair": "c102",
+  "feat": "REP",
+  "sign": -1
+ },
+ {
+  "id": "c103p",
+  "labels": [
+   "AMBIG",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "OSCILLATING",
+   "OSCILLATING",
+   "OSCILLATING",
+   "OSCILLATING",
+   "OSCILLATING"
+  ],
+  "effs": [
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "NONE",
+   "NONE",
+   "REVERSION",
+   "REVERSION",
+   "REVERSION",
+   "REVERSION",
+   "REVERSION",
+   "REVERSION"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9,
+   10,
+   11
+  ],
+  "n": 12,
+  "pair": "c103",
+  "feat": "REV",
+  "sign": 1
+ },
+ {
+  "id": "c103n",
+  "labels": [
+   "AMBIG",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE"
+  ],
+  "effs": [
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "PROGRESS",
+   "PROGRESS",
+   "PROGRESS",
+   "PROGRESS",
+   "PROGRESS",
+   "PROGRESS",
+   "PROGRESS",
+   "PROGRESS"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9,
+   10,
+   11
+  ],
+  "n": 12,
+  "pair": "c103",
+  "feat": "REV",
+  "sign": -1
+ },
+ {
+  "id": "c104p",
+  "labels": [
+   "AMBIG",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "OSCILLATING",
+   "OSCILLATING",
+   "OSCILLATING"
+  ],
+  "effs": [
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "NONE",
+   "NONE",
+   "REVERSION",
+   "REVERSION",
+   "REVERSION",
+   "REVERSION"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9
+  ],
+  "n": 10,
+  "pair": "c104",
+  "feat": "REV",
+  "sign": 1
+ },
+ {
+  "id": "c104n",
+  "labels": [
+   "AMBIG",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE"
+  ],
+  "effs": [
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "PROGRESS",
+   "PROGRESS",
+   "PROGRESS",
+   "PROGRESS",
+   "PROGRESS",
+   "PROGRESS"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9
+  ],
+  "n": 10,
+  "pair": "c104",
+  "feat": "REV",
+  "sign": -1
+ },
+ {
+  "id": "c105p",
+  "labels": [
+   "AMBIG",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY"
+  ],
+  "effs": [
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "NONE",
+   "NEW_FACT",
+   "PROGRESS",
+   "RESOLVES",
+   "NEW_FACT"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8
+  ],
+  "n": 9,
+  "pair": "c105",
+  "feat": "RES",
+  "sign": 1
+ },
+ {
+  "id": "c105n",
+  "labels": [
+   "AMBIG",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY"
+  ],
+  "effs": [
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "NONE",
+   "NEW_FACT",
+   "PROGRESS",
+   "IN_POLICY",
+   "NEW_FACT"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8
+  ],
+  "n": 9,
+  "pair": "c105",
+  "feat": "RES",
+  "sign": -1
+ },
+ {
+  "id": "c106p",
+  "labels": [
+   "AMBIG",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY"
+  ],
+  "effs": [
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "NONE",
+   "PROGRESS",
+   "RESOLVES",
+   "NEW_FACT"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7
+  ],
+  "n": 8,
+  "pair": "c106",
+  "feat": "RES",
+  "sign": 1
+ },
+ {
+  "id": "c106n",
+  "labels": [
+   "AMBIG",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY"
+  ],
+  "effs": [
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "NONE",
+   "PROGRESS",
+   "IN_POLICY",
+   "NEW_FACT"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7
+  ],
+  "n": 8,
+  "pair": "c106",
+  "feat": "RES",
+  "sign": -1
+ },
+ {
+  "id": "c107p",
+  "labels": [
+   "AMBIG",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE"
+  ],
+  "effs": [
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "NONE"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4
+  ],
+  "n": 5,
+  "pair": "c107",
+  "feat": "ERR",
+  "sign": 1
+ },
+ {
+  "id": "c107n",
+  "labels": [
+   "AMBIG",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE"
+  ],
+  "effs": [
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4
+  ],
+  "n": 5,
+  "pair": "c107",
+  "feat": "ERR",
+  "sign": -1
+ },
+ {
+  "id": "c108p",
+  "labels": [
+   "AMBIG",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE"
+  ],
+  "effs": [
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7
+  ],
+  "n": 8,
+  "pair": "c108",
+  "feat": "REP",
+  "sign": 1
+ },
+ {
+  "id": "c108n",
+  "labels": [
+   "AMBIG",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE"
+  ],
+  "effs": [
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7
+  ],
+  "n": 8,
+  "pair": "c108",
+  "feat": "REP",
+  "sign": -1
+ },
+ {
+  "id": "c109p",
+  "labels": [
+   "AMBIG",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE"
+  ],
+  "effs": [
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "NONE",
+   "REDUNDANT",
+   "REDUNDANT",
+   "REDUNDANT"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7
+  ],
+  "n": 8,
+  "pair": "c109",
+  "feat": "REP",
+  "sign": 1
+ },
+ {
+  "id": "c109n",
+  "labels": [
+   "AMBIG",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE"
+  ],
+  "effs": [
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "NONE",
+   "PROGRESS",
+   "NONE",
+   "NONE"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7
+  ],
+  "n": 8,
+  "pair": "c109",
+  "feat": "REP",
+  "sign": -1
+ },
+ {
+  "id": "c110p",
+  "labels": [
+   "AMBIG",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "OSCILLATING",
+   "OSCILLATING",
+   "OSCILLATING",
+   "OSCILLATING",
+   "OSCILLATING",
+   "OSCILLATING"
+  ],
+  "effs": [
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "NONE",
+   "NONE",
+   "REVERSION",
+   "REDUNDANT",
+   "REVERSION",
+   "REDUNDANT",
+   "REVERSION",
+   "REDUNDANT",
+   "REVERSION",
+   "REDUNDANT"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9,
+   10,
+   11,
+   12,
+   13
+  ],
+  "n": 14,
+  "pair": "c110",
+  "feat": "REV",
+  "sign": 1
+ },
+ {
+  "id": "c110n",
+  "labels": [
+   "AMBIG",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE"
+  ],
+  "effs": [
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "PROGRESS",
+   "NONE",
+   "PROGRESS",
+   "NONE",
+   "PROGRESS",
+   "NONE",
+   "PROGRESS",
+   "NONE",
+   "PROGRESS",
+   "PROGRESS"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9,
+   10,
+   11,
+   12,
+   13
+  ],
+  "n": 14,
+  "pair": "c110",
+  "feat": "REV",
+  "sign": -1
+ },
+ {
+  "id": "c111p",
+  "labels": [
+   "AMBIG",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY"
+  ],
+  "effs": [
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "NONE",
+   "IN_POLICY",
+   "RESOLVES",
+   "NEW_FACT",
+   "NEW_FACT"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8
+  ],
+  "n": 9,
+  "pair": "c111",
+  "feat": "RES",
+  "sign": 1
+ },
+ {
+  "id": "c111n",
+  "labels": [
+   "AMBIG",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY",
+   "RECOVERY"
+  ],
+  "effs": [
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "NONE",
+   "IN_POLICY",
+   "IN_POLICY",
+   "NEW_FACT",
+   "NEW_FACT"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8
+  ],
+  "n": 9,
+  "pair": "c111",
+  "feat": "RES",
+  "sign": -1
+ },
+ {
+  "id": "c112p",
+  "labels": [
+   "AMBIG",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE"
+  ],
+  "effs": [
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "NONE"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4
+  ],
+  "n": 5,
+  "pair": "c112",
+  "feat": "ERR",
+  "sign": 1
+ },
+ {
+  "id": "c112n",
+  "labels": [
+   "AMBIG",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE",
+   "PRODUCTIVE"
+  ],
+  "effs": [
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT",
+   "NEW_FACT"
+  ],
+  "windows": [
+   0,
+   1,
+   2,
+   3,
+   4
+  ],
+  "n": 5,
+  "pair": "c112",
+  "feat": "ERR",
+  "sign": -1
+ }
+]

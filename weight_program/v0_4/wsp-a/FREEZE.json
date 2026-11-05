@@ -1,0 +1,16 @@
+{
+ "consistent": true,
+ "freeze_sha256": "494db5e3a07b623c459d5fe7f0fe3d93a5db32500a400aac2df2e8d920d1d61f",
+ "g1_freeze_sha256": "494db5e3a07b623c459d5fe7f0fe3d93a5db32500a400aac2df2e8d920d1d61f",
+ "kernel_freezes": [
+  "494db5e3a07b623c459d5fe7f0fe3d93a5db32500a400aac2df2e8d920d1d61f"
+ ],
+ "launches": {
+  "wsp-a": "494db5e3a07b623c459d5fe7f0fe3d93a5db32500a400aac2df2e8d920d1d61f"
+ },
+ "phase": "wsp-a",
+ "registry": "experiments/registry_v0_4.yaml",
+ "registry_sha256": "fec506dbfbfe7496853fda827e55f2ea373d19a6e3b35794250930c98c0d2980",
+ "revisions": 0,
+ "unfrozen": false
+}

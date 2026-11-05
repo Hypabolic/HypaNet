@@ -1,0 +1,7 @@
+{
+ "BETA_PROD": 1.6,
+ "BIAS_ALL": [0.0, 0.0, 0.0, 0.0],
+ "A_OSC": 3.0, "TH_OSC": 0.5, "W_E_OSC": 1.5, "OFF_OSC": -1.5, "S_OSC": 0.2,
+ "A_STAL": 3.0, "TH_STAL": 2.5, "W_E_STAL": 2.0, "OFF_STAL": 0.0, "S_STAL": 0.07,
+ "A_RECO": 3.0, "TH_RECO": 0.0, "OFF_RECO": 0.6, "S_RECO": 0.25
+}
