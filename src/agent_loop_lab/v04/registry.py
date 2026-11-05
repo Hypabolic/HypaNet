@@ -147,6 +147,7 @@ REQUIRED_FILES: tuple[str, ...] = (
     "datasets/v0_2/MANIFEST.json",
     "datasets/v0_3/MANIFEST_v0_3.json",
     "datasets/v0_4/EXPORT_MANIFEST.json",
+    "datasets/v0_4/BUDGETS.json",  # probe/LoRA budgets, ES set, disclosed windows, WSP-F holdout (§4, §5, §7)
     "datasets/v0_4/fresh_test/MANIFEST_fresh_test.json",
     "experiments/v0_4/fresh_test/REGISTRATION.json",
     "experiments/v0_4/prompt_choice/README.md",
