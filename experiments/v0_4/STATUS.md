@@ -44,10 +44,20 @@ Matthew decided directly: "Drop the training baselines", and "I’ve never plann
 | **Session harness** | `scripts/v04_{prepare_author_dir,launch,kit_tests}.sh`, `v04_{cost,audit_session,run_build}.py`, `experiments/v0_4/author_kit/` | `./py` launcher under the KERNEL_CLIENT guard; command hook; settings; session-id cost accounting, which also charges killed launches; AST audit plus ledger cross-check; watchdog. Reviewed (7 findings, all fixed). The kit test passed end to end on a scratch dir (Haiku, server on CPU) |
 | **G1 pre-registration (draft)** | `experiments/v0_4/PREREGISTRATION.md`, `scripts/v04_freeze.py` | Backends, Q5 statistic and hypotheses (the probe and LoRA recipes were dropped on 6 Nov). The freeze covers every v0.4 tree and the root-env import closure, and refuses until the WSP-B pieces exist. Reviewed (8 findings, all fixed) |
 
-## Running (6 Nov)
+## Quick-look result (6 Nov): base Qwen vs WSP-A, 1,000 val sessions (18,222 windows, harness-only)
 
-- **Qwen-0 readout of the quick-look subset** on MPS (`run_readout --split val --sessions datasets/v0_4/VAL_QUICK.txt`, label-free), from the main checkout. Scored only after the G1 freeze.
-- **Then:** freeze G1 → prepare `../HypaNet-v04-author` → kit tests → launch WSP-A (Fable, cap US$500), as Matthew asked → WSP-A quick look (subset readout, scored paired against Qwen-0) → full val readouts. The v0.3 val columns (`scripts/v04_v03_val_columns.py`) run on CPU when the MPS readout is not competing.
+| Column | Macro-F1 [95% CI] | Accuracy | False-loop alarm rate |
+| --- | --- | --- | --- |
+| prior dev-majority (always PRODUCTIVE) | 0.137 [0.131, 0.144] | 0.379 | 0.000 |
+| Qwen-0 | 0.223 [0.202, 0.243] | 0.242 | 0.687 |
+| **WSP-A** (Fable, edit `74576466`, US$32.58) | **0.330 [0.309, 0.350]** | 0.351 | 0.553 |
+
+WSP-A − Qwen-0 macro-F1 **+0.107 [+0.083, +0.130]** (paired, shared bootstrap draws), `artifacts/reports/v04_val_quick_wspa.json`. Per-class F1 Qwen-0 → WSP-A: OSCILLATING 0.22 → 0.41, STALLED 0.37 → 0.54, RECOVERY 0.25 → 0.28, PRODUCTIVE 0.05 → 0.09 (recall 0.03 → 0.06: still the weak spot). WSP-A audit: one benign executed finding, adjudicated in `experiments/v0_4/logs/wsp-a.ADJUDICATION.md`.
+
+## Next
+
+- Full val readouts (Qwen-0, WSP-A) with checkpoints, the result of record. The v0.3 val columns (`scripts/v04_v03_val_columns.py`) on CPU when MPS is free.
+- WSP-B (disclosure, prepare_phase_b, launch, cap US$250) → quick look → full val; then WSP-F.
 
 ## Kernel rules added beyond the contract (fold into `docs/V04_WSP_KERNEL.md` at G1)
 
