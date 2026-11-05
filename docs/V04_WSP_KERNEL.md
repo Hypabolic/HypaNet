@@ -1,6 +1,6 @@
 # v0.4 WSP kernel: design contract
 
-_Draft, 2026-11-05. This file decides the open design points in the plan's "Rules for Fable's weight-space programming". It is the contract the kernel, guards and build runner are built against. G1 freezes it._
+_Frozen at G1, 2026-11-05 (`experiments/v0_4/PREREGISTRATION.md`, hashed in `experiments/registry_v0_4.yaml`). This file decides the open design points in the plan's "Rules for Fable's weight-space programming". It is the contract the kernel, guards and build runner were built against. The rules the kernel added beyond the first draft (listed in `experiments/v0_4/STATUS.md`) are folded in below and marked **(G1)**. A change after G1 is a registered revision._
 
 ## 1. Principles
 
@@ -18,11 +18,15 @@ Allowed tensors: `model.language_model.*` (the 320 text-model tensors), with the
 - `model.language_model.embed_tokens.weight`: only the 4 label-word rows (`LABEL_IDS`), through `save_label_rows`. The embeddings are tied, so the build record flags the input-side effect. It lists every occurrence of those ids in the frozen prefix and suffix.
 - `model.language_model.norm.weight` (the final, zero-centred `(1 + w)` norm) is refused. Scaling it is a global temperature knob.
 - Refused: `mtp.*`, `model.visual.*`, any non-finite value, a shape or dtype mismatch, and a whole-tensor scalar multiple of the original (`W' = c·W`).
+- **(G1) Rescaling refusal.** "Scalar multiple" is a tolerance, not exact equality, which `W' = c·W + noise` would evade. With `new = c·W + R` and `c = ⟨new, W⟩ / ⟨W, W⟩`, an edit is refused when `|c − 1| > 1e-3` **and** `‖R‖ < 0.5·‖(c − 1)·W‖` (`c = 0` covers zeroing a tensor). For the zero-centred `x·(1 + w)` norms (`input_layernorm`, `post_attention_layernorm`, `q_norm`, `k_norm`) the test also runs on the effective gain `1 + w`. For the label rows it also runs on the row-centred `[4, d]` block and, when two or more rows changed, on the changed rows, which refuses a common rescaling of the rows with or without a shared offset. The rule lives in one place (`hypaqwen/wsp/edit_state.py`, `rescaling`): the server applies it to every save and the runner to every built tensor, so the two cannot disagree.
+- **(G1) Edit state is a function of the weights.** Saving a tensor equal to its original removes that tensor's edit, so the edit hash never depends on history. The embedding's edit is held and hashed as its four label rows (`[4, d]`, `LABEL_IDS` order).
 
 ## 3. Model server (`envs/qwen/hypaqwen/wsp/server.py`)
 
 - **Process.** Started by the launcher before the author session, outside the author sandbox. It loads the model once with `hypaqwen.model.load(device, "fp32")`. The device is pre-registered: MPS on this Mac, about 445 tok/s.
 - **Transport.** It serves a length-prefixed JSON + raw-tensor-bytes protocol over a Unix domain socket or FIFOs in `AUTHOR_DIR/.kernel/`. The client guard permits only that path.
+- **(G1) Two sockets.** `kernel.sock` serves `./py` scripts (metadata, load, save, drop, `edited`, `edit_hash`, `budget`; no forward). `fwd.sock` serves only the `./fwd` tool (`forward`, `forward_disclosed` in WSP-B, `budget`, `edit_hash`). The client guard permits `./py` only the kernel socket, so a script cannot run the model even by writing frames by hand. One connection is served at a time; a malformed frame or a failure while serving drops that connection only.
+- **(G1) Command line.** `python -m hypaqwen.wsp.server --phase P --author-dir D --log-dir L [--device mps] [--budget 2000000] [--request-cap 50000] [--disclosed FILE]`. It binds `D/.kernel/kernel.sock` and `D/.kernel/fwd.sock`, prints one JSON `ready` line and exits with status 143 on SIGTERM.
 - **State.**
   - The current edits are `{name: fp32 tensor}`. Pristine copies are kept only for edited tensors.
   - The edit-state hash is sha256 over sorted `(name, bytes)`. The empty state has a fixed hash.
@@ -46,12 +50,18 @@ Allowed tensors: `model.language_model.*` (the 320 text-model tensors), with the
 - **Op for `./fwd` only: `forward(request)`.** The request names `model: "edited" | "original" | "both"` and gives `sessions: [{id, blocks: [str], windows: [int]}]` plus `return: {hidden: [layers], mlp_act: [layers], topk: int ≤ 20}`. The rules:
   - Texts are run through `hypaqwen.readout.Verbaliser` with the frozen interface and the exact scoring tokenisation.
   - The cost is the sum of `WindowReadout.tokens`, doubled for `both`. It is charged on completion. The server refuses a request that would cross the phase budget (2,000,000 tokens) or exceed 50,000 tokens by itself.
+  - **(G1) Disclosed-overlap refusal.** In a phase that holds a disclosure copy, a session is refused when its text overlaps any disclosed window: an identical window prefix, or a share of at least **0.6** of the window's blocks or of its 16-character shingles, overall or in its last four blocks. So `forward` cannot return the activations `forward_disclosed` withholds. Blocks after a session's last requested window are refused (they would never run).
   - The response gives, per window: the 4 label logits, the full-vocabulary logsumexp, the argmax and the top-k token ids (ids only, never vocabulary strings). For `both` it adds the logit deltas and an argmax-flip count. Requested activations are written as `.npy` under `output/<phase>/fwd/<k>/`.
   - Each request appends a ledger line to `experiments/v0_4/logs/<phase>.ledger.jsonl`: call id, UTC time, tokens, cumulative tokens, edit hash, sha256 of each session's text, layers requested and the request file path.
 - **WSP-B only: `forward_disclosed(window_ids, model)`.** It runs the 200 disclosed windows from the read-only disclosure copy and returns **label logits and argmax only**. No hidden states, MLP activations or top-k come back. That prevents a closed-form 200-window centroid probe. It is metered like `forward`.
-- **WSP-F only: `score_dev(session_ids)`** (at most 128 sessions, at most 50 calls) and `holdout_check()` (once). Dev labels live only in the WSP-F server.
+  - **(G1, confirmed)** At most **2** distinct non-empty edit states may be evaluated on the disclosed windows per phase: the WSP-A edit WSP-B starts from, and one revision. `original` is not limited. This is what "sees the 200 disclosed windows once" means for a model that can be re-run.
+- **(G1) Weight-load quota.** `load` / `load_original` of layer tensors (everything except the embedding and the final norm) draw on a per-phase quota of distinct tensor bytes: **0.5** of the layer weights. Reloading a tensor is free. The quota is per phase, not per run, because tensors can be cached under `output/<phase>/` and re-read by the next run; it exists so that no series of `./py` scripts can assemble the whole model and run unmetered forward passes. `arch()` reports the quota.
+- **(G1) Kernel log.** Every kernel op (load, save, drop, metadata) appends a line to `experiments/v0_4/logs/<phase>.kernel.jsonl` with the connection id, tensor name and bytes. It is the quota's record. The ledger is the meter's record: tokens used and requests are re-read from it on start, and each line holds, per session, the sha256 of exactly what ran (block token ids and windows), a short hash per block for near-duplicate audits and, when windows are disclosed, the session's overlap with them. A refused request is logged too.
+- **WSP-F only: `score_dev(session_ids)`** (at most 128 sessions, at most 50 calls) and `holdout_check()` (once). Dev labels live only in the WSP-F server. **(G1)** The full WSP-F rules (aggregate-only responses, opaque pool ids and no dev text, the 500-session holdout disjoint from the 2,048 budget subset, accept only if strictly better than WSP-B on the holdout) are in `experiments/v0_4/PREREGISTRATION.md` §7.3. They are frozen; these two ops are implemented before WSP-F launches, by the one additive registry revision §7.3 pre-registers (new files plus named dispatch changes in `server.py`, `author/protocol.py`, `author/client.py` and `author/fwd.py`; the ops exist only in phase `wsp-f`).
 
 ## 4. Author client (`tools/hn_kernel/client.py`, copied into the author dir)
+
+**(G1) Tools are copied read-only.** `hypaqwen.wsp.install.install(dest)` copies exactly `KERNEL_FILES` into `tools/hn_kernel/` with files 0444 and the directory 0555, so Write/Edit can neither change a file nor plant a module (`socket.py`, `numpy/`) beside them; the guard package goes to `tools/hn_guard/` the same way. `install.verify(dest)` runs before every `./py` and `./fwd` exec and in the audit: the directory holds exactly those files, none is a symlink or writable, and each matches the package source's sha256. Anything else raises `KernelTampered`. This matters because `./fwd` runs without the `./py` guard, and `./py` imports `client` before it enters the guard.
 
 `from wsp import load, load_original, save_edit, save_label_rows, drop_edit, edited, edit_hash, budget, NAMES, SHAPES, ARCH, LABEL_IDS, CLASS_NAMES, tok`
 
@@ -82,6 +92,8 @@ Allowed tensors: `model.language_model.*` (the 320 text-model tensors), with the
   - No subprocesses, threads or other sockets.
 - Every patched torch internal is re-verified on 2.14.1, with one test per banned path.
 
+**(G1) Violations end the run with status 3.** Every refusal raises `GuardViolation`, is counted and prints `HN_GUARD: refused: ...` to a private duplicate of the stderr the guard found at install, so a later `dup2` or close of fd 2 cannot divert it. A swallowed violation still fails the process with status 3 however it ends (`atexit`, `finish()`, `os._exit`, `os.abort`). `install(mode, *, author_dir, phase, kernel_endpoint=None, consts_path=None)` is permanent: there is no uninstall. **Launchers** give the child's stderr as a pipe and treat a run as clean only when `hn_guard.clean_run(returncode, stderr)` holds: status 0 **and** no `HN_GUARD:` line.
+
 **BUILD_EDIT** (`build_edit.py` in the build runner) is v0.3 BUILD minus the matmul and linalg ban. It still refuses:
 
 - any model or `nn.Module` call;
@@ -106,13 +118,17 @@ Allowed tensors: `model.language_model.*` (the 320 text-model tensors), with the
   - An exact diff (`edit_diff.safetensors`: changed indices and values per tensor, with sha256), so the artefact does not depend on recomputation.
   - `attempts/NNNN.json`.
 - **Prose files:** `EDIT.md` (what changed, where, the mechanism claimed and the ledger ids behind each vector), plus `ITERATIONS.md` (WSP-A) or `REVISION.md` (WSP-B).
+- **(G1) Mechanism table.** `EDIT.md` ends with a `## Mechanisms` table, one row per claimed mechanism: id, the tensors (or `label rows`) that implement it, the target class (one of the four class names) and the claim in one sentence. The Q5 check (`PREREGISTRATION.md` §8) ablates exactly those tensors; a row is evaluated only if its tensors are a strict subset of the edit's and disjoint from every other row's, and an edit with no such row fails Q5.
+- **(G1) Refusals.** A refused build writes `attempts/NNNN.json`; only its author-facing `error` text (at most 2,000 characters, no harness paths, author exceptions by type and line only) goes back to the author, in at most 3 resubmissions per phase.
 
 ## 7. Session harness (built after §3–6)
 
+- **(G1) Author dir layout** (`../HypaNet-v04-author`, made fresh by the prepare script, never reused): `packet/` (read-only), `tools/hn_kernel/` and `tools/hn_guard/` (read-only, §4), the `py` and `fwd` wrappers (0555: `py` runs `.venv/bin/python -I -B tools/hn_kernel/run_py.py`, `fwd` runs `.venv/bin/python -I -B tools/hn_kernel/fwd.py`), `.venv/` (`envs/qwen/scripts/make_author_venv.sh`), `.kernel/` (the sockets) and `output/<phase>/`, the only writable tree.
 - **Launch** (`scripts/v04_launch.sh`):
   - `claude -p --tools Read,Glob,Grep,Write,Edit,Bash` (an allow-list), `--strict-mcp-config` with no MCP servers, and `--permission-mode dontAsk`;
   - a PreToolUse hook that rejects any Bash command not matching `^\./(py|fwd) [^;&|<>`$\n]+$`;
-  - `--max-budget-usd` set to the remaining cap.
+  - `--max-budget-usd` set to the remaining cap;
+  - **(G1)** the session permissions deny Write and Edit under `tools/`, on the `py` and `fwd` wrappers, on `.venv/` and on `.kernel/`; `install.verify` (§4) is what still holds if that is misconfigured.
 - **Cost.** Account by session id, as a delta of the cumulative `total_cost_usd`. v0.3's `scripts/v03_cost.py` double-counted resumed sessions. Caps: WSP-A US$500, WSP-B US$250, WSP-F US$250.
 - **Audit:**
   - forbidden markers: the repo, `envs/qwen`, `datasets`, `.cache/huggingface`, `experiments/v0_4`;
