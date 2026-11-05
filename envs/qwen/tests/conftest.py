@@ -140,10 +140,10 @@ def budgets_doc(dev_ids: list[str], val_ids: list[str], val_labels: dict[str, np
     es = [s for s in sorted(val_ids, key=B.es_key) if s not in dset][: B.ES_SESSIONS]
     in2048 = set(budgets["2048"])
     holdout = sorted([s for s in full if s not in in2048], key=B.holdout_key)[: B.HOLDOUT_SESSIONS]
-    sha = {**{k: B.ids_sha256(v) for k, v in budgets.items()}, "es_val": B.ids_sha256(es),
-           "disclosed_200w": B.windows_sha256(disclosed), "wspf_holdout": B.ids_sha256(holdout)}
-    return {"format": B.FORMAT, "budgets": budgets, "es_val": es,
-            "disclosed_200w": [{"session_id": w.session_id, "row_pos": w.row_pos} for w in disclosed],
+    windows = [{"session_id": w.session_id, "row_pos": w.row_pos} for w in disclosed]
+    lists = {**budgets, "es_val": es, "disclosed_200w": windows, "wspf_holdout": holdout}
+    sha = {k: B.canonical_sha256(v) for k, v in lists.items()}  # the writer's convention
+    return {"format": B.FORMAT, "budgets": budgets, "es_val": es, "disclosed_200w": windows,
             "wspf_holdout": holdout, "sha256": sha}
 
 

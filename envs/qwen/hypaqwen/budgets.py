@@ -11,9 +11,12 @@ and read here, because ``envs/qwen`` never imports ``agent_loop_lab``. Format ``
      "wspf_holdout": [500 dev ids],               # §7.3, in holdout-key order
      "sha256": {name: hex}}
 
-``sha256`` holds, for every list, the sha256 of its entries joined by newlines in file order (v0.3
-``phase_c_v03.ids_sha256``); a disclosed window is written ``f"{session_id}:{row_pos}"``. Names: the
-five budget names, ``es_val``, ``disclosed_200w``, ``wspf_holdout``; every one is required.
+``sha256`` holds, for every list, the writer's convention (``agent_loop_lab.v04.budgets.canonical_sha256``):
+the sha256 of the list's canonical JSON as it stands in the file (``sort_keys=True``, ``","``/``":"``
+separators, ``ensure_ascii=False``, UTF-8), so ``disclosed_200w`` hashes as its list of
+``{"row_pos", "session_id"}`` objects. (The writer separately checks each list against v0.3's
+newline-joined ``ids_sha256`` training logs; that hash is not stored here.) Names: the five budget
+names, ``es_val``, ``disclosed_200w``, ``wspf_holdout``; every one is required.
 
 :func:`load` checks everything that can be checked without labels or other splits: the orders are
 recomputed from their hash keys (``all`` is ascending ``sha256(BUDGET_KEY)``, each budget its first
@@ -34,7 +37,7 @@ import hashlib
 import json
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Iterable, Mapping, Sequence
+from typing import Mapping, Sequence
 
 import numpy as np
 
@@ -43,7 +46,7 @@ from . import V04_DATA
 __all__ = [
     "FORMAT", "PATH", "SESSION_BUDGETS", "BUDGET_NAMES", "BUDGET_SIZES", "LORA_SEEDS", "BUDGET_KEY", "ES_KEY",
     "HOLDOUT_KEY", "DISCLOSURE_KEY", "ES_SESSIONS", "HOLDOUT_SESSIONS", "DISCLOSED_WINDOWS", "PER_CLASS",
-    "BudgetError", "Window", "Budgets", "ids_sha256", "windows_sha256", "budget_key", "es_key", "holdout_key",
+    "BudgetError", "Window", "Budgets", "canonical_sha256", "budget_key", "es_key", "holdout_key",
     "disclosure_key", "parse", "load", "check_dev_ids", "check_val_ids", "check_disclosure", "disclosure_rows",
 ]
 
@@ -120,13 +123,10 @@ def disclosure_key(session_id: str, endpoint: int) -> str:
     return _key(DISCLOSURE_KEY, session_id=session_id, endpoint=int(endpoint))
 
 
-def ids_sha256(ids: Iterable[str]) -> str:
-    """sha256 of the newline-joined ids in the given order (v0.3 ``phase_c_v03.ids_sha256``)."""
-    return hashlib.sha256("\n".join(ids).encode()).hexdigest()
-
-
-def windows_sha256(windows: Iterable[Window]) -> str:
-    return ids_sha256(f"{w.session_id}:{w.row_pos}" for w in windows)
+def canonical_sha256(obj) -> str:
+    """sha256 of ``obj``'s canonical JSON: the writer's ``agent_loop_lab.v04.budgets.canonical_sha256``."""
+    return hashlib.sha256(json.dumps(obj, sort_keys=True, separators=(",", ":"), ensure_ascii=False)
+                          .encode("utf-8")).hexdigest()
 
 
 def _ids(value, what: str) -> tuple[str, ...]:
@@ -189,8 +189,9 @@ def parse(doc: Mapping, *, file_sha256: str | None = None) -> Budgets:
     sha = doc["sha256"]
     if not isinstance(sha, Mapping) or set(sha) != set(_SHA_NAMES):
         raise BudgetError(f"sha256: keys must be exactly {sorted(_SHA_NAMES)}")
-    got = {**{n: ids_sha256(budgets[n]) for n in SESSION_BUDGETS}, "es_val": ids_sha256(es_val),
-           "disclosed_200w": windows_sha256(disclosed), "wspf_holdout": ids_sha256(holdout)}
+    raw_lists = {**{n: raw[n] for n in SESSION_BUDGETS}, "es_val": doc["es_val"],
+                 "disclosed_200w": doc["disclosed_200w"], "wspf_holdout": doc["wspf_holdout"]}
+    got = {name: canonical_sha256(raw_lists[name]) for name in _SHA_NAMES}
     for name in _SHA_NAMES:
         if sha[name] != got[name]:
             raise BudgetError(f"sha256[{name!r}] {sha[name]} != {got[name]} recomputed")

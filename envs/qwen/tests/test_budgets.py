@@ -6,6 +6,7 @@ Synthetic splits and labels only (the ``world`` fixture).
 from __future__ import annotations
 
 import copy
+import hashlib
 import json
 
 import numpy as np
@@ -43,10 +44,9 @@ def _swap(lst, i, j):
 def _resha(d):
     sha = d["sha256"]
     for k in B.SESSION_BUDGETS:
-        sha[k] = B.ids_sha256(d["budgets"][k])
-    sha["es_val"] = B.ids_sha256(d["es_val"])
-    sha["wspf_holdout"] = B.ids_sha256(d["wspf_holdout"])
-    sha["disclosed_200w"] = B.windows_sha256(B.Window(w["session_id"], w["row_pos"]) for w in d["disclosed_200w"])
+        sha[k] = B.canonical_sha256(d["budgets"][k])
+    for k in ("es_val", "disclosed_200w", "wspf_holdout"):
+        sha[k] = B.canonical_sha256(d[k])
 
 
 @pytest.mark.parametrize("edit, match", [
@@ -122,3 +122,30 @@ def test_load_reads_the_file(tmp_path, world):
     p = tmp_path / "BUDGETS.json"
     p.write_text(json.dumps(world["doc"]))
     assert B.load(p).budgets == B.load(world["budgets"]).budgets
+
+
+def test_sha256_convention_is_the_writers():
+    """Pinned by hand: the canonical JSON bytes of ``agent_loop_lab.v04.budgets.canonical_sha256``."""
+    assert B.canonical_sha256(["d0001", "d0002"]) == hashlib.sha256(b'["d0001","d0002"]').hexdigest()
+    w = [{"session_id": "v0001", "row_pos": 7}]
+    assert B.canonical_sha256(w) == hashlib.sha256(b'[{"row_pos":7,"session_id":"v0001"}]').hexdigest()
+
+
+def test_newline_joined_hashes_are_refused(world):
+    """The convention this reader once used (newline-joined ids, ``sid:row_pos`` windows) is not the file's."""
+    d = copy.deepcopy(world["doc"])
+    d["sha256"]["32"] = hashlib.sha256("\n".join(d["budgets"]["32"]).encode()).hexdigest()
+    with pytest.raises(B.BudgetError, match=r"sha256\['32'\]"):
+        B.parse(d)
+
+
+@pytest.mark.skipif(not B.PATH.is_file(), reason="datasets/v0_4/BUDGETS.json not committed on this branch yet")
+def test_committed_budgets_file_loads():
+    """The harness-written BUDGETS.json parses here, so writer and reader cannot drift apart (no labels read)."""
+    from hypaqwen import data as qdata
+
+    b = B.load()
+    assert [len(b.sessions(n)) for n in B.SESSION_BUDGETS[:4]] == [32, 128, 512, 2048]
+    for split, check in (("dev", B.check_dev_ids), ("val", B.check_val_ids)):
+        if (B.PATH.parent / f"{split}.tasks.jsonl.gz").is_file():
+            check(b, [t.session_id for t in qdata.iter_tasks(split)])

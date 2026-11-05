@@ -641,8 +641,8 @@ def build_inputs(tok, iface: Interface, budget: str, b: B.Budgets, data_dir: Pat
     prov = {"budgets_file_sha256": b.file_sha256, "budgets_sha256": dict(b.sha256),
             "val_labels_sha256": sha256_file(data_dir / "val.labels.npz"),
             "val_tasks_sha256": sha256_file(data_dir / "val.tasks.jsonl.gz")}
+    B.check_disclosure(b, val_labels)  # both paths: the ES set is defined with the disclosed sessions removed (§5)
     if budget == "200w":
-        B.check_disclosure(b, val_labels)
         return TrainInputs(window_items(tok, iface, b.disclosed_200w, val_labels, data_dir), None, b.size(budget), prov)
     dev_labels = qdata.load_labels("dev", data_dir)
     B.check_dev_ids(b, [str(s) for s in dev_labels["session_ids"]])

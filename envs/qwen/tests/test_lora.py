@@ -282,6 +282,33 @@ def test_build_inputs_from_the_export(world):
     assert L.epoch_cap(w.budget_size) == 31
 
 
+def test_session_budgets_verify_the_disclosure(world, tmp_path):
+    """A BUDGETS.json whose disclosed set (and the ES set built from it) is consistent but not the v0.3 rule is refused."""
+    import copy
+    import shutil
+
+    doc = copy.deepcopy(world["doc"])
+    disclosed = {w["session_id"] for w in doc["disclosed_200w"]}
+    spare = next(s for s in sorted((s["session_id"] for s in world["val"]), key=B.es_key) if s not in disclosed)
+    vrows = {str(x): i for i, x in enumerate(world["val_labels"]["session_ids"])}
+    lab = world["val_labels"]
+    pos = int(lab["row_pos"][np.flatnonzero(lab["row_session"] == vrows[spare])[0]])
+    doc["disclosed_200w"][0] = {"session_id": spare, "row_pos": pos}  # a wrong but well-formed window
+    dset = {w["session_id"] for w in doc["disclosed_200w"]}
+    doc["es_val"] = [s for s in sorted((s["session_id"] for s in world["val"]), key=B.es_key)
+                     if s not in dset][: B.ES_SESSIONS]
+    for k in ("es_val", "disclosed_200w"):
+        doc["sha256"][k] = B.canonical_sha256(doc[k])
+    d = tmp_path / "data"
+    shutil.copytree(world["dir"], d)
+    (d / "BUDGETS.json").write_text(json.dumps(doc))
+    b = B.load(d / "BUDGETS.json")
+    B.check_val_ids(b, [s["session_id"] for s in world["val"]])  # internally consistent: the ES check alone passes
+    for budget in ("32", "200w"):
+        with pytest.raises(B.BudgetError, match="disclosure rule"):
+            L.build_inputs(CharTok(), TINY_IFACE, budget, b, d)
+
+
 def test_cli_readout_on_a_tiny_run(world, tmp_path, monkeypatch, tiny_factory):
     run = tmp_path / "run"
     _run(run, tiny_factory)
