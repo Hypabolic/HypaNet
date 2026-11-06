@@ -1,6 +1,26 @@
 # v0.4 status
 
-_Last update: 2026-11-06. Plan: `agent_doom_loop_detector_plan_v0_4.md`. Matthew accepted every recommendation in it, and the post-M0 revisions are in its "Revisions after M0" section. On 6 Nov, before G1, he dropped the training baselines and all cloud compute (plan revision 12), and then took sealed scoring out of v0.4 (plan revision 13). No Qwen output has been compared with a label._
+_Last update: 2026-11-06 (evening). Plan: `agent_doom_loop_detector_plan_v0_4.md`. Matthew accepted every recommendation in it, and the post-M0 revisions are in its "Revisions after M0" section. On 6 Nov, before G1, he dropped the training baselines and all cloud compute (plan revision 12), and then took sealed scoring out of v0.4 (plan revision 13). G1 was frozen on 6 Nov; WSP-A and WSP-B have run and been scored on the val quick look. **The handoff for the next session is `experiments/v0_4/HANDOFF.md`.**_
+
+## Where things stand (6 Nov, evening)
+
+- **G1 frozen** (`experiments/registry_v0_4.yaml`, G1 freeze `494db5e3`), then three revisions, all deviations logged in PREREGISTRATION §13: D1 (revisions 1 and 2) and D2 (revision 3). Current freeze: `bf81354e`.
+- **WSP-A and WSP-B done** (Fable, claude-fable-5-1, one session `dd5e5940` resumed for WSP-B). Both builds rebuild byte for byte; both audits were adjudicated as having no effect on the evaluation.
+- **Quick look scored** for Qwen-0, WSP-A and WSP-B (table below). WSP-B − Qwen-0 = +0.196 macro-F1 [+0.165, +0.226].
+- **Full val readouts: in progress.** Qwen-0 runs with 3 parallel MPS workers (D2). The 1,700-session single-process checkpoint is the seed, plus 3 × 768 sessions. WSP-A and WSP-B full val have not started.
+- **Not run:** the v0.3 val columns (Q2 needs them), WSP-F, the CPU replay check.
+
+| Fable session | Launch | Cost (session-id delta) | Edit | Changed | Audit |
+| --- | --- | --- | --- | --- | --- |
+| WSP-A | 2026-11-05 16:07–17:58 UTC, 145 turns | US$32.58 of US$500 | `74576466` (archive `weight_program/v0_4/wsp-a/`) | 10 tensors, rank 1 each (10,240 entries): neurons in layers 21–23 plus the ` productive` row | 1 executed finding (Claude Code's persisted-output notice named a `~/.claude` path; never read) and 1 refused write: `logs/wsp-a.ADJUDICATION.md` |
+| WSP-B | 2026-11-05 20:51–21:52 UTC, 116 turns | US$29.81 of US$250 | `0ea2eb77` (archive `weight_program/v0_4/wsp-b/`) | 7 tensors (8,192 entries); the layer-21 neuron removed; RECOVERY moved to the label rows | 2 file findings (a `shutil` copy of its own files, which the run-time guard did not refuse; a `getattr` dispatch): `logs/wsp-b.ADJUDICATION.md` |
+
+The launch times are in UTC as the launch records give them; the Mac's clock reads 6 Nov local time. Fable spent US$62.39 in total.
+
+## Deviations from the pre-registration (6 Nov)
+
+- **D1:** Matthew: "I'd rather go straight to WSP-B and get a number for that", then "Shortcut, report deviation". The WSP-B disclosure's `network_class` came from a WSP-A readout of exactly the 200 disclosed sessions (`datasets/v0_4/DISCLOSED_SESSIONS.txt`, `columns/wspa.val_disclosed.npz`), not a full val readout. That gives the same classes, because sessions are read out independently. Revision 2 (a follow-on) let `handover.kernel_freezes` keep the G1 kernel chain through kernel-neutral revisions, because the build had refused WSP-B's freeze.
+- **D2:** readouts run as 3 parallel MPS workers (`scripts/v04_parallel_readout.py`). The benchmark is in `experiments/v0_4/benchmarks/parallel_readout/README.md`: 1.84× and bit-identical logits.
 
 ## Second decision of 6 Nov 2026: val only, no sealed scoring
 
@@ -19,8 +39,8 @@ Matthew decided directly: "Drop the training baselines", and "I’ve never plann
 
 - **No Qwen-probe and no Qwen-LoRA** column at any budget (32, 128, 512, 2,048, all or 200 windows). WSP-A, WSP-B and WSP-F are compared with Qwen-0 and the cited v0.3 and v0.2 columns only.
 - **Q3 and Q4 are not tested.** Q1, Q2, Q2-OOD and Q5 were unchanged by this decision (the second decision, above, then dropped Q2-OOD and the Q5 verdict).
-- **Nothing is rented.** The author's forward server and the harness-only val readouts use local MPS, fp32 (the sealed scoring runs this bullet first listed were removed by the second decision, above). The CPU replay check runs on this Mac's CPU, Qwen-0 and WSP-B against MPS (PREREGISTRATION §3.1, §3.3).
-- **Time instead of money.** One Qwen column over val takes about 5 h on MPS, a quick look about 1.25 h. The CPU replay takes several hours per column; its tool is written after G1 as pre-registered revision 3 (§3.3, §13).
+- **Nothing is rented.** The author's forward server and the harness-only val readouts use local MPS, fp32 (the sealed scoring runs this bullet first listed were removed by the second decision, above). The CPU replay check, if run (a pending decision, see HANDOFF), runs on this Mac's CPU, Qwen-0 and WSP-B against MPS (PREREGISTRATION §3.1, §3.3).
+- **Time instead of money.** One Qwen column over val takes about 5 h in one MPS process, or about 2.5–3 h with 3 parallel workers (D2). A quick look takes about 75 min, or about 41 min with 3 workers. The CPU replay takes several hours per column; its tool is written after G1 as pre-registered revision 3 (§3.3, §13).
 - **Code removed.** The probe, LoRA and cloud-runner code merged earlier (`hypaqwen/{probe, lora, cloud, backend, columns, budgets}.py`, `envs/qwen/scripts/cloud_run.sh`, and their tests) is deleted, and `peft` is out of `envs/qwen`. It stays in git history at `0540341`. `datasets/v0_4/BUDGETS.json` is kept unchanged: v0.4 uses its 200 disclosed windows and its WSP-F holdout.
 - **Updated before G1:** PREREGISTRATION (§1, §3, §9 to §13; §4, §5 and §7.2 are stubs, so section numbers do not move; §8 now defines the "Small" yardstick itself), the spec's non-packet sections, the plan (revision 12) and the freeze's required components.
 
@@ -57,8 +77,13 @@ WSP-A − Qwen-0 macro-F1 **+0.107 [+0.083, +0.130]** (paired, shared bootstrap 
 
 ## Next
 
-- Full val readouts (Qwen-0, WSP-A) with checkpoints, the result of record. The v0.3 val columns (`scripts/v04_v03_val_columns.py`) on CPU when MPS is free.
-- WSP-B full val; WSP-A full val (the 200-session column does not replace it); then WSP-F (check the hn_guard shutil gap first).
+See `experiments/v0_4/HANDOFF.md` for the commands. In order:
+
+1. Finish the Qwen-0 full val (running), and score it (Q1).
+2. WSP-A and WSP-B full val, with 3 workers each, about 2.5–3 h each. The 200-session WSP-A column does not replace WSP-A's full val.
+3. v0.3 val columns, on CPU when MPS is free. Do this before the final score: Q2 is WSP-B − v0.3 B, and an official report is written once.
+4. Score full val with `--v03`: `v04_val_wspb.json`, the result of record.
+5. Matthew decides: WSP-F (and the `shutil` guard gap) and the CPU replay check (§3.3).
 
 ## Kernel rules added beyond the contract (fold into `docs/V04_WSP_KERNEL.md` at G1)
 
@@ -81,7 +106,7 @@ The unofficial v0.3 val dry run (`scripts/v03_sealed_eval.py --dry-run-val`) ran
 
 So the frozen v0.3 artefacts can be re-scored here with no tolerance (plan revision 10); after the second 6 Nov decision they are re-scored on val only. The first attempt stopped because the Phase C `model.pt` files were Git LFS pointers. `git lfs install --local && git lfs pull` fixed that, and the hashes match.
 
-## Next
+## Earlier next steps (done or dropped)
 
 1. **Qwen-0 val logits** (label-free): the quick-look subset first (about 1.25 h on MPS, running), then full val (about 5 h). They are scored only after G1.
 2. Build the session harness: prepare script, launch with a tool allow-list and command hook, audit, cost by session delta, packet, kit tests.
@@ -93,11 +118,18 @@ So the frozen v0.3 artefacts can be re-scored here with no tolerance (plan revis
 
 | Backend | Verbaliser readout | Note |
 | --- | --- | --- |
-| MPS, fp32 | 445 tok/s | Compute-bound; a fixed 40–70 ms per call. One val pass takes about 5 h; 2M tokens take about 75 min |
+| MPS, fp32 | 424–457 tok/s (424–440 on the real quick-look and full-val runs) | Compute-bound; a fixed 40–70 ms per call. One full val pass (7.87M tokens) takes about 5 h; the 1,000-session quick look takes about 75 min |
+| MPS, fp32, 3 parallel workers (D2) | about 850 tok/s in total | 1.84× one process, bit-identical logits; full val in about 2.5–3 h. 4 workers give 2.0× but leave only 11–14% of memory free. See `experiments/v0_4/benchmarks/parallel_readout/` |
 | CPU, fp32 | under 10 tok/s | Measured with other jobs running. The 100-session CPU replay check runs here, for Qwen-0 and WSP-B: several hours per column |
+
+## Incidents (PREREGISTRATION §10)
+
+- **6 Nov, first full val readout of Qwen-0 (single process, before G1 scoring):** the process died at session 2,140 of 4,004 and left no output. There was no traceback and no jetsam record, and the exit code was lost behind a `tail`. Heavy test suites were running at the same time and are the probable cause. Fixes: `run_readout` now checkpoints every 50 sessions with resume (`OUT.partial.npz`); the quick-look subset is read out first; and no heavy test suites run during readouts. The rerun was stopped twice on purpose, once for the WSP-B session and once on Matthew's request, at 1,710 sessions. Its 1,700-session checkpoint seeds the current 3-worker run.
+- **WSP-B build refused once** (freeze `f654d2c9` not in the G1 kernel chain). Fixed by registry revision 2 (D1 follow-on) and rebuilt.
 
 ## Corrections to earlier notes
 
+- **Full-val readout time (6 Nov):** some estimates of 6 Nov, including the parenthetical "(about 7.5 h)" in PREREGISTRATION §13 D1 and figures given to Matthew in the session, said a single-process full val readout takes 7–7.5 h. Measured rates (424–440 tok/s over the 7.87M val readout tokens) give **about 5 h**, and about 2.5–3 h with 3 workers. §13 is frozen and was not edited for this.
 - An earlier version of this file said the bridge would call `metrics.score_report`. It calls `m4.score_columns`: `score_report` needs a reference policy and accepts val only.
 - v0.3's cost was over-counted. `total_cost_usd` is cumulative across resumed launches, so v0.3's hand-written work cost US$64.62 in total, not US$122.24.
 

@@ -6,3 +6,11 @@ W1106 11:18:40.723000 40937 .venv/lib/python3.12/site-packages/torch/distributed
 10 sessions, 27162 tokens, 290 tok/s
 20 sessions, 61199 tokens, 285 tok/s
 30 sessions, 89505 tokens, 284 tok/s
+40 sessions, 117803 tokens, 280 tok/s
+50 sessions, 148875 tokens, 279 tok/s
+60 sessions, 180243 tokens, 280 tok/s
+70 sessions, 213278 tokens, 281 tok/s
+80 sessions, 246640 tokens, 280 tok/s
+90 sessions, 282447 tokens, 280 tok/s
+100 sessions, 308945 tokens, 281 tok/s
+110 sessions, 336768 tokens, 281 tok/s

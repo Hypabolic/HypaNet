@@ -22,3 +22,4 @@ weight_program/v0_4/*/author_output/**/*.npz
 experiments/v0_4/columns/*.partial.npz
 experiments/v0_4/columns/*.shards/*.npz
 experiments/v0_4/columns/*.shards/*.partial.npz
+experiments/v0_4/benchmarks/*/runs/
