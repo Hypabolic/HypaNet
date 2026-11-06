@@ -30,8 +30,39 @@ also reproduced every v0.5 and v0.3 val report exactly):
 | v0.5 B − v0.3 A | +0.2073 [+0.1976, +0.2171] | +0.0120 |
 | v0.5 r1 − v0.3 A | −0.4292 [−0.4420, −0.4168] | +0.9376 |
 
-**Sealed test and OOD:** pre-registered in `experiments/v0_5/sealed/README.md` (committed `abe8b83`); the
-one-time run started 6 Nov.
+## Sealed test and OOD (one-time run, 6 Nov; `artifacts/reports/v05_sealed.json`)
+
+Pre-registered in `experiments/v0_5/sealed/README.md` (committed `abe8b83`, before the run). All sessions,
+95% session-bootstrap CIs; every v0.3 column re-scored in the same run.
+
+| Network | Sealed test macro-F1 | FA | Sealed OOD macro-F1 | FA |
+|---|---|---|---|---|
+| v0.5 r1 (no code, 0 labels) | 0.326 [0.319, 0.333] | 95.7% | 0.292 [0.283, 0.300] | 81.5% |
+| **v0.5 B** (no code + 200 labels) | **0.959** [0.956, 0.961] | 3.2% | **0.765** [0.762, 0.769] | **31.4%** |
+| v0.3 A (code, 0 labels) | 0.744 [0.734, 0.754] | 1.9% | 0.815 [0.806, 0.823] | 4.0% |
+| v0.3 B (code + 200 labels) | 0.957 [0.953, 0.961] | 2.5% | 0.908 [0.905, 0.912] | 6.8% |
+| v0.3 C-all (trained, 223,930 labels) | 0.923 [0.918, 0.929] | 6.1% | 0.488 [0.478, 0.497] | 34.5% |
+
+Paired (pre-registered primaries first):
+
+| Pair | Test ΔF1 | Test ΔFA | OOD ΔF1 | OOD ΔFA |
+|---|---|---|---|---|
+| v0.5 B − v0.3 B | +0.0015 [−0.0020, +0.0052] | +0.0078 [+0.0064, +0.0093] | **−0.1430** [−0.1473, −0.1386] | **+0.2462** [+0.2392, +0.2533] |
+| v0.5 B − v0.3 C-all | +0.0351 [+0.0300, +0.0405] | −0.0282 [−0.0329, −0.0237] | +0.2774 [+0.2680, +0.2871] | −0.0317 [−0.0419, −0.0215] |
+| v0.5 B − v0.3 A | +0.2145 [+0.2048, +0.2239] | +0.0136 | −0.0495 [−0.0586, −0.0399] | +0.2739 |
+| v0.5 r1 − v0.3 A | −0.4183 [−0.4303, −0.4066] | +0.9378 | −0.5230 [−0.5345, −0.5110] | +0.7748 |
+
+- **In distribution, the no-code lineage ends level with v0.3 B** (test +0.0015, CI spans 0; slightly more
+  false alarms).
+- **Out of distribution it does not hold up like v0.3 B:** −0.143 macro-F1 and false alarms 31.4% against
+  6.8%. It is worse than v0.3 B on all 10 OOD families (false alarms 12–48% per family against 0–15%), and still
+  better than the trained C-all on all 10 by macro-F1. Its OOD false-alarm rate is about the trained network's
+  (31.4% against 34.5%). Why has not been analysed; Phase B rebuilt layers 1–3 against 200 in-distribution
+  windows (`weight_program/v0_5/phase-b/REVISION.md`), which is the obvious place to look.
+- **Reproduction:** every v0.3 column reproduced `v03_sealed.json` on val, counterfactual and test. On OOD, one
+  trained model (C-128 seed0) differs in one window of 74,000 (macro-F1 0.2742913 against 0.2742901, an arm64 vs
+  x86_64 float difference); it is flagged in the report and affects no v0.5 number or primary pair.
+- Run log: `experiments/v0_5/sealed/sealed_run.log`.
 
 - **r1:** OSCILLATING F1 0.83 (precision 0.98, recall 0.73) from a hand-reasoned hunk-reversion circuit and a
   residue code (token id mod 4, 5, 7; mod 3, 13) written as strided fills; STALLED predicted on most windows.
