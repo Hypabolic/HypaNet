@@ -1,0 +1,170 @@
+{
+  "abandoned_session_ids": [],
+  "bare": false,
+  "claude_version": "2.1.311 (Claude Code)",
+  "continuation_cap": 40,
+  "continue_message": "Continue.",
+  "cost": {
+    "cap_usd": 500.0,
+    "lower_bound_only": [],
+    "overshoot_usd": 0.0,
+    "reached": false,
+    "remaining_usd": 483.303995,
+    "total_usd": 16.696005,
+    "unresolved": []
+  },
+  "effort": "max",
+  "env_set": {
+    "CLAUDE_CODE_DISABLE_ATTACHMENTS": "1",
+    "CLAUDE_CODE_DISABLE_AUTO_MEMORY": "1",
+    "CLAUDE_CODE_DISABLE_CLAUDE_MDS": "1",
+    "CLAUDE_CODE_DISABLE_FILE_MENTIONS": "1",
+    "CLAUDE_CODE_MAX_EFFORT_REMINDER": "0",
+    "CLAUDE_CODE_MAX_OUTPUT_TOKENS": "128000",
+    "CLAUDE_CODE_NO_MODEL_FALLBACK": "1",
+    "DISABLE_AUTO_COMPACT": "1",
+    "DISABLE_COMPACT": "1"
+  },
+  "events": [
+    {
+      "event": "created",
+      "utc": "2026-11-06T07:39:28Z"
+    },
+    {
+      "event": "stopped",
+      "status": "finished",
+      "utc": "2026-11-06T08:37:17Z"
+    }
+  ],
+  "finished": true,
+  "model": "claude-fable-5-1",
+  "prompt_sha256": "f4981981f7a706de4d22a86f8ae87f58d0c3ea2d65efa6c8fb70575f3fd5ed10",
+  "retry_cap": 3,
+  "retry_offsets": {},
+  "retry_waits_s": [
+    120,
+    600,
+    1800
+  ],
+  "run": "r1",
+  "session_file": "/Users/matthew/.claude/projects/-private-var-folders-xk-g6rk4nl55qb5z0gmpplmz9qr0000gn-T-run-6mvgjtxh/4a66e4cf-1ebb-4009-aa98-7d24ceacb89c.jsonl",
+  "session_id": "4a66e4cf-1ebb-4009-aa98-7d24ceacb89c",
+  "status": "finished",
+  "system_prompt": "Answer the user's request.",
+  "turn_budget_usd": 60.0,
+  "turns": [
+    {
+      "api_messages_cut_off": [
+        true,
+        false
+      ],
+      "assistant_messages": 2,
+      "cut_off": false,
+      "end_marker": false,
+      "end_marker_exact": false,
+      "failed_attempts": [],
+      "has_result_event": true,
+      "is_error": false,
+      "message": "PROMPT.txt",
+      "message_sha256": "f4981981f7a706de4d22a86f8ae87f58d0c3ea2d65efa6c8fb70575f3fd5ed10",
+      "models": [
+        "claude-fable-5-1"
+      ],
+      "name": "r1.t001",
+      "reply_chars": 7308,
+      "result_subtype": "success",
+      "session_ids": [
+        "4a66e4cf-1ebb-4009-aa98-7d24ceacb89c"
+      ],
+      "session_total_cost_usd": 13.36377,
+      "stop_reason": "end_turn",
+      "transcript": "r1.t001.stream.jsonl",
+      "turn": 1
+    },
+    {
+      "api_messages_cut_off": [
+        false
+      ],
+      "assistant_messages": 1,
+      "cut_off": false,
+      "end_marker": false,
+      "end_marker_exact": false,
+      "failed_attempts": [],
+      "has_result_event": true,
+      "is_error": false,
+      "message": "Continue.",
+      "message_sha256": "f3daf2941865055833e9db4c9bab5d1280281952bb1699514a28ee4c67256573",
+      "models": [
+        "claude-fable-5-1"
+      ],
+      "name": "r1.t002",
+      "reply_chars": 7508,
+      "result_subtype": "success",
+      "session_ids": [
+        "4a66e4cf-1ebb-4009-aa98-7d24ceacb89c"
+      ],
+      "session_total_cost_usd": 15.867673250000001,
+      "stop_reason": "end_turn",
+      "transcript": "r1.t002.stream.jsonl",
+      "turn": 2
+    },
+    {
+      "api_messages_cut_off": [
+        false
+      ],
+      "assistant_messages": 1,
+      "cut_off": false,
+      "end_marker": false,
+      "end_marker_exact": false,
+      "failed_attempts": [],
+      "has_result_event": true,
+      "is_error": false,
+      "message": "Continue.",
+      "message_sha256": "f3daf2941865055833e9db4c9bab5d1280281952bb1699514a28ee4c67256573",
+      "models": [
+        "claude-fable-5-1"
+      ],
+      "name": "r1.t003",
+      "reply_chars": 11112,
+      "result_subtype": "success",
+      "session_ids": [
+        "4a66e4cf-1ebb-4009-aa98-7d24ceacb89c"
+      ],
+      "session_total_cost_usd": 16.35666625,
+      "stop_reason": "end_turn",
+      "transcript": "r1.t003.stream.jsonl",
+      "turn": 3
+    },
+    {
+      "api_messages_cut_off": [
+        false
+      ],
+      "assistant_messages": 1,
+      "cut_off": false,
+      "end_marker": true,
+      "end_marker_exact": true,
+      "failed_attempts": [],
+      "has_result_event": true,
+      "is_error": false,
+      "message": "Continue.",
+      "message_sha256": "f3daf2941865055833e9db4c9bab5d1280281952bb1699514a28ee4c67256573",
+      "models": [
+        "claude-fable-5-1"
+      ],
+      "name": "r1.t004",
+      "reply_chars": 5023,
+      "result_subtype": "success",
+      "session_ids": [
+        "4a66e4cf-1ebb-4009-aa98-7d24ceacb89c"
+      ],
+      "session_total_cost_usd": 16.696005,
+      "stop_reason": "end_turn",
+      "transcript": "r1.t004.stream.jsonl",
+      "turn": 4
+    }
+  ],
+  "turns_sent": 4,
+  "utc_created": "2026-11-06T07:39:27Z",
+  "utc_stopped": "2026-11-06T08:37:17Z",
+  "workdir": "/private/var/folders/xk/g6rk4nl55qb5z0gmpplmz9qr0000gn/T/run-6mvgjtxh"
+}

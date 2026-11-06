@@ -1,0 +1,61 @@
+{
+  "join": "NNN.md joins a turn's parts with a newline, for people only; the reader reads the parts",
+  "reading_order": "every ```edits block of every unit, in this order (turn order, then position in the file); a unit with parts is read as its parts, each a reply of its own (one API message each)",
+  "run": "r1",
+  "status": "finished",
+  "units": [
+    {
+      "chars": 7308,
+      "cut_off": false,
+      "end_marker": false,
+      "file": "001.md",
+      "parts": [
+        {
+          "chars": 0,
+          "cut_off": true,
+          "file": "001.p1.md",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "chars": 7308,
+          "cut_off": false,
+          "file": "001.p2.md",
+          "sha256": "361ed7f6fdd8ecf82beffdf4a15839e76776d751528618ad80328322427f9287"
+        }
+      ],
+      "sha256": "361ed7f6fdd8ecf82beffdf4a15839e76776d751528618ad80328322427f9287",
+      "stop_reason": "end_turn",
+      "turn": 1
+    },
+    {
+      "chars": 7508,
+      "cut_off": false,
+      "end_marker": false,
+      "file": "002.md",
+      "parts": [],
+      "sha256": "eebcb40fd5afb80092ecb10312bd832bb5dcdda6e31435882d6353ce815fada9",
+      "stop_reason": "end_turn",
+      "turn": 2
+    },
+    {
+      "chars": 11112,
+      "cut_off": false,
+      "end_marker": false,
+      "file": "003.md",
+      "parts": [],
+      "sha256": "3cee6658c109280beb1ca0ba8b692cff338a5ab22069053ea5c55aaa1d3cbbfd",
+      "stop_reason": "end_turn",
+      "turn": 3
+    },
+    {
+      "chars": 5023,
+      "cut_off": false,
+      "end_marker": true,
+      "file": "004.md",
+      "parts": [],
+      "sha256": "d7897752adde645838c710f9a0890d6190c7fc990bb3e8a33f403f8e543ec164",
+      "stop_reason": "end_turn",
+      "turn": 4
+    }
+  ]
+}
