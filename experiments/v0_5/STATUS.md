@@ -57,8 +57,12 @@ Paired (pre-registered primaries first):
 - **Out of distribution it does not hold up like v0.3 B:** −0.143 macro-F1 and false alarms 31.4% against
   6.8%. It is worse than v0.3 B on all 10 OOD families (false alarms 12–48% per family against 0–15%), and still
   better than the trained C-all on all 10 by macro-F1. Its OOD false-alarm rate is about the trained network's
-  (31.4% against 34.5%). Why has not been analysed; Phase B rebuilt layers 1–3 against 200 in-distribution
-  windows (`weight_program/v0_5/phase-b/REVISION.md`), which is the obvious place to look.
+  (31.4% against 34.5%). **Why** (`ood_analysis/FINDINGS.md`, 7 Nov, on a fresh OOD
+  set from the same generator, no sealed data): almost all of the loss is PRODUCTIVE called STALLED. Phase B's
+  behavioural "ineffective" rules (a failure on an already-seen error line, an edit after a repeated test
+  result, a repeated target keyed on its first word) agree with the oracle 62–84% in distribution but 28–44%
+  OOD. Unlike v0.3 A/B, there is no progress veto (a new high in a passed count), so 92% of the false STALLED
+  windows have real progress that the network never looks for.
 - **Reproduction:** every v0.3 column reproduced `v03_sealed.json` on val, counterfactual and test. On OOD, one
   trained model (C-128 seed0) differs in one window of 74,000 (macro-F1 0.2742913 against 0.2742901, an arm64 vs
   x86_64 float difference); it is flagged in the report and affects no v0.5 number or primary pair.

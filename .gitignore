@@ -23,3 +23,6 @@ experiments/v0_4/columns/*.partial.npz
 experiments/v0_4/columns/*.shards/*.npz
 experiments/v0_4/columns/*.shards/*.partial.npz
 experiments/v0_4/benchmarks/*/runs/
+
+# v0.5 OOD diagnosis: window rows regenerate from analyse.py
+experiments/v0_5/ood_analysis/rows*.jsonl.gz
