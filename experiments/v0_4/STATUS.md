@@ -7,7 +7,7 @@ _Last update: 2026-11-06 (evening). Plan: `agent_doom_loop_detector_plan_v0_4.md
 - **G1 frozen** (`experiments/registry_v0_4.yaml`, G1 freeze `494db5e3`), then three revisions, all deviations logged in PREREGISTRATION §13: D1 (revisions 1 and 2) and D2 (revision 3). Current freeze: `bf81354e`.
 - **WSP-A and WSP-B done** (Fable, claude-fable-5-1, one session `dd5e5940` resumed for WSP-B). Both builds rebuild byte for byte; both audits were adjudicated as having no effect on the evaluation.
 - **Quick look scored** for Qwen-0, WSP-A and WSP-B (table below). WSP-B − Qwen-0 = +0.196 macro-F1 [+0.165, +0.226].
-- **Full val readouts: in progress.** Qwen-0 runs with 3 parallel MPS workers (D2). The 1,700-session single-process checkpoint is the seed, plus 3 × 768 sessions. WSP-A and WSP-B full val have not started.
+- **Qwen-0 full val: done and scored** (3 parallel MPS workers, D2; finished 12:55 AEDT 6 Nov). `excluding_disclosed` macro-F1 **0.212 [0.202, 0.222]**; Q1 = Qwen-0 − dev-majority prior **+0.073 [+0.061, +0.085]** (`artifacts/reports/v04_val_qwen0.json`). WSP-A and WSP-B full val have not started.
 - **Not run:** the v0.3 val columns (Q2 needs them), WSP-F, the CPU replay check.
 
 | Fable session | Launch | Cost (session-id delta) | Edit | Changed | Audit |
@@ -75,11 +75,21 @@ Matthew decided directly: "Drop the training baselines", and "I’ve never plann
 
 WSP-A − Qwen-0 macro-F1 **+0.107 [+0.083, +0.130]** (paired, shared bootstrap draws), `artifacts/reports/v04_val_quick_wspa.json`. Per-class F1 Qwen-0 → WSP-A: OSCILLATING 0.22 → 0.41, STALLED 0.37 → 0.54, RECOVERY 0.25 → 0.28, PRODUCTIVE 0.05 → 0.09 (recall 0.03 → 0.06: still the weak spot). WSP-B − Qwen-0 **+0.196 [+0.165, +0.226]**, WSP-B − WSP-A **+0.089 [+0.065, +0.113]** (`v04_val_quick_wspb.json`). WSP-B per-class F1: OSCILLATING 0.31, STALLED 0.67, RECOVERY 0.40, PRODUCTIVE 0.29 (recall 0.18, precision 0.69); it gave back some OSCILLATING (0.41 → 0.31) for the rest. WSP-B's disclosure came from a 200-session WSP-A readout (deviation D1, registry revisions 1–2). WSP-A audit: one benign executed finding, adjudicated in `experiments/v0_4/logs/wsp-a.ADJUDICATION.md`.
 
+## Full val, result of record (`excluding_disclosed`, 3,804 sessions, 69,974 scored windows)
+
+| Column | Macro-F1 [95% CI] | Accuracy | False-loop alarm rate | Report |
+| --- | --- | --- | --- | --- |
+| prior dev-majority (always PRODUCTIVE) | 0.139 [0.136, 0.143] | 0.387 | 0.000 | |
+| Qwen-0 | **0.212 [0.202, 0.222]** | 0.231 | 0.709 | `v04_val_qwen0.json` |
+| WSP-A, WSP-B | not yet read out | | | |
+
+Q1 (Qwen-0 − dev-majority prior) **+0.073 [+0.061, +0.085]**: supported. all_val: Qwen-0 0.213 [0.204, 0.223], Q1 +0.076 [+0.065, +0.087]. Qwen-0 per-class F1: STALLED 0.36, RECOVERY 0.23, OSCILLATING 0.21, PRODUCTIVE 0.05. Consistent with the quick look.
+
 ## Next
 
 See `experiments/v0_4/HANDOFF.md` for the commands. In order:
 
-1. Finish the Qwen-0 full val (running), and score it (Q1).
+1. ~~Finish the Qwen-0 full val and score it (Q1).~~ Done: Q1 = +0.073 [+0.061, +0.085], `excluding_disclosed`.
 2. WSP-A and WSP-B full val, with 3 workers each, about 2.5–3 h each. The 200-session WSP-A column does not replace WSP-A's full val.
 3. v0.3 val columns, on CPU when MPS is free. Do this before the final score: Q2 is WSP-B − v0.3 B, and an official report is written once.
 4. Score full val with `--v03`: `v04_val_wspb.json`, the result of record.

@@ -15,33 +15,24 @@ Fable (claude-fable-5-1) edited the weights of Qwen3.5-0.8B by hand to detect ag
 
 The reports are `artifacts/reports/v04_val_quick_{qwen0,wspa,wspb}.json`. Fable's cost: WSP-A US$32.58 and WSP-B US$29.81, US$62.39 in total, against caps of US$500 and US$250.
 
-**Caveats:** these are val numbers, not sealed ones (Matthew chose "Val only, no sealed"). The full-val `excluding_disclosed` numbers are the result of record and are still to come. WSP-B's disclosure followed deviation D1.
+**Caveats:** these are val numbers, not sealed ones (Matthew chose "Val only, no sealed"). The full-val `excluding_disclosed` numbers are the result of record: Qwen-0's is in (below); WSP-A's and WSP-B's are still to come. WSP-B's disclosure followed deviation D1.
 
-## Running right now
+## Qwen-0 full val: done (6 Nov, 12:55 AEDT)
 
-**Qwen-0 full val, 3 parallel MPS workers** (deviation D2), started from the main checkout:
+The 3-worker run (deviation D2) finished cleanly: `experiments/v0_4/columns/qwen0.val.npz`, 4,004 sessions, 87,176 rows, 7,871,600 tokens. The workers held 276–281 tok/s each, and the merged file was ready 1 h 37 min after the start (1,700-session seed plus 3 × 768). Scored → `artifacts/reports/v04_val_qwen0.json` (official):
 
-```sh
-caffeinate -i -s uv run python scripts/v04_parallel_readout.py --out experiments/v0_4/columns/qwen0.val.npz \
-    --workers 3 --seed-partial experiments/v0_4/columns/qwen0.val.partial.npz
-```
+| Population | Qwen-0 macro-F1 [95% CI] | Prior (always PRODUCTIVE) | Q1: Qwen-0 − dev-majority prior |
+| --- | --- | --- | --- |
+| **excluding_disclosed** (3,804 sessions, 69,974 scored windows; primary) | **0.212 [0.202, 0.222]** | 0.139 | **+0.073 [+0.061, +0.085]** |
+| all_val (4,004 sessions) | 0.213 [0.204, 0.223] | | +0.076 [+0.065, +0.087] |
 
-- The seed is 1,700 sessions from the interrupted single-process run, copied to `qwen0.val.shards/seed.partial.npz`. Each of the 3 shards holds 768 sessions. It started at 11:18 AEDT on 6 Nov. About 4.7M tokens remained at the start (7.87M minus the seed's 3.15M). At about 280–285 tok/s per worker, it should finish around 13:00 AEDT, ±30 min.
-- **It runs as a background task of Claude Code session `84f94084-9d88-46ef-9b1b-8b4fda2dc583`.** The driver log (shard pids, merge result or refusal) is outside the repo: `/private/tmp/claude-501/-Users-matthew-Development-hypabolic-HypaNet/84f94084-9d88-46ef-9b1b-8b4fda2dc583/scratchpad/qwen0_parallel.log`. Closing that session may kill the workers and `caffeinate`, which lets the Mac sleep. If that happens, use "If it died" below.
-- **Check progress:** `tail -1 experiments/v0_4/columns/qwen0.val.shards/shard{0,1,2}.log` and `pgrep -fl hypaqwen.run_readout`.
-- **Finished** when `experiments/v0_4/columns/qwen0.val.npz` exists (4,004 sessions, 87,176 rows).
-- **If it died** (session ended, reboot):
-  1. First make sure nothing is still running: `pgrep -fl 'hypaqwen.run_readout|v04_parallel_readout'` must print nothing. **This run started before the lock existed, so `LOCK` does not protect it.** Never start a second copy while any of its processes is alive; 6 fp32 workers would not fit in 24 GB.
-  2. Run the same command again from the repo root, in a plain terminal (not as a Claude background task), so that it outlives any session.
-  3. The plan is fixed in `qwen0.val.shards/PLAN.json`, which was brought up to the reviewed format. Finished shards are kept and checked. Unfinished ones resume from `shard{k}.partial.npz` (checkpoints every 50 sessions). If all three `shard{k}.npz` exist but `qwen0.val.npz` does not, the re-run only checks and merges.
-  4. From then on the reviewed script holds `LOCK`.
-- **Note:** if this run completes, its merge is done by the pre-review driver code that is in memory. An independent review found that merge logic correct; the fixes concerned re-runs only. The merged file records `parallel.plan_sha256` and each shard's sha256.
+Per-class F1 (excluding_disclosed): STALLED 0.36, RECOVERY 0.23, OSCILLATING 0.21, PRODUCTIVE 0.05. Accuracy 0.231; false-loop alarm rate 0.709. This agrees with the quick look (0.223 [0.202, 0.243]).
+
+The driver log was in the session scratchpad; the per-worker logs and `PLAN.json` are committed in `qwen0.val.shards/`. Worker `.npz` files are gitignored and can be deleted.
 
 ## Next, in order
 
-1. **Score Qwen-0 full val** when it finishes:
-   `uv run python scripts/v04_score_validation.py --arm qwen0 --column "Qwen-0=experiments/v0_4/columns/qwen0.val.npz"`
-   → `artifacts/reports/v04_val_qwen0.json`. This gives Q1 (Qwen-0 − dev-majority prior). Commit the column and report.
+1. ~~Score Qwen-0 full val~~ **done** (above): `artifacts/reports/v04_val_qwen0.json`, Q1 = +0.073 [+0.061, +0.085].
 2. **WSP-A and WSP-B full val**, one at a time, about 2.5–3 h each with 3 workers. Run them from the repo root in a plain terminal, so they outlive any Claude session:
    ```sh
    caffeinate -i -s uv run python scripts/v04_parallel_readout.py --out experiments/v0_4/columns/wspa.val.npz --workers 3 --edit weight_program/v0_4/wsp-a
@@ -86,7 +77,7 @@ caffeinate -i -s uv run python scripts/v04_parallel_readout.py --out experiments
 | Edit archives | `weight_program/v0_4/wsp-{a,b}/`: BUILD_RECORD.json, edit_diff, build inputs, author output, MECHANISMS.json, FREEZE.json |
 | WSP-B disclosure | `experiments/v0_4/disclosure/DISCLOSURE.json` (`d8c75fbc`), `experiments/v0_4/DISCLOSED_WINDOWS.json`, `experiments/v0_4/DISCLOSURE_PRIVATE.json`, `experiments/v0_4/wsp_b/HANDOVER.json` |
 | Numbering | PREREGISTRATION §13's "pre-registered revisions 1–3" are not registry revision numbers. Registry revisions 1–3 are D1, the D1 follow-on and D2 |
-| Readout columns | `experiments/v0_4/columns/`: `qwen0.val_quick`, `wspa.val_quick`, `wspb.val_quick`, `wspa.val_disclosed` (D1); `qwen0.val.shards/` (running) |
+| Readout columns | `experiments/v0_4/columns/`: `qwen0.val_quick`, `wspa.val_quick`, `wspb.val_quick`, `wspa.val_disclosed` (D1); `qwen0.val` (full val, done) and `qwen0.val.shards/` |
 | Quick-look subset | `datasets/v0_4/VAL_QUICK.txt` (`b77f7415`, 1,000 sessions, no disclosed session) |
 | Parallel benchmark | `experiments/v0_4/benchmarks/parallel_readout/` (README, bench.py, compare.py, results.jsonl) |
 

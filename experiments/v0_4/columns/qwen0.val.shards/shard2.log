@@ -15,3 +15,107 @@ W1106 11:18:40.723000 40938 .venv/lib/python3.12/site-packages/torch/distributed
 100 sessions, 292511 tokens, 284 tok/s
 110 sessions, 319663 tokens, 286 tok/s
 120 sessions, 343310 tokens, 286 tok/s
+130 sessions, 372710 tokens, 288 tok/s
+140 sessions, 396622 tokens, 288 tok/s
+150 sessions, 426973 tokens, 289 tok/s
+160 sessions, 453351 tokens, 290 tok/s
+170 sessions, 482458 tokens, 290 tok/s
+180 sessions, 505877 tokens, 290 tok/s
+190 sessions, 532867 tokens, 291 tok/s
+200 sessions, 557662 tokens, 291 tok/s
+210 sessions, 587549 tokens, 291 tok/s
+220 sessions, 608214 tokens, 292 tok/s
+230 sessions, 630347 tokens, 292 tok/s
+240 sessions, 654675 tokens, 291 tok/s
+250 sessions, 675625 tokens, 291 tok/s
+260 sessions, 700223 tokens, 291 tok/s
+270 sessions, 724066 tokens, 291 tok/s
+280 sessions, 743268 tokens, 291 tok/s
+290 sessions, 765805 tokens, 290 tok/s
+300 sessions, 787770 tokens, 290 tok/s
+310 sessions, 807495 tokens, 290 tok/s
+320 sessions, 831541 tokens, 290 tok/s
+330 sessions, 849056 tokens, 290 tok/s
+340 sessions, 860095 tokens, 291 tok/s
+350 sessions, 874207 tokens, 291 tok/s
+360 sessions, 887613 tokens, 291 tok/s
+370 sessions, 900233 tokens, 291 tok/s
+380 sessions, 914906 tokens, 291 tok/s
+390 sessions, 928042 tokens, 291 tok/s
+400 sessions, 944304 tokens, 291 tok/s
+410 sessions, 954638 tokens, 291 tok/s
+420 sessions, 970087 tokens, 291 tok/s
+430 sessions, 983621 tokens, 291 tok/s
+440 sessions, 998729 tokens, 291 tok/s
+450 sessions, 1015266 tokens, 291 tok/s
+460 sessions, 1029972 tokens, 291 tok/s
+470 sessions, 1046878 tokens, 290 tok/s
+480 sessions, 1061744 tokens, 290 tok/s
+490 sessions, 1076174 tokens, 290 tok/s
+500 sessions, 1097557 tokens, 289 tok/s
+510 sessions, 1115604 tokens, 288 tok/s
+520 sessions, 1133473 tokens, 287 tok/s
+530 sessions, 1152910 tokens, 287 tok/s
+540 sessions, 1170067 tokens, 286 tok/s
+550 sessions, 1186144 tokens, 286 tok/s
+560 sessions, 1200468 tokens, 286 tok/s
+570 sessions, 1214807 tokens, 285 tok/s
+580 sessions, 1229586 tokens, 285 tok/s
+590 sessions, 1244013 tokens, 285 tok/s
+600 sessions, 1260270 tokens, 285 tok/s
+610 sessions, 1272589 tokens, 284 tok/s
+620 sessions, 1285780 tokens, 284 tok/s
+630 sessions, 1300622 tokens, 283 tok/s
+640 sessions, 1315812 tokens, 283 tok/s
+650 sessions, 1329384 tokens, 283 tok/s
+660 sessions, 1346185 tokens, 282 tok/s
+670 sessions, 1365880 tokens, 282 tok/s
+680 sessions, 1383250 tokens, 281 tok/s
+690 sessions, 1403511 tokens, 280 tok/s
+700 sessions, 1421057 tokens, 280 tok/s
+710 sessions, 1435838 tokens, 280 tok/s
+720 sessions, 1455526 tokens, 279 tok/s
+730 sessions, 1473499 tokens, 279 tok/s
+740 sessions, 1493698 tokens, 279 tok/s
+750 sessions, 1512082 tokens, 278 tok/s
+760 sessions, 1530658 tokens, 278 tok/s
+{
+ "split": "val",
+ "limit": null,
+ "device": "mps",
+ "dtype": "fp32",
+ "torch": "2.14.1",
+ "transformers": "5.22.1",
+ "platform": "macOS-27.0.1-arm64-arm-64bit",
+ "python": "3.12.16",
+ "attn_implementation": "sdpa",
+ "model": {
+  "id": "Qwen/Qwen3.5-0.8B",
+  "revision": "2fc06364715b967f1860aea9cf38778875588b17",
+  "file_sha256": {
+   "model.safetensors-00001-of-00001.safetensors": "04b1c301231dd422b8860db31311ab2721511346a32cb1e079c4c4e5f1fe4696",
+   "tokenizer.json": "5f9e4d4901a92b997e463c1f46055088b6cca5ca61a6522d1b9f64c4bb81cb42",
+   "tokenizer_config.json": "49e2b6e395f959f077f1e992b338919c0d4a9732fc6e613995e06557f843500c",
+   "config.json": "b90b86f35c8e6925ef74ee04d0e758f0a845c83a42089ad82bbaa948de9b4204",
+   "chat_template.jinja": "273d8e0e683b885071fb17e08d71e5f2a5ddfb5309756181681de4f5a1822d80",
+   "vocab.json": "ce99b4cb2983d118806ce0a8b777a35b093e2000a503ebde25853284c9dfa003",
+   "merges.txt": "a9d356d7bdf1ef4949e3e748e95b8e10ad9d4e2e838eddc38a0a7b6b94d1db8d"
+  }
+ },
+ "interface_sha256": "512b88234ecf01eedafbe56b84073fbff91af9af1c18f0b0c667c2dc82b56e16",
+ "interface": {
+  "name": "w1-state-full",
+  "spec_sha256": "5922eb4500122921ac7d07e3d35599b95cb10b462c4f50b89e5d6bb989437879"
+ },
+ "edit": null,
+ "subset": {
+  "file": "shard2.txt",
+  "sha256": "8f2eb304673d236c60bb65ffb7047d99a3611931d60e21fd42ba851fd112dbe0",
+  "sessions": 768
+ },
+ "resumed_after_sessions": null,
+ "sessions": 768,
+ "tokens": 1543406,
+ "seconds": 5557.8,
+ "tokens_per_second": 277.7
+}
