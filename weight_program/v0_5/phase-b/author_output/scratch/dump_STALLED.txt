@@ -1,0 +1,1007 @@
+=== V006 oracle=STALLED net=STALLED t=27 start=20 logits=[0.5, 0.0, 4.0, 0.0]
+ [17] read_file path=src/metrics/__tests__/money.e2e.test.ts -> ok in=833 out=235   || RECO 
+ [18] run_tests suite=contract tests=src/metrics/__tests__/notifier.contract.test.ts::notifier compact token default config -> FAILED 0/1 passed in=6313 out=124   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! SyntaxError at src/metrics/__tests__/notifier.contract.test.ts::notifier compact token default config:649 (pid 75860)
+ [19] run_tests suite=contract tests=src/metrics/__tests__/notifier.contract.test.ts::notifier compact token default config -> FAILED 0/1 passed in=1263 out=258   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! SyntaxError at src/metrics/__tests__/notifier.contract.test.ts::notifier compact token default config:649 (0x238ac587)
+*[20] run_tests suite=contract tests=src/metrics/__tests__/notifier.contract.test.ts::notifier compact token default config -> FAILED 0/1 passed in=2250 out=509   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! SyntaxError at src/metrics/__tests__/notifier.contract.test.ts::notifier compact token default config:649 (pid 77491)
+*[21] read_file path=src/metrics/__tests__/auditLog.e2e.test.ts -> ok in=1241 out=90   || PROD 
+*[22] run_tests suite=contract tests=src/metrics/__tests__/notifier.contract.test.ts::notifier compact token default config -> FAILED 0/1 passed in=3853 out=168   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! SyntaxError at src/metrics/__tests__/notifier.contract.test.ts::notifier compact token default config:649 (0x046a4cee)
+*[23] run_tests suite=contract tests=src/metrics/__tests__/notifier.contract.test.ts::notifier compact token default config -> FAILED 0/1 passed in=2938 out=79   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! SyntaxError at src/metrics/__tests__/notifier.contract.test.ts::notifier compact token default config:649 (0xe06cd62a)
+*[24] run_tests suite=contract tests=src/metrics/__tests__/notifier.contract.test.ts::notifier compact token default config -> FAILED 0/1 passed in=881 out=116   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! SyntaxError at src/metrics/__tests__/notifier.contract.test.ts::notifier compact token default config:649 (pid 16433)
+*[25] read_file path=src/metrics/__tests__/money.e2e.test.ts -> ok in=1246 out=188   || PROD 
+*[26] run_tests suite=contract tests=src/metrics/__tests__/notifier.contract.test.ts::notifier compact token default config -> FAILED 0/1 passed in=2275 out=121   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! SyntaxError at src/metrics/__tests__/notifier.contract.test.ts::notifier compact token default config:649 (0xbf2ea231)
+*[27] run_tests suite=contract tests=src/metrics/__tests__/notifier.contract.test.ts::notifier compact token default config -> FAILED 0/1 passed in=6041 out=56   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! SyntaxError at src/metrics/__tests__/notifier.contract.test.ts::notifier compact token default config:649 (0x785d196f)
+
+=== V007 oracle=STALLED net=STALLED t=53 start=46 logits=[0.5, 0.0, 4.0, 0.0]
+ [43] run_tests suite=spec:feature -> FAILED 3/8 passed in=3619 out=113   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! NoMethodError at spec/sync/slugify_feature_spec.rb::slugify decode quota empty input:61 (pid 28668)
+ [44] run_tests suite=spec:feature -> FAILED 3/8 passed in=3076 out=196   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! NoMethodError at spec/sync/slugify_feature_spec.rb::slugify decode quota empty input:61 (0x03a883f0)
+ [45] plan action=checkpoint -> ok in=3330 out=460   || PROD 
+*[46] run_tests suite=spec:feature -> FAILED 3/8 passed in=5660 out=137   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! NoMethodError at spec/sync/slugify_feature_spec.rb::slugify decode quota empty input:61 (0x2487a8ad)
+*[47] run_tests suite=spec:feature -> FAILED 3/8 passed in=3435 out=206   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! NoMethodError at spec/sync/slugify_feature_spec.rb::slugify decode quota empty input:61 (pid 29448)
+*[48] read_file path=spec/sync/slugify_feature_spec.rb -> ok in=2522 out=153   || STAL REP=1.0 INEFF=1.0
+*[49] run_tests suite=spec:feature -> FAILED 3/8 passed in=5494 out=275   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! NoMethodError at spec/sync/slugify_feature_spec.rb::slugify decode quota empty input:61 (0x9b3337e3)
+*[50] run_tests suite=spec:feature -> FAILED 3/8 passed in=4320 out=135   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! NoMethodError at spec/sync/slugify_feature_spec.rb::slugify decode quota empty input:61 (pid 69352)
+*[51] list_dir path=lib -> ok in=1089 out=146   || PROD 
+*[52] run_tests suite=spec:feature -> FAILED 3/8 passed in=3526 out=100   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! NoMethodError at spec/sync/slugify_feature_spec.rb::slugify decode quota empty input:61 (0x012696c0)
+*[53] run_tests suite=spec:feature -> FAILED 3/8 passed in=3239 out=169   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! NoMethodError at spec/sync/slugify_feature_spec.rb::slugify decode quota empty input:61 (pid 49454)
+
+=== V009 oracle=STALLED net=PRODUCTIVE t=21 start=14 logits=[0.5, -0.0, -4.0, 0.0]
+ [11] search scope=src query="convertSlug" -> ok in=966 out=42   || RECO 
+ [12] run_tests suite=integrationTests tests=src/test/java/com/acme/pipeline/RetryPolicyIntegrationTest.java::convertSlugMissingKey -> FAILED 0/1 passed in=4984 out=171   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! ArrayIndexOutOfBoundsException at src/test/java/com/acme/pipeline/RetryPolicyIntegrationTest.java::convertSlugMissingKey:481 (0x6de0aff1)
+ [13] read_file path=src/test/java/com/acme/pipeline/CsvImportContractTest.java -> ok in=475 out=121   || PROD 
+*[14] run_tests suite=integrationTests tests=src/test/java/com/acme/pipeline/RetryPolicyIntegrationTest.java::convertSlugMissingKey -> FAILED 0/1 passed in=2953 out=92   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! ArrayIndexOutOfBoundsException at src/test/java/com/acme/pipeline/RetryPolicyIntegrationTest.java::convertSlugMissingKey:481 (pid 80581)
+*[15] read_file path=src/test/java/com/acme/pipeline/RetryPolicyIntegrationTest.java -> ok in=2098 out=56   || STAL REP=1.0 INEFF=1.0
+*[16] list_dir path=src/test -> ok in=520 out=145   || STAL REP=1.0 INEFF=1.0
+*[17] run_tests suite=integrationTests tests=src/test/java/com/acme/pipeline/RetryPolicyIntegrationTest.java::convertSlugMissingKey -> FAILED 0/1 passed in=2289 out=79   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! ArrayIndexOutOfBoundsException at src/test/java/com/acme/pipeline/RetryPolicyIntegrationTest.java::convertSlugMissingKey:481 (0x9a040146)
+*[18] read_file path=src/test/java/com/acme/pipeline/CsvImportContractTest.java -> ok in=485 out=91   || STAL REP=1.0 INEFF=1.0
+*[19] run_tests suite=integrationTests tests=src/test/java/com/acme/pipeline/RetryPolicyIntegrationTest.java::convertSlugMissingKey -> FAILED 0/1 passed in=2099 out=101   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! ArrayIndexOutOfBoundsException at src/test/java/com/acme/pipeline/RetryPolicyIntegrationTest.java::convertSlugMissingKey:481 (0x1bc5f172)
+*[20] list_dir path=src/test -> ok in=374 out=89   || STAL REP=1.0 INEFF=1.0
+*[21] search scope=src query="convertSlug" -> ok in=746 out=65   || PROD 
+
+=== V013 oracle=STALLED net=STALLED t=51 start=44 logits=[0.5, 0.0, 4.0, 0.0]
+ [41] run_tests suite=./internal/...:race -> FAILED 5/8 passed in=3817 out=145   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! IndexOutOfRange at internal/catalog/webhook_race_test.go::TestComputeAmountConcurrentAccess:591 (0xac9869c6)
+ [42] run_tests suite=./internal/...:race -> FAILED 5/8 passed in=3116 out=124   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! IndexOutOfRange at internal/catalog/webhook_race_test.go::TestComputeAmountConcurrentAccess:591 (0x16f4c399)
+ [43] run_tests suite=./internal/...:race -> FAILED 5/8 passed in=3656 out=147   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! IndexOutOfRange at internal/catalog/webhook_race_test.go::TestComputeAmountConcurrentAccess:591 (pid 68463)
+*[44] run_tests suite=./internal/...:race -> FAILED 5/8 passed in=4108 out=110   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! IndexOutOfRange at internal/catalog/webhook_race_test.go::TestComputeAmountConcurrentAccess:591 (0x01112b46)
+*[45] run_tests suite=./internal/...:race -> FAILED 5/8 passed in=3071 out=162   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! IndexOutOfRange at internal/catalog/webhook_race_test.go::TestComputeAmountConcurrentAccess:591 (pid 36575)
+*[46] run_tests suite=./internal/...:race -> FAILED 5/8 passed in=2949 out=247   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! IndexOutOfRange at internal/catalog/webhook_race_test.go::TestComputeAmountConcurrentAccess:591 (0xd765cefc)
+*[47] run_tests suite=./internal/...:race -> FAILED 5/8 passed in=3977 out=94   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! IndexOutOfRange at internal/catalog/webhook_race_test.go::TestComputeAmountConcurrentAccess:591 (pid 23544)
+*[48] run_tests suite=./internal/...:race -> FAILED 5/8 passed in=3488 out=244   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! IndexOutOfRange at internal/catalog/webhook_race_test.go::TestComputeAmountConcurrentAccess:591 (pid 66998)
+*[49] run_tests suite=./internal/...:race -> FAILED 5/8 passed in=1664 out=90   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! IndexOutOfRange at internal/catalog/webhook_race_test.go::TestComputeAmountConcurrentAccess:591 (0xc6b62522)
+*[50] run_tests suite=./internal/...:race -> FAILED 5/8 passed in=3098 out=116   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! IndexOutOfRange at internal/catalog/webhook_race_test.go::TestComputeAmountConcurrentAccess:591 (0x063d6169)
+*[51] run_tests suite=./internal/...:race -> FAILED 5/8 passed in=4667 out=171   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! IndexOutOfRange at internal/catalog/webhook_race_test.go::TestComputeAmountConcurrentAccess:591 (0x64b901ed)
+
+=== V014 oracle=STALLED net=STALLED t=17 start=10 logits=[0.5, 0.0, 3.9, 0.0]
+ [ 7] plan action=estimate_scope -> ok in=3636 out=1028   || PROD 
+ [ 8] run_tests suite=./internal/...:integration -> ok 9/9 passed in=3066 out=129   || PROD 
+ [ 9] list_dir path=. -> ok in=623 out=188   || PROD 
+*[10] read_file path=internal/metrics/manifest.go -> ok in=2152 out=280   || PROD REP=1.0 INEFF=1.0
+*[11] read_file path=internal/metrics/manifest_race_test.go -> ok in=2161 out=488   || PROD REP=1.0 INEFF=1.0
+*[12] read_file path=internal/auth/invoice.go -> ok in=2605 out=363   || PROD REP=1.0 INEFF=1.0
+*[13] read_file path=internal/auth/invoice.go -> ok in=3229 out=83   || PROD REP=1.0 INEFF=1.0
+*[14] list_dir path=. -> ok in=1525 out=234   || PROD 
+*[15] edit_file path=internal/metrics/manifest.go -> ok in=15095 out=2737   || PROD hunk=0.5
+        @ internal/metrics/manifest.go hbc1ef9a4ca > h83ad768919
+*[16] read_file path=internal/metrics/manifest_race_test.go -> ok in=5181 out=175   || STAL REP=1.0 INEFF=1.0
+*[17] read_file path=internal/auth/invoice.go -> ok in=5742 out=217   || STAL REP=1.0 INEFF=1.0
+
+=== V027 oracle=STALLED net=PRODUCTIVE t=36 start=29 logits=[0.5, -0.0, -12.0, 0.0]
+ [26] run_tests suite=tests/smoke -> FAILED 8/11 passed in=2288 out=63   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! UnicodeDecodeError at tests/smoke/test_quota.py::test_schedule_limit_leap_year:717 (pid 73537)
+ [27] edit_file path=src/notify/quota.py -> ok in=1438 out=656   || PROD hunk=0.5
+        @ src/notify/quota.py ha091f40e5a > h703f61b193
+ [28] run_tests suite=tests/smoke -> FAILED 8/11 passed in=6417 out=84   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! UnicodeDecodeError at tests/smoke/test_quota.py::test_schedule_limit_leap_year:717 (pid 63153)
+*[29] edit_file path=src/notify/quota.py -> ok in=3678 out=380   || PROD hunk=0.5
+        @ src/notify/quota.py h703f61b193 > h2d0a9b693d
+*[30] edit_file path=src/sync/cursor.py -> ok in=1383 out=310   || PROD hunk=0.5
+        @ src/sync/cursor.py h10972c2781 > hf54d70f83a
+*[31] run_tests suite=tests/smoke -> FAILED 8/11 passed in=1421 out=37   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! UnicodeDecodeError at tests/smoke/test_quota.py::test_schedule_limit_leap_year:717 (pid 70497)
+*[32] edit_file path=src/notify/quota.py -> ok in=1208 out=230   || STAL INEFF=1.0 NOOP=1.0
+*[33] run_tests suite=tests/smoke -> FAILED 8/11 passed in=825 out=60   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! UnicodeDecodeError at tests/smoke/test_quota.py::test_schedule_limit_leap_year:717 (0xf0f8f28a)
+*[34] edit_file path=tests/smoke/test_quota.py -> ok in=992 out=300   || PROD hunk=0.5
+        @ tests/smoke/test_quota.py hb2d8c9322e > h052a6a1696
+*[35] run_tests suite=tests/smoke -> FAILED 8/11 passed in=3498 out=93   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! UnicodeDecodeError at tests/smoke/test_quota.py::test_schedule_limit_leap_year:717 (pid 15225)
+*[36] edit_file path=src/notify/quota.py -> ok in=6830 out=224   || PROD hunk=0.5
+        @ src/notify/quota.py hd13a90b131 > h6696a8941d
+
+=== V035 oracle=STALLED net=STALLED t=35 start=28 logits=[0.5, 0.0, 4.0, 0.0]
+ [25] run_tests suite=property -> FAILED 7/10 passed in=3109 out=129   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! ParseIntError at tests/migrations_property.rs::compact_slug_empty_input:753 (0x8a197f5f)
+ [26] run_tests suite=property -> FAILED 7/10 passed in=2710 out=132   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! ParseIntError at tests/migrations_property.rs::compact_slug_empty_input:753 (pid 66128)
+ [27] run_tests suite=property -> FAILED 7/10 passed in=5010 out=64   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! ParseIntError at tests/migrations_property.rs::compact_slug_empty_input:753 (pid 93755)
+*[28] run_tests suite=property -> FAILED 7/10 passed in=2981 out=118   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! ParseIntError at tests/migrations_property.rs::compact_slug_empty_input:753 (0x42b2b7c5)
+*[29] run_tests suite=property -> FAILED 7/10 passed in=1965 out=136   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! ParseIntError at tests/migrations_property.rs::compact_slug_empty_input:753 (pid 17204)
+*[30] run_tests suite=property -> FAILED 7/10 passed in=1743 out=188   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! ParseIntError at tests/migrations_property.rs::compact_slug_empty_input:753 (pid 58681)
+*[31] run_tests suite=property -> FAILED 7/10 passed in=3509 out=119   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! ParseIntError at tests/migrations_property.rs::compact_slug_empty_input:753 (pid 26121)
+*[32] run_tests suite=property -> FAILED 7/10 passed in=1799 out=82   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! ParseIntError at tests/migrations_property.rs::compact_slug_empty_input:753 (0x17573bde)
+*[33] run_tests suite=property -> FAILED 7/10 passed in=1861 out=119   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! ParseIntError at tests/migrations_property.rs::compact_slug_empty_input:753 (pid 29291)
+*[34] run_tests suite=property -> FAILED 7/10 passed in=1798 out=134   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! ParseIntError at tests/migrations_property.rs::compact_slug_empty_input:753 (pid 47664)
+*[35] run_tests suite=property -> FAILED 7/10 passed in=2395 out=126   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! ParseIntError at tests/migrations_property.rs::compact_slug_empty_input:753 (0xbed31b5e)
+
+=== V037 oracle=STALLED net=RECOVERY t=16 start=9 logits=[0.5, 6.0, 0.9, 0.0]
+ [ 6] run_tests suite=unit -> FAILED 3/8 passed in=693 out=207   || PROD 
+        ! AssertionFailed at tests/backoff_unit.rs::resolve_payload_boundary:391 (pid 51768)
+ [ 7] edit_file path=src/notify/backoff.rs -> ok in=3142 out=404   || PROD hunk=0.5
+        @ src/notify/backoff.rs hb9912d7787 > h2295b72e98
+ [ 8] run_tests suite=unit -> FAILED 3/8 passed in=5521 out=184   || RECO CNT=1.0 INEFF=1.0 fail=1.0
+        ! AssertionFailed at tests/backoff_unit.rs::resolve_payload_boundary:391 (0xa6c886aa)
+*[ 9] edit_file path=tests/backoff_unit.rs -> ok in=2000 out=860   || RECO hunk=0.5
+        @ tests/backoff_unit.rs h09322293e6 > heb954dc23c
+*[10] edit_file path=src/notify/backoff.rs -> ok in=6627 out=160   || RECO INEFF=1.0 NOOP=1.0
+*[11] run_tests suite=unit -> FAILED 3/8 passed in=8130 out=166   || RECO CNT=1.0 INEFF=1.0 fail=1.0
+        ! AssertionFailed at tests/backoff_unit.rs::resolve_payload_boundary:391 (pid 64501)
+*[12] edit_file path=src/notify/backoff.rs -> ok in=1084 out=78   || RECO INEFF=1.0 NOOP=1.0
+*[13] run_tests suite=unit -> FAILED 3/8 passed in=4872 out=405   || RECO CNT=1.0 INEFF=1.0 fail=1.0
+        ! AssertionFailed at tests/backoff_unit.rs::resolve_payload_boundary:391 (pid 4665)
+*[14] edit_file path=tests/backoff_unit.rs -> ok in=1220 out=128   || RECO hunk=0.5
+        @ tests/backoff_unit.rs h5d29ab9bd1 > h64009d008e
+*[15] edit_file path=src/notify/backoff.rs -> ok in=4450 out=2771   || RECO hunk=0.5
+        @ src/notify/backoff.rs hf986efbeda > h35022ca4f4
+*[16] run_tests suite=unit -> FAILED 3/8 passed in=4888 out=274   || RECO CNT=1.0 INEFF=1.0 fail=1.0
+        ! AssertionFailed at tests/backoff_unit.rs::resolve_payload_boundary:391 (0xc024dd3c)
+
+=== V040 oracle=STALLED net=PRODUCTIVE t=22 start=15 logits=[0.5, 0.0, -12.0, 0.0]
+ [12] edit_file path=src/cli/export_job.rs -> ok in=4007 out=571   || PROD hunk=0.5
+        @ src/cli/export_job.rs h7126d7e58c > h7db40c5374
+ [13] build target=cargo-build -> ok in=1916 out=154   || PROD 
+ [14] edit_file path=src/cli/export_job.rs -> ok in=2314 out=225   || PROD hunk=0.5
+        @ src/cli/export_job.rs h7db40c5374 > h57b962e948
+*[15] run_tests suite=integration -> ok 5/5 passed in=650 out=106   || PROD 
+*[16] edit_file path=src/cli/export_job.rs -> ok in=795 out=998   || PROD hunk=0.5
+        @ src/cli/export_job.rs hb7e36caddf > h7dc60e945a
+*[17] build target=cargo-build -> ok in=805 out=119   || PROD 
+*[18] edit_file path=src/cli/export_job.rs -> ok in=461 out=451   || PROD hunk=0.5
+        @ src/cli/export_job.rs h7dc60e945a > h7733c79cf0
+*[19] run_tests suite=integration -> ok 5/5 passed in=696 out=53   || PROD 
+*[20] edit_file path=tests/currency_integration.rs -> ok in=1123 out=642   || PROD hunk=0.5
+        @ tests/currency_integration.rs hf2861ca021 > h12c2da8f05
+*[21] run_tests suite=integration -> ok 5/5 passed in=457 out=31   || PROD 
+*[22] edit_file path=tests/currency_integration.rs -> ok in=774 out=167   || PROD hunk=0.5
+        @ tests/currency_integration.rs h12c2da8f05 > hb111e7f0f1
+
+=== V044 oracle=STALLED net=PRODUCTIVE t=47 start=40 logits=[0.5, 0.0, -4.0, 0.0]
+ [37] read_file path=config/settings.yaml -> ok in=2577 out=205   || STAL REP=1.0 INEFF=1.0
+ [38] poll_status resource=replica/sync/2328 backoff=120 -> pending in=492 out=24   || STAL pend=1.0 INEFF=1.0 fail=0.7
+ [39] poll_status resource=replica/sync/2328 backoff=120 -> pending in=487 out=47   || STAL pend=1.0 INEFF=1.0 fail=0.7
+*[40] poll_status resource=replica/sync/2328 backoff=120 -> pending in=951 out=62   || STAL pend=1.0 INEFF=1.0 fail=0.7
+*[41] poll_status resource=replica/sync/2328 backoff=120 -> pending in=209 out=117   || STAL pend=1.0 INEFF=1.0 fail=0.7
+*[42] read_file path=config/settings.yaml -> ok in=844 out=151   || STAL REP=1.0 INEFF=1.0
+*[43] poll_status resource=replica/sync/2328 backoff=120 -> pending in=487 out=279   || STAL pend=1.0 INEFF=1.0 fail=0.7
+*[44] read_file path=config/settings.yaml -> ok in=759 out=132   || STAL REP=1.0 INEFF=1.0
+*[45] poll_status resource=replica/sync/2328 backoff=120 -> pending in=407 out=68   || STAL pend=1.0 INEFF=1.0 fail=0.7
+*[46] poll_status resource=replica/sync/2328 backoff=120 -> pending in=426 out=116   || STAL pend=1.0 INEFF=1.0 fail=0.7
+*[47] run_tests suite=tests/smoke -> ok 12/12 passed in=830 out=109   || PROD 
+
+=== V048 oracle=STALLED net=STALLED t=32 start=25 logits=[0.5, 0.0, 4.0, 0.0]
+ [22] search scope=src query="formatHeader" -> ok in=3466 out=124   || STAL REP=1.0 INEFF=1.0
+ [23] run_tests suite=integrationTests tests=src/test/java/com/acme/auth/SchedulerIntegrationTest.java::formatHeaderNegativeValues,src/test/java/com/acme/auth/SchedulerIntegrationTest.java::formatHeaderUnicode -> FAILED 0/2 passed in=3748 out=50   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! AssertionFailedError at src/test/java/com/acme/auth/SchedulerIntegrationTest.java::formatHeaderNegativeValues:75 (0xaaf16cb9)
+ [24] run_tests suite=integrationTests tests=src/test/java/com/acme/auth/SchedulerIntegrationTest.java::formatHeaderNegativeValues,src/test/java/com/acme/auth/SchedulerIntegrationTest.java::formatHeaderUnicode -> FAILED 0/2 passed in=1852 out=47   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! AssertionFailedError at src/test/java/com/acme/auth/SchedulerIntegrationTest.java::formatHeaderNegativeValues:75 (pid 63968)
+*[25] read_file path=src/main/java/com/acme/auth/EmailRender.java -> ok in=1210 out=143   || PROD 
+*[26] run_tests suite=integrationTests tests=src/test/java/com/acme/auth/SchedulerIntegrationTest.java::formatHeaderNegativeValues,src/test/java/com/acme/auth/SchedulerIntegrationTest.java::formatHeaderUnicode -> FAILED 0/2 passed in=1689 out=664   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! AssertionFailedError at src/test/java/com/acme/auth/SchedulerIntegrationTest.java::formatHeaderNegativeValues:75 (0xb96875d3)
+*[27] run_tests suite=integrationTests tests=src/test/java/com/acme/auth/SchedulerIntegrationTest.java::formatHeaderNegativeValues,src/test/java/com/acme/auth/SchedulerIntegrationTest.java::formatHeaderUnicode -> FAILED 0/2 passed in=2316 out=141   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! AssertionFailedError at src/test/java/com/acme/auth/SchedulerIntegrationTest.java::formatHeaderNegativeValues:75 (pid 57693)
+*[28] search scope=src query="formatHeader" -> ok in=770 out=136   || STAL REP=1.0 INEFF=1.0
+*[29] run_tests suite=integrationTests tests=src/test/java/com/acme/auth/SchedulerIntegrationTest.java::formatHeaderNegativeValues,src/test/java/com/acme/auth/SchedulerIntegrationTest.java::formatHeaderUnicode -> FAILED 0/2 passed in=1447 out=110   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! AssertionFailedError at src/test/java/com/acme/auth/SchedulerIntegrationTest.java::formatHeaderNegativeValues:75 (0xcfd9575a)
+*[30] plan action=list_hypotheses -> ok in=2537 out=222   || PROD 
+*[31] run_tests suite=integrationTests tests=src/test/java/com/acme/auth/SchedulerIntegrationTest.java::formatHeaderNegativeValues,src/test/java/com/acme/auth/SchedulerIntegrationTest.java::formatHeaderUnicode -> FAILED 0/2 passed in=1554 out=71   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! AssertionFailedError at src/test/java/com/acme/auth/SchedulerIntegrationTest.java::formatHeaderNegativeValues:75 (pid 60367)
+*[32] run_tests suite=integrationTests tests=src/test/java/com/acme/auth/SchedulerIntegrationTest.java::formatHeaderNegativeValues,src/test/java/com/acme/auth/SchedulerIntegrationTest.java::formatHeaderUnicode -> FAILED 0/2 passed in=1522 out=27   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! AssertionFailedError at src/test/java/com/acme/auth/SchedulerIntegrationTest.java::formatHeaderNegativeValues:75 (0xd5892b0e)
+
+=== V060 oracle=STALLED net=STALLED t=22 start=15 logits=[0.5, -0.0, 4.0, 0.0]
+ [12] edit_file path=src/main/java/com/initech/cli/Checksum.java -> ok in=2421 out=314   || RECO hunk=0.5
+        @ src/main/java/com/initech/cli/Checksum.java h99ed7f5320 > h6a58065282
+ [13] run_tests suite=contractTests -> FAILED 9/14 passed in=1928 out=312   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! IllegalArgumentException at src/test/java/com/initech/cli/ImageResizeContractTest.java::encodeSchemaBoundary:715 (0x59f30095)
+ [14] edit_file path=src/main/java/com/initech/cli/ImageResize.java -> ok in=2459 out=941   || PROD hunk=0.5
+        @ src/main/java/com/initech/cli/ImageResize.java h39b6fe3100 > h215684e3fb
+*[15] run_tests suite=contractTests -> FAILED 9/14 passed in=6515 out=160   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! IllegalArgumentException at src/test/java/com/initech/cli/ImageResizeContractTest.java::encodeSchemaBoundary:715 (0x270bccca)
+*[16] edit_file path=src/main/java/com/initech/cli/ImageResize.java -> ok in=1252 out=438   || PROD hunk=0.5
+        @ src/main/java/com/initech/cli/ImageResize.java h346c5ba77b > hfe6e2bcf47
+*[17] run_tests suite=contractTests -> FAILED 9/14 passed in=7709 out=168   || PROD CNT=1.0 INEFF=1.0 fail=1.0
+        ! IllegalArgumentException at src/test/java/com/initech/cli/ImageResizeContractTest.java::encodeSchemaBoundary:715 (0xc407eefd)
+*[18] edit_file path=src/main/java/com/initech/cli/ImageResize.java -> ok in=2365 out=120   || PROD hunk=0.5
+        @ src/main/java/com/initech/cli/ImageResize.java hfe6e2bcf47 > h6a57ff42af
+*[19] run_tests suite=contractTests -> FAILED 9/14 passed in=2941 out=65   || PROD CNT=1.0 INEFF=1.0 fail=1.0
+        ! IllegalArgumentException at src/test/java/com/initech/cli/ImageResizeContractTest.java::encodeSchemaBoundary:715 (pid 2094)
+*[20] edit_file path=src/main/java/com/initech/cli/ImageResize.java -> ok in=1067 out=193   || PROD hunk=0.5
+        @ src/main/java/com/initech/cli/ImageResize.java h6a57ff42af > he58d2a1864
+*[21] run_tests suite=contractTests -> FAILED 9/14 passed in=3594 out=144   || PROD CNT=1.0 INEFF=1.0 fail=1.0
+        ! IllegalArgumentException at src/test/java/com/initech/cli/ImageResizeContractTest.java::encodeSchemaBoundary:715 (pid 99700)
+*[22] edit_file path=src/test/java/com/initech/cli/ImageResizeContractTest.java -> ok in=2084 out=1141   || STAL INEFF=1.0 NOOP=1.0
+
+=== V062 oracle=STALLED net=RECOVERY t=12 start=5 logits=[0.5, 6.0, -15.0, 0.0]
+ [ 2] run_tests suite=integration -> FAILED 4/11 passed in=3282 out=62   || PROD 
+        ! AssertionError at src/sync/__tests__/emailRender.integration.test.ts::email_render reconcile header empty input:670 (0x6e837f58)
+ [ 3] read_file path=src/sync/emailRender.ts lines=10-27 -> ok in=1415 out=112   || PROD lines=1.0
+ [ 4] run_tests suite=integration tests=src/sync/__tests__/emailRender.integration.test.ts::email_render reconcile header empty input -> FAILED 0/1 passed in=5091 out=63   || PROD 
+        ! AssertionError at src/sync/__tests__/emailRender.integration.test.ts::email_render reconcile header empty input:670 (0xc5da69d9)
+*[ 5] edit_file path=src/sync/__tests__/emailRender.integration.test.ts -> ok in=2273 out=152   || PROD hunk=0.5
+        @ src/sync/__tests__/emailRender.integration.test.ts h428141fce5 > h91e89cec3e
+*[ 6] run_tests suite=integration tests=src/sync/__tests__/emailRender.integration.test.ts::email_render reconcile header empty input -> FAILED 0/1 passed in=1447 out=94   || RECO CNT=1.0 INEFF=1.0 fail=1.0
+        ! AssertionError at src/sync/__tests__/emailRender.integration.test.ts::email_render reconcile header empty input:670 (0x35865364)
+*[ 7] edit_file path=src/sync/emailRender.ts -> ok in=1218 out=426   || RECO hunk=0.5
+        @ src/sync/emailRender.ts hc847c95295 > h5aaa068972
+*[ 8] read_file path=src/sync/emailRender.ts lines=16-22 -> ok in=2103 out=100   || RECO REP=1.0 lines=1.0
+*[ 9] run_tests suite=integration tests=src/sync/__tests__/emailRender.integration.test.ts::email_render reconcile header empty input -> FAILED 0/1 passed in=1140 out=107   || RECO CNT=1.0 INEFF=1.0 fail=1.0
+        ! AssertionError at src/sync/__tests__/emailRender.integration.test.ts::email_render reconcile header empty input:670 (0x8c113296)
+*[10] edit_file path=src/sync/__tests__/emailRender.integration.test.ts -> ok in=450 out=76   || RECO hunk=0.5
+        @ src/sync/__tests__/emailRender.integration.test.ts h7ae8d757e9 > hb629c0297d
+*[11] run_tests suite=integration tests=src/sync/__tests__/emailRender.integration.test.ts::email_render reconcile header empty input -> FAILED 0/1 passed in=2308 out=39   || RECO CNT=1.0 INEFF=1.0 fail=1.0
+        ! AssertionError at src/sync/__tests__/emailRender.integration.test.ts::email_render reconcile header empty input:670 (0x8cd753bc)
+*[12] edit_file path=src/sync/configLoader.ts -> ok in=995 out=256   || RECO hunk=0.5
+        @ src/sync/configLoader.ts h68be10d0dc > hbef433369d
+
+=== V063 oracle=STALLED net=PRODUCTIVE t=41 start=34 logits=[0.5, -0.0, -12.0, 0.0]
+ [31] run_tests suite=spec:feature -> FAILED 9/11 passed in=2334 out=139   || PROD CNT=1.0 INEFF=1.0 fail=1.0
+        ! NoMethodError at spec/auth/export_job_feature_spec.rb::export_job estimate locale concurrent access:204 (pid 45810)
+ [32] edit_file path=lib/auth/export_job.rb -> ok in=1164 out=563   || PROD hunk=0.5
+        @ lib/auth/export_job.rb hc12bb34e81 > h0e7cf8a563
+ [33] run_tests suite=spec:feature -> FAILED 9/11 passed in=1698 out=57   || PROD CNT=1.0 INEFF=1.0 fail=1.0
+        ! NoMethodError at spec/auth/export_job_feature_spec.rb::export_job estimate locale concurrent access:204 (pid 1925)
+*[34] edit_file path=spec/auth/export_job_feature_spec.rb -> ok in=1626 out=303   || PROD hunk=0.5
+        @ spec/auth/export_job_feature_spec.rb h875349a05a > hda3b8eb90b
+*[35] run_tests suite=spec:feature -> FAILED 9/11 passed in=3263 out=72   || PROD CNT=1.0 INEFF=1.0 fail=1.0
+        ! NoMethodError at spec/auth/export_job_feature_spec.rb::export_job estimate locale concurrent access:204 (0x66556af1)
+*[36] edit_file path=lib/auth/export_job.rb -> ok in=1065 out=464   || PROD hunk=0.5
+        @ lib/auth/export_job.rb h0e7cf8a563 > hdd67988e87
+*[37] plan action=checkpoint -> ok in=2138 out=377   || PROD 
+*[38] run_tests suite=spec:feature -> FAILED 9/11 passed in=4430 out=57   || PROD CNT=1.0 INEFF=1.0 fail=1.0
+        ! NoMethodError at spec/auth/export_job_feature_spec.rb::export_job estimate locale concurrent access:204 (0xe9702112)
+*[39] edit_file path=config/application.rb -> ok in=1406 out=513   || PROD hunk=0.5
+        @ config/application.rb hb3b71d5133 > h5a96565607
+*[40] run_tests suite=spec:feature -> FAILED 9/11 passed in=1889 out=143   || PROD CNT=1.0 INEFF=1.0 fail=1.0
+        ! NoMethodError at spec/auth/export_job_feature_spec.rb::export_job estimate locale concurrent access:204 (pid 46423)
+*[41] edit_file path=lib/auth/export_job.rb -> ok in=2887 out=221   || PROD hunk=0.5
+        @ lib/auth/export_job.rb hdd67988e87 > he1815e2837
+
+=== V064 oracle=STALLED net=PRODUCTIVE t=26 start=19 logits=[0.5, -0.0, -4.0, 0.0]
+ [16] read_file path=src/orders/cache.rs lines=14-23 -> ok in=1153 out=131   || RECO lines=1.0
+ [17] run_tests suite=doc -> FAILED 7/9 passed in=3031 out=102   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! IndexOutOfBounds at tests/cache_doc.rs::apply_address_unicode:875 (pid 13129)
+ [18] read_file path=tests/webhook_property.rs -> ok in=2084 out=200   || PROD 
+*[19] run_tests suite=doc -> FAILED 7/9 passed in=3934 out=164   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! IndexOutOfBounds at tests/cache_doc.rs::apply_address_unicode:875 (pid 29538)
+*[20] read_file path=src/orders/cache.rs lines=14-23 -> ok in=1304 out=98   || PROD REP=1.0 lines=1.0
+*[21] run_tests suite=doc -> FAILED 7/9 passed in=4191 out=152   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! IndexOutOfBounds at tests/cache_doc.rs::apply_address_unicode:875 (pid 77350)
+*[22] read_file path=tests/webhook_property.rs -> ok in=1163 out=135   || STAL REP=1.0 INEFF=1.0
+*[23] run_tests suite=doc -> FAILED 7/9 passed in=4878 out=95   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! IndexOutOfBounds at tests/cache_doc.rs::apply_address_unicode:875 (pid 1471)
+*[24] search scope=. query="apply_address" -> ok in=1498 out=204   || PROD 
+*[25] run_tests suite=doc -> FAILED 7/9 passed in=5943 out=111   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! IndexOutOfBounds at tests/cache_doc.rs::apply_address_unicode:875 (0x6553523f)
+*[26] read_file path=src/orders/cache.rs lines=14-23 -> ok in=1363 out=119   || PROD REP=1.0 lines=1.0
+
+=== V066 oracle=STALLED net=STALLED t=11 start=4 logits=[0.5, 0.0, 4.0, 0.0]
+ [ 1] list_dir path=src/ingest -> ok in=613 out=175   || PROD 
+ [ 2] read_file path=src/ingest/notifier.rs lines=10-15 -> ok in=832 out=139   || PROD lines=1.0
+ [ 3] run_tests suite=integration -> FAILED 7/14 passed in=5345 out=138   || PROD 
+        ! IndexOutOfBounds at tests/archive_integration.rs::estimate_offset_round_trip:582 (0x0f6139bf)
+*[ 4] run_tests suite=integration -> FAILED 7/14 passed in=3796 out=260   || RECO CNT=1.0 INEFF=1.0 fail=1.0
+        ! IndexOutOfBounds at tests/archive_integration.rs::estimate_offset_round_trip:582 (0xf6083702)
+*[ 5] read_file path=src/ingest/notifier.rs lines=10-15 -> ok in=1960 out=180   || RECO REP=1.0 lines=1.0
+*[ 6] run_tests suite=integration -> FAILED 7/14 passed in=2788 out=210   || RECO CNT=1.0 INEFF=1.0 fail=1.0
+        ! IndexOutOfBounds at tests/archive_integration.rs::estimate_offset_round_trip:582 (pid 12146)
+*[ 7] run_tests suite=integration -> FAILED 7/14 passed in=4826 out=275   || RECO CNT=1.0 INEFF=1.0 fail=1.0
+        ! IndexOutOfBounds at tests/archive_integration.rs::estimate_offset_round_trip:582 (0x68e8b62f)
+*[ 8] read_file path=src/ingest/notifier.rs lines=10-15 -> ok in=1750 out=127   || RECO REP=1.0 lines=1.0
+*[ 9] run_tests suite=integration -> FAILED 7/14 passed in=2466 out=107   || RECO CNT=1.0 INEFF=1.0 fail=1.0
+        ! IndexOutOfBounds at tests/archive_integration.rs::estimate_offset_round_trip:582 (pid 30209)
+*[10] run_tests suite=integration -> FAILED 7/14 passed in=6166 out=209   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! IndexOutOfBounds at tests/archive_integration.rs::estimate_offset_round_trip:582 (pid 60912)
+*[11] run_tests suite=integration -> FAILED 7/14 passed in=6933 out=172   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! IndexOutOfBounds at tests/archive_integration.rs::estimate_offset_round_trip:582 (0xa36e4ce8)
+
+=== V071 oracle=STALLED net=PRODUCTIVE t=19 start=12 logits=[0.5, 0.0, -12.0, 0.0]
+ [ 9] edit_file path=src/sync/cursor.rs -> ok in=2124 out=762   || RECO hunk=0.5
+        @ src/sync/cursor.rs h4fb0b9c480 > h8466edb2e9
+ [10] lint target=rustfmt-check -> ok in=414 out=94   || RECO 
+ [11] edit_file path=src/sync/cursor.rs -> ok in=1898 out=617   || RECO INEFF=1.0 NOOP=1.0
+*[12] run_tests suite=integration tests=tests/cursor_integration.rs::render_record_boundary,tests/cursor_integration.rs::render_record_partial_page -> FAILED 0/2 passed in=3190 out=141   || RECO CNT=1.0 INEFF=1.0 fail=1.0
+        ! Panic at tests/cursor_integration.rs::render_record_boundary:320 (0x35811568)
+*[13] edit_file path=src/sync/cursor.rs -> ok in=1849 out=536   || RECO hunk=0.5
+        @ src/sync/cursor.rs he331b4b460 > h309044003f
+*[14] run_tests suite=integration tests=tests/cursor_integration.rs::render_record_boundary,tests/cursor_integration.rs::render_record_partial_page -> FAILED 0/2 passed in=575 out=57   || RECO CNT=1.0 INEFF=1.0 fail=1.0
+        ! Panic at tests/cursor_integration.rs::render_record_boundary:320 (pid 64343)
+*[15] edit_file path=tests/cursor_integration.rs -> ok in=1379 out=832   || RECO hunk=0.5
+        @ tests/cursor_integration.rs h192c71aa4b > hb4c00ada10
+*[16] edit_file path=tests/cursor_integration.rs -> ok in=1462 out=163   || RECO INEFF=1.0 NOOP=1.0
+*[17] run_tests suite=integration tests=tests/cursor_integration.rs::render_record_boundary,tests/cursor_integration.rs::render_record_partial_page -> FAILED 0/2 passed in=1027 out=98   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! Panic at tests/cursor_integration.rs::render_record_boundary:320 (pid 40945)
+*[18] edit_file path=src/sync/cursor.rs -> ok in=4487 out=1281   || PROD hunk=0.5
+        @ src/sync/cursor.rs hc12b8096bc > hd76a924218
+*[19] lint target=rustfmt-check -> ok in=520 out=76   || PROD 
+
+=== V072 oracle=STALLED net=STALLED t=33 start=26 logits=[0.5, -0.0, 3.9, 0.0]
+ [23] list_dir path=src -> ok in=195 out=51   || STAL REP=1.0 INEFF=1.0
+ [24] search scope=src query="normalize_entry" -> ok in=538 out=177   || STAL REP=1.0 INEFF=1.0
+ [25] run_tests suite=property -> FAILED 5/8 passed in=1794 out=134   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! IndexOutOfBounds at tests/migrations_property.rs::normalize_entry_boundary:735 (0x99ab07a9)
+*[26] search scope=src query="normalize_entry" -> ok in=436 out=47   || STAL REP=1.0 INEFF=1.0
+*[27] run_tests suite=property -> FAILED 5/8 passed in=3895 out=84   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! IndexOutOfBounds at tests/migrations_property.rs::normalize_entry_boundary:735 (pid 99155)
+*[28] search scope=src query="normalize_entry" -> ok in=668 out=99   || STAL REP=1.0 INEFF=1.0
+*[29] run_tests suite=property -> FAILED 5/8 passed in=2083 out=130   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! IndexOutOfBounds at tests/migrations_property.rs::normalize_entry_boundary:735 (0x6debada1)
+*[30] plan action=verify_plan -> ok in=735 out=399   || PROD 
+*[31] list_dir path=src -> ok in=133 out=73   || PROD 
+*[32] run_tests suite=property -> FAILED 5/8 passed in=997 out=76   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! IndexOutOfBounds at tests/migrations_property.rs::normalize_entry_boundary:735 (0xe1202fdb)
+*[33] search scope=src query="normalize_entry" -> ok in=678 out=36   || STAL REP=1.0 INEFF=1.0
+
+=== V079 oracle=STALLED net=PRODUCTIVE t=15 start=8 logits=[0.5, -0.0, -12.0, 0.0]
+ [ 5] run_tests suite=tests/integration -> FAILED 6/13 passed in=4496 out=83   || RECO CNT=1.0 INEFF=1.0 fail=1.0
+        ! IndexError at tests/integration/test_dedupe.py::test_compact_quota_large_batch:696 (0xe059629b)
+ [ 6] edit_file path=src/web/backoff.py -> ok in=799 out=464   || RECO hunk=0.5
+        @ src/web/backoff.py hd98f124760 > h8799018ae1
+ [ 7] run_tests suite=tests/integration -> FAILED 6/13 passed in=2570 out=490   || RECO CNT=1.0 INEFF=1.0 fail=1.0
+        ! IndexError at tests/integration/test_dedupe.py::test_compact_quota_large_batch:696 (pid 35610)
+*[ 8] edit_file path=src/web/dedupe.py -> ok in=1567 out=99   || RECO REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/web/dedupe.py hb3ca17a3ad > h29df805e0c
+*[ 9] run_tests suite=tests/integration -> FAILED 6/13 passed in=2410 out=72   || RECO CNT=1.0 INEFF=1.0 fail=1.0
+        ! IndexError at tests/integration/test_dedupe.py::test_compact_quota_large_batch:696 (0xb650970e)
+*[10] edit_file path=src/web/dedupe.py -> ok in=676 out=751   || RECO hunk=0.5
+        @ src/web/dedupe.py h84a9caea21 > h7f3376a629
+*[11] edit_file path=src/web/dedupe.py -> ok in=3230 out=665   || RECO hunk=0.5
+        @ src/web/dedupe.py hca6c6e5118 > h16fce8d41e
+*[12] run_tests suite=tests/integration -> FAILED 6/13 passed in=645 out=238   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! IndexError at tests/integration/test_dedupe.py::test_compact_quota_large_batch:696 (0xb1b7b132)
+*[13] edit_file path=src/web/dedupe.py -> ok in=3409 out=468   || PROD hunk=0.5
+        @ src/web/dedupe.py h079e15a7b7 > hf45e3f439f
+*[14] run_tests suite=tests/integration -> FAILED 6/13 passed in=3567 out=111   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! IndexError at tests/integration/test_dedupe.py::test_compact_quota_large_batch:696 (pid 60089)
+*[15] edit_file path=src/web/templates.py -> ok in=1757 out=156   || PROD hunk=0.5
+        @ src/web/templates.py h44d44465dd > ha07ff0a768
+
+=== V082 oracle=STALLED net=STALLED t=27 start=20 logits=[0.5, 0.0, 4.0, 0.0]
+ [17] run_tests suite=integration -> FAILED 9/11 passed in=4259 out=68   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! ArithmeticOverflow at tests/search_index_integration.rs::expand_digest_boundary:757 (0xd6d3506f)
+ [18] run_tests suite=integration -> FAILED 9/11 passed in=3218 out=111   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! ArithmeticOverflow at tests/search_index_integration.rs::expand_digest_boundary:757 (pid 47410)
+ [19] read_file path=tests/search_index_integration.rs -> ok in=1302 out=79   || PROD 
+*[20] run_tests suite=integration -> FAILED 9/11 passed in=5059 out=156   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! ArithmeticOverflow at tests/search_index_integration.rs::expand_digest_boundary:757 (pid 87590)
+*[21] read_file path=tests/search_index_integration.rs -> ok in=1847 out=247   || STAL REP=1.0 INEFF=1.0
+*[22] run_tests suite=integration -> FAILED 9/11 passed in=3793 out=282   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! ArithmeticOverflow at tests/search_index_integration.rs::expand_digest_boundary:757 (pid 11741)
+*[23] search scope=. query="expand_digest" -> ok in=2124 out=134   || PROD 
+*[24] run_tests suite=integration -> FAILED 9/11 passed in=3017 out=220   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! ArithmeticOverflow at tests/search_index_integration.rs::expand_digest_boundary:757 (pid 30165)
+*[25] run_tests suite=integration -> FAILED 9/11 passed in=4242 out=142   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! ArithmeticOverflow at tests/search_index_integration.rs::expand_digest_boundary:757 (pid 40959)
+*[26] run_tests suite=integration -> FAILED 9/11 passed in=3905 out=216   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! ArithmeticOverflow at tests/search_index_integration.rs::expand_digest_boundary:757 (pid 13215)
+*[27] run_tests suite=integration -> FAILED 9/11 passed in=4111 out=373   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! ArithmeticOverflow at tests/search_index_integration.rs::expand_digest_boundary:757 (pid 51719)
+
+=== V091 oracle=STALLED net=RECOVERY t=18 start=11 logits=[0.5, 6.0, -15.0, 0.0]
+ [ 8] run_tests suite=./internal/...:integration tests=internal/geo/chunker_integration_test.go::TestDispatchLimitNegativeValues,internal/geo/chunker_integration_test.go::TestDispatchLimitRounding -> FAILED 0/2 passed in=2273 out=222   || PROD 
+        ! IndexOutOfRange at internal/geo/chunker_integration_test.go::TestDispatchLimitNegativeValues:541 (pid 72036)
+ [ 9] edit_file path=internal/geo/chunker.go -> ok in=1568 out=207   || PROD hunk=0.5
+        @ internal/geo/chunker.go hde0cd73ccd > hecac906f4b
+ [10] run_tests suite=./internal/...:integration tests=internal/geo/chunker_integration_test.go::TestDispatchLimitNegativeValues,internal/geo/chunker_integration_test.go::TestDispatchLimitRounding -> FAILED 0/2 passed in=1511 out=120   || RECO CNT=1.0 INEFF=1.0 fail=1.0
+        ! IndexOutOfRange at internal/geo/chunker_integration_test.go::TestDispatchLimitNegativeValues:541 (pid 25997)
+*[11] edit_file path=internal/geo/chunker.go -> ok in=343 out=237   || RECO hunk=0.5
+        @ internal/geo/chunker.go ha102b72da7 > hacc89b1591
+*[12] run_tests suite=./internal/...:integration tests=internal/geo/chunker_integration_test.go::TestDispatchLimitNegativeValues,internal/geo/chunker_integration_test.go::TestDispatchLimitRounding -> FAILED 0/2 passed in=2304 out=61   || RECO CNT=1.0 INEFF=1.0 fail=1.0
+        ! IndexOutOfRange at internal/geo/chunker_integration_test.go::TestDispatchLimitNegativeValues:541 (0x5b565341)
+*[13] edit_file path=internal/geo/graph_walk.go -> ok in=690 out=332   || RECO hunk=0.5
+        @ internal/geo/graph_walk.go hf6c2764967 > h61ab547522
+*[14] run_tests suite=./internal/...:integration tests=internal/geo/chunker_integration_test.go::TestDispatchLimitNegativeValues,internal/geo/chunker_integration_test.go::TestDispatchLimitRounding -> FAILED 0/2 passed in=1248 out=84   || RECO CNT=1.0 INEFF=1.0 fail=1.0
+        ! IndexOutOfRange at internal/geo/chunker_integration_test.go::TestDispatchLimitNegativeValues:541 (pid 51212)
+*[15] edit_file path=internal/geo/chunker.go -> ok in=475 out=154   || RECO hunk=0.5
+        @ internal/geo/chunker.go h28ba59c96d > hd7208c2a9a
+*[16] edit_file path=internal/geo/chunker.go -> ok in=757 out=146   || RECO hunk=0.5
+        @ internal/geo/chunker.go hb39dd3959c > h1b29a10014
+*[17] run_tests suite=./internal/...:integration tests=internal/geo/chunker_integration_test.go::TestDispatchLimitNegativeValues,internal/geo/chunker_integration_test.go::TestDispatchLimitRounding -> FAILED 0/2 passed in=2243 out=54   || RECO CNT=1.0 INEFF=1.0 fail=1.0
+        ! IndexOutOfRange at internal/geo/chunker_integration_test.go::TestDispatchLimitNegativeValues:541 (pid 62301)
+*[18] edit_file path=internal/geo/chunker.go -> ok in=1025 out=118   || RECO hunk=0.5
+        @ internal/geo/chunker.go hd33ea24741 > ha3e4d1e705
+
+=== V099 oracle=STALLED net=PRODUCTIVE t=33 start=26 logits=[0.5, -0.0, -12.0, 0.0]
+ [23] edit_file path=lib/report/queue_worker.rb -> ok in=2507 out=508   || PROD hunk=0.5
+        @ lib/report/queue_worker.rb hf0b3fc5cd2 > hed9f32fbc6
+ [24] run_tests suite=spec:feature -> FAILED 8/10 passed in=4162 out=185   || PROD CNT=1.0 INEFF=1.0 fail=1.0
+        ! NoMethodError at spec/report/queue_worker_feature_spec.rb::queue_worker encode key expired token:63 (pid 39260)
+ [25] edit_file path=spec/report/queue_worker_feature_spec.rb -> ok in=2210 out=714   || PROD hunk=0.5
+        @ spec/report/queue_worker_feature_spec.rb h9013ea2aee > h021af954a1
+*[26] run_tests suite=spec:feature -> FAILED 8/10 passed in=4170 out=328   || PROD CNT=1.0 INEFF=1.0 fail=1.0
+        ! NoMethodError at spec/report/queue_worker_feature_spec.rb::queue_worker encode key expired token:63 (0x2013bede)
+*[27] edit_file path=lib/report/queue_worker.rb -> ok in=4107 out=194   || PROD hunk=0.5
+        @ lib/report/queue_worker.rb h355793ac6f > hb77a1f8eb8
+*[28] run_tests suite=spec:feature -> FAILED 8/10 passed in=6413 out=148   || PROD CNT=1.0 INEFF=1.0 fail=1.0
+        ! NoMethodError at spec/report/queue_worker_feature_spec.rb::queue_worker encode key expired token:63 (0x65828543)
+*[29] edit_file path=lib/report/queue_worker.rb -> ok in=3301 out=373   || PROD hunk=0.5
+        @ lib/report/queue_worker.rb hb77a1f8eb8 > hc6bd537312
+*[30] run_tests suite=spec:feature -> FAILED 8/10 passed in=6156 out=158   || PROD CNT=1.0 INEFF=1.0 fail=1.0
+        ! NoMethodError at spec/report/queue_worker_feature_spec.rb::queue_worker encode key expired token:63 (pid 20355)
+*[31] edit_file path=lib/report/queue_worker.rb -> ok in=588 out=542   || PROD hunk=0.5
+        @ lib/report/queue_worker.rb hed9f32fbc6 > h21753b57af
+*[32] run_tests suite=spec:feature -> FAILED 8/10 passed in=7090 out=100   || PROD CNT=1.0 INEFF=1.0 fail=1.0
+        ! NoMethodError at spec/report/queue_worker_feature_spec.rb::queue_worker encode key expired token:63 (pid 22808)
+*[33] edit_file path=lib/report/queue_worker.rb -> ok in=2179 out=178   || PROD hunk=0.5
+        @ lib/report/queue_worker.rb h5809dc8363 > hb8db3a9f8f
+
+=== V104 oracle=STALLED net=PRODUCTIVE t=24 start=17 logits=[0.5, 0.0, -12.0, 0.0]
+ [14] edit_file path=src/cli/searchIndex.ts -> ok in=2864 out=976   || RECO hunk=0.5
+        @ src/cli/searchIndex.ts hfe13366ebf > h7c827db70e
+ [15] run_tests suite=contract tests=src/cli/__tests__/searchIndex.contract.test.ts::search_index render locale empty input -> FAILED 0/1 passed in=17496 out=552   || RECO CNT=1.0 INEFF=1.0 fail=1.0
+        ! JestAssertionError at src/cli/__tests__/searchIndex.contract.test.ts::search_index render locale empty input:498 (0x21571368)
+ [16] edit_file path=src/cli/searchIndex.ts -> ok in=3247 out=703   || RECO hunk=0.5
+        @ src/cli/searchIndex.ts h7c827db70e > hc0d0f3cecc
+*[17] run_tests suite=contract tests=src/cli/__tests__/searchIndex.contract.test.ts::search_index render locale empty input -> FAILED 0/1 passed in=11260 out=173   || RECO CNT=1.0 INEFF=1.0 fail=1.0
+        ! JestAssertionError at src/cli/__tests__/searchIndex.contract.test.ts::search_index render locale empty input:498 (0x15587e9f)
+*[18] edit_file path=src/cli/__tests__/searchIndex.contract.test.ts -> ok in=4230 out=990   || RECO hunk=0.5
+        @ src/cli/__tests__/searchIndex.contract.test.ts h0808712d2e > h0523759278
+*[19] edit_file path=src/identity/tokenBucket.ts -> ok in=3720 out=1508   || RECO hunk=0.5
+        @ src/identity/tokenBucket.ts h2dc7c681fa > hd6bb72bbb1
+*[20] run_tests suite=contract tests=src/cli/__tests__/searchIndex.contract.test.ts::search_index render locale empty input -> FAILED 0/1 passed in=10638 out=661   || PROD CNT=1.0 INEFF=1.0 fail=1.0
+        ! JestAssertionError at src/cli/__tests__/searchIndex.contract.test.ts::search_index render locale empty input:498 (pid 99046)
+*[21] write_file path=src/cli/searchIndex.ts -> ok in=2507 out=1145   || PROD hunk=0.5
+        @ src/cli/searchIndex.ts h9750f7ca1b > h6d63e7ac1f
+*[22] write_file path=src/cli/__tests__/searchIndex.contract.test.ts -> ok in=5568 out=1353   || PROD hunk=0.5
+        @ src/cli/__tests__/searchIndex.contract.test.ts h5c6705a8d6 > h3fb03c7e68
+*[23] run_tests suite=contract tests=src/cli/__tests__/searchIndex.contract.test.ts::search_index render locale empty input -> FAILED 0/1 passed in=5694 out=349   || PROD CNT=1.0 INEFF=1.0 fail=1.0
+        ! JestAssertionError at src/cli/__tests__/searchIndex.contract.test.ts::search_index render locale empty input:498 (pid 80883)
+*[24] edit_file path=src/cli/searchIndex.ts -> ok in=3382 out=2643   || PROD hunk=0.5
+        @ src/cli/searchIndex.ts ha993ee150e > he6a3aa0327
+
+=== V107 oracle=STALLED net=PRODUCTIVE t=23 start=16 logits=[0.5, -0.0, -12.0, 0.0]
+ [13] run_tests suite=integration -> FAILED 7/11 passed in=3845 out=458   || PROD CNT=1.0 INEFF=1.0 fail=1.0
+        ! Utf8Error at tests/graph_walk_integration.rs::apply_address_trailing_slash:8 (pid 92912)
+ [14] edit_file path=src/web/graph_walk.rs -> ok in=2409 out=298   || PROD INEFF=1.0 NOOP=1.0
+ [15] run_tests suite=integration -> FAILED 7/11 passed in=3253 out=159   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! Utf8Error at tests/graph_walk_integration.rs::apply_address_trailing_slash:8 (0x63482282)
+*[16] edit_file path=src/web/manifest.rs -> ok in=4101 out=3443   || PROD hunk=0.5
+        @ src/web/manifest.rs h3067221d09 > hd280a7dede
+*[17] run_tests suite=integration -> FAILED 7/11 passed in=1911 out=462   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! Utf8Error at tests/graph_walk_integration.rs::apply_address_trailing_slash:8 (pid 39169)
+*[18] edit_file path=src/web/graph_walk.rs -> ok in=3913 out=720   || PROD hunk=0.5
+        @ src/web/graph_walk.rs hae57510c05 > h30d41f80c8
+*[19] run_tests suite=integration -> FAILED 7/11 passed in=4609 out=209   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! Utf8Error at tests/graph_walk_integration.rs::apply_address_trailing_slash:8 (pid 66980)
+*[20] edit_file path=src/web/graph_walk.rs -> ok in=5103 out=1069   || PROD hunk=0.5
+        @ src/web/graph_walk.rs hcf53a09c33 > h7a956664e2
+*[21] edit_file path=src/web/graph_walk.rs -> ok in=5096 out=987   || PROD hunk=0.5
+        @ src/web/graph_walk.rs h30d41f80c8 > h8cd9e4f3b2
+*[22] run_tests suite=integration -> FAILED 7/11 passed in=8183 out=119   || PROD CNT=1.0 INEFF=1.0 fail=1.0
+        ! Utf8Error at tests/graph_walk_integration.rs::apply_address_trailing_slash:8 (pid 89649)
+*[23] edit_file path=src/web/graph_walk.rs -> ok in=3859 out=945   || PROD hunk=0.5
+        @ src/web/graph_walk.rs h8cd9e4f3b2 > h29403cf4f5
+
+=== V111 oracle=STALLED net=PRODUCTIVE t=24 start=17 logits=[0.5, 0.0, -12.0, 0.0]
+ [14] run_tests suite=integration -> ok 11/11 passed in=970 out=141   || PROD 
+ [15] write_file path=src/billing/scheduler.ts -> ok in=1539 out=394   || PROD hunk=0.5
+        @ src/billing/scheduler.ts h8196308331 > h046dca418c
+ [16] lint target=tsc -> ok in=760 out=50   || PROD 
+*[17] write_file path=src/billing/__tests__/scheduler.integration.test.ts -> ok in=898 out=751   || PROD hunk=0.5
+        @ src/billing/__tests__/scheduler.integration.test.ts hb655c21284 > h1566e28ed4
+*[18] read_file path=src/catalog/money.ts lines=22-30 -> ok in=695 out=144   || PROD REP=1.0 lines=1.0
+*[19] run_tests suite=integration -> ok 11/11 passed in=1255 out=42   || PROD 
+*[20] edit_file path=src/billing/scheduler.ts -> ok in=939 out=897   || PROD hunk=0.5
+        @ src/billing/scheduler.ts h046dca418c > haec2ad9a63
+*[21] run_tests suite=integration -> ok 11/11 passed in=848 out=94   || PROD 
+*[22] write_file path=src/billing/scheduler.ts -> ok in=842 out=613   || PROD hunk=0.5
+        @ src/billing/scheduler.ts hcc88f5a95f > hc1eefc3885
+*[23] run_tests suite=integration -> ok 11/11 passed in=1280 out=177   || PROD 
+*[24] write_file path=src/billing/__tests__/scheduler.integration.test.ts -> ok in=3082 out=662   || PROD hunk=0.5
+        @ src/billing/__tests__/scheduler.integration.test.ts ha1a59dd5f4 > hcfd39b67ce
+
+=== V114 oracle=STALLED net=PRODUCTIVE t=24 start=17 logits=[0.5, 0.0, -4.1, 0.0]
+ [14] run_tests suite=unit -> FAILED 3/6 passed in=6465 out=67   || RECO CNT=1.0 INEFF=1.0 fail=1.0
+        ! RangeError at src/metrics/__tests__/slugify.unit.test.ts::slugify compute manifest boundary:711 (0xff46295d)
+ [15] edit_file path=src/metrics/ledger.ts -> ok in=1336 out=382   || RECO hunk=0.5
+        @ src/metrics/ledger.ts h3cb648b4e6 > hb393c1d4a8
+ [16] run_tests suite=unit -> FAILED 3/6 passed in=4614 out=82   || PROD CNT=1.0 INEFF=1.0 fail=1.0
+        ! RangeError at src/metrics/__tests__/slugify.unit.test.ts::slugify compute manifest boundary:711 (0xb54aa518)
+*[17] edit_file path=src/metrics/slugify.ts -> ok in=3750 out=861   || PROD hunk=0.5
+        @ src/metrics/slugify.ts hd45ed348d7 > hf33a5eee03
+*[18] run_tests suite=unit -> FAILED 3/6 passed in=7345 out=487   || PROD CNT=1.0 INEFF=1.0 fail=1.0
+        ! RangeError at src/metrics/__tests__/slugify.unit.test.ts::slugify compute manifest boundary:711 (0x1ff7d011)
+*[19] edit_file path=src/metrics/slugify.ts -> ok in=347 out=657   || PROD hunk=0.5
+        @ src/metrics/slugify.ts hf33a5eee03 > haa498d73ab
+*[20] read_file path=src/metrics/slugify.ts lines=16-22 -> ok in=1903 out=310   || PROD lines=1.0
+*[21] run_tests suite=unit -> FAILED 3/6 passed in=5244 out=163   || PROD CNT=1.0 INEFF=1.0 fail=1.0
+        ! RangeError at src/metrics/__tests__/slugify.unit.test.ts::slugify compute manifest boundary:711 (pid 93385)
+*[22] edit_file path=src/metrics/__tests__/slugify.unit.test.ts -> ok in=1243 out=569   || PROD hunk=0.5
+        @ src/metrics/__tests__/slugify.unit.test.ts hee8db54684 > h14309cdf39
+*[23] edit_file path=src/metrics/slugify.ts -> ok in=1873 out=214   || PROD hunk=0.5
+        @ src/metrics/slugify.ts haa498d73ab > h1fef4fb67e
+*[24] run_tests suite=unit -> FAILED 3/6 passed in=1027 out=378   || PROD CNT=1.0 INEFF=1.0 fail=1.0
+        ! RangeError at src/metrics/__tests__/slugify.unit.test.ts::slugify compute manifest boundary:711 (0x9836e344)
+
+=== V116 oracle=STALLED net=PRODUCTIVE t=32 start=25 logits=[0.5, 0.0, -12.0, 0.0]
+ [22] edit_file path=src/billing/serializer.rs -> ok in=2438 out=578   || PROD hunk=0.5
+        @ src/billing/serializer.rs h99ea150afd > h83f40f6383
+ [23] run_tests suite=unit -> ok 8/8 passed in=1101 out=32   || PROD 
+ [24] edit_file path=tests/serializer_unit.rs -> ok in=4011 out=570   || PROD hunk=0.5
+        @ tests/serializer_unit.rs h948aff9f51 > h55eb74a34d
+*[25] run_tests suite=unit -> ok 8/8 passed in=185 out=94   || PROD 
+*[26] edit_file path=src/billing/serializer.rs -> ok in=3320 out=1546   || PROD hunk=0.5
+        @ src/billing/serializer.rs heb39dee2ec > hd3beea6ce8
+*[27] run_tests suite=unit -> ok 8/8 passed in=549 out=56   || PROD 
+*[28] edit_file path=src/billing/serializer.rs -> ok in=874 out=274   || PROD hunk=0.5
+        @ src/billing/serializer.rs hd155b55ca7 > h9e9a5e1a37
+*[29] run_tests suite=unit -> ok 8/8 passed in=1015 out=61   || PROD 
+*[30] edit_file path=src/billing/serializer.rs -> ok in=1208 out=494   || PROD hunk=0.5
+        @ src/billing/serializer.rs he93f1bec01 > hdf9c6119d5
+*[31] run_tests suite=unit -> ok 8/8 passed in=929 out=21   || PROD 
+*[32] edit_file path=tests/serializer_unit.rs -> ok in=1726 out=326   || PROD hunk=0.5
+        @ tests/serializer_unit.rs h0fdb6522fa > h5c52897331
+
+=== V118 oracle=STALLED net=PRODUCTIVE t=37 start=30 logits=[0.5, 0.0, -12.0, 0.0]
+ [27] run_tests suite=./internal/...:unit -> FAILED 5/8 passed in=3503 out=112   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! NilPointerDereference at internal/search/slugify_unit_test.go::TestRenderRetriesDefaultConfig:644 (pid 69966)
+ [28] edit_file path=internal/search/slugify_unit_test.go -> ok in=1512 out=599   || STAL INEFF=1.0 NOOP=1.0
+ [29] read_file path=internal/search/slugify.go lines=5-11 -> ok in=1161 out=34   || PROD REP=1.0 lines=1.0
+*[30] run_tests suite=./internal/...:unit -> FAILED 5/8 passed in=3772 out=167   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! NilPointerDereference at internal/search/slugify_unit_test.go::TestRenderRetriesDefaultConfig:644 (pid 2800)
+*[31] edit_file path=internal/web/config_loader.go -> ok in=1153 out=330   || PROD hunk=0.5
+        @ internal/web/config_loader.go h23bf02f225 > h34af66b2f9
+*[32] run_tests suite=./internal/...:unit -> FAILED 5/8 passed in=1634 out=164   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! NilPointerDereference at internal/search/slugify_unit_test.go::TestRenderRetriesDefaultConfig:644 (pid 44951)
+*[33] edit_file path=internal/cli/scheduler.go -> ok in=1002 out=323   || PROD hunk=0.5
+        @ internal/cli/scheduler.go h5616ef716b > h211b002f8e
+*[34] run_tests suite=./internal/...:unit -> FAILED 5/8 passed in=2379 out=188   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! NilPointerDereference at internal/search/slugify_unit_test.go::TestRenderRetriesDefaultConfig:644 (0xf94cb91b)
+*[35] edit_file path=internal/web/audit_log.go -> ok in=1162 out=432   || PROD hunk=0.5
+        @ internal/web/audit_log.go hde9e88e1bc > hae26850bc4
+*[36] run_tests suite=./internal/...:unit -> FAILED 5/8 passed in=2959 out=157   || PROD CNT=1.0 INEFF=1.0 fail=1.0
+        ! NilPointerDereference at internal/search/slugify_unit_test.go::TestRenderRetriesDefaultConfig:644 (0x4a00a1c6)
+*[37] edit_file path=internal/search/slugify.go -> ok in=1012 out=411   || PROD hunk=0.5
+        @ internal/search/slugify.go hb60078fb33 > h2e9ea36dc3
+
+=== V119 oracle=STALLED net=PRODUCTIVE t=25 start=18 logits=[0.5, 0.0, -12.0, 0.0]
+ [15] run_tests suite=unitTests -> FAILED 9/11 passed in=2250 out=43   || RECO CNT=1.0 INEFF=1.0 fail=1.0
+        ! IllegalStateException at src/test/java/com/initech/geo/ThumbnailerUnitTest.java::loadEntryExpiredToken:443 (0x6f2201b5)
+ [16] run_tests suite=unitTests -> FAILED 9/11 passed in=1379 out=229   || RECO CNT=1.0 INEFF=1.0 fail=1.0
+        ! IllegalStateException at src/test/java/com/initech/geo/ThumbnailerUnitTest.java::loadEntryExpiredToken:443 (pid 25526)
+ [17] run_tests suite=unitTests -> FAILED 9/11 passed in=3057 out=46   || RECO CNT=1.0 INEFF=1.0 fail=1.0
+        ! IllegalStateException at src/test/java/com/initech/geo/ThumbnailerUnitTest.java::loadEntryExpiredToken:443 (pid 32750)
+*[18] search scope=src query="loadEntry" -> ok in=1313 out=136   || RECO 
+*[19] run_tests suite=unitTests -> FAILED 9/11 passed in=2838 out=174   || RECO CNT=1.0 INEFF=1.0 fail=1.0
+        ! IllegalStateException at src/test/java/com/initech/geo/ThumbnailerUnitTest.java::loadEntryExpiredToken:443 (0x6e5ff29b)
+*[20] read_file path=deploy/helm/values.yaml -> ok in=1572 out=78   || RECO REP=1.0 INEFF=1.0
+*[21] run_tests suite=unitTests -> FAILED 9/11 passed in=662 out=83   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! IllegalStateException at src/test/java/com/initech/geo/ThumbnailerUnitTest.java::loadEntryExpiredToken:443 (0xb674c8ee)
+*[22] read_file path=src/main/java/com/initech/geo/Thumbnailer.java lines=5-14 -> ok in=2045 out=64   || PROD lines=1.0
+*[23] plan action=estimate_scope -> ok in=1336 out=198   || PROD 
+*[24] run_tests suite=unitTests -> FAILED 9/11 passed in=2071 out=76   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! IllegalStateException at src/test/java/com/initech/geo/ThumbnailerUnitTest.java::loadEntryExpiredToken:443 (pid 62291)
+*[25] read_file path=.editorconfig -> ok in=1067 out=792   || PROD 
+
+=== V123 oracle=STALLED net=STALLED t=42 start=35 logits=[0.5, 0.0, 4.0, 0.0]
+ [32] search scope=lib query="flush_address" -> ok in=2336 out=48   || PROD 
+ [33] run_tests suite=spec:request -> FAILED 7/12 passed in=2943 out=57   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! ExpectationNotMetError at spec/web/serializer_request_spec.rb::serializer store amount negative values:667 (0xf680db1e)
+ [34] run_tests suite=spec:request -> FAILED 7/12 passed in=1665 out=244   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! ExpectationNotMetError at spec/web/serializer_request_spec.rb::serializer store amount negative values:667 (pid 96040)
+*[35] plan action=choose_next_step -> ok in=2534 out=196   || PROD 
+*[36] run_tests suite=spec:request -> FAILED 7/12 passed in=2418 out=33   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! ExpectationNotMetError at spec/web/serializer_request_spec.rb::serializer store amount negative values:667 (0x1c04cba3)
+*[37] plan action=choose_next_step -> ok in=3205 out=1073   || PROD 
+*[38] run_tests suite=spec:request -> FAILED 7/12 passed in=1109 out=316   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! ExpectationNotMetError at spec/web/serializer_request_spec.rb::serializer store amount negative values:667 (pid 77323)
+*[39] run_tests suite=spec:request -> FAILED 7/12 passed in=2397 out=67   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! ExpectationNotMetError at spec/web/serializer_request_spec.rb::serializer store amount negative values:667 (pid 16410)
+*[40] read_file path=lib/web/serializer.rb lines=21-28 -> ok in=377 out=245   || PROD lines=1.0
+*[41] run_tests suite=spec:request -> FAILED 7/12 passed in=4963 out=99   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! ExpectationNotMetError at spec/web/serializer_request_spec.rb::serializer store amount negative values:667 (0x1d240def)
+*[42] run_tests suite=spec:request -> FAILED 7/12 passed in=2151 out=75   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! ExpectationNotMetError at spec/web/serializer_request_spec.rb::serializer store amount negative values:667 (pid 63769)
+
+=== V125 oracle=STALLED net=PRODUCTIVE t=28 start=21 logits=[0.5, 0.0, -3.9, 0.0]
+ [18] read_file path=docs/api.md -> ok in=340 out=70   || PROD 
+ [19] run_tests suite=./internal/...:integration tests=internal/billing/export_job_integration_test.go::TestLookupHeaderEmptyInput,internal/billing/export_job_integration_test.go::TestLookupHeaderMaxLength -> FAILED 0/2 passed in=964 out=69   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! NilPointerDereference at internal/billing/export_job_integration_test.go::TestLookupHeaderEmptyInput:196 (pid 67118)
+ [20] read_file path=internal/billing/export_job.go lines=28-34 -> ok in=706 out=58   || PROD lines=1.0
+*[21] run_tests suite=./internal/...:integration tests=internal/billing/export_job_integration_test.go::TestLookupHeaderEmptyInput,internal/billing/export_job_integration_test.go::TestLookupHeaderMaxLength -> FAILED 0/2 passed in=1698 out=55   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! NilPointerDereference at internal/billing/export_job_integration_test.go::TestLookupHeaderEmptyInput:196 (0x5eba3dba)
+*[22] read_file path=internal/billing/export_job.go lines=28-34 -> ok in=415 out=64   || PROD REP=1.0 lines=1.0
+*[23] run_tests suite=./internal/...:integration tests=internal/billing/export_job_integration_test.go::TestLookupHeaderEmptyInput,internal/billing/export_job_integration_test.go::TestLookupHeaderMaxLength -> FAILED 0/2 passed in=1557 out=77   || PROD CNT=1.0 INEFF=1.0 fail=1.0
+        ! NilPointerDereference at internal/billing/export_job_integration_test.go::TestLookupHeaderEmptyInput:196 (0x5c19deed)
+*[24] run_tests suite=./internal/...:integration tests=internal/billing/export_job_integration_test.go::TestLookupHeaderEmptyInput,internal/billing/export_job_integration_test.go::TestLookupHeaderMaxLength -> FAILED 0/2 passed in=962 out=65   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! NilPointerDereference at internal/billing/export_job_integration_test.go::TestLookupHeaderEmptyInput:196 (pid 81242)
+*[25] run_tests suite=./internal/...:race -> ok 9/9 passed in=1048 out=49   || PROD 
+*[26] run_tests suite=./internal/...:integration tests=internal/billing/export_job_integration_test.go::TestLookupHeaderEmptyInput,internal/billing/export_job_integration_test.go::TestLookupHeaderMaxLength -> FAILED 0/2 passed in=2585 out=65   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! NilPointerDereference at internal/billing/export_job_integration_test.go::TestLookupHeaderEmptyInput:196 (pid 81423)
+*[27] run_tests suite=./internal/...:integration tests=internal/billing/export_job_integration_test.go::TestLookupHeaderEmptyInput,internal/billing/export_job_integration_test.go::TestLookupHeaderMaxLength -> FAILED 0/2 passed in=1554 out=43   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! NilPointerDereference at internal/billing/export_job_integration_test.go::TestLookupHeaderEmptyInput:196 (0x9dd39643)
+*[28] read_file path=docs/api.md -> ok in=319 out=81   || PROD 
+
+=== V127 oracle=STALLED net=PRODUCTIVE t=24 start=17 logits=[0.5, 0.0, -12.0, 0.0]
+ [14] run_tests suite=doc -> ok 8/8 passed in=1942 out=170   || PROD 
+ [15] edit_file path=src/web/retry_policy.rs -> ok in=2696 out=435   || PROD hunk=0.5
+        @ src/web/retry_policy.rs h13a58b3c74 > h54bba8d79f
+ [16] run_tests suite=doc -> ok 8/8 passed in=3264 out=226   || PROD 
+*[17] edit_file path=tests/money_doc.rs -> ok in=3789 out=295   || PROD hunk=0.5
+        @ tests/money_doc.rs hbef5bcd3da > hbfb66a86b9
+*[18] run_tests suite=doc -> ok 8/8 passed in=1283 out=155   || PROD 
+*[19] edit_file path=src/ingest/queue_worker.rs -> ok in=6556 out=790   || PROD hunk=0.5
+        @ src/ingest/queue_worker.rs h618bd45039 > h065e692e04
+*[20] edit_file path=src/web/retry_policy.rs -> ok in=4888 out=867   || PROD hunk=0.5
+        @ src/web/retry_policy.rs hda3b79a8c8 > h57ed3d9526
+*[21] run_tests suite=doc -> ok 8/8 passed in=1348 out=118   || PROD 
+*[22] edit_file path=src/web/retry_policy.rs -> ok in=10306 out=1636   || PROD hunk=0.5
+        @ src/web/retry_policy.rs ha85372cb14 > ha9208ded27
+*[23] read_file path=src/web/retry_policy.rs lines=4-13 -> ok in=4222 out=286   || PROD lines=1.0
+*[24] run_tests suite=doc -> ok 8/8 passed in=1845 out=298   || PROD 
+
+=== V128 oracle=STALLED net=PRODUCTIVE t=21 start=14 logits=[0.5, -0.0, -4.0, 0.0]
+ [11] run_tests suite=spec:unit tests=spec/catalog/retry_policy_unit_spec.rb::retry_policy merge amount expired token,spec/catalog/retry_policy_unit_spec.rb::retry_policy merge amount retry after -> FAILED 0/2 passed in=5428 out=100   || RECO CNT=1.0 INEFF=1.0 fail=1.0
+        ! TypeError at spec/catalog/retry_policy_unit_spec.rb::retry_policy merge amount expired token:238 (0x9e1f7c4f)
+ [12] read_file path=spec/catalog/retry_policy_unit_spec.rb -> ok in=1205 out=60   || RECO 
+ [13] run_tests suite=spec:unit tests=spec/catalog/retry_policy_unit_spec.rb::retry_policy merge amount expired token,spec/catalog/retry_policy_unit_spec.rb::retry_policy merge amount retry after -> FAILED 0/2 passed in=2575 out=86   || RECO CNT=1.0 INEFF=1.0 fail=1.0
+        ! TypeError at spec/catalog/retry_policy_unit_spec.rb::retry_policy merge amount expired token:238 (pid 42440)
+*[14] plan action=summarise_findings -> ok in=1823 out=200   || RECO 
+*[15] run_tests suite=spec:unit tests=spec/catalog/retry_policy_unit_spec.rb::retry_policy merge amount expired token,spec/catalog/retry_policy_unit_spec.rb::retry_policy merge amount retry after -> FAILED 0/2 passed in=1482 out=97   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! TypeError at spec/catalog/retry_policy_unit_spec.rb::retry_policy merge amount expired token:238 (0x6365d33d)
+*[16] read_file path=spec/catalog/retry_policy_unit_spec.rb -> ok in=471 out=88   || STAL REP=1.0 INEFF=1.0
+*[17] run_tests suite=spec:unit tests=spec/catalog/retry_policy_unit_spec.rb::retry_policy merge amount expired token,spec/catalog/retry_policy_unit_spec.rb::retry_policy merge amount retry after -> FAILED 0/2 passed in=2188 out=119   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! TypeError at spec/catalog/retry_policy_unit_spec.rb::retry_policy merge amount expired token:238 (pid 53607)
+*[18] list_dir path=. -> ok in=817 out=118   || PROD 
+*[19] read_file path=spec/catalog/retry_policy_unit_spec.rb -> ok in=1224 out=71   || STAL REP=1.0 INEFF=1.0
+*[20] run_tests suite=spec:unit tests=spec/catalog/retry_policy_unit_spec.rb::retry_policy merge amount expired token,spec/catalog/retry_policy_unit_spec.rb::retry_policy merge amount retry after -> FAILED 0/2 passed in=3722 out=95   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! TypeError at spec/catalog/retry_policy_unit_spec.rb::retry_policy merge amount expired token:238 (pid 6525)
+*[21] list_dir path=. -> ok in=589 out=226   || PROD 
+
+=== V134 oracle=STALLED net=PRODUCTIVE t=10 start=3 logits=[0.5, 0.0, -12.0, 0.0]
+ [ 0] list_dir path=. -> ok in=198 out=52   || PROD 
+ [ 1] run_tests suite=contract -> FAILED 8/10 passed in=570 out=25   || PROD 
+        ! TypeError at src/sync/__tests__/parser.contract.test.ts::parser validate manifest max length:216 (pid 53640)
+ [ 2] read_file path=src/sync/parser.ts lines=23-33 -> ok in=414 out=99   || PROD lines=1.0
+*[ 3] read_file path=src/sync/parser.ts -> ok in=409 out=14   || PROD REP=1.0 INEFF=1.0
+*[ 4] read_file path=src/sync/__tests__/parser.contract.test.ts -> ok in=1066 out=87   || PROD 
+*[ 5] plan action=review_diff -> ok in=3776 out=188   || PROD 
+*[ 6] plan action=checkpoint -> ok in=584 out=445   || PROD 
+*[ 7] plan action=review_diff -> ok in=298 out=309   || PROD 
+*[ 8] read_file path=src/sync/parser.ts lines=23-33 -> ok in=471 out=154   || PROD REP=1.0 lines=1.0
+*[ 9] plan action=checkpoint -> ok in=1161 out=190   || PROD 
+*[10] plan action=checkpoint -> ok in=925 out=154   || PROD 
+
+=== V139 oracle=STALLED net=PRODUCTIVE t=10 start=3 logits=[0.5, 0.0, -4.1, 0.0]
+ [ 0] run_tests suite=property -> FAILED 5/7 passed in=1588 out=113   || PROD 
+        ! AssertionFailed at tests/config_loader_property.rs::split_entry_leap_year:753 (pid 88488)
+ [ 1] edit_file path=src/catalog/config_loader.rs -> ok in=994 out=198   || PROD hunk=0.5
+        @ src/catalog/config_loader.rs hdcc4a5f8e5 > h2434f3c2d9
+ [ 2] run_tests suite=property -> FAILED 5/7 passed in=1581 out=74   || RECO CNT=1.0 INEFF=1.0 fail=1.0
+        ! AssertionFailed at tests/config_loader_property.rs::split_entry_leap_year:753 (0xeabc958c)
+*[ 3] edit_file path=src/catalog/config_loader.rs -> ok in=980 out=152   || RECO hunk=0.5
+        @ src/catalog/config_loader.rs h2434f3c2d9 > hdd7e6806da
+*[ 4] run_tests suite=property -> FAILED 5/7 passed in=1716 out=160   || RECO CNT=1.0 INEFF=1.0 fail=1.0
+        ! AssertionFailed at tests/config_loader_property.rs::split_entry_leap_year:753 (0xd76f7e0c)
+*[ 5] edit_file path=src/catalog/config_loader.rs -> ok in=857 out=260   || RECO hunk=0.5
+        @ src/catalog/config_loader.rs hdd7e6806da > h80a569baed
+*[ 6] run_tests suite=property -> FAILED 5/7 passed in=2914 out=129   || RECO CNT=1.0 INEFF=1.0 fail=1.0
+        ! AssertionFailed at tests/config_loader_property.rs::split_entry_leap_year:753 (0x49f76b99)
+*[ 7] edit_file path=src/catalog/config_loader.rs -> ok in=733 out=216   || RECO hunk=0.5
+        @ src/catalog/config_loader.rs h80a569baed > hc15824cf32
+*[ 8] run_tests suite=property -> FAILED 5/7 passed in=1338 out=88   || RECO CNT=1.0 INEFF=1.0 fail=1.0
+        ! AssertionFailed at tests/config_loader_property.rs::split_entry_leap_year:753 (0x86770509)
+*[ 9] edit_file path=src/catalog/config_loader.rs -> ok in=1022 out=248   || RECO hunk=0.5
+        @ src/catalog/config_loader.rs hc15824cf32 > h0cc701ac27
+*[10] run_tests suite=property -> FAILED 5/7 passed in=1639 out=86   || PROD CNT=1.0 INEFF=1.0 fail=1.0
+        ! AssertionFailed at tests/config_loader_property.rs::split_entry_leap_year:753 (pid 64201)
+
+=== V140 oracle=STALLED net=PRODUCTIVE t=26 start=19 logits=[0.5, 0.0, -12.0, 0.0]
+ [16] run_tests suite=unitTests -> FAILED 4/7 passed in=4004 out=60   || RECO CNT=1.0 INEFF=1.0 fail=1.0
+        ! NumberFormatException at src/test/java/com/initech/billing/RateLimiterUnitTest.java::expandAddressConcurrentAccess:718 (pid 27847)
+ [17] plan action=decompose -> ok in=1391 out=461   || RECO 
+ [18] run_tests suite=unitTests -> FAILED 4/7 passed in=5512 out=65   || RECO CNT=1.0 INEFF=1.0 fail=1.0
+        ! NumberFormatException at src/test/java/com/initech/billing/RateLimiterUnitTest.java::expandAddressConcurrentAccess:718 (pid 85854)
+*[19] read_file path=src/test/java/com/initech/billing/RateLimiterUnitTest.java -> ok in=4233 out=139   || RECO 
+*[20] run_tests suite=unitTests -> FAILED 4/7 passed in=7146 out=65   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! NumberFormatException at src/test/java/com/initech/billing/RateLimiterUnitTest.java::expandAddressConcurrentAccess:718 (0xc7f9f7d1)
+*[21] search scope=. query="expandAddress" -> ok in=2357 out=131   || PROD 
+*[22] run_tests suite=unitTests -> FAILED 4/7 passed in=7034 out=266   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! NumberFormatException at src/test/java/com/initech/billing/RateLimiterUnitTest.java::expandAddressConcurrentAccess:718 (pid 23465)
+*[23] read_file path=docs/architecture.md -> ok in=1209 out=73   || PROD 
+*[24] search scope=. query="expandAddress" -> ok in=978 out=98   || PROD REP=1.0 INEFF=1.0
+*[25] run_tests suite=unitTests -> FAILED 4/7 passed in=5637 out=462   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! NumberFormatException at src/test/java/com/initech/billing/RateLimiterUnitTest.java::expandAddressConcurrentAccess:718 (pid 36886)
+*[26] read_file path=src/main/java/com/initech/billing/RateLimiter.java lines=28-37 -> ok in=514 out=290   || PROD lines=1.0
+
+=== V142 oracle=STALLED net=PRODUCTIVE t=30 start=23 logits=[0.5, 0.0, -4.1, 0.0]
+ [20] read_file path=tests/tokenizer_unit.rs -> ok in=3636 out=361   || PROD 
+ [21] read_file path=clippy.toml -> ok in=1633 out=444   || PROD REP=1.0 INEFF=1.0
+ [22] read_file path=src/report/tokenizer.rs lines=5-20 -> ok in=2349 out=479   || PROD REP=1.0 lines=1.0
+*[23] http_call GET https://payments.sandbox.acme.io/v1/jobs/{job_id} req=0633e491 -> ok in=2227 out=237   || PROD 
+*[24] list_dir path=. -> ok in=2854 out=389   || PROD 
+*[25] read_file path=tests/tokenizer_unit.rs -> ok in=3714 out=496   || PROD REP=1.0 INEFF=1.0
+*[26] read_file path=src/report/tokenizer.rs lines=5-20 -> ok in=8891 out=564   || PROD REP=1.0 lines=1.0
+*[27] run_tests suite=unit -> FAILED 7/10 passed in=32205 out=382   || PROD 
+        ! ArithmeticOverflow at tests/tokenizer_unit.rs::convert_deadline_large_batch:313 (pid 75024)
+*[28] list_dir path=. -> ok in=2383 out=241   || PROD 
+*[29] read_file path=tests/tokenizer_unit.rs -> ok in=6856 out=451   || PROD REP=1.0 INEFF=1.0
+*[30] read_file path=tests/tokenizer_unit.rs -> ok in=7069 out=375   || PROD REP=1.0 INEFF=1.0
+
+=== V143 oracle=STALLED net=STALLED t=47 start=40 logits=[0.5, 0.0, 4.0, 0.0]
+ [37] run_tests suite=./internal/...:unit tests=internal/geo/router_unit_test.go::TestNormalizeRangesMissingKey,internal/geo/router_unit_test.go::TestNormalizeRangesUtf8Bom -> FAILED 0/2 passed in=1785 out=78   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! NilPointerDereference at internal/geo/router_unit_test.go::TestNormalizeRangesMissingKey:409 (0x4a57f88a)
+ [38] list_dir path=internal/geo -> ok in=356 out=119   || PROD 
+ [39] run_tests suite=./internal/...:unit tests=internal/geo/router_unit_test.go::TestNormalizeRangesMissingKey,internal/geo/router_unit_test.go::TestNormalizeRangesUtf8Bom -> FAILED 0/2 passed in=2716 out=74   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! NilPointerDereference at internal/geo/router_unit_test.go::TestNormalizeRangesMissingKey:409 (0x9a8883db)
+*[40] run_tests suite=./internal/...:unit tests=internal/geo/router_unit_test.go::TestNormalizeRangesMissingKey,internal/geo/router_unit_test.go::TestNormalizeRangesUtf8Bom -> FAILED 0/2 passed in=2023 out=72   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! NilPointerDereference at internal/geo/router_unit_test.go::TestNormalizeRangesMissingKey:409 (pid 1499)
+*[41] run_tests suite=./internal/...:unit tests=internal/geo/router_unit_test.go::TestNormalizeRangesMissingKey,internal/geo/router_unit_test.go::TestNormalizeRangesUtf8Bom -> FAILED 0/2 passed in=1666 out=124   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! NilPointerDereference at internal/geo/router_unit_test.go::TestNormalizeRangesMissingKey:409 (0xb9cddab1)
+*[42] run_tests suite=./internal/...:unit tests=internal/geo/router_unit_test.go::TestNormalizeRangesMissingKey,internal/geo/router_unit_test.go::TestNormalizeRangesUtf8Bom -> FAILED 0/2 passed in=1766 out=215   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! NilPointerDereference at internal/geo/router_unit_test.go::TestNormalizeRangesMissingKey:409 (pid 94087)
+*[43] read_file path=internal/geo/router.go lines=14-25 -> ok in=1002 out=55   || PROD lines=1.0
+*[44] run_tests suite=./internal/...:unit tests=internal/geo/router_unit_test.go::TestNormalizeRangesMissingKey,internal/geo/router_unit_test.go::TestNormalizeRangesUtf8Bom -> FAILED 0/2 passed in=3000 out=56   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! NilPointerDereference at internal/geo/router_unit_test.go::TestNormalizeRangesMissingKey:409 (0x55f2b967)
+*[45] run_tests suite=./internal/...:unit tests=internal/geo/router_unit_test.go::TestNormalizeRangesMissingKey,internal/geo/router_unit_test.go::TestNormalizeRangesUtf8Bom -> FAILED 0/2 passed in=2893 out=104   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! NilPointerDereference at internal/geo/router_unit_test.go::TestNormalizeRangesMissingKey:409 (pid 73243)
+*[46] read_file path=internal/geo/router.go lines=14-25 -> ok in=1505 out=94   || PROD REP=1.0 lines=1.0
+*[47] run_tests suite=./internal/...:unit tests=internal/geo/router_unit_test.go::TestNormalizeRangesMissingKey,internal/geo/router_unit_test.go::TestNormalizeRangesUtf8Bom -> FAILED 0/2 passed in=2260 out=91   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! NilPointerDereference at internal/geo/router_unit_test.go::TestNormalizeRangesMissingKey:409 (0x93899862)
+
+=== V145 oracle=STALLED net=RECOVERY t=44 start=37 logits=[0.5, 6.0, -15.0, 0.0]
+ [34] edit_file path=src/notify/graph_walk.py -> ok in=2680 out=620   || RECO hunk=0.5
+        @ src/notify/graph_walk.py h6bc06790d0 > hb19be05435
+ [35] lint target=ruff -> ok in=3689 out=73   || PROD 
+ [36] edit_file path=src/notify/graph_walk.py -> ok in=2060 out=855   || PROD hunk=0.5
+        @ src/notify/graph_walk.py hb19be05435 > hbec4cfb750
+*[37] edit_file path=src/notify/graph_walk.py -> ok in=3960 out=821   || PROD hunk=0.5
+        @ src/notify/graph_walk.py hbec4cfb750 > hdfc15568fe
+*[38] read_file path=src/notify/graph_walk.py lines=14-19 -> ok in=669 out=115   || PROD lines=1.0
+*[39] run_tests suite=tests/unit -> FAILED 9/14 passed in=8712 out=139   || PROD 
+        ! IndexError at tests/unit/test_graph_walk.py::test_validate_address_missing_key:292 (pid 80559)
+*[40] edit_file path=src/notify/graph_walk.py -> ok in=790 out=757   || PROD hunk=0.5
+        @ src/notify/graph_walk.py hdfc15568fe > h7743262cb6
+*[41] run_tests suite=tests/unit -> FAILED 9/14 passed in=1862 out=413   || RECO CNT=1.0 INEFF=1.0 fail=1.0
+        ! IndexError at tests/unit/test_graph_walk.py::test_validate_address_missing_key:292 (pid 87992)
+*[42] edit_file path=src/notify/graph_walk.py -> ok in=2589 out=1156   || RECO hunk=0.5
+        @ src/notify/graph_walk.py hbe52ea0739 > h93483231c1
+*[43] lint target=ruff -> ok in=3408 out=132   || RECO 
+*[44] edit_file path=src/notify/graph_walk.py -> ok in=3891 out=344   || RECO hunk=0.5
+        @ src/notify/graph_walk.py hd15b6138c1 > h5785f998d8
+
+=== V146 oracle=STALLED net=PRODUCTIVE t=41 start=34 logits=[0.5, -0.0, -12.0, 0.0]
+ [31] edit_file path=src/worker/scheduler.ts -> ok in=1699 out=290   || PROD hunk=0.5
+        @ src/worker/scheduler.ts h508ea5cc0c > h1a2dda1c10
+ [32] run_tests suite=integration -> FAILED 15/17 passed in=3155 out=170   || PROD CNT=1.0 INEFF=1.0 fail=1.0
+        ! AssertionError at src/worker/__tests__/scheduler.integration.test.ts::scheduler estimate quota expired token:311 (0x42033471)
+ [33] edit_file path=src/worker/backoff.ts -> ok in=729 out=247   || PROD hunk=0.5
+        @ src/worker/backoff.ts h36e96bbcc1 > h7f83f69952
+*[34] run_tests suite=integration -> FAILED 15/17 passed in=4031 out=102   || PROD CNT=1.0 INEFF=1.0 fail=1.0
+        ! AssertionError at src/worker/__tests__/scheduler.integration.test.ts::scheduler estimate quota expired token:311 (pid 45097)
+*[35] edit_file path=src/worker/cursor.ts -> ok in=888 out=309   || PROD hunk=0.5
+        @ src/worker/cursor.ts h8f65cb64df > h38eaf4e9ee
+*[36] read_file path=src/worker/backoff.ts lines=11-20 -> ok in=737 out=77   || PROD lines=1.0
+*[37] run_tests suite=integration -> FAILED 15/17 passed in=6657 out=194   || PROD CNT=1.0 INEFF=1.0 fail=1.0
+        ! AssertionError at src/worker/__tests__/scheduler.integration.test.ts::scheduler estimate quota expired token:311 (0xd1b86260)
+*[38] edit_file path=src/worker/backoff.ts -> ok in=648 out=360   || PROD hunk=0.5
+        @ src/worker/backoff.ts h20f919308e > h3dd95a9975
+*[39] read_file path=src/worker/cursor.ts lines=10-19 -> ok in=471 out=152   || PROD lines=1.0
+*[40] run_tests suite=integration -> FAILED 15/17 passed in=8986 out=104   || PROD CNT=1.0 INEFF=1.0 fail=1.0
+        ! AssertionError at src/worker/__tests__/scheduler.integration.test.ts::scheduler estimate quota expired token:311 (pid 17235)
+*[41] edit_file path=src/worker/cursor.ts -> ok in=594 out=274   || PROD hunk=0.5
+        @ src/worker/cursor.ts h38eaf4e9ee > hae9cbab014
+
+=== V147 oracle=STALLED net=STALLED t=39 start=32 logits=[0.5, 0.0, 3.9, 0.0]
+ [29] run_tests suite=tests/smoke tests=tests/smoke/test_quota.py::test_sanitize_address_boundary,tests/smoke/test_quota.py::test_sanitize_address_case_folding,tests/smoke/test_quota.py::test_sanitize_address_trailing_slash -> FAILED 0/3 passed in=2158 out=127   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! ValueError at tests/smoke/test_quota.py::test_sanitize_address_boundary:685 (0x270f0d94)
+ [30] edit_file path=src/media/cache.py -> ok in=2898 out=178   || PROD hunk=0.5
+        @ src/media/cache.py h77943fd069 > hcfd0c580ae
+ [31] run_tests suite=tests/smoke tests=tests/smoke/test_quota.py::test_sanitize_address_boundary,tests/smoke/test_quota.py::test_sanitize_address_case_folding,tests/smoke/test_quota.py::test_sanitize_address_trailing_slash -> FAILED 0/3 passed in=10133 out=81   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! ValueError at tests/smoke/test_quota.py::test_sanitize_address_boundary:685 (0x715e435e)
+*[32] edit_file path=src/media/quota.py -> ok in=2275 out=270   || PROD hunk=0.5
+        @ src/media/quota.py hbb751e3a5f > h0b295daf58
+*[33] run_tests suite=tests/smoke tests=tests/smoke/test_quota.py::test_sanitize_address_boundary,tests/smoke/test_quota.py::test_sanitize_address_case_folding,tests/smoke/test_quota.py::test_sanitize_address_trailing_slash -> FAILED 0/3 passed in=3837 out=90   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! ValueError at tests/smoke/test_quota.py::test_sanitize_address_boundary:685 (0xc5f397aa)
+*[34] edit_file path=src/media/quota.py -> ok in=959 out=298   || PROD hunk=0.5
+        @ src/media/quota.py hd989bf2e48 > h399d94f6aa
+*[35] run_tests suite=tests/smoke tests=tests/smoke/test_quota.py::test_sanitize_address_boundary,tests/smoke/test_quota.py::test_sanitize_address_case_folding,tests/smoke/test_quota.py::test_sanitize_address_trailing_slash -> FAILED 0/3 passed in=2203 out=162   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! ValueError at tests/smoke/test_quota.py::test_sanitize_address_boundary:685 (pid 4881)
+*[36] edit_file path=src/api/email_render.py -> ok in=1439 out=267   || PROD hunk=0.5
+        @ src/api/email_render.py h0581e893d9 > h9730922914
+*[37] run_tests suite=tests/smoke tests=tests/smoke/test_quota.py::test_sanitize_address_boundary,tests/smoke/test_quota.py::test_sanitize_address_case_folding,tests/smoke/test_quota.py::test_sanitize_address_trailing_slash -> FAILED 0/3 passed in=1719 out=248   || PROD CNT=1.0 INEFF=1.0 fail=1.0
+        ! ValueError at tests/smoke/test_quota.py::test_sanitize_address_boundary:685 (0xa9ec04a9)
+*[38] edit_file path=src/media/quota.py -> ok in=1224 out=187   || STAL INEFF=1.0 NOOP=1.0
+*[39] run_tests suite=tests/smoke tests=tests/smoke/test_quota.py::test_sanitize_address_boundary,tests/smoke/test_quota.py::test_sanitize_address_case_folding,tests/smoke/test_quota.py::test_sanitize_address_trailing_slash -> FAILED 0/3 passed in=2681 out=208   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! ValueError at tests/smoke/test_quota.py::test_sanitize_address_boundary:685 (pid 75218)
+
+=== V153 oracle=STALLED net=STALLED t=20 start=13 logits=[0.5, -0.0, 4.0, 0.0]
+ [10] edit_file path=src/metrics/shard_map.py -> ok in=857 out=445   || RECO hunk=0.5
+        @ src/metrics/shard_map.py h185f798d20 > h52e9054bd2
+ [11] run_tests suite=tests/unit -> FAILED 6/13 passed in=4743 out=62   || RECO CNT=1.0 INEFF=1.0 fail=1.0
+        ! OverflowError at tests/unit/test_shard_map.py::test_parse_slug_nested_objects:744 (0xbe6fa92e)
+ [12] write_file path=src/metrics/shard_map.py -> ok in=1039 out=430   || RECO hunk=0.5
+        @ src/metrics/shard_map.py h7d76bfb2a6 > h00882200be
+*[13] run_tests suite=tests/unit -> FAILED 6/13 passed in=3443 out=128   || RECO CNT=1.0 INEFF=1.0 fail=1.0
+        ! OverflowError at tests/unit/test_shard_map.py::test_parse_slug_nested_objects:744 (pid 26026)
+*[14] edit_file path=src/metrics/shard_map.py -> ok in=559 out=230   || RECO hunk=0.5
+        @ src/metrics/shard_map.py hb9c67d1a05 > hc0597872ad
+*[15] run_tests suite=tests/unit -> FAILED 6/13 passed in=3311 out=78   || RECO CNT=1.0 INEFF=1.0 fail=1.0
+        ! OverflowError at tests/unit/test_shard_map.py::test_parse_slug_nested_objects:744 (pid 22522)
+*[16] edit_file path=tests/unit/test_shard_map.py -> ok in=851 out=261   || RECO hunk=0.5
+        @ tests/unit/test_shard_map.py hdfc4757fd4 > hb9e664acbc
+*[17] run_tests suite=tests/unit -> FAILED 6/13 passed in=6437 out=112   || PROD CNT=1.0 INEFF=1.0 fail=1.0
+        ! OverflowError at tests/unit/test_shard_map.py::test_parse_slug_nested_objects:744 (0xbedf4c8a)
+*[18] edit_file path=src/metrics/shard_map.py -> ok in=900 out=391   || PROD hunk=0.5
+        @ src/metrics/shard_map.py h1076f020bc > h71c207798e
+*[19] run_tests suite=tests/unit -> FAILED 6/13 passed in=5404 out=122   || PROD CNT=1.0 INEFF=1.0 fail=1.0
+        ! OverflowError at tests/unit/test_shard_map.py::test_parse_slug_nested_objects:744 (pid 25138)
+*[20] edit_file path=src/metrics/shard_map.py -> ok in=1464 out=181   || STAL INEFF=1.0 NOOP=1.0
+
+=== V158 oracle=STALLED net=PRODUCTIVE t=33 start=26 logits=[0.5, 0.0, -12.0, 0.0]
+ [23] edit_file path=internal/auth/image_resize.go -> ok in=1450 out=321   || PROD hunk=0.5
+        @ internal/auth/image_resize.go h780638c9ee > hdc95c0af1d
+ [24] run_tests suite=./internal/...:unit -> ok 10/10 passed in=2119 out=134   || PROD 
+ [25] write_file path=internal/auth/image_resize.go -> ok in=5989 out=418   || PROD hunk=0.5
+        @ internal/auth/image_resize.go h842c30ed1a > h861de46d52
+*[26] write_file path=internal/auth/invoice_unit_test.go -> ok in=6806 out=1126   || PROD hunk=0.5
+        @ internal/auth/invoice_unit_test.go h7bfb839043 > h517f0cdd85
+*[27] run_tests suite=./internal/...:unit -> ok 10/10 passed in=2119 out=191   || PROD 
+*[28] edit_file path=internal/auth/image_resize.go -> ok in=1451 out=386   || PROD hunk=0.5
+        @ internal/auth/image_resize.go hea282cfdce > h09921b27ec
+*[29] run_tests suite=./internal/...:unit -> ok 10/10 passed in=2902 out=276   || PROD 
+*[30] edit_file path=internal/auth/image_resize.go -> ok in=3114 out=520   || PROD hunk=0.5
+        @ internal/auth/image_resize.go h71d7189cfc > h877517b471
+*[31] edit_file path=internal/auth/image_resize.go -> ok in=6994 out=1194   || PROD INEFF=1.0 NOOP=1.0
+*[32] run_tests suite=./internal/...:unit -> ok 10/10 passed in=5960 out=1209   || PROD 
+*[33] edit_file path=internal/auth/image_resize.go -> ok in=2640 out=494   || PROD hunk=0.5
+        @ internal/auth/image_resize.go hfeb9739291 > h4101913ec3
+
+=== V159 oracle=STALLED net=PRODUCTIVE t=27 start=20 logits=[0.5, 0.0, -12.0, 0.0]
+ [17] read_file path=src/api/serializer.py lines=9-15 -> ok in=845 out=121   || PROD lines=1.0
+ [18] run_tests suite=tests/smoke -> ok 9/9 passed in=798 out=64   || PROD 
+ [19] edit_file path=src/api/serializer.py -> ok in=1379 out=345   || PROD hunk=0.5
+        @ src/api/serializer.py h7e4d4fea70 > hf1df3bfa1a
+*[20] run_tests suite=tests/smoke -> ok 9/9 passed in=922 out=167   || PROD 
+*[21] edit_file path=src/api/serializer.py -> ok in=1362 out=432   || PROD hunk=0.5
+        @ src/api/serializer.py hf1df3bfa1a > hd3472be41e
+*[22] lint target=flake8 -> ok in=415 out=39   || PROD 
+*[23] edit_file path=src/identity/audit_log.py -> ok in=1846 out=419   || PROD hunk=0.5
+        @ src/identity/audit_log.py h91e1477075 > h4c0a8d6a62
+*[24] edit_file path=src/api/serializer.py -> ok in=2460 out=237   || PROD hunk=0.5
+        @ src/api/serializer.py h73585f5a95 > h7b06170383
+*[25] read_file path=src/api/serializer.py lines=9-16 -> ok in=591 out=108   || PROD lines=1.0
+*[26] run_tests suite=tests/smoke -> ok 9/9 passed in=485 out=82   || PROD 
+*[27] edit_file path=src/api/serializer.py -> ok in=1380 out=245   || PROD hunk=0.5
+        @ src/api/serializer.py h75710cc225 > h071ada5c9f
+
+=== V162 oracle=STALLED net=STALLED t=21 start=14 logits=[0.5, -0.0, 3.9, 0.0]
+ [11] run_tests suite=./internal/...:race tests=internal/sync/currency_race_test.go::TestBatchPayloadExpiredToken,internal/sync/currency_race_test.go::TestBatchPayloadUtf8Bom -> FAILED 0/2 passed in=1132 out=83   || RECO CNT=1.0 INEFF=1.0 fail=1.0
+        ! DeadlineExceeded at internal/sync/currency_race_test.go::TestBatchPayloadExpiredToken:726 (0x3165704d)
+ [12] plan action=review_diff -> ok in=1880 out=271   || RECO 
+ [13] run_tests suite=./internal/...:race tests=internal/sync/currency_race_test.go::TestBatchPayloadExpiredToken,internal/sync/currency_race_test.go::TestBatchPayloadUtf8Bom -> FAILED 0/2 passed in=2058 out=37   || RECO CNT=1.0 INEFF=1.0 fail=1.0
+        ! DeadlineExceeded at internal/sync/currency_race_test.go::TestBatchPayloadExpiredToken:726 (pid 47738)
+*[14] list_dir path=. -> ok in=484 out=86   || RECO 
+*[15] run_tests suite=./internal/...:race tests=internal/sync/currency_race_test.go::TestBatchPayloadExpiredToken,internal/sync/currency_race_test.go::TestBatchPayloadUtf8Bom -> FAILED 0/2 passed in=1006 out=35   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! DeadlineExceeded at internal/sync/currency_race_test.go::TestBatchPayloadExpiredToken:726 (0x1ecf83d2)
+*[16] search scope=internal query="BatchPayload" -> ok in=623 out=77   || PROD 
+*[17] run_tests suite=./internal/...:race tests=internal/sync/currency_race_test.go::TestBatchPayloadExpiredToken,internal/sync/currency_race_test.go::TestBatchPayloadUtf8Bom -> FAILED 0/2 passed in=693 out=65   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! DeadlineExceeded at internal/sync/currency_race_test.go::TestBatchPayloadExpiredToken:726 (pid 95537)
+*[18] search scope=internal query="BatchPayload" -> ok in=901 out=142   || STAL REP=1.0 INEFF=1.0
+*[19] read_file path=internal/sync/currency.go lines=5-10 -> ok in=409 out=48   || PROD lines=1.0
+*[20] run_tests suite=./internal/...:race tests=internal/sync/currency_race_test.go::TestBatchPayloadExpiredToken,internal/sync/currency_race_test.go::TestBatchPayloadUtf8Bom -> FAILED 0/2 passed in=1365 out=115   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! DeadlineExceeded at internal/sync/currency_race_test.go::TestBatchPayloadExpiredToken:726 (pid 56994)
+*[21] search scope=internal query="BatchPayload" -> ok in=645 out=30   || STAL REP=1.0 INEFF=1.0
+
+=== V163 oracle=STALLED net=STALLED t=19 start=12 logits=[0.5, 0.0, 4.0, 0.0]
+ [ 9] plan action=reflect -> ok in=2928 out=204   || RECO 
+ [10] poll_status resource=queue/drain/ledger backoff=30 -> pending in=160 out=19   || RECO pend=1.0 INEFF=1.0 fail=0.7
+ [11] poll_status resource=queue/drain/ledger backoff=30 -> pending in=101 out=9   || RECO pend=1.0 INEFF=1.0 fail=0.7
+*[12] poll_status resource=queue/drain/ledger backoff=30 -> pending in=32 out=18   || RECO pend=1.0 INEFF=1.0 fail=0.7
+*[13] read_file path=deploy/helm/values.yaml -> ok in=305 out=46   || RECO 
+*[14] poll_status resource=queue/drain/ledger backoff=30 -> pending in=155 out=13   || STAL pend=1.0 INEFF=1.0 fail=0.7
+*[15] plan action=verify_plan -> ok in=2687 out=281   || PROD 
+*[16] poll_status resource=queue/drain/ledger backoff=30 -> pending in=117 out=16   || STAL pend=1.0 INEFF=1.0 fail=0.7
+*[17] poll_status resource=queue/drain/ledger backoff=30 -> pending in=184 out=22   || STAL pend=1.0 INEFF=1.0 fail=0.7
+*[18] list_dir path=src/metrics -> ok in=207 out=300   || PROD 
+*[19] poll_status resource=queue/drain/ledger backoff=30 -> pending in=145 out=13   || STAL pend=1.0 INEFF=1.0 fail=0.7
+
+=== V166 oracle=STALLED net=STALLED t=33 start=26 logits=[0.5, 0.0, 4.0, 0.0]
+ [23] run_tests suite=property -> FAILED 6/12 passed in=3179 out=122   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! IndexOutOfBounds at tests/backoff_property.rs::load_deadline_duplicate_entries:649 (0x786acc21)
+ [24] run_tests suite=property -> FAILED 6/12 passed in=2877 out=294   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! IndexOutOfBounds at tests/backoff_property.rs::load_deadline_duplicate_entries:649 (0x02039b72)
+ [25] plan action=reflect -> ok in=2153 out=182   || PROD 
+*[26] run_tests suite=property -> FAILED 6/12 passed in=2762 out=129   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! IndexOutOfBounds at tests/backoff_property.rs::load_deadline_duplicate_entries:649 (0x3489c644)
+*[27] run_tests suite=property -> FAILED 6/12 passed in=3282 out=251   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! IndexOutOfBounds at tests/backoff_property.rs::load_deadline_duplicate_entries:649 (0x1b8f768e)
+*[28] read_file path=docs/adr/0003-caching.md -> ok in=1656 out=203   || PROD 
+*[29] run_tests suite=property -> FAILED 6/12 passed in=2430 out=162   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! IndexOutOfBounds at tests/backoff_property.rs::load_deadline_duplicate_entries:649 (0xcb2fa6f6)
+*[30] read_file path=docs/adr/0003-caching.md -> ok in=1007 out=124   || STAL REP=1.0 INEFF=1.0
+*[31] run_tests suite=property -> FAILED 6/12 passed in=3710 out=1668   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! IndexOutOfBounds at tests/backoff_property.rs::load_deadline_duplicate_entries:649 (pid 64737)
+*[32] plan action=review_diff -> ok in=2842 out=164   || PROD 
+*[33] run_tests suite=property -> FAILED 6/12 passed in=5446 out=150   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! IndexOutOfBounds at tests/backoff_property.rs::load_deadline_duplicate_entries:649 (pid 77774)
+
+=== V168 oracle=STALLED net=PRODUCTIVE t=26 start=19 logits=[0.5, -0.0, -4.0, 0.0]
+ [16] edit_file path=internal/billing/router_unit_test.go -> ok in=3196 out=3278   || PROD hunk=0.5
+        @ internal/billing/router_unit_test.go h553bff86b4 > hae77acd266
+ [17] run_tests suite=./internal/...:unit tests=internal/billing/router_unit_test.go::TestLookupWindowBoundary -> FAILED 0/1 passed in=2874 out=191   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! NilPointerDereference at internal/billing/router_unit_test.go::TestLookupWindowBoundary:809 (0x5dd97ecf)
+ [18] write_file path=internal/billing/router_unit_test.go -> ok in=3917 out=1088   || PROD hunk=0.5
+        @ internal/billing/router_unit_test.go hb147be6920 > hd7152b4cf2
+*[19] run_tests suite=./internal/...:unit tests=internal/billing/router_unit_test.go::TestLookupWindowBoundary -> FAILED 0/1 passed in=11730 out=128   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! NilPointerDereference at internal/billing/router_unit_test.go::TestLookupWindowBoundary:809 (pid 10826)
+*[20] write_file path=internal/billing/router.go -> ok in=2586 out=1112   || PROD hunk=0.5
+        @ internal/billing/router.go h2b3bc81b5c > h1878c359f2
+*[21] run_tests suite=./internal/...:unit tests=internal/billing/router_unit_test.go::TestLookupWindowBoundary -> FAILED 0/1 passed in=5931 out=126   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! NilPointerDereference at internal/billing/router_unit_test.go::TestLookupWindowBoundary:809 (pid 99529)
+*[22] write_file path=internal/billing/router.go -> ok in=3102 out=1080   || PROD hunk=0.5
+        @ internal/billing/router.go h1878c359f2 > hf79b0d8388
+*[23] run_tests suite=./internal/...:unit tests=internal/billing/router_unit_test.go::TestLookupWindowBoundary -> FAILED 0/1 passed in=9123 out=282   || PROD CNT=1.0 INEFF=1.0 fail=1.0
+        ! NilPointerDereference at internal/billing/router_unit_test.go::TestLookupWindowBoundary:809 (0xf77c4a94)
+*[24] edit_file path=internal/billing/router.go -> ok in=1863 out=1487   || STAL INEFF=1.0 NOOP=1.0
+*[25] run_tests suite=./internal/...:unit tests=internal/billing/router_unit_test.go::TestLookupWindowBoundary -> FAILED 0/1 passed in=3688 out=510   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! NilPointerDereference at internal/billing/router_unit_test.go::TestLookupWindowBoundary:809 (pid 95563)
+*[26] edit_file path=internal/billing/router.go -> ok in=7400 out=880   || PROD hunk=0.5
+        @ internal/billing/router.go h7c0fef9004 > h20ed2daaa3
+
+=== V171 oracle=STALLED net=STALLED t=28 start=21 logits=[0.5, 0.0, 4.0, 0.0]
+ [18] run_tests suite=unitTests tests=src/test/java/com/acme/ingest/ConfigLoaderUnitTest.java::dispatchTokenRoundTrip,src/test/java/com/acme/ingest/ConfigLoaderUnitTest.java::dispatchTokenTimezoneOffset -> FAILED 0/2 passed in=2032 out=230   || RECO CNT=1.0 INEFF=1.0 fail=1.0
+        ! NullPointerException at src/test/java/com/acme/ingest/ConfigLoaderUnitTest.java::dispatchTokenRoundTrip:609 (pid 3525)
+ [19] list_dir path=scripts -> ok in=828 out=58   || RECO 
+ [20] run_tests suite=unitTests tests=src/test/java/com/acme/ingest/ConfigLoaderUnitTest.java::dispatchTokenRoundTrip,src/test/java/com/acme/ingest/ConfigLoaderUnitTest.java::dispatchTokenTimezoneOffset -> FAILED 0/2 passed in=820 out=74   || RECO CNT=1.0 INEFF=1.0 fail=1.0
+        ! NullPointerException at src/test/java/com/acme/ingest/ConfigLoaderUnitTest.java::dispatchTokenRoundTrip:609 (0xdbbad9bf)
+*[21] plan action=review_diff -> ok in=2618 out=328   || RECO 
+*[22] run_tests suite=unitTests tests=src/test/java/com/acme/ingest/ConfigLoaderUnitTest.java::dispatchTokenRoundTrip,src/test/java/com/acme/ingest/ConfigLoaderUnitTest.java::dispatchTokenTimezoneOffset -> FAILED 0/2 passed in=1990 out=83   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! NullPointerException at src/test/java/com/acme/ingest/ConfigLoaderUnitTest.java::dispatchTokenRoundTrip:609 (0x3648ced4)
+*[23] list_dir path=deploy/terraform -> ok in=205 out=25   || PROD 
+*[24] run_tests suite=unitTests tests=src/test/java/com/acme/ingest/ConfigLoaderUnitTest.java::dispatchTokenRoundTrip,src/test/java/com/acme/ingest/ConfigLoaderUnitTest.java::dispatchTokenTimezoneOffset -> FAILED 0/2 passed in=3441 out=99   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! NullPointerException at src/test/java/com/acme/ingest/ConfigLoaderUnitTest.java::dispatchTokenRoundTrip:609 (0xaf463d6a)
+*[25] list_dir path=deploy -> ok in=281 out=31   || PROD 
+*[26] run_tests suite=unitTests tests=src/test/java/com/acme/ingest/ConfigLoaderUnitTest.java::dispatchTokenRoundTrip,src/test/java/com/acme/ingest/ConfigLoaderUnitTest.java::dispatchTokenTimezoneOffset -> FAILED 0/2 passed in=1776 out=360   || PROD CNT=1.0 INEFF=1.0 fail=1.0
+        ! NullPointerException at src/test/java/com/acme/ingest/ConfigLoaderUnitTest.java::dispatchTokenRoundTrip:609 (0x5ec9f864)
+*[27] run_tests suite=unitTests tests=src/test/java/com/acme/ingest/ConfigLoaderUnitTest.java::dispatchTokenRoundTrip,src/test/java/com/acme/ingest/ConfigLoaderUnitTest.java::dispatchTokenTimezoneOffset -> FAILED 0/2 passed in=1723 out=183   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! NullPointerException at src/test/java/com/acme/ingest/ConfigLoaderUnitTest.java::dispatchTokenRoundTrip:609 (pid 3617)
+*[28] run_tests suite=unitTests tests=src/test/java/com/acme/ingest/ConfigLoaderUnitTest.java::dispatchTokenRoundTrip,src/test/java/com/acme/ingest/ConfigLoaderUnitTest.java::dispatchTokenTimezoneOffset -> FAILED 0/2 passed in=1855 out=163   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! NullPointerException at src/test/java/com/acme/ingest/ConfigLoaderUnitTest.java::dispatchTokenRoundTrip:609 (0x046fed58)
+
+=== V172 oracle=STALLED net=PRODUCTIVE t=53 start=46 logits=[0.5, -0.0, -4.0, 0.0]
+ [43] run_tests suite=contractTests -> FAILED 3/5 passed in=8218 out=47   || PROD CNT=1.0 INEFF=1.0 fail=1.0
+        ! ClassCastException at src/test/java/com/hooli/billing/DiffEngineContractTest.java::reconcileDigestBoundary:416 (pid 85892)
+ [44] read_file path=src/test/java/com/hooli/billing/GraphWalkContractTest.java -> ok in=1166 out=68   || STAL REP=1.0 INEFF=1.0
+ [45] run_tests suite=contractTests -> FAILED 3/5 passed in=1379 out=213   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! ClassCastException at src/test/java/com/hooli/billing/DiffEngineContractTest.java::reconcileDigestBoundary:416 (0x11c16ccd)
+*[46] read_file path=src/main/java/com/hooli/billing/DiffEngine.java lines=3-16 -> ok in=813 out=85   || PROD lines=1.0
+*[47] run_tests suite=contractTests -> FAILED 3/5 passed in=6444 out=207   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! ClassCastException at src/test/java/com/hooli/billing/DiffEngineContractTest.java::reconcileDigestBoundary:416 (pid 72537)
+*[48] run_tests suite=contractTests -> FAILED 3/5 passed in=2972 out=415   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! ClassCastException at src/test/java/com/hooli/billing/DiffEngineContractTest.java::reconcileDigestBoundary:416 (pid 66783)
+*[49] read_file path=docs/adr/0003-caching.md -> ok in=1664 out=161   || STAL REP=1.0 INEFF=1.0
+*[50] run_tests suite=contractTests -> FAILED 3/5 passed in=2046 out=220   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! ClassCastException at src/test/java/com/hooli/billing/DiffEngineContractTest.java::reconcileDigestBoundary:416 (0x83f4335d)
+*[51] list_dir path=tests/fixtures -> ok in=575 out=127   || PROD 
+*[52] run_tests suite=contractTests -> FAILED 3/5 passed in=8677 out=191   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! ClassCastException at src/test/java/com/hooli/billing/DiffEngineContractTest.java::reconcileDigestBoundary:416 (pid 8897)
+*[53] read_file path=CHANGELOG.md -> ok in=1878 out=114   || PROD 
+

@@ -1,0 +1,2 @@
+{"name": "v05b", "mode": "phase-b", "session_id": "c8c50605-46fc-47c3-a6cf-b7e0bd9377c7", "utc_start": "2026-11-06T08:41:01Z", "utc_end": "2026-11-06T09:33:46Z", "claude_rc": 1, "started": true}
+{"name": "v05b.c1", "mode": "continue", "session_id": "c8c50605-46fc-47c3-a6cf-b7e0bd9377c7", "utc_start": "2026-11-06T09:46:43Z", "utc_end": "2026-11-06T10:07:35Z", "claude_rc": 0, "started": true}

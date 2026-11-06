@@ -1,0 +1,806 @@
+=== V026 oracle=RECOVERY net=RECOVERY t=22 start=15 logits=[0.5, 6.0, -7.0, 0.0]
+ [12] edit_file path=src/notify/pagination.py -> ok in=609 out=570   || PROD hunk=0.5
+        @ src/notify/pagination.py ha23691e5f5 > hac717db0de
+ [13] run_tests suite=tests/smoke tests=tests/smoke/test_pagination.py::test_validate_chunk_empty_input,tests/smoke/test_pagination.py::test_validate_chunk_max_length -> ok 2/2 passed in=1303 out=111   || PROD 
+ [14] read_file path=deploy/terraform/main.tf -> ok in=492 out=112   || PROD 
+*[15] poll_status resource=deploy/staging/ledger -> pending in=135 out=27   || RECO pend=1.0 INEFF=1.0 fail=0.7
+*[16] poll_status resource=deploy/staging/ledger -> pending in=326 out=128   || RECO pend=1.0 INEFF=1.0 fail=0.7
+*[17] poll_status resource=deploy/staging/ledger -> pending in=358 out=45   || RECO pend=1.0 INEFF=1.0 fail=0.7
+*[18] poll_status resource=deploy/staging/ledger -> pending in=598 out=282   || RECO pend=1.0 INEFF=1.0 fail=0.7
+*[19] plan action=checkpoint -> ok in=1913 out=276   || RECO 
+*[20] poll_status resource=deploy/staging/ledger -> pending in=795 out=61   || STAL pend=1.0 INEFF=1.0 fail=0.7
+*[21] plan action=summarise_findings -> ok in=2434 out=505   || PROD 
+*[22] poll_status resource=deploy/staging/ledger -> ready in=130 out=55   || RECO 
+
+=== V030 oracle=RECOVERY net=RECOVERY t=28 start=21 logits=[0.5, 6.0, 1.0, 0.0]
+ [18] edit_file path=src/ingest/archive.py -> ok in=2159 out=419   || PROD hunk=0.5
+        @ src/ingest/archive.py hef39118deb > hf9f57edcbc
+ [19] run_tests suite=tests/integration tests=tests/integration/test_archive.py::test_compact_row_boundary,tests/integration/test_archive.py::test_compact_row_empty_input -> ok 2/2 passed in=1531 out=138   || PROD 
+ [20] read_file path=README.md -> ok in=1796 out=109   || PROD 
+*[21] http_call GET https://pypi.org/api/v2/search req=e12d9c23 -> ok in=764 out=95   || PROD 
+*[22] poll_status resource=db/migration/5822 backoff=2 -> pending in=319 out=70   || RECO pend=1.0 INEFF=1.0 fail=0.7
+*[23] poll_status resource=db/migration/5822 backoff=4 -> pending in=348 out=73   || RECO pend=1.0 INEFF=1.0 fail=0.7
+*[24] poll_status resource=db/migration/5822 backoff=8 -> pending in=369 out=75   || RECO pend=1.0 INEFF=1.0 fail=0.7
+*[25] plan action=estimate_scope -> ok in=3084 out=377   || RECO 
+*[26] poll_status resource=db/migration/5822 backoff=16 -> pending in=434 out=81   || RECO pend=1.0 INEFF=1.0 fail=0.7
+*[27] poll_status resource=db/migration/5822 backoff=32 -> pending in=430 out=45   || RECO pend=1.0 INEFF=1.0 fail=0.7
+*[28] poll_status resource=db/migration/5822 backoff=64 -> pending in=310 out=58   || RECO pend=1.0 INEFF=1.0 fail=0.7
+
+=== V036 oracle=RECOVERY net=RECOVERY t=19 start=12 logits=[0.5, 6.0, -15.0, 0.0]
+ [ 9] poll_status resource=replica/sync/3248 backoff=8 -> pending in=192 out=21   || RECO pend=1.0 INEFF=1.0 fail=0.7
+ [10] poll_status resource=replica/sync/3248 backoff=16 -> pending in=191 out=32   || RECO pend=1.0 INEFF=1.0 fail=0.7
+ [11] poll_status resource=replica/sync/3248 backoff=32 -> ready in=133 out=30   || RECO 
+*[12] run_tests suite=./internal/...:race tests=internal/orders/pagination_race_test.go::TestMergeLimitMaxLength,internal/orders/pagination_race_test.go::TestMergeLimitNegativeValues -> FAILED 0/2 passed in=2183 out=179   || RECO 
+        ! RuntimePanic at internal/orders/pagination_race_test.go::TestMergeLimitMaxLength:89 (pid 65636)
+*[13] read_file path=internal/orders/pagination.go lines=1-16 -> ok in=1369 out=65   || RECO lines=1.0
+*[14] edit_file path=internal/orders/pagination.go -> ok in=2245 out=442   || RECO hunk=0.5
+        @ internal/orders/pagination.go hcfa1b2bf50 > ha31e13b486
+*[15] run_tests suite=./internal/...:race -> FAILED 9/12 passed in=1333 out=460   || PROD 
+        ! DeadlineExceeded at internal/orders/router_race_test.go::TestCompactDiscountCaseFolding:498 (0x97f32553)
+*[16] search scope=. query="FIXME" -> ok in=842 out=70   || PROD 
+*[17] http_call POST https://s3.us-east-1.amazonaws.com/health body={"limit": "limit-ded2", "ref": "ref-5459 TRUNC req=64cd0a7b -> ok in=562 out=59   || PROD 
+*[18] poll_status resource=dns/propagation/api -> pending in=441 out=85   || RECO pend=1.0 INEFF=1.0 fail=0.7
+*[19] poll_status resource=dns/propagation/api -> ready in=253 out=111   || RECO 
+
+=== V039 oracle=RECOVERY net=RECOVERY t=29 start=22 logits=[0.5, 6.0, -7.0, 0.0]
+ [19] search scope=. query="loadDeadline" -> ok in=598 out=63   || PROD 
+ [20] read_file path=src/core/templates.ts lines=14-23 -> ok in=1227 out=36   || PROD lines=1.0
+ [21] search scope=src query="digest null" -> ok in=2869 out=104   || PROD 
+*[22] edit_file path=src/core/templates.ts -> ok in=4962 out=492   || PROD hunk=0.5
+        @ src/core/templates.ts hd42051f0dc > hf612dddc4b
+*[23] run_tests suite=contract -> FAILED 7/10 passed in=5455 out=87   || PROD 
+        ! RangeError at src/core/__tests__/ledger.contract.test.ts::ledger decode slug nested objects:592 (0x4c2dd0e4)
+*[24] list_dir path=docs -> ok in=1523 out=64   || PROD 
+*[25] search scope=. query="copyright" -> ok in=825 out=65   || PROD 
+*[26] poll_status resource=build/artifact/2bba72 backoff=2 -> pending in=1015 out=75   || RECO pend=1.0 INEFF=1.0 fail=0.7
+*[27] poll_status resource=build/artifact/2bba72 backoff=4 -> pending in=614 out=157   || RECO pend=1.0 INEFF=1.0 fail=0.7
+*[28] poll_status resource=build/artifact/2bba72 backoff=8 -> pending in=468 out=35   || PROD pend=1.0 INEFF=1.0 fail=0.7
+*[29] poll_status resource=build/artifact/2bba72 backoff=16 -> pending in=1532 out=118   || RECO pend=1.0 INEFF=1.0 fail=0.7
+
+=== V054 oracle=RECOVERY net=RECOVERY t=9 start=2 logits=[0.5, 6.0, -15.0, 0.0]
+ [ 0] search scope=src query="lru_cache" -> ok in=780 out=58   || PROD 
+ [ 1] read_file path=package.json -> ok in=370 out=63   || PROD 
+*[ 2] list_dir path=deploy/helm -> ok in=303 out=91   || PROD 
+*[ 3] search scope=. query="require_relative" -> ok in=894 out=70   || PROD 
+*[ 4] list_dir path=tests -> ok in=216 out=60   || PROD 
+*[ 5] plan action=checkpoint -> ok in=1891 out=238   || PROD 
+*[ 6] http_call GET https://storage.googleapis.com/health req=a3c7ab5f -> error in=495 out=92   || RECO err=1.0 INEFF=1.0 fail=1.0
+        ! HTTP504 at storage.googleapis.com/health:190 (pid 80492)
+*[ 7] http_call GET https://storage.googleapis.com/health req=ec10d83a -> error in=623 out=82   || RECO err=1.0 INEFF=1.0 fail=1.0
+        ! HTTP504 at storage.googleapis.com/health:190 (pid 59380)
+*[ 8] http_call GET https://storage.googleapis.com/health req=ccb42189 -> error in=445 out=84   || RECO err=1.0 INEFF=1.0 fail=1.0
+        ! HTTP504 at storage.googleapis.com/health:190 (pid 43159)
+*[ 9] http_call GET https://storage.googleapis.com/health req=d2c9c9c0 -> ok in=591 out=51   || RECO 
+
+=== V068 oracle=RECOVERY net=RECOVERY t=16 start=9 logits=[0.5, 6.0, -15.0, 0.0]
+ [ 6] poll_status resource=k8s/rollout/ledger backoff=1 -> pending in=469 out=101   || RECO pend=1.0 INEFF=1.0 fail=0.7
+ [ 7] poll_status resource=k8s/rollout/ledger backoff=2 -> pending in=564 out=38   || RECO pend=1.0 INEFF=1.0 fail=0.7
+ [ 8] read_file path=build.gradle -> ok in=945 out=464   || RECO 
+*[ 9] poll_status resource=k8s/rollout/ledger backoff=4 -> pending in=801 out=72   || RECO pend=1.0 INEFF=1.0 fail=0.7
+*[10] list_dir path=.github -> ok in=1695 out=219   || RECO 
+*[11] poll_status resource=k8s/rollout/ledger backoff=8 -> pending in=214 out=151   || RECO pend=1.0 INEFF=1.0 fail=0.7
+*[12] search scope=. query="copyright" -> ok in=1125 out=328   || RECO 
+*[13] poll_status resource=k8s/rollout/ledger backoff=16 -> pending in=478 out=60   || RECO pend=1.0 INEFF=1.0 fail=0.7
+*[14] poll_status resource=k8s/rollout/ledger backoff=32 -> pending in=379 out=128   || RECO pend=1.0 INEFF=1.0 fail=0.7
+*[15] plan action=review_diff -> ok in=4761 out=2045   || RECO 
+*[16] poll_status resource=k8s/rollout/ledger backoff=64 -> ready in=194 out=34   || RECO 
+
+=== V074 oracle=RECOVERY net=RECOVERY t=21 start=14 logits=[0.5, 6.0, -15.0, 0.0]
+ [11] write_file path=lib/cli/checksum.rb -> ok in=2277 out=407   || PROD hunk=0.5
+        @ lib/cli/checksum.rb h6fb2eabcf1 > hbeabbd1c5d
+ [12] run_tests suite=spec:feature tests=spec/cli/checksum_feature_spec.rb::checksum decode manifest case folding,spec/cli/checksum_feature_spec.rb::checksum decode manifest negative values,spec/cli/checksum_feature_spec.rb::checksum decode TRUNC -> ok 3/3 passed in=708 out=67   || PROD 
+ [13] read_file path=spec/cli/locale_feature_spec.rb -> ok in=3106 out=71   || PROD 
+*[14] list_dir path=deploy/helm -> ok in=298 out=285   || PROD 
+*[15] search scope=docs query="interface{}" -> ok in=873 out=101   || PROD 
+*[16] read_file path=config/application.rb -> ok in=4428 out=91   || PROD 
+*[17] plan action=checkpoint -> ok in=2680 out=452   || PROD 
+*[18] http_call GET https://staging-api.acme.io/oauth/token req=e02aba6b -> error in=511 out=44   || PROD err=1.0 INEFF=1.0 fail=1.0
+        ! HTTP502 at staging-api.acme.io/oauth/token:228 (pid 5092)
+*[19] http_call GET https://staging-api.acme.io/oauth/token req=7f13fb4a -> error in=1568 out=13   || PROD err=1.0 INEFF=1.0 fail=1.0
+        ! HTTP502 at staging-api.acme.io/oauth/token:228 (pid 18452)
+*[20] http_call GET https://staging-api.acme.io/oauth/token req=cb4ba504 -> ok in=1833 out=82   || PROD 
+*[21] run_tests suite=spec:feature tests=spec/cli/locale_feature_spec.rb::locale parse query boundary,spec/cli/locale_feature_spec.rb::locale parse query retry after,spec/cli/locale_feature_spec.rb::locale parse query TRUNC -> FAILED 0/3 passed in=1578 out=485   || RECO 
+        ! NoMethodError at spec/cli/locale_feature_spec.rb::locale parse query boundary:405 (pid 63231)
+
+=== V088 oracle=RECOVERY net=PRODUCTIVE t=30 start=23 logits=[0.5, 0.0, -12.0, 0.0]
+ [20] read_file path=docs/runbook.md -> ok in=402 out=43   || PROD 
+ [21] run_tests suite=spec:unit tests=spec/report/config_loader_unit_spec.rb::config_loader flush digest case folding,spec/report/config_loader_unit_spec.rb::config_loader flush digest leap year,spec/report/config_loader_unit_spec.rb::config_loader flush TRUNC -> FAILED 0/3 passed in=1991 out=62   || RECO CNT=1.0 INEFF=1.0 fail=1.0
+        ! TypeError at spec/report/config_loader_unit_spec.rb::config_loader flush digest case folding:631 (pid 69233)
+ [22] run_tests suite=spec:unit tests=spec/report/config_loader_unit_spec.rb::config_loader flush digest case folding,spec/report/config_loader_unit_spec.rb::config_loader flush digest leap year,spec/report/config_loader_unit_spec.rb::config_loader flush TRUNC -> FAILED 0/3 passed in=1273 out=57   || RECO CNT=1.0 INEFF=1.0 fail=1.0
+        ! TypeError at spec/report/config_loader_unit_spec.rb::config_loader flush digest case folding:631 (pid 33808)
+*[23] write_file path=lib/report/config_loader.rb -> ok in=1221 out=283   || RECO hunk=0.5
+        @ lib/report/config_loader.rb ha030cac3c4 > ha93ac351f7
+*[24] run_tests suite=spec:unit tests=spec/report/config_loader_unit_spec.rb::config_loader flush digest case folding,spec/report/config_loader_unit_spec.rb::config_loader flush digest leap year,spec/report/config_loader_unit_spec.rb::config_loader flush TRUNC -> ok 3/3 passed in=657 out=43   || RECO 
+*[25] run_tests suite=spec:unit tests=spec/report/search_index_unit_spec.rb::search_index encode window negative values,spec/report/search_index_unit_spec.rb::search_index encode window sorted order -> FAILED 0/2 passed in=926 out=43   || PROD CNT=1.0 INEFF=1.0 fail=1.0
+        ! ArgumentError at spec/report/search_index_unit_spec.rb::search_index encode window negative values:209 (pid 65993)
+*[26] run_tests suite=spec:unit tests=spec/report/search_index_unit_spec.rb::search_index encode window negative values,spec/report/search_index_unit_spec.rb::search_index encode window sorted order -> FAILED 0/2 passed in=722 out=45   || PROD CNT=1.0 INEFF=1.0 fail=1.0
+        ! ArgumentError at spec/report/search_index_unit_spec.rb::search_index encode window negative values:209 (0x5a55cefc)
+*[27] read_file path=lib/report/search_index.rb lines=17-32 -> ok in=359 out=49   || PROD lines=1.0
+*[28] edit_file path=lib/report/search_index.rb -> ok in=731 out=258   || PROD hunk=0.5
+        @ lib/report/search_index.rb hdec53d9e15 > h400e4d17ed
+*[29] run_tests suite=spec:unit tests=spec/report/search_index_unit_spec.rb::search_index encode window negative values,spec/report/search_index_unit_spec.rb::search_index encode window sorted order -> ok 2/2 passed in=335 out=35   || PROD 
+*[30] yield action=done -> ok in=865 out=147   || PROD 
+
+=== V101 oracle=RECOVERY net=STALLED t=15 start=8 logits=[0.5, 0.0, 4.0, 0.0]
+ [ 5] edit_file path=lib/storage/diff_engine.rb -> ok in=3967 out=811   || RECO hunk=0.5
+        @ lib/storage/diff_engine.rb hf9c027aa3e > h53b0ccdaf8
+ [ 6] run_tests suite=spec:feature -> ok 11/11 passed in=1655 out=120   || RECO 
+ [ 7] read_file path=deploy/helm/values.yaml -> ok in=2839 out=248   || RECO 
+*[ 8] http_call POST https://payments.sandbox.acme.io/oauth/token body={"dry_run": false, "query": 484} req=ddc500b2 -> ok in=838 out=103   || RECO 
+*[ 9] poll_status resource=dns/propagation/scheduler -> pending in=491 out=112   || RECO pend=1.0 INEFF=1.0 fail=0.7
+*[10] poll_status resource=dns/propagation/scheduler -> pending in=517 out=129   || RECO pend=1.0 INEFF=1.0 fail=0.7
+*[11] read_file path=deploy/helm/values.yaml -> ok in=2880 out=361   || RECO REP=1.0 INEFF=1.0
+*[12] poll_status resource=dns/propagation/scheduler -> pending in=713 out=45   || RECO pend=1.0 INEFF=1.0 fail=0.7
+*[13] plan action=decompose -> ok in=7270 out=886   || RECO 
+*[14] poll_status resource=dns/propagation/scheduler -> pending in=615 out=134   || RECO pend=1.0 INEFF=1.0 fail=0.7
+*[15] poll_status resource=dns/propagation/scheduler -> pending in=372 out=105   || STAL pend=1.0 INEFF=1.0 fail=0.7
+
+=== V112 oracle=RECOVERY net=PRODUCTIVE t=26 start=19 logits=[0.5, 0.0, -12.0, 0.0]
+ [16] http_call GET https://vault.acme.internal/v1/users/{id} req=151ba18b -> error in=653 out=94   || RECO err=1.0 INEFF=1.0 fail=1.0
+        ! HTTP400 at vault.acme.internal/v1/users/{id}:440 (0xd1ded721)
+ [17] http_call GET https://vault.acme.internal/v1/users/{id} req=8fc63af2 -> error in=660 out=98   || PROD err=1.0 INEFF=1.0 fail=1.0
+        ! HTTP400 at vault.acme.internal/v1/users/{id}:440 (pid 2333)
+ [18] read_file path=src/main/java/com/hooli/media/Scheduler.java lines=27-37 -> ok in=448 out=87   || PROD lines=1.0
+*[19] edit_file path=src/main/java/com/hooli/media/Scheduler.java -> ok in=1801 out=513   || PROD hunk=0.5
+        @ src/main/java/com/hooli/media/Scheduler.java h5ceff37bfe > hef62621da3
+*[20] http_call GET https://vault.acme.internal/v1/users/{id} req=7ba24d40 -> ok in=674 out=75   || PROD 
+*[21] list_dir path=src/main/java/com/hooli/media -> ok in=332 out=95   || PROD 
+*[22] run_tests suite=integrationTests -> FAILED 6/8 passed in=2877 out=140   || PROD 
+        ! IllegalStateException at src/test/java/com/hooli/sync/SerializerIntegrationTest.java::decodeTokenPartialPage:393 (0xa4882b65)
+*[23] run_tests suite=integrationTests -> FAILED 6/8 passed in=1836 out=99   || PROD CNT=1.0 INEFF=1.0 fail=1.0
+        ! IllegalStateException at src/test/java/com/hooli/sync/SerializerIntegrationTest.java::decodeTokenPartialPage:393 (0x8857e55e)
+*[24] run_tests suite=integrationTests -> FAILED 6/8 passed in=2789 out=237   || PROD CNT=1.0 INEFF=1.0 fail=1.0
+        ! IllegalStateException at src/test/java/com/hooli/sync/SerializerIntegrationTest.java::decodeTokenPartialPage:393 (pid 39132)
+*[25] read_file path=src/main/java/com/hooli/sync/Serializer.java lines=2-17 -> ok in=847 out=83   || PROD lines=1.0
+*[26] edit_file path=src/main/java/com/hooli/sync/Serializer.java -> ok in=2077 out=447   || PROD hunk=0.5
+        @ src/main/java/com/hooli/sync/Serializer.java hfa69a496f4 > h5748d572b5
+
+=== V115 oracle=RECOVERY net=RECOVERY t=21 start=14 logits=[0.5, 6.0, -15.0, 0.0]
+ [11] build target=goreleaser -> ok in=678 out=84   || RECO 
+ [12] read_file path=config.yaml -> ok in=505 out=198   || RECO 
+ [13] read_file path=internal/identity/image_resize_integration_test.go -> ok in=1048 out=91   || PROD 
+*[14] list_dir path=docs/adr -> ok in=282 out=54   || PROD 
+*[15] run_tests suite=./internal/...:integration tests=internal/identity/slugify_integration_test.go::TestComputeHeaderConcurrentAccess,internal/identity/slugify_integration_test.go::TestComputeHeaderUtf8Bom -> FAILED 0/2 passed in=2435 out=73   || PROD 
+        ! DeadlineExceeded at internal/identity/slugify_integration_test.go::TestComputeHeaderConcurrentAccess:742 (0x8b61bd80)
+*[16] run_tests suite=./internal/...:integration tests=internal/identity/slugify_integration_test.go::TestComputeHeaderConcurrentAccess,internal/identity/slugify_integration_test.go::TestComputeHeaderUtf8Bom -> FAILED 0/2 passed in=2262 out=109   || RECO CNT=1.0 INEFF=1.0 fail=1.0
+        ! DeadlineExceeded at internal/identity/slugify_integration_test.go::TestComputeHeaderConcurrentAccess:742 (pid 29987)
+*[17] read_file path=internal/identity/slugify.go lines=2-13 -> ok in=730 out=56   || RECO lines=1.0
+*[18] edit_file path=internal/identity/slugify.go -> ok in=1320 out=468   || RECO hunk=0.5
+        @ internal/identity/slugify.go hf67f73c10f > h42478c7abc
+*[19] run_tests suite=./internal/...:integration tests=internal/identity/slugify_integration_test.go::TestComputeHeaderConcurrentAccess,internal/identity/slugify_integration_test.go::TestComputeHeaderUtf8Bom -> ok 2/2 passed in=441 out=72   || RECO 
+*[20] run_tests suite=./internal/...:integration tests=internal/identity/migrations_integration_test.go::TestSplitHeaderExpiredToken,internal/identity/migrations_integration_test.go::TestSplitHeaderNullField -> FAILED 0/2 passed in=2716 out=79   || RECO CNT=1.0 INEFF=1.0 fail=1.0
+        ! NilPointerDereference at internal/identity/migrations_integration_test.go::TestSplitHeaderExpiredToken:6 (pid 53238)
+*[21] read_file path=internal/identity/migrations.go lines=17-22 -> ok in=571 out=82   || RECO lines=1.0
+
+=== V120 oracle=RECOVERY net=RECOVERY t=9 start=2 logits=[0.5, 6.0, -15.0, 0.0]
+ [ 0] list_dir path=tests/fixtures -> ok in=605 out=75   || PROD 
+ [ 1] plan action=choose_next_step -> ok in=1093 out=97   || PROD 
+*[ 2] read_file path=docs/architecture.md -> ok in=767 out=74   || PROD 
+*[ 3] list_dir path=scripts -> ok in=431 out=32   || PROD 
+*[ 4] plan action=estimate_scope -> ok in=1074 out=187   || PROD 
+*[ 5] poll_status resource=container/gateway/health backoff=10 -> pending in=165 out=38   || RECO pend=1.0 INEFF=1.0 fail=0.7
+*[ 6] poll_status resource=container/gateway/health backoff=10 -> pending in=153 out=28   || RECO pend=1.0 INEFF=1.0 fail=0.7
+*[ 7] poll_status resource=container/gateway/health backoff=10 -> ready in=237 out=42   || RECO 
+*[ 8] run_tests suite=spec:request tests=spec/auth/money_request_spec.rb::money apply manifest leap year,spec/auth/money_request_spec.rb::money apply manifest timezone offset -> FAILED 0/2 passed in=1535 out=23   || RECO 
+        ! ExpectationNotMetError at spec/auth/money_request_spec.rb::money apply manifest leap year:566 (pid 2069)
+*[ 9] read_file path=lib/auth/money.rb lines=1-13 -> ok in=447 out=254   || RECO lines=1.0
+
+=== V124 oracle=RECOVERY net=RECOVERY t=11 start=4 logits=[0.5, 6.0, -15.0, 0.0]
+ [ 1] search scope=. query="refreshQuery" -> ok in=2855 out=256   || PROD 
+ [ 2] read_file path=src/main/java/com/acme/notify/Thumbnailer.java lines=7-19 -> ok in=3134 out=214   || PROD lines=1.0
+ [ 3] build target=gradle-assemble -> FAILED in=1623 out=246   || RECO FNC=1.0 fail=1.0
+        ! MissingSymbol at src/main/java/com/acme/notify/Thumbnailer.java:524 (0x996bc977)
+*[ 4] read_file path=logs/app.log lines=1-2 -> ok in=1069 out=155   || RECO lines=1.0
+*[ 5] edit_file path=src/main/java/com/acme/notify/Thumbnailer.java -> ok in=4519 out=658   || RECO hunk=0.5
+        @ src/main/java/com/acme/notify/Thumbnailer.java h1095e4f37e > h6cf9eb45bb
+*[ 6] plan action=estimate_scope -> ok in=3679 out=406   || RECO 
+*[ 7] list_dir path=src/main/java/com -> ok in=1007 out=185   || RECO 
+*[ 8] http_call GET https://sentry.io/api/0/issues/{issue_id}/events/ req=0748955b -> error in=1313 out=138   || RECO err=1.0 INEFF=1.0 fail=1.0
+        ! TimeoutError at sentry.io/api/0/issues/{issue_id}/events/:763 (pid 88620)
+*[ 9] http_call GET https://sentry.io/api/0/issues/{issue_id}/events/ req=3c49e651 -> ok in=1776 out=112   || RECO 
+*[10] search scope=. query="normalizeAddress" -> ok in=2333 out=461   || RECO 
+*[11] read_file path=src/main/java/com/acme/notify/Serializer.java lines=2-17 -> ok in=3172 out=252   || RECO lines=1.0
+
+=== V129 oracle=RECOVERY net=RECOVERY t=27 start=20 logits=[0.5, 6.0, -15.0, 0.0]
+ [17] read_file path=internal/notify/uploader.go lines=6-21 -> ok in=1175 out=295   || PROD lines=1.0
+ [18] edit_file path=internal/notify/uploader.go -> ok in=1978 out=907   || PROD hunk=0.5
+        @ internal/notify/uploader.go h32d3e73380 > h546f656582
+ [19] run_tests suite=./internal/...:integration -> FAILED 10/16 passed in=16269 out=342   || PROD 
+        ! IndexOutOfRange at internal/notify/ledger_integration_test.go::TestParseAmountRetryAfter:394 (pid 55368)
+*[20] read_file path=internal/notify/ledger.go lines=8-25 -> ok in=4061 out=326   || PROD REP=1.0 lines=1.0
+*[21] edit_file path=internal/notify/ledger.go -> ok in=2893 out=755   || PROD hunk=0.5
+        @ internal/notify/ledger.go h098b2a35dd > h7170437d67
+*[22] run_tests suite=./internal/...:integration tests=internal/notify/ledger_integration_test.go::TestParseAmountRetryAfter,internal/notify/ledger_integration_test.go::TestParseAmountRoundTrip,internal/notify/ledger_integration_test.go::TestParseAmountTimezoneOffset -> ok 3/3 passed in=2946 out=299   || PROD 
+*[23] list_dir path=. -> ok in=982 out=398   || PROD 
+*[24] poll_status resource=job/ebb431 backoff=5 -> pending in=504 out=38   || RECO pend=1.0 INEFF=1.0 fail=0.7
+*[25] poll_status resource=job/ebb431 backoff=10 -> ready in=1086 out=109   || RECO 
+*[26] search scope=. query="LookupWindow" -> ok in=7766 out=253   || RECO 
+*[27] read_file path=internal/notify/pagination.go lines=5-22 -> ok in=2168 out=438   || RECO lines=1.0
+
+=== V131 oracle=RECOVERY net=RECOVERY t=15 start=8 logits=[0.5, 6.0, -15.0, 0.0]
+ [ 5] search scope=docs query="unsafe" -> ok in=1653 out=826   || PROD 
+ [ 6] list_dir path=tests -> ok in=544 out=123   || PROD 
+ [ 7] read_file path=tests/dedupe_unit.rs -> ok in=3823 out=149   || PROD 
+*[ 8] read_file path=scripts/release.sh -> ok in=605 out=160   || PROD 
+*[ 9] list_dir path=src -> ok in=620 out=231   || PROD 
+*[10] http_call POST https://staging-api.acme.io/graphql body={"dry_run": false, "id": 1} req=395be340 -> error in=1028 out=130   || RECO err=1.0 INEFF=1.0 fail=1.0
+        ! HTTP500 at staging-api.acme.io/graphql:250 (0xc3bd6772)
+*[11] http_call POST https://staging-api.acme.io/graphql body={"dry_run": false, "id": 1} req=e920d144 -> error in=410 out=170   || RECO err=1.0 INEFF=1.0 fail=1.0
+        ! HTTP500 at staging-api.acme.io/graphql:250 (0x08d383c3)
+*[12] http_call POST https://staging-api.acme.io/graphql body={"dry_run": false, "id": 1} req=b96f98d9 -> error in=454 out=73   || RECO err=1.0 INEFF=1.0 fail=1.0
+        ! HTTP500 at staging-api.acme.io/graphql:250 (0x3bfd6bc6)
+*[13] http_call POST https://staging-api.acme.io/graphql body={"dry_run": false, "id": 1} req=209ca654 -> ok in=1371 out=133   || RECO 
+*[14] run_tests suite=unit tests=tests/scheduler_unit.rs::flush_schema_duplicate_entries,tests/scheduler_unit.rs::flush_schema_partial_page,tests/scheduler_unit.rs::flush_schema_sorted_order -> FAILED 0/3 passed in=1934 out=83   || RECO 
+        ! Utf8Error at tests/scheduler_unit.rs::flush_schema_duplicate_entries:116 (pid 3374)
+*[15] read_file path=src/core/scheduler.rs lines=1-13 -> ok in=7232 out=172   || RECO lines=1.0
+
+=== V137 oracle=RECOVERY net=PRODUCTIVE t=17 start=10 logits=[0.5, 0.0, -12.0, 0.0]
+ [ 7] run_tests suite=spec:feature tests=spec/geo/templates_feature_spec.rb::templates apply key max length -> FAILED 0/1 passed in=2893 out=81   || RECO CNT=1.0 INEFF=1.0 fail=1.0
+        ! ExpectationNotMetError at spec/geo/templates_feature_spec.rb::templates apply key max length:441 (pid 25574)
+ [ 8] run_tests suite=spec:feature tests=spec/storage/parser_feature_spec.rb::parser compact total retry after -> FAILED 0/1 passed in=1110 out=163   || PROD CNT=1.0 INEFF=1.0 fail=1.0
+        ! ArgumentError at spec/storage/parser_feature_spec.rb::parser compact total retry after:834 (0x577c7ef9)
+ [ 9] run_tests suite=spec:feature tests=spec/geo/templates_feature_spec.rb::templates apply key expired token,spec/geo/templates_feature_spec.rb::templates apply key max length,spec/geo/templates_feature_spec.rb::templates apply TRUNC -> FAILED 0/3 passed in=679 out=84   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! ExpectationNotMetError at spec/geo/templates_feature_spec.rb::templates apply key expired token:256 (0xae415608)
+*[10] run_tests suite=spec:feature tests=spec/geo/templates_feature_spec.rb::templates apply key expired token,spec/geo/templates_feature_spec.rb::templates apply key max length,spec/geo/templates_feature_spec.rb::templates apply TRUNC -> FAILED 0/3 passed in=1806 out=165   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! ExpectationNotMetError at spec/geo/templates_feature_spec.rb::templates apply key expired token:256 (pid 84369)
+*[11] edit_file path=lib/geo/templates.rb -> ok in=1377 out=454   || PROD hunk=0.5
+        @ lib/geo/templates.rb h41e1548594 > h8b5cfef170
+*[12] run_tests suite=spec:feature tests=spec/geo/templates_feature_spec.rb::templates apply key expired token,spec/geo/templates_feature_spec.rb::templates apply key max length,spec/geo/templates_feature_spec.rb::templates apply TRUNC -> ok 3/3 passed in=253 out=77   || PROD 
+*[13] search scope=docs query="import json" -> ok in=1000 out=90   || PROD 
+*[14] http_call PUT https://api.openai-proxy.acme.dev/v1/webhooks/{hook_id}/deliveries req=5f3426c8 -> error in=1045 out=190   || STAL err=1.0 INEFF=1.0 fail=1.0
+        ! HTTP504 at api.openai-proxy.acme.dev/v1/webhooks/{hook_id}/deliveries:536 (pid 59648)
+*[15] http_call PUT https://api.openai-proxy.acme.dev/v1/webhooks/{hook_id}/deliveries req=64b71026 -> error in=345 out=115   || STAL err=1.0 INEFF=1.0 fail=1.0
+        ! HTTP504 at api.openai-proxy.acme.dev/v1/webhooks/{hook_id}/deliveries:536 (0xd48e636f)
+*[16] http_call PUT https://api.openai-proxy.acme.dev/v1/webhooks/{hook_id}/deliveries req=2648f67e -> ok in=551 out=139   || PROD 
+*[17] read_file path=lib/storage/parser.rb lines=26-34 -> ok in=487 out=135   || PROD lines=1.0
+
+=== V149 oracle=RECOVERY net=RECOVERY t=8 start=1 logits=[0.5, 6.0, -7.0, 0.0]
+ [ 0] list_dir path=src/notify -> ok in=1154 out=253   || PROD 
+*[ 1] search scope=. query="version" -> ok in=2955 out=462   || PROD 
+*[ 2] search scope=. query="unsafe" -> ok in=3669 out=312   || PROD 
+*[ 3] plan action=summarise_findings -> ok in=3192 out=700   || PROD 
+*[ 4] read_file path=README.md -> ok in=1709 out=174   || PROD 
+*[ 5] poll_status resource=db/migration/8738 backoff=1 -> pending in=460 out=95   || RECO pend=1.0 INEFF=1.0 fail=0.7
+*[ 6] poll_status resource=db/migration/8738 backoff=2 -> pending in=298 out=66   || RECO pend=1.0 INEFF=1.0 fail=0.7
+*[ 7] plan action=verify_plan -> ok in=10751 out=1275   || RECO 
+*[ 8] poll_status resource=db/migration/8738 backoff=4 -> pending in=590 out=71   || RECO pend=1.0 INEFF=1.0 fail=0.7
+
+=== V152 oracle=RECOVERY net=RECOVERY t=8 start=1 logits=[0.5, 6.0, -7.0, 0.0]
+ [ 0] read_file path=CONTRIBUTING.md -> ok in=948 out=205   || PROD 
+*[ 1] search scope=internal query="CompactRetries" -> ok in=1692 out=484   || PROD 
+*[ 2] read_file path=internal/core/diff_engine.go lines=1-15 -> ok in=779 out=331   || PROD lines=1.0
+*[ 3] search scope=internal query="path escape" -> ok in=2021 out=149   || PROD 
+*[ 4] write_file path=internal/core/diff_engine.go -> ok in=3007 out=975   || PROD hunk=0.5
+        @ internal/core/diff_engine.go ha0b59ab613 > h1b4b82372e
+*[ 5] run_tests suite=./internal/...:unit -> FAILED 5/10 passed in=3178 out=66   || PROD 
+        ! DeadlineExceeded at internal/orders/serializer_unit_test.go::TestScheduleQuotaDefaultConfig:57 (0x3a70b595)
+*[ 6] http_call GET https://hooks.slack.com/health req=5767ff57 -> error in=526 out=94   || RECO err=1.0 INEFF=1.0 fail=1.0
+        ! ConnectionResetError at hooks.slack.com/health:876 (0x4ee8c69f)
+*[ 7] http_call GET https://hooks.slack.com/health req=ac510678 -> error in=335 out=26   || RECO err=1.0 INEFF=1.0 fail=1.0
+        ! ConnectionResetError at hooks.slack.com/health:876 (0xcc781a5b)
+*[ 8] http_call GET https://hooks.slack.com/health req=fc95db9c -> error in=295 out=37   || RECO err=1.0 INEFF=1.0 fail=1.0
+        ! ConnectionResetError at hooks.slack.com/health:876 (0x69f593e3)
+
+=== V154 oracle=RECOVERY net=RECOVERY t=13 start=6 logits=[0.5, 6.0, -15.0, 0.0]
+ [ 3] read_file path=CONTRIBUTING.md -> ok in=3065 out=114   || PROD 
+ [ 4] list_dir path=tests/smoke -> ok in=689 out=129   || PROD 
+ [ 5] read_file path=tests/unit/test_queue_worker.py -> ok in=2069 out=83   || PROD 
+*[ 6] search scope=src query="deprecated" -> ok in=2286 out=123   || PROD 
+*[ 7] search scope=docs query="def main" -> ok in=3101 out=204   || PROD 
+*[ 8] read_file path=tests/unit/test_webhook.py -> ok in=1864 out=65   || PROD REP=1.0 INEFF=1.0
+*[ 9] run_tests suite=tests/regression -> FAILED 5/10 passed in=4954 out=185   || PROD 
+        ! TypeError at tests/regression/test_config_loader.py::test_reconcile_slug_empty_input:27 (pid 92605)
+*[10] run_tests suite=tests/regression -> FAILED 5/10 passed in=2068 out=226   || RECO CNT=1.0 INEFF=1.0 fail=1.0
+        ! TypeError at tests/regression/test_config_loader.py::test_reconcile_slug_empty_input:27 (0xd02fb2b6)
+*[11] run_tests suite=tests/regression -> FAILED 5/10 passed in=3205 out=160   || RECO CNT=1.0 INEFF=1.0 fail=1.0
+        ! TypeError at tests/regression/test_config_loader.py::test_reconcile_slug_empty_input:27 (pid 46030)
+*[12] run_tests suite=tests/regression -> FAILED 5/10 passed in=2480 out=115   || RECO CNT=1.0 INEFF=1.0 fail=1.0
+        ! TypeError at tests/regression/test_config_loader.py::test_reconcile_slug_empty_input:27 (pid 29065)
+*[13] read_file path=tests/fixtures/invoice.json -> ok in=291 out=354   || RECO 
+
+=== V157 oracle=RECOVERY net=RECOVERY t=7 start=0 logits=[0.5, 6.0, -15.0, 0.0]
+*[ 0] list_dir path=tests/fixtures -> ok in=324 out=58   || PROD 
+*[ 1] read_file path=src/test/java/com/globex/storage/MoneyIntegrationTest.java -> ok in=380 out=167   || PROD 
+*[ 2] plan action=review_diff -> ok in=1661 out=806   || PROD 
+*[ 3] plan action=verify_plan -> ok in=2331 out=191   || PROD 
+*[ 4] run_tests suite=contractTests tests=src/test/java/com/globex/storage/BackoffContractTest.java::decodeKeyExpiredToken,src/test/java/com/globex/storage/BackoffContractTest.java::decodeKeyRounding -> FAILED 0/2 passed in=2296 out=51   || PROD 
+        ! AssertionFailedError at src/test/java/com/globex/storage/BackoffContractTest.java::decodeKeyExpiredToken:394 (0x07d7061b)
+*[ 5] run_tests suite=contractTests tests=src/test/java/com/globex/storage/BackoffContractTest.java::decodeKeyExpiredToken,src/test/java/com/globex/storage/BackoffContractTest.java::decodeKeyRounding -> FAILED 0/2 passed in=560 out=90   || RECO CNT=1.0 INEFF=1.0 fail=1.0
+        ! AssertionFailedError at src/test/java/com/globex/storage/BackoffContractTest.java::decodeKeyExpiredToken:394 (pid 86312)
+*[ 6] run_tests suite=contractTests tests=src/test/java/com/globex/storage/BackoffContractTest.java::decodeKeyExpiredToken,src/test/java/com/globex/storage/BackoffContractTest.java::decodeKeyRounding -> FAILED 0/2 passed in=1398 out=59   || RECO CNT=1.0 INEFF=1.0 fail=1.0
+        ! AssertionFailedError at src/test/java/com/globex/storage/BackoffContractTest.java::decodeKeyExpiredToken:394 (pid 59500)
+*[ 7] read_file path=src/main/java/com/globex/storage/Backoff.java lines=17-26 -> ok in=2637 out=113   || RECO lines=1.0
+
+=== V160 oracle=RECOVERY net=RECOVERY t=16 start=9 logits=[0.5, 6.0, -15.0, 0.0]
+ [ 6] run_tests suite=tests/smoke tests=tests/smoke/test_currency.py::test_normalize_manifest_duplicate_entries,tests/smoke/test_currency.py::test_normalize_manifest_null_field,tests/smoke/test_currency.py::test_normalize_manifest_trailing_slash -> FAILED 0/3 passed in=14598 out=1424   || PROD 
+        ! AssertionError at tests/smoke/test_currency.py::test_normalize_manifest_duplicate_entries:473 (pid 68355)
+ [ 7] run_tests suite=tests/smoke tests=tests/smoke/test_currency.py::test_normalize_manifest_duplicate_entries,tests/smoke/test_currency.py::test_normalize_manifest_null_field,tests/smoke/test_currency.py::test_normalize_manifest_trailing_slash -> FAILED 0/3 passed in=4405 out=208   || RECO CNT=1.0 INEFF=1.0 fail=1.0
+        ! AssertionError at tests/smoke/test_currency.py::test_normalize_manifest_duplicate_entries:473 (pid 24009)
+ [ 8] edit_file path=src/notify/currency.py -> ok in=3518 out=433   || RECO hunk=0.5
+        @ src/notify/currency.py hb6a22e0a42 > h9bcf66627b
+*[ 9] run_tests suite=tests/smoke tests=tests/smoke/test_currency.py::test_normalize_manifest_duplicate_entries,tests/smoke/test_currency.py::test_normalize_manifest_null_field,tests/smoke/test_currency.py::test_normalize_manifest_trailing_slash -> ok 3/3 passed in=824 out=75   || RECO 
+*[10] search scope=. query="env var" -> ok in=1521 out=262   || RECO 
+*[11] run_tests suite=tests/smoke tests=tests/smoke/test_config_loader.py::test_decode_schema_concurrent_access,tests/smoke/test_config_loader.py::test_decode_schema_partial_page -> FAILED 0/2 passed in=6418 out=627   || RECO CNT=1.0 INEFF=1.0 fail=1.0
+        ! KeyError at tests/smoke/test_config_loader.py::test_decode_schema_concurrent_access:806 (pid 98910)
+*[12] run_tests suite=tests/smoke tests=tests/smoke/test_config_loader.py::test_decode_schema_concurrent_access,tests/smoke/test_config_loader.py::test_decode_schema_partial_page -> FAILED 0/2 passed in=7756 out=196   || RECO CNT=1.0 INEFF=1.0 fail=1.0
+        ! KeyError at tests/smoke/test_config_loader.py::test_decode_schema_concurrent_access:806 (pid 4291)
+*[13] run_tests suite=tests/smoke tests=tests/smoke/test_config_loader.py::test_decode_schema_concurrent_access,tests/smoke/test_config_loader.py::test_decode_schema_partial_page -> FAILED 0/2 passed in=5133 out=871   || RECO CNT=1.0 INEFF=1.0 fail=1.0
+        ! KeyError at tests/smoke/test_config_loader.py::test_decode_schema_concurrent_access:806 (pid 20044)
+*[14] read_file path=src/ingest/config_loader.py lines=6-16 -> ok in=7082 out=213   || RECO lines=1.0
+*[15] edit_file path=src/ingest/config_loader.py -> ok in=3237 out=335   || RECO hunk=0.5
+        @ src/ingest/config_loader.py h44b770381a > h19dea38778
+*[16] run_tests suite=tests/smoke tests=tests/smoke/test_config_loader.py::test_decode_schema_concurrent_access,tests/smoke/test_config_loader.py::test_decode_schema_partial_page -> ok 2/2 passed in=1260 out=166   || RECO 
+
+=== V167 oracle=RECOVERY net=RECOVERY t=14 start=7 logits=[0.5, 6.0, -15.0, 0.0]
+ [ 4] search scope=. query="def main" -> ok in=485 out=63   || PROD 
+ [ 5] http_call POST https://maps.googleapis.com/graphql body={"dry_run": 114, "status": true} req=f1bf411f -> error in=369 out=16   || RECO err=1.0 INEFF=1.0 fail=1.0
+        ! HTTP404 at maps.googleapis.com/graphql:467 (pid 95303)
+ [ 6] http_call POST https://maps.googleapis.com/graphql body={"dry_run": 114, "status": true} req=6a9dc28c -> error in=115 out=43   || RECO err=1.0 INEFF=1.0 fail=1.0
+        ! HTTP404 at maps.googleapis.com/graphql:467 (0xa15aaa93)
+*[ 7] write_file path=src/metrics/ledger.py -> ok in=1194 out=192   || RECO hunk=0.5
+        @ src/metrics/ledger.py h785ce2dcb7 > hefedb03d14
+*[ 8] http_call POST https://maps.googleapis.com/graphql body={"dry_run": 114, "status": true} req=3b3cd305 -> ok in=461 out=10   || RECO 
+*[ 9] plan action=review_diff -> ok in=2605 out=125   || RECO 
+*[10] read_file path=Makefile -> ok in=670 out=48   || RECO 
+*[11] read_file path=src/ingest/scheduler.py -> ok in=417 out=81   || PROD 
+*[12] http_call GET https://staging-api.acme.io/status req=22397e9f -> error in=766 out=20   || RECO err=1.0 INEFF=1.0 fail=1.0
+        ! HTTP502 at staging-api.acme.io/status:482 (pid 70539)
+*[13] http_call GET https://staging-api.acme.io/status req=e7d8d8f0 -> error in=162 out=81   || RECO err=1.0 INEFF=1.0 fail=1.0
+        ! HTTP502 at staging-api.acme.io/status:482 (0xd777a291)
+*[14] http_call GET https://staging-api.acme.io/status req=ead036ce -> ok in=210 out=26   || RECO 
+
+=== V173 oracle=RECOVERY net=RECOVERY t=18 start=11 logits=[0.5, 6.0, -15.0, 0.0]
+ [ 8] run_tests suite=spec:feature tests=spec/core/migrations_feature_spec.rb::migrations decode manifest case folding,spec/core/migrations_feature_spec.rb::migrations decode manifest sorted order -> FAILED 0/2 passed in=3620 out=160   || RECO 
+        ! ZeroDivisionError at spec/core/migrations_feature_spec.rb::migrations decode manifest case folding:174 (pid 42205)
+ [ 9] read_file path=lib/core/migrations.rb lines=22-27 -> ok in=969 out=206   || RECO lines=1.0
+ [10] write_file path=lib/core/migrations.rb -> ok in=2574 out=460   || RECO hunk=0.5
+        @ lib/core/migrations.rb h19993a17ac > h7e6661a670
+*[11] run_tests suite=spec:feature -> FAILED 5/7 passed in=2772 out=131   || PROD 
+        ! ZeroDivisionError at spec/search/session_feature_spec.rb::session resolve token expired token:613 (0x12581928)
+*[12] list_dir path=scripts -> ok in=884 out=200   || PROD 
+*[13] http_call PUT https://registry.npmjs.org/status req=3ee8d242 -> ok in=1284 out=92   || PROD 
+*[14] poll_status resource=index/rebuild/ledger backoff=15 -> pending in=277 out=61   || RECO pend=1.0 INEFF=1.0 fail=0.7
+*[15] poll_status resource=index/rebuild/ledger backoff=15 -> pending in=280 out=61   || RECO pend=1.0 INEFF=1.0 fail=0.7
+*[16] search scope=src query="class Config" -> ok in=1981 out=142   || RECO 
+*[17] poll_status resource=index/rebuild/ledger backoff=15 -> pending in=275 out=47   || RECO pend=1.0 INEFF=1.0 fail=0.7
+*[18] plan action=decompose -> ok in=1662 out=477   || RECO 
+
+=== V174 oracle=RECOVERY net=RECOVERY t=14 start=7 logits=[0.5, 6.0, 0.9, 0.0]
+ [ 4] list_dir path=spec -> ok in=817 out=210   || PROD 
+ [ 5] list_dir path=deploy -> ok in=1859 out=217   || PROD 
+ [ 6] search scope=. query="feature flag" -> ok in=4516 out=303   || PROD 
+*[ 7] read_file path=docs/runbook.md -> ok in=2755 out=253   || PROD 
+*[ 8] search scope=src query="import json" -> ok in=4338 out=253   || PROD REP=1.0 INEFF=1.0
+*[ 9] list_dir path=docs/adr -> ok in=838 out=287   || PROD 
+*[10] search scope=. query="deprecated" -> ok in=2434 out=173   || PROD REP=1.0 INEFF=1.0
+*[11] run_tests suite=spec:feature tests=spec/auth/token_bucket_feature_spec.rb::token_bucket encode amount leap year,spec/auth/token_bucket_feature_spec.rb::token_bucket encode amount sorted order,spec/auth/token_bucket_feature_spec.rb::token_bucket encode TRUNC -> FAILED 0/3 passed in=9078 out=284   || PROD 
+        ! ArgumentError at spec/auth/token_bucket_feature_spec.rb::token_bucket encode amount leap year:712 (pid 9503)
+*[12] run_tests suite=spec:feature tests=spec/auth/token_bucket_feature_spec.rb::token_bucket encode amount leap year,spec/auth/token_bucket_feature_spec.rb::token_bucket encode amount sorted order,spec/auth/token_bucket_feature_spec.rb::token_bucket encode TRUNC -> FAILED 0/3 passed in=5290 out=293   || RECO CNT=1.0 INEFF=1.0 fail=1.0
+        ! ArgumentError at spec/auth/token_bucket_feature_spec.rb::token_bucket encode amount leap year:712 (pid 50919)
+*[13] run_tests suite=spec:feature tests=spec/auth/token_bucket_feature_spec.rb::token_bucket encode amount leap year,spec/auth/token_bucket_feature_spec.rb::token_bucket encode amount sorted order,spec/auth/token_bucket_feature_spec.rb::token_bucket encode TRUNC -> FAILED 0/3 passed in=6530 out=207   || RECO CNT=1.0 INEFF=1.0 fail=1.0
+        ! ArgumentError at spec/auth/token_bucket_feature_spec.rb::token_bucket encode amount leap year:712 (0xd13e2df8)
+*[14] run_tests suite=spec:feature tests=spec/auth/token_bucket_feature_spec.rb::token_bucket encode amount leap year,spec/auth/token_bucket_feature_spec.rb::token_bucket encode amount sorted order,spec/auth/token_bucket_feature_spec.rb::token_bucket encode TRUNC -> FAILED 0/3 passed in=5575 out=247   || RECO CNT=1.0 INEFF=1.0 fail=1.0
+        ! ArgumentError at spec/auth/token_bucket_feature_spec.rb::token_bucket encode amount leap year:712 (pid 19911)
+
+=== V175 oracle=RECOVERY net=PRODUCTIVE t=26 start=19 logits=[0.5, 0.0, -12.0, 0.0]
+ [16] poll_status resource=k8s/rollout/search -> pending in=227 out=42   || RECO pend=1.0 INEFF=1.0 fail=0.7
+ [17] poll_status resource=k8s/rollout/search -> pending in=231 out=25   || RECO pend=1.0 INEFF=1.0 fail=0.7
+ [18] read_file path=docs/api.md -> ok in=905 out=87   || RECO REP=1.0 INEFF=1.0
+*[19] poll_status resource=k8s/rollout/search -> pending in=204 out=29   || RECO pend=1.0 INEFF=1.0 fail=0.7
+*[20] search scope=docs query="logger" -> ok in=898 out=103   || RECO 
+*[21] poll_status resource=k8s/rollout/search -> pending in=161 out=39   || STAL pend=1.0 INEFF=1.0 fail=0.7
+*[22] search scope=. query="metrics.increment" -> ok in=2237 out=132   || PROD 
+*[23] poll_status resource=k8s/rollout/search -> ready in=180 out=36   || PROD 
+*[24] read_file path=internal/api/config_loader.go lines=8-16 -> ok in=1065 out=174   || RECO lines=1.0
+*[25] write_file path=internal/api/config_loader.go -> ok in=1592 out=474   || RECO hunk=0.5
+        @ internal/api/config_loader.go hc4fdff6eb2 > h3c6c11dd85
+*[26] run_tests suite=./internal/...:integration -> FAILED 12/15 passed in=2093 out=94   || PROD 
+        ! AssertionFailed at internal/api/quota_integration_test.go::TestResolveAmountCaseFolding:475 (0xf0f6c399)
+
+=== V176 oracle=RECOVERY net=RECOVERY t=10 start=3 logits=[0.5, 6.0, -7.1, 0.0]
+ [ 0] search scope=src query="encodeManifest" -> ok in=869 out=96   || PROD 
+ [ 1] read_file path=src/main/java/com/hooli/billing/Router.java lines=26-37 -> ok in=1006 out=162   || PROD lines=1.0
+ [ 2] search scope=docs query="require_relative" -> ok in=737 out=156   || PROD 
+*[ 3] plan action=choose_next_step -> ok in=2798 out=580   || PROD 
+*[ 4] read_file path=checkstyle.xml -> ok in=552 out=132   || PROD 
+*[ 5] read_file path=src/main/java/com/hooli/billing/Uploader.java -> ok in=1197 out=135   || PROD 
+*[ 6] run_tests suite=integrationTests -> FAILED 8/11 passed in=1174 out=141   || PROD 
+        ! NumberFormatException at src/test/java/com/hooli/billing/RouterIntegrationTest.java::encodeManifestDefaultConfig:821 (pid 71674)
+*[ 7] run_tests suite=integrationTests -> FAILED 8/11 passed in=3537 out=165   || RECO CNT=1.0 INEFF=1.0 fail=1.0
+        ! NumberFormatException at src/test/java/com/hooli/billing/RouterIntegrationTest.java::encodeManifestDefaultConfig:821 (pid 54298)
+*[ 8] read_file path=src/test/java/com/hooli/billing/RouterIntegrationTest.java -> ok in=2610 out=69   || RECO 
+*[ 9] run_tests suite=integrationTests -> FAILED 8/11 passed in=3125 out=67   || RECO CNT=1.0 INEFF=1.0 fail=1.0
+        ! NumberFormatException at src/test/java/com/hooli/billing/RouterIntegrationTest.java::encodeManifestDefaultConfig:821 (0xfd0dc72d)
+*[10] run_tests suite=integrationTests -> FAILED 8/11 passed in=419 out=29   || RECO CNT=1.0 INEFF=1.0 fail=1.0
+        ! NumberFormatException at src/test/java/com/hooli/billing/RouterIntegrationTest.java::encodeManifestDefaultConfig:821 (pid 46487)
+
+=== V177 oracle=RECOVERY net=RECOVERY t=7 start=0 logits=[0.5, 6.0, -7.0, 0.0]
+*[ 0] list_dir path=tests/integration -> ok in=256 out=240   || PROD 
+*[ 1] plan action=prioritise -> ok in=2750 out=433   || PROD 
+*[ 2] run_tests suite=tests/integration tests=tests/integration/test_router.py::test_expand_schema_partial_page,tests/integration/test_router.py::test_expand_schema_round_trip,tests/integration/test_router.py::test_expand_schema_timezone_offset -> FAILED 0/3 passed in=4604 out=92   || PROD 
+        ! KeyError at tests/integration/test_router.py::test_expand_schema_partial_page:437 (0x409c80df)
+*[ 3] read_file path=src/web/router.py lines=18-24 -> ok in=393 out=99   || PROD lines=1.0
+*[ 4] edit_file path=src/web/router.py -> ok in=5058 out=566   || PROD hunk=0.5
+        @ src/web/router.py hee0f5c68dd > hebc56ffcda
+*[ 5] run_tests suite=tests/integration tests=tests/integration/test_router.py::test_expand_schema_partial_page,tests/integration/test_router.py::test_expand_schema_round_trip,tests/integration/test_router.py::test_expand_schema_timezone_offset -> ok 3/3 passed in=393 out=67   || PROD 
+*[ 6] http_call POST https://db-proxy.internal/v1/embeddings body={"dry_run": "dry_run-7003", "name": false} req=2b229cbc -> error in=1004 out=41   || RECO err=1.0 INEFF=1.0 fail=1.0
+        ! ConnectionRefusedError at db-proxy.internal/v1/embeddings:338 (pid 41904)
+*[ 7] http_call POST https://db-proxy.internal/v1/embeddings body={"dry_run": "dry_run-7003", "name": false} req=86ffda14 -> error in=985 out=91   || RECO err=1.0 INEFF=1.0 fail=1.0
+        ! ConnectionRefusedError at db-proxy.internal/v1/embeddings:338 (0x8024ef75)
+
+=== V178 oracle=RECOVERY net=RECOVERY t=10 start=3 logits=[0.5, 6.0, -7.0, 0.0]
+ [ 0] read_file path=docs/runbook.md -> ok in=390 out=22   || PROD 
+ [ 1] read_file path=tox.ini -> ok in=335 out=26   || PROD 
+ [ 2] search scope=src query="apply_entry" -> ok in=280 out=34   || PROD REP=1.0 INEFF=1.0
+*[ 3] read_file path=src/notify/invoice.py lines=22-30 -> ok in=279 out=52   || PROD lines=1.0
+*[ 4] lint target=ruff -> FAILED in=863 out=149   || RECO FNC=1.0 fail=1.0
+        ! E501 at src/notify/invoice.py:380 (pid 85341)
+*[ 5] write_file path=src/notify/invoice.py -> ok in=626 out=122   || RECO hunk=0.5
+        @ src/notify/invoice.py hef26897556 > hb8f19116f9
+*[ 6] run_tests suite=tests/unit tests=tests/unit/test_invoice.py::test_apply_entry_case_folding,tests/unit/test_invoice.py::test_apply_entry_rounding -> ok 2/2 passed in=337 out=56   || RECO 
+*[ 7] poll_status resource=dns/propagation/gateway backoff=10 -> pending in=384 out=18   || RECO pend=1.0 INEFF=1.0 fail=0.7
+*[ 8] poll_status resource=dns/propagation/gateway backoff=10 -> pending in=179 out=17   || RECO pend=1.0 INEFF=1.0 fail=0.7
+*[ 9] search scope=src query="lru_cache" -> ok in=522 out=55   || RECO 
+*[10] poll_status resource=dns/propagation/gateway backoff=10 -> pending in=219 out=19   || RECO pend=1.0 INEFF=1.0 fail=0.7
+
+=== V179 oracle=RECOVERY net=RECOVERY t=23 start=16 logits=[0.5, 6.0, -15.0, 0.0]
+ [13] search scope=internal query="ReconcileCursor" -> ok in=708 out=66   || RECO 
+ [14] read_file path=internal/billing/tokenizer.go lines=7-20 -> ok in=718 out=68   || PROD lines=1.0
+ [15] build target=go-build -> FAILED in=505 out=95   || RECO FNC=1.0 fail=1.0
+        ! CompileError at internal/core/cache.go:147 (0xe494250d)
+*[16] edit_file path=internal/billing/tokenizer.go -> ok in=561 out=383   || RECO hunk=0.5
+        @ internal/billing/tokenizer.go h2677bf3ad2 > h9ad608a913
+*[17] run_tests suite=./internal/...:integration tests=internal/billing/tokenizer_integration_test.go::TestReconcileCursorNullField,internal/billing/tokenizer_integration_test.go::TestReconcileCursorRounding -> ok 2/2 passed in=579 out=47   || RECO 
+*[18] run_tests suite=./internal/...:integration tests=internal/billing/serializer_integration_test.go::TestValidateRangesMissingKey,internal/billing/serializer_integration_test.go::TestValidateRangesTimezoneOffset -> FAILED 0/2 passed in=2066 out=72   || RECO 
+        ! RuntimePanic at internal/billing/serializer_integration_test.go::TestValidateRangesMissingKey:268 (pid 32820)
+*[19] run_tests suite=./internal/...:integration tests=internal/billing/serializer_integration_test.go::TestValidateRangesMissingKey,internal/billing/serializer_integration_test.go::TestValidateRangesTimezoneOffset -> FAILED 0/2 passed in=1615 out=63   || RECO CNT=1.0 INEFF=1.0 fail=1.0
+        ! RuntimePanic at internal/billing/serializer_integration_test.go::TestValidateRangesMissingKey:268 (pid 67162)
+*[20] edit_file path=internal/billing/serializer.go -> ok in=2957 out=259   || RECO hunk=0.5
+        @ internal/billing/serializer.go h6f64e45563 > heb5eab066a
+*[21] run_tests suite=./internal/...:integration tests=internal/billing/serializer_integration_test.go::TestValidateRangesMissingKey,internal/billing/serializer_integration_test.go::TestValidateRangesTimezoneOffset -> ok 2/2 passed in=483 out=22   || RECO 
+*[22] plan action=prioritise -> ok in=1182 out=227   || RECO 
+*[23] plan action=review_diff -> ok in=2434 out=445   || RECO 
+
+=== V180 oracle=RECOVERY net=RECOVERY t=8 start=1 logits=[0.5, 6.0, -7.0, 0.0]
+ [ 0] run_tests suite=spec:request tests=spec/ingest/parser_request_spec.rb::parser format digest duplicate entries,spec/ingest/parser_request_spec.rb::parser format digest missing key -> FAILED 0/2 passed in=4896 out=175   || PROD 
+        ! TypeError at spec/ingest/parser_request_spec.rb::parser format digest duplicate entries:535 (pid 69203)
+*[ 1] read_file path=lib/ingest/parser.rb lines=20-29 -> ok in=698 out=1305   || PROD lines=1.0
+*[ 2] write_file path=lib/ingest/parser.rb -> ok in=4607 out=1427   || PROD hunk=0.5
+        @ lib/ingest/parser.rb hd97423f8ca > h5a39bc3cb0
+*[ 3] search scope=src query="FIXME" -> ok in=1549 out=120   || PROD 
+*[ 4] list_dir path=config -> ok in=470 out=67   || PROD 
+*[ 5] search scope=docs query="FIXME" -> ok in=1581 out=711   || PROD REP=1.0 INEFF=1.0
+*[ 6] read_file path=scripts/release.sh -> ok in=793 out=127   || PROD 
+*[ 7] http_call PUT https://staging-api.acme.io/internal/flags req=5fe0497d -> error in=514 out=144   || RECO err=1.0 INEFF=1.0 fail=1.0
+        ! TimeoutError at staging-api.acme.io/internal/flags:494 (pid 88530)
+*[ 8] http_call PUT https://staging-api.acme.io/internal/flags req=41e21307 -> error in=588 out=197   || RECO err=1.0 INEFF=1.0 fail=1.0
+        ! TimeoutError at staging-api.acme.io/internal/flags:494 (0xecdf8b9d)
+
+=== V181 oracle=RECOVERY net=PRODUCTIVE t=14 start=7 logits=[0.5, -6.0, -9.0, 0.0]
+ [ 4] run_tests suite=tests/smoke tests=tests/smoke/test_token_bucket.py::test_estimate_slug_leap_year -> FAILED 0/1 passed in=2847 out=307   || PROD 
+        ! KeyError at tests/smoke/test_token_bucket.py::test_estimate_slug_leap_year:609 (pid 15846)
+ [ 5] run_tests suite=tests/smoke tests=tests/smoke/test_locale.py::test_encode_window_negative_values -> FAILED 0/1 passed in=12515 out=222   || RECO CNT=1.0 INEFF=1.0 fail=1.0
+        ! TypeError at tests/smoke/test_locale.py::test_encode_window_negative_values:896 (0xdd93d6e7)
+ [ 6] run_tests suite=tests/smoke tests=tests/smoke/test_token_bucket.py::test_estimate_slug_unicode -> FAILED 0/1 passed in=5072 out=314   || RECO CNT=1.0 INEFF=1.0 fail=1.0
+        ! KeyError at tests/smoke/test_token_bucket.py::test_estimate_slug_unicode:743 (pid 72620)
+*[ 7] run_tests suite=tests/smoke tests=tests/smoke/test_locale.py::test_encode_window_round_trip -> FAILED 0/1 passed in=9979 out=130   || RECO CNT=1.0 INEFF=1.0 fail=1.0
+        ! TypeError at tests/smoke/test_locale.py::test_encode_window_round_trip:689 (pid 15117)
+*[ 8] run_tests suite=tests/smoke tests=tests/smoke/test_token_bucket.py::test_estimate_slug_leap_year,tests/smoke/test_token_bucket.py::test_estimate_slug_unicode -> FAILED 0/2 passed in=8036 out=155   || RECO CNT=1.0 INEFF=1.0 fail=1.0
+        ! KeyError at tests/smoke/test_token_bucket.py::test_estimate_slug_leap_year:609 (0x10c0dddb)
+*[ 9] run_tests suite=tests/smoke tests=tests/smoke/test_token_bucket.py::test_estimate_slug_leap_year,tests/smoke/test_token_bucket.py::test_estimate_slug_unicode -> FAILED 0/2 passed in=1630 out=142   || STAL CNT=1.0 INEFF=1.0 fail=1.0
+        ! KeyError at tests/smoke/test_token_bucket.py::test_estimate_slug_leap_year:609 (pid 45240)
+*[10] read_file path=src/cli/token_bucket.py lines=5-17 -> ok in=3333 out=311   || PROD lines=1.0
+*[11] edit_file path=src/cli/token_bucket.py -> ok in=2029 out=718   || PROD hunk=0.5
+        @ src/cli/token_bucket.py h931dbb8175 > hfaed479774
+*[12] run_tests suite=tests/smoke tests=tests/smoke/test_token_bucket.py::test_estimate_slug_leap_year,tests/smoke/test_token_bucket.py::test_estimate_slug_unicode -> ok 2/2 passed in=3786 out=177   || PROD 
+*[13] read_file path=src/auth/locale.py lines=9-23 -> ok in=618 out=146   || PROD lines=1.0
+*[14] write_file path=src/auth/locale.py -> ok in=1808 out=1501   || PROD hunk=0.5
+        @ src/auth/locale.py h8ad72ee818 > h997eb4d1c1
+
+=== V182 oracle=RECOVERY net=RECOVERY t=12 start=5 logits=[0.5, 6.0, -15.0, 0.0]
+ [ 2] read_file path=logs/quota.log lines=2-2 -> ok in=699 out=112   || PROD lines=1.0
+ [ 3] build target=rake-build -> FAILED in=899 out=98   || RECO FNC=1.0 fail=1.0
+        ! GemNotFound at lib/cli/quota.rb:2 (0xcb0da7b6)
+ [ 4] edit_file path=lib/cli/quota.rb -> ok in=1286 out=160   || RECO hunk=0.5
+        @ lib/cli/quota.rb haf4e12b532 > h2360d35ba7
+*[ 5] read_file path=docs/architecture.md -> ok in=2287 out=65   || RECO 
+*[ 6] http_call POST https://vault.acme.internal/v1/jobs/{job_id} body={"dry_run": "dry_run-b8e3", "limit": true, TRUNC req=75a0818a -> error in=265 out=109   || RECO err=1.0 INEFF=1.0 fail=1.0
+        ! HTTP503 at vault.acme.internal/v1/jobs/{job_id}:731 (pid 86964)
+*[ 7] http_call POST https://vault.acme.internal/v1/jobs/{job_id} body={"dry_run": "dry_run-b8e3", "limit": true, TRUNC req=621b2df5 -> error in=857 out=44   || RECO err=1.0 INEFF=1.0 fail=1.0
+        ! HTTP503 at vault.acme.internal/v1/jobs/{job_id}:731 (0xc34cfd2c)
+*[ 8] plan action=reflect -> ok in=3590 out=521   || RECO 
+*[ 9] http_call POST https://vault.acme.internal/v1/jobs/{job_id} body={"dry_run": "dry_run-b8e3", "limit": true, TRUNC req=8bc16d4f -> ok in=659 out=58   || RECO 
+*[10] search scope=lib query="expand_path" -> ok in=2095 out=188   || RECO 
+*[11] read_file path=logs/quota.log lines=1-3 -> ok in=778 out=84   || RECO lines=1.0
+*[12] lint target=brakeman -> FAILED in=707 out=117   || RECO FNC=1.0 fail=1.0
+        ! Style/StringLiterals at lib/cli/quota.rb:2 (pid 97279)
+
+=== V183 oracle=RECOVERY net=RECOVERY t=16 start=9 logits=[0.5, 6.0, -7.1, 0.0]
+ [ 6] list_dir path=src/main/java/com/initech -> ok in=1586 out=172   || PROD 
+ [ 7] search scope=docs query="def main" -> ok in=2530 out=172   || PROD 
+ [ 8] list_dir path=tests -> ok in=265 out=158   || PROD 
+*[ 9] search scope=. query="async def" -> ok in=5685 out=346   || PROD 
+*[10] read_file path=docs/onboarding.md -> ok in=2411 out=286   || PROD 
+*[11] search scope=src query="interface{}" -> ok in=1107 out=192   || PROD 
+*[12] list_dir path=src/main/java -> ok in=673 out=115   || PROD 
+*[13] search scope=docs query="require_relative" -> ok in=1517 out=492   || PROD 
+*[14] run_tests suite=contractTests -> FAILED 8/11 passed in=3625 out=297   || PROD 
+        ! ArrayIndexOutOfBoundsException at src/test/java/com/initech/geo/ChecksumContractTest.java::dispatchOffsetConcurrentAccess:803 (0x2d8d1e2f)
+*[15] run_tests suite=contractTests -> FAILED 8/11 passed in=14364 out=135   || RECO CNT=1.0 INEFF=1.0 fail=1.0
+        ! ArrayIndexOutOfBoundsException at src/test/java/com/initech/geo/ChecksumContractTest.java::dispatchOffsetConcurrentAccess:803 (pid 60945)
+*[16] run_tests suite=contractTests -> FAILED 8/11 passed in=3287 out=342   || RECO CNT=1.0 INEFF=1.0 fail=1.0
+        ! ArrayIndexOutOfBoundsException at src/test/java/com/initech/geo/ChecksumContractTest.java::dispatchOffsetConcurrentAccess:803 (pid 6909)
+
+=== V184 oracle=RECOVERY net=RECOVERY t=8 start=1 logits=[0.5, 6.0, -7.0, 0.0]
+ [ 0] search scope=docs query="panic!" -> ok in=1269 out=119   || PROD 
+*[ 1] read_file path=tests/integration/test_locale.py -> ok in=982 out=60   || PROD 
+*[ 2] plan action=decompose -> ok in=1023 out=229   || PROD 
+*[ 3] plan action=choose_next_step -> ok in=1681 out=320   || PROD 
+*[ 4] read_file path=tests/regression/test_thumbnailer.py -> ok in=1058 out=119   || PROD 
+*[ 5] poll_status resource=k8s/rollout/gateway -> pending in=49 out=15   || RECO pend=1.0 INEFF=1.0 fail=0.7
+*[ 6] poll_status resource=k8s/rollout/gateway -> pending in=111 out=27   || RECO pend=1.0 INEFF=1.0 fail=0.7
+*[ 7] poll_status resource=k8s/rollout/gateway -> pending in=232 out=148   || RECO pend=1.0 INEFF=1.0 fail=0.7
+*[ 8] poll_status resource=k8s/rollout/gateway -> pending in=46 out=27   || RECO pend=1.0 INEFF=1.0 fail=0.7
+
+=== V185 oracle=RECOVERY net=RECOVERY t=11 start=4 logits=[0.5, 6.0, -7.1, 0.0]
+ [ 1] plan action=estimate_scope -> ok in=4882 out=321   || PROD 
+ [ 2] read_file path=scripts/release.sh -> ok in=1213 out=169   || PROD 
+ [ 3] run_tests suite=unit tests=tests/permissions_unit.rs::merge_retries_rounding,tests/permissions_unit.rs::merge_retries_zero_division -> FAILED 0/2 passed in=11800 out=117   || PROD 
+        ! AssertionFailed at tests/permissions_unit.rs::merge_retries_rounding:81 (pid 48465)
+*[ 4] run_tests suite=unit tests=tests/permissions_unit.rs::merge_retries_rounding,tests/permissions_unit.rs::merge_retries_zero_division -> FAILED 0/2 passed in=1615 out=382   || RECO CNT=1.0 INEFF=1.0 fail=1.0
+        ! AssertionFailed at tests/permissions_unit.rs::merge_retries_rounding:81 (0x829db15e)
+*[ 5] read_file path=src/media/permissions.rs lines=8-17 -> ok in=671 out=210   || RECO lines=1.0
+*[ 6] edit_file path=src/media/permissions.rs -> ok in=1554 out=473   || RECO hunk=0.5
+        @ src/media/permissions.rs h44939cc3da > h6e71082a2f
+*[ 7] run_tests suite=unit tests=tests/permissions_unit.rs::merge_retries_rounding,tests/permissions_unit.rs::merge_retries_zero_division -> ok 2/2 passed in=2385 out=230   || RECO 
+*[ 8] search scope=src query="flush_entry" -> ok in=1128 out=451   || RECO 
+*[ 9] edit_file path=src/media/permissions.rs -> ok in=1182 out=729   || PROD hunk=0.5
+        @ src/media/permissions.rs h12745c1ea3 > h008d1b54ce
+*[10] run_tests suite=unit tests=tests/session_unit.rs::load_header_round_trip,tests/session_unit.rs::load_header_utf8_bom,tests/session_unit.rs::load_header_zero_division -> FAILED 0/3 passed in=3777 out=116   || RECO CNT=1.0 INEFF=1.0 fail=1.0
+        ! AssertionFailed at tests/session_unit.rs::load_header_round_trip:588 (0x641b3508)
+*[11] run_tests suite=unit tests=tests/session_unit.rs::load_header_round_trip,tests/session_unit.rs::load_header_utf8_bom,tests/session_unit.rs::load_header_zero_division -> FAILED 0/3 passed in=3924 out=87   || RECO CNT=1.0 INEFF=1.0 fail=1.0
+        ! AssertionFailed at tests/session_unit.rs::load_header_round_trip:588 (pid 91365)
+
+=== V186 oracle=RECOVERY net=RECOVERY t=11 start=4 logits=[0.5, 6.0, -15.0, 0.0]
+ [ 1] read_file path=CONTRIBUTING.md -> ok in=509 out=72   || PROD 
+ [ 2] search scope=src query="version" -> ok in=369 out=132   || PROD 
+ [ 3] plan action=review_diff -> ok in=6155 out=1077   || PROD 
+*[ 4] plan action=checkpoint -> ok in=671 out=821   || PROD 
+*[ 5] list_dir path=lib -> ok in=382 out=124   || PROD 
+*[ 6] http_call PUT https://vault.acme.internal/status req=19b00735 -> ok in=936 out=110   || PROD 
+*[ 7] poll_status resource=dns/propagation/api backoff=5 -> pending in=228 out=24   || RECO pend=1.0 INEFF=1.0 fail=0.7
+*[ 8] poll_status resource=dns/propagation/api backoff=5 -> pending in=359 out=38   || RECO pend=1.0 INEFF=1.0 fail=0.7
+*[ 9] poll_status resource=dns/propagation/api backoff=5 -> pending in=170 out=15   || RECO pend=1.0 INEFF=1.0 fail=0.7
+*[10] poll_status resource=dns/propagation/api backoff=5 -> ready in=127 out=45   || RECO 
+*[11] run_tests suite=spec:request tests=spec/orders/feature_flags_request_spec.rb::feature_flags convert cursor duplicate entries,spec/orders/feature_flags_request_spec.rb::feature_flags convert cursor negative values,spec/orders/feature_flags_request_spec.rb::feature_flags convert TRUNC -> FAILED 0/3 passed in=989 out=67   || RECO 
+        ! ArgumentError at spec/orders/feature_flags_request_spec.rb::feature_flags convert cursor duplicate entries:505 (pid 90634)
+
+=== V187 oracle=RECOVERY net=RECOVERY t=15 start=8 logits=[0.5, 6.0, -7.0, 0.0]
+ [ 5] search scope=. query="assert_eq" -> ok in=4330 out=507   || PROD 
+ [ 6] list_dir path=tests -> ok in=3841 out=599   || PROD 
+ [ 7] poll_status resource=k8s/rollout/worker -> pending in=262 out=72   || RECO pend=1.0 INEFF=1.0 fail=0.7
+*[ 8] poll_status resource=k8s/rollout/worker -> pending in=666 out=49   || RECO pend=1.0 INEFF=1.0 fail=0.7
+*[ 9] poll_status resource=k8s/rollout/worker -> pending in=545 out=92   || RECO pend=1.0 INEFF=1.0 fail=0.7
+*[10] poll_status resource=k8s/rollout/worker -> pending in=301 out=65   || RECO pend=1.0 INEFF=1.0 fail=0.7
+*[11] poll_status resource=k8s/rollout/worker -> pending in=270 out=35   || RECO pend=1.0 INEFF=1.0 fail=0.7
+*[12] poll_status resource=k8s/rollout/worker -> pending in=444 out=101   || RECO pend=1.0 INEFF=1.0 fail=0.7
+*[13] poll_status resource=k8s/rollout/worker -> ready in=303 out=59   || RECO 
+*[14] run_tests suite=unitTests tests=src/test/java/com/acme/worker/TokenBucketUnitTest.java::loadChunkConcurrentAccess,src/test/java/com/acme/worker/TokenBucketUnitTest.java::loadChunkUtf8Bom,src/test/java/com/acme/worker/TokenBucketUnitTest.java::loadChunkZeroDivision -> FAILED 0/3 passed in=1561 out=124   || RECO 
+        ! IllegalStateException at src/test/java/com/acme/worker/TokenBucketUnitTest.java::loadChunkConcurrentAccess:413 (0x910ff56f)
+*[15] read_file path=src/main/java/com/acme/worker/TokenBucket.java lines=26-37 -> ok in=3251 out=152   || RECO lines=1.0
+
+=== V188 oracle=RECOVERY net=RECOVERY t=10 start=3 logits=[0.5, 6.0, -15.0, 0.0]
+ [ 0] search scope=. query="def main" -> ok in=321 out=67   || PROD 
+ [ 1] run_tests suite=spec:request tests=spec/media/slugify_request_spec.rb::slugify normalize offset concurrent access,spec/media/slugify_request_spec.rb::slugify normalize offset duplicate entries -> FAILED 0/2 passed in=3328 out=106   || PROD 
+        ! ZeroDivisionError at spec/media/slugify_request_spec.rb::slugify normalize offset concurrent access:669 (pid 91189)
+ [ 2] read_file path=lib/media/slugify.rb lines=6-19 -> ok in=792 out=61   || PROD lines=1.0
+*[ 3] read_file path=Gemfile lines=9-14 -> ok in=456 out=125   || PROD lines=1.0
+*[ 4] edit_file path=lib/media/slugify.rb -> ok in=724 out=270   || PROD hunk=0.5
+        @ lib/media/slugify.rb hdb4cf679e6 > h1b9a4e7e3d
+*[ 5] run_tests suite=spec:request -> FAILED 11/17 passed in=2492 out=94   || PROD 
+        ! NameError at spec/sync/quota_request_spec.rb::quota compute total concurrent access:463 (pid 34706)
+*[ 6] http_call GET https://api.openai-proxy.acme.dev/v1/jobs/{job_id} req=05fc352f -> error in=352 out=22   || RECO err=1.0 INEFF=1.0 fail=1.0
+        ! ConnectionRefusedError at api.openai-proxy.acme.dev/v1/jobs/{job_id}:532 (pid 90840)
+*[ 7] http_call GET https://api.openai-proxy.acme.dev/v1/jobs/{job_id} req=ccbec13e -> error in=111 out=27   || RECO err=1.0 INEFF=1.0 fail=1.0
+        ! ConnectionRefusedError at api.openai-proxy.acme.dev/v1/jobs/{job_id}:532 (0xe79bb31f)
+*[ 8] http_call GET https://api.openai-proxy.acme.dev/v1/jobs/{job_id} req=453a5e83 -> error in=215 out=64   || RECO err=1.0 INEFF=1.0 fail=1.0
+        ! ConnectionRefusedError at api.openai-proxy.acme.dev/v1/jobs/{job_id}:532 (0x8fc3bea6)
+*[ 9] http_call GET https://api.openai-proxy.acme.dev/v1/jobs/{job_id} req=3aaa6368 -> error in=160 out=36   || RECO err=1.0 INEFF=1.0 fail=1.0
+        ! ConnectionRefusedError at api.openai-proxy.acme.dev/v1/jobs/{job_id}:532 (pid 19878)
+*[10] http_call GET https://api.openai-proxy.acme.dev/v1/jobs/{job_id} req=1ec58c54 -> ok in=205 out=28   || RECO 
+
+=== V189 oracle=RECOVERY net=PRODUCTIVE t=12 start=5 logits=[0.5, 0.0, -12.0, 0.0]
+ [ 2] search scope=docs query="feature flag" -> ok in=1059 out=139   || PROD 
+ [ 3] search scope=. query="panic!" -> ok in=1206 out=119   || PROD 
+ [ 4] search scope=src query="unsafe" -> ok in=1409 out=158   || PROD 
+*[ 5] list_dir path=tests/fixtures -> ok in=1337 out=54   || PROD 
+*[ 6] poll_status resource=job/f5245d -> pending in=173 out=54   || RECO pend=1.0 INEFF=1.0 fail=0.7
+*[ 7] poll_status resource=job/f5245d -> pending in=187 out=31   || RECO pend=1.0 INEFF=1.0 fail=0.7
+*[ 8] read_file path=scripts/bootstrap.sh -> ok in=799 out=169   || RECO 
+*[ 9] poll_status resource=job/f5245d -> ready in=49 out=36   || RECO 
+*[10] search scope=. query="refresh_query" -> ok in=1993 out=109   || RECO 
+*[11] read_file path=src/metrics/rate_limiter.py lines=21-31 -> ok in=784 out=61   || RECO lines=1.0
+*[12] edit_file path=src/metrics/rate_limiter.py -> ok in=1519 out=296   || PROD hunk=0.5
+        @ src/metrics/rate_limiter.py hfe4874fcb8 > h4b5b8122e5
+
+=== V190 oracle=RECOVERY net=RECOVERY t=9 start=2 logits=[0.5, 6.0, -15.0, 0.0]
+ [ 0] list_dir path=spec/search -> ok in=925 out=180   || PROD 
+ [ 1] read_file path=tests/fixtures/retry_policy.json -> ok in=1197 out=197   || PROD REP=1.0 INEFF=1.0
+*[ 2] read_file path=spec/geo/webhook_request_spec.rb -> ok in=2634 out=337   || PROD 
+*[ 3] http_call POST https://localhost:8080/v1/users/{id} body={"ref": 300} req=3770c1fd -> error in=596 out=114   || RECO err=1.0 INEFF=1.0 fail=1.0
+        ! TimeoutError at localhost:8080/v1/users/{id}:726 (0x32a32dd0)
+*[ 4] http_call POST https://localhost:8080/v1/users/{id} body={"ref": 300} req=c727f635 -> error in=441 out=38   || RECO err=1.0 INEFF=1.0 fail=1.0
+        ! TimeoutError at localhost:8080/v1/users/{id}:726 (0x2b603585)
+*[ 5] read_file path=spec/geo/templates_request_spec.rb -> ok in=2772 out=151   || RECO 
+*[ 6] http_call POST https://localhost:8080/v1/users/{id} body={"ref": 300} req=f3db6395 -> error in=348 out=42   || RECO err=1.0 INEFF=1.0 fail=1.0
+        ! TimeoutError at localhost:8080/v1/users/{id}:726 (pid 26380)
+*[ 7] search scope=src query="lru_cache" -> ok in=1934 out=312   || RECO 
+*[ 8] http_call POST https://localhost:8080/v1/users/{id} body={"ref": 300} req=933e3521 -> error in=273 out=70   || RECO err=1.0 INEFF=1.0 fail=1.0
+        ! TimeoutError at localhost:8080/v1/users/{id}:726 (pid 76055)
+*[ 9] http_call POST https://localhost:8080/v1/users/{id} body={"ref": 300} req=95653638 -> ok in=562 out=36   || RECO 
+
+=== V191 oracle=RECOVERY net=RECOVERY t=8 start=1 logits=[0.5, 6.0, -15.0, 0.0]
+ [ 0] read_file path=Dockerfile -> ok in=702 out=308   || PROD 
+*[ 1] plan action=summarise_findings -> ok in=948 out=276   || PROD 
+*[ 2] read_file path=spec/report/retry_policy_request_spec.rb -> ok in=1049 out=371   || PROD 
+*[ 3] search scope=docs query="class Config" -> ok in=1686 out=50   || PROD 
+*[ 4] list_dir path=config -> ok in=319 out=133   || PROD 
+*[ 5] search scope=docs query="panic!" -> ok in=1844 out=102   || PROD 
+*[ 6] http_call POST https://registry.npmjs.org/api/v1/orders/{order_id} body={"labels": 157, "query": 239} req=cfa5ba36 -> error in=987 out=203   || RECO err=1.0 INEFF=1.0 fail=1.0
+        ! TimeoutError at registry.npmjs.org/api/v1/orders/{order_id}:276 (pid 42928)
+*[ 7] http_call POST https://registry.npmjs.org/api/v1/orders/{order_id} body={"labels": 157, "query": 239} req=d184cc7b -> error in=1306 out=128   || RECO err=1.0 INEFF=1.0 fail=1.0
+        ! TimeoutError at registry.npmjs.org/api/v1/orders/{order_id}:276 (0x5aff016b)
+*[ 8] http_call POST https://registry.npmjs.org/api/v1/orders/{order_id} body={"labels": 157, "query": 239} req=e181a1b2 -> ok in=653 out=52   || RECO 
+
+=== V192 oracle=RECOVERY net=RECOVERY t=13 start=6 logits=[0.5, 6.0, -15.0, 0.0]
+ [ 3] list_dir path=spec -> ok in=283 out=52   || PROD 
+ [ 4] http_call POST https://storage.googleapis.com/status body={"target": 45} req=aeadbe2b -> error in=352 out=37   || RECO err=1.0 INEFF=1.0 fail=1.0
+        ! HTTP502 at storage.googleapis.com/status:314 (pid 60864)
+ [ 5] http_call POST https://storage.googleapis.com/status body={"target": 45} req=3e8eb80b -> error in=138 out=43   || RECO err=1.0 INEFF=1.0 fail=1.0
+        ! HTTP502 at storage.googleapis.com/status:314 (0xdf8e6f06)
+*[ 6] http_call POST https://storage.googleapis.com/status body={"target": 45} req=cee3f33c -> ok in=251 out=38   || RECO 
+*[ 7] read_file path=scripts/release.sh -> ok in=302 out=73   || RECO 
+*[ 8] read_file path=deploy/helm/values.yaml -> ok in=377 out=79   || RECO 
+*[ 9] run_tests suite=spec:feature tests=spec/media/archive_feature_spec.rb::archive expand retries nested objects,spec/media/archive_feature_spec.rb::archive expand retries rounding -> FAILED 0/2 passed in=1640 out=139   || RECO 
+        ! NameError at spec/media/archive_feature_spec.rb::archive expand retries nested objects:172 (pid 21036)
+*[10] run_tests suite=spec:feature tests=spec/media/archive_feature_spec.rb::archive expand retries nested objects,spec/media/archive_feature_spec.rb::archive expand retries rounding -> FAILED 0/2 passed in=1449 out=99   || RECO CNT=1.0 INEFF=1.0 fail=1.0
+        ! NameError at spec/media/archive_feature_spec.rb::archive expand retries nested objects:172 (0xd13799a6)
+*[11] read_file path=lib/media/archive.rb lines=4-9 -> ok in=391 out=60   || RECO lines=1.0
+*[12] edit_file path=lib/media/archive.rb -> ok in=1046 out=447   || RECO hunk=0.5
+        @ lib/media/archive.rb h0bdb7ce32d > hc0185e4fa7
+*[13] run_tests suite=spec:feature tests=spec/media/archive_feature_spec.rb::archive expand retries nested objects,spec/media/archive_feature_spec.rb::archive expand retries rounding -> ok 2/2 passed in=567 out=91   || RECO 
+
+=== V193 oracle=RECOVERY net=RECOVERY t=36 start=29 logits=[0.5, 6.0, -15.0, 0.0]
+ [26] read_file path=config/database.yml -> ok in=289 out=5   || PROD 
+ [27] read_file path=docs/adr/0003-caching.md -> ok in=323 out=15   || PROD 
+ [28] read_file path=CONTRIBUTING.md -> ok in=479 out=24   || PROD 
+*[29] plan action=reflect -> ok in=268 out=193   || PROD 
+*[30] http_call GET https://ci.acme.dev/api/v4/jobs/{job_id}/trace req=9f5c7e28 -> error in=88 out=58   || RECO err=1.0 INEFF=1.0 fail=1.0
+        ! ConnectionResetError at ci.acme.dev/api/v4/jobs/{job_id}/trace:292 (pid 30385)
+*[31] http_call GET https://ci.acme.dev/api/v4/jobs/{job_id}/trace req=562606be -> error in=118 out=28   || RECO err=1.0 INEFF=1.0 fail=1.0
+        ! ConnectionResetError at ci.acme.dev/api/v4/jobs/{job_id}/trace:292 (0xf8fec287)
+*[32] http_call GET https://ci.acme.dev/api/v4/jobs/{job_id}/trace req=3db36f2c -> error in=101 out=16   || RECO err=1.0 INEFF=1.0 fail=1.0
+        ! ConnectionResetError at ci.acme.dev/api/v4/jobs/{job_id}/trace:292 (0x1275cab3)
+*[33] http_call GET https://ci.acme.dev/api/v4/jobs/{job_id}/trace req=748ad920 -> ok in=173 out=15   || RECO 
+*[34] read_file path=lib/auth/cursor.rb lines=4-21 -> ok in=1779 out=49   || RECO lines=1.0
+*[35] lint target=rubocop -> FAILED in=398 out=54   || RECO FNC=1.0 fail=1.0
+        ! Style/StringLiterals at lib/auth/cursor.rb:667 (pid 58906)
+*[36] search scope=lib query="chunk null" -> ok in=118 out=35   || RECO 
+
+=== V194 oracle=RECOVERY net=STALLED t=14 start=7 logits=[0.5, 0.0, 4.0, 0.0]
+ [ 4] run_tests suite=spec:unit tests=spec/cli/shard_map_unit_spec.rb::shard_map flush key nested objects,spec/cli/shard_map_unit_spec.rb::shard_map flush key round trip -> FAILED 0/2 passed in=2172 out=44   || RECO CNT=1.0 INEFF=1.0 fail=1.0
+        ! ExpectationNotMetError at spec/cli/shard_map_unit_spec.rb::shard_map flush key nested objects:811 (0x907418ad)
+ [ 5] run_tests suite=spec:unit tests=spec/cli/shard_map_unit_spec.rb::shard_map flush key nested objects,spec/cli/shard_map_unit_spec.rb::shard_map flush key round trip -> FAILED 0/2 passed in=1868 out=107   || RECO CNT=1.0 INEFF=1.0 fail=1.0
+        ! ExpectationNotMetError at spec/cli/shard_map_unit_spec.rb::shard_map flush key nested objects:811 (pid 83594)
+ [ 6] edit_file path=lib/cli/shard_map.rb -> ok in=2769 out=326   || RECO hunk=0.5
+        @ lib/cli/shard_map.rb h4863d3ba78 > hfae1be991a
+*[ 7] run_tests suite=spec:unit tests=spec/cli/shard_map_unit_spec.rb::shard_map flush key nested objects,spec/cli/shard_map_unit_spec.rb::shard_map flush key round trip -> ok 2/2 passed in=486 out=59   || RECO 
+*[ 8] run_tests suite=spec:unit tests=spec/cli/shard_map_unit_spec.rb::shard_map apply schema concurrent access,spec/cli/shard_map_unit_spec.rb::shard_map apply schema expired token,spec/cli/shard_map_unit_spec.rb::shard_map apply TRUNC -> FAILED 0/3 passed in=2075 out=57   || RECO CNT=1.0 INEFF=1.0 fail=1.0
+        ! NoMethodError at spec/cli/shard_map_unit_spec.rb::shard_map apply schema concurrent access:443 (0x31dae66d)
+*[ 9] run_tests suite=spec:unit tests=spec/cli/shard_map_unit_spec.rb::shard_map apply schema concurrent access,spec/cli/shard_map_unit_spec.rb::shard_map apply schema expired token,spec/cli/shard_map_unit_spec.rb::shard_map apply TRUNC -> FAILED 0/3 passed in=487 out=106   || RECO CNT=1.0 INEFF=1.0 fail=1.0
+        ! NoMethodError at spec/cli/shard_map_unit_spec.rb::shard_map apply schema concurrent access:443 (pid 57918)
+*[10] edit_file path=lib/cli/shard_map.rb -> ok in=1740 out=480   || RECO hunk=0.5
+        @ lib/cli/shard_map.rb h09be923c8e > he8e69841a0
+*[11] run_tests suite=spec:unit tests=spec/cli/shard_map_unit_spec.rb::shard_map apply schema concurrent access,spec/cli/shard_map_unit_spec.rb::shard_map apply schema expired token,spec/cli/shard_map_unit_spec.rb::shard_map apply TRUNC -> ok 3/3 passed in=508 out=41   || RECO 
+*[12] http_call POST https://localhost:8080/v1/users/{id} body={"dry_run": "dry_run-2357", "ref": 33, TRUNC req=5f94db98 -> error in=490 out=75   || PROD err=1.0 INEFF=1.0 fail=1.0
+        ! HTTP401 at localhost:8080/v1/users/{id}:18 (pid 62667)
+*[13] http_call POST https://localhost:8080/v1/users/{id} body={"dry_run": "dry_run-2357", "ref": 33, TRUNC req=b92a7960 -> error in=717 out=87   || PROD err=1.0 INEFF=1.0 fail=1.0
+        ! HTTP401 at localhost:8080/v1/users/{id}:18 (pid 59290)
+*[14] http_call POST https://localhost:8080/v1/users/{id} body={"dry_run": "dry_run-2357", "ref": 33, TRUNC req=81b043a1 -> error in=247 out=32   || STAL err=1.0 INEFF=1.0 fail=1.0
+        ! HTTP401 at localhost:8080/v1/users/{id}:18 (0x412f8b11)
+
+=== V195 oracle=RECOVERY net=RECOVERY t=14 start=7 logits=[0.5, 6.0, -7.1, 0.0]
+ [ 4] read_file path=internal/web/timezone_unit_test.go -> ok in=865 out=73   || PROD 
+ [ 5] plan action=list_hypotheses -> ok in=6220 out=306   || PROD 
+ [ 6] read_file path=internal/media/webhook_race_test.go -> ok in=572 out=75   || PROD 
+*[ 7] search scope=. query="FIXME" -> ok in=1123 out=100   || PROD 
+*[ 8] read_file path=internal/media/archive_unit_test.go -> ok in=868 out=128   || PROD 
+*[ 9] list_dir path=docs -> ok in=790 out=60   || PROD 
+*[10] read_file path=internal/media/webhook_race_test.go -> ok in=473 out=93   || PROD REP=1.0 INEFF=1.0
+*[11] search scope=src query="panic!" -> ok in=1040 out=123   || PROD 
+*[12] run_tests suite=./internal/...:race -> FAILED 5/9 passed in=3434 out=223   || PROD 
+        ! IndexOutOfRange at internal/media/webhook_race_test.go::TestStoreRangesTrailingSlash:10 (0xf09e66c7)
+*[13] run_tests suite=./internal/...:race -> FAILED 5/9 passed in=1564 out=185   || RECO CNT=1.0 INEFF=1.0 fail=1.0
+        ! IndexOutOfRange at internal/media/webhook_race_test.go::TestStoreRangesTrailingSlash:10 (0x272fc4ab)
+*[14] run_tests suite=./internal/...:race -> FAILED 5/9 passed in=4227 out=168   || RECO CNT=1.0 INEFF=1.0 fail=1.0
+        ! IndexOutOfRange at internal/media/webhook_race_test.go::TestStoreRangesTrailingSlash:10 (0x712f1b7b)
+
+=== V196 oracle=RECOVERY net=RECOVERY t=12 start=5 logits=[0.5, 6.0, -7.0, 0.0]
+ [ 2] read_file path=tests/queue_worker_unit.rs -> ok in=3710 out=120   || PROD 
+ [ 3] search scope=docs query="__all__" -> ok in=3239 out=360   || PROD 
+ [ 4] read_file path=.editorconfig -> ok in=802 out=163   || PROD 
+*[ 5] poll_status resource=ci/pipeline/5160 backoff=2 -> pending in=321 out=65   || RECO pend=1.0 INEFF=1.0 fail=0.7
+*[ 6] poll_status resource=ci/pipeline/5160 backoff=4 -> pending in=974 out=81   || RECO pend=1.0 INEFF=1.0 fail=0.7
+*[ 7] poll_status resource=ci/pipeline/5160 backoff=8 -> pending in=519 out=325   || RECO pend=1.0 INEFF=1.0 fail=0.7
+*[ 8] poll_status resource=ci/pipeline/5160 backoff=16 -> pending in=916 out=121   || RECO pend=1.0 INEFF=1.0 fail=0.7
+*[ 9] poll_status resource=ci/pipeline/5160 backoff=32 -> pending in=661 out=98   || RECO pend=1.0 INEFF=1.0 fail=0.7
+*[10] poll_status resource=ci/pipeline/5160 backoff=64 -> ready in=527 out=81   || RECO 
+*[11] run_tests suite=unit tests=tests/graph_walk_unit.rs::resolve_offset_nested_objects,tests/graph_walk_unit.rs::resolve_offset_unicode -> FAILED 0/2 passed in=6524 out=213   || RECO 
+        ! IndexOutOfBounds at tests/graph_walk_unit.rs::resolve_offset_nested_objects:215 (pid 25332)
+*[12] read_file path=src/media/graph_walk.rs lines=1-15 -> ok in=2230 out=200   || RECO lines=1.0
+
+=== V197 oracle=RECOVERY net=RECOVERY t=10 start=3 logits=[0.5, 6.0, -15.0, 0.0]
+ [ 0] read_file path=lib/storage/cursor.rb -> ok in=159 out=83   || PROD 
+ [ 1] list_dir path=logs -> ok in=316 out=91   || PROD 
+ [ 2] plan action=estimate_scope -> ok in=405 out=163   || PROD 
+*[ 3] search scope=docs query="panic!" -> ok in=761 out=96   || PROD 
+*[ 4] list_dir path=scripts -> ok in=404 out=56   || PROD 
+*[ 5] plan action=checkpoint -> ok in=1052 out=229   || PROD 
+*[ 6] read_file path=tests/fixtures/feature_flags.json -> ok in=308 out=83   || PROD 
+*[ 7] build target=bundle-package -> FAILED in=408 out=13   || RECO FNC=1.0 fail=1.0
+        ! GemNotFound at lib/storage/feature_flags.rb:216 (pid 2857)
+*[ 8] build target=bundle-package -> FAILED in=414 out=58   || RECO FNC=1.0 fail=1.0
+        ! GemNotFound at lib/storage/feature_flags.rb:216 (0xcdba8684)
+*[ 9] plan action=decompose -> ok in=192 out=104   || RECO 
+*[10] build target=bundle-package -> FAILED in=278 out=49   || RECO FNC=1.0 fail=1.0
+        ! GemNotFound at lib/storage/feature_flags.rb:216 (0x84e6b591)
+
+=== V198 oracle=RECOVERY net=RECOVERY t=13 start=6 logits=[0.5, 6.0, -15.0, 0.0]
+ [ 3] read_file path=spec/metrics/retry_policy_request_spec.rb -> ok in=649 out=77   || PROD 
+ [ 4] read_file path=spec/search/audit_log_request_spec.rb -> ok in=594 out=123   || PROD 
+ [ 5] read_file path=docs/architecture.md -> ok in=837 out=72   || PROD 
+*[ 6] list_dir path=. -> ok in=541 out=26   || PROD 
+*[ 7] read_file path=spec/cli/manifest_unit_spec.rb -> ok in=650 out=105   || PROD 
+*[ 8] search scope=docs query="interface{}" -> ok in=1828 out=65   || PROD 
+*[ 9] http_call GET https://payments.sandbox.acme.io/simple/{package}/ req=d7c975d3 -> error in=667 out=133   || RECO err=1.0 INEFF=1.0 fail=1.0
+        ! SSLError at payments.sandbox.acme.io/simple/{package}/:760 (0x7c9716ef)
+*[10] http_call GET https://payments.sandbox.acme.io/simple/{package}/ req=acc003a7 -> error in=643 out=126   || RECO err=1.0 INEFF=1.0 fail=1.0
+        ! SSLError at payments.sandbox.acme.io/simple/{package}/:760 (pid 77521)
+*[11] http_call GET https://payments.sandbox.acme.io/simple/{package}/ req=2035d397 -> error in=540 out=55   || RECO err=1.0 INEFF=1.0 fail=1.0
+        ! SSLError at payments.sandbox.acme.io/simple/{package}/:760 (0x98015b9f)
+*[12] http_call GET https://payments.sandbox.acme.io/simple/{package}/ req=1971689e -> error in=397 out=99   || RECO err=1.0 INEFF=1.0 fail=1.0
+        ! SSLError at payments.sandbox.acme.io/simple/{package}/:760 (pid 74498)
+*[13] read_file path=Dockerfile -> ok in=1632 out=115   || RECO 
+
+=== V199 oracle=RECOVERY net=RECOVERY t=14 start=7 logits=[0.5, 6.0, -7.2, 0.0]
+ [ 4] list_dir path=deploy -> ok in=358 out=66   || PROD 
+ [ 5] list_dir path=. -> ok in=492 out=61   || PROD 
+ [ 6] http_call GET https://grafana.acme.dev/api/datasources/proxy/{id}/query req=015b6fb3 -> error in=430 out=57   || RECO err=1.0 INEFF=1.0 fail=1.0
+        ! HTTP502 at grafana.acme.dev/api/datasources/proxy/{id}/query:52 (0xd32d4c56)
+*[ 7] http_call GET https://grafana.acme.dev/api/datasources/proxy/{id}/query req=0c974271 -> ok in=735 out=24   || RECO 
+*[ 8] run_tests suite=spec:feature tests=spec/core/manifest_feature_spec.rb::manifest lookup address boundary,spec/core/manifest_feature_spec.rb::manifest lookup address empty input,spec/core/manifest_feature_spec.rb::manifest lookup address TRUNC -> FAILED 0/3 passed in=3445 out=116   || RECO 
+        ! ExpectationNotMetError at spec/core/manifest_feature_spec.rb::manifest lookup address boundary:460 (pid 19552)
+*[ 9] read_file path=lib/core/manifest.rb lines=1-13 -> ok in=713 out=56   || RECO lines=1.0
+*[10] write_file path=lib/core/manifest.rb -> ok in=1832 out=433   || RECO hunk=0.5
+        @ lib/core/manifest.rb hd77ee4a5db > h7d6027cff9
+*[11] read_file path=docs/adr/0003-caching.md -> ok in=532 out=100   || PROD 
+*[12] http_call GET https://search.internal.acme.dev/status req=b89ef829 -> error in=235 out=39   || RECO err=1.0 INEFF=1.0 fail=1.0
+        ! ConnectionResetError at search.internal.acme.dev/status:345 (pid 54664)
+*[13] http_call GET https://search.internal.acme.dev/status req=7c98b53e -> ok in=281 out=23   || RECO 
+*[14] run_tests suite=spec:unit tests=spec/catalog/csv_import_unit_spec.rb::csv_import compact limit timezone offset,spec/catalog/csv_import_unit_spec.rb::csv_import compact limit trailing slash,spec/catalog/csv_import_unit_spec.rb::csv_import compact TRUNC -> FAILED 0/3 passed in=2790 out=106   || RECO CNT=1.0 INEFF=1.0 fail=1.0
+        ! TypeError at spec/catalog/csv_import_unit_spec.rb::csv_import compact limit timezone offset:253 (0xe9d284af)
+
+=== V200 oracle=RECOVERY net=RECOVERY t=8 start=1 logits=[0.5, 6.0, -15.0, 0.0]
+ [ 0] list_dir path=. -> ok in=371 out=56   || PROD 
+*[ 1] list_dir path=deploy -> ok in=640 out=192   || PROD 
+*[ 2] run_tests suite=doc tests=tests/checksum_doc.rs::flush_manifest_sorted_order,tests/checksum_doc.rs::flush_manifest_zero_division -> FAILED 0/2 passed in=3320 out=109   || PROD 
+        ! Panic at tests/checksum_doc.rs::flush_manifest_sorted_order:585 (pid 46098)
+*[ 3] read_file path=src/metrics/checksum.rs lines=4-9 -> ok in=2506 out=118   || PROD lines=1.0
+*[ 4] edit_file path=src/metrics/checksum.rs -> ok in=1424 out=416   || PROD hunk=0.5
+        @ src/metrics/checksum.rs h6846365b74 > hb3406c8707
+*[ 5] run_tests suite=doc tests=tests/checksum_doc.rs::flush_manifest_sorted_order,tests/checksum_doc.rs::flush_manifest_zero_division -> ok 2/2 passed in=1186 out=65   || PROD 
+*[ 6] http_call GET https://db-proxy.internal/internal/flags req=cda68ced -> error in=325 out=87   || RECO err=1.0 INEFF=1.0 fail=1.0
+        ! HTTP502 at db-proxy.internal/internal/flags:330 (0x10e92260)
+*[ 7] http_call GET https://db-proxy.internal/internal/flags req=386960a6 -> ok in=1307 out=99   || RECO 
+*[ 8] search scope=. query="store_schema" -> ok in=1421 out=63   || RECO 
+

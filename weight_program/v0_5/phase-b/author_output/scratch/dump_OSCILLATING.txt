@@ -1,0 +1,1087 @@
+=== V002 oracle=OSCILLATING net=OSCILLATING t=10 start=3 logits=[0.5, 0.0, -12.0, 12.0]
+ [ 0] search scope=src query="flush_quota" -> ok in=2341 out=234   || PROD 
+ [ 1] read_file path=src/billing/archive.py lines=3-19 -> ok in=1692 out=121   || PROD lines=1.0
+ [ 2] edit_file path=src/billing/archive.py -> ok in=2735 out=1228   || PROD hunk=0.5
+        @ src/billing/archive.py h43d7da1748 > h99c782f63a
+*[ 3] write_file path=src/billing/archive.py -> ok in=6216 out=788   || PROD hunk=0.5
+        @ src/billing/archive.py h8799e98c6f > h7fc3365539
+*[ 4] run_tests suite=tests/regression -> ok 6/6 passed in=1749 out=193   || PROD 
+*[ 5] edit_file path=src/billing/archive.py -> ok in=1701 out=981   || PROD REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/billing/archive.py h7fc3365539 > h8799e98c6f
+*[ 6] run_tests suite=tests/regression -> ok 6/6 passed in=2619 out=159   || PROD 
+*[ 7] write_file path=src/billing/archive.py -> ok in=3726 out=577   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/billing/archive.py h8799e98c6f > h7fc3365539
+*[ 8] run_tests suite=tests/regression -> ok 6/6 passed in=2278 out=125   || OSCI 
+*[ 9] edit_file path=src/billing/archive.py -> ok in=2955 out=1464   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/billing/archive.py h7fc3365539 > h8799e98c6f
+*[10] run_tests suite=tests/regression -> ok 6/6 passed in=1916 out=166   || OSCI 
+
+=== V010 oracle=OSCILLATING net=OSCILLATING t=34 start=27 logits=[0.5, 0.0, 3.9, 12.0]
+ [24] edit_file path=scripts/bootstrap.sh -> ok in=1738 out=379   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ scripts/bootstrap.sh h4085eba713 > hf1990d9deb
+ [25] edit_file path=scripts/bootstrap.sh -> ok in=810 out=286   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ scripts/bootstrap.sh hf1990d9deb > h4085eba713
+ [26] edit_file path=scripts/bootstrap.sh -> ok in=832 out=790   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ scripts/bootstrap.sh h4085eba713 > hf1990d9deb
+*[27] edit_file path=scripts/bootstrap.sh -> ok in=439 out=498   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ scripts/bootstrap.sh hf1990d9deb > h4085eba713
+*[28] edit_file path=scripts/bootstrap.sh -> ok in=725 out=82   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ scripts/bootstrap.sh h4085eba713 > hf1990d9deb
+*[29] edit_file path=scripts/bootstrap.sh -> ok in=1476 out=253   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ scripts/bootstrap.sh hf1990d9deb > h4085eba713
+*[30] edit_file path=scripts/bootstrap.sh -> ok in=621 out=997   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ scripts/bootstrap.sh h4085eba713 > hf1990d9deb
+*[31] edit_file path=scripts/bootstrap.sh -> ok in=3290 out=85   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ scripts/bootstrap.sh hf1990d9deb > h4085eba713
+*[32] edit_file path=scripts/bootstrap.sh -> ok in=748 out=327   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ scripts/bootstrap.sh h4085eba713 > hf1990d9deb
+*[33] edit_file path=scripts/bootstrap.sh -> ok in=996 out=944   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ scripts/bootstrap.sh hf1990d9deb > h4085eba713
+*[34] edit_file path=scripts/bootstrap.sh -> ok in=1388 out=789   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ scripts/bootstrap.sh h4085eba713 > hf1990d9deb
+
+=== V018 oracle=OSCILLATING net=OSCILLATING t=33 start=26 logits=[0.5, 0.0, 3.9, 12.0]
+ [23] write_file path=src/media/chunker.rs -> ok in=3018 out=608   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/media/chunker.rs h7dc0754d4a > h5f2b43bcba
+ [24] edit_file path=src/media/chunker.rs -> ok in=3882 out=533   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/media/chunker.rs h5f2b43bcba > h7dc0754d4a
+ [25] write_file path=src/media/chunker.rs -> ok in=4212 out=717   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/media/chunker.rs h7dc0754d4a > h5f2b43bcba
+*[26] edit_file path=src/media/chunker.rs -> ok in=1832 out=553   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/media/chunker.rs h5f2b43bcba > h7dc0754d4a
+*[27] write_file path=src/media/chunker.rs -> ok in=2459 out=458   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/media/chunker.rs h7dc0754d4a > h5f2b43bcba
+*[28] edit_file path=src/media/chunker.rs -> ok in=1684 out=637   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/media/chunker.rs h5f2b43bcba > h7dc0754d4a
+*[29] write_file path=src/media/chunker.rs -> ok in=2163 out=583   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/media/chunker.rs h7dc0754d4a > h5f2b43bcba
+*[30] edit_file path=src/media/chunker.rs -> ok in=2512 out=618   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/media/chunker.rs h5f2b43bcba > h7dc0754d4a
+*[31] write_file path=src/media/chunker.rs -> ok in=1968 out=343   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/media/chunker.rs h7dc0754d4a > h5f2b43bcba
+*[32] edit_file path=src/media/chunker.rs -> ok in=2729 out=586   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/media/chunker.rs h5f2b43bcba > h7dc0754d4a
+*[33] write_file path=src/media/chunker.rs -> ok in=2623 out=583   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/media/chunker.rs h7dc0754d4a > h5f2b43bcba
+
+=== V020 oracle=OSCILLATING net=OSCILLATING t=19 start=12 logits=[0.5, -0.0, 3.9, 12.0]
+ [ 9] write_file path=src/storage/uploader.py -> ok in=889 out=364   || RECO REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/storage/uploader.py h4a8a32ef39 > h3a2057118e
+ [10] run_tests suite=tests/unit -> FAILED 11/13 passed in=1772 out=38   || RECO CNT=1.0 INEFF=1.0 fail=1.0
+        ! OverflowError at tests/unit/test_uploader.py::test_encode_query_empty_input:169 (pid 83502)
+ [11] write_file path=src/storage/uploader.py -> ok in=1111 out=519   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/storage/uploader.py h3a2057118e > h4a8a32ef39
+*[12] run_tests suite=tests/unit -> FAILED 11/13 passed in=1627 out=82   || OSCI CNT=1.0 INEFF=1.0 fail=1.0
+        ! OverflowError at tests/unit/test_uploader.py::test_encode_query_boundary:10 (0x5923786d)
+*[13] write_file path=src/storage/uploader.py -> ok in=802 out=194   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/storage/uploader.py h4a8a32ef39 > h3a2057118e
+*[14] run_tests suite=tests/unit -> FAILED 11/13 passed in=2232 out=92   || OSCI CNT=1.0 INEFF=1.0 fail=1.0
+        ! OverflowError at tests/unit/test_uploader.py::test_encode_query_empty_input:169 (0xbc81bfbc)
+*[15] write_file path=src/storage/uploader.py -> ok in=943 out=215   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/storage/uploader.py h3a2057118e > h4a8a32ef39
+*[16] run_tests suite=tests/unit -> FAILED 11/13 passed in=856 out=74   || OSCI CNT=1.0 INEFF=1.0 fail=1.0
+        ! OverflowError at tests/unit/test_uploader.py::test_encode_query_boundary:10 (pid 58852)
+*[17] write_file path=src/storage/uploader.py -> ok in=1273 out=340   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/storage/uploader.py h4a8a32ef39 > h3a2057118e
+*[18] run_tests suite=tests/unit -> FAILED 11/13 passed in=1723 out=39   || OSCI CNT=1.0 INEFF=1.0 fail=1.0
+        ! OverflowError at tests/unit/test_uploader.py::test_encode_query_empty_input:169 (pid 81746)
+*[19] write_file path=src/storage/uploader.py -> ok in=1015 out=448   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/storage/uploader.py h3a2057118e > h4a8a32ef39
+
+=== V025 oracle=OSCILLATING net=OSCILLATING t=10 start=3 logits=[0.5, 0.0, -4.3, 12.0]
+ [ 0] read_file path=src/identity/__tests__/manifest.e2e.test.ts -> ok in=473 out=309   || PROD 
+ [ 1] list_dir path=src -> ok in=197 out=130   || PROD 
+ [ 2] edit_file path=.eslintrc.json -> ok in=2355 out=256   || PROD hunk=0.5
+        @ .eslintrc.json ha3dd889b54 > h0d571cddb4
+*[ 3] build target=tsc-build -> ok in=1300 out=123   || PROD 
+*[ 4] revert paths=.eslintrc.json -> ok in=2141 out=690   || PROD hunk=0.5
+        @ .eslintrc.json h0d571cddb4 > ha3dd889b54
+*[ 5] build target=tsc-build -> ok in=2131 out=355   || PROD 
+*[ 6] edit_file path=.eslintrc.json -> ok in=1824 out=249   || PROD REV=1.0 INEFF=1.0 hunk=0.5
+        @ .eslintrc.json ha3dd889b54 > h0d571cddb4
+*[ 7] build target=tsc-build -> ok in=846 out=147   || PROD 
+*[ 8] revert paths=.eslintrc.json -> ok in=1496 out=100   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ .eslintrc.json h0d571cddb4 > ha3dd889b54
+*[ 9] build target=tsc-build -> ok in=520 out=109   || OSCI 
+*[10] edit_file path=.eslintrc.json -> ok in=1436 out=231   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ .eslintrc.json ha3dd889b54 > h0d571cddb4
+
+=== V032 oracle=OSCILLATING net=OSCILLATING t=30 start=23 logits=[0.5, 0.0, 3.8, 12.0]
+ [20] run_tests suite=integration tests=src/core/__tests__/tokenBucket.integration.test.ts::token_bucket resolve chunk empty input,src/core/__tests__/tokenBucket.integration.test.ts::token_bucket resolve chunk trailing slash,src/core/__tests__/tokenBucket.integration.test.ts::token_bucket resolve TRUNC -> FAILED 1/3 passed in=? out=248   || OSCI CNT=1.0 INEFF=1.0 fail=1.0
+        ! ? at ?:? (pid 80015)
+ [21] edit_file path=src/core/tokenBucket.ts -> ok in=? out=819   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/core/tokenBucket.ts h0d3faf7f7f > hb1a19876d8
+ [22] run_tests suite=integration tests=src/core/__tests__/tokenBucket.integration.test.ts::token_bucket resolve chunk empty input,src/core/__tests__/tokenBucket.integration.test.ts::token_bucket resolve chunk trailing slash,src/core/__tests__/tokenBucket.integration.test.ts::token_bucket resolve TRUNC -> FAILED 2/3 passed in=5719 out=312   || OSCI CNT=1.0 INEFF=1.0 fail=1.0
+        ! RangeError at src/core/__tests__/tokenBucket.integration.test.ts::token_bucket resolve chunk empty input:98 (pid 19500)
+*[23] edit_file path=src/core/tokenBucket.ts -> ok in=1193 out=795   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/core/tokenBucket.ts hb1a19876d8 > h0d3faf7f7f
+*[24] run_tests suite=integration tests=src/core/__tests__/tokenBucket.integration.test.ts::token_bucket resolve chunk empty input,src/core/__tests__/tokenBucket.integration.test.ts::token_bucket resolve chunk trailing slash,src/core/__tests__/tokenBucket.integration.test.ts::token_bucket resolve TRUNC -> FAILED 1/3 passed in=2442 out=358   || OSCI CNT=1.0 INEFF=1.0 fail=1.0
+        ! RangeError at src/core/__tests__/tokenBucket.integration.test.ts::token_bucket resolve chunk trailing slash:474 (0x21846179)
+*[25] edit_file path=src/core/tokenBucket.ts -> ok in=2167 out=1154   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/core/tokenBucket.ts h0d3faf7f7f > hb1a19876d8
+*[26] run_tests suite=integration tests=src/core/__tests__/tokenBucket.integration.test.ts::token_bucket resolve chunk empty input,src/core/__tests__/tokenBucket.integration.test.ts::token_bucket resolve chunk trailing slash,src/core/__tests__/tokenBucket.integration.test.ts::token_bucket resolve TRUNC -> FAILED 2/3 passed in=6287 out=366   || OSCI CNT=1.0 INEFF=1.0 fail=1.0
+        ! RangeError at src/core/__tests__/tokenBucket.integration.test.ts::token_bucket resolve chunk empty input:98 (0x504f3044)
+*[27] edit_file path=src/core/tokenBucket.ts -> ok in=2363 out=1019   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/core/tokenBucket.ts hb1a19876d8 > h0d3faf7f7f
+*[28] run_tests suite=integration tests=src/core/__tests__/tokenBucket.integration.test.ts::token_bucket resolve chunk empty input,src/core/__tests__/tokenBucket.integration.test.ts::token_bucket resolve chunk trailing slash,src/core/__tests__/tokenBucket.integration.test.ts::token_bucket resolve TRUNC -> FAILED 1/3 passed in=6723 out=265   || OSCI CNT=1.0 INEFF=1.0 fail=1.0
+        ! RangeError at src/core/__tests__/tokenBucket.integration.test.ts::token_bucket resolve chunk trailing slash:474 (pid 74782)
+*[29] edit_file path=src/core/tokenBucket.ts -> ok in=4503 out=537   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/core/tokenBucket.ts h0d3faf7f7f > hb1a19876d8
+*[30] run_tests suite=integration tests=src/core/__tests__/tokenBucket.integration.test.ts::token_bucket resolve chunk empty input,src/core/__tests__/tokenBucket.integration.test.ts::token_bucket resolve chunk trailing slash,src/core/__tests__/tokenBucket.integration.test.ts::token_bucket resolve TRUNC -> FAILED 2/3 passed in=4204 out=379   || OSCI CNT=1.0 INEFF=1.0 fail=1.0
+        ! RangeError at src/core/__tests__/tokenBucket.integration.test.ts::token_bucket resolve chunk empty input:98 (pid 29044)
+
+=== V033 oracle=OSCILLATING net=OSCILLATING t=20 start=13 logits=[0.5, 0.0, -12.0, 12.0]
+ [10] lint target=brakeman -> ok in=4081 out=566   || PROD 
+ [11] edit_file path=lib/billing/webhook.rb -> ok in=1203 out=939   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ lib/billing/webhook.rb hd220369b8e > hbc92f859a4
+ [12] lint target=brakeman -> ok in=2227 out=77   || OSCI 
+*[13] edit_file path=lib/billing/webhook.rb -> ok in=5699 out=1109   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ lib/billing/webhook.rb hbc92f859a4 > hd220369b8e
+*[14] lint target=brakeman -> ok in=4779 out=111   || OSCI 
+*[15] edit_file path=lib/billing/webhook.rb -> ok in=3612 out=989   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ lib/billing/webhook.rb hd220369b8e > hbc92f859a4
+*[16] lint target=brakeman -> ok in=1851 out=209   || OSCI 
+*[17] edit_file path=lib/billing/webhook.rb -> ok in=5894 out=354   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ lib/billing/webhook.rb hbc92f859a4 > hd220369b8e
+*[18] lint target=brakeman -> ok in=1376 out=120   || OSCI 
+*[19] edit_file path=lib/billing/webhook.rb -> ok in=3955 out=748   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ lib/billing/webhook.rb hd220369b8e > hbc92f859a4
+*[20] lint target=brakeman -> ok in=1535 out=82   || OSCI 
+
+=== V041 oracle=OSCILLATING net=OSCILLATING t=40 start=33 logits=[0.5, 0.0, 3.9, 12.0]
+ [30] write_file path=src/storage/templates.ts -> ok in=2786 out=5227   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/storage/templates.ts h2e295bd133 > hfb978a08a4
+ [31] write_file path=src/storage/templates.ts -> ok in=6248 out=984   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/storage/templates.ts hfb978a08a4 > h2e295bd133
+ [32] write_file path=src/storage/templates.ts -> ok in=10723 out=1502   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/storage/templates.ts h2e295bd133 > hfb978a08a4
+*[33] write_file path=src/storage/templates.ts -> ok in=6376 out=873   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/storage/templates.ts hfb978a08a4 > h2e295bd133
+*[34] read_file path=src/storage/templates.ts lines=15-22 -> ok in=2470 out=138   || OSCI lines=1.0
+*[35] write_file path=src/storage/templates.ts -> ok in=4231 out=2346   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/storage/templates.ts h2e295bd133 > hfb978a08a4
+*[36] write_file path=src/storage/templates.ts -> ok in=6945 out=1223   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/storage/templates.ts hfb978a08a4 > h2e295bd133
+*[37] read_file path=src/storage/templates.ts lines=16-21 -> ok in=1231 out=79   || OSCI REP=1.0 lines=1.0
+*[38] write_file path=src/storage/templates.ts -> ok in=4332 out=1555   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/storage/templates.ts h2e295bd133 > hfb978a08a4
+*[39] write_file path=src/storage/templates.ts -> ok in=4617 out=1515   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/storage/templates.ts hfb978a08a4 > h2e295bd133
+*[40] write_file path=src/storage/templates.ts -> ok in=7345 out=1101   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/storage/templates.ts h2e295bd133 > hfb978a08a4
+
+=== V042 oracle=OSCILLATING net=OSCILLATING t=43 start=36 logits=[0.5, 0.0, 3.9, 12.0]
+ [33] edit_file path=lib/catalog/feature_flags.rb -> ok in=2242 out=454   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ lib/catalog/feature_flags.rb h9f232a2cc7 > h691c4f7c6d
+ [34] run_tests suite=spec:unit -> FAILED 10/12 passed in=2623 out=302   || OSCI CNT=1.0 INEFF=1.0 fail=1.0
+        ! ArgumentError at spec/catalog/feature_flags_unit_spec.rb::feature_flags merge record empty input:749 (0x7ab3765c)
+ [35] edit_file path=lib/catalog/feature_flags.rb -> ok in=2236 out=280   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ lib/catalog/feature_flags.rb h691c4f7c6d > h9f232a2cc7
+*[36] run_tests suite=spec:unit -> FAILED 10/12 passed in=754 out=82   || OSCI CNT=1.0 INEFF=1.0 fail=1.0
+        ! ArgumentError at spec/catalog/feature_flags_unit_spec.rb::feature_flags merge record negative values:632 (pid 40428)
+*[37] edit_file path=lib/catalog/feature_flags.rb -> ok in=1403 out=353   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ lib/catalog/feature_flags.rb h9f232a2cc7 > h691c4f7c6d
+*[38] run_tests suite=spec:unit -> FAILED 10/12 passed in=1560 out=317   || OSCI CNT=1.0 INEFF=1.0 fail=1.0
+        ! ArgumentError at spec/catalog/feature_flags_unit_spec.rb::feature_flags merge record empty input:749 (0xc9b3d9fa)
+*[39] edit_file path=lib/catalog/feature_flags.rb -> ok in=2288 out=197   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ lib/catalog/feature_flags.rb h691c4f7c6d > h9f232a2cc7
+*[40] run_tests suite=spec:unit -> FAILED 10/12 passed in=1341 out=105   || OSCI CNT=1.0 INEFF=1.0 fail=1.0
+        ! ArgumentError at spec/catalog/feature_flags_unit_spec.rb::feature_flags merge record negative values:632 (pid 86231)
+*[41] edit_file path=lib/catalog/feature_flags.rb -> ok in=1899 out=409   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ lib/catalog/feature_flags.rb h9f232a2cc7 > h691c4f7c6d
+*[42] run_tests suite=spec:unit -> FAILED 10/12 passed in=2604 out=57   || OSCI CNT=1.0 INEFF=1.0 fail=1.0
+        ! ArgumentError at spec/catalog/feature_flags_unit_spec.rb::feature_flags merge record empty input:749 (pid 67983)
+*[43] edit_file path=lib/catalog/feature_flags.rb -> ok in=683 out=319   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ lib/catalog/feature_flags.rb h691c4f7c6d > h9f232a2cc7
+
+=== V043 oracle=OSCILLATING net=OSCILLATING t=33 start=26 logits=[0.5, 0.0, 3.9, 12.0]
+ [23] run_tests suite=unitTests -> FAILED 8/18 passed in=1089 out=99   || OSCI CNT=1.0 INEFF=1.0 fail=1.0
+        ! IllegalStateException at src/test/java/com/globex/report/ChecksumUnitTest.java::scheduleRecordMissingKey:249 (0x481243f2)
+ [24] read_file path=src/main/java/com/globex/report/Quota.java lines=17-26 -> ok in=826 out=49   || OSCI lines=1.0
+ [25] edit_file path=src/main/java/com/globex/report/Quota.java -> ok in=2921 out=437   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/main/java/com/globex/report/Quota.java hdd16df5ca6 > h2939470467
+*[26] run_tests suite=unitTests -> FAILED 7/18 passed in=2544 out=121   || OSCI CNT=1.0 INEFF=1.0 fail=1.0
+        ! IllegalStateException at src/test/java/com/globex/report/ChecksumUnitTest.java::scheduleRecordMissingKey:249 (0xda277f0c)
+*[27] edit_file path=src/main/java/com/globex/report/Quota.java -> ok in=1184 out=667   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/main/java/com/globex/report/Quota.java h2939470467 > hdd16df5ca6
+*[28] run_tests suite=unitTests -> FAILED 8/18 passed in=1947 out=36   || OSCI CNT=1.0 INEFF=1.0 fail=1.0
+        ! IllegalStateException at src/test/java/com/globex/report/ChecksumUnitTest.java::scheduleRecordMissingKey:249 (pid 65627)
+*[29] edit_file path=src/main/java/com/globex/report/Quota.java -> ok in=2764 out=1193   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/main/java/com/globex/report/Quota.java hdd16df5ca6 > h2939470467
+*[30] run_tests suite=unitTests -> FAILED 7/18 passed in=2528 out=77   || OSCI CNT=1.0 INEFF=1.0 fail=1.0
+        ! IllegalStateException at src/test/java/com/globex/report/ChecksumUnitTest.java::scheduleRecordMissingKey:249 (pid 61674)
+*[31] edit_file path=src/main/java/com/globex/report/Quota.java -> ok in=3701 out=596   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/main/java/com/globex/report/Quota.java h2939470467 > hdd16df5ca6
+*[32] run_tests suite=unitTests -> FAILED 8/18 passed in=1097 out=117   || OSCI CNT=1.0 INEFF=1.0 fail=1.0
+        ! IllegalStateException at src/test/java/com/globex/report/ChecksumUnitTest.java::scheduleRecordMissingKey:249 (pid 95462)
+*[33] edit_file path=src/main/java/com/globex/report/Quota.java -> ok in=2806 out=369   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/main/java/com/globex/report/Quota.java hdd16df5ca6 > h2939470467
+
+=== V050 oracle=OSCILLATING net=OSCILLATING t=8 start=1 logits=[0.5, 6.0, -7.1, 12.0]
+ [ 0] list_dir path=tests/fixtures -> ok in=1304 out=252   || PROD 
+*[ 1] read_file path=src/main/java/com/initech/media/SearchIndex.java -> ok in=1688 out=112   || PROD 
+*[ 2] edit_file path=src/main/java/com/initech/media/SearchIndex.java -> ok in=1674 out=105   || PROD hunk=0.5
+        @ src/main/java/com/initech/media/SearchIndex.java h97bdb2d220 > h326f3c4c2c
+*[ 3] lint target=spotbugs -> FAILED in=528 out=104   || RECO FNC=1.0 fail=1.0
+        ! NP_NULL_ON_SOME_PATH at src/main/java/com/initech/core/Manifest.java:331 (0xa90eea95)
+*[ 4] revert paths=src/main/java/com/initech/media/SearchIndex.java -> ok in=3801 out=252   || RECO REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/main/java/com/initech/media/SearchIndex.java h326f3c4c2c > h97bdb2d220
+*[ 5] edit_file path=src/main/java/com/initech/media/SearchIndex.java -> ok in=1354 out=209   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/main/java/com/initech/media/SearchIndex.java h97bdb2d220 > h326f3c4c2c
+*[ 6] lint target=spotbugs -> FAILED in=954 out=28   || OSCI FNC=1.0 fail=1.0
+        ! NP_NULL_ON_SOME_PATH at src/main/java/com/initech/core/Manifest.java:331 (0xbea6349c)
+*[ 7] revert paths=src/main/java/com/initech/media/SearchIndex.java -> ok in=3188 out=604   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/main/java/com/initech/media/SearchIndex.java h326f3c4c2c > h97bdb2d220
+*[ 8] edit_file path=src/main/java/com/initech/media/SearchIndex.java -> ok in=1257 out=166   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/main/java/com/initech/media/SearchIndex.java h97bdb2d220 > h326f3c4c2c
+
+=== V056 oracle=OSCILLATING net=OSCILLATING t=11 start=4 logits=[0.5, 0.0, -12.0, 12.0]
+ [ 1] read_file path=src/main/java/com/acme/storage/Quota.java lines=16-27 -> ok in=1045 out=111   || PROD REP=1.0 lines=1.0
+ [ 2] edit_file path=src/main/java/com/acme/storage/Quota.java -> ok in=1872 out=294   || PROD hunk=0.5
+        @ src/main/java/com/acme/storage/Quota.java h8c6503f297 > h0f09eb867e
+ [ 3] run_tests suite=contractTests -> ok 6/6 passed in=404 out=88   || PROD 
+*[ 4] edit_file path=src/main/java/com/acme/storage/Router.java -> ok in=2271 out=280   || PROD hunk=0.5
+        @ src/main/java/com/acme/storage/Router.java h1a4c73622d > h88db65aaa6
+*[ 5] run_tests suite=contractTests -> ok 6/6 passed in=251 out=33   || PROD 
+*[ 6] edit_file path=src/main/java/com/acme/storage/Router.java -> ok in=1289 out=866   || PROD REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/main/java/com/acme/storage/Router.java h88db65aaa6 > h1a4c73622d
+*[ 7] edit_file path=src/main/java/com/acme/storage/Router.java -> ok in=1184 out=402   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/main/java/com/acme/storage/Router.java h1a4c73622d > h88db65aaa6
+*[ 8] read_file path=src/main/java/com/acme/storage/Router.java -> ok in=1192 out=153   || OSCI 
+*[ 9] edit_file path=src/main/java/com/acme/storage/Router.java -> ok in=2307 out=243   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/main/java/com/acme/storage/Router.java h88db65aaa6 > h1a4c73622d
+*[10] edit_file path=src/main/java/com/acme/storage/Router.java -> ok in=1157 out=290   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/main/java/com/acme/storage/Router.java h1a4c73622d > h88db65aaa6
+*[11] lint target=spotbugs -> ok in=417 out=28   || OSCI 
+
+=== V057 oracle=OSCILLATING net=OSCILLATING t=32 start=25 logits=[0.5, 0.0, 3.9, 12.0]
+ [22] write_file path=src/main/java/com/umbrella/notify/AuditLog.java -> ok in=931 out=392   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/main/java/com/umbrella/notify/AuditLog.java h63505f90b4 > h3d7d4d6ce4
+ [23] run_tests suite=contractTests -> FAILED 10/12 passed in=1525 out=93   || OSCI CNT=1.0 INEFF=1.0 fail=1.0
+        ! ClassCastException at src/test/java/com/umbrella/notify/AuditLogContractTest.java::expandTimestampRetryAfter:888 (0x133ba69c)
+ [24] write_file path=src/main/java/com/umbrella/notify/AuditLog.java -> ok in=1594 out=93   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/main/java/com/umbrella/notify/AuditLog.java h3d7d4d6ce4 > h63505f90b4
+*[25] run_tests suite=contractTests -> FAILED 10/12 passed in=1051 out=274   || OSCI CNT=1.0 INEFF=1.0 fail=1.0
+        ! ClassCastException at src/test/java/com/umbrella/notify/AuditLogContractTest.java::expandTimestampDefaultConfig:857 (pid 98610)
+*[26] read_file path=src/main/java/com/umbrella/notify/AuditLog.java lines=18-25 -> ok in=270 out=34   || OSCI REP=1.0 lines=1.0
+*[27] write_file path=src/main/java/com/umbrella/notify/AuditLog.java -> ok in=1294 out=142   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/main/java/com/umbrella/notify/AuditLog.java h63505f90b4 > h3d7d4d6ce4
+*[28] run_tests suite=contractTests -> FAILED 10/12 passed in=1156 out=40   || OSCI CNT=1.0 INEFF=1.0 fail=1.0
+        ! ClassCastException at src/test/java/com/umbrella/notify/AuditLogContractTest.java::expandTimestampRetryAfter:888 (0x3e865d17)
+*[29] write_file path=src/main/java/com/umbrella/notify/AuditLog.java -> ok in=1171 out=122   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/main/java/com/umbrella/notify/AuditLog.java h3d7d4d6ce4 > h63505f90b4
+*[30] run_tests suite=contractTests -> FAILED 10/12 passed in=1688 out=130   || OSCI CNT=1.0 INEFF=1.0 fail=1.0
+        ! ClassCastException at src/test/java/com/umbrella/notify/AuditLogContractTest.java::expandTimestampDefaultConfig:857 (0xb8439b2b)
+*[31] write_file path=src/main/java/com/umbrella/notify/AuditLog.java -> ok in=648 out=183   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/main/java/com/umbrella/notify/AuditLog.java h63505f90b4 > h3d7d4d6ce4
+*[32] run_tests suite=contractTests -> FAILED 10/12 passed in=2294 out=47   || OSCI CNT=1.0 INEFF=1.0 fail=1.0
+        ! ClassCastException at src/test/java/com/umbrella/notify/AuditLogContractTest.java::expandTimestampRetryAfter:888 (0x247c9935)
+
+=== V061 oracle=OSCILLATING net=OSCILLATING t=12 start=5 logits=[0.5, 0.0, -12.0, 12.0]
+ [ 2] edit_file path=src/core/chunker.ts -> ok in=2026 out=297   || PROD hunk=0.5
+        @ src/core/chunker.ts h46f51143d0 > he0009085e5
+ [ 3] run_tests suite=e2e -> FAILED 6/9 passed in=1938 out=92   || PROD 
+        ! AssertionError at src/core/__tests__/quota.e2e.test.ts::quota apply token concurrent access:742 (pid 78092)
+ [ 4] list_dir path=scripts -> ok in=297 out=128   || PROD 
+*[ 5] read_file path=src/core/__tests__/uploader.e2e.test.ts -> ok in=271 out=96   || PROD 
+*[ 6] read_file path=src/core/uploader.ts -> ok in=1524 out=337   || PROD 
+*[ 7] edit_file path=src/core/uploader.ts -> ok in=2297 out=619   || PROD hunk=0.5
+        @ src/core/uploader.ts h8bab930bd5 > ha0903e2628
+*[ 8] lint target=prettier -> ok in=457 out=28   || PROD 
+*[ 9] edit_file path=src/core/uploader.ts -> ok in=1608 out=416   || PROD REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/core/uploader.ts ha0903e2628 > h8bab930bd5
+*[10] lint target=prettier -> ok in=705 out=133   || PROD 
+*[11] edit_file path=src/core/uploader.ts -> ok in=2734 out=886   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/core/uploader.ts h8bab930bd5 > ha0903e2628
+*[12] lint target=prettier -> ok in=602 out=79   || OSCI 
+
+=== V069 oracle=OSCILLATING net=OSCILLATING t=47 start=40 logits=[0.5, 0.0, 3.9, 12.0]
+ [37] edit_file path=lib/search/tokenizer.rb -> ok in=4154 out=426   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ lib/search/tokenizer.rb h2b78408f00 > hae2eb3d12d
+ [38] edit_file path=lib/search/tokenizer.rb -> ok in=2050 out=1179   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ lib/search/tokenizer.rb hae2eb3d12d > h2b78408f00
+ [39] edit_file path=lib/search/tokenizer.rb -> ok in=2305 out=508   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ lib/search/tokenizer.rb h2b78408f00 > hae2eb3d12d
+*[40] edit_file path=lib/search/tokenizer.rb -> ok in=3681 out=878   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ lib/search/tokenizer.rb hae2eb3d12d > h2b78408f00
+*[41] edit_file path=lib/search/tokenizer.rb -> ok in=1308 out=453   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ lib/search/tokenizer.rb h2b78408f00 > hae2eb3d12d
+*[42] edit_file path=lib/search/tokenizer.rb -> ok in=1658 out=390   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ lib/search/tokenizer.rb hae2eb3d12d > h2b78408f00
+*[43] edit_file path=lib/search/tokenizer.rb -> ok in=1930 out=520   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ lib/search/tokenizer.rb h2b78408f00 > hae2eb3d12d
+*[44] edit_file path=lib/search/tokenizer.rb -> ok in=1183 out=442   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ lib/search/tokenizer.rb hae2eb3d12d > h2b78408f00
+*[45] edit_file path=lib/search/tokenizer.rb -> ok in=1104 out=549   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ lib/search/tokenizer.rb h2b78408f00 > hae2eb3d12d
+*[46] edit_file path=lib/search/tokenizer.rb -> ok in=2073 out=715   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ lib/search/tokenizer.rb hae2eb3d12d > h2b78408f00
+*[47] edit_file path=lib/search/tokenizer.rb -> ok in=1696 out=987   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ lib/search/tokenizer.rb h2b78408f00 > hae2eb3d12d
+
+=== V070 oracle=OSCILLATING net=OSCILLATING t=18 start=11 logits=[0.5, 0.0, 3.9, 12.0]
+ [ 8] edit_file path=src/auth/invoice.py -> ok in=1178 out=368   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/auth/invoice.py h5a061ab4ff > hce2fdcf1cb
+ [ 9] edit_file path=src/auth/invoice.py -> ok in=991 out=486   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/auth/invoice.py hce2fdcf1cb > h5a061ab4ff
+ [10] read_file path=src/auth/invoice.py lines=8-14 -> ok in=676 out=143   || OSCI REP=1.0 lines=1.0
+*[11] edit_file path=src/auth/invoice.py -> ok in=1525 out=252   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/auth/invoice.py h5a061ab4ff > hce2fdcf1cb
+*[12] edit_file path=src/auth/invoice.py -> ok in=362 out=254   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/auth/invoice.py hce2fdcf1cb > h5a061ab4ff
+*[13] read_file path=src/auth/invoice.py lines=6-16 -> ok in=773 out=128   || OSCI REP=1.0 lines=1.0
+*[14] edit_file path=src/auth/invoice.py -> ok in=565 out=398   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/auth/invoice.py h5a061ab4ff > hce2fdcf1cb
+*[15] edit_file path=src/auth/invoice.py -> ok in=1574 out=321   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/auth/invoice.py hce2fdcf1cb > h5a061ab4ff
+*[16] edit_file path=src/auth/invoice.py -> ok in=992 out=201   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/auth/invoice.py h5a061ab4ff > hce2fdcf1cb
+*[17] edit_file path=src/auth/invoice.py -> ok in=401 out=274   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/auth/invoice.py hce2fdcf1cb > h5a061ab4ff
+*[18] edit_file path=src/auth/invoice.py -> ok in=1553 out=375   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/auth/invoice.py h5a061ab4ff > hce2fdcf1cb
+
+=== V073 oracle=OSCILLATING net=OSCILLATING t=16 start=9 logits=[0.5, 6.0, 0.8, 12.0]
+ [ 6] read_file path=src/orders/uploader.py -> ok in=1900 out=90   || PROD 
+ [ 7] edit_file path=src/orders/uploader.py -> ok in=1811 out=279   || PROD hunk=0.5
+        @ src/orders/uploader.py hb8f2890268 > had62f5474e
+ [ 8] edit_file path=src/orders/uploader.py -> ok in=1765 out=342   || PROD REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/orders/uploader.py had62f5474e > hb8f2890268
+*[ 9] run_tests suite=tests/smoke -> FAILED 6/11 passed in=2181 out=54   || PROD 
+        ! IndexError at tests/smoke/test_migrations.py::test_estimate_row_negative_values:206 (pid 82502)
+*[10] edit_file path=src/orders/uploader.py -> ok in=1569 out=443   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/orders/uploader.py hb8f2890268 > had62f5474e
+*[11] edit_file path=src/orders/uploader.py -> ok in=1197 out=235   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/orders/uploader.py had62f5474e > hb8f2890268
+*[12] lint target=flake8 -> ok in=966 out=71   || OSCI 
+*[13] edit_file path=src/orders/uploader.py -> ok in=1145 out=1218   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/orders/uploader.py hb8f2890268 > had62f5474e
+*[14] lint target=flake8 -> ok in=1211 out=95   || OSCI 
+*[15] edit_file path=src/orders/uploader.py -> ok in=1492 out=141   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/orders/uploader.py had62f5474e > hb8f2890268
+*[16] run_tests suite=tests/smoke -> FAILED 6/11 passed in=2209 out=55   || OSCI CNT=1.0 INEFF=1.0 fail=1.0
+        ! IndexError at tests/smoke/test_migrations.py::test_estimate_row_negative_values:206 (0xf40f6a18)
+
+=== V075 oracle=OSCILLATING net=OSCILLATING t=44 start=37 logits=[0.5, 6.0, -7.0, 12.0]
+ [34] lint target=spotbugs -> ok in=563 out=26   || OSCI 
+ [35] edit_file path=src/main/java/com/globex/catalog/Quota.java -> ok in=608 out=747   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/main/java/com/globex/catalog/Quota.java h59d7af1a5a > hfc067a094a
+ [36] run_tests suite=contractTests -> FAILED 7/9 passed in=5727 out=56   || OSCI 
+        ! IllegalArgumentException at src/test/java/com/globex/catalog/QuotaContractTest.java::dispatchPathLargeBatch:443 (0x55ed07fa)
+*[37] edit_file path=src/main/java/com/globex/catalog/Quota.java -> ok in=1090 out=476   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/main/java/com/globex/catalog/Quota.java hfc067a094a > h59d7af1a5a
+*[38] run_tests suite=contractTests -> FAILED 8/9 passed in=809 out=40   || OSCI 
+        ! IllegalArgumentException at src/test/java/com/globex/catalog/QuotaContractTest.java::dispatchPathExpiredToken:387 (0x78fb757a)
+*[39] edit_file path=src/main/java/com/globex/catalog/Quota.java -> ok in=673 out=573   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/main/java/com/globex/catalog/Quota.java h59d7af1a5a > hfc067a094a
+*[40] run_tests suite=contractTests -> FAILED 7/9 passed in=1871 out=130   || OSCI CNT=1.0 INEFF=1.0 fail=1.0
+        ! IllegalArgumentException at src/test/java/com/globex/catalog/QuotaContractTest.java::dispatchPathLargeBatch:443 (pid 42088)
+*[41] edit_file path=src/main/java/com/globex/catalog/Quota.java -> ok in=700 out=158   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/main/java/com/globex/catalog/Quota.java hfc067a094a > h59d7af1a5a
+*[42] run_tests suite=contractTests -> FAILED 8/9 passed in=908 out=47   || OSCI CNT=1.0 INEFF=1.0 fail=1.0
+        ! IllegalArgumentException at src/test/java/com/globex/catalog/QuotaContractTest.java::dispatchPathExpiredToken:387 (0xad7908b8)
+*[43] edit_file path=src/main/java/com/globex/catalog/Quota.java -> ok in=733 out=724   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/main/java/com/globex/catalog/Quota.java h59d7af1a5a > hfc067a094a
+*[44] lint target=spotbugs -> ok in=435 out=99   || OSCI 
+
+=== V076 oracle=OSCILLATING net=OSCILLATING t=45 start=38 logits=[0.5, 0.0, 3.8, 12.0]
+ [35] run_tests suite=e2e -> FAILED 10/14 passed in=8193 out=828   || OSCI CNT=1.0 INEFF=1.0 fail=1.0
+        ! ReferenceError at src/catalog/__tests__/searchIndex.e2e.test.ts::search_index render total nested objects:183 (0xf85c6acd)
+ [36] read_file path=src/catalog/searchIndex.ts lines=14-23 -> ok in=899 out=427   || OSCI REP=1.0 lines=1.0
+ [37] edit_file path=src/catalog/searchIndex.ts -> ok in=3770 out=1440   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/catalog/searchIndex.ts hd97b6ff697 > h32b4659fe0
+*[38] run_tests suite=e2e -> FAILED 11/14 passed in=7853 out=428   || OSCI CNT=1.0 INEFF=1.0 fail=1.0
+        ! ReferenceError at src/catalog/__tests__/searchIndex.e2e.test.ts::search_index render total nested objects:183 (pid 9728)
+*[39] edit_file path=src/catalog/searchIndex.ts -> ok in=1978 out=944   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/catalog/searchIndex.ts h32b4659fe0 > hd97b6ff697
+*[40] run_tests suite=e2e -> FAILED 10/14 passed in=11284 out=106   || OSCI CNT=1.0 INEFF=1.0 fail=1.0
+        ! ReferenceError at src/catalog/__tests__/searchIndex.e2e.test.ts::search_index render total nested objects:183 (pid 9531)
+*[41] read_file path=src/catalog/searchIndex.ts lines=16-21 -> ok in=3712 out=422   || OSCI REP=1.0 lines=1.0
+*[42] edit_file path=src/catalog/searchIndex.ts -> ok in=2296 out=882   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/catalog/searchIndex.ts hd97b6ff697 > h32b4659fe0
+*[43] run_tests suite=e2e -> FAILED 11/14 passed in=13323 out=149   || OSCI CNT=1.0 INEFF=1.0 fail=1.0
+        ! ReferenceError at src/catalog/__tests__/searchIndex.e2e.test.ts::search_index render total nested objects:183 (0xf650aafe)
+*[44] read_file path=src/catalog/searchIndex.ts lines=12-25 -> ok in=1509 out=84   || OSCI REP=1.0 lines=1.0
+*[45] edit_file path=src/catalog/searchIndex.ts -> ok in=13129 out=736   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/catalog/searchIndex.ts h32b4659fe0 > hd97b6ff697
+
+=== V081 oracle=OSCILLATING net=OSCILLATING t=36 start=29 logits=[0.5, 0.0, -4.1, 12.0]
+ [26] run_tests suite=tests/regression -> FAILED 5/18 passed in=6646 out=50   || OSCI CNT=1.0 INEFF=1.0 fail=1.0
+        ! ZeroDivisionError at tests/regression/test_cache.py::test_lookup_query_case_folding:604 (0x30c0964b)
+ [27] edit_file path=src/core/dedupe.py -> ok in=2253 out=801   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/core/dedupe.py hd821bbc068 > h1f658497d6
+ [28] run_tests suite=tests/regression tests=tests/regression/test_dedupe.py::test_batch_digest_default_config,tests/regression/test_dedupe.py::test_batch_digest_leap_year,tests/regression/test_dedupe.py::test_batch_digest_partial_page -> FAILED 2/3 passed in=2322 out=82   || OSCI 
+        ! KeyError at tests/regression/test_dedupe.py::test_batch_digest_leap_year:67 (0x6b95e8d3)
+*[29] edit_file path=src/core/dedupe.py -> ok in=966 out=439   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/core/dedupe.py h1f658497d6 > hd821bbc068
+*[30] run_tests suite=tests/regression tests=tests/regression/test_dedupe.py::test_batch_digest_default_config,tests/regression/test_dedupe.py::test_batch_digest_leap_year,tests/regression/test_dedupe.py::test_batch_digest_partial_page -> FAILED 1/3 passed in=3561 out=133   || OSCI 
+        ! KeyError at tests/regression/test_dedupe.py::test_batch_digest_default_config:485 (pid 31428)
+*[31] edit_file path=src/core/dedupe.py -> ok in=1554 out=477   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/core/dedupe.py hd821bbc068 > h1f658497d6
+*[32] run_tests suite=tests/regression -> FAILED 6/18 passed in=1450 out=42   || OSCI 
+        ! ZeroDivisionError at tests/regression/test_cache.py::test_lookup_query_case_folding:604 (0x46093d69)
+*[33] edit_file path=src/core/dedupe.py -> ok in=6053 out=442   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/core/dedupe.py h1f658497d6 > hd821bbc068
+*[34] run_tests suite=tests/regression -> FAILED 5/18 passed in=12279 out=135   || OSCI 
+        ! ZeroDivisionError at tests/regression/test_cache.py::test_lookup_query_case_folding:604 (0xcdae8dad)
+*[35] read_file path=src/core/dedupe.py lines=18-23 -> ok in=829 out=91   || OSCI lines=1.0
+*[36] edit_file path=src/core/dedupe.py -> ok in=1480 out=767   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/core/dedupe.py hd821bbc068 > h1f658497d6
+
+=== V086 oracle=OSCILLATING net=OSCILLATING t=27 start=20 logits=[0.5, 0.0, 3.8, 12.0]
+ [17] run_tests suite=tests/regression -> FAILED 6/14 passed in=4072 out=110   || OSCI CNT=1.0 INEFF=1.0 fail=1.0
+        ! UnicodeDecodeError at tests/regression/test_config_loader.py::test_parse_key_large_batch:57 (pid 89784)
+ [18] edit_file path=src/report/diff_engine.py -> ok in=1935 out=581   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/report/diff_engine.py h4d75a704cd > hecbe766a73
+ [19] run_tests suite=tests/regression -> FAILED 5/14 passed in=2460 out=176   || OSCI CNT=1.0 INEFF=1.0 fail=1.0
+        ! UnicodeDecodeError at tests/regression/test_config_loader.py::test_parse_key_large_batch:57 (pid 50229)
+*[20] edit_file path=src/report/diff_engine.py -> ok in=1077 out=288   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/report/diff_engine.py hecbe766a73 > h4d75a704cd
+*[21] run_tests suite=tests/regression -> FAILED 6/14 passed in=2116 out=90   || OSCI CNT=1.0 INEFF=1.0 fail=1.0
+        ! UnicodeDecodeError at tests/regression/test_config_loader.py::test_parse_key_large_batch:57 (0x600b7f64)
+*[22] edit_file path=src/report/diff_engine.py -> ok in=1077 out=284   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/report/diff_engine.py h4d75a704cd > hecbe766a73
+*[23] run_tests suite=tests/regression -> FAILED 5/14 passed in=3702 out=148   || OSCI CNT=1.0 INEFF=1.0 fail=1.0
+        ! UnicodeDecodeError at tests/regression/test_config_loader.py::test_parse_key_large_batch:57 (0x5ea672c8)
+*[24] edit_file path=src/report/diff_engine.py -> ok in=1207 out=246   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/report/diff_engine.py hecbe766a73 > h4d75a704cd
+*[25] run_tests suite=tests/regression -> FAILED 6/14 passed in=3356 out=109   || OSCI CNT=1.0 INEFF=1.0 fail=1.0
+        ! UnicodeDecodeError at tests/regression/test_config_loader.py::test_parse_key_large_batch:57 (0x67a879a6)
+*[26] edit_file path=src/report/diff_engine.py -> ok in=1396 out=481   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/report/diff_engine.py h4d75a704cd > hecbe766a73
+*[27] run_tests suite=tests/regression -> FAILED 5/14 passed in=3748 out=86   || OSCI CNT=1.0 INEFF=1.0 fail=1.0
+        ! UnicodeDecodeError at tests/regression/test_config_loader.py::test_parse_key_large_batch:57 (0x6699d170)
+
+=== V087 oracle=OSCILLATING net=OSCILLATING t=8 start=1 logits=[0.5, 6.0, 0.9, 12.0]
+ [ 0] read_file path=internal/orders/config_loader.go lines=5-10 -> ok in=1483 out=670   || PROD lines=1.0
+*[ 1] edit_file path=internal/orders/config_loader.go -> ok in=2216 out=488   || PROD hunk=0.5
+        @ internal/orders/config_loader.go h703729a0fa > h6236fc3953
+*[ 2] run_tests suite=./internal/...:race -> FAILED 9/10 passed in=8617 out=234   || PROD 
+        ! DeadlineExceeded at internal/orders/config_loader_race_test.go::TestCompactDeadlineCaseFolding:60 (0xbd68d063)
+*[ 3] edit_file path=internal/orders/config_loader.go -> ok in=6128 out=629   || PROD hunk=0.5
+        @ internal/orders/config_loader.go h6236fc3953 > h48210ad4eb
+*[ 4] run_tests suite=./internal/...:race -> FAILED 9/10 passed in=3437 out=259   || RECO CNT=1.0 INEFF=1.0 fail=1.0
+        ! DeadlineExceeded at internal/orders/config_loader_race_test.go::TestCompactDeadlineRounding:67 (0x425a713d)
+*[ 5] edit_file path=internal/orders/config_loader.go -> ok in=3705 out=2088   || RECO REV=1.0 INEFF=1.0 hunk=0.5
+        @ internal/orders/config_loader.go h48210ad4eb > h6236fc3953
+*[ 6] run_tests suite=./internal/...:race -> FAILED 9/10 passed in=2410 out=91   || RECO CNT=1.0 INEFF=1.0 fail=1.0
+        ! DeadlineExceeded at internal/orders/config_loader_race_test.go::TestCompactDeadlineCaseFolding:60 (0xb54c3c45)
+*[ 7] edit_file path=internal/orders/config_loader.go -> ok in=3515 out=502   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ internal/orders/config_loader.go h6236fc3953 > h48210ad4eb
+*[ 8] run_tests suite=./internal/...:race -> FAILED 9/10 passed in=5990 out=228   || OSCI CNT=1.0 INEFF=1.0 fail=1.0
+        ! DeadlineExceeded at internal/orders/config_loader_race_test.go::TestCompactDeadlineRounding:67 (0x29e61238)
+
+=== V092 oracle=OSCILLATING net=OSCILLATING t=21 start=14 logits=[0.5, 0.0, -12.0, 12.0]
+ [11] lint target=golangci-lint -> ok in=1070 out=207   || PROD 
+ [12] edit_file path=internal/worker/config_loader.go -> ok in=7083 out=547   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ internal/worker/config_loader.go h04cc63bb2f > ha3798f72ba
+ [13] lint target=golangci-lint -> ok in=1308 out=120   || OSCI 
+*[14] edit_file path=internal/worker/config_loader.go -> ok in=2265 out=996   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ internal/worker/config_loader.go ha3798f72ba > h04cc63bb2f
+*[15] lint target=golangci-lint -> ok in=1168 out=150   || OSCI 
+*[16] edit_file path=internal/worker/config_loader.go -> ok in=3897 out=606   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ internal/worker/config_loader.go h04cc63bb2f > ha3798f72ba
+*[17] lint target=golangci-lint -> ok in=1279 out=89   || OSCI 
+*[18] edit_file path=internal/worker/config_loader.go -> ok in=1252 out=747   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ internal/worker/config_loader.go ha3798f72ba > h04cc63bb2f
+*[19] lint target=golangci-lint -> ok in=1225 out=116   || OSCI 
+*[20] edit_file path=internal/worker/config_loader.go -> ok in=2692 out=1886   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ internal/worker/config_loader.go h04cc63bb2f > ha3798f72ba
+*[21] lint target=golangci-lint -> ok in=1941 out=84   || OSCI 
+
+=== V093 oracle=OSCILLATING net=OSCILLATING t=44 start=37 logits=[0.5, 0.0, -4.0, 12.0]
+ [34] edit_file path=src/search/archive.py -> ok in=3764 out=848   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/search/archive.py h2a55ea5d79 > h0d72b46daf
+ [35] run_tests suite=tests/regression tests=tests/regression/test_archive.py::test_render_manifest_boundary -> ok 1/1 passed in=1272 out=80   || OSCI 
+ [36] run_tests suite=tests/regression tests=tests/regression/test_archive.py::test_render_manifest_boundary,tests/regression/test_archive.py::test_render_manifest_large_batch,tests/regression/test_archive.py::test_render_manifest_sorted_order -> FAILED 1/3 passed in=5200 out=163   || OSCI CNT=1.0 INEFF=1.0 fail=1.0
+        ! UnicodeDecodeError at tests/regression/test_archive.py::test_render_manifest_large_batch:427 (pid 84531)
+*[37] edit_file path=src/search/archive.py -> ok in=3046 out=762   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/search/archive.py h0d72b46daf > h2a55ea5d79
+*[38] run_tests suite=tests/regression tests=tests/regression/test_archive.py::test_render_manifest_large_batch -> ok 1/1 passed in=947 out=161   || OSCI 
+*[39] run_tests suite=tests/regression tests=tests/regression/test_archive.py::test_render_manifest_boundary,tests/regression/test_archive.py::test_render_manifest_large_batch,tests/regression/test_archive.py::test_render_manifest_sorted_order -> FAILED 2/3 passed in=5042 out=94   || OSCI CNT=1.0 INEFF=1.0 fail=1.0
+        ! UnicodeDecodeError at tests/regression/test_archive.py::test_render_manifest_boundary:837 (0x54188043)
+*[40] edit_file path=src/search/archive.py -> ok in=3045 out=786   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/search/archive.py h2a55ea5d79 > h0d72b46daf
+*[41] run_tests suite=tests/regression tests=tests/regression/test_archive.py::test_render_manifest_boundary -> ok 1/1 passed in=2063 out=218   || OSCI 
+*[42] run_tests suite=tests/regression tests=tests/regression/test_archive.py::test_render_manifest_boundary,tests/regression/test_archive.py::test_render_manifest_large_batch,tests/regression/test_archive.py::test_render_manifest_sorted_order -> FAILED 1/3 passed in=2082 out=91   || OSCI CNT=1.0 INEFF=1.0 fail=1.0
+        ! UnicodeDecodeError at tests/regression/test_archive.py::test_render_manifest_large_batch:427 (pid 25635)
+*[43] edit_file path=src/search/archive.py -> ok in=3112 out=890   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/search/archive.py h0d72b46daf > h2a55ea5d79
+*[44] run_tests suite=tests/regression tests=tests/regression/test_archive.py::test_render_manifest_large_batch -> ok 1/1 passed in=1004 out=188   || OSCI 
+
+=== V096 oracle=OSCILLATING net=OSCILLATING t=37 start=30 logits=[0.5, 0.0, 3.9, 12.0]
+ [27] edit_file path=internal/orders/retry_policy.go -> ok in=2850 out=820   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ internal/orders/retry_policy.go h05a20e8ea2 > h1f68fb11e8
+ [28] edit_file path=internal/orders/retry_policy.go -> ok in=1588 out=1698   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ internal/orders/retry_policy.go h1f68fb11e8 > h05a20e8ea2
+ [29] edit_file path=internal/orders/retry_policy.go -> ok in=4475 out=946   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ internal/orders/retry_policy.go h05a20e8ea2 > h1f68fb11e8
+*[30] edit_file path=internal/orders/retry_policy.go -> ok in=4366 out=897   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ internal/orders/retry_policy.go h1f68fb11e8 > h05a20e8ea2
+*[31] edit_file path=internal/orders/retry_policy.go -> ok in=3163 out=1369   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ internal/orders/retry_policy.go h05a20e8ea2 > h1f68fb11e8
+*[32] edit_file path=internal/orders/retry_policy.go -> ok in=1601 out=804   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ internal/orders/retry_policy.go h1f68fb11e8 > h05a20e8ea2
+*[33] edit_file path=internal/orders/retry_policy.go -> ok in=4575 out=971   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ internal/orders/retry_policy.go h05a20e8ea2 > h1f68fb11e8
+*[34] edit_file path=internal/orders/retry_policy.go -> ok in=4041 out=1027   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ internal/orders/retry_policy.go h1f68fb11e8 > h05a20e8ea2
+*[35] edit_file path=internal/orders/retry_policy.go -> ok in=5138 out=1165   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ internal/orders/retry_policy.go h05a20e8ea2 > h1f68fb11e8
+*[36] edit_file path=internal/orders/retry_policy.go -> ok in=4548 out=1975   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ internal/orders/retry_policy.go h1f68fb11e8 > h05a20e8ea2
+*[37] edit_file path=internal/orders/retry_policy.go -> ok in=3340 out=633   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ internal/orders/retry_policy.go h05a20e8ea2 > h1f68fb11e8
+
+=== V098 oracle=OSCILLATING net=OSCILLATING t=18 start=11 logits=[0.5, 0.0, 3.9, 12.0]
+ [ 8] read_file path=src/cli/audit_log.py -> ok in=1359 out=113   || OSCI REP=1.0 INEFF=1.0
+ [ 9] edit_file path=src/cli/audit_log.py -> ok in=2831 out=142   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/cli/audit_log.py hac18c182e5 > h2d0c8c3707
+ [10] read_file path=src/cli/audit_log.py -> ok in=1647 out=107   || OSCI REP=1.0 INEFF=1.0
+*[11] revert paths=src/cli/audit_log.py -> ok in=1040 out=180   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/cli/audit_log.py h2d0c8c3707 > hac18c182e5
+*[12] read_file path=src/cli/audit_log.py -> ok in=1744 out=91   || OSCI REP=1.0 INEFF=1.0
+*[13] edit_file path=src/cli/audit_log.py -> ok in=437 out=305   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/cli/audit_log.py hac18c182e5 > h2d0c8c3707
+*[14] lint target=flake8 -> ok in=1001 out=30   || OSCI 
+*[15] revert paths=src/cli/audit_log.py -> ok in=942 out=419   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/cli/audit_log.py h2d0c8c3707 > hac18c182e5
+*[16] lint target=flake8 -> ok in=712 out=108   || OSCI 
+*[17] edit_file path=src/cli/audit_log.py -> ok in=633 out=151   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/cli/audit_log.py hac18c182e5 > h2d0c8c3707
+*[18] read_file path=src/cli/audit_log.py -> ok in=2284 out=88   || OSCI REP=1.0 INEFF=1.0
+
+=== V100 oracle=OSCILLATING net=OSCILLATING t=44 start=37 logits=[0.5, 0.0, -4.2, 12.0]
+ [34] edit_file path=internal/core/dedupe.go -> ok in=2118 out=301   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ internal/core/dedupe.go h5c34e20fae > hf9d2be9348
+ [35] lint target=staticcheck -> ok in=1381 out=96   || OSCI 
+ [36] edit_file path=internal/core/dedupe.go -> ok in=1802 out=698   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ internal/core/dedupe.go hf9d2be9348 > he56142983e
+*[37] lint target=staticcheck -> ok in=1471 out=197   || OSCI 
+*[38] edit_file path=internal/core/dedupe.go -> ok in=975 out=572   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ internal/core/dedupe.go he56142983e > h5c34e20fae
+*[39] lint target=staticcheck -> ok in=749 out=68   || OSCI 
+*[40] edit_file path=internal/core/dedupe.go -> ok in=1207 out=389   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ internal/core/dedupe.go h5c34e20fae > hf9d2be9348
+*[41] lint target=staticcheck -> ok in=1201 out=114   || OSCI 
+*[42] edit_file path=internal/core/dedupe.go -> ok in=1163 out=519   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ internal/core/dedupe.go hf9d2be9348 > he56142983e
+*[43] lint target=staticcheck -> ok in=1723 out=54   || OSCI 
+*[44] edit_file path=internal/core/dedupe.go -> ok in=1377 out=312   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ internal/core/dedupe.go he56142983e > h5c34e20fae
+
+=== V113 oracle=OSCILLATING net=OSCILLATING t=20 start=13 logits=[0.5, 0.0, 3.9, 12.0]
+ [10] run_tests suite=spec:unit -> FAILED 5/8 passed in=3842 out=143   || OSCI CNT=1.0 INEFF=1.0 fail=1.0
+        ! TypeError at spec/sync/csv_import_unit_spec.rb::csv_import refresh entry retry after:633 (0x0bd02407)
+ [11] edit_file path=lib/sync/csv_import.rb -> ok in=2376 out=389   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ lib/sync/csv_import.rb h17f84874f8 > h31ed8aa6a5
+ [12] run_tests suite=spec:unit -> FAILED 5/8 passed in=4150 out=361   || OSCI CNT=1.0 INEFF=1.0 fail=1.0
+        ! TypeError at spec/sync/csv_import_unit_spec.rb::csv_import refresh entry default config:565 (pid 77328)
+*[13] edit_file path=lib/sync/csv_import.rb -> ok in=1356 out=869   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ lib/sync/csv_import.rb h31ed8aa6a5 > h17f84874f8
+*[14] run_tests suite=spec:unit -> FAILED 5/8 passed in=5098 out=91   || OSCI CNT=1.0 INEFF=1.0 fail=1.0
+        ! TypeError at spec/sync/csv_import_unit_spec.rb::csv_import refresh entry retry after:633 (0xd633fd8b)
+*[15] edit_file path=lib/sync/csv_import.rb -> ok in=2462 out=1020   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ lib/sync/csv_import.rb h17f84874f8 > h31ed8aa6a5
+*[16] run_tests suite=spec:unit -> FAILED 5/8 passed in=5092 out=61   || OSCI CNT=1.0 INEFF=1.0 fail=1.0
+        ! TypeError at spec/sync/csv_import_unit_spec.rb::csv_import refresh entry default config:565 (pid 66329)
+*[17] edit_file path=lib/sync/csv_import.rb -> ok in=2434 out=283   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ lib/sync/csv_import.rb h31ed8aa6a5 > h17f84874f8
+*[18] run_tests suite=spec:unit -> FAILED 5/8 passed in=3918 out=146   || OSCI CNT=1.0 INEFF=1.0 fail=1.0
+        ! TypeError at spec/sync/csv_import_unit_spec.rb::csv_import refresh entry retry after:633 (0x0f962e56)
+*[19] edit_file path=lib/sync/csv_import.rb -> ok in=1133 out=548   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ lib/sync/csv_import.rb h17f84874f8 > h31ed8aa6a5
+*[20] run_tests suite=spec:unit -> FAILED 5/8 passed in=3234 out=250   || OSCI CNT=1.0 INEFF=1.0 fail=1.0
+        ! TypeError at spec/sync/csv_import_unit_spec.rb::csv_import refresh entry default config:565 (pid 66077)
+
+=== V117 oracle=OSCILLATING net=OSCILLATING t=33 start=26 logits=[0.5, 0.0, -4.1, 12.0]
+ [23] write_file path=src/main/java/com/globex/search/Thumbnailer.java -> ok in=5914 out=1347   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/main/java/com/globex/search/Thumbnailer.java h1823f65d80 > h7656c680c8
+ [24] lint target=checkstyle -> ok in=1216 out=152   || OSCI 
+ [25] write_file path=src/main/java/com/globex/search/Thumbnailer.java -> ok in=2519 out=893   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/main/java/com/globex/search/Thumbnailer.java h7656c680c8 > h1823f65d80
+*[26] lint target=checkstyle -> ok in=1437 out=164   || OSCI 
+*[27] write_file path=src/main/java/com/globex/search/Thumbnailer.java -> ok in=2274 out=301   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/main/java/com/globex/search/Thumbnailer.java h1823f65d80 > h7656c680c8
+*[28] lint target=checkstyle -> ok in=856 out=87   || OSCI 
+*[29] write_file path=src/main/java/com/globex/search/Thumbnailer.java -> ok in=1456 out=396   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/main/java/com/globex/search/Thumbnailer.java h7656c680c8 > h1823f65d80
+*[30] lint target=checkstyle -> ok in=1759 out=191   || OSCI 
+*[31] write_file path=src/main/java/com/globex/search/Thumbnailer.java -> ok in=1585 out=739   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/main/java/com/globex/search/Thumbnailer.java h1823f65d80 > h7656c680c8
+*[32] lint target=checkstyle -> ok in=1003 out=97   || OSCI 
+*[33] write_file path=src/main/java/com/globex/search/Thumbnailer.java -> ok in=2263 out=935   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/main/java/com/globex/search/Thumbnailer.java h7656c680c8 > h1823f65d80
+
+=== V121 oracle=OSCILLATING net=OSCILLATING t=13 start=6 logits=[0.5, 0.0, -4.1, 12.0]
+ [ 3] search scope=docs query="unsafe" -> ok in=1988 out=86   || PROD 
+ [ 4] read_file path=src/geo/archive.rs -> ok in=1882 out=133   || PROD 
+ [ 5] search scope=src query="lru_cache" -> ok in=1944 out=131   || PROD 
+*[ 6] read_file path=docs/api.md -> ok in=284 out=104   || PROD 
+*[ 7] search scope=. query="async def" -> ok in=1156 out=136   || PROD 
+*[ 8] read_file path=src/search/search_index.rs -> ok in=2075 out=190   || PROD 
+*[ 9] edit_file path=src/search/search_index.rs -> ok in=1589 out=331   || PROD hunk=0.5
+        @ src/search/search_index.rs hcba26be2dd > h8a0ef223c3
+*[10] edit_file path=src/search/search_index.rs -> ok in=1355 out=258   || PROD REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/search/search_index.rs h8a0ef223c3 > hcba26be2dd
+*[11] edit_file path=src/search/search_index.rs -> ok in=2609 out=457   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/search/search_index.rs hcba26be2dd > h8a0ef223c3
+*[12] edit_file path=src/search/search_index.rs -> ok in=1714 out=307   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/search/search_index.rs h8a0ef223c3 > hcba26be2dd
+*[13] edit_file path=src/search/search_index.rs -> ok in=1063 out=330   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/search/search_index.rs hcba26be2dd > h8a0ef223c3
+
+=== V122 oracle=OSCILLATING net=OSCILLATING t=11 start=4 logits=[0.5, 6.0, -7.2, 12.0]
+ [ 1] list_dir path=tests/fixtures -> ok in=243 out=102   || PROD 
+ [ 2] list_dir path=.github/workflows -> ok in=263 out=73   || PROD 
+ [ 3] read_file path=deploy/helm/values.yaml -> ok in=508 out=45   || PROD 
+*[ 4] search scope=docs query="async def" -> ok in=386 out=96   || PROD 
+*[ 5] search scope=. query="deprecated" -> ok in=443 out=60   || PROD 
+*[ 6] read_file path=src/search/currency.py -> ok in=561 out=58   || PROD 
+*[ 7] edit_file path=src/search/currency.py -> ok in=1243 out=253   || PROD hunk=0.5
+        @ src/search/currency.py h7a43be29a3 > h8020ee180c
+*[ 8] run_tests suite=tests/smoke -> FAILED 8/11 passed in=1752 out=65   || PROD 
+        ! TypeError at tests/smoke/test_scheduler.py::test_load_address_boundary:663 (0x7041df15)
+*[ 9] revert paths=src/search/currency.py -> ok in=996 out=141   || PROD REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/search/currency.py h8020ee180c > h7a43be29a3
+*[10] edit_file path=src/search/currency.py -> ok in=848 out=267   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/search/currency.py h7a43be29a3 > h8020ee180c
+*[11] run_tests suite=tests/smoke -> FAILED 8/11 passed in=1848 out=107   || OSCI CNT=1.0 INEFF=1.0 fail=1.0
+        ! TypeError at tests/smoke/test_scheduler.py::test_load_address_boundary:663 (0x7820886e)
+
+=== V126 oracle=OSCILLATING net=OSCILLATING t=24 start=17 logits=[0.5, 0.0, 3.9, 12.0]
+ [14] edit_file path=src/cli/feature_flags.py -> ok in=1823 out=377   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/cli/feature_flags.py hd56e817509 > h5cb029ae9d
+ [15] run_tests suite=tests/regression tests=tests/regression/test_feature_flags.py::test_normalize_entry_large_batch,tests/regression/test_feature_flags.py::test_normalize_entry_nested_objects,tests/regression/test_feature_flags.py::test_normalize_entry_unicode -> FAILED 2/3 passed in=4043 out=401   || OSCI CNT=1.0 INEFF=1.0 fail=1.0
+        ! AssertionError at tests/regression/test_feature_flags.py::test_normalize_entry_unicode:202 (0xbcf2a8eb)
+ [16] edit_file path=src/cli/feature_flags.py -> ok in=2408 out=708   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/cli/feature_flags.py h5cb029ae9d > hd56e817509
+*[17] run_tests suite=tests/regression tests=tests/regression/test_feature_flags.py::test_normalize_entry_large_batch,tests/regression/test_feature_flags.py::test_normalize_entry_nested_objects,tests/regression/test_feature_flags.py::test_normalize_entry_unicode -> FAILED 1/3 passed in=2150 out=255   || OSCI CNT=1.0 INEFF=1.0 fail=1.0
+        ! AssertionError at tests/regression/test_feature_flags.py::test_normalize_entry_large_batch:247 (pid 36167)
+*[18] edit_file path=src/cli/feature_flags.py -> ok in=930 out=766   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/cli/feature_flags.py hd56e817509 > h5cb029ae9d
+*[19] run_tests suite=tests/regression tests=tests/regression/test_feature_flags.py::test_normalize_entry_large_batch,tests/regression/test_feature_flags.py::test_normalize_entry_nested_objects,tests/regression/test_feature_flags.py::test_normalize_entry_unicode -> FAILED 2/3 passed in=5356 out=175   || OSCI CNT=1.0 INEFF=1.0 fail=1.0
+        ! AssertionError at tests/regression/test_feature_flags.py::test_normalize_entry_unicode:202 (pid 54849)
+*[20] edit_file path=src/cli/feature_flags.py -> ok in=1124 out=307   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/cli/feature_flags.py h5cb029ae9d > hd56e817509
+*[21] run_tests suite=tests/regression tests=tests/regression/test_feature_flags.py::test_normalize_entry_large_batch,tests/regression/test_feature_flags.py::test_normalize_entry_nested_objects,tests/regression/test_feature_flags.py::test_normalize_entry_unicode -> FAILED 1/3 passed in=2062 out=369   || OSCI CNT=1.0 INEFF=1.0 fail=1.0
+        ! AssertionError at tests/regression/test_feature_flags.py::test_normalize_entry_large_batch:247 (pid 71444)
+*[22] edit_file path=src/cli/feature_flags.py -> ok in=1403 out=501   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/cli/feature_flags.py hd56e817509 > h5cb029ae9d
+*[23] run_tests suite=tests/regression tests=tests/regression/test_feature_flags.py::test_normalize_entry_large_batch,tests/regression/test_feature_flags.py::test_normalize_entry_nested_objects,tests/regression/test_feature_flags.py::test_normalize_entry_unicode -> FAILED 2/3 passed in=5721 out=777   || OSCI CNT=1.0 INEFF=1.0 fail=1.0
+        ! AssertionError at tests/regression/test_feature_flags.py::test_normalize_entry_unicode:202 (pid 77885)
+*[24] edit_file path=src/cli/feature_flags.py -> ok in=1958 out=656   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/cli/feature_flags.py h5cb029ae9d > hd56e817509
+
+=== V130 oracle=OSCILLATING net=OSCILLATING t=40 start=33 logits=[0.5, 0.0, 3.9, 12.0]
+ [30] run_tests suite=tests/regression tests=tests/regression/test_search_index.py::test_expand_deadline_large_batch,tests/regression/test_search_index.py::test_expand_deadline_partial_page -> FAILED 1/2 passed in=2779 out=150   || OSCI CNT=1.0 INEFF=1.0 fail=1.0
+        ! AssertionError at tests/regression/test_search_index.py::test_expand_deadline_partial_page:888 (pid 23582)
+ [31] edit_file path=src/storage/search_index.py -> ok in=1515 out=2083   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/storage/search_index.py h0ad6c76cb4 > h2652574272
+ [32] run_tests suite=tests/regression tests=tests/regression/test_search_index.py::test_expand_deadline_large_batch,tests/regression/test_search_index.py::test_expand_deadline_partial_page -> FAILED 1/2 passed in=6046 out=137   || OSCI CNT=1.0 INEFF=1.0 fail=1.0
+        ! AssertionError at tests/regression/test_search_index.py::test_expand_deadline_large_batch:130 (pid 74475)
+*[33] edit_file path=src/storage/search_index.py -> ok in=3840 out=819   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/storage/search_index.py h2652574272 > h0ad6c76cb4
+*[34] run_tests suite=tests/regression tests=tests/regression/test_search_index.py::test_expand_deadline_large_batch,tests/regression/test_search_index.py::test_expand_deadline_partial_page -> FAILED 1/2 passed in=2452 out=196   || OSCI CNT=1.0 INEFF=1.0 fail=1.0
+        ! AssertionError at tests/regression/test_search_index.py::test_expand_deadline_partial_page:888 (pid 12638)
+*[35] edit_file path=src/storage/search_index.py -> ok in=2924 out=599   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/storage/search_index.py h0ad6c76cb4 > h2652574272
+*[36] run_tests suite=tests/regression tests=tests/regression/test_search_index.py::test_expand_deadline_large_batch,tests/regression/test_search_index.py::test_expand_deadline_partial_page -> FAILED 1/2 passed in=2729 out=252   || OSCI CNT=1.0 INEFF=1.0 fail=1.0
+        ! AssertionError at tests/regression/test_search_index.py::test_expand_deadline_large_batch:130 (pid 60573)
+*[37] edit_file path=src/storage/search_index.py -> ok in=1481 out=456   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/storage/search_index.py h2652574272 > h0ad6c76cb4
+*[38] run_tests suite=tests/regression tests=tests/regression/test_search_index.py::test_expand_deadline_large_batch,tests/regression/test_search_index.py::test_expand_deadline_partial_page -> FAILED 1/2 passed in=4769 out=144   || OSCI CNT=1.0 INEFF=1.0 fail=1.0
+        ! AssertionError at tests/regression/test_search_index.py::test_expand_deadline_partial_page:888 (pid 48383)
+*[39] edit_file path=src/storage/search_index.py -> ok in=1660 out=540   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/storage/search_index.py h0ad6c76cb4 > h2652574272
+*[40] run_tests suite=tests/regression tests=tests/regression/test_search_index.py::test_expand_deadline_large_batch,tests/regression/test_search_index.py::test_expand_deadline_partial_page -> FAILED 1/2 passed in=2499 out=252   || OSCI CNT=1.0 INEFF=1.0 fail=1.0
+        ! AssertionError at tests/regression/test_search_index.py::test_expand_deadline_large_batch:130 (0x37501fb7)
+
+=== V132 oracle=OSCILLATING net=OSCILLATING t=39 start=32 logits=[0.5, 0.0, 3.9, 12.0]
+ [29] edit_file path=src/ingest/notifier.ts -> ok in=454 out=107   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/ingest/notifier.ts h57b30836df > hd5c0e81dbb
+ [30] lint target=tsc -> ok in=587 out=90   || OSCI 
+ [31] edit_file path=src/ingest/notifier.ts -> ok in=1031 out=157   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/ingest/notifier.ts hd5c0e81dbb > h57b30836df
+*[32] run_tests suite=integration -> FAILED 10/11 passed in=3067 out=67   || OSCI CNT=1.0 INEFF=1.0 fail=1.0
+        ! AssertionError at src/ingest/__tests__/notifier.integration.test.ts::notifier batch offset nested objects:598 (pid 29149)
+*[33] edit_file path=src/ingest/notifier.ts -> ok in=584 out=153   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/ingest/notifier.ts h57b30836df > hd5c0e81dbb
+*[34] run_tests suite=integration -> FAILED 10/11 passed in=2390 out=42   || OSCI CNT=1.0 INEFF=1.0 fail=1.0
+        ! AssertionError at src/ingest/__tests__/notifier.integration.test.ts::notifier batch offset expired token:696 (pid 1344)
+*[35] edit_file path=src/ingest/notifier.ts -> ok in=1091 out=388   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/ingest/notifier.ts hd5c0e81dbb > h57b30836df
+*[36] run_tests suite=integration -> FAILED 10/11 passed in=2085 out=122   || OSCI CNT=1.0 INEFF=1.0 fail=1.0
+        ! AssertionError at src/ingest/__tests__/notifier.integration.test.ts::notifier batch offset nested objects:598 (0x54f5fcf6)
+*[37] edit_file path=src/ingest/notifier.ts -> ok in=706 out=241   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/ingest/notifier.ts h57b30836df > hd5c0e81dbb
+*[38] lint target=tsc -> ok in=357 out=65   || OSCI 
+*[39] edit_file path=src/ingest/notifier.ts -> ok in=1546 out=233   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/ingest/notifier.ts hd5c0e81dbb > h57b30836df
+
+=== V133 oracle=OSCILLATING net=OSCILLATING t=33 start=26 logits=[0.5, 0.0, 3.8, 12.0]
+ [23] read_file path=src/main/java/com/initech/core/ShardMap.java lines=22-31 -> ok in=1409 out=303   || OSCI REP=1.0 lines=1.0
+ [24] edit_file path=src/main/java/com/initech/core/ShardMap.java -> ok in=1197 out=598   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/main/java/com/initech/core/ShardMap.java h0f5e6d4c27 > h0735024323
+ [25] run_tests suite=unitTests tests=src/test/java/com/initech/core/ShardMapUnitTest.java::reconcileTokenBoundary,src/test/java/com/initech/core/ShardMapUnitTest.java::reconcileTokenMaxLength,src/test/java/com/initech/core/ShardMapUnitTest.java::reconcileTokenNestedObjects -> FAILED 2/3 passed in=3206 out=161   || OSCI CNT=1.0 INEFF=1.0 fail=1.0
+        ! IllegalArgumentException at src/test/java/com/initech/core/ShardMapUnitTest.java::reconcileTokenMaxLength:27 (pid 55547)
+*[26] edit_file path=src/main/java/com/initech/core/ShardMap.java -> ok in=1623 out=443   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/main/java/com/initech/core/ShardMap.java h0735024323 > h0f5e6d4c27
+*[27] run_tests suite=unitTests tests=src/test/java/com/initech/core/ShardMapUnitTest.java::reconcileTokenBoundary,src/test/java/com/initech/core/ShardMapUnitTest.java::reconcileTokenMaxLength,src/test/java/com/initech/core/ShardMapUnitTest.java::reconcileTokenNestedObjects -> FAILED 1/3 passed in=5844 out=148   || OSCI CNT=1.0 INEFF=1.0 fail=1.0
+        ! IllegalArgumentException at src/test/java/com/initech/core/ShardMapUnitTest.java::reconcileTokenBoundary:183 (pid 4583)
+*[28] edit_file path=src/main/java/com/initech/core/ShardMap.java -> ok in=1572 out=175   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/main/java/com/initech/core/ShardMap.java h0f5e6d4c27 > h0735024323
+*[29] run_tests suite=unitTests tests=src/test/java/com/initech/core/ShardMapUnitTest.java::reconcileTokenBoundary,src/test/java/com/initech/core/ShardMapUnitTest.java::reconcileTokenMaxLength,src/test/java/com/initech/core/ShardMapUnitTest.java::reconcileTokenNestedObjects -> FAILED 2/3 passed in=4248 out=94   || OSCI CNT=1.0 INEFF=1.0 fail=1.0
+        ! IllegalArgumentException at src/test/java/com/initech/core/ShardMapUnitTest.java::reconcileTokenMaxLength:27 (pid 80273)
+*[30] edit_file path=src/main/java/com/initech/core/ShardMap.java -> ok in=2822 out=479   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/main/java/com/initech/core/ShardMap.java h0735024323 > h0f5e6d4c27
+*[31] run_tests suite=unitTests tests=src/test/java/com/initech/core/ShardMapUnitTest.java::reconcileTokenBoundary,src/test/java/com/initech/core/ShardMapUnitTest.java::reconcileTokenMaxLength,src/test/java/com/initech/core/ShardMapUnitTest.java::reconcileTokenNestedObjects -> FAILED 1/3 passed in=7896 out=92   || OSCI CNT=1.0 INEFF=1.0 fail=1.0
+        ! IllegalArgumentException at src/test/java/com/initech/core/ShardMapUnitTest.java::reconcileTokenBoundary:183 (0xca0822c2)
+*[32] edit_file path=src/main/java/com/initech/core/ShardMap.java -> ok in=2319 out=810   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/main/java/com/initech/core/ShardMap.java h0f5e6d4c27 > h0735024323
+*[33] run_tests suite=unitTests tests=src/test/java/com/initech/core/ShardMapUnitTest.java::reconcileTokenBoundary,src/test/java/com/initech/core/ShardMapUnitTest.java::reconcileTokenMaxLength,src/test/java/com/initech/core/ShardMapUnitTest.java::reconcileTokenNestedObjects -> FAILED 2/3 passed in=1298 out=156   || OSCI CNT=1.0 INEFF=1.0 fail=1.0
+        ! IllegalArgumentException at src/test/java/com/initech/core/ShardMapUnitTest.java::reconcileTokenMaxLength:27 (0x56794a64)
+
+=== V135 oracle=OSCILLATING net=OSCILLATING t=12 start=5 logits=[0.5, 0.0, 3.9, 12.0]
+ [ 2] edit_file path=src/core/migrations.py -> ok in=1311 out=548   || PROD hunk=0.5
+        @ src/core/migrations.py h7fb1d9b85b > h2ee769613c
+ [ 3] edit_file path=src/core/migrations.py -> ok in=512 out=242   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/core/migrations.py h2ee769613c > h7fb1d9b85b
+ [ 4] edit_file path=src/core/migrations.py -> ok in=2259 out=470   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/core/migrations.py h7fb1d9b85b > h2ee769613c
+*[ 5] edit_file path=src/core/migrations.py -> ok in=1925 out=243   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/core/migrations.py h2ee769613c > h7fb1d9b85b
+*[ 6] edit_file path=src/core/migrations.py -> ok in=683 out=412   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/core/migrations.py h7fb1d9b85b > h2ee769613c
+*[ 7] edit_file path=src/core/migrations.py -> ok in=729 out=191   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/core/migrations.py h2ee769613c > h7fb1d9b85b
+*[ 8] edit_file path=src/core/migrations.py -> ok in=6643 out=415   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/core/migrations.py h7fb1d9b85b > h2ee769613c
+*[ 9] edit_file path=src/core/migrations.py -> ok in=1095 out=627   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/core/migrations.py h2ee769613c > h7fb1d9b85b
+*[10] edit_file path=src/core/migrations.py -> ok in=5389 out=380   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/core/migrations.py h7fb1d9b85b > h2ee769613c
+*[11] edit_file path=src/core/migrations.py -> ok in=2887 out=158   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/core/migrations.py h2ee769613c > h7fb1d9b85b
+*[12] edit_file path=src/core/migrations.py -> ok in=2329 out=114   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/core/migrations.py h7fb1d9b85b > h2ee769613c
+
+=== V136 oracle=OSCILLATING net=OSCILLATING t=19 start=12 logits=[0.5, 0.0, 3.9, 12.0]
+ [ 9] edit_file path=src/geo/export_job.py -> ok in=787 out=321   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/geo/export_job.py hc40e4eda9a > he514109229
+ [10] write_file path=src/geo/export_job.py -> ok in=1638 out=144   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/geo/export_job.py he514109229 > hc40e4eda9a
+ [11] edit_file path=src/geo/export_job.py -> ok in=1478 out=338   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/geo/export_job.py hc40e4eda9a > he514109229
+*[12] write_file path=src/geo/export_job.py -> ok in=1291 out=523   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/geo/export_job.py he514109229 > hc40e4eda9a
+*[13] edit_file path=src/geo/export_job.py -> ok in=1416 out=205   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/geo/export_job.py hc40e4eda9a > he514109229
+*[14] write_file path=src/geo/export_job.py -> ok in=2385 out=302   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/geo/export_job.py he514109229 > hc40e4eda9a
+*[15] edit_file path=src/geo/export_job.py -> ok in=946 out=426   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/geo/export_job.py hc40e4eda9a > he514109229
+*[16] write_file path=src/geo/export_job.py -> ok in=1135 out=180   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/geo/export_job.py he514109229 > hc40e4eda9a
+*[17] edit_file path=src/geo/export_job.py -> ok in=2749 out=344   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/geo/export_job.py hc40e4eda9a > he514109229
+*[18] write_file path=src/geo/export_job.py -> ok in=725 out=318   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/geo/export_job.py he514109229 > hc40e4eda9a
+*[19] edit_file path=src/geo/export_job.py -> ok in=2143 out=533   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/geo/export_job.py hc40e4eda9a > he514109229
+
+=== V138 oracle=OSCILLATING net=OSCILLATING t=11 start=4 logits=[0.5, 6.0, 0.8, 12.0]
+ [ 1] read_file path=src/metrics/graph_walk.rs lines=8-17 -> ok in=658 out=115   || PROD lines=1.0
+ [ 2] edit_file path=src/metrics/graph_walk.rs -> ok in=2546 out=924   || PROD hunk=0.5
+        @ src/metrics/graph_walk.rs h5b7f73ad1b > h458a3333d7
+ [ 3] run_tests suite=property -> FAILED 9/17 passed in=2796 out=197   || PROD 
+        ! AssertionFailed at tests/cache_property.rs::flush_ranges_case_folding:753 (pid 99518)
+*[ 4] edit_file path=src/metrics/graph_walk.rs -> ok in=4349 out=2055   || PROD hunk=0.5
+        @ src/metrics/graph_walk.rs h458a3333d7 > h03bc3312d3
+*[ 5] run_tests suite=property -> FAILED 8/17 passed in=5049 out=125   || PROD 
+        ! AssertionFailed at tests/cache_property.rs::flush_ranges_case_folding:753 (0xf1b012ca)
+*[ 6] edit_file path=src/metrics/graph_walk.rs -> ok in=1350 out=989   || PROD hunk=0.5
+        @ src/metrics/graph_walk.rs h03bc3312d3 > h59e0191de1
+*[ 7] run_tests suite=property -> FAILED 9/17 passed in=3430 out=132   || RECO CNT=1.0 INEFF=1.0 fail=1.0
+        ! AssertionFailed at tests/cache_property.rs::flush_ranges_case_folding:753 (pid 33041)
+*[ 8] edit_file path=src/metrics/graph_walk.rs -> ok in=2592 out=1003   || RECO REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/metrics/graph_walk.rs h59e0191de1 > h458a3333d7
+*[ 9] run_tests suite=property -> FAILED 9/17 passed in=9494 out=236   || RECO CNT=1.0 INEFF=1.0 fail=1.0
+        ! AssertionFailed at tests/cache_property.rs::flush_ranges_case_folding:753 (0x11b7d726)
+*[10] edit_file path=src/metrics/graph_walk.rs -> ok in=1130 out=436   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/metrics/graph_walk.rs h458a3333d7 > h03bc3312d3
+*[11] run_tests suite=property -> FAILED 8/17 passed in=2606 out=126   || OSCI CNT=1.0 INEFF=1.0 fail=1.0
+        ! AssertionFailed at tests/cache_property.rs::flush_ranges_case_folding:753 (pid 37057)
+
+=== V141 oracle=OSCILLATING net=OSCILLATING t=17 start=10 logits=[0.5, 0.0, 3.9, 12.0]
+ [ 7] write_file path=src/report/auditLog.ts -> ok in=2637 out=946   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/report/auditLog.ts hbc538dc204 > h19c742c7bb
+ [ 8] write_file path=src/report/auditLog.ts -> ok in=4257 out=795   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/report/auditLog.ts h19c742c7bb > h0fe59da7ad
+ [ 9] write_file path=src/report/auditLog.ts -> ok in=3224 out=1158   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/report/auditLog.ts h0fe59da7ad > hbc538dc204
+*[10] write_file path=src/report/auditLog.ts -> ok in=2308 out=586   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/report/auditLog.ts hbc538dc204 > h19c742c7bb
+*[11] write_file path=src/report/auditLog.ts -> ok in=2328 out=1394   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/report/auditLog.ts h19c742c7bb > h0fe59da7ad
+*[12] write_file path=src/report/auditLog.ts -> ok in=3691 out=784   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/report/auditLog.ts h0fe59da7ad > hbc538dc204
+*[13] write_file path=src/report/auditLog.ts -> ok in=3463 out=1070   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/report/auditLog.ts hbc538dc204 > h19c742c7bb
+*[14] write_file path=src/report/auditLog.ts -> ok in=2757 out=790   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/report/auditLog.ts h19c742c7bb > h0fe59da7ad
+*[15] write_file path=src/report/auditLog.ts -> ok in=1915 out=866   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/report/auditLog.ts h0fe59da7ad > hbc538dc204
+*[16] write_file path=src/report/auditLog.ts -> ok in=2433 out=591   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/report/auditLog.ts hbc538dc204 > h19c742c7bb
+*[17] write_file path=src/report/auditLog.ts -> ok in=2755 out=877   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/report/auditLog.ts h19c742c7bb > h0fe59da7ad
+
+=== V144 oracle=OSCILLATING net=OSCILLATING t=29 start=22 logits=[0.5, 0.0, 3.9, 12.0]
+ [19] run_tests suite=tests/integration tests=tests/integration/test_config_loader.py::test_encode_deadline_expired_token,tests/integration/test_config_loader.py::test_encode_deadline_negative_values,tests/integration/test_config_loader.py::test_encode_deadline_partial_page,tests/integration/test_config_loader.py::test_encode_deadline_retry_after -> FAILED 2/4 passed in=1988 out=285   || OSCI CNT=1.0 INEFF=1.0 fail=1.0
+        ! ZeroDivisionError at tests/integration/test_config_loader.py::test_encode_deadline_expired_token:887 (pid 4111)
+ [20] edit_file path=src/web/config_loader.py -> ok in=2107 out=631   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/web/config_loader.py hfaa7f1a717 > h59f924a209
+ [21] run_tests suite=tests/integration tests=tests/integration/test_config_loader.py::test_encode_deadline_expired_token,tests/integration/test_config_loader.py::test_encode_deadline_negative_values,tests/integration/test_config_loader.py::test_encode_deadline_partial_page,tests/integration/test_config_loader.py::test_encode_deadline_retry_after -> FAILED 2/4 passed in=3650 out=195   || OSCI CNT=1.0 INEFF=1.0 fail=1.0
+        ! ZeroDivisionError at tests/integration/test_config_loader.py::test_encode_deadline_negative_values:683 (pid 53846)
+*[22] edit_file path=src/web/config_loader.py -> ok in=3044 out=548   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/web/config_loader.py h59f924a209 > hfaa7f1a717
+*[23] run_tests suite=tests/integration tests=tests/integration/test_config_loader.py::test_encode_deadline_expired_token,tests/integration/test_config_loader.py::test_encode_deadline_negative_values,tests/integration/test_config_loader.py::test_encode_deadline_partial_page,tests/integration/test_config_loader.py::test_encode_deadline_retry_after -> FAILED 2/4 passed in=5241 out=165   || OSCI CNT=1.0 INEFF=1.0 fail=1.0
+        ! ZeroDivisionError at tests/integration/test_config_loader.py::test_encode_deadline_expired_token:887 (0xd69f1290)
+*[24] edit_file path=src/web/config_loader.py -> ok in=1690 out=523   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/web/config_loader.py hfaa7f1a717 > h59f924a209
+*[25] run_tests suite=tests/integration tests=tests/integration/test_config_loader.py::test_encode_deadline_expired_token,tests/integration/test_config_loader.py::test_encode_deadline_negative_values,tests/integration/test_config_loader.py::test_encode_deadline_partial_page,tests/integration/test_config_loader.py::test_encode_deadline_retry_after -> FAILED 2/4 passed in=4464 out=179   || OSCI CNT=1.0 INEFF=1.0 fail=1.0
+        ! ZeroDivisionError at tests/integration/test_config_loader.py::test_encode_deadline_negative_values:683 (0xb4bd9e0e)
+*[26] edit_file path=src/web/config_loader.py -> ok in=4336 out=584   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/web/config_loader.py h59f924a209 > hfaa7f1a717
+*[27] run_tests suite=tests/integration tests=tests/integration/test_config_loader.py::test_encode_deadline_expired_token,tests/integration/test_config_loader.py::test_encode_deadline_negative_values,tests/integration/test_config_loader.py::test_encode_deadline_partial_page,tests/integration/test_config_loader.py::test_encode_deadline_retry_after -> FAILED 2/4 passed in=3811 out=100   || OSCI CNT=1.0 INEFF=1.0 fail=1.0
+        ! ZeroDivisionError at tests/integration/test_config_loader.py::test_encode_deadline_expired_token:887 (0x6c694bc3)
+*[28] edit_file path=src/web/config_loader.py -> ok in=1776 out=660   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/web/config_loader.py hfaa7f1a717 > h59f924a209
+*[29] run_tests suite=tests/integration tests=tests/integration/test_config_loader.py::test_encode_deadline_expired_token,tests/integration/test_config_loader.py::test_encode_deadline_negative_values,tests/integration/test_config_loader.py::test_encode_deadline_partial_page,tests/integration/test_config_loader.py::test_encode_deadline_retry_after -> FAILED 2/4 passed in=6418 out=295   || OSCI CNT=1.0 INEFF=1.0 fail=1.0
+        ! ZeroDivisionError at tests/integration/test_config_loader.py::test_encode_deadline_negative_values:683 (pid 90101)
+
+=== V148 oracle=OSCILLATING net=OSCILLATING t=12 start=5 logits=[0.5, 0.0, 3.9, 12.0]
+ [ 2] edit_file path=internal/identity/archive.go -> ok in=2107 out=864   || PROD hunk=0.5
+        @ internal/identity/archive.go h3283b96c8f > hce7997174b
+ [ 3] run_tests suite=./internal/...:unit -> ok 7/7 passed in=738 out=139   || PROD 
+ [ 4] edit_file path=internal/identity/archive.go -> ok in=3215 out=714   || PROD hunk=0.5
+        @ internal/identity/archive.go hb4bc7a9713 > h348081d141
+*[ 5] revert paths=internal/identity/archive.go -> ok in=2191 out=205   || PROD REV=1.0 INEFF=1.0 hunk=0.5
+        @ internal/identity/archive.go h348081d141 > hb4bc7a9713
+*[ 6] edit_file path=internal/identity/archive.go -> ok in=3217 out=231   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ internal/identity/archive.go hb4bc7a9713 > h348081d141
+*[ 7] revert paths=internal/identity/archive.go -> ok in=3260 out=768   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ internal/identity/archive.go h348081d141 > hb4bc7a9713
+*[ 8] edit_file path=internal/identity/archive.go -> ok in=1908 out=1048   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ internal/identity/archive.go hb4bc7a9713 > h348081d141
+*[ 9] revert paths=internal/identity/archive.go -> ok in=7612 out=647   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ internal/identity/archive.go h348081d141 > hb4bc7a9713
+*[10] edit_file path=internal/identity/archive.go -> ok in=1531 out=558   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ internal/identity/archive.go hb4bc7a9713 > h348081d141
+*[11] revert paths=internal/identity/archive.go -> ok in=5604 out=919   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ internal/identity/archive.go h348081d141 > hb4bc7a9713
+*[12] edit_file path=internal/identity/archive.go -> ok in=3816 out=628   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ internal/identity/archive.go hb4bc7a9713 > h348081d141
+
+=== V150 oracle=OSCILLATING net=OSCILLATING t=21 start=14 logits=[0.5, 0.0, 3.9, 12.0]
+ [11] run_tests suite=contract tests=src/orders/__tests__/rateLimiter.contract.test.ts::rate_limiter apply payload large batch,src/orders/__tests__/rateLimiter.contract.test.ts::rate_limiter apply payload null field -> FAILED 1/2 passed in=6095 out=140   || RECO CNT=1.0 INEFF=1.0 fail=1.0
+        ! SyntaxError at src/orders/__tests__/rateLimiter.contract.test.ts::rate_limiter apply payload large batch:218 (pid 78888)
+ [12] edit_file path=src/orders/rateLimiter.ts -> ok in=2607 out=414   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/orders/rateLimiter.ts h347e6cf835 > hb48f669a9e
+ [13] run_tests suite=contract tests=src/orders/__tests__/rateLimiter.contract.test.ts::rate_limiter apply payload large batch,src/orders/__tests__/rateLimiter.contract.test.ts::rate_limiter apply payload null field -> FAILED 1/2 passed in=2420 out=243   || OSCI CNT=1.0 INEFF=1.0 fail=1.0
+        ! SyntaxError at src/orders/__tests__/rateLimiter.contract.test.ts::rate_limiter apply payload null field:257 (pid 63038)
+*[14] edit_file path=src/orders/rateLimiter.ts -> ok in=1990 out=625   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/orders/rateLimiter.ts hb48f669a9e > h347e6cf835
+*[15] run_tests suite=contract tests=src/orders/__tests__/rateLimiter.contract.test.ts::rate_limiter apply payload large batch,src/orders/__tests__/rateLimiter.contract.test.ts::rate_limiter apply payload null field -> FAILED 1/2 passed in=3432 out=224   || OSCI CNT=1.0 INEFF=1.0 fail=1.0
+        ! SyntaxError at src/orders/__tests__/rateLimiter.contract.test.ts::rate_limiter apply payload large batch:218 (0xe258bf9a)
+*[16] edit_file path=src/orders/rateLimiter.ts -> ok in=2059 out=590   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/orders/rateLimiter.ts h347e6cf835 > hb48f669a9e
+*[17] run_tests suite=contract tests=src/orders/__tests__/rateLimiter.contract.test.ts::rate_limiter apply payload large batch,src/orders/__tests__/rateLimiter.contract.test.ts::rate_limiter apply payload null field -> FAILED 1/2 passed in=4428 out=182   || OSCI CNT=1.0 INEFF=1.0 fail=1.0
+        ! SyntaxError at src/orders/__tests__/rateLimiter.contract.test.ts::rate_limiter apply payload null field:257 (pid 62119)
+*[18] edit_file path=src/orders/rateLimiter.ts -> ok in=2554 out=739   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/orders/rateLimiter.ts hb48f669a9e > h347e6cf835
+*[19] run_tests suite=contract tests=src/orders/__tests__/rateLimiter.contract.test.ts::rate_limiter apply payload large batch,src/orders/__tests__/rateLimiter.contract.test.ts::rate_limiter apply payload null field -> FAILED 1/2 passed in=3356 out=143   || OSCI CNT=1.0 INEFF=1.0 fail=1.0
+        ! SyntaxError at src/orders/__tests__/rateLimiter.contract.test.ts::rate_limiter apply payload large batch:218 (0xf14a3618)
+*[20] edit_file path=src/orders/rateLimiter.ts -> ok in=1789 out=971   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/orders/rateLimiter.ts h347e6cf835 > hb48f669a9e
+*[21] run_tests suite=contract tests=src/orders/__tests__/rateLimiter.contract.test.ts::rate_limiter apply payload large batch,src/orders/__tests__/rateLimiter.contract.test.ts::rate_limiter apply payload null field -> FAILED 1/2 passed in=4257 out=119   || OSCI CNT=1.0 INEFF=1.0 fail=1.0
+        ! SyntaxError at src/orders/__tests__/rateLimiter.contract.test.ts::rate_limiter apply payload null field:257 (0x3d6c23a3)
+
+=== V151 oracle=OSCILLATING net=OSCILLATING t=20 start=13 logits=[0.5, 0.0, 4.0, 12.0]
+ [10] edit_file path=lib/identity/money.rb -> ok in=680 out=291   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ lib/identity/money.rb hc5793bfee8 > h6b3781f8ae
+ [11] edit_file path=lib/identity/money.rb -> ok in=1384 out=277   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ lib/identity/money.rb h6b3781f8ae > hc5793bfee8
+ [12] edit_file path=lib/identity/money.rb -> ok in=1392 out=215   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ lib/identity/money.rb hc5793bfee8 > h6b3781f8ae
+*[13] edit_file path=lib/identity/money.rb -> ok in=1225 out=478   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ lib/identity/money.rb h6b3781f8ae > hc5793bfee8
+*[14] edit_file path=lib/identity/money.rb -> ok in=1551 out=307   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ lib/identity/money.rb hc5793bfee8 > h6b3781f8ae
+*[15] edit_file path=lib/identity/money.rb -> ok in=1208 out=351   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ lib/identity/money.rb h6b3781f8ae > hc5793bfee8
+*[16] edit_file path=lib/identity/money.rb -> ok in=1284 out=293   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ lib/identity/money.rb hc5793bfee8 > h6b3781f8ae
+*[17] edit_file path=lib/identity/money.rb -> ok in=1842 out=271   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ lib/identity/money.rb h6b3781f8ae > hc5793bfee8
+*[18] edit_file path=lib/identity/money.rb -> ok in=1233 out=279   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ lib/identity/money.rb hc5793bfee8 > h6b3781f8ae
+*[19] edit_file path=lib/identity/money.rb -> ok in=2154 out=328   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ lib/identity/money.rb h6b3781f8ae > hc5793bfee8
+*[20] edit_file path=lib/identity/money.rb -> ok in=1202 out=414   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ lib/identity/money.rb hc5793bfee8 > h6b3781f8ae
+
+=== V155 oracle=OSCILLATING net=OSCILLATING t=21 start=14 logits=[0.5, 0.0, 3.9, 12.0]
+ [11] run_tests suite=e2e -> FAILED 5/8 passed in=2094 out=47   || OSCI CNT=1.0 INEFF=1.0 fail=1.0
+        ! SyntaxError at src/cli/__tests__/quota.e2e.test.ts::quota apply key large batch:138 (0x06ec5796)
+ [12] edit_file path=Dockerfile -> ok in=1958 out=544   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ Dockerfile h0cc3b8a910 > hd34240f166
+ [13] run_tests suite=e2e -> FAILED 5/8 passed in=3096 out=84   || OSCI CNT=1.0 INEFF=1.0 fail=1.0
+        ! SyntaxError at src/cli/__tests__/quota.e2e.test.ts::quota apply key large batch:138 (0x513367fc)
+*[14] write_file path=Dockerfile -> ok in=1317 out=332   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ Dockerfile hd34240f166 > h0cc3b8a910
+*[15] run_tests suite=e2e -> FAILED 5/8 passed in=1831 out=64   || OSCI CNT=1.0 INEFF=1.0 fail=1.0
+        ! SyntaxError at src/cli/__tests__/quota.e2e.test.ts::quota apply key large batch:138 (pid 6629)
+*[16] edit_file path=Dockerfile -> ok in=2234 out=316   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ Dockerfile h0cc3b8a910 > hd34240f166
+*[17] run_tests suite=e2e -> FAILED 5/8 passed in=3993 out=152   || OSCI CNT=1.0 INEFF=1.0 fail=1.0
+        ! SyntaxError at src/cli/__tests__/quota.e2e.test.ts::quota apply key large batch:138 (0x20b49ae5)
+*[18] write_file path=Dockerfile -> ok in=933 out=333   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ Dockerfile hd34240f166 > h0cc3b8a910
+*[19] run_tests suite=e2e -> FAILED 5/8 passed in=2694 out=81   || OSCI CNT=1.0 INEFF=1.0 fail=1.0
+        ! SyntaxError at src/cli/__tests__/quota.e2e.test.ts::quota apply key large batch:138 (0xf701cf03)
+*[20] edit_file path=Dockerfile -> ok in=1922 out=486   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ Dockerfile h0cc3b8a910 > hd34240f166
+*[21] run_tests suite=e2e -> FAILED 5/8 passed in=3396 out=81   || OSCI CNT=1.0 INEFF=1.0 fail=1.0
+        ! SyntaxError at src/cli/__tests__/quota.e2e.test.ts::quota apply key large batch:138 (pid 31675)
+
+=== V156 oracle=OSCILLATING net=OSCILLATING t=36 start=29 logits=[0.5, 6.0, 0.9, 12.0]
+ [26] edit_file path=internal/identity/chunker.go -> ok in=3745 out=156   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ internal/identity/chunker.go h5106fce122 > h87e3f6722f
+ [27] lint target=go-vet -> ok in=916 out=113   || OSCI 
+ [28] write_file path=internal/identity/chunker.go -> ok in=1490 out=203   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ internal/identity/chunker.go h87e3f6722f > h5106fce122
+*[29] lint target=go-vet -> ok in=577 out=39   || OSCI 
+*[30] edit_file path=internal/identity/chunker.go -> ok in=229 out=464   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ internal/identity/chunker.go h5106fce122 > h87e3f6722f
+*[31] lint target=go-vet -> ok in=1279 out=131   || OSCI 
+*[32] write_file path=internal/identity/chunker.go -> ok in=1352 out=83   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ internal/identity/chunker.go h87e3f6722f > h5106fce122
+*[33] run_tests suite=./internal/...:unit -> FAILED 6/11 passed in=1263 out=264   || OSCI 
+        ! IndexOutOfRange at internal/core/locale_unit_test.go::TestValidateOffsetEmptyInput:618 (0x2be2827f)
+*[34] edit_file path=internal/identity/chunker.go -> ok in=2011 out=226   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ internal/identity/chunker.go h5106fce122 > h87e3f6722f
+*[35] run_tests suite=./internal/...:unit -> FAILED 6/11 passed in=10208 out=53   || OSCI CNT=1.0 INEFF=1.0 fail=1.0
+        ! IndexOutOfRange at internal/core/locale_unit_test.go::TestValidateOffsetEmptyInput:618 (pid 79482)
+*[36] write_file path=internal/identity/chunker.go -> ok in=2298 out=206   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ internal/identity/chunker.go h87e3f6722f > h5106fce122
+
+=== V161 oracle=OSCILLATING net=OSCILLATING t=32 start=25 logits=[0.5, 0.0, 3.9, 12.0]
+ [22] read_file path=src/media/templates.ts -> ok in=2914 out=328   || OSCI REP=1.0 INEFF=1.0
+ [23] edit_file path=src/media/templates.ts -> ok in=774 out=388   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/media/templates.ts h3d9a5c2411 > h727ca06bc8
+ [24] edit_file path=src/media/templates.ts -> ok in=3081 out=196   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/media/templates.ts h727ca06bc8 > h3d9a5c2411
+*[25] read_file path=src/media/templates.ts -> ok in=1334 out=192   || OSCI REP=1.0 INEFF=1.0
+*[26] edit_file path=src/media/templates.ts -> ok in=3940 out=341   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/media/templates.ts h3d9a5c2411 > h727ca06bc8
+*[27] edit_file path=src/media/templates.ts -> ok in=2572 out=314   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/media/templates.ts h727ca06bc8 > h3d9a5c2411
+*[28] read_file path=src/media/templates.ts -> ok in=2645 out=132   || OSCI REP=1.0 INEFF=1.0
+*[29] edit_file path=src/media/templates.ts -> ok in=939 out=351   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/media/templates.ts h3d9a5c2411 > h727ca06bc8
+*[30] edit_file path=src/media/templates.ts -> ok in=1746 out=211   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/media/templates.ts h727ca06bc8 > h3d9a5c2411
+*[31] read_file path=src/media/templates.ts -> ok in=1506 out=182   || OSCI REP=1.0 INEFF=1.0
+*[32] edit_file path=src/media/templates.ts -> ok in=2212 out=266   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/media/templates.ts h3d9a5c2411 > h727ca06bc8
+
+=== V164 oracle=OSCILLATING net=OSCILLATING t=33 start=26 logits=[0.5, 0.0, 3.9, 12.0]
+ [23] lint target=brakeman -> ok in=364 out=34   || OSCI 
+ [24] revert paths=lib/worker/cache.rb -> ok in=745 out=259   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ lib/worker/cache.rb h6570c34b91 > hbf6836665b
+ [25] edit_file path=lib/worker/cache.rb -> ok in=524 out=147   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ lib/worker/cache.rb hbf6836665b > h6570c34b91
+*[26] lint target=brakeman -> ok in=293 out=39   || OSCI 
+*[27] revert paths=lib/worker/cache.rb -> ok in=1075 out=188   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ lib/worker/cache.rb h6570c34b91 > hbf6836665b
+*[28] edit_file path=lib/worker/cache.rb -> ok in=490 out=93   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ lib/worker/cache.rb hbf6836665b > h6570c34b91
+*[29] lint target=brakeman -> ok in=483 out=44   || OSCI 
+*[30] revert paths=lib/worker/cache.rb -> ok in=796 out=261   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ lib/worker/cache.rb h6570c34b91 > hbf6836665b
+*[31] edit_file path=lib/worker/cache.rb -> ok in=990 out=131   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ lib/worker/cache.rb hbf6836665b > h6570c34b91
+*[32] lint target=brakeman -> ok in=314 out=74   || OSCI 
+*[33] revert paths=lib/worker/cache.rb -> ok in=837 out=217   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ lib/worker/cache.rb h6570c34b91 > hbf6836665b
+
+=== V165 oracle=OSCILLATING net=OSCILLATING t=32 start=25 logits=[0.5, 0.0, 3.9, 12.0]
+ [22] write_file path=src/report/image_resize.rs -> ok in=2837 out=391   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/report/image_resize.rs hbe221a386a > hf88f904247
+ [23] edit_file path=src/report/image_resize.rs -> ok in=675 out=420   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/report/image_resize.rs hf88f904247 > hbe221a386a
+ [24] write_file path=src/report/image_resize.rs -> ok in=1853 out=587   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/report/image_resize.rs hbe221a386a > hf88f904247
+*[25] edit_file path=src/report/image_resize.rs -> ok in=678 out=340   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/report/image_resize.rs hf88f904247 > hbe221a386a
+*[26] write_file path=src/report/image_resize.rs -> ok in=2353 out=167   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/report/image_resize.rs hbe221a386a > hf88f904247
+*[27] edit_file path=src/report/image_resize.rs -> ok in=1785 out=580   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/report/image_resize.rs hf88f904247 > hbe221a386a
+*[28] write_file path=src/report/image_resize.rs -> ok in=682 out=654   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/report/image_resize.rs hbe221a386a > hf88f904247
+*[29] edit_file path=src/report/image_resize.rs -> ok in=1220 out=480   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/report/image_resize.rs hf88f904247 > hbe221a386a
+*[30] write_file path=src/report/image_resize.rs -> ok in=2018 out=370   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/report/image_resize.rs hbe221a386a > hf88f904247
+*[31] edit_file path=src/report/image_resize.rs -> ok in=2160 out=297   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/report/image_resize.rs hf88f904247 > hbe221a386a
+*[32] write_file path=src/report/image_resize.rs -> ok in=3756 out=278   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/report/image_resize.rs hbe221a386a > hf88f904247
+
+=== V169 oracle=OSCILLATING net=OSCILLATING t=12 start=5 logits=[0.5, 6.0, -7.0, 12.0]
+ [ 2] read_file path=scripts/release.sh -> ok in=816 out=144   || PROD 
+ [ 3] edit_file path=scripts/release.sh -> ok in=1521 out=423   || PROD hunk=0.5
+        @ scripts/release.sh h0c1f1efcd1 > h9bd3b8899b
+ [ 4] read_file path=scripts/release.sh -> ok in=935 out=227   || PROD REP=1.0 INEFF=1.0
+*[ 5] revert paths=scripts/release.sh -> ok in=1712 out=548   || PROD REV=1.0 INEFF=1.0 hunk=0.5
+        @ scripts/release.sh h9bd3b8899b > h0c1f1efcd1
+*[ 6] run_tests suite=./internal/...:integration -> FAILED 6/17 passed in=8373 out=140   || PROD 
+        ! ErrUnexpectedEOF at internal/worker/archive_integration_test.go::TestStoreLocaleDuplicateEntries:414 (pid 22179)
+*[ 7] edit_file path=scripts/release.sh -> ok in=2466 out=1336   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ scripts/release.sh h0c1f1efcd1 > h9bd3b8899b
+*[ 8] run_tests suite=./internal/...:integration -> FAILED 6/17 passed in=3414 out=99   || OSCI CNT=1.0 INEFF=1.0 fail=1.0
+        ! ErrUnexpectedEOF at internal/worker/archive_integration_test.go::TestStoreLocaleDuplicateEntries:414 (0xf0bc31a1)
+*[ 9] revert paths=scripts/release.sh -> ok in=2758 out=385   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ scripts/release.sh h9bd3b8899b > h0c1f1efcd1
+*[10] run_tests suite=./internal/...:integration -> FAILED 6/17 passed in=8034 out=195   || OSCI CNT=1.0 INEFF=1.0 fail=1.0
+        ! ErrUnexpectedEOF at internal/worker/archive_integration_test.go::TestStoreLocaleDuplicateEntries:414 (pid 97282)
+*[11] edit_file path=scripts/release.sh -> ok in=1989 out=452   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ scripts/release.sh h0c1f1efcd1 > h9bd3b8899b
+*[12] read_file path=scripts/release.sh -> ok in=1907 out=242   || OSCI 
+
+=== V170 oracle=OSCILLATING net=OSCILLATING t=40 start=33 logits=[0.5, 0.0, 3.9, 12.0]
+ [30] edit_file path=src/billing/pagination.rs -> ok in=3783 out=334   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/billing/pagination.rs ha8e70227db > hbdf15223a4
+ [31] lint target=clippy -> ok in=1140 out=197   || OSCI 
+ [32] edit_file path=src/billing/pagination.rs -> ok in=1605 out=546   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/billing/pagination.rs hbdf15223a4 > ha8e70227db
+*[33] run_tests suite=integration -> FAILED 7/8 passed in=2793 out=61   || OSCI CNT=1.0 INEFF=1.0 fail=1.0
+        ! AssertionFailed at tests/pagination_integration.rs::validate_row_timezone_offset:608 (pid 26149)
+*[34] edit_file path=src/billing/pagination.rs -> ok in=1614 out=139   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/billing/pagination.rs ha8e70227db > hbdf15223a4
+*[35] run_tests suite=integration -> FAILED 7/8 passed in=1226 out=127   || OSCI CNT=1.0 INEFF=1.0 fail=1.0
+        ! AssertionFailed at tests/pagination_integration.rs::validate_row_case_folding:706 (0x9db0e4e6)
+*[36] edit_file path=src/billing/pagination.rs -> ok in=1052 out=1074   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/billing/pagination.rs hbdf15223a4 > ha8e70227db
+*[37] run_tests suite=integration tests=tests/pagination_integration.rs::validate_row_case_folding,tests/pagination_integration.rs::validate_row_timezone_offset -> FAILED 1/2 passed in=2593 out=116   || OSCI 
+        ! AssertionFailed at tests/pagination_integration.rs::validate_row_timezone_offset:608 (0x5ba506c0)
+*[38] edit_file path=src/billing/pagination.rs -> ok in=1718 out=381   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/billing/pagination.rs ha8e70227db > hbdf15223a4
+*[39] run_tests suite=integration tests=tests/pagination_integration.rs::validate_row_case_folding,tests/pagination_integration.rs::validate_row_timezone_offset -> FAILED 1/2 passed in=998 out=76   || OSCI CNT=1.0 INEFF=1.0 fail=1.0
+        ! AssertionFailed at tests/pagination_integration.rs::validate_row_case_folding:706 (0x5c77760c)
+*[40] edit_file path=src/billing/pagination.rs -> ok in=578 out=428   || OSCI REV=1.0 INEFF=1.0 hunk=0.5
+        @ src/billing/pagination.rs hbdf15223a4 > ha8e70227db
+

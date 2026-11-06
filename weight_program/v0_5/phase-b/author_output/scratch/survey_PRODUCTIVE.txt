@@ -1,0 +1,582 @@
+=== V001 PRODUCTIVE net=STALLED t=8
+   0 p+         action=verify_plan                       
+ * 1 S+         src query="copyright"                    
+ * 2 BF         target=go-build                          k0
+ * 3 NF         target=staticcheck                       nomut k0
+ * 4 S+         docs query="import json"                 
+ * 5 S+         internal query="manifest off_by_one"     
+ * 6 S+         src query="metrics.increment"            
+ * 7 H+         GET https://ci.acme.dev/api/v4/jobs/{j   
+ * 8 L+         tests                                    
+=== V003 PRODUCTIVE net=STALLED t=22
+  12 NF         target=tsc                               k0
+  13 E+         src/metrics/slugify.ts                   
+  14 TF6/14     suite=contract                           k0
+ *15 TF0/3      suite=contract tests=src/geo/__tests__   nomut k0
+ *16 R+         src/geo/quota.ts lines=5-20              
+ *17 E+         src/geo/quota.ts                         
+ *18 TF9/14     suite=contract                           rep k0
+ *19 R+         src/geo/checksum.ts lines=8-15           
+ *20 W+         src/geo/checksum.ts                      
+ *21 TF11/14    suite=contract                           rep k0
+ *22 S+         src query="locale timeout"               
+=== V004 PRODUCTIVE net=STALLED t=16
+   6 S+         . query="def main"                       
+   7 L+         .                                        
+   8 R+         docs/onboarding.md                       
+ * 9 L+         docs/adr                                 
+ *10 H!         POST https://auth.internal.acme.dev/ap   k0
+ *11 H+         POST https://auth.internal.acme.dev/ap   rep resolved
+ *12 S+         internal query="FormatLocale"            
+ *13 R+         internal/cli/serializer.go lines=19-28   
+ *14 E+         internal/cli/serializer.go               
+ *15 TF11/18    suite=./internal/...:integration         k0
+ *16 S+         internal query="CompactLimit"            
+=== V005 PRODUCTIVE net=STALLED t=23
+  13 R+         deploy/terraform/main.tf                 
+  14 L+         .github                                  
+  15 E+         src/billing/currency.ts                  
+ *16 TF5/23     suite=e2e                                k0
+ *17 BF         target=tsc-build                         nomut k0
+ *18 H+         GET https://api.datadoghq.com/api/v2/l   
+ *19 S+         src query="key cache_key"                
+ *20 R+         src/billing/__tests__/currency.e2e.tes   
+ *21 W+         src/billing/currency.ts                  
+ *22 T+5/5      suite=e2e tests=src/billing/__tests__/   
+ *23 TF10/23    suite=e2e                                rep nomut k0
+=== V008 PRODUCTIVE net=STALLED t=15
+   5 L+         src/main/java                            
+   6 L+         src/test/java/com/hooli/metrics          
+   7 S+         docs query="assert_eq"                   
+ * 8 TF6/8      suite=unitTests                          k0
+ * 9 R+         src/main/java/com/hooli/search/Router.   
+ *10 E+         src/main/java/com/hooli/search/Router.   
+ *11 T+8/8      suite=unitTests                          rep
+ *12 E+         src/main/java/com/hooli/search/Router.   
+ *13 E+         src/main/java/com/hooli/metrics/EmailR   
+ *14 R+         src/main/java/com/hooli/search/Router.   
+ *15 T+8/8      suite=unitTests                          rep cnt cntw
+=== V011 PRODUCTIVE net=STALLED t=14
+   4 R+         src/main/java/com/acme/metrics/Migrati   
+   5 NF         target=checkstyle                        k0
+   6 S+         src query="limit encoding"               
+ * 7 R+         logs/migrations.log lines=1-2            
+ * 8 R+         src/test/java/com/acme/metrics/Slugify   
+ * 9 S+         . query="convertRecord"                  
+ *10 R+         src/main/java/com/acme/metrics/Slugify   
+ *11 R+         checkstyle.xml lines=3-5                 
+ *12 E+         src/main/java/com/acme/metrics/Migrati   
+ *13 E+         src/main/java/com/acme/metrics/Slugify   
+ *14 T+10/10    suite=integrationTests                   
+=== V012 PRODUCTIVE net=STALLED t=38
+  28 TF17/21    suite=spec:request                       rep k0
+  29 R+         lib/worker/serializer.rb lines=3-22      
+  30 R+         logs/serializer.log lines=1-2            
+ *31 S+         lib query="token cache_key"              
+ *32 E+         lib/worker/serializer.rb                 
+ *33 T+4/4      suite=spec:request tests=spec/worker/s   
+ *34 T+21/21    suite=spec:request                       rep nomut
+ *35 T+6/6      suite=spec:feature                       nomut
+ *36 T+7/7      suite=spec:unit                          nomut
+ *37 B+         target=bundle-package                    rep nomut
+ *38 y+         action=done                              
+=== V015 PRODUCTIVE net=STALLED t=11
+   1 L+         scripts                                  
+   2 S+         docs query="TODO"                        
+   3 R+         scripts/bootstrap.sh                     
+ * 4 R+         tests/fixtures/serializer.json           
+ * 5 L+         lib/storage                              
+ * 6 S+         src query="def main"                     
+ * 7 R+         Gemfile                                  
+ * 8 TF7/21     suite=spec:feature                       k0
+ * 9 E+         lib/storage/money.rb                     
+ *10 TF10/21    suite=spec:feature                       rep k0
+ *11 E+         lib/storage/money.rb                     
+=== V016 PRODUCTIVE net=STALLED t=15
+   5 H!         GET https://sentry.io/api/0/issues/{is   k0
+   6 H!         GET https://sentry.io/api/0/issues/{is   rep k0
+   7 H+         GET https://sentry.io/api/0/issues/{is   rep resolved
+ * 8 S+         src query="refreshAmount"                
+ * 9 R+         src/main/java/com/globex/api/Timezone.   
+ *10 R+         logs/ci-726.log lines=2-2                
+ *11 E+         src/main/java/com/globex/api/Timezone.   
+ *12 TF9/12     suite=integrationTests                   k0
+ *13 R+         src/main/java/com/globex/metrics/Image   
+ *14 W+         src/main/java/com/globex/metrics/Image   
+ *15 T+12/12    suite=integrationTests                   rep
+=== V017 PRODUCTIVE net=STALLED t=15
+   5 NF         target=tsc                               k0
+   6 R+         logs/ci-588.log lines=1-2                
+   7 H+         GET https://api.datadoghq.com/api/v2/l   
+ * 8 R+         package.json lines=2-6                   
+ * 9 S+         src query="convertDeadline"              
+ *10 R+         tests/fixtures/tokenizer.json            
+ *11 S+         src query="manifest dst"                 
+ *12 BF         target=bundle                            nomut k0
+ *13 R+         logs/app.log lines=2-2                   
+ *14 L+         src/notify/__tests__                     
+ *15 S+         src query="refreshManifest"              
+=== V019 PRODUCTIVE net=STALLED t=20
+  10 Pr         cache/warmup/billing backoff=16          
+  11 S+         src query="flushOffset"                  
+  12 R+         src/main/java/com/umbrella/media/RateL   
+ *13 NF         target=spotbugs                          k0
+ *14 R+         src/main/resources/application.yml lin   
+ *15 E+         src/main/java/com/umbrella/media/RateL   
+ *16 E+         src/main/java/com/umbrella/media/RateL   
+ *17 T+3/3      suite=contractTests tests=src/test/jav   
+ *18 TF0/2      suite=contractTests tests=src/test/jav   nomut k0
+ *19 R+         src/main/java/com/umbrella/media/Email   
+ *20 BF         target=mvn-package                       nomut k0
+=== V021 PRODUCTIVE net=STALLED t=13
+   3 T+2/2      suite=integration tests=tests/thumbnai   
+   4 S+         src query="split_offset"                 
+   5 R+         src/sync/search_index.rs lines=1-15      
+ * 6 E+         src/sync/search_index.rs                 
+ * 7 TF0/2      suite=unit tests=tests/pagination_unit   k0
+ * 8 R+         src/auth/pagination.rs lines=4-15        
+ * 9 E+         src/auth/pagination.rs                   
+ *10 TF1/2      suite=unit tests=tests/pagination_unit   rep k0
+ *11 E+         src/auth/pagination.rs                   
+ *12 TF1/2      suite=unit tests=tests/pagination_unit   rep cnt cntw k0
+ *13 E+         src/auth/pagination.rs                   rev
+=== V022 PRODUCTIVE net=STALLED t=34
+  24 T+3/3      suite=tests/integration tests=tests/in   cnt cntw
+  25 H!         POST https://search.internal.acme.dev/   k0
+  26 H!         POST https://search.internal.acme.dev/   rep k0
+ *27 H+         POST https://search.internal.acme.dev/   rep resolved
+ *28 TF0/2      suite=tests/integration tests=tests/in   nomut k0
+ *29 R+         src/web/ledger.py lines=3-19             
+ *30 NF         target=flake8                            nomut k0
+ *31 BF         target=sdist                             nomut k0
+ *32 W+         src/web/ledger.py                        
+ *33 T+17/17    suite=tests/integration                  
+ *34 T+17/17    suite=tests/integration                  rep cnt cntw nomut
+=== V023 PRODUCTIVE net=STALLED t=8
+   0 L+         .                                        
+ * 1 TF9/12     suite=integration                        k0
+ * 2 R+         src/sync/archive.rs lines=1-12           
+ * 3 R+         src/sync/archive.rs                      
+ * 4 R+         tests/archive_integration.rs             
+ * 5 S+         src query="compact_digest"               
+ * 6 H+         GET https://staging-api.acme.io/v1/web   
+ * 7 p+         action=prioritise                        
+ * 8 p+         action=reflect                           
+=== V024 PRODUCTIVE net=STALLED t=11
+   1 R+         src/billing/cache.py lines=3-18          
+   2 S+         . query="deprecated"                     
+   3 L+         src/notify                               
+ * 4 L+         src/billing                              
+ * 5 R+         tests/unit/test_archive.py               
+ * 6 L+         tests/unit                               
+ * 7 E+         src/billing/cache.py                     
+ * 8 TF4/22     suite=tests/regression                   k0
+ * 9 E+         src/metrics/archive.py                   
+ *10 TF7/22     suite=tests/regression                   rep k0
+ *11 E+         src/billing/cache.py                     
+=== V028 PRODUCTIVE net=STALLED t=15
+   5 L+         scripts                                  
+   6 L+         tests/fixtures                           
+   7 S+         src query="@Override"                    
+ * 8 L+         .github                                  
+ * 9 L+         src/api/__tests__                        
+ *10 R+         tests/fixtures/serializer.json           
+ *11 L+         src/api                                  
+ *12 S+         src query="version"                      
+ *13 E+         src/api/session.ts                       
+ *14 TF5/17     suite=contract                           k0
+ *15 R+         src/api/imageResize.ts lines=16-27       
+=== V029 PRODUCTIVE net=STALLED t=8
+   0 S+         src query="feature flag"                 
+ * 1 L+         deploy                                   
+ * 2 L+         src/notify                               
+ * 3 L+         src/web                                  
+ * 4 R+         tests/unit/test_serializer.py            
+ * 5 S+         docs query="class Config"                
+ * 6 TF4/8      suite=tests/unit                         k0
+ * 7 R+         src/web/graph_walk.py lines=23-28        
+ * 8 TF0/1      suite=tests/unit tests=tests/unit/test   nomut k0
+=== V031 PRODUCTIVE net=STALLED t=13
+   3 S+         . query="TODO"                           
+   4 H!         GET https://grafana.acme.dev/api/datas   k0
+   5 H!         GET https://grafana.acme.dev/api/datas   rep k0
+ * 6 H!         GET https://grafana.acme.dev/api/datas   rep k0
+ * 7 H!         GET https://grafana.acme.dev/api/datas   rep k0
+ * 8 H+         GET https://grafana.acme.dev/api/datas   rep resolved
+ * 9 TF0/2      suite=integration tests=src/sync/__tes   k0
+ *10 R+         src/sync/tokenBucket.ts lines=21-27      
+ *11 BF         target=tsc-build                         nomut k0
+ *12 E+         src/sync/tokenBucket.ts                  
+ *13 TF5/10     suite=integration                        k0
+=== V034 PRODUCTIVE net=STALLED t=7
+ * 0 TF4/9      suite=tests/unit                         k0
+ * 1 R+         src/core/templates.py lines=14-18        
+ * 2 R+         src/core/templates.py                    
+ * 3 R+         tests/unit/test_templates.py             
+ * 4 S+         src query="rank_limit"                   
+ * 5 H+         GET https://ci.acme.dev/oauth/token re   
+ * 6 p+         action=summarise_findings                
+ * 7 p+         action=verify_plan                       
+=== V038 PRODUCTIVE net=STALLED t=9
+   0 p+         action=reflect                           
+   1 L+         .                                        
+ * 2 S+         docs query="async def"                   
+ * 3 TF0/3      suite=integration tests=tests/ledger_i   k0
+ * 4 R+         src/media/ledger.rs lines=4-9            
+ * 5 BF         target=cargo-doc                         nomut k0
+ * 6 R+         Makefile                                 
+ * 7 R+         logs/app.log lines=1-2                   
+ * 8 NF         target=clippy                            nomut k0
+ * 9 H+         GET https://grafana.acme.dev/api/datas   
+=== V045 PRODUCTIVE net=STALLED t=19
+   9 S+         src query="unsafe"                       
+  10 R+         src/core/auditLog.ts lines=7-15          
+  11 R+         logs/app.log lines=1-2                   
+ *12 S+         docs query="metrics.increment"           
+ *13 R+         config/default.json lines=1-4            
+ *14 S+         src query="limit encoding"               
+ *15 S+         src query="reconcileSchema"              
+ *16 R+         src/search/router.ts lines=5-15          
+ *17 S+         src query="discount escape"              
+ *18 S+         . query="unsafe"                         
+ *19 E+         src/core/manifest.ts                     
+=== V046 PRODUCTIVE net=STALLED t=14
+   4 L+         docs                                     
+   5 H!         GET https://api.openai-proxy.acme.dev/   k0
+   6 H!         GET https://api.openai-proxy.acme.dev/   rep k0
+ * 7 H!         GET https://api.openai-proxy.acme.dev/   rep k0
+ * 8 H!         GET https://api.openai-proxy.acme.dev/   rep k0
+ * 9 H+         GET https://api.openai-proxy.acme.dev/   rep resolved
+ *10 S+         internal query="EstimateKey"             
+ *11 R+         internal/worker/manifest.go lines=2-13   
+ *12 E+         internal/worker/manifest.go              
+ *13 TF12/17    suite=./internal/...:unit                k0
+ *14 TF0/3      suite=./internal/...:unit tests=intern   nomut k0
+=== V047 PRODUCTIVE net=STALLED t=20
+  10 R+         docs/architecture.md                     
+  11 Pp         deploy/staging/ledger                    rep k0
+  12 Pp         deploy/staging/ledger                    rep k1
+ *13 Pr         deploy/staging/ledger                    rep resolved
+ *14 S+         src query="sanitizeSchema"               
+ *15 R+         src/worker/pagination.ts lines=1-15      
+ *16 S+         src query="locale locale"                
+ *17 R+         package.json lines=2-6                   
+ *18 E+         src/worker/pagination.ts                 
+ *19 T+3/3      suite=contract                           cnt cntw
+ *20 B+         target=bundle                            nomut
+=== V049 PRODUCTIVE net=STALLED t=22
+  12 S+         src query="applyTimestamp"               
+  13 R+         src/catalog/archive.ts lines=2-11        
+  14 R+         src/notify/checksum.ts                   
+ *15 BF         target=tsc-build                         nomut k0
+ *16 S+         docs query="version"                     
+ *17 S+         src query="ranges overflow"              
+ *18 H+         GET https://grafana.acme.dev/api/datas   
+ *19 R+         package.json lines=3-4                   
+ *20 E+         src/search/tokenBucket.ts                
+ *21 E+         src/catalog/archive.ts                   
+ *22 T+6/6      suite=e2e                                
+=== V051 PRODUCTIVE net=STALLED t=21
+  11 R+         src/pipeline/cursor.ts                   rep
+  12 E+         src/pipeline/cursor.ts                   rev
+  13 TF8/13     suite=integration                        k0
+ *14 V+         paths=src/pipeline/cursor.ts             rev
+ *15 E+         src/pipeline/cursor.ts                   rev
+ *16 N+         target=prettier                          
+ *17 V+         paths=src/pipeline/cursor.ts             rev
+ *18 N+         target=prettier                          rep
+ *19 R+         src/pipeline/emailRender.ts lines=19-2   
+ *20 E+         src/pipeline/emailRender.ts              
+ *21 TF10/13    suite=integration                        rep k0
+=== V052 PRODUCTIVE net=PRODUCTIVE t=15
+   5 R+         src/test/java/com/acme/orders/SessionU   
+   6 L+         src/main/resources                       
+   7 L+         src/main/java/com                        
+ * 8 E+         src/main/java/com/acme/orders/Migratio   
+ * 9 TF7/16     suite=contractTests                      k0
+ *10 E+         src/main/java/com/acme/orders/Migratio   
+ *11 TF10/16    suite=contractTests                      rep k0
+ *12 E+         src/main/java/com/acme/orders/RetryPol   
+ *13 TF12/16    suite=contractTests                      rep k0
+ *14 E+         src/main/java/com/acme/orders/Schedule   
+ *15 T+16/16    suite=contractTests                      rep
+=== V053 PRODUCTIVE net=STALLED t=8
+   0 S+         src query="estimateDeadline"             
+ * 1 R+         src/identity/money.ts lines=1-15         
+ * 2 E+         src/identity/money.ts                    
+ * 3 R+         .editorconfig                            
+ * 4 E+         .editorconfig                            
+ * 5 B+         target=tsc-build                         
+ * 6 V+         paths=.editorconfig                      rev
+ * 7 B+         target=tsc-build                         rep
+ * 8 E+         .editorconfig                            rev
+=== V055 PRODUCTIVE net=STALLED t=14
+   4 S+         docs query="lru_cache"                   
+   5 L+         .github/workflows                        
+   6 L+         tests/fixtures                           
+ * 7 R+         tests/fixtures/feature_flags.json        
+ * 8 L+         tests                                    
+ * 9 TF6/11     suite=./internal/...:unit                k0
+ *10 R+         internal/storage/locale.go lines=18-28   
+ *11 S+         internal query="token cache_key"         
+ *12 E+         internal/storage/locale.go               
+ *13 TF8/11     suite=./internal/...:unit                rep k0
+ *14 R+         internal/storage/search_index.go lines   
+=== V058 PRODUCTIVE net=STALLED t=25
+  15 TF11/17    suite=contractTests                      rep cnt cntw k0
+  16 E+         src/main/java/com/acme/ingest/Serializ   
+  17 TF14/17    suite=contractTests                      rep k0
+ *18 R+         src/main/java/com/acme/sync/Router.jav   
+ *19 R+         logs/app.log lines=1-2                   
+ *20 BF         target=gradle-assemble                   nomut k0
+ *21 S+         src query="panic!"                       
+ *22 R+         src/test/java/com/acme/sync/RouterCont   
+ *23 p+         action=reflect                           
+ *24 E+         src/main/java/com/acme/sync/Router.jav   
+ *25 T+17/17    suite=contractTests                      rep
+=== V059 PRODUCTIVE net=PRODUCTIVE t=21
+  11 S+         lib query="offset off_by_one"            
+  12 BF         target=rake-build                        nomut k0
+  13 R+         spec/sync/scheduler_feature_spec.rb      
+ *14 E+         lib/sync/scheduler.rb                    
+ *15 TF8/16     suite=spec:feature                       rep k0
+ *16 E+         lib/sync/shard_map.rb                    
+ *17 TF8/16     suite=spec:feature                       rep cnt cntw k0
+ *18 E+         lib/sync/shard_map.rb                    rev
+ *19 TF8/16     suite=spec:feature                       rep cnt cntw k0
+ *20 E+         lib/sync/shard_map.rb                    
+ *21 TF10/16    suite=spec:feature                       rep k0
+=== V065 PRODUCTIVE net=STALLED t=14
+   4 NF         target=standardrb                        nomut k0
+   5 R+         logs/app.log lines=1-2                   
+   6 E+         lib/cli/session.rb                       
+ * 7 TF11/14    suite=spec:request                       rep k0
+ * 8 R+         lib/report/locale.rb lines=1-13          
+ * 9 R+         logs/ci-783.log lines=1-2                
+ *10 R+         spec/cli/quota_unit_spec.rb              
+ *11 W+         lib/report/locale.rb                     
+ *12 T+14/14    suite=spec:request                       rep
+ *13 TF4/9      suite=spec:unit                          nomut k0
+ *14 R+         lib/report/locale.rb lines=15-23         
+=== V067 PRODUCTIVE net=STALLED t=7
+ * 0 R+         internal/ingest/dedupe.go                
+ * 1 TF0/3      suite=./internal/...:race tests=intern   k0
+ * 2 H+         GET https://logs.acme.dev/v1/search re   
+ * 3 S+         docs query="__all__"                     
+ * 4 R+         internal/search/rate_limiter.go lines=   
+ * 5 R+         Makefile.env lines=4-8                   
+ * 6 S+         src query="async def"                    
+ * 7 H+         GET https://api.datadoghq.com/api/v2/l   
+=== V077 PRODUCTIVE net=STALLED t=14
+   4 p+         action=verify_plan                       
+   5 L+         deploy                                   
+   6 S+         src query="@Override"                    
+ * 7 H!         GET https://auth.internal.acme.dev/api   k0
+ * 8 H+         GET https://auth.internal.acme.dev/api   rep resolved
+ * 9 S+         internal query="RefreshTotal"            
+ *10 R+         internal/auth/templates.go lines=6-21    
+ *11 R+         logs/app.log lines=1-2                   
+ *12 E+         internal/auth/templates.go               
+ *13 TF6/10     suite=./internal/...:unit                k0
+ *14 R+         internal/auth/search_index.go lines=5-   
+=== V078 PRODUCTIVE net=STALLED t=12
+   2 R+         internal/web/cache_race_test.go          
+   3 S+         . query="assert_eq"                      
+   4 S+         src query="version"                      
+ * 5 L+         deploy                                   
+ * 6 p+         action=checkpoint                        
+ * 7 H!         POST https://artifacts.acme.dev/v1/emb   k0
+ * 8 H+         POST https://artifacts.acme.dev/v1/emb   rep resolved
+ * 9 S+         internal query="EncodeDigest"            
+ *10 R+         internal/web/shard_map.go lines=11-16    
+ *11 H+         GET https://api.datadoghq.com/api/v2/l   
+ *12 BF         target=go-build                          k0
+=== V080 PRODUCTIVE net=STALLED t=20
+  10 R+         setup.cfg lines=5-11                     
+  11 R+         logs/ci-612.log lines=2-2                
+  12 E+         src/metrics/dedupe.py                    
+ *13 T+11/11    suite=tests/integration                  rep
+ *14 TF9/17     suite=tests/regression                   nomut k0
+ *15 R+         src/metrics/config_loader.py lines=16-   
+ *16 R+         config/settings.yaml lines=6-8           
+ *17 NF         target=ruff                              nomut k0
+ *18 E+         src/metrics/config_loader.py             
+ *19 T+4/4      suite=tests/regression tests=tests/reg   
+ *20 TF13/17    suite=tests/regression                   rep nomut k0
+=== V083 PRODUCTIVE net=STALLED t=11
+   1 S+         src query="validate_chunk"               
+   2 R+         src/core/uploader.rs lines=22-27         
+   3 R+         logs/app.log lines=1-4                   
+ * 4 NF         target=rustfmt-check                     k0
+ * 5 S+         src query="limit precision"              
+ * 6 R+         Cargo.toml lines=6-8                     
+ * 7 S+         src query="compute_deadline"             
+ * 8 R+         docs/runbook.md                          
+ * 9 R+         src/core/invoice.rs lines=1-16           
+ *10 R+         tests/invoice_unit.rs                    
+ *11 S+         src query="query stale"                  
+=== V084 PRODUCTIVE net=STALLED t=20
+  10 R+         src/core/retry_policy.py lines=5-17      
+  11 E+         src/core/retry_policy.py                 
+  12 T+5/5      suite=tests/unit tests=tests/unit/test   
+ *13 TF12/18    suite=tests/unit                         rep nomut k0
+ *14 R+         src/core/thumbnailer.py lines=11-23      
+ *15 R+         tests/unit/test_thumbnailer.py           
+ *16 E+         src/core/thumbnailer.py                  
+ *17 T+3/3      suite=tests/unit tests=tests/unit/test   cntw
+ *18 TF15/18    suite=tests/unit                         rep nomut k0
+ *19 R+         src/core/tokenizer.py lines=23-28        
+ *20 E+         src/core/tokenizer.py                    
+=== V085 PRODUCTIVE net=STALLED t=35
+  25 Pp         dns/propagation/worker                   rep k0
+  26 L+         tests/unit                               
+  27 Pp         dns/propagation/worker                   rep k0
+ *28 Pp         dns/propagation/worker                   rep k1
+ *29 p+         action=review_diff                       
+ *30 Pr         dns/propagation/worker                   rep
+ *31 R+         src/web/config_loader.py lines=29-33     
+ *32 R+         logs/app.log lines=1-2                   
+ *33 E+         src/web/config_loader.py                 
+ *34 TF12/15    suite=tests/unit                         rep k0
+ *35 Pp         container/search/health backoff=10       k0
+=== V089 PRODUCTIVE net=STALLED t=10
+   0 L+         .                                        
+   1 TF7/12     suite=unit                               k0
+   2 R+         src/catalog/csvImport.ts lines=5-20      
+ * 3 NF         target=prettier                          nomut k0
+ * 4 R+         logs/ci-172.log lines=1-2                
+ * 5 S+         src query="slug off_by_one"              
+ * 6 W+         src/catalog/csvImport.ts                 
+ * 7 TF9/12     suite=unit                               rep k0
+ * 8 R+         src/geo/scheduler.ts lines=1-15          
+ * 9 BF         target=bundle                            nomut k0
+ *10 R+         logs/ci-659.log lines=1-2                
+=== V090 PRODUCTIVE net=STALLED t=19
+   9 R+         src/sync/queue_worker.rs lines=10-15     
+  10 BF         target=cargo-doc                         nomut k0
+  11 H+         GET https://logs.acme.dev/v1/search re   
+ *12 E+         src/sync/queue_worker.rs                 
+ *13 T+11/11    suite=property                           rep
+ *14 TF3/5      suite=doc                                nomut k0
+ *15 R+         src/sync/queue_worker.rs lines=14-29     
+ *16 R+         logs/queue_worker.log lines=1-2          
+ *17 R+         Cargo.toml lines=3-5                     
+ *18 E+         src/sync/queue_worker.rs                 
+ *19 T+5/5      suite=doc                                rep
+=== V094 PRODUCTIVE net=STALLED t=13
+   3 S+         src query="header truncation"            
+   4 R+         config/app.toml lines=5-14               
+   5 S+         docs query="def main"                    
+ * 6 R+         rustfmt.toml lines=8-14                  
+ * 7 R+         src/catalog/export_job.rs lines=13-24    
+ * 8 TF0/3      suite=property tests=tests/scheduler_p   k0
+ * 9 R+         src/catalog/backoff.rs                   
+ *10 NF         target=clippy                            nomut k0
+ *11 R+         src/catalog/scheduler.rs lines=10-15     
+ *12 R+         src/core/router.rs                       
+ *13 H+         GET https://honeycomb.io/1/query_resul   
+=== V095 PRODUCTIVE net=PRODUCTIVE t=15
+   5 L+         tests/fixtures                           
+   6 L+         deploy                                   
+   7 TF8/25     suite=./internal/...:race                k0
+ * 8 E+         internal/web/cursor.go                   
+ * 9 TF12/25    suite=./internal/...:race                rep k0
+ *10 E+         internal/web/image_resize.go             
+ *11 TF17/25    suite=./internal/...:race                rep k0
+ *12 E+         internal/web/pagination.go               
+ *13 TF22/25    suite=./internal/...:race                rep k0
+ *14 E+         internal/web/retry_policy.go             
+ *15 T+25/25    suite=./internal/...:race                rep
+=== V097 PRODUCTIVE net=STALLED t=19
+   9 H!         GET https://ci.acme.dev/api/v4/jobs/{j   k0
+  10 H!         GET https://ci.acme.dev/api/v4/jobs/{j   rep k0
+  11 H!         GET https://ci.acme.dev/api/v4/jobs/{j   rep k0
+ *12 H!         GET https://ci.acme.dev/api/v4/jobs/{j   rep k0
+ *13 H+         GET https://ci.acme.dev/api/v4/jobs/{j   rep resolved
+ *14 S+         src query="compact_locale"               
+ *15 R+         src/auth/search_index.rs lines=9-16      
+ *16 BF         target=cargo-doc                         k0
+ *17 E+         src/auth/search_index.rs                 
+ *18 TF8/13     suite=unit                               k0
+ *19 TF0/2      suite=unit tests=tests/diff_engine_uni   nomut k0
+=== V102 PRODUCTIVE net=STALLED t=9
+   0 L+         .                                        
+   1 S+         docs query="assert_eq"                   
+ * 2 S+         internal query="ComputeSchema"           
+ * 3 R+         internal/sync/export_job.go lines=16-2   
+ * 4 R+         internal/sync/graph_walk.go              
+ * 5 S+         internal query="deadline dst"            
+ * 6 R+         Makefile                                 
+ * 7 NF         target=staticcheck                       k0
+ * 8 L+         scripts                                  
+ * 9 H+         GET https://grafana.acme.dev/api/datas   
+=== V103 PRODUCTIVE net=STALLED t=19
+   9 S+         . query="feature flag"                   
+  10 NF         target=eslint                            nomut k0
+  11 R+         src/web/permissions.ts                   
+ *12 S+         src query="record locale"                
+ *13 S+         . query="estimateHeader"                 
+ *14 S+         docs query="async def"                   
+ *15 R+         src/web/manifest.ts lines=8-17           
+ *16 R+         CHANGELOG.md                             
+ *17 H+         GET https://api.datadoghq.com/api/v2/l   
+ *18 S+         docs query="class Config"                
+ *19 p+         action=list_hypotheses                   
+=== V105 PRODUCTIVE net=STALLED t=19
+   9 R+         src/pipeline/migrations.py lines=19-33   
+  10 S+         src query="ranges race"                  
+  11 NF         target=flake8                            nomut k0
+ *12 H+         GET https://honeycomb.io/1/query_resul   
+ *13 E+         src/pipeline/migrations.py               
+ *14 TF12/15    suite=tests/integration                  rep k0
+ *15 R+         src/pipeline/migrations.py lines=8-14    
+ *16 S+         src query="quota cache_key"              
+ *17 E+         src/pipeline/migrations.py               
+ *18 T+15/15    suite=tests/integration                  rep
+ *19 TF7/9      suite=tests/regression                   nomut k0
+=== V106 PRODUCTIVE net=STALLED t=18
+   8 S+         . query="estimateAddress"                
+   9 BF         target=tsc-build                         nomut k0
+  10 R+         src/cli/__tests__/searchIndex.contract   
+ *11 R+         src/notify/session.ts lines=1-14         
+ *12 NF         target=tsc                               nomut k0
+ *13 R+         src/cli/configLoader.ts lines=21-27      
+ *14 H+         GET https://api.datadoghq.com/api/v2/l   
+ *15 R+         logs/ci-744.log lines=1-2                
+ *16 R+         src/cli/__tests__/tokenBucket.e2e.test   
+ *17 S+         . query="loadQuery"                      
+ *18 R+         jest.config.ts lines=1-9                 
+=== V108 PRODUCTIVE net=STALLED t=11
+   1 L+         src                                      
+   2 L+         deploy/terraform                         
+   3 S+         docs query="lru_cache"                   
+ * 4 L+         docs/adr                                 
+ * 5 L+         src/pipeline                             
+ * 6 S+         src query="interface{}"                  
+ * 7 S+         src query="lru_cache"                    
+ * 8 L+         deploy                                   
+ * 9 TF7/10     suite=contract                           k0
+ *10 R+         src/pipeline/tokenBucket.ts lines=19-2   
+ *11 BF         target=tsc-build                         nomut k0
+=== V109 PRODUCTIVE net=STALLED t=15
+   5 S+         . query="lru_cache"                      
+   6 TF0/2      suite=tests/smoke tests=tests/smoke/te   k0
+   7 R+         src/web/config_loader.py lines=15-23     
+ * 8 R+         logs/config_loader.log lines=2-2         
+ * 9 E+         src/web/config_loader.py                 
+ *10 TF7/14     suite=tests/smoke                        k0
+ *11 TF0/2      suite=tests/smoke tests=tests/smoke/te   cntw nomut k0
+ *12 R+         src/web/slugify.py lines=15-27           
+ *13 E+         src/web/slugify.py                       
+ *14 TF9/14     suite=tests/smoke                        rep k0
+ *15 R+         src/web/currency.py lines=19-23          
+=== V110 PRODUCTIVE net=STALLED t=8
+   0 L+         .                                        
+ * 1 R+         lib/ingest/router.rb lines=3-10          
+ * 2 H+         GET https://sentry.io/api/0/issues/{is   
+ * 3 R+         lib/ingest/serializer.rb lines=14-23     
+ * 4 NF         target=standardrb                        k0
+ * 5 NF         target=brakeman                          nomut k0
+ * 6 R+         .rubocop.yml lines=5-9                   
+ * 7 H+         GET https://ci.acme.dev/api/v4/jobs/{j   
+ * 8 R+         lib/ingest/tokenizer.rb lines=4-9        

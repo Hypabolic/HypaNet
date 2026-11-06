@@ -1,0 +1,596 @@
+=== V002 OSCILLATING net=OSCILLATING t=10
+   0 S+         src query="flush_quota"                  
+   1 R+         src/billing/archive.py lines=3-19        
+   2 E+         src/billing/archive.py                   
+ * 3 W+         src/billing/archive.py                   
+ * 4 T+6/6      suite=tests/regression                   
+ * 5 E+         src/billing/archive.py                   rev
+ * 6 T+6/6      suite=tests/regression                   rep cnt cntw
+ * 7 W+         src/billing/archive.py                   rev
+ * 8 T+6/6      suite=tests/regression                   rep cnt cntw
+ * 9 E+         src/billing/archive.py                   rev
+ *10 T+6/6      suite=tests/regression                   rep cnt cntw
+=== V010 OSCILLATING net=OSCILLATING t=34
+  24 E+         scripts/bootstrap.sh                     rev
+  25 E+         scripts/bootstrap.sh                     rev
+  26 E+         scripts/bootstrap.sh                     rev
+ *27 E+         scripts/bootstrap.sh                     rev
+ *28 E+         scripts/bootstrap.sh                     rev
+ *29 E+         scripts/bootstrap.sh                     rev
+ *30 E+         scripts/bootstrap.sh                     rev
+ *31 E+         scripts/bootstrap.sh                     rev
+ *32 E+         scripts/bootstrap.sh                     rev
+ *33 E+         scripts/bootstrap.sh                     rev
+ *34 E+         scripts/bootstrap.sh                     rev
+=== V018 OSCILLATING net=OSCILLATING t=33
+  23 W+         src/media/chunker.rs                     rev
+  24 E+         src/media/chunker.rs                     rev
+  25 W+         src/media/chunker.rs                     rev
+ *26 E+         src/media/chunker.rs                     rev
+ *27 W+         src/media/chunker.rs                     rev
+ *28 E+         src/media/chunker.rs                     rev
+ *29 W+         src/media/chunker.rs                     rev
+ *30 E+         src/media/chunker.rs                     rev
+ *31 W+         src/media/chunker.rs                     rev
+ *32 E+         src/media/chunker.rs                     rev
+ *33 W+         src/media/chunker.rs                     rev
+=== V020 OSCILLATING net=OSCILLATING t=19
+   9 W+         src/storage/uploader.py                  rev
+  10 TF11/13    suite=tests/unit                         rep cnt cntw k0
+  11 W+         src/storage/uploader.py                  rev
+ *12 TF11/13    suite=tests/unit                         rep cnt cntw k0
+ *13 W+         src/storage/uploader.py                  rev
+ *14 TF11/13    suite=tests/unit                         rep cnt cntw k0
+ *15 W+         src/storage/uploader.py                  rev
+ *16 TF11/13    suite=tests/unit                         rep cnt cntw k0
+ *17 W+         src/storage/uploader.py                  rev
+ *18 TF11/13    suite=tests/unit                         rep cnt cntw k0
+ *19 W+         src/storage/uploader.py                  rev
+=== V025 OSCILLATING net=OSCILLATING t=10
+   0 R+         src/identity/__tests__/manifest.e2e.te   
+   1 L+         src                                      
+   2 E+         .eslintrc.json                           
+ * 3 B+         target=tsc-build                         
+ * 4 V+         paths=.eslintrc.json                     rev
+ * 5 B+         target=tsc-build                         rep
+ * 6 E+         .eslintrc.json                           rev
+ * 7 B+         target=tsc-build                         rep
+ * 8 V+         paths=.eslintrc.json                     rev
+ * 9 B+         target=tsc-build                         rep
+ *10 E+         .eslintrc.json                           rev
+=== V032 OSCILLATING net=OSCILLATING t=30
+  20 TF1/3      suite=integration tests=src/core/__tes   rep cntw k0
+  21 E+         src/core/tokenBucket.ts                  rev
+  22 TF2/3      suite=integration tests=src/core/__tes   rep cntw k0
+ *23 E+         src/core/tokenBucket.ts                  rev
+ *24 TF1/3      suite=integration tests=src/core/__tes   rep cntw k0
+ *25 E+         src/core/tokenBucket.ts                  rev
+ *26 TF2/3      suite=integration tests=src/core/__tes   rep cntw k0
+ *27 E+         src/core/tokenBucket.ts                  rev
+ *28 TF1/3      suite=integration tests=src/core/__tes   rep cntw k0
+ *29 E+         src/core/tokenBucket.ts                  rev
+ *30 TF2/3      suite=integration tests=src/core/__tes   rep cntw k0
+=== V033 OSCILLATING net=OSCILLATING t=20
+  10 N+         target=brakeman                          rep
+  11 E+         lib/billing/webhook.rb                   rev
+  12 N+         target=brakeman                          rep
+ *13 E+         lib/billing/webhook.rb                   rev
+ *14 N+         target=brakeman                          rep
+ *15 E+         lib/billing/webhook.rb                   rev
+ *16 N+         target=brakeman                          rep
+ *17 E+         lib/billing/webhook.rb                   rev
+ *18 N+         target=brakeman                          rep
+ *19 E+         lib/billing/webhook.rb                   rev
+ *20 N+         target=brakeman                          rep
+=== V041 OSCILLATING net=STALLED t=40
+  30 W+         src/storage/templates.ts                 rev
+  31 W+         src/storage/templates.ts                 rev
+  32 W+         src/storage/templates.ts                 rev
+ *33 W+         src/storage/templates.ts                 rev
+ *34 R+         src/storage/templates.ts lines=15-22     
+ *35 W+         src/storage/templates.ts                 rev
+ *36 W+         src/storage/templates.ts                 rev
+ *37 R+         src/storage/templates.ts lines=16-21     rep
+ *38 W+         src/storage/templates.ts                 rev
+ *39 W+         src/storage/templates.ts                 rev
+ *40 W+         src/storage/templates.ts                 rev
+=== V042 OSCILLATING net=OSCILLATING t=43
+  33 E+         lib/catalog/feature_flags.rb             rev
+  34 TF10/12    suite=spec:unit                          rep cnt cntw k0
+  35 E+         lib/catalog/feature_flags.rb             rev
+ *36 TF10/12    suite=spec:unit                          rep cnt cntw k0
+ *37 E+         lib/catalog/feature_flags.rb             rev
+ *38 TF10/12    suite=spec:unit                          rep cnt cntw k0
+ *39 E+         lib/catalog/feature_flags.rb             rev
+ *40 TF10/12    suite=spec:unit                          rep cnt cntw k0
+ *41 E+         lib/catalog/feature_flags.rb             rev
+ *42 TF10/12    suite=spec:unit                          rep cnt cntw k0
+ *43 E+         lib/catalog/feature_flags.rb             rev
+=== V043 OSCILLATING net=OSCILLATING t=33
+  23 TF8/18     suite=unitTests                          rep cntw k0
+  24 R+         src/main/java/com/globex/report/Quota.   
+  25 E+         src/main/java/com/globex/report/Quota.   rev
+ *26 TF7/18     suite=unitTests                          rep cntw k0
+ *27 E+         src/main/java/com/globex/report/Quota.   rev
+ *28 TF8/18     suite=unitTests                          rep cntw k0
+ *29 E+         src/main/java/com/globex/report/Quota.   rev
+ *30 TF7/18     suite=unitTests                          rep cntw k0
+ *31 E+         src/main/java/com/globex/report/Quota.   rev
+ *32 TF8/18     suite=unitTests                          rep cntw k0
+ *33 E+         src/main/java/com/globex/report/Quota.   rev
+=== V050 OSCILLATING net=STALLED t=8
+   0 L+         tests/fixtures                           
+ * 1 R+         src/main/java/com/initech/media/Search   
+ * 2 E+         src/main/java/com/initech/media/Search   
+ * 3 NF         target=spotbugs                          k0
+ * 4 V+         paths=src/main/java/com/initech/media/   rev
+ * 5 E+         src/main/java/com/initech/media/Search   rev
+ * 6 NF         target=spotbugs                          rep k0
+ * 7 V+         paths=src/main/java/com/initech/media/   rev
+ * 8 E+         src/main/java/com/initech/media/Search   rev
+=== V056 OSCILLATING net=STALLED t=11
+   1 R+         src/main/java/com/acme/storage/Quota.j   
+   2 E+         src/main/java/com/acme/storage/Quota.j   
+   3 T+6/6      suite=contractTests                      
+ * 4 E+         src/main/java/com/acme/storage/Router.   
+ * 5 T+6/6      suite=contractTests                      rep cnt cntw
+ * 6 E+         src/main/java/com/acme/storage/Router.   rev
+ * 7 E+         src/main/java/com/acme/storage/Router.   rev
+ * 8 R+         src/main/java/com/acme/storage/Router.   
+ * 9 E+         src/main/java/com/acme/storage/Router.   rev
+ *10 E+         src/main/java/com/acme/storage/Router.   rev
+ *11 N+         target=spotbugs                          
+=== V057 OSCILLATING net=STALLED t=32
+  22 W+         src/main/java/com/umbrella/notify/Audi   rev
+  23 TF10/12    suite=contractTests                      rep cnt cntw k0
+  24 W+         src/main/java/com/umbrella/notify/Audi   rev
+ *25 TF10/12    suite=contractTests                      rep cnt cntw k0
+ *26 R+         src/main/java/com/umbrella/notify/Audi   
+ *27 W+         src/main/java/com/umbrella/notify/Audi   rev
+ *28 TF10/12    suite=contractTests                      rep cnt cntw k0
+ *29 W+         src/main/java/com/umbrella/notify/Audi   rev
+ *30 TF10/12    suite=contractTests                      rep cnt cntw k0
+ *31 W+         src/main/java/com/umbrella/notify/Audi   rev
+ *32 TF10/12    suite=contractTests                      rep cnt cntw k0
+=== V061 OSCILLATING net=STALLED t=12
+   2 E+         src/core/chunker.ts                      
+   3 TF6/9      suite=e2e                                k0
+   4 L+         scripts                                  
+ * 5 R+         src/core/__tests__/uploader.e2e.test.t   
+ * 6 R+         src/core/uploader.ts                     
+ * 7 E+         src/core/uploader.ts                     
+ * 8 N+         target=prettier                          
+ * 9 E+         src/core/uploader.ts                     rev
+ *10 N+         target=prettier                          rep
+ *11 E+         src/core/uploader.ts                     rev
+ *12 N+         target=prettier                          rep
+=== V069 OSCILLATING net=OSCILLATING t=47
+  37 E+         lib/search/tokenizer.rb                  rev
+  38 E+         lib/search/tokenizer.rb                  rev
+  39 E+         lib/search/tokenizer.rb                  rev
+ *40 E+         lib/search/tokenizer.rb                  rev
+ *41 E+         lib/search/tokenizer.rb                  rev
+ *42 E+         lib/search/tokenizer.rb                  rev
+ *43 E+         lib/search/tokenizer.rb                  rev
+ *44 E+         lib/search/tokenizer.rb                  rev
+ *45 E+         lib/search/tokenizer.rb                  rev
+ *46 E+         lib/search/tokenizer.rb                  rev
+ *47 E+         lib/search/tokenizer.rb                  rev
+=== V070 OSCILLATING net=STALLED t=18
+   8 E+         src/auth/invoice.py                      rev
+   9 E+         src/auth/invoice.py                      rev
+  10 R+         src/auth/invoice.py lines=8-14           rep
+ *11 E+         src/auth/invoice.py                      rev
+ *12 E+         src/auth/invoice.py                      rev
+ *13 R+         src/auth/invoice.py lines=6-16           
+ *14 E+         src/auth/invoice.py                      rev
+ *15 E+         src/auth/invoice.py                      rev
+ *16 E+         src/auth/invoice.py                      rev
+ *17 E+         src/auth/invoice.py                      rev
+ *18 E+         src/auth/invoice.py                      rev
+=== V073 OSCILLATING net=OSCILLATING t=16
+   6 R+         src/orders/uploader.py                   
+   7 E+         src/orders/uploader.py                   
+   8 E+         src/orders/uploader.py                   rev
+ * 9 TF6/11     suite=tests/smoke                        k0
+ *10 E+         src/orders/uploader.py                   rev
+ *11 E+         src/orders/uploader.py                   rev
+ *12 N+         target=flake8                            
+ *13 E+         src/orders/uploader.py                   rev
+ *14 N+         target=flake8                            rep
+ *15 E+         src/orders/uploader.py                   rev
+ *16 TF6/11     suite=tests/smoke                        rep cntw k0
+=== V075 OSCILLATING net=OSCILLATING t=44
+  34 N+         target=spotbugs                          rep
+  35 E+         src/main/java/com/globex/catalog/Quota   rev
+  36 TF7/9      suite=contractTests                      rep cntw k0
+ *37 E+         src/main/java/com/globex/catalog/Quota   rev
+ *38 TF8/9      suite=contractTests                      rep cntw k0
+ *39 E+         src/main/java/com/globex/catalog/Quota   rev
+ *40 TF7/9      suite=contractTests                      rep cntw k0
+ *41 E+         src/main/java/com/globex/catalog/Quota   rev
+ *42 TF8/9      suite=contractTests                      rep cntw k0
+ *43 E+         src/main/java/com/globex/catalog/Quota   rev
+ *44 N+         target=spotbugs                          rep
+=== V076 OSCILLATING net=STALLED t=45
+  35 TF10/14    suite=e2e                                rep cntw k0
+  36 R+         src/catalog/searchIndex.ts lines=14-23   rep
+  37 E+         src/catalog/searchIndex.ts               rev
+ *38 TF11/14    suite=e2e                                rep cntw k0
+ *39 E+         src/catalog/searchIndex.ts               rev
+ *40 TF10/14    suite=e2e                                rep cntw k0
+ *41 R+         src/catalog/searchIndex.ts lines=16-21   
+ *42 E+         src/catalog/searchIndex.ts               rev
+ *43 TF11/14    suite=e2e                                rep cntw k0
+ *44 R+         src/catalog/searchIndex.ts lines=12-25   rep
+ *45 E+         src/catalog/searchIndex.ts               rev
+=== V081 OSCILLATING net=STALLED t=36
+  26 TF5/18     suite=tests/regression                   rep cntw k0
+  27 E+         src/core/dedupe.py                       rev
+  28 TF2/3      suite=tests/regression tests=tests/reg   rep k0
+ *29 E+         src/core/dedupe.py                       rev
+ *30 TF1/3      suite=tests/regression tests=tests/reg   rep k0
+ *31 E+         src/core/dedupe.py                       rev
+ *32 TF6/18     suite=tests/regression                   rep cntw k0
+ *33 E+         src/core/dedupe.py                       rev
+ *34 TF5/18     suite=tests/regression                   rep cntw k0
+ *35 R+         src/core/dedupe.py lines=18-23           rep
+ *36 E+         src/core/dedupe.py                       rev
+=== V086 OSCILLATING net=OSCILLATING t=27
+  17 TF6/14     suite=tests/regression                   rep cntw k0
+  18 E+         src/report/diff_engine.py                rev
+  19 TF5/14     suite=tests/regression                   rep cntw k0
+ *20 E+         src/report/diff_engine.py                rev
+ *21 TF6/14     suite=tests/regression                   rep cntw k0
+ *22 E+         src/report/diff_engine.py                rev
+ *23 TF5/14     suite=tests/regression                   rep cntw k0
+ *24 E+         src/report/diff_engine.py                rev
+ *25 TF6/14     suite=tests/regression                   rep cntw k0
+ *26 E+         src/report/diff_engine.py                rev
+ *27 TF5/14     suite=tests/regression                   rep cntw k0
+=== V087 OSCILLATING net=OSCILLATING t=8
+   0 R+         internal/orders/config_loader.go lines   
+ * 1 E+         internal/orders/config_loader.go         
+ * 2 TF9/10     suite=./internal/...:race                k0
+ * 3 E+         internal/orders/config_loader.go         
+ * 4 TF9/10     suite=./internal/...:race                rep cnt cntw k0
+ * 5 E+         internal/orders/config_loader.go         rev
+ * 6 TF9/10     suite=./internal/...:race                rep cnt cntw k0
+ * 7 E+         internal/orders/config_loader.go         rev
+ * 8 TF9/10     suite=./internal/...:race                rep cnt cntw k0
+=== V092 OSCILLATING net=OSCILLATING t=21
+  11 N+         target=golangci-lint                     rep
+  12 E+         internal/worker/config_loader.go         rev
+  13 N+         target=golangci-lint                     rep
+ *14 E+         internal/worker/config_loader.go         rev
+ *15 N+         target=golangci-lint                     rep
+ *16 E+         internal/worker/config_loader.go         rev
+ *17 N+         target=golangci-lint                     rep
+ *18 E+         internal/worker/config_loader.go         rev
+ *19 N+         target=golangci-lint                     rep
+ *20 E+         internal/worker/config_loader.go         rev
+ *21 N+         target=golangci-lint                     rep
+=== V093 OSCILLATING net=OSCILLATING t=44
+  34 E+         src/search/archive.py                    rev
+  35 T+1/1      suite=tests/regression tests=tests/reg   rep cntw
+  36 TF1/3      suite=tests/regression tests=tests/reg   rep cntw nomut k0
+ *37 E+         src/search/archive.py                    rev
+ *38 T+1/1      suite=tests/regression tests=tests/reg   rep cntw
+ *39 TF2/3      suite=tests/regression tests=tests/reg   rep cntw nomut k0
+ *40 E+         src/search/archive.py                    rev
+ *41 T+1/1      suite=tests/regression tests=tests/reg   rep cntw
+ *42 TF1/3      suite=tests/regression tests=tests/reg   rep cntw nomut k0
+ *43 E+         src/search/archive.py                    rev
+ *44 T+1/1      suite=tests/regression tests=tests/reg   rep cntw
+=== V096 OSCILLATING net=OSCILLATING t=37
+  27 E+         internal/orders/retry_policy.go          rev
+  28 E+         internal/orders/retry_policy.go          rev
+  29 E+         internal/orders/retry_policy.go          rev
+ *30 E+         internal/orders/retry_policy.go          rev
+ *31 E+         internal/orders/retry_policy.go          rev
+ *32 E+         internal/orders/retry_policy.go          rev
+ *33 E+         internal/orders/retry_policy.go          rev
+ *34 E+         internal/orders/retry_policy.go          rev
+ *35 E+         internal/orders/retry_policy.go          rev
+ *36 E+         internal/orders/retry_policy.go          rev
+ *37 E+         internal/orders/retry_policy.go          rev
+=== V098 OSCILLATING net=STALLED t=18
+   8 R+         src/cli/audit_log.py                     rep
+   9 E+         src/cli/audit_log.py                     rev
+  10 R+         src/cli/audit_log.py                     rep
+ *11 V+         paths=src/cli/audit_log.py               rev
+ *12 R+         src/cli/audit_log.py                     rep
+ *13 E+         src/cli/audit_log.py                     rev
+ *14 N+         target=flake8                            rep
+ *15 V+         paths=src/cli/audit_log.py               rev
+ *16 N+         target=flake8                            rep
+ *17 E+         src/cli/audit_log.py                     rev
+ *18 R+         src/cli/audit_log.py                     rep
+=== V100 OSCILLATING net=OSCILLATING t=44
+  34 E+         internal/core/dedupe.go                  rev
+  35 N+         target=staticcheck                       rep
+  36 E+         internal/core/dedupe.go                  rev
+ *37 N+         target=staticcheck                       rep
+ *38 E+         internal/core/dedupe.go                  rev
+ *39 N+         target=staticcheck                       rep
+ *40 E+         internal/core/dedupe.go                  rev
+ *41 N+         target=staticcheck                       rep
+ *42 E+         internal/core/dedupe.go                  rev
+ *43 N+         target=staticcheck                       rep
+ *44 E+         internal/core/dedupe.go                  rev
+=== V113 OSCILLATING net=OSCILLATING t=20
+  10 TF5/8      suite=spec:unit                          rep cnt cntw k0
+  11 E+         lib/sync/csv_import.rb                   rev
+  12 TF5/8      suite=spec:unit                          rep cnt cntw k0
+ *13 E+         lib/sync/csv_import.rb                   rev
+ *14 TF5/8      suite=spec:unit                          rep cnt cntw k0
+ *15 E+         lib/sync/csv_import.rb                   rev
+ *16 TF5/8      suite=spec:unit                          rep cnt cntw k0
+ *17 E+         lib/sync/csv_import.rb                   rev
+ *18 TF5/8      suite=spec:unit                          rep cnt cntw k0
+ *19 E+         lib/sync/csv_import.rb                   rev
+ *20 TF5/8      suite=spec:unit                          rep cnt cntw k0
+=== V117 OSCILLATING net=OSCILLATING t=33
+  23 W+         src/main/java/com/globex/search/Thumbn   rev
+  24 N+         target=checkstyle                        rep
+  25 W+         src/main/java/com/globex/search/Thumbn   rev
+ *26 N+         target=checkstyle                        rep
+ *27 W+         src/main/java/com/globex/search/Thumbn   rev
+ *28 N+         target=checkstyle                        rep
+ *29 W+         src/main/java/com/globex/search/Thumbn   rev
+ *30 N+         target=checkstyle                        rep
+ *31 W+         src/main/java/com/globex/search/Thumbn   rev
+ *32 N+         target=checkstyle                        rep
+ *33 W+         src/main/java/com/globex/search/Thumbn   rev
+=== V121 OSCILLATING net=STALLED t=13
+   3 S+         docs query="unsafe"                      
+   4 R+         src/geo/archive.rs                       
+   5 S+         src query="lru_cache"                    
+ * 6 R+         docs/api.md                              
+ * 7 S+         . query="async def"                      
+ * 8 R+         src/search/search_index.rs               
+ * 9 E+         src/search/search_index.rs               
+ *10 E+         src/search/search_index.rs               rev
+ *11 E+         src/search/search_index.rs               rev
+ *12 E+         src/search/search_index.rs               rev
+ *13 E+         src/search/search_index.rs               rev
+=== V122 OSCILLATING net=STALLED t=11
+   1 L+         tests/fixtures                           
+   2 L+         .github/workflows                        
+   3 R+         deploy/helm/values.yaml                  
+ * 4 S+         docs query="async def"                   
+ * 5 S+         . query="deprecated"                     
+ * 6 R+         src/search/currency.py                   
+ * 7 E+         src/search/currency.py                   
+ * 8 TF8/11     suite=tests/smoke                        k0
+ * 9 V+         paths=src/search/currency.py             rev
+ *10 E+         src/search/currency.py                   rev
+ *11 TF8/11     suite=tests/smoke                        rep cnt cntw k0
+=== V126 OSCILLATING net=OSCILLATING t=24
+  14 E+         src/cli/feature_flags.py                 rev
+  15 TF2/3      suite=tests/regression tests=tests/reg   rep cntw k0
+  16 E+         src/cli/feature_flags.py                 rev
+ *17 TF1/3      suite=tests/regression tests=tests/reg   rep cntw k0
+ *18 E+         src/cli/feature_flags.py                 rev
+ *19 TF2/3      suite=tests/regression tests=tests/reg   rep cntw k0
+ *20 E+         src/cli/feature_flags.py                 rev
+ *21 TF1/3      suite=tests/regression tests=tests/reg   rep cntw k0
+ *22 E+         src/cli/feature_flags.py                 rev
+ *23 TF2/3      suite=tests/regression tests=tests/reg   rep cntw k0
+ *24 E+         src/cli/feature_flags.py                 rev
+=== V130 OSCILLATING net=OSCILLATING t=40
+  30 TF1/2      suite=tests/regression tests=tests/reg   rep cnt cntw k0
+  31 E+         src/storage/search_index.py              rev
+  32 TF1/2      suite=tests/regression tests=tests/reg   rep cnt cntw k0
+ *33 E+         src/storage/search_index.py              rev
+ *34 TF1/2      suite=tests/regression tests=tests/reg   rep cnt cntw k0
+ *35 E+         src/storage/search_index.py              rev
+ *36 TF1/2      suite=tests/regression tests=tests/reg   rep cnt cntw k0
+ *37 E+         src/storage/search_index.py              rev
+ *38 TF1/2      suite=tests/regression tests=tests/reg   rep cnt cntw k0
+ *39 E+         src/storage/search_index.py              rev
+ *40 TF1/2      suite=tests/regression tests=tests/reg   rep cnt cntw k0
+=== V132 OSCILLATING net=OSCILLATING t=39
+  29 E+         src/ingest/notifier.ts                   rev
+  30 N+         target=tsc                               rep
+  31 E+         src/ingest/notifier.ts                   rev
+ *32 TF10/11    suite=integration                        rep cntw k0
+ *33 E+         src/ingest/notifier.ts                   rev
+ *34 TF10/11    suite=integration                        rep cnt cntw k0
+ *35 E+         src/ingest/notifier.ts                   rev
+ *36 TF10/11    suite=integration                        rep cnt cntw k0
+ *37 E+         src/ingest/notifier.ts                   rev
+ *38 N+         target=tsc                               rep
+ *39 E+         src/ingest/notifier.ts                   rev
+=== V133 OSCILLATING net=OSCILLATING t=33
+  23 R+         src/main/java/com/initech/core/ShardMa   rep
+  24 E+         src/main/java/com/initech/core/ShardMa   rev
+  25 TF2/3      suite=unitTests tests=src/test/java/co   rep cntw k0
+ *26 E+         src/main/java/com/initech/core/ShardMa   rev
+ *27 TF1/3      suite=unitTests tests=src/test/java/co   rep cntw k0
+ *28 E+         src/main/java/com/initech/core/ShardMa   rev
+ *29 TF2/3      suite=unitTests tests=src/test/java/co   rep cntw k0
+ *30 E+         src/main/java/com/initech/core/ShardMa   rev
+ *31 TF1/3      suite=unitTests tests=src/test/java/co   rep cntw k0
+ *32 E+         src/main/java/com/initech/core/ShardMa   rev
+ *33 TF2/3      suite=unitTests tests=src/test/java/co   rep cntw k0
+=== V135 OSCILLATING net=OSCILLATING t=12
+   2 E+         src/core/migrations.py                   
+   3 E+         src/core/migrations.py                   rev
+   4 E+         src/core/migrations.py                   rev
+ * 5 E+         src/core/migrations.py                   rev
+ * 6 E+         src/core/migrations.py                   rev
+ * 7 E+         src/core/migrations.py                   rev
+ * 8 E+         src/core/migrations.py                   rev
+ * 9 E+         src/core/migrations.py                   rev
+ *10 E+         src/core/migrations.py                   rev
+ *11 E+         src/core/migrations.py                   rev
+ *12 E+         src/core/migrations.py                   rev
+=== V136 OSCILLATING net=OSCILLATING t=19
+   9 E+         src/geo/export_job.py                    rev
+  10 W+         src/geo/export_job.py                    rev
+  11 E+         src/geo/export_job.py                    rev
+ *12 W+         src/geo/export_job.py                    rev
+ *13 E+         src/geo/export_job.py                    rev
+ *14 W+         src/geo/export_job.py                    rev
+ *15 E+         src/geo/export_job.py                    rev
+ *16 W+         src/geo/export_job.py                    rev
+ *17 E+         src/geo/export_job.py                    rev
+ *18 W+         src/geo/export_job.py                    rev
+ *19 E+         src/geo/export_job.py                    rev
+=== V138 OSCILLATING net=OSCILLATING t=11
+   1 R+         src/metrics/graph_walk.rs lines=8-17     
+   2 E+         src/metrics/graph_walk.rs                
+   3 TF9/17     suite=property                           k0
+ * 4 E+         src/metrics/graph_walk.rs                
+ * 5 TF8/17     suite=property                           rep k0
+ * 6 E+         src/metrics/graph_walk.rs                
+ * 7 TF9/17     suite=property                           rep cntw k0
+ * 8 E+         src/metrics/graph_walk.rs                rev
+ * 9 TF9/17     suite=property                           rep cnt cntw k0
+ *10 E+         src/metrics/graph_walk.rs                rev
+ *11 TF8/17     suite=property                           rep cntw k0
+=== V141 OSCILLATING net=OSCILLATING t=17
+   7 W+         src/report/auditLog.ts                   rev
+   8 W+         src/report/auditLog.ts                   rev
+   9 W+         src/report/auditLog.ts                   rev
+ *10 W+         src/report/auditLog.ts                   rev
+ *11 W+         src/report/auditLog.ts                   rev
+ *12 W+         src/report/auditLog.ts                   rev
+ *13 W+         src/report/auditLog.ts                   rev
+ *14 W+         src/report/auditLog.ts                   rev
+ *15 W+         src/report/auditLog.ts                   rev
+ *16 W+         src/report/auditLog.ts                   rev
+ *17 W+         src/report/auditLog.ts                   rev
+=== V144 OSCILLATING net=OSCILLATING t=29
+  19 TF2/4      suite=tests/integration tests=tests/in   rep cnt cntw k0
+  20 E+         src/web/config_loader.py                 rev
+  21 TF2/4      suite=tests/integration tests=tests/in   rep cnt cntw k0
+ *22 E+         src/web/config_loader.py                 rev
+ *23 TF2/4      suite=tests/integration tests=tests/in   rep cnt cntw k0
+ *24 E+         src/web/config_loader.py                 rev
+ *25 TF2/4      suite=tests/integration tests=tests/in   rep cnt cntw k0
+ *26 E+         src/web/config_loader.py                 rev
+ *27 TF2/4      suite=tests/integration tests=tests/in   rep cnt cntw k0
+ *28 E+         src/web/config_loader.py                 rev
+ *29 TF2/4      suite=tests/integration tests=tests/in   rep cnt cntw k0
+=== V148 OSCILLATING net=OSCILLATING t=12
+   2 E+         internal/identity/archive.go             
+   3 T+7/7      suite=./internal/...:unit                
+   4 E+         internal/identity/archive.go             
+ * 5 V+         paths=internal/identity/archive.go       rev
+ * 6 E+         internal/identity/archive.go             rev
+ * 7 V+         paths=internal/identity/archive.go       rev
+ * 8 E+         internal/identity/archive.go             rev
+ * 9 V+         paths=internal/identity/archive.go       rev
+ *10 E+         internal/identity/archive.go             rev
+ *11 V+         paths=internal/identity/archive.go       rev
+ *12 E+         internal/identity/archive.go             rev
+=== V150 OSCILLATING net=OSCILLATING t=21
+  11 TF1/2      suite=contract tests=src/orders/__test   rep cnt cntw k0
+  12 E+         src/orders/rateLimiter.ts                rev
+  13 TF1/2      suite=contract tests=src/orders/__test   rep cnt cntw k0
+ *14 E+         src/orders/rateLimiter.ts                rev
+ *15 TF1/2      suite=contract tests=src/orders/__test   rep cnt cntw k0
+ *16 E+         src/orders/rateLimiter.ts                rev
+ *17 TF1/2      suite=contract tests=src/orders/__test   rep cnt cntw k0
+ *18 E+         src/orders/rateLimiter.ts                rev
+ *19 TF1/2      suite=contract tests=src/orders/__test   rep cnt cntw k0
+ *20 E+         src/orders/rateLimiter.ts                rev
+ *21 TF1/2      suite=contract tests=src/orders/__test   rep cnt cntw k0
+=== V151 OSCILLATING net=OSCILLATING t=20
+  10 E+         lib/identity/money.rb                    rev
+  11 E+         lib/identity/money.rb                    rev
+  12 E+         lib/identity/money.rb                    rev
+ *13 E+         lib/identity/money.rb                    rev
+ *14 E+         lib/identity/money.rb                    rev
+ *15 E+         lib/identity/money.rb                    rev
+ *16 E+         lib/identity/money.rb                    rev
+ *17 E+         lib/identity/money.rb                    rev
+ *18 E+         lib/identity/money.rb                    rev
+ *19 E+         lib/identity/money.rb                    rev
+ *20 E+         lib/identity/money.rb                    rev
+=== V155 OSCILLATING net=OSCILLATING t=21
+  11 TF5/8      suite=e2e                                rep cnt cntw k0
+  12 E+         Dockerfile                               rev
+  13 TF5/8      suite=e2e                                rep cnt cntw k0
+ *14 W+         Dockerfile                               rev
+ *15 TF5/8      suite=e2e                                rep cnt cntw k0
+ *16 E+         Dockerfile                               rev
+ *17 TF5/8      suite=e2e                                rep cnt cntw k0
+ *18 W+         Dockerfile                               rev
+ *19 TF5/8      suite=e2e                                rep cnt cntw k0
+ *20 E+         Dockerfile                               rev
+ *21 TF5/8      suite=e2e                                rep cnt cntw k0
+=== V156 OSCILLATING net=OSCILLATING t=36
+  26 E+         internal/identity/chunker.go             rev
+  27 N+         target=go-vet                            rep
+  28 W+         internal/identity/chunker.go             rev
+ *29 N+         target=go-vet                            rep
+ *30 E+         internal/identity/chunker.go             rev
+ *31 N+         target=go-vet                            rep
+ *32 W+         internal/identity/chunker.go             rev
+ *33 TF6/11     suite=./internal/...:unit                rep cntw k0
+ *34 E+         internal/identity/chunker.go             rev
+ *35 TF6/11     suite=./internal/...:unit                rep cnt cntw k0
+ *36 W+         internal/identity/chunker.go             rev
+=== V161 OSCILLATING net=STALLED t=32
+  22 R+         src/media/templates.ts                   rep
+  23 E+         src/media/templates.ts                   rev
+  24 E+         src/media/templates.ts                   rev
+ *25 R+         src/media/templates.ts                   rep
+ *26 E+         src/media/templates.ts                   rev
+ *27 E+         src/media/templates.ts                   rev
+ *28 R+         src/media/templates.ts                   rep
+ *29 E+         src/media/templates.ts                   rev
+ *30 E+         src/media/templates.ts                   rev
+ *31 R+         src/media/templates.ts                   rep
+ *32 E+         src/media/templates.ts                   rev
+=== V164 OSCILLATING net=OSCILLATING t=33
+  23 N+         target=brakeman                          rep
+  24 V+         paths=lib/worker/cache.rb                rev
+  25 E+         lib/worker/cache.rb                      rev
+ *26 N+         target=brakeman                          rep
+ *27 V+         paths=lib/worker/cache.rb                rev
+ *28 E+         lib/worker/cache.rb                      rev
+ *29 N+         target=brakeman                          rep
+ *30 V+         paths=lib/worker/cache.rb                rev
+ *31 E+         lib/worker/cache.rb                      rev
+ *32 N+         target=brakeman                          rep
+ *33 V+         paths=lib/worker/cache.rb                rev
+=== V165 OSCILLATING net=OSCILLATING t=32
+  22 W+         src/report/image_resize.rs               rev
+  23 E+         src/report/image_resize.rs               rev
+  24 W+         src/report/image_resize.rs               rev
+ *25 E+         src/report/image_resize.rs               rev
+ *26 W+         src/report/image_resize.rs               rev
+ *27 E+         src/report/image_resize.rs               rev
+ *28 W+         src/report/image_resize.rs               rev
+ *29 E+         src/report/image_resize.rs               rev
+ *30 W+         src/report/image_resize.rs               rev
+ *31 E+         src/report/image_resize.rs               rev
+ *32 W+         src/report/image_resize.rs               rev
+=== V169 OSCILLATING net=OSCILLATING t=12
+   2 R+         scripts/release.sh                       
+   3 E+         scripts/release.sh                       
+   4 R+         scripts/release.sh                       rep
+ * 5 V+         paths=scripts/release.sh                 rev
+ * 6 TF6/17     suite=./internal/...:integration         k0
+ * 7 E+         scripts/release.sh                       rev
+ * 8 TF6/17     suite=./internal/...:integration         rep cnt cntw k0
+ * 9 V+         paths=scripts/release.sh                 rev
+ *10 TF6/17     suite=./internal/...:integration         rep cnt cntw k0
+ *11 E+         scripts/release.sh                       rev
+ *12 R+         scripts/release.sh                       rep
+=== V170 OSCILLATING net=OSCILLATING t=40
+  30 E+         src/billing/pagination.rs                rev
+  31 N+         target=clippy                            rep
+  32 E+         src/billing/pagination.rs                rev
+ *33 TF7/8      suite=integration                        rep cntw k0
+ *34 E+         src/billing/pagination.rs                rev
+ *35 TF7/8      suite=integration                        rep cnt cntw k0
+ *36 E+         src/billing/pagination.rs                rev
+ *37 TF1/2      suite=integration tests=tests/paginati   rep cntw k0
+ *38 E+         src/billing/pagination.rs                rev
+ *39 TF1/2      suite=integration tests=tests/paginati   rep cnt cntw k0
+ *40 E+         src/billing/pagination.rs                rev

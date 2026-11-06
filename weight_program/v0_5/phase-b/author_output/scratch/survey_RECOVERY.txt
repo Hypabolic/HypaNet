@@ -1,0 +1,579 @@
+=== V026 RECOVERY net=PRODUCTIVE t=22
+  12 E+         src/notify/pagination.py                 
+  13 T+2/2      suite=tests/smoke tests=tests/smoke/te   rep
+  14 R+         deploy/terraform/main.tf                 
+ *15 Pp         deploy/staging/ledger                    k0
+ *16 Pp         deploy/staging/ledger                    rep k1
+ *17 Pp         deploy/staging/ledger                    rep k2
+ *18 Pp         deploy/staging/ledger                    rep k3
+ *19 p+         action=checkpoint                        
+ *20 Pp         deploy/staging/ledger                    rep k0
+ *21 p+         action=summarise_findings                
+ *22 Pr         deploy/staging/ledger                    rep
+=== V030 RECOVERY net=STALLED t=28
+  18 E+         src/ingest/archive.py                    
+  19 T+2/2      suite=tests/integration tests=tests/in   rep
+  20 R+         README.md                                
+ *21 H+         GET https://pypi.org/api/v2/search req   
+ *22 Pp         db/migration/5822 backoff=2              k0
+ *23 Pp         db/migration/5822 backoff=4              k0
+ *24 Pp         db/migration/5822 backoff=8              k0
+ *25 p+         action=estimate_scope                    
+ *26 Pp         db/migration/5822 backoff=16             k0
+ *27 Pp         db/migration/5822 backoff=32             k0
+ *28 Pp         db/migration/5822 backoff=64             k0
+=== V036 RECOVERY net=STALLED t=19
+   9 Pp         replica/sync/3248 backoff=8              k0
+  10 Pp         replica/sync/3248 backoff=16             k0
+  11 Pr         replica/sync/3248 backoff=32             
+ *12 TF0/2      suite=./internal/...:race tests=intern   k0
+ *13 R+         internal/orders/pagination.go lines=1-   
+ *14 E+         internal/orders/pagination.go            
+ *15 TF9/12     suite=./internal/...:race                k0
+ *16 S+         . query="FIXME"                          
+ *17 H+         POST https://s3.us-east-1.amazonaws.co   
+ *18 Pp         dns/propagation/api                      k0
+ *19 Pr         dns/propagation/api                      rep resolved
+=== V039 RECOVERY net=STALLED t=29
+  19 S+         . query="loadDeadline"                   
+  20 R+         src/core/templates.ts lines=14-23        
+  21 S+         src query="digest null"                  
+ *22 E+         src/core/templates.ts                    
+ *23 TF7/10     suite=contract                           k0
+ *24 L+         docs                                     
+ *25 S+         . query="copyright"                      
+ *26 Pp         build/artifact/2bba72 backoff=2          k0
+ *27 Pp         build/artifact/2bba72 backoff=4          k0
+ *28 Pp         build/artifact/2bba72 backoff=8          k0
+ *29 Pp         build/artifact/2bba72 backoff=16         k0
+=== V054 RECOVERY net=STALLED t=9
+   0 S+         src query="lru_cache"                    
+   1 R+         package.json                             
+ * 2 L+         deploy/helm                              
+ * 3 S+         . query="require_relative"               
+ * 4 L+         tests                                    
+ * 5 p+         action=checkpoint                        
+ * 6 H!         GET https://storage.googleapis.com/hea   k0
+ * 7 H!         GET https://storage.googleapis.com/hea   rep k0
+ * 8 H!         GET https://storage.googleapis.com/hea   rep k0
+ * 9 H+         GET https://storage.googleapis.com/hea   rep resolved
+=== V068 RECOVERY net=STALLED t=16
+   6 Pp         k8s/rollout/ledger backoff=1             k0
+   7 Pp         k8s/rollout/ledger backoff=2             k0
+   8 R+         build.gradle                             
+ * 9 Pp         k8s/rollout/ledger backoff=4             k0
+ *10 L+         .github                                  
+ *11 Pp         k8s/rollout/ledger backoff=8             k0
+ *12 S+         . query="copyright"                      
+ *13 Pp         k8s/rollout/ledger backoff=16            k0
+ *14 Pp         k8s/rollout/ledger backoff=32            k0
+ *15 p+         action=review_diff                       
+ *16 Pr         k8s/rollout/ledger backoff=64            
+=== V074 RECOVERY net=STALLED t=21
+  11 W+         lib/cli/checksum.rb                      
+  12 T+3/3      suite=spec:feature tests=spec/cli/chec   
+  13 R+         spec/cli/locale_feature_spec.rb          
+ *14 L+         deploy/helm                              
+ *15 S+         docs query="interface{}"                 
+ *16 R+         config/application.rb                    
+ *17 p+         action=checkpoint                        
+ *18 H!         GET https://staging-api.acme.io/oauth/   k0
+ *19 H!         GET https://staging-api.acme.io/oauth/   rep k0
+ *20 H+         GET https://staging-api.acme.io/oauth/   rep resolved
+ *21 TF0/3      suite=spec:feature tests=spec/cli/loca   nomut k0
+=== V088 RECOVERY net=STALLED t=30
+  20 R+         docs/runbook.md                          
+  21 TF0/3      suite=spec:unit tests=spec/report/conf   cntw nomut k0
+  22 TF0/3      suite=spec:unit tests=spec/report/conf   rep cnt cntw nomut k0
+ *23 W+         lib/report/config_loader.rb              
+ *24 T+3/3      suite=spec:unit tests=spec/report/conf   rep cntw
+ *25 TF0/2      suite=spec:unit tests=spec/report/sear   nomut k0
+ *26 TF0/2      suite=spec:unit tests=spec/report/sear   rep cnt cntw nomut k0
+ *27 R+         lib/report/search_index.rb lines=17-32   
+ *28 E+         lib/report/search_index.rb               
+ *29 T+2/2      suite=spec:unit tests=spec/report/sear   rep
+ *30 y+         action=done                              
+=== V101 RECOVERY net=STALLED t=15
+   5 E+         lib/storage/diff_engine.rb               
+   6 T+11/11    suite=spec:feature                       
+   7 R+         deploy/helm/values.yaml                  
+ * 8 H+         POST https://payments.sandbox.acme.io/   
+ * 9 Pp         dns/propagation/scheduler                k0
+ *10 Pp         dns/propagation/scheduler                rep k1
+ *11 R+         deploy/helm/values.yaml                  rep
+ *12 Pp         dns/propagation/scheduler                rep k0
+ *13 p+         action=decompose                         
+ *14 Pp         dns/propagation/scheduler                rep k0
+ *15 Pp         dns/propagation/scheduler                rep k1
+=== V112 RECOVERY net=STALLED t=26
+  16 H!         GET https://vault.acme.internal/v1/use   rep k0
+  17 H!         GET https://vault.acme.internal/v1/use   rep k0
+  18 R+         src/main/java/com/hooli/media/Schedule   
+ *19 E+         src/main/java/com/hooli/media/Schedule   
+ *20 H+         GET https://vault.acme.internal/v1/use   rep
+ *21 L+         src/main/java/com/hooli/media            
+ *22 TF6/8      suite=integrationTests                   k0
+ *23 TF6/8      suite=integrationTests                   rep cnt cntw nomut k0
+ *24 TF6/8      suite=integrationTests                   rep cnt cntw nomut k0
+ *25 R+         src/main/java/com/hooli/sync/Serialize   
+ *26 E+         src/main/java/com/hooli/sync/Serialize   
+=== V115 RECOVERY net=STALLED t=21
+  11 B+         target=goreleaser                        rep
+  12 R+         config.yaml                              
+  13 R+         internal/identity/image_resize_integra   
+ *14 L+         docs/adr                                 
+ *15 TF0/2      suite=./internal/...:integration tests   nomut k0
+ *16 TF0/2      suite=./internal/...:integration tests   rep cnt cntw nomut k0
+ *17 R+         internal/identity/slugify.go lines=2-1   
+ *18 E+         internal/identity/slugify.go             
+ *19 T+2/2      suite=./internal/...:integration tests   rep cntw
+ *20 TF0/2      suite=./internal/...:integration tests   cntw nomut k0
+ *21 R+         internal/identity/migrations.go lines=   
+=== V120 RECOVERY net=STALLED t=9
+   0 L+         tests/fixtures                           
+   1 p+         action=choose_next_step                  
+ * 2 R+         docs/architecture.md                     
+ * 3 L+         scripts                                  
+ * 4 p+         action=estimate_scope                    
+ * 5 Pp         container/gateway/health backoff=10      k0
+ * 6 Pp         container/gateway/health backoff=10      rep k1
+ * 7 Pr         container/gateway/health backoff=10      rep resolved
+ * 8 TF0/2      suite=spec:request tests=spec/auth/mon   k0
+ * 9 R+         lib/auth/money.rb lines=1-13             
+=== V124 RECOVERY net=STALLED t=11
+   1 S+         . query="refreshQuery"                   
+   2 R+         src/main/java/com/acme/notify/Thumbnai   
+   3 BF         target=gradle-assemble                   k0
+ * 4 R+         logs/app.log lines=1-2                   
+ * 5 E+         src/main/java/com/acme/notify/Thumbnai   
+ * 6 p+         action=estimate_scope                    
+ * 7 L+         src/main/java/com                        
+ * 8 H!         GET https://sentry.io/api/0/issues/{is   k0
+ * 9 H+         GET https://sentry.io/api/0/issues/{is   rep resolved
+ *10 S+         . query="normalizeAddress"               
+ *11 R+         src/main/java/com/acme/notify/Serializ   
+=== V129 RECOVERY net=STALLED t=27
+  17 R+         internal/notify/uploader.go lines=6-21   
+  18 E+         internal/notify/uploader.go              
+  19 TF10/16    suite=./internal/...:integration         k0
+ *20 R+         internal/notify/ledger.go lines=8-25     
+ *21 E+         internal/notify/ledger.go                
+ *22 T+3/3      suite=./internal/...:integration tests   cntw
+ *23 L+         .                                        
+ *24 Pp         job/ebb431 backoff=5                     k0
+ *25 Pr         job/ebb431 backoff=10                    
+ *26 S+         . query="LookupWindow"                   
+ *27 R+         internal/notify/pagination.go lines=5-   
+=== V131 RECOVERY net=STALLED t=15
+   5 S+         docs query="unsafe"                      
+   6 L+         tests                                    
+   7 R+         tests/dedupe_unit.rs                     
+ * 8 R+         scripts/release.sh                       
+ * 9 L+         src                                      
+ *10 H!         POST https://staging-api.acme.io/graph   k0
+ *11 H!         POST https://staging-api.acme.io/graph   rep k0
+ *12 H!         POST https://staging-api.acme.io/graph   rep k0
+ *13 H+         POST https://staging-api.acme.io/graph   rep resolved
+ *14 TF0/3      suite=unit tests=tests/scheduler_unit.   k0
+ *15 R+         src/core/scheduler.rs lines=1-13         
+=== V137 RECOVERY net=STALLED t=17
+   7 TF0/1      suite=spec:feature tests=spec/geo/temp   cnt cntw nomut k0
+   8 TF0/1      suite=spec:feature tests=spec/storage/   cnt cntw nomut k0
+   9 TF0/3      suite=spec:feature tests=spec/geo/temp   cntw nomut k0
+ *10 TF0/3      suite=spec:feature tests=spec/geo/temp   rep cnt cntw nomut k0
+ *11 E+         lib/geo/templates.rb                     
+ *12 T+3/3      suite=spec:feature tests=spec/geo/temp   rep
+ *13 S+         docs query="import json"                 
+ *14 H!         PUT https://api.openai-proxy.acme.dev/   k0
+ *15 H!         PUT https://api.openai-proxy.acme.dev/   rep k0
+ *16 H+         PUT https://api.openai-proxy.acme.dev/   rep resolved
+ *17 R+         lib/storage/parser.rb lines=26-34        
+=== V149 RECOVERY net=STALLED t=8
+   0 L+         src/notify                               
+ * 1 S+         . query="version"                        
+ * 2 S+         . query="unsafe"                         
+ * 3 p+         action=summarise_findings                
+ * 4 R+         README.md                                
+ * 5 Pp         db/migration/8738 backoff=1              k0
+ * 6 Pp         db/migration/8738 backoff=2              k0
+ * 7 p+         action=verify_plan                       
+ * 8 Pp         db/migration/8738 backoff=4              k0
+=== V152 RECOVERY net=STALLED t=8
+   0 R+         CONTRIBUTING.md                          
+ * 1 S+         internal query="CompactRetries"          
+ * 2 R+         internal/core/diff_engine.go lines=1-1   
+ * 3 S+         internal query="path escape"             
+ * 4 W+         internal/core/diff_engine.go             
+ * 5 TF5/10     suite=./internal/...:unit                k0
+ * 6 H!         GET https://hooks.slack.com/health req   k0
+ * 7 H!         GET https://hooks.slack.com/health req   rep k0
+ * 8 H!         GET https://hooks.slack.com/health req   rep k0
+=== V154 RECOVERY net=STALLED t=13
+   3 R+         CONTRIBUTING.md                          
+   4 L+         tests/smoke                              
+   5 R+         tests/unit/test_queue_worker.py          
+ * 6 S+         src query="deprecated"                   
+ * 7 S+         docs query="def main"                    
+ * 8 R+         tests/unit/test_webhook.py               
+ * 9 TF5/10     suite=tests/regression                   k0
+ *10 TF5/10     suite=tests/regression                   rep cnt cntw nomut k0
+ *11 TF5/10     suite=tests/regression                   rep cnt cntw nomut k0
+ *12 TF5/10     suite=tests/regression                   rep cnt cntw nomut k0
+ *13 R+         tests/fixtures/invoice.json              rep
+=== V157 RECOVERY net=STALLED t=7
+ * 0 L+         tests/fixtures                           
+ * 1 R+         src/test/java/com/globex/storage/Money   
+ * 2 p+         action=review_diff                       
+ * 3 p+         action=verify_plan                       
+ * 4 TF0/2      suite=contractTests tests=src/test/jav   k0
+ * 5 TF0/2      suite=contractTests tests=src/test/jav   rep cnt cntw nomut k0
+ * 6 TF0/2      suite=contractTests tests=src/test/jav   rep cnt cntw nomut k0
+ * 7 R+         src/main/java/com/globex/storage/Backo   
+=== V160 RECOVERY net=STALLED t=16
+   6 TF0/3      suite=tests/smoke tests=tests/smoke/te   k0
+   7 TF0/3      suite=tests/smoke tests=tests/smoke/te   rep cnt cntw nomut k0
+   8 E+         src/notify/currency.py                   
+ * 9 T+3/3      suite=tests/smoke tests=tests/smoke/te   rep
+ *10 S+         . query="env var"                        
+ *11 TF0/2      suite=tests/smoke tests=tests/smoke/te   nomut k0
+ *12 TF0/2      suite=tests/smoke tests=tests/smoke/te   rep cnt cntw nomut k0
+ *13 TF0/2      suite=tests/smoke tests=tests/smoke/te   rep cnt cntw nomut k0
+ *14 R+         src/ingest/config_loader.py lines=6-16   
+ *15 E+         src/ingest/config_loader.py              
+ *16 T+2/2      suite=tests/smoke tests=tests/smoke/te   rep
+=== V167 RECOVERY net=STALLED t=14
+   4 S+         . query="def main"                       
+   5 H!         POST https://maps.googleapis.com/graph   k0
+   6 H!         POST https://maps.googleapis.com/graph   rep k0
+ * 7 W+         src/metrics/ledger.py                    
+ * 8 H+         POST https://maps.googleapis.com/graph   rep
+ * 9 p+         action=review_diff                       
+ *10 R+         Makefile                                 
+ *11 R+         src/ingest/scheduler.py                  
+ *12 H!         GET https://staging-api.acme.io/status   k0
+ *13 H!         GET https://staging-api.acme.io/status   rep k0
+ *14 H+         GET https://staging-api.acme.io/status   rep resolved
+=== V173 RECOVERY net=STALLED t=18
+   8 TF0/2      suite=spec:feature tests=spec/core/mig   k0
+   9 R+         lib/core/migrations.rb lines=22-27       
+  10 W+         lib/core/migrations.rb                   
+ *11 TF5/7      suite=spec:feature                       k0
+ *12 L+         scripts                                  
+ *13 H+         PUT https://registry.npmjs.org/status    
+ *14 Pp         index/rebuild/ledger backoff=15          k0
+ *15 Pp         index/rebuild/ledger backoff=15          rep k1
+ *16 S+         src query="class Config"                 
+ *17 Pp         index/rebuild/ledger backoff=15          rep k0
+ *18 p+         action=decompose                         
+=== V174 RECOVERY net=STALLED t=14
+   4 L+         spec                                     
+   5 L+         deploy                                   
+   6 S+         . query="feature flag"                   
+ * 7 R+         docs/runbook.md                          
+ * 8 S+         src query="import json"                  
+ * 9 L+         docs/adr                                 
+ *10 S+         . query="deprecated"                     
+ *11 TF0/3      suite=spec:feature tests=spec/auth/tok   k0
+ *12 TF0/3      suite=spec:feature tests=spec/auth/tok   rep cnt cntw nomut k0
+ *13 TF0/3      suite=spec:feature tests=spec/auth/tok   rep cnt cntw nomut k0
+ *14 TF0/3      suite=spec:feature tests=spec/auth/tok   rep cnt cntw nomut k0
+=== V175 RECOVERY net=STALLED t=26
+  16 Pp         k8s/rollout/search                       k0
+  17 Pp         k8s/rollout/search                       rep k1
+  18 R+         docs/api.md                              
+ *19 Pp         k8s/rollout/search                       rep k0
+ *20 S+         docs query="logger"                      
+ *21 Pp         k8s/rollout/search                       rep k0
+ *22 S+         . query="metrics.increment"              
+ *23 Pr         k8s/rollout/search                       rep
+ *24 R+         internal/api/config_loader.go lines=8-   
+ *25 W+         internal/api/config_loader.go            
+ *26 TF12/15    suite=./internal/...:integration         rep k0
+=== V176 RECOVERY net=STALLED t=10
+   0 S+         src query="encodeManifest"               
+   1 R+         src/main/java/com/hooli/billing/Router   
+   2 S+         docs query="require_relative"            
+ * 3 p+         action=choose_next_step                  
+ * 4 R+         checkstyle.xml                           
+ * 5 R+         src/main/java/com/hooli/billing/Upload   
+ * 6 TF8/11     suite=integrationTests                   k0
+ * 7 TF8/11     suite=integrationTests                   rep cnt cntw nomut k0
+ * 8 R+         src/test/java/com/hooli/billing/Router   
+ * 9 TF8/11     suite=integrationTests                   rep cnt cntw nomut k0
+ *10 TF8/11     suite=integrationTests                   rep cnt cntw nomut k0
+=== V177 RECOVERY net=STALLED t=7
+ * 0 L+         tests/integration                        
+ * 1 p+         action=prioritise                        
+ * 2 TF0/3      suite=tests/integration tests=tests/in   k0
+ * 3 R+         src/web/router.py lines=18-24            
+ * 4 E+         src/web/router.py                        
+ * 5 T+3/3      suite=tests/integration tests=tests/in   rep
+ * 6 H!         POST https://db-proxy.internal/v1/embe   k0
+ * 7 H!         POST https://db-proxy.internal/v1/embe   rep k0
+=== V178 RECOVERY net=STALLED t=10
+   0 R+         docs/runbook.md                          
+   1 R+         tox.ini                                  
+   2 S+         src query="apply_entry"                  
+ * 3 R+         src/notify/invoice.py lines=22-30        
+ * 4 NF         target=ruff                              k0
+ * 5 W+         src/notify/invoice.py                    
+ * 6 T+2/2      suite=tests/unit tests=tests/unit/test   
+ * 7 Pp         dns/propagation/gateway backoff=10       k0
+ * 8 Pp         dns/propagation/gateway backoff=10       rep k1
+ * 9 S+         src query="lru_cache"                    
+ *10 Pp         dns/propagation/gateway backoff=10       rep k0
+=== V179 RECOVERY net=PRODUCTIVE t=23
+  13 S+         internal query="ReconcileCursor"         
+  14 R+         internal/billing/tokenizer.go lines=7-   
+  15 BF         target=go-build                          nomut k0
+ *16 E+         internal/billing/tokenizer.go            
+ *17 T+2/2      suite=./internal/...:integration tests   cntw
+ *18 TF0/2      suite=./internal/...:integration tests   cntw nomut k0
+ *19 TF0/2      suite=./internal/...:integration tests   rep cnt cntw nomut k0
+ *20 E+         internal/billing/serializer.go           
+ *21 T+2/2      suite=./internal/...:integration tests   rep cntw
+ *22 p+         action=prioritise                        
+ *23 p+         action=review_diff                       
+=== V180 RECOVERY net=STALLED t=8
+   0 TF0/2      suite=spec:request tests=spec/ingest/p   k0
+ * 1 R+         lib/ingest/parser.rb lines=20-29         
+ * 2 W+         lib/ingest/parser.rb                     
+ * 3 S+         src query="FIXME"                        
+ * 4 L+         config                                   
+ * 5 S+         docs query="FIXME"                       
+ * 6 R+         scripts/release.sh                       
+ * 7 H!         PUT https://staging-api.acme.io/intern   k0
+ * 8 H!         PUT https://staging-api.acme.io/intern   rep k0
+=== V181 RECOVERY net=STALLED t=14
+   4 TF0/1      suite=tests/smoke tests=tests/smoke/te   nomut k0
+   5 TF0/1      suite=tests/smoke tests=tests/smoke/te   cnt cntw nomut k0
+   6 TF0/1      suite=tests/smoke tests=tests/smoke/te   cnt cntw nomut k0
+ * 7 TF0/1      suite=tests/smoke tests=tests/smoke/te   cnt cntw nomut k0
+ * 8 TF0/2      suite=tests/smoke tests=tests/smoke/te   nomut k0
+ * 9 TF0/2      suite=tests/smoke tests=tests/smoke/te   rep cnt cntw nomut k0
+ *10 R+         src/cli/token_bucket.py lines=5-17       
+ *11 E+         src/cli/token_bucket.py                  
+ *12 T+2/2      suite=tests/smoke tests=tests/smoke/te   rep
+ *13 R+         src/auth/locale.py lines=9-23            
+ *14 W+         src/auth/locale.py                       
+=== V182 RECOVERY net=STALLED t=12
+   2 R+         logs/quota.log lines=2-2                 
+   3 BF         target=rake-build                        nomut k0
+   4 E+         lib/cli/quota.rb                         
+ * 5 R+         docs/architecture.md                     
+ * 6 H!         POST https://vault.acme.internal/v1/jo   k0
+ * 7 H!         POST https://vault.acme.internal/v1/jo   rep k0
+ * 8 p+         action=reflect                           
+ * 9 H+         POST https://vault.acme.internal/v1/jo   rep
+ *10 S+         lib query="expand_path"                  
+ *11 R+         logs/quota.log lines=1-3                 
+ *12 NF         target=brakeman                          k0
+=== V183 RECOVERY net=STALLED t=16
+   6 L+         src/main/java/com/initech                
+   7 S+         docs query="def main"                    
+   8 L+         tests                                    
+ * 9 S+         . query="async def"                      
+ *10 R+         docs/onboarding.md                       
+ *11 S+         src query="interface{}"                  
+ *12 L+         src/main/java                            
+ *13 S+         docs query="require_relative"            
+ *14 TF8/11     suite=contractTests                      k0
+ *15 TF8/11     suite=contractTests                      rep cnt cntw nomut k0
+ *16 TF8/11     suite=contractTests                      rep cnt cntw nomut k0
+=== V184 RECOVERY net=STALLED t=8
+   0 S+         docs query="panic!"                      
+ * 1 R+         tests/integration/test_locale.py         
+ * 2 p+         action=decompose                         
+ * 3 p+         action=choose_next_step                  
+ * 4 R+         tests/regression/test_thumbnailer.py     
+ * 5 Pp         k8s/rollout/gateway                      k0
+ * 6 Pp         k8s/rollout/gateway                      rep k1
+ * 7 Pp         k8s/rollout/gateway                      rep k2
+ * 8 Pp         k8s/rollout/gateway                      rep k3
+=== V185 RECOVERY net=STALLED t=11
+   1 p+         action=estimate_scope                    
+   2 R+         scripts/release.sh                       
+   3 TF0/2      suite=unit tests=tests/permissions_uni   k0
+ * 4 TF0/2      suite=unit tests=tests/permissions_uni   rep cnt cntw nomut k0
+ * 5 R+         src/media/permissions.rs lines=8-17      
+ * 6 E+         src/media/permissions.rs                 
+ * 7 T+2/2      suite=unit tests=tests/permissions_uni   rep
+ * 8 S+         src query="flush_entry"                  
+ * 9 E+         src/media/permissions.rs                 
+ *10 TF0/3      suite=unit tests=tests/session_unit.rs   k0
+ *11 TF0/3      suite=unit tests=tests/session_unit.rs   rep cnt cntw nomut k0
+=== V186 RECOVERY net=STALLED t=11
+   1 R+         CONTRIBUTING.md                          
+   2 S+         src query="version"                      
+   3 p+         action=review_diff                       
+ * 4 p+         action=checkpoint                        
+ * 5 L+         lib                                      
+ * 6 H+         PUT https://vault.acme.internal/status   
+ * 7 Pp         dns/propagation/api backoff=5            k0
+ * 8 Pp         dns/propagation/api backoff=5            rep k1
+ * 9 Pp         dns/propagation/api backoff=5            rep k2
+ *10 Pr         dns/propagation/api backoff=5            rep resolved
+ *11 TF0/3      suite=spec:request tests=spec/orders/f   k0
+=== V187 RECOVERY net=PRODUCTIVE t=15
+   5 S+         . query="assert_eq"                      
+   6 L+         tests                                    
+   7 Pp         k8s/rollout/worker                       k0
+ * 8 Pp         k8s/rollout/worker                       rep k1
+ * 9 Pp         k8s/rollout/worker                       rep k2
+ *10 Pp         k8s/rollout/worker                       rep k3
+ *11 Pp         k8s/rollout/worker                       rep k4
+ *12 Pp         k8s/rollout/worker                       rep k5
+ *13 Pr         k8s/rollout/worker                       rep resolved
+ *14 TF0/3      suite=unitTests tests=src/test/java/co   k0
+ *15 R+         src/main/java/com/acme/worker/TokenBuc   
+=== V188 RECOVERY net=STALLED t=10
+   0 S+         . query="def main"                       
+   1 TF0/2      suite=spec:request tests=spec/media/sl   k0
+   2 R+         lib/media/slugify.rb lines=6-19          
+ * 3 R+         Gemfile lines=9-14                       
+ * 4 E+         lib/media/slugify.rb                     
+ * 5 TF11/17    suite=spec:request                       k0
+ * 6 H!         GET https://api.openai-proxy.acme.dev/   k0
+ * 7 H!         GET https://api.openai-proxy.acme.dev/   rep k0
+ * 8 H!         GET https://api.openai-proxy.acme.dev/   rep k0
+ * 9 H!         GET https://api.openai-proxy.acme.dev/   rep k0
+ *10 H+         GET https://api.openai-proxy.acme.dev/   rep resolved
+=== V189 RECOVERY net=STALLED t=12
+   2 S+         docs query="feature flag"                
+   3 S+         . query="panic!"                         
+   4 S+         src query="unsafe"                       
+ * 5 L+         tests/fixtures                           
+ * 6 Pp         job/f5245d                               k0
+ * 7 Pp         job/f5245d                               rep k1
+ * 8 R+         scripts/bootstrap.sh                     
+ * 9 Pr         job/f5245d                               rep
+ *10 S+         . query="refresh_query"                  
+ *11 R+         src/metrics/rate_limiter.py lines=21-3   
+ *12 E+         src/metrics/rate_limiter.py              
+=== V190 RECOVERY net=STALLED t=9
+   0 L+         spec/search                              
+   1 R+         tests/fixtures/retry_policy.json         
+ * 2 R+         spec/geo/webhook_request_spec.rb         
+ * 3 H!         POST https://localhost:8080/v1/users/{   k0
+ * 4 H!         POST https://localhost:8080/v1/users/{   rep k0
+ * 5 R+         spec/geo/templates_request_spec.rb       
+ * 6 H!         POST https://localhost:8080/v1/users/{   rep k0
+ * 7 S+         src query="lru_cache"                    
+ * 8 H!         POST https://localhost:8080/v1/users/{   rep k0
+ * 9 H+         POST https://localhost:8080/v1/users/{   rep resolved
+=== V191 RECOVERY net=STALLED t=8
+   0 R+         Dockerfile                               
+ * 1 p+         action=summarise_findings                
+ * 2 R+         spec/report/retry_policy_request_spec.   
+ * 3 S+         docs query="class Config"                
+ * 4 L+         config                                   
+ * 5 S+         docs query="panic!"                      
+ * 6 H!         POST https://registry.npmjs.org/api/v1   k0
+ * 7 H!         POST https://registry.npmjs.org/api/v1   rep k0
+ * 8 H+         POST https://registry.npmjs.org/api/v1   rep resolved
+=== V192 RECOVERY net=STALLED t=13
+   3 L+         spec                                     
+   4 H!         POST https://storage.googleapis.com/st   k0
+   5 H!         POST https://storage.googleapis.com/st   rep k0
+ * 6 H+         POST https://storage.googleapis.com/st   rep resolved
+ * 7 R+         scripts/release.sh                       
+ * 8 R+         deploy/helm/values.yaml                  
+ * 9 TF0/2      suite=spec:feature tests=spec/media/ar   k0
+ *10 TF0/2      suite=spec:feature tests=spec/media/ar   rep cnt cntw nomut k0
+ *11 R+         lib/media/archive.rb lines=4-9           
+ *12 E+         lib/media/archive.rb                     
+ *13 T+2/2      suite=spec:feature tests=spec/media/ar   rep
+=== V193 RECOVERY net=STALLED t=36
+  26 R+         config/database.yml                      
+  27 R+         docs/adr/0003-caching.md                 
+  28 R+         CONTRIBUTING.md                          
+ *29 p+         action=reflect                           
+ *30 H!         GET https://ci.acme.dev/api/v4/jobs/{j   k0
+ *31 H!         GET https://ci.acme.dev/api/v4/jobs/{j   rep k0
+ *32 H!         GET https://ci.acme.dev/api/v4/jobs/{j   rep k0
+ *33 H+         GET https://ci.acme.dev/api/v4/jobs/{j   rep resolved
+ *34 R+         lib/auth/cursor.rb lines=4-21            
+ *35 NF         target=rubocop                           nomut k0
+ *36 S+         lib query="chunk null"                   
+=== V194 RECOVERY net=STALLED t=14
+   4 TF0/2      suite=spec:unit tests=spec/cli/shard_m   k0
+   5 TF0/2      suite=spec:unit tests=spec/cli/shard_m   rep cnt cntw nomut k0
+   6 E+         lib/cli/shard_map.rb                     
+ * 7 T+2/2      suite=spec:unit tests=spec/cli/shard_m   rep
+ * 8 TF0/3      suite=spec:unit tests=spec/cli/shard_m   cntw nomut k0
+ * 9 TF0/3      suite=spec:unit tests=spec/cli/shard_m   rep cnt cntw nomut k0
+ *10 E+         lib/cli/shard_map.rb                     
+ *11 T+3/3      suite=spec:unit tests=spec/cli/shard_m   rep
+ *12 H!         POST https://localhost:8080/v1/users/{   k0
+ *13 H!         POST https://localhost:8080/v1/users/{   rep k0
+ *14 H!         POST https://localhost:8080/v1/users/{   rep k0
+=== V195 RECOVERY net=STALLED t=14
+   4 R+         internal/web/timezone_unit_test.go       
+   5 p+         action=list_hypotheses                   
+   6 R+         internal/media/webhook_race_test.go      
+ * 7 S+         . query="FIXME"                          
+ * 8 R+         internal/media/archive_unit_test.go      rep
+ * 9 L+         docs                                     
+ *10 R+         internal/media/webhook_race_test.go      rep
+ *11 S+         src query="panic!"                       
+ *12 TF5/9      suite=./internal/...:race                k0
+ *13 TF5/9      suite=./internal/...:race                rep cnt cntw nomut k0
+ *14 TF5/9      suite=./internal/...:race                rep cnt cntw nomut k0
+=== V196 RECOVERY net=PRODUCTIVE t=12
+   2 R+         tests/queue_worker_unit.rs               
+   3 S+         docs query="__all__"                     
+   4 R+         .editorconfig                            
+ * 5 Pp         ci/pipeline/5160 backoff=2               k0
+ * 6 Pp         ci/pipeline/5160 backoff=4               k0
+ * 7 Pp         ci/pipeline/5160 backoff=8               k0
+ * 8 Pp         ci/pipeline/5160 backoff=16              k0
+ * 9 Pp         ci/pipeline/5160 backoff=32              k0
+ *10 Pr         ci/pipeline/5160 backoff=64              
+ *11 TF0/2      suite=unit tests=tests/graph_walk_unit   k0
+ *12 R+         src/media/graph_walk.rs lines=1-15       
+=== V197 RECOVERY net=STALLED t=10
+   0 R+         lib/storage/cursor.rb                    
+   1 L+         logs                                     
+   2 p+         action=estimate_scope                    
+ * 3 S+         docs query="panic!"                      
+ * 4 L+         scripts                                  
+ * 5 p+         action=checkpoint                        
+ * 6 R+         tests/fixtures/feature_flags.json        
+ * 7 BF         target=bundle-package                    k0
+ * 8 BF         target=bundle-package                    rep nomut k0
+ * 9 p+         action=decompose                         
+ *10 BF         target=bundle-package                    rep nomut k0
+=== V198 RECOVERY net=STALLED t=13
+   3 R+         spec/metrics/retry_policy_request_spec   
+   4 R+         spec/search/audit_log_request_spec.rb    
+   5 R+         docs/architecture.md                     
+ * 6 L+         .                                        
+ * 7 R+         spec/cli/manifest_unit_spec.rb           
+ * 8 S+         docs query="interface{}"                 
+ * 9 H!         GET https://payments.sandbox.acme.io/s   k0
+ *10 H!         GET https://payments.sandbox.acme.io/s   rep k0
+ *11 H!         GET https://payments.sandbox.acme.io/s   rep k0
+ *12 H!         GET https://payments.sandbox.acme.io/s   rep k0
+ *13 R+         Dockerfile                               
+=== V199 RECOVERY net=STALLED t=14
+   4 L+         deploy                                   
+   5 L+         .                                        
+   6 H!         GET https://grafana.acme.dev/api/datas   k0
+ * 7 H+         GET https://grafana.acme.dev/api/datas   rep resolved
+ * 8 TF0/3      suite=spec:feature tests=spec/core/man   k0
+ * 9 R+         lib/core/manifest.rb lines=1-13          
+ *10 W+         lib/core/manifest.rb                     
+ *11 R+         docs/adr/0003-caching.md                 
+ *12 H!         GET https://search.internal.acme.dev/s   k0
+ *13 H+         GET https://search.internal.acme.dev/s   rep resolved
+ *14 TF0/3      suite=spec:unit tests=spec/catalog/csv   cnt cntw k0
+=== V200 RECOVERY net=STALLED t=8
+   0 L+         .                                        
+ * 1 L+         deploy                                   
+ * 2 TF0/2      suite=doc tests=tests/checksum_doc.rs:   k0
+ * 3 R+         src/metrics/checksum.rs lines=4-9        
+ * 4 E+         src/metrics/checksum.rs                  
+ * 5 T+2/2      suite=doc tests=tests/checksum_doc.rs:   rep
+ * 6 H!         GET https://db-proxy.internal/internal   k0
+ * 7 H+         GET https://db-proxy.internal/internal   rep resolved
+ * 8 S+         . query="store_schema"                   

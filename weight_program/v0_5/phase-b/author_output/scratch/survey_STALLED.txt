@@ -1,0 +1,600 @@
+=== V006 STALLED net=STALLED t=27
+  17 R+         src/metrics/__tests__/money.e2e.test.t   rep
+  18 TF0/1      suite=contract tests=src/metrics/__tes   rep cnt cntw nomut k0
+  19 TF0/1      suite=contract tests=src/metrics/__tes   rep cnt cntw nomut k0
+ *20 TF0/1      suite=contract tests=src/metrics/__tes   rep cnt cntw nomut k0
+ *21 R+         src/metrics/__tests__/auditLog.e2e.tes   rep
+ *22 TF0/1      suite=contract tests=src/metrics/__tes   rep cnt cntw nomut k0
+ *23 TF0/1      suite=contract tests=src/metrics/__tes   rep cnt cntw nomut k0
+ *24 TF0/1      suite=contract tests=src/metrics/__tes   rep cnt cntw nomut k0
+ *25 R+         src/metrics/__tests__/money.e2e.test.t   rep
+ *26 TF0/1      suite=contract tests=src/metrics/__tes   rep cnt cntw nomut k0
+ *27 TF0/1      suite=contract tests=src/metrics/__tes   rep cnt cntw nomut k0
+=== V007 STALLED net=STALLED t=53
+  43 TF3/8      suite=spec:feature                       rep cnt cntw nomut k0
+  44 TF3/8      suite=spec:feature                       rep cnt cntw nomut k0
+  45 p+         action=checkpoint                        
+ *46 TF3/8      suite=spec:feature                       rep cnt cntw nomut k0
+ *47 TF3/8      suite=spec:feature                       rep cnt cntw nomut k0
+ *48 R+         spec/sync/slugify_feature_spec.rb        rep
+ *49 TF3/8      suite=spec:feature                       rep cnt cntw nomut k0
+ *50 TF3/8      suite=spec:feature                       rep cnt cntw nomut k0
+ *51 L+         lib                                      rep
+ *52 TF3/8      suite=spec:feature                       rep cnt cntw nomut k0
+ *53 TF3/8      suite=spec:feature                       rep cnt cntw nomut k0
+=== V009 STALLED net=STALLED t=21
+  11 S+         src query="convertSlug"                  
+  12 TF0/1      suite=integrationTests tests=src/test/   rep cnt cntw nomut k0
+  13 R+         src/test/java/com/acme/pipeline/CsvImp   rep
+ *14 TF0/1      suite=integrationTests tests=src/test/   rep cnt cntw nomut k0
+ *15 R+         src/test/java/com/acme/pipeline/RetryP   rep
+ *16 L+         src/test                                 rep
+ *17 TF0/1      suite=integrationTests tests=src/test/   rep cnt cntw nomut k0
+ *18 R+         src/test/java/com/acme/pipeline/CsvImp   rep
+ *19 TF0/1      suite=integrationTests tests=src/test/   rep cnt cntw nomut k0
+ *20 L+         src/test                                 rep
+ *21 S+         src query="convertSlug"                  rep
+=== V013 STALLED net=STALLED t=51
+  41 TF5/8      suite=./internal/...:race                rep cnt cntw nomut k0
+  42 TF5/8      suite=./internal/...:race                rep cnt cntw nomut k0
+  43 TF5/8      suite=./internal/...:race                rep cnt cntw nomut k0
+ *44 TF5/8      suite=./internal/...:race                rep cnt cntw nomut k0
+ *45 TF5/8      suite=./internal/...:race                rep cnt cntw nomut k0
+ *46 TF5/8      suite=./internal/...:race                rep cnt cntw nomut k0
+ *47 TF5/8      suite=./internal/...:race                rep cnt cntw nomut k0
+ *48 TF5/8      suite=./internal/...:race                rep cnt cntw nomut k0
+ *49 TF5/8      suite=./internal/...:race                rep cnt cntw nomut k0
+ *50 TF5/8      suite=./internal/...:race                rep cnt cntw nomut k0
+ *51 TF5/8      suite=./internal/...:race                rep cnt cntw nomut k0
+=== V014 STALLED net=STALLED t=17
+   7 p+         action=estimate_scope                    
+   8 T+9/9      suite=./internal/...:integration         nomut
+   9 L+         .                                        rep
+ *10 R+         internal/metrics/manifest.go             rep
+ *11 R+         internal/metrics/manifest_race_test.go   rep
+ *12 R+         internal/auth/invoice.go                 rep
+ *13 R+         internal/auth/invoice.go                 rep
+ *14 L+         .                                        rep
+ *15 E+         internal/metrics/manifest.go             
+ *16 R+         internal/metrics/manifest_race_test.go   rep
+ *17 R+         internal/auth/invoice.go                 rep
+=== V027 STALLED net=PRODUCTIVE t=36
+  26 TF8/11     suite=tests/smoke                        rep cnt cntw nomut k0
+  27 E+         src/notify/quota.py                      
+  28 TF8/11     suite=tests/smoke                        rep cnt cntw k0
+ *29 E+         src/notify/quota.py                      
+ *30 E+         src/sync/cursor.py                       
+ *31 TF8/11     suite=tests/smoke                        rep cnt cntw k0
+ *32 E+         src/notify/quota.py                      noop
+ *33 TF8/11     suite=tests/smoke                        rep cnt cntw nomut k0
+ *34 E+         tests/smoke/test_quota.py                
+ *35 TF8/11     suite=tests/smoke                        rep cnt cntw k0
+ *36 E+         src/notify/quota.py                      
+=== V035 STALLED net=STALLED t=35
+  25 TF7/10     suite=property                           rep cnt cntw nomut k0
+  26 TF7/10     suite=property                           rep cnt cntw nomut k0
+  27 TF7/10     suite=property                           rep cnt cntw nomut k0
+ *28 TF7/10     suite=property                           rep cnt cntw nomut k0
+ *29 TF7/10     suite=property                           rep cnt cntw nomut k0
+ *30 TF7/10     suite=property                           rep cnt cntw nomut k0
+ *31 TF7/10     suite=property                           rep cnt cntw nomut k0
+ *32 TF7/10     suite=property                           rep cnt cntw nomut k0
+ *33 TF7/10     suite=property                           rep cnt cntw nomut k0
+ *34 TF7/10     suite=property                           rep cnt cntw nomut k0
+ *35 TF7/10     suite=property                           rep cnt cntw nomut k0
+=== V037 STALLED net=STALLED t=16
+   6 TF3/8      suite=unit                               k0
+   7 E+         src/notify/backoff.rs                    
+   8 TF3/8      suite=unit                               rep cnt cntw k0
+ * 9 E+         tests/backoff_unit.rs                    
+ *10 E+         src/notify/backoff.rs                    noop
+ *11 TF3/8      suite=unit                               rep cnt cntw k0
+ *12 E+         src/notify/backoff.rs                    noop
+ *13 TF3/8      suite=unit                               rep cnt cntw nomut k0
+ *14 E+         tests/backoff_unit.rs                    
+ *15 E+         src/notify/backoff.rs                    
+ *16 TF3/8      suite=unit                               rep cnt cntw k0
+=== V040 STALLED net=PRODUCTIVE t=22
+  12 E+         src/cli/export_job.rs                    
+  13 B+         target=cargo-build                       rep
+  14 E+         src/cli/export_job.rs                    
+ *15 T+5/5      suite=integration                        rep cntw
+ *16 E+         src/cli/export_job.rs                    
+ *17 B+         target=cargo-build                       rep
+ *18 E+         src/cli/export_job.rs                    
+ *19 T+5/5      suite=integration                        rep cntw
+ *20 E+         tests/currency_integration.rs            
+ *21 T+5/5      suite=integration                        rep cnt cntw
+ *22 E+         tests/currency_integration.rs            
+=== V044 STALLED net=STALLED t=47
+  37 R+         config/settings.yaml                     rep
+  38 Pp         replica/sync/2328 backoff=120            rep k0
+  39 Pp         replica/sync/2328 backoff=120            rep k1
+ *40 Pp         replica/sync/2328 backoff=120            rep k2
+ *41 Pp         replica/sync/2328 backoff=120            rep k3
+ *42 R+         config/settings.yaml                     rep
+ *43 Pp         replica/sync/2328 backoff=120            rep k0
+ *44 R+         config/settings.yaml                     rep
+ *45 Pp         replica/sync/2328 backoff=120            rep k0
+ *46 Pp         replica/sync/2328 backoff=120            rep k1
+ *47 T+12/12    suite=tests/smoke                        rep cnt cntw nomut
+=== V048 STALLED net=STALLED t=32
+  22 S+         src query="formatHeader"                 rep
+  23 TF0/2      suite=integrationTests tests=src/test/   rep cnt cntw nomut k0
+  24 TF0/2      suite=integrationTests tests=src/test/   rep cnt cntw nomut k0
+ *25 R+         src/main/java/com/acme/auth/EmailRende   rep
+ *26 TF0/2      suite=integrationTests tests=src/test/   rep cnt cntw nomut k0
+ *27 TF0/2      suite=integrationTests tests=src/test/   rep cnt cntw nomut k0
+ *28 S+         src query="formatHeader"                 rep
+ *29 TF0/2      suite=integrationTests tests=src/test/   rep cnt cntw nomut k0
+ *30 p+         action=list_hypotheses                   
+ *31 TF0/2      suite=integrationTests tests=src/test/   rep cnt cntw nomut k0
+ *32 TF0/2      suite=integrationTests tests=src/test/   rep cnt cntw nomut k0
+=== V060 STALLED net=STALLED t=22
+  12 E+         src/main/java/com/initech/cli/Checksum   
+  13 TF9/14     suite=contractTests                      rep cnt cntw k0
+  14 E+         src/main/java/com/initech/cli/ImageRes   
+ *15 TF9/14     suite=contractTests                      rep cnt cntw k0
+ *16 E+         src/main/java/com/initech/cli/ImageRes   
+ *17 TF9/14     suite=contractTests                      rep cnt cntw k0
+ *18 E+         src/main/java/com/initech/cli/ImageRes   
+ *19 TF9/14     suite=contractTests                      rep cnt cntw k0
+ *20 E+         src/main/java/com/initech/cli/ImageRes   
+ *21 TF9/14     suite=contractTests                      rep cnt cntw k0
+ *22 E+         src/test/java/com/initech/cli/ImageRes   noop
+=== V062 STALLED net=STALLED t=12
+   2 TF4/11     suite=integration                        k0
+   3 R+         src/sync/emailRender.ts lines=10-27      
+   4 TF0/1      suite=integration tests=src/sync/__tes   nomut k0
+ * 5 E+         src/sync/__tests__/emailRender.integra   
+ * 6 TF0/1      suite=integration tests=src/sync/__tes   rep cnt cntw k0
+ * 7 E+         src/sync/emailRender.ts                  
+ * 8 R+         src/sync/emailRender.ts lines=16-22      
+ * 9 TF0/1      suite=integration tests=src/sync/__tes   rep cnt cntw k0
+ *10 E+         src/sync/__tests__/emailRender.integra   
+ *11 TF0/1      suite=integration tests=src/sync/__tes   rep cnt cntw k0
+ *12 E+         src/sync/configLoader.ts                 
+=== V063 STALLED net=PRODUCTIVE t=41
+  31 TF9/11     suite=spec:feature                       rep cnt cntw k0
+  32 E+         lib/auth/export_job.rb                   
+  33 TF9/11     suite=spec:feature                       rep cnt cntw k0
+ *34 E+         spec/auth/export_job_feature_spec.rb     
+ *35 TF9/11     suite=spec:feature                       rep cnt cntw k0
+ *36 E+         lib/auth/export_job.rb                   
+ *37 p+         action=checkpoint                        
+ *38 TF9/11     suite=spec:feature                       rep cnt cntw k0
+ *39 E+         config/application.rb                    
+ *40 TF9/11     suite=spec:feature                       rep cnt cntw k0
+ *41 E+         lib/auth/export_job.rb                   
+=== V064 STALLED net=STALLED t=26
+  16 R+         src/orders/cache.rs lines=14-23          rep
+  17 TF7/9      suite=doc                                rep cnt cntw nomut k0
+  18 R+         tests/webhook_property.rs                rep
+ *19 TF7/9      suite=doc                                rep cnt cntw nomut k0
+ *20 R+         src/orders/cache.rs lines=14-23          rep
+ *21 TF7/9      suite=doc                                rep cnt cntw nomut k0
+ *22 R+         tests/webhook_property.rs                rep
+ *23 TF7/9      suite=doc                                rep cnt cntw nomut k0
+ *24 S+         . query="apply_address"                  rep
+ *25 TF7/9      suite=doc                                rep cnt cntw nomut k0
+ *26 R+         src/orders/cache.rs lines=14-23          rep
+=== V066 STALLED net=STALLED t=11
+   1 L+         src/ingest                               
+   2 R+         src/ingest/notifier.rs lines=10-15       
+   3 TF7/14     suite=integration                        k0
+ * 4 TF7/14     suite=integration                        rep cnt cntw nomut k0
+ * 5 R+         src/ingest/notifier.rs lines=10-15       rep
+ * 6 TF7/14     suite=integration                        rep cnt cntw nomut k0
+ * 7 TF7/14     suite=integration                        rep cnt cntw nomut k0
+ * 8 R+         src/ingest/notifier.rs lines=10-15       rep
+ * 9 TF7/14     suite=integration                        rep cnt cntw nomut k0
+ *10 TF7/14     suite=integration                        rep cnt cntw nomut k0
+ *11 TF7/14     suite=integration                        rep cnt cntw nomut k0
+=== V071 STALLED net=PRODUCTIVE t=19
+   9 E+         src/sync/cursor.rs                       
+  10 N+         target=rustfmt-check                     rep
+  11 E+         src/sync/cursor.rs                       noop
+ *12 TF0/2      suite=integration tests=tests/cursor_i   rep cntw nomut k0
+ *13 E+         src/sync/cursor.rs                       
+ *14 TF0/2      suite=integration tests=tests/cursor_i   rep cnt cntw k0
+ *15 E+         tests/cursor_integration.rs              
+ *16 E+         tests/cursor_integration.rs              noop
+ *17 TF0/2      suite=integration tests=tests/cursor_i   rep cnt cntw k0
+ *18 E+         src/sync/cursor.rs                       
+ *19 N+         target=rustfmt-check                     rep
+=== V072 STALLED net=STALLED t=33
+  23 L+         src                                      rep
+  24 S+         src query="normalize_entry"              rep
+  25 TF5/8      suite=property                           rep cnt cntw nomut k0
+ *26 S+         src query="normalize_entry"              rep
+ *27 TF5/8      suite=property                           rep cnt cntw nomut k0
+ *28 S+         src query="normalize_entry"              rep
+ *29 TF5/8      suite=property                           rep cnt cntw nomut k0
+ *30 p+         action=verify_plan                       
+ *31 L+         src                                      rep
+ *32 TF5/8      suite=property                           rep cnt cntw nomut k0
+ *33 S+         src query="normalize_entry"              rep
+=== V079 STALLED net=PRODUCTIVE t=15
+   5 TF6/13     suite=tests/integration                  rep cnt cntw k0
+   6 E+         src/web/backoff.py                       
+   7 TF6/13     suite=tests/integration                  rep cnt cntw k0
+ * 8 E+         src/web/dedupe.py                        
+ * 9 TF6/13     suite=tests/integration                  rep cnt cntw k0
+ *10 E+         src/web/dedupe.py                        
+ *11 E+         src/web/dedupe.py                        
+ *12 TF6/13     suite=tests/integration                  rep cnt cntw k0
+ *13 E+         src/web/dedupe.py                        
+ *14 TF6/13     suite=tests/integration                  rep cnt cntw k0
+ *15 E+         src/web/templates.py                     
+=== V082 STALLED net=STALLED t=27
+  17 TF9/11     suite=integration                        rep cnt cntw nomut k0
+  18 TF9/11     suite=integration                        rep cnt cntw nomut k0
+  19 R+         tests/search_index_integration.rs        rep
+ *20 TF9/11     suite=integration                        rep cnt cntw nomut k0
+ *21 R+         tests/search_index_integration.rs        rep
+ *22 TF9/11     suite=integration                        rep cnt cntw nomut k0
+ *23 S+         . query="expand_digest"                  rep
+ *24 TF9/11     suite=integration                        rep cnt cntw nomut k0
+ *25 TF9/11     suite=integration                        rep cnt cntw nomut k0
+ *26 TF9/11     suite=integration                        rep cnt cntw nomut k0
+ *27 TF9/11     suite=integration                        rep cnt cntw nomut k0
+=== V091 STALLED net=PRODUCTIVE t=18
+   8 TF0/2      suite=./internal/...:integration tests   nomut k0
+   9 E+         internal/geo/chunker.go                  
+  10 TF0/2      suite=./internal/...:integration tests   rep cnt cntw k0
+ *11 E+         internal/geo/chunker.go                  
+ *12 TF0/2      suite=./internal/...:integration tests   rep cnt cntw k0
+ *13 E+         internal/geo/graph_walk.go               
+ *14 TF0/2      suite=./internal/...:integration tests   rep cnt cntw k0
+ *15 E+         internal/geo/chunker.go                  
+ *16 E+         internal/geo/chunker.go                  
+ *17 TF0/2      suite=./internal/...:integration tests   rep cnt cntw k0
+ *18 E+         internal/geo/chunker.go                  
+=== V099 STALLED net=PRODUCTIVE t=33
+  23 E+         lib/report/queue_worker.rb               
+  24 TF8/10     suite=spec:feature                       rep cnt cntw k0
+  25 E+         spec/report/queue_worker_feature_spec.   
+ *26 TF8/10     suite=spec:feature                       rep cnt cntw k0
+ *27 E+         lib/report/queue_worker.rb               
+ *28 TF8/10     suite=spec:feature                       rep cnt cntw k0
+ *29 E+         lib/report/queue_worker.rb               
+ *30 TF8/10     suite=spec:feature                       rep cnt cntw k0
+ *31 E+         lib/report/queue_worker.rb               
+ *32 TF8/10     suite=spec:feature                       rep cnt cntw k0
+ *33 E+         lib/report/queue_worker.rb               
+=== V104 STALLED net=PRODUCTIVE t=24
+  14 E+         src/cli/searchIndex.ts                   
+  15 TF0/1      suite=contract tests=src/cli/__tests__   rep cnt cntw k0
+  16 E+         src/cli/searchIndex.ts                   
+ *17 TF0/1      suite=contract tests=src/cli/__tests__   rep cnt cntw k0
+ *18 E+         src/cli/__tests__/searchIndex.contract   
+ *19 E+         src/identity/tokenBucket.ts              
+ *20 TF0/1      suite=contract tests=src/cli/__tests__   rep cnt cntw k0
+ *21 W+         src/cli/searchIndex.ts                   
+ *22 W+         src/cli/__tests__/searchIndex.contract   
+ *23 TF0/1      suite=contract tests=src/cli/__tests__   rep cnt cntw k0
+ *24 E+         src/cli/searchIndex.ts                   
+=== V107 STALLED net=PRODUCTIVE t=23
+  13 TF7/11     suite=integration                        rep cnt cntw k0
+  14 E+         src/web/graph_walk.rs                    noop
+  15 TF7/11     suite=integration                        rep cnt cntw nomut k0
+ *16 E+         src/web/manifest.rs                      
+ *17 TF7/11     suite=integration                        rep cnt cntw k0
+ *18 E+         src/web/graph_walk.rs                    
+ *19 TF7/11     suite=integration                        rep cnt cntw k0
+ *20 E+         src/web/graph_walk.rs                    
+ *21 E+         src/web/graph_walk.rs                    
+ *22 TF7/11     suite=integration                        rep cnt cntw k0
+ *23 E+         src/web/graph_walk.rs                    
+=== V111 STALLED net=STALLED t=24
+  14 T+11/11    suite=integration                        rep cnt cntw
+  15 W+         src/billing/scheduler.ts                 
+  16 N+         target=tsc                               rep
+ *17 W+         src/billing/__tests__/scheduler.integr   
+ *18 R+         src/catalog/money.ts lines=22-30         rep
+ *19 T+11/11    suite=integration                        rep cntw
+ *20 E+         src/billing/scheduler.ts                 
+ *21 T+11/11    suite=integration                        rep cnt cntw
+ *22 W+         src/billing/scheduler.ts                 
+ *23 T+11/11    suite=integration                        rep cnt cntw
+ *24 W+         src/billing/__tests__/scheduler.integr   
+=== V114 STALLED net=STALLED t=24
+  14 TF3/6      suite=unit                               rep cnt cntw k0
+  15 E+         src/metrics/ledger.ts                    
+  16 TF3/6      suite=unit                               rep cnt cntw k0
+ *17 E+         src/metrics/slugify.ts                   
+ *18 TF3/6      suite=unit                               rep cnt cntw k0
+ *19 E+         src/metrics/slugify.ts                   
+ *20 R+         src/metrics/slugify.ts lines=16-22       rep
+ *21 TF3/6      suite=unit                               rep cnt cntw k0
+ *22 E+         src/metrics/__tests__/slugify.unit.tes   
+ *23 E+         src/metrics/slugify.ts                   
+ *24 TF3/6      suite=unit                               rep cnt cntw k0
+=== V116 STALLED net=PRODUCTIVE t=32
+  22 E+         src/billing/serializer.rs                
+  23 T+8/8      suite=unit                               rep cnt cntw
+  24 E+         tests/serializer_unit.rs                 
+ *25 T+8/8      suite=unit                               rep cnt cntw
+ *26 E+         src/billing/serializer.rs                
+ *27 T+8/8      suite=unit                               rep cnt cntw
+ *28 E+         src/billing/serializer.rs                
+ *29 T+8/8      suite=unit                               rep cnt cntw
+ *30 E+         src/billing/serializer.rs                
+ *31 T+8/8      suite=unit                               rep cnt cntw
+ *32 E+         tests/serializer_unit.rs                 
+=== V118 STALLED net=PRODUCTIVE t=37
+  27 TF5/8      suite=./internal/...:unit                rep cnt cntw k0
+  28 E+         internal/search/slugify_unit_test.go     noop
+  29 R+         internal/search/slugify.go lines=5-11    rep
+ *30 TF5/8      suite=./internal/...:unit                rep cnt cntw nomut k0
+ *31 E+         internal/web/config_loader.go            
+ *32 TF5/8      suite=./internal/...:unit                rep cnt cntw k0
+ *33 E+         internal/cli/scheduler.go                
+ *34 TF5/8      suite=./internal/...:unit                rep cnt cntw k0
+ *35 E+         internal/web/audit_log.go                
+ *36 TF5/8      suite=./internal/...:unit                rep cnt cntw k0
+ *37 E+         internal/search/slugify.go               
+=== V119 STALLED net=STALLED t=25
+  15 TF9/11     suite=unitTests                          rep cnt cntw nomut k0
+  16 TF9/11     suite=unitTests                          rep cnt cntw nomut k0
+  17 TF9/11     suite=unitTests                          rep cnt cntw nomut k0
+ *18 S+         src query="loadEntry"                    rep
+ *19 TF9/11     suite=unitTests                          rep cnt cntw nomut k0
+ *20 R+         deploy/helm/values.yaml                  rep
+ *21 TF9/11     suite=unitTests                          rep cnt cntw nomut k0
+ *22 R+         src/main/java/com/initech/geo/Thumbnai   rep
+ *23 p+         action=estimate_scope                    
+ *24 TF9/11     suite=unitTests                          rep cnt cntw nomut k0
+ *25 R+         .editorconfig                            rep
+=== V123 STALLED net=STALLED t=42
+  32 S+         lib query="flush_address"                rep
+  33 TF7/12     suite=spec:request                       rep cnt cntw nomut k0
+  34 TF7/12     suite=spec:request                       rep cnt cntw nomut k0
+ *35 p+         action=choose_next_step                  
+ *36 TF7/12     suite=spec:request                       rep cnt cntw nomut k0
+ *37 p+         action=choose_next_step                  
+ *38 TF7/12     suite=spec:request                       rep cnt cntw nomut k0
+ *39 TF7/12     suite=spec:request                       rep cnt cntw nomut k0
+ *40 R+         lib/web/serializer.rb lines=21-28        rep
+ *41 TF7/12     suite=spec:request                       rep cnt cntw nomut k0
+ *42 TF7/12     suite=spec:request                       rep cnt cntw nomut k0
+=== V125 STALLED net=STALLED t=28
+  18 R+         docs/api.md                              rep
+  19 TF0/2      suite=./internal/...:integration tests   rep cnt cntw nomut k0
+  20 R+         internal/billing/export_job.go lines=2   rep
+ *21 TF0/2      suite=./internal/...:integration tests   rep cnt cntw nomut k0
+ *22 R+         internal/billing/export_job.go lines=2   rep
+ *23 TF0/2      suite=./internal/...:integration tests   rep cnt cntw nomut k0
+ *24 TF0/2      suite=./internal/...:integration tests   rep cnt cntw nomut k0
+ *25 T+9/9      suite=./internal/...:race                nomut
+ *26 TF0/2      suite=./internal/...:integration tests   rep cntw nomut k0
+ *27 TF0/2      suite=./internal/...:integration tests   rep cnt cntw nomut k0
+ *28 R+         docs/api.md                              rep
+=== V127 STALLED net=STALLED t=24
+  14 T+8/8      suite=doc                                rep cnt cntw
+  15 E+         src/web/retry_policy.rs                  
+  16 T+8/8      suite=doc                                rep cnt cntw
+ *17 E+         tests/money_doc.rs                       
+ *18 T+8/8      suite=doc                                rep cnt cntw
+ *19 E+         src/ingest/queue_worker.rs               
+ *20 E+         src/web/retry_policy.rs                  
+ *21 T+8/8      suite=doc                                rep cnt cntw
+ *22 E+         src/web/retry_policy.rs                  
+ *23 R+         src/web/retry_policy.rs lines=4-13       
+ *24 T+8/8      suite=doc                                rep cnt cntw
+=== V128 STALLED net=STALLED t=21
+  11 TF0/2      suite=spec:unit tests=spec/catalog/ret   rep cnt cntw nomut k0
+  12 R+         spec/catalog/retry_policy_unit_spec.rb   rep
+  13 TF0/2      suite=spec:unit tests=spec/catalog/ret   rep cnt cntw nomut k0
+ *14 p+         action=summarise_findings                
+ *15 TF0/2      suite=spec:unit tests=spec/catalog/ret   rep cnt cntw nomut k0
+ *16 R+         spec/catalog/retry_policy_unit_spec.rb   rep
+ *17 TF0/2      suite=spec:unit tests=spec/catalog/ret   rep cnt cntw nomut k0
+ *18 L+         .                                        rep
+ *19 R+         spec/catalog/retry_policy_unit_spec.rb   rep
+ *20 TF0/2      suite=spec:unit tests=spec/catalog/ret   rep cnt cntw nomut k0
+ *21 L+         .                                        rep
+=== V134 STALLED net=STALLED t=10
+   0 L+         .                                        
+   1 TF8/10     suite=contract                           k0
+   2 R+         src/sync/parser.ts lines=23-33           
+ * 3 R+         src/sync/parser.ts                       
+ * 4 R+         src/sync/__tests__/parser.contract.tes   
+ * 5 p+         action=review_diff                       
+ * 6 p+         action=checkpoint                        
+ * 7 p+         action=review_diff                       
+ * 8 R+         src/sync/parser.ts lines=23-33           rep
+ * 9 p+         action=checkpoint                        
+ *10 p+         action=checkpoint                        
+=== V139 STALLED net=PRODUCTIVE t=10
+   0 TF5/7      suite=property                           k0
+   1 E+         src/catalog/config_loader.rs             
+   2 TF5/7      suite=property                           rep cnt cntw k0
+ * 3 E+         src/catalog/config_loader.rs             
+ * 4 TF5/7      suite=property                           rep cnt cntw k0
+ * 5 E+         src/catalog/config_loader.rs             
+ * 6 TF5/7      suite=property                           rep cnt cntw k0
+ * 7 E+         src/catalog/config_loader.rs             
+ * 8 TF5/7      suite=property                           rep cnt cntw k0
+ * 9 E+         src/catalog/config_loader.rs             
+ *10 TF5/7      suite=property                           rep cnt cntw k0
+=== V140 STALLED net=STALLED t=26
+  16 TF4/7      suite=unitTests                          rep cnt cntw nomut k0
+  17 p+         action=decompose                         
+  18 TF4/7      suite=unitTests                          rep cnt cntw nomut k0
+ *19 R+         src/test/java/com/initech/billing/Rate   rep
+ *20 TF4/7      suite=unitTests                          rep cnt cntw nomut k0
+ *21 S+         . query="expandAddress"                  rep
+ *22 TF4/7      suite=unitTests                          rep cnt cntw nomut k0
+ *23 R+         docs/architecture.md                     rep
+ *24 S+         . query="expandAddress"                  rep
+ *25 TF4/7      suite=unitTests                          rep cnt cntw nomut k0
+ *26 R+         src/main/java/com/initech/billing/Rate   rep
+=== V142 STALLED net=STALLED t=30
+  20 R+         tests/tokenizer_unit.rs                  rep
+  21 R+         clippy.toml                              rep
+  22 R+         src/report/tokenizer.rs lines=5-20       rep
+ *23 H+         GET https://payments.sandbox.acme.io/v   rep
+ *24 L+         .                                        rep
+ *25 R+         tests/tokenizer_unit.rs                  rep
+ *26 R+         src/report/tokenizer.rs lines=5-20       rep
+ *27 TF7/10     suite=unit                               rep cnt cntw nomut k0
+ *28 L+         .                                        rep
+ *29 R+         tests/tokenizer_unit.rs                  rep
+ *30 R+         tests/tokenizer_unit.rs                  rep
+=== V143 STALLED net=STALLED t=47
+  37 TF0/2      suite=./internal/...:unit tests=intern   rep cnt cntw nomut k0
+  38 L+         internal/geo                             rep
+  39 TF0/2      suite=./internal/...:unit tests=intern   rep cnt cntw nomut k0
+ *40 TF0/2      suite=./internal/...:unit tests=intern   rep cnt cntw nomut k0
+ *41 TF0/2      suite=./internal/...:unit tests=intern   rep cnt cntw nomut k0
+ *42 TF0/2      suite=./internal/...:unit tests=intern   rep cnt cntw nomut k0
+ *43 R+         internal/geo/router.go lines=14-25       rep
+ *44 TF0/2      suite=./internal/...:unit tests=intern   rep cnt cntw nomut k0
+ *45 TF0/2      suite=./internal/...:unit tests=intern   rep cnt cntw nomut k0
+ *46 R+         internal/geo/router.go lines=14-25       rep
+ *47 TF0/2      suite=./internal/...:unit tests=intern   rep cnt cntw nomut k0
+=== V145 STALLED net=STALLED t=44
+  34 E+         src/notify/graph_walk.py                 
+  35 N+         target=ruff                              rep
+  36 E+         src/notify/graph_walk.py                 
+ *37 E+         src/notify/graph_walk.py                 
+ *38 R+         src/notify/graph_walk.py lines=14-19     rep
+ *39 TF9/14     suite=tests/unit                         rep cntw k0
+ *40 E+         src/notify/graph_walk.py                 
+ *41 TF9/14     suite=tests/unit                         rep cnt cntw k0
+ *42 E+         src/notify/graph_walk.py                 
+ *43 N+         target=ruff                              rep
+ *44 E+         src/notify/graph_walk.py                 
+=== V146 STALLED net=STALLED t=41
+  31 E+         src/worker/scheduler.ts                  
+  32 TF15/17    suite=integration                        rep cnt cntw k0
+  33 E+         src/worker/backoff.ts                    
+ *34 TF15/17    suite=integration                        rep cnt cntw k0
+ *35 E+         src/worker/cursor.ts                     
+ *36 R+         src/worker/backoff.ts lines=11-20        
+ *37 TF15/17    suite=integration                        rep cnt cntw k0
+ *38 E+         src/worker/backoff.ts                    
+ *39 R+         src/worker/cursor.ts lines=10-19         
+ *40 TF15/17    suite=integration                        rep cnt cntw k0
+ *41 E+         src/worker/cursor.ts                     
+=== V147 STALLED net=STALLED t=39
+  29 TF0/3      suite=tests/smoke tests=tests/smoke/te   rep cnt cntw nomut k0
+  30 E+         src/media/cache.py                       
+  31 TF0/3      suite=tests/smoke tests=tests/smoke/te   rep cnt cntw k0
+ *32 E+         src/media/quota.py                       
+ *33 TF0/3      suite=tests/smoke tests=tests/smoke/te   rep cnt cntw k0
+ *34 E+         src/media/quota.py                       
+ *35 TF0/3      suite=tests/smoke tests=tests/smoke/te   rep cnt cntw k0
+ *36 E+         src/api/email_render.py                  
+ *37 TF0/3      suite=tests/smoke tests=tests/smoke/te   rep cnt cntw k0
+ *38 E+         src/media/quota.py                       noop
+ *39 TF0/3      suite=tests/smoke tests=tests/smoke/te   rep cnt cntw nomut k0
+=== V153 STALLED net=STALLED t=20
+  10 E+         src/metrics/shard_map.py                 
+  11 TF6/13     suite=tests/unit                         rep cnt cntw k0
+  12 W+         src/metrics/shard_map.py                 
+ *13 TF6/13     suite=tests/unit                         rep cnt cntw k0
+ *14 E+         src/metrics/shard_map.py                 
+ *15 TF6/13     suite=tests/unit                         rep cnt cntw k0
+ *16 E+         tests/unit/test_shard_map.py             
+ *17 TF6/13     suite=tests/unit                         rep cnt cntw k0
+ *18 E+         src/metrics/shard_map.py                 
+ *19 TF6/13     suite=tests/unit                         rep cnt cntw k0
+ *20 E+         src/metrics/shard_map.py                 noop
+=== V158 STALLED net=PRODUCTIVE t=33
+  23 E+         internal/auth/image_resize.go            
+  24 T+10/10    suite=./internal/...:unit                rep cnt cntw
+  25 W+         internal/auth/image_resize.go            
+ *26 W+         internal/auth/invoice_unit_test.go       
+ *27 T+10/10    suite=./internal/...:unit                rep cnt cntw
+ *28 E+         internal/auth/image_resize.go            
+ *29 T+10/10    suite=./internal/...:unit                rep cnt cntw
+ *30 E+         internal/auth/image_resize.go            
+ *31 E+         internal/auth/image_resize.go            noop
+ *32 T+10/10    suite=./internal/...:unit                rep cnt cntw
+ *33 E+         internal/auth/image_resize.go            
+=== V159 STALLED net=STALLED t=27
+  17 R+         src/api/serializer.py lines=9-15         
+  18 T+9/9      suite=tests/smoke                        rep cntw
+  19 E+         src/api/serializer.py                    
+ *20 T+9/9      suite=tests/smoke                        rep cnt cntw
+ *21 E+         src/api/serializer.py                    
+ *22 N+         target=flake8                            rep
+ *23 E+         src/identity/audit_log.py                
+ *24 E+         src/api/serializer.py                    
+ *25 R+         src/api/serializer.py lines=9-16         
+ *26 T+9/9      suite=tests/smoke                        rep cntw
+ *27 E+         src/api/serializer.py                    
+=== V162 STALLED net=STALLED t=21
+  11 TF0/2      suite=./internal/...:race tests=intern   rep cnt cntw nomut k0
+  12 p+         action=review_diff                       
+  13 TF0/2      suite=./internal/...:race tests=intern   rep cnt cntw nomut k0
+ *14 L+         .                                        rep
+ *15 TF0/2      suite=./internal/...:race tests=intern   rep cnt cntw nomut k0
+ *16 S+         internal query="BatchPayload"            rep
+ *17 TF0/2      suite=./internal/...:race tests=intern   rep cnt cntw nomut k0
+ *18 S+         internal query="BatchPayload"            rep
+ *19 R+         internal/sync/currency.go lines=5-10     rep
+ *20 TF0/2      suite=./internal/...:race tests=intern   rep cnt cntw nomut k0
+ *21 S+         internal query="BatchPayload"            rep
+=== V163 STALLED net=STALLED t=19
+   9 p+         action=reflect                           
+  10 Pp         queue/drain/ledger backoff=30            rep k0
+  11 Pp         queue/drain/ledger backoff=30            rep k1
+ *12 Pp         queue/drain/ledger backoff=30            rep k2
+ *13 R+         deploy/helm/values.yaml                  rep
+ *14 Pp         queue/drain/ledger backoff=30            rep k0
+ *15 p+         action=verify_plan                       
+ *16 Pp         queue/drain/ledger backoff=30            rep k0
+ *17 Pp         queue/drain/ledger backoff=30            rep k1
+ *18 L+         src/metrics                              
+ *19 Pp         queue/drain/ledger backoff=30            rep k0
+=== V166 STALLED net=STALLED t=33
+  23 TF6/12     suite=property                           rep cnt cntw nomut k0
+  24 TF6/12     suite=property                           rep cnt cntw nomut k0
+  25 p+         action=reflect                           
+ *26 TF6/12     suite=property                           rep cnt cntw nomut k0
+ *27 TF6/12     suite=property                           rep cnt cntw nomut k0
+ *28 R+         docs/adr/0003-caching.md                 rep
+ *29 TF6/12     suite=property                           rep cnt cntw nomut k0
+ *30 R+         docs/adr/0003-caching.md                 rep
+ *31 TF6/12     suite=property                           rep cnt cntw nomut k0
+ *32 p+         action=review_diff                       
+ *33 TF6/12     suite=property                           rep cnt cntw nomut k0
+=== V168 STALLED net=PRODUCTIVE t=26
+  16 E+         internal/billing/router_unit_test.go     
+  17 TF0/1      suite=./internal/...:unit tests=intern   rep cnt cntw k0
+  18 W+         internal/billing/router_unit_test.go     
+ *19 TF0/1      suite=./internal/...:unit tests=intern   rep cnt cntw k0
+ *20 W+         internal/billing/router.go               
+ *21 TF0/1      suite=./internal/...:unit tests=intern   rep cnt cntw k0
+ *22 W+         internal/billing/router.go               
+ *23 TF0/1      suite=./internal/...:unit tests=intern   rep cnt cntw k0
+ *24 E+         internal/billing/router.go               noop
+ *25 TF0/1      suite=./internal/...:unit tests=intern   rep cnt cntw nomut k0
+ *26 E+         internal/billing/router.go               
+=== V171 STALLED net=STALLED t=28
+  18 TF0/2      suite=unitTests tests=src/test/java/co   rep cnt cntw nomut k0
+  19 L+         scripts                                  rep
+  20 TF0/2      suite=unitTests tests=src/test/java/co   rep cnt cntw nomut k0
+ *21 p+         action=review_diff                       
+ *22 TF0/2      suite=unitTests tests=src/test/java/co   rep cnt cntw nomut k0
+ *23 L+         deploy/terraform                         rep
+ *24 TF0/2      suite=unitTests tests=src/test/java/co   rep cnt cntw nomut k0
+ *25 L+         deploy                                   rep
+ *26 TF0/2      suite=unitTests tests=src/test/java/co   rep cnt cntw nomut k0
+ *27 TF0/2      suite=unitTests tests=src/test/java/co   rep cnt cntw nomut k0
+ *28 TF0/2      suite=unitTests tests=src/test/java/co   rep cnt cntw nomut k0
+=== V172 STALLED net=STALLED t=53
+  43 TF3/5      suite=contractTests                      rep cnt cntw nomut k0
+  44 R+         src/test/java/com/hooli/billing/GraphW   rep
+  45 TF3/5      suite=contractTests                      rep cnt cntw nomut k0
+ *46 R+         src/main/java/com/hooli/billing/DiffEn   rep
+ *47 TF3/5      suite=contractTests                      rep cnt cntw nomut k0
+ *48 TF3/5      suite=contractTests                      rep cnt cntw nomut k0
+ *49 R+         docs/adr/0003-caching.md                 rep
+ *50 TF3/5      suite=contractTests                      rep cnt cntw nomut k0
+ *51 L+         tests/fixtures                           rep
+ *52 TF3/5      suite=contractTests                      rep cnt cntw nomut k0
+ *53 R+         CHANGELOG.md                             rep

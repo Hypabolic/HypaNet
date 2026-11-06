@@ -1,0 +1,67 @@
+v0.5 Phase B: US$22.689034 spent, US$227.310966 of US$250.0 left
+launching v05b.c1: model=claude-fable-5-1 fallback=none effort=max max_output=128000 max_budget_usd=227.31 session=c8c50605-46fc-47c3-a6cf-b7e0bd9377c7 dir=/Users/matthew/Development/hypabolic/HypaNet-v05b-author
+transcript: /Users/matthew/Development/hypabolic/HypaNet/experiments/v0_5/phase_b/logs/v05b.c1.stream.jsonl
+audit: 46 tool calls, models ['claude-fable-5-1'], 1 denials, 3 violations, 0 file findings -> /Users/matthew/Development/hypabolic/HypaNet/experiments/v0_5/phase_b/logs/v05b.c1.stream.audit.json
+  VIOLATION: [refused] Read: refers to '/.claude/': /Users/matthew/.claude/projects/-Users-matthew-Development-hypabolic-HypaNet-v05b-author/c8c50605-46fc-47c3-a6cf-b7e0bd9377c7/tool-results/b9venek8y.txt     
+  VIOLATION: [refused] Read: absolute path outside the author dir: /Users/matthew/.claude/projects/-Users-matthew-Development-hypabolic-HypaNet-v05b-author/c8c50605-46fc-47c3-a6cf-b7e0bd9377c7/tool-results/b9venek8y.txt
+  VIOLATION: [refused] Read: path resolves outside the author dir: /Users/matthew/.claude/projects/-Users-matthew-Development-hypabolic-HypaNet-v05b-author/c8c50605-46fc-47c3-a6cf-b7e0bd9377c7/tool-results/b9venek8y.txt
+  executed violations: 0 (refused attempts are listed but were blocked)
+{
+  "launches": {
+    "v05b": {
+      "charged_as": "result delta",
+      "cost_usd": 22.689034,
+      "log": "v05b.stream.jsonl",
+      "max_budget_usd": 250.0,
+      "models": [
+        "<synthetic>",
+        "claude-fable-5-1"
+      ],
+      "phase": "v05b",
+      "resolved": true,
+      "result_events": 1,
+      "session_totals_usd": {
+        "c8c50605-46fc-47c3-a6cf-b7e0bd9377c7": 22.689034
+      },
+      "turns_after_last_result": 0
+    },
+    "v05b.c1": {
+      "charged_as": "result delta",
+      "cost_usd": 18.057369,
+      "log": "v05b.c1.stream.jsonl",
+      "max_budget_usd": 227.31,
+      "models": [
+        "claude-fable-5-1"
+      ],
+      "phase": "v05b",
+      "resolved": true,
+      "result_events": 1,
+      "session_totals_usd": {
+        "c8c50605-46fc-47c3-a6cf-b7e0bd9377c7": 40.746403
+      },
+      "turns_after_last_result": 0
+    }
+  },
+  "method": "per-session-id delta of the cumulative total_cost_usd; unresolved launches at an operator figure, their --max-budget-usd ceiling, or a lower bound",
+  "not_phase_b": [],
+  "phases": {
+    "v05b": {
+      "cap_usd": 250.0,
+      "launches": [
+        "v05b.c1",
+        "v05b"
+      ],
+      "lower_bound_only": [],
+      "overshoot_usd": 0.0,
+      "reached": false,
+      "remaining_usd": 209.253597,
+      "total_usd": 40.746403,
+      "unresolved": []
+    }
+  },
+  "sessions": [
+    "c8c50605-46fc-47c3-a6cf-b7e0bd9377c7"
+  ],
+  "total_usd": 40.746403
+}
+launcher exit 0

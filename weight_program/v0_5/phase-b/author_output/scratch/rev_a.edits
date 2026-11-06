@@ -1,0 +1,2 @@
+# rev_a: fix the layer-0 MLP target-code gate (units 32-63 need all three gates AND the code bit: bias -3)
+layers.0.mlp.fc1.bias[32:64] = -3
