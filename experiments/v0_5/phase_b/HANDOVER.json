@@ -1,0 +1,107 @@
+{
+  "author_dir": "/Users/matthew/Development/hypabolic/HypaNet-v05b-author",
+  "disclosure_network_class_checked": true,
+  "disclosure_sha256": "372a1c4209e9fc15b21b45375a3868ee53c0b04595e0bcdc0b84e3570c7e4677",
+  "disclosure_source": "experiments/v0_5/phase_b/disclosure",
+  "effort": "max",
+  "fallback_model": null,
+  "handed_over": {
+    "disclosure": {
+      "DISCLOSURE.json": "372a1c4209e9fc15b21b45375a3868ee53c0b04595e0bcdc0b84e3570c7e4677",
+      "DISCLOSURE.sha256": "c17a8764efb89a6cd1c07aabf13345ea5f7a289fb72865c519c2808dca9bae0e"
+    },
+    "packet": {
+      "AUTHOR_INSTRUCTIONS.md": "456abdea0ffa4e06647f6893b12820ca97ec75878b96567237211891342d1022",
+      "GRAMMAR_SHEET.md": "13341c152f837c8b047cde4900a83a33ca75ad7242e7447f3113b067e7488dd8",
+      "PACKET_MANIFEST.json": "72d2bebf0a4c2c8607fd1ca7f451ef56ff95dea444276f8a13132921d99045f2",
+      "SPEC.md": "da5ceedce5a28996ff37afd2ea2c1949a18c52e63f45326b48ecac6df4f1cc41",
+      "model.py": "11cb75636ac01911f1f2bdaf2e169596de972942ab6fcead0f72cebebd28613e",
+      "renderer.py": "b5451f7fe65152cb7c6c8401b8ee2bcb927e87c41985b379c6b5caf993ff920b",
+      "state_dict_template.json": "e5b2c19987d6fde1ae7cd4a54ea3179c0a866d334248feb797964575dee373ea",
+      "tokenizer.py": "dc26886cb75db9cebacdb9c68e31fcbb3072434e48ae19892d89707db57d614d"
+    },
+    "py": "36e0947d89f5a281d5dbb0f1b9bf18227ee84e25844a40206571e507103dd51f",
+    "r1": {
+      "PROMPT.txt": "f4981981f7a706de4d22a86f8ae87f58d0c3ea2d65efa6c8fb70575f3fd5ed10",
+      "R1_MANIFEST.json": "2858782aaa5c73e38ddc4c0cd382b2ce4a3927d9e748d5484c2b1d541dec7a4a",
+      "artifact.dlw": "46d4b2a221dc0ecfb447d15b288ffb093d4612a9720cf87ed953221989ef56ac",
+      "artifact.sha256": "a10d0b90f03dc393a1e966ab9ff8c8ce6e3082847ac1bdfdee5d5a4981120433",
+      "replies/001.md": "361ed7f6fdd8ecf82beffdf4a15839e76776d751528618ad80328322427f9287",
+      "replies/001.p1.md": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "replies/001.p2.md": "361ed7f6fdd8ecf82beffdf4a15839e76776d751528618ad80328322427f9287",
+      "replies/002.md": "eebcb40fd5afb80092ecb10312bd832bb5dcdda6e31435882d6353ce815fada9",
+      "replies/003.md": "3cee6658c109280beb1ca0ba8b692cff338a5ab22069053ea5c55aaa1d3cbbfd",
+      "replies/004.md": "d7897752adde645838c710f9a0890d6190c7fc990bb3e8a33f403f8e543ec164",
+      "replies/INDEX.json": "ffc9ee91075f070f402f7b4204d0e407da1cbee90a8ddfc8ada84050525fb257"
+    },
+    "tools": {
+      "hn_guard/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "hn_guard/guards_v02.py": "a15bc11de8774d6e9f93ca2219af70a418a9d434f56d9adeac7cd5042868e001",
+      "hn_guard/guards_v03.py": "2c69d49ea3acad7e299341c2a59dbecf838b38a75c521e40e2900dfd44c9eaaf",
+      "launch.py": "1995b50c12cf382a2788994b28207d300acfe2d5cccf81298d02721d2c74d893",
+      "lib/hn_v05/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "lib/hn_v05/dlw3.py": "36c2193326a00f6b7bac58ac03580c28156bb6f60eec7e4d7bb295c977ea5c5c",
+      "lib/hn_v05/edits.py": "9c4b08302f1288eb16651652eecedb95b90bf7f63e81c58de8677e6e27e1cf04",
+      "lib/hn_v05/revision.py": "ab48c2c0a718b23f9f1ad95c66817d37315111653614eec0b13f9365e8472fec",
+      "lib/v05_load.py": "05293a0f7156be0503f3b7a881a66ef4e1410fbdd817b24e84c4f43285b1047c"
+    }
+  },
+  "kit": false,
+  "kit_files": {
+    "launch.py": "1995b50c12cf382a2788994b28207d300acfe2d5cccf81298d02721d2c74d893",
+    "prompt_continue.md": "54d1dc30c1e4f7b805754944894952dec765ffcd7647134000ef41663f21249a",
+    "prompt_resubmit.md": "df8362bceba284ebc4fe7aae3d50f6edb61173ef7db69e7d6e7ca6c6b98412cf",
+    "prompt_v05_phase_b.md": "a5477c162006a7ac43972509ec8ff3667eaddc5bf0576438d15b7ea3df3732c6",
+    "settings_v05_phase_b.json": "77defa304018ec8c535962e927b39e479b47e90ad09c0610cb0fe212b6d33acb",
+    "v05_load.py": "05293a0f7156be0503f3b7a881a66ef4e1410fbdd817b24e84c4f43285b1047c"
+  },
+  "model": "claude-fable-5-1",
+  "output_dir": "output/v05-phase-b",
+  "output_entries": [
+    "v05-phase-b"
+  ],
+  "packet_sha256": "72d2bebf0a4c2c8607fd1ca7f451ef56ff95dea444276f8a13132921d99045f2",
+  "phase": "v05-phase-b",
+  "prompt_txt_sha256": "f4981981f7a706de4d22a86f8ae87f58d0c3ea2d65efa6c8fb70575f3fd5ed10",
+  "r1_artifact_sha256": "46d4b2a221dc0ecfb447d15b288ffb093d4612a9720cf87ed953221989ef56ac",
+  "r1_checks": {
+    "artifact_sha256": "46d4b2a221dc0ecfb447d15b288ffb093d4612a9720cf87ed953221989ef56ac",
+    "reading": "index",
+    "reading_units": [
+      "001.p1.md",
+      "001.p2.md",
+      "002.md",
+      "003.md",
+      "004.md"
+    ],
+    "rebuild_identical": true,
+    "status": "finished"
+  },
+  "r1_manifest_sha256": "2858782aaa5c73e38ddc4c0cd382b2ce4a3927d9e748d5484c2b1d541dec7a4a",
+  "r1_prompt_sha256": "f4981981f7a706de4d22a86f8ae87f58d0c3ea2d65efa6c8fb70575f3fd5ed10",
+  "r1_source": "experiments/v0_5/runs/r1",
+  "reference_policy_class": "absent: r1 wrote no reference policy (v0.5 has none)",
+  "registry_v0_3_sha256": "8b755d441f870cc6722b53cd82246ffbbbbe02e96299c17b000fec0d814b7f6e",
+  "root_entries": [
+    ".venv",
+    "disclosure",
+    "output",
+    "packet",
+    "py",
+    "r1",
+    "tools"
+  ],
+  "venv": {
+    "kind": "private",
+    "numpy": "1.26.4",
+    "torch": "2.2.2"
+  },
+  "venv_state": {
+    "entries": 14586,
+    "inventory_sha256": "40febebd11918795372d25c5774f4de655fa05a01b128341068a68cd08c82ea1",
+    "startup_files": {
+      "lib/python3.12/site-packages/_virtualenv.pth": "69ac3d8f27e679c81b94ab30b3b56e9cd138219b1ba94a1fa3606d5a76a1433d",
+      "pyvenv.cfg": "ca7228d1b09c26434abbfb2046949593daf2715aacce65b9daa28ea38d1e13ce"
+    }
+  }
+}
