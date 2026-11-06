@@ -1,0 +1,1816 @@
+YOUR TASK: write, from scratch, the weights of a transformer that reads the log of an AI coding agent's session and, at every event, classifies the agent's recent behaviour into one of four classes, as well as possible. There is no training: no data, no labels, no loss, no gradients, no fine-tuning; you choose every number yourself. You have no tools: no code execution, no calculator, nothing to run, no files to read; everything you are given is in this message. You will get no feedback: nothing is run, and the network is scored only after you have finished. You may take as many replies as you need. After each reply you will receive only the message "Continue." (it carries no feedback, and nothing is run in between); after a reply that was cut off by a length limit you may instead receive a fixed notice that it was cut off. If a reply is cut off, continue in your next reply; if the cut fell inside an edits block, open a new edits block and write the cut statement again in full. Every edits block in every reply is read and applied, in the order written. First describe your design briefly (the strategy, and what the attention heads and MLP units compute), then write the edits blocks. End your final reply with a line that is exactly END OF WEIGHTS (outside any edits block).
+
+THE TASK: an AI coding agent works through a session of tool calls (reading and editing files, searching, running tests, builds and lints, HTTP calls, polling, planning). Its session log is rendered as text, one event block per tool call, and tokenised. At every event, your network classifies the pattern of the agent's most recent eight operations into one of four classes. The sessions are synthetic: a simulator generates them, and an oracle labels each window from the simulator's hidden state. The task's specification follows; its section numbers are kept, so a reference such as §4.3 points to that section of the specification.
+
+## 1. Objective
+
+At every event of an AI coding agent's session, the model classifies the pattern of the agent's most recent eight operations as one of four classes:
+
+1. **PRODUCTIVE**: evidence of forward progress or materially new investigation.
+2. **RECOVERY**: a bounded retry or repair after a transient or diagnosed failure, still within policy or recently resolved.
+3. **STALLED**: repeated ineffective operations, with no observed progress and no state-reversion cycle.
+4. **OSCILLATING**: recurring reversal between previously held workspace or execution states, with no net progress.
+
+The model reads the session's rendered log. No hand-written feature extractor sits between the log and the network. There is only a fixed renderer (§4) and a fixed tokeniser (§5).
+
+### 1.2 What a good result does and does not show
+
+- **The logs are synthetic, in one fixed grammar.** There is one header line per tool call, with a family-specific tool name and canonical result syntax. Tool output and assistant text are absent, and diff content is replaced by opaque hunk ids. A good score shows hand-programmed perception over this grammar. It does not show robustness to real transcripts.
+- **Segmentation is given, not perceived.** `EOE` tokens, the `event_ord` input and an attention bias indexed by event distance make "same event" and "within the last 8 events" one scalar table each. This mirrors transcripts where each tool call is a record. It is a task-aligned inductive bias, and it computes no content signal.
+- **The tokeniser is fixed and word-level.** Paths and identifiers are single tokens, and numbers are digit groups. It computes no repeat, state or delta signal.
+- **Diff hunks are opaque ids.** Whether an edit repeats, undoes or restores an earlier change is visible. Whether it is correct code is not. In the real world, progress shows only through later validation, and that is the case here too.
+- v0.3 makes no claim that hand-programming beats training.
+
+## 6. Windows, gate, labels
+
+- **Oracle rules.** The labels come from the v0.2 oracle. Its §6.1–§6.3 (latent state definitions, parameters, rules) and the family names in its §7.1 follow.
+- **Gate rule.** Windows with withheld observations are not scored.
+
+## v0.2 oracle rules and scenario families (unchanged in v0.3)
+
+The labels are produced by the v0.2 oracle from the simulator's latent state. Its definitions,
+parameters and rules (v0.2 §6.1-§6.3) and the names of the scenario families (v0.2 §7.1) are
+reproduced here. "Encoded features" and "the 120-vector" refer to v0.2's input, which v0.3
+replaces with the rendered log.
+
+#### 6.1 Latent state (simulator-internal, never encoded)
+
+Per session the simulator maintains:
+
+- `progress p_t ∈ [0, 1]`: hidden objective completion.
+- `knowledge K_t`: a set of latent facts about the fault. An operation may add facts. A new fact is "material narrowing".
+- `workspace W_t`: real simulated file contents. Digests are computed from these.
+- `episodes`: failure episodes with latent cause (`transient`, `persistent`, `diagnosed_repair`), a retry counter and a resolution flag.
+- Per-operation latent effect: one of `PROGRESS`, `NEW_FACT`, `RESOLVES_EPISODE`, `IN_POLICY_RETRY`, `IN_POLICY_POLL`, `REVERSION`, `REDUNDANT`, `NONE`.
+
+`REDUNDANT` means the operation repeats work already reflected in latent state. It re-acquires a fact already in `K_t`, re-applies an edit already present in `W_t`, re-runs validation on an unchanged workspace, or is an out-of-policy retry or poll. Redundancy is defined against `K_t` and `W_t`, **not** against `intent_fingerprint`, so it stays independent of the encoded features. `NONE` means the operation is novel but yielded nothing, for example a first read of a file that turns out to be irrelevant.
+
+An episode's **initial failing operation** has effect `NONE`, because the attempt itself was reasonable. Its in-policy retries are `IN_POLICY_RETRY`. Retries beyond `R_max` are `REDUNDANT`.
+
+An operation is **stall-ineffective** iff its latent effect is `REDUNDANT` or `REVERSION`. An operation is **ineffective** iff it is stall-ineffective or has effect `NONE`.
+
+A **reversion** is an agent mutation whose latent after-state equals a workspace state held earlier in the window **and** that undoes an earlier agent mutation. External resets don't count.
+
+#### 6.2 Pre-registered oracle parameters
+
+| Symbol | Value | Meaning |
+|---|---:|---|
+| `ε_p` | 0.02 | Progress tolerance over a window |
+| `F_prod` | 2 | Minimum new facts in the window for investigative PRODUCTIVE |
+| `N_stall` | 5 | Minimum ineffective operations of 8 for STALLED |
+| `N_grey` | 3 | Lower bound of the stall grey zone |
+| `N_rev` | 2 | Minimum reversions in the window for OSCILLATING |
+| `R_max` | 3 | Maximum retries of one intent within an episode while still in policy |
+| `P_max` | 5 | Maximum polls of an external dependency (with backoff) while still in policy |
+| `k_rec` | 4 | Recency horizon for RECOVERY |
+
+#### 6.3 Window labelling rules (evaluated in order; first match wins)
+
+Let `Δp` be the progress change across the window, `F` the number of new facts, `I` the number of **stall-ineffective** operations (`REDUNDANT` + `REVERSION`) and `V` the number of reversions.
+
+1. **INSUFFICIENT_EVIDENCE (instrumentation):** the generator deliberately dropped a required observation (scenario 12).
+2. **OSCILLATING:** `V ≥ N_rev` and `Δp ≤ ε_p`.
+3. **STALLED:** `Δp ≤ ε_p`, `F = 0`, `I ≥ N_stall`, the final event is stall-ineffective, **and** no episode is in policy at the endpoint.
+4. **RECOVERY:** an episode is active at the endpoint with retries ≤ `R_max` (or polls ≤ `P_max`), **or** an episode resolved within the last `k_rec` events.
+5. **PRODUCTIVE:** `Δp > ε_p` or `F ≥ F_prod`.
+6. **INSUFFICIENT_EVIDENCE (ambiguous):** everything else. This includes the grey zone `N_grey ≤ I < N_stall` with no progress, windows with a single new fact and no progress, and aimless novel activity (mostly `NONE` effects). Novel but fruitless exploration is never labelled STALLED. Repetition of already-done work is what defines a stall.
+
+This ordering gives `OSCILLATING > STALLED > RECOVERY > PRODUCTIVE`. The recency bound in rule 4 stops a long-resolved retry from overriding later productive work.
+
+Labels depend on latent causal state. Observable features are emitted independently by the event layer. Labels are never defined in terms of encoded features. For example, there must be no rule of the form "STALLED iff `repeated_intent`".
+
+#### 7.1 Scenario families (names only)
+
+1. Incremental productive repair: failing tests, targeted edits, fewer failures, eventually green.
+2. Productive exploration: several inspections and diagnostics before a meaningful change.
+3. Transient external failure: repeated timeout, then success, then productive work.
+4. Bounded backoff or retry: a recoverable failure with one or two controlled retries.
+5. Repeated failed test invocation with unchanged artefact and unchanged failure.
+6. Repeated edits that change files but don't improve validation.
+7. A/B/A/B workspace oscillation between competing edits.
+8. Tool oscillation: two operations repeatedly undo each other's effects.
+9. Benign lookalike: repeated test runs with genuine incremental improvement.
+10. Benign lookalike: repeated reads or polls while an external dependency legitimately recovers.
+11. Rising context or token expenditure without useful work. Cost is weak supporting evidence, not a label shortcut.
+12. Under-instrumented sessions, for gate coverage.
+
+THE LOGS (the network's input): each session is rendered by renderer.py into one text block per event and tokenised by tokenizer.py (encode_session); the network reads the token ids, with each token's event ordinal and offset. Below: the specification's rendering and tokeniser sections, the id of every fixed token, the records the renderer reads, the exact source of renderer.py and tokenizer.py, and a grammar sheet with one invented example block per tool and its tokens.
+
+## 4. Log rendering (frozen)
+
+### 4.1 Layout
+
+The log is `BOS`, then one **event block** per event in order. Each block is a header line plus up to 6 body lines, all ASCII (non-ASCII characters become `?` before any marker is inserted). The truncation marker is the ASCII word `TRUNC`.
+
+### 4.2 Header line
+
+```
+{HH:MM:SS.mmm} {tool} {fields…} -> {status} in={input_tokens} out={output_tokens}
+```
+
+| Tool | Fields (budget in tokens) | Status |
+|---|---|---|
+| `read_file` | `path={p}` [`lines={a}-{b}`] | `ok` / `error` |
+| `search` | `scope={s} query="{q}"` (query ≤ 12) [`limit={n}`] | `ok` |
+| `list_dir` | `path={p}` | `ok` |
+| `edit_file` | `path={p}` | `ok` / `error` |
+| `write_file` | `path={p}` | `ok` / `error` |
+| `revert` | `paths={p1},{p2}…` (≤ 16) | `ok` |
+| `run_tests` | `suite={s}` [`tests={t1},{t2}…`] (≤ 24) | `ok` or `FAILED` |
+| `build`, `lint` | `target={t}` (`?` if the suite was dropped) | `ok` or `FAILED` |
+| `http_call` | `{METHOD} https://{host}{path_template}` [`body={json}`] (body ≤ 16) `req={hex8}` | `ok` / `error` |
+| `poll_status` | `resource={r}` [`backoff={b}`] | `ready` / `pending` |
+| `plan`, `ask`, `yield` | `action={action_type}` | `ok` |
+
+- **Validation counts.** For any event with a validation result, the status is followed by `{passed}/{total} passed`.
+- **Field budgets.** A field over its budget is cut and ends with `TRUNC`.
+- **The suffix is never cut.** The suffix is `-> {status} … in= out=`.
+- **Header limit.** The whole header is at most 64 tokens, `TRUNC` included.
+
+### 4.3 Body lines
+
+These are emitted in this order, at most 6 lines in total:
+
+1. **Hunk lines.** One line per changed file, in path order:
+   ```
+     @ {path} {h_old} > {h_new}
+   ```
+   - The diff is `difflib.unified_diff(before.split("\n"), after.split("\n"), n=0)`.
+   - `h_x` is `h` plus the first 10 hex characters of `sha256(session_id + ":hunk:" + path + ":" + text)`, where `text` is the file's removed lines (for `h_old`) or added lines (for `h_new`), taken across all hunks in diff order and joined with `\n`.
+   - An empty side renders as `h0`.
+   - The same change in the same file and session always gets the same ids. An undo swaps them, and a return to earlier content reuses an earlier id.
+   - The number of hunks inside a file is not shown. At most `min(5, 6 − tail lines)` file lines are shown. If more files changed, the last shown line is `  @ TRUNC {k}`, where `k` is the number of files not shown.
+   - Hunk lines are still shown when workspace digests were dropped. Those windows are not scored, but later windows may refer back to them.
+2. **Error line** (ERROR outcome only):
+   ```
+     ! {error_class} at {error_location}:{line} ({noise})
+   ```
+   - `{line}` is `int(sha256(session_id+":"+error_location)[:4],16) % 900 + 1`, so it is stable across repeats.
+   - `{noise}` is `pid {n}` or `0x{hex8}`, drawn from the event's render RNG.
+3. **Workspace line** (`[workspace untracked]`), emitted when either digest was dropped.
+
+### 4.4 Missing observations
+
+Each dropped field renders as `?` in its own position, for example `in=? out=812`, `?/18 passed`, `suite=?`, or `! ? at ?:? (…)` when the failure was dropped.
+
+### 4.5 Noise
+
+- **Render RNG.** Each event has its own render RNG, `random.Random(int(sha256(canonical_json(RawOp) + ":render")[:16], 16))`. It supplies `req=` and `{noise}`. It is independent of the generators and the oracle.
+- **Timestamps.** These are parsed with `datetime.fromisoformat` and rendered in UTC as `HH:MM:SS.mmm`.
+
+### 4.6 Bound
+
+A block has at most 64 header tokens, then for each of up to 6 body lines one line-marker token plus at most 20 tokens, then `EOE`. That is at most 64 + 6·21 + 1 = 191 < `O`. The renderer enforces the per-line cap with `TRUNC`.
+
+## 5. Tokeniser (frozen)
+
+A deterministic left-to-right scan of each block. Spaces and tabs are dropped.
+
+| Rule | Token |
+|---|---|
+| A newline followed (after spaces) by `@`, `!` or `[` | one reserved line-marker id `NL@`, `NL!` or `NL[` (the character is consumed) |
+| Any other newline | `NL` |
+| `WORD = [A-Za-z_][A-Za-z0-9_.\-/]*` | one token: a reserved id if the word is reserved, otherwise a hashed id |
+| `NUM = [0-9]+` | split left to right into groups of 3 digits (the last group may be shorter); each group is a dedicated id |
+| Any other printable character | one punctuation id |
+
+**Vocabulary (V = 10,240):**
+
+| Ids | Content |
+|---|---|
+| 0 | `PAD` |
+| 1 | `BOS` |
+| 2 | `EOE` |
+| 3 | `NL` |
+| 4–6 | `NL@`, `NL!`, `NL[` |
+| 7–127 | reserved words, frozen in `tokenizer.py`: all tool names; the words `path lines scope query limit bytes paths suite tests target body req resource backoff action in out ok error FAILED passed ready pending at pid workspace untracked TRUNC https GET POST PUT PATCH DELETE` |
+| 128–223 | printable ASCII punctuation |
+| 224–1,333 | digit groups `0`–`9`, `00`–`99`, `000`–`999` |
+| 1,334–2,047 | unused |
+| 2,048–10,239 | other words: `2048 + int(sha256(word)[:8],16) mod 8192` |
+
+The tokeniser returns `tokens`, `event_ord`, `offset`, the indices of the `EOE` tokens, and the **surface strings** (each token's text before hashing).
+
+Token ids (the tables of tokenizer.py, listed):
+Special and line-marker tokens:
+  0 PAD (padding only; never produced)   1 BOS   2 EOE   3 NL   4 NL@   5 NL!   6 NL[
+Reserved words (ids 7-54; ids 55-127 are never produced):
+  7 read_file   8 search   9 list_dir   10 edit_file   11 write_file   12 revert   13 run_tests
+  14 build   15 lint   16 http_call   17 poll_status   18 plan   19 ask   20 yield
+  21 path   22 lines   23 scope   24 query   25 limit   26 bytes   27 paths
+  28 suite   29 tests   30 target   31 body   32 req   33 resource   34 backoff
+  35 action   36 in   37 out   38 ok   39 error   40 FAILED   41 passed
+  42 ready   43 pending   44 at   45 pid   46 workspace   47 untracked   48 TRUNC
+  49 https   50 GET   51 POST   52 PUT   53 PATCH   54 DELETE
+Punctuation (ids 128-158; ids 159-223 are never produced):
+  128 !   129 "   130 #   131 $   132 %   133 &   134 '   135 (
+  136 )   137 *   138 +   139 ,   140 -   141 .   142 /   143 :
+  144 ;   145 <   146 =   147 >   148 ?   149 @   150 [   151 \
+  152 ]   153 ^   154 `   155 {   156 |   157 }   158 ~
+Digit groups (a number is split left to right into groups of 3 digits; the last group may be shorter):
+  a 1-digit group g ("0".."9") has id 224 + g (224-233); a 2-digit group ("00".."99") has id 234 + its value
+  (234-333); a 3-digit group ("000".."999") has id 334 + its value (334-1333). For example "09" is 243 and
+  "250" is 584. Ids 1334-2047 are never produced.
+Every other word: id 2048 + (int(sha256(word)[:8], 16) mod 8192), in 2048-10239.
+
+## Operation records (`RawOp` dicts, the renderer's input)
+
+`renderer.render_session(ops, session_id)` returns one block string per operation; `ops` is a list
+of plain dicts, one per tool call, with these keys (a missing key reads as null; `session_id` is any
+string, and it seeds the hunk ids and error line numbers of §4.3):
+
+| Key | Type | Meaning |
+|---|---|---|
+| `family` | str | The tool name: `read_file`, `search`, `list_dir`, `edit_file`, `write_file`, `revert`, `run_tests`, `build`, `lint`, `http_call`, `poll_status`, `plan`, `ask`, `yield` |
+| `target` | str, list or dict | What the call acts on: the path (`read_file`, `list_dir`, `edit_file`, `write_file`), the scope (`search`), the list of paths (`revert`), the suite (`run_tests`), the target (`build`, `lint`), `{"method", "host", "path_template"}` (`http_call`), the resource (`poll_status`) |
+| `args` | dict | Call arguments the header shows: `line_start` / `line_end` (`read_file`), `content` (`write_file`; not shown in the header), `query` / `limit` (`search`), `tests` (a list, `run_tests`), `body` (`http_call`), `backoff` (`poll_status`), `action_type` (`plan`, `ask`, `yield`) |
+| `outcome` | str | `SUCCESS`, `ERROR` or `NEUTRAL`. The status reads `error` for `ERROR` and `ok` otherwise; `run_tests` / `build` / `lint` read `FAILED` / `ok`, and `poll_status` reads `ready` / `error` / `pending` |
+| `error_class`, `error_location` | str or null | The error line of an `ERROR` outcome: `! {error_class} at {error_location}:{line} (...)` |
+| `validation` | `{"suite", "passed", "total"}` or null | The validation result; shown as `{passed}/{total} passed` |
+| `changed` | list of `{"path", "before", "after"}` | Every tracked file whose text differs between the start and the end of the call, sorted by path; `before` / `after` is the full text, or null when the file is absent. Rendered as hunk lines (§4.3) |
+| `extra` | dict or null | Tool-specific detail that the header does not show |
+| `input_tokens`, `output_tokens` | int or null | Shown as `in=` and `out=` |
+| `timestamp` | str or null | ISO 8601 (`2026-03-01T09:14:03.250+00:00`); shown in UTC as `HH:MM:SS.mmm` |
+| `dropped` | sorted list of str | Observations withheld on this call, each shown as `?` in its own position: any of `digest_after`, `digest_before`, `failure`, `input_tokens`, `output_tokens`, `validation_passed`, `validation_suite`, `validation_total` (a dropped digest adds the `[workspace untracked]` line) |
+
+The renderer's exact source (renderer.py):
+
+```python
+"""v0.3 log renderer (spec v0.3 §4). Frozen; ships in the authoring packet.
+
+Standalone: standard library only, plus the sibling packet module ``tokenizer`` (imported lazily so
+the harness can also import this file as ``agent_loop_lab.v03.renderer``).
+
+    blocks = render_session(rawops, session_id)   # rawops: list of RawOp dicts (RawOp.to_dict())
+
+One block per event: a header line, then at most 6 body lines (hunk lines, error line, workspace line).
+"""
+
+from __future__ import annotations
+
+import difflib
+import hashlib
+import json
+import random
+from datetime import datetime, timezone
+from typing import Any, Mapping, Sequence
+
+try:  # packet layout: tokenizer.py next to this file
+    import tokenizer as _tok  # type: ignore
+except ImportError:  # harness layout
+    from . import tokenizer as _tok  # type: ignore
+
+HEADER_MAX_TOKENS = 64
+BODY_MAX_LINES = 6
+LINE_MAX_TOKENS = 20  # excluding the line-marker token
+HUNK_MAX_LINES = 5
+TRUNC = "TRUNC"
+
+FIELD_BUDGETS = {"tests": 24, "body": 16, "paths": 16, "query": 12}
+
+VALIDATE_FAMILIES = ("run_tests", "build", "lint")
+DIGEST_DROPS = ("digest_before", "digest_after")
+
+
+def _get(op: Mapping[str, Any] | Any, key: str, default: Any = None) -> Any:
+    if isinstance(op, Mapping):
+        return op.get(key, default)
+    return getattr(op, key, default)
+
+
+def _ascii(text: str) -> str:
+    return "".join(ch if 32 <= ord(ch) < 127 else "?" for ch in str(text))
+
+
+def _ntok(text: str) -> int:
+    return len(_tok.tokenize_block(text))
+
+
+def _fit(text: str, budget: int) -> str:
+    """ASCII-sanitise ``text`` and cut it to at most ``budget`` tokens, ending with TRUNC when cut.
+
+    The cut keeps the source text up to the end of the last kept token, so the kept part reads
+    exactly as it would uncut; a space before TRUNC keeps it a separate word."""
+    text = _ascii(text)
+    spans = _tok.tokenize_spans(text)
+    if len(spans) <= budget:
+        return text
+    keep = max(0, budget - 1)
+    kept = text[: spans[keep - 1][3]] if keep else ""
+    return (kept + " " + TRUNC) if kept else TRUNC
+
+
+def canonical_json(obj: Any) -> str:
+    return json.dumps(obj, sort_keys=True, separators=(",", ":"), ensure_ascii=True, default=str)
+
+
+def render_rng(op: Mapping[str, Any] | Any) -> random.Random:
+    d = op if isinstance(op, Mapping) else op.to_dict()
+    seed = int(hashlib.sha256((canonical_json(d) + ":render").encode()).hexdigest()[:16], 16)
+    return random.Random(seed)
+
+
+def _clock(ts: str | None) -> str:
+    if not ts:
+        return "?"
+    t = datetime.fromisoformat(ts)
+    if t.tzinfo is not None:
+        t = t.astimezone(timezone.utc)
+    return f"{t:%H:%M:%S}.{t.microsecond // 1000:03d}"
+
+
+def _q(v: Any) -> str:
+    return "?" if v is None else str(v)
+
+
+def hunk_id(session_id: str, path: str, lines: Sequence[str]) -> str:
+    if not lines:
+        return "h0"
+    text = "\n".join(lines)
+    return "h" + hashlib.sha256(f"{session_id}:hunk:{path}:{text}".encode("utf-8")).hexdigest()[:10]
+
+
+def diff_hunks(before: str | None, after: str | None) -> list[tuple[list[str], list[str]]]:
+    """(removed lines, added lines) per hunk of the n=0 unified diff."""
+    a = [] if before is None else before.split("\n")
+    b = [] if after is None else after.split("\n")
+    lines = list(difflib.unified_diff(a, b, "a", "b", lineterm="", n=0))[2:]
+    hunks: list[tuple[list[str], list[str]]] = []
+    for ln in lines:
+        if ln.startswith("@@"):
+            hunks.append(([], []))
+        elif hunks and ln.startswith("-"):
+            hunks[-1][0].append(ln[1:])
+        elif hunks and ln.startswith("+"):
+            hunks[-1][1].append(ln[1:])
+    return hunks
+
+
+def _status(op: Any) -> str:
+    family, outcome = _get(op, "family"), _get(op, "outcome")
+    dropped = set(_get(op, "dropped") or ())
+    val = _get(op, "validation")
+    if family == "poll_status":
+        status = "ready" if outcome == "SUCCESS" else ("pending" if outcome == "NEUTRAL" else "error")
+    elif family in VALIDATE_FAMILIES:
+        status = "FAILED" if outcome == "ERROR" else "ok"
+    else:
+        status = "error" if outcome == "ERROR" else "ok"
+    if val is not None:
+        p = "?" if "validation_passed" in dropped else _q(val.get("passed"))
+        t = "?" if "validation_total" in dropped else _q(val.get("total"))
+        status += f" {p}/{t} passed"
+    tin = "?" if "input_tokens" in dropped else _q(_get(op, "input_tokens"))
+    tout = "?" if "output_tokens" in dropped else _q(_get(op, "output_tokens"))
+    return f"-> {status} in={tin} out={tout}"
+
+
+def _fields(op: Any, rng: random.Random) -> str:
+    family = _get(op, "family")
+    target = _get(op, "target")
+    args = _get(op, "args") or {}
+    dropped = set(_get(op, "dropped") or ())
+    parts: list[str] = []
+    if family in ("read_file", "list_dir", "edit_file"):
+        parts.append(f"path={target}")
+        if family == "read_file" and (args.get("line_start") is not None or args.get("line_end") is not None):
+            parts.append(f"lines={_q(args.get('line_start'))}-{_q(args.get('line_end'))}")
+    elif family == "write_file":
+        parts.append(f"path={target}")
+    elif family == "search":
+        parts.append(f"scope={target}")
+        parts.append('query="' + _fit(str(args.get("query", "")), FIELD_BUDGETS["query"]) + '"')
+        if args.get("limit") is not None:
+            parts.append(f"limit={args['limit']}")
+    elif family == "revert":
+        paths = target if isinstance(target, (list, tuple)) else [target]
+        parts.append("paths=" + _fit(",".join(str(p) for p in paths), FIELD_BUDGETS["paths"]))
+    elif family == "run_tests":
+        suite = "?" if "validation_suite" in dropped else target
+        parts.append(f"suite={suite}")
+        if args.get("tests"):
+            parts.append("tests=" + _fit(",".join(str(t) for t in args["tests"]), FIELD_BUDGETS["tests"]))
+    elif family in ("build", "lint"):
+        suite_dropped = "validation_suite" in dropped and _get(op, "validation") is not None
+        parts.append(f"target={'?' if suite_dropped else target}")
+    elif family == "http_call":
+        t = target or {}
+        parts.append(f"{t.get('method', '?')} https://{t.get('host', '?')}{t.get('path_template', '')}")
+        if args.get("body") is not None:
+            parts.append("body=" + _fit(str(args["body"]), FIELD_BUDGETS["body"]))
+        parts.append(f"req={rng.getrandbits(32):08x}")
+    elif family == "poll_status":
+        parts.append(f"resource={target}")
+        if args.get("backoff") is not None:
+            parts.append(f"backoff={args['backoff']}")
+    elif family in ("plan", "ask", "yield"):
+        parts.append(f"action={args.get('action_type', '?')}")
+    else:
+        parts.append(f"target={target}")
+    return " ".join(parts)
+
+
+def _header(op: Any, rng: random.Random) -> str:
+    head = f"{_clock(_get(op, 'timestamp'))} {_get(op, 'family')}"
+    suffix = _status(op)
+    fields = _ascii(_fields(op, rng))
+    room = HEADER_MAX_TOKENS - _ntok(head) - _ntok(suffix)
+    if _ntok(fields) > room:
+        fields = _fit(fields, room)
+    return _ascii(f"{head} {fields} {suffix}")
+
+
+def _line(marker: str, text: str) -> str:
+    return "  " + marker + " " + _fit(_ascii(text), LINE_MAX_TOKENS)
+
+
+def render_event(op: Any, session_id: str) -> str:
+    rng = render_rng(op)
+    header = _header(op, rng)
+    hunk_lines: list[str] = []
+    for ch in sorted(_get(op, "changed") or [], key=lambda c: c["path"]):
+        # One line per changed file (spec v0.3 r2 §4.3): all removed lines vs all added lines of the
+        # n=0 diff, so the number of hunks inside a file is not shown.
+        hunks = diff_hunks(ch.get("before"), ch.get("after"))
+        if not hunks:
+            continue
+        removed = [ln for r, _ in hunks for ln in r]
+        added = [ln for _, a in hunks for ln in a]
+        path = ch["path"]
+        hunk_lines.append(f"{path} {hunk_id(session_id, path, removed)} > {hunk_id(session_id, path, added)}")
+    tail: list[str] = []
+    if _get(op, "outcome") == "ERROR":
+        dropped = set(_get(op, "dropped") or ())
+        loc = _get(op, "error_location")
+        if "failure" in dropped:
+            cls, loc_s, line = "?", "?", "?"
+        else:
+            cls = _q(_get(op, "error_class"))
+            loc_s = _q(loc)
+            line = "?" if loc is None else str(int(hashlib.sha256(f"{session_id}:{loc}".encode()).hexdigest()[:4], 16) % 900 + 1)
+        noise = f"pid {rng.randint(1000, 99999)}" if rng.random() < 0.5 else f"0x{rng.getrandbits(32):08x}"
+        tail.append(("!", f"{cls} at {loc_s}:{line} ({noise})"))
+    if set(_get(op, "dropped") or ()) & set(DIGEST_DROPS):
+        tail.append(("[", "workspace untracked]"))
+    max_hunks = min(HUNK_MAX_LINES, BODY_MAX_LINES - len(tail))
+    if len(hunk_lines) > max_hunks:
+        omitted = len(hunk_lines) - (max_hunks - 1)
+        hunk_lines = hunk_lines[: max_hunks - 1] + [f"{TRUNC} {omitted}"]
+    body = [_line("@", h) for h in hunk_lines] + [_line(m, t) for m, t in tail]
+    return "\n".join([header] + body)
+
+
+def render_session(rawops: Sequence[Any], session_id: str) -> list[str]:
+    return [render_event(op, session_id) for op in rawops]
+```
+
+The tokeniser's exact source (tokenizer.py):
+
+```python
+"""v0.3 tokeniser (spec v0.3 §5). Frozen; ships in the authoring packet.
+
+Standalone: standard library only, no relative imports.
+
+    enc = encode_session(blocks)   # blocks: one rendered string per event (renderer.render_session)
+    enc.tokens, enc.event_ord, enc.offset, enc.eoe_index, enc.surface
+
+A session is ``BOS`` followed, for each event block, by the block's tokens and then ``EOE``.
+``event_ord`` is 0 for ``BOS`` and k+1 for every token of block k, including its ``EOE``.
+``offset`` is the 0-based position within the block (``BOS`` has offset 0); an offset >= ``O`` raises.
+"""
+
+from __future__ import annotations
+
+import hashlib
+import re
+from dataclasses import dataclass
+
+V = 10240
+O = 192
+
+PAD, BOS, EOE, NL = 0, 1, 2, 3
+NL_AT, NL_BANG, NL_BRACKET = 4, 5, 6
+LINE_MARKERS = {"@": NL_AT, "!": NL_BANG, "[": NL_BRACKET}
+
+TOOL_NAMES = (
+    "read_file", "search", "list_dir", "edit_file", "write_file", "revert", "run_tests", "build", "lint",
+    "http_call", "poll_status", "plan", "ask", "yield",
+)
+FIELD_AND_STATUS_WORDS = (
+    "path", "lines", "scope", "query", "limit", "bytes", "paths", "suite", "tests", "target", "body", "req",
+    "resource", "backoff", "action", "in", "out", "ok", "error", "FAILED", "passed", "ready", "pending", "at",
+    "pid", "workspace", "untracked", "TRUNC", "https", "GET", "POST", "PUT", "PATCH", "DELETE",
+)
+RESERVED_WORDS: tuple[str, ...] = TOOL_NAMES + FIELD_AND_STATUS_WORDS
+RESERVED_BASE = 7
+assert RESERVED_BASE + len(RESERVED_WORDS) <= 128
+RESERVED_IDS: dict[str, int] = {w: RESERVED_BASE + i for i, w in enumerate(RESERVED_WORDS)}
+
+PUNCT_BASE = 128
+PUNCT_CHARS = "".join(chr(c) for c in range(33, 127) if not chr(c).isalnum() and chr(c) != "_")
+assert len(PUNCT_CHARS) <= 96
+PUNCT_IDS: dict[str, int] = {ch: PUNCT_BASE + i for i, ch in enumerate(PUNCT_CHARS)}
+
+DIGIT_BASE = 224
+DIGIT_GROUPS: tuple[str, ...] = (
+    tuple(f"{i}" for i in range(10)) + tuple(f"{i:02d}" for i in range(100)) + tuple(f"{i:03d}" for i in range(1000))
+)
+DIGIT_IDS: dict[str, int] = {g: DIGIT_BASE + i for i, g in enumerate(DIGIT_GROUPS)}
+assert DIGIT_BASE + len(DIGIT_GROUPS) == 1334
+
+HASH_BASE = 2048
+HASH_BUCKETS = 8192
+assert HASH_BASE + HASH_BUCKETS == V
+
+_WORD = re.compile(r"[A-Za-z_][A-Za-z0-9_.\-/]*")
+_NUM = re.compile(r"[0-9]+")
+
+
+class TokenizerError(ValueError):
+    pass
+
+
+def word_id(word: str) -> int:
+    """Id of a WORD token: reserved id if reserved, otherwise its hashed bucket."""
+    if word in RESERVED_IDS:
+        return RESERVED_IDS[word]
+    return HASH_BASE + int(hashlib.sha256(word.encode("utf-8")).hexdigest()[:8], 16) % HASH_BUCKETS
+
+
+def digit_groups(num: str) -> list[str]:
+    """Split a digit string left to right into groups of 3 (the last may be shorter)."""
+    return [num[i : i + 3] for i in range(0, len(num), 3)]
+
+
+def tokenize_spans(block: str) -> list[tuple[int, str, int, int]]:
+    """(id, surface, start, end) per token of one event block (without EOE); ``block[start:end]`` is the
+    matched source text (for a line marker, the newline, any spaces and the marker character)."""
+    out: list[tuple[int, str, int, int]] = []
+    i, n = 0, len(block)
+    while i < n:
+        ch = block[i]
+        if ch in " \t":
+            i += 1
+            continue
+        if ch == "\n":
+            j = i + 1
+            while j < n and block[j] in " \t":
+                j += 1
+            if j < n and block[j] in LINE_MARKERS:
+                out.append((LINE_MARKERS[block[j]], "\n" + block[j], i, j + 1))
+                i = j + 1
+            else:
+                out.append((NL, "\n", i, i + 1))
+                i += 1
+            continue
+        m = _WORD.match(block, i)
+        if m:
+            w = m.group(0)
+            out.append((word_id(w), w, i, m.end()))
+            i = m.end()
+            continue
+        m = _NUM.match(block, i)
+        if m:
+            for k, g in enumerate(digit_groups(m.group(0))):
+                out.append((DIGIT_IDS[g], g, i + 3 * k, i + 3 * k + len(g)))
+            i = m.end()
+            continue
+        if ch in PUNCT_IDS:
+            out.append((PUNCT_IDS[ch], ch, i, i + 1))
+            i += 1
+            continue
+        raise TokenizerError(f"unrenderable character {ch!r} at {i}")
+    return out
+
+
+def tokenize_block(block: str) -> list[tuple[int, str]]:
+    """(id, surface) pairs for one event block (without EOE)."""
+    return [(tid, s) for tid, s, _, _ in tokenize_spans(block)]
+
+
+@dataclass(frozen=True)
+class Encoded:
+    tokens: list[int]
+    event_ord: list[int]
+    offset: list[int]
+    eoe_index: list[int]
+    surface: list[str]
+
+
+def encode_session(blocks: list[str]) -> Encoded:
+    tokens, event_ord, offset, eoe, surface = [BOS], [0], [0], [], ["<BOS>"]
+    for k, block in enumerate(blocks):
+        pairs = tokenize_block(block)
+        pairs.append((EOE, "<EOE>"))
+        if len(pairs) > O:
+            raise TokenizerError(f"event block {k} has {len(pairs)} tokens (offset >= O={O})")
+        for off, (tid, s) in enumerate(pairs):
+            tokens.append(tid)
+            event_ord.append(k + 1)
+            offset.append(off)
+            surface.append(s)
+        eoe.append(len(tokens) - 1)
+    return Encoded(tokens, event_ord, offset, eoe, surface)
+
+
+def prefix(enc: Encoded, t: int) -> Encoded:
+    """The encoding of blocks 0..t (inclusive): a prefix ending at EOE_t."""
+    end = enc.eoe_index[t] + 1
+    return Encoded(enc.tokens[:end], enc.event_ord[:end], enc.offset[:end], enc.eoe_index[: t + 1], enc.surface[:end])
+```
+
+# Grammar sheet (spec v0.3 §4-§5)
+
+Each example below is one **event block** as the frozen renderer lays it out, followed by its
+tokens from the frozen tokenizer (`tokenizer.tokenize_block`, then `EOE`), one per line as
+`offset  id  surface`. Line-marker tokens are shown as `NL@`, `NL!` and `NL[`.
+
+Every path, suite, test, target, host, action, error class, hunk id and number here is
+**invented** for illustration. Real logs use the same grammar with other values.
+
+A session is `BOS` followed by its blocks in order (`tokenizer.encode_session`). `event_ord` is 0
+for `BOS` and k+1 for every token of block k, including its `EOE`; `offset` restarts at 0 in every
+block. The network's prediction for block k is read at that block's `EOE`.
+
+Header suffix: `-> {status}[ {passed}/{total} passed] in={input_tokens} out={output_tokens}`.
+Body lines, at most 6, in this order: hunk lines (`@`, at most 5), the error line (`!`, ERROR
+outcomes only) and the workspace line (`[`, when a digest was dropped). A dropped observation is
+rendered as `?` in its own position.
+
+## read_file
+
+```text
+09:14:03.250 read_file path=zork/zeta/widget.qx lines=12-40 -> ok in=1840 out=96
+```
+
+```tokens
+  0    243  09
+  1    143  :
+  2    248  14
+  3    143  :
+  4    237  03
+  5    141  .
+  6    584  250
+  7      7  read_file
+  8     21  path
+  9    146  =
+ 10   6414  zork/zeta/widget.qx
+ 11     22  lines
+ 12    146  =
+ 13    246  12
+ 14    140  -
+ 15    274  40
+ 16    140  -
+ 17    147  >
+ 18     38  ok
+ 19     36  in
+ 20    146  =
+ 21    518  184
+ 22    224  0
+ 23     37  out
+ 24    146  =
+ 25    330  96
+ 26      2  <EOE>
+```
+
+## search
+
+```text
+09:14:05.004 search scope=zork/zeta query="quux frobnicate" limit=5 -> ok in=1932 out=41
+```
+
+```tokens
+  0    243  09
+  1    143  :
+  2    248  14
+  3    143  :
+  4    239  05
+  5    141  .
+  6    338  004
+  7      8  search
+  8     23  scope
+  9    146  =
+ 10   7568  zork/zeta
+ 11     24  query
+ 12    146  =
+ 13    129  "
+ 14   8189  quux
+ 15   8358  frobnicate
+ 16    129  "
+ 17     25  limit
+ 18    146  =
+ 19    229  5
+ 20    140  -
+ 21    147  >
+ 22     38  ok
+ 23     36  in
+ 24    146  =
+ 25    527  193
+ 26    226  2
+ 27     37  out
+ 28    146  =
+ 29    275  41
+ 30      2  <EOE>
+```
+
+## list_dir
+
+```text
+09:14:06.117 list_dir path=zork/zeta -> ok in=2010 out=22
+```
+
+```tokens
+  0    243  09
+  1    143  :
+  2    248  14
+  3    143  :
+  4    240  06
+  5    141  .
+  6    451  117
+  7      9  list_dir
+  8     21  path
+  9    146  =
+ 10   7568  zork/zeta
+ 11    140  -
+ 12    147  >
+ 13     38  ok
+ 14     36  in
+ 15    146  =
+ 16    535  201
+ 17    224  0
+ 18     37  out
+ 19    146  =
+ 20    256  22
+ 21      2  <EOE>
+```
+
+## edit_file (one line per changed file: removed-lines id > added-lines id)
+
+```text
+09:14:09.880 edit_file path=zork/zeta/widget.qx -> ok in=2214 out=310
+  @ zork/zeta/widget.qx h3f9a0c1d2e > h7b21e9c04a
+```
+
+```tokens
+  0    243  09
+  1    143  :
+  2    248  14
+  3    143  :
+  4    243  09
+  5    141  .
+  6   1214  880
+  7     10  edit_file
+  8     21  path
+  9    146  =
+ 10   6414  zork/zeta/widget.qx
+ 11    140  -
+ 12    147  >
+ 13     38  ok
+ 14     36  in
+ 15    146  =
+ 16    555  221
+ 17    228  4
+ 18     37  out
+ 19    146  =
+ 20    644  310
+ 21      4  NL@
+ 22   6414  zork/zeta/widget.qx
+ 23   2227  h3f9a0c1d2e
+ 24    147  >
+ 25   4182  h7b21e9c04a
+ 26      2  <EOE>
+```
+
+## write_file
+
+```text
+09:14:12.301 write_file path=zork/zeta/gizmo_plinth.qx -> ok in=2402 out=505
+  @ zork/zeta/gizmo_plinth.qx h0 > h9e4a7710cd
+```
+
+```tokens
+  0    243  09
+  1    143  :
+  2    248  14
+  3    143  :
+  4    246  12
+  5    141  .
+  6    635  301
+  7     11  write_file
+  8     21  path
+  9    146  =
+ 10   7212  zork/zeta/gizmo_plinth.qx
+ 11    140  -
+ 12    147  >
+ 13     38  ok
+ 14     36  in
+ 15    146  =
+ 16    574  240
+ 17    226  2
+ 18     37  out
+ 19    146  =
+ 20    839  505
+ 21      4  NL@
+ 22   7212  zork/zeta/gizmo_plinth.qx
+ 23   5861  h0
+ 24    147  >
+ 25   7348  h9e4a7710cd
+ 26      2  <EOE>
+```
+
+## revert (undoes the edit_file block: the ids swap back)
+
+```text
+09:14:15.762 revert paths=zork/zeta/widget.qx -> ok in=2470 out=12
+  @ zork/zeta/widget.qx h7b21e9c04a > h3f9a0c1d2e
+```
+
+```tokens
+  0    243  09
+  1    143  :
+  2    248  14
+  3    143  :
+  4    249  15
+  5    141  .
+  6   1096  762
+  7     12  revert
+  8     27  paths
+  9    146  =
+ 10   6414  zork/zeta/widget.qx
+ 11    140  -
+ 12    147  >
+ 13     38  ok
+ 14     36  in
+ 15    146  =
+ 16    581  247
+ 17    224  0
+ 18     37  out
+ 19    146  =
+ 20    246  12
+ 21      4  NL@
+ 22   6414  zork/zeta/widget.qx
+ 23   4182  h7b21e9c04a
+ 24    147  >
+ 25   2227  h3f9a0c1d2e
+ 26      2  <EOE>
+```
+
+## run_tests (failed, with validation counts and an error line)
+
+```text
+09:14:20.415 run_tests suite=alpha tests=alpha/spin_wobble -> FAILED 7/9 passed in=2611 out=188
+  ! QuuxError at zork/zeta/widget.qx:417 (pid 4821)
+```
+
+```tokens
+  0    243  09
+  1    143  :
+  2    248  14
+  3    143  :
+  4    254  20
+  5    141  .
+  6    749  415
+  7     13  run_tests
+  8     28  suite
+  9    146  =
+ 10   7853  alpha
+ 11     29  tests
+ 12    146  =
+ 13   2519  alpha/spin_wobble
+ 14    140  -
+ 15    147  >
+ 16     40  FAILED
+ 17    231  7
+ 18    142  /
+ 19    233  9
+ 20     41  passed
+ 21     36  in
+ 22    146  =
+ 23    595  261
+ 24    225  1
+ 25     37  out
+ 26    146  =
+ 27    522  188
+ 28      5  NL!
+ 29   2810  QuuxError
+ 30     44  at
+ 31   6414  zork/zeta/widget.qx
+ 32    143  :
+ 33    751  417
+ 34    135  (
+ 35     45  pid
+ 36    816  482
+ 37    225  1
+ 38    136  )
+ 39      2  <EOE>
+```
+
+## run_tests (dropped observations and untracked workspace)
+
+```text
+09:14:22.006 run_tests suite=? -> FAILED ?/9 passed in=? out=176
+  ! ? at ?:? (0x1f2e3d4c)
+  [workspace untracked]
+```
+
+```tokens
+  0    243  09
+  1    143  :
+  2    248  14
+  3    143  :
+  4    256  22
+  5    141  .
+  6    340  006
+  7     13  run_tests
+  8     28  suite
+  9    146  =
+ 10    148  ?
+ 11    140  -
+ 12    147  >
+ 13     40  FAILED
+ 14    148  ?
+ 15    142  /
+ 16    233  9
+ 17     41  passed
+ 18     36  in
+ 19    146  =
+ 20    148  ?
+ 21     37  out
+ 22    146  =
+ 23    510  176
+ 24      5  NL!
+ 25    148  ?
+ 26     44  at
+ 27    148  ?
+ 28    143  :
+ 29    148  ?
+ 30    135  (
+ 31    224  0
+ 32   6279  x1f2e3d4c
+ 33    136  )
+ 34      6  NL[
+ 35     46  workspace
+ 36     47  untracked
+ 37    152  ]
+ 38      2  <EOE>
+```
+
+## build
+
+```text
+09:14:31.002 build target=zeta_bale -> ok in=2702 out=64
+```
+
+```tokens
+  0    243  09
+  1    143  :
+  2    248  14
+  3    143  :
+  4    265  31
+  5    141  .
+  6    336  002
+  7     14  build
+  8     30  target
+  9    146  =
+ 10   9591  zeta_bale
+ 11    140  -
+ 12    147  >
+ 13     38  ok
+ 14     36  in
+ 15    146  =
+ 16    604  270
+ 17    226  2
+ 18     37  out
+ 19    146  =
+ 20    298  64
+ 21      2  <EOE>
+```
+
+## lint (failed, hex noise)
+
+```text
+09:14:33.640 lint target=zeta_bale -> FAILED in=2750 out=71
+  ! QuuxError at zork/zeta/gizmo_plinth.qx:88 (0x9c1e44b7)
+```
+
+```tokens
+  0    243  09
+  1    143  :
+  2    248  14
+  3    143  :
+  4    267  33
+  5    141  .
+  6    974  640
+  7     15  lint
+  8     30  target
+  9    146  =
+ 10   9591  zeta_bale
+ 11    140  -
+ 12    147  >
+ 13     40  FAILED
+ 14     36  in
+ 15    146  =
+ 16    609  275
+ 17    224  0
+ 18     37  out
+ 19    146  =
+ 20    305  71
+ 21      5  NL!
+ 22   2810  QuuxError
+ 23     44  at
+ 24   7212  zork/zeta/gizmo_plinth.qx
+ 25    143  :
+ 26    322  88
+ 27    135  (
+ 28    224  0
+ 29   9034  x9c1e44b7
+ 30    136  )
+ 31      2  <EOE>
+```
+
+## http_call
+
+```text
+09:14:40.118 http_call POST https://quuxhost.zeta/v9/gadgets/{gid} body={"flavor":"quux"} req=5d03ac91 -> error in=2810 out=33
+  ! QuuxError at zeta_portal:212 (pid 30177)
+```
+
+```tokens
+  0    243  09
+  1    143  :
+  2    248  14
+  3    143  :
+  4    274  40
+  5    141  .
+  6    452  118
+  7     16  http_call
+  8     51  POST
+  9     49  https
+ 10    143  :
+ 11    142  /
+ 12    142  /
+ 13   2727  quuxhost.zeta/v9/gadgets/
+ 14    155  {
+ 15   2509  gid
+ 16    157  }
+ 17     31  body
+ 18    146  =
+ 19    155  {
+ 20    129  "
+ 21   7249  flavor
+ 22    129  "
+ 23    143  :
+ 24    129  "
+ 25   8189  quux
+ 26    129  "
+ 27    157  }
+ 28     32  req
+ 29    146  =
+ 30    229  5
+ 31   5868  d03ac91
+ 32    140  -
+ 33    147  >
+ 34     39  error
+ 35     36  in
+ 36    146  =
+ 37    615  281
+ 38    224  0
+ 39     37  out
+ 40    146  =
+ 41    267  33
+ 42      5  NL!
+ 43   2810  QuuxError
+ 44     44  at
+ 45   7250  zeta_portal
+ 46    143  :
+ 47    546  212
+ 48    135  (
+ 49     45  pid
+ 50    635  301
+ 51    311  77
+ 52    136  )
+ 53      2  <EOE>
+```
+
+## poll_status
+
+```text
+09:14:52.733 poll_status resource=zeta_hopper backoff=4 -> pending in=2851 out=18
+```
+
+```tokens
+  0    243  09
+  1    143  :
+  2    248  14
+  3    143  :
+  4    286  52
+  5    141  .
+  6   1067  733
+  7     17  poll_status
+  8     33  resource
+  9    146  =
+ 10   3989  zeta_hopper
+ 11     34  backoff
+ 12    146  =
+ 13    228  4
+ 14    140  -
+ 15    147  >
+ 16     43  pending
+ 17     36  in
+ 18    146  =
+ 19    619  285
+ 20    225  1
+ 21     37  out
+ 22    146  =
+ 23    252  18
+ 24      2  <EOE>
+```
+
+## plan
+
+```text
+09:14:55.090 plan action=sketch_zeta_zigzag -> ok in=2902 out=640
+```
+
+```tokens
+  0    243  09
+  1    143  :
+  2    248  14
+  3    143  :
+  4    289  55
+  5    141  .
+  6    424  090
+  7     18  plan
+  8     35  action
+  9    146  =
+ 10   6721  sketch_zeta_zigzag
+ 11    140  -
+ 12    147  >
+ 13     38  ok
+ 14     36  in
+ 15    146  =
+ 16    624  290
+ 17    226  2
+ 18     37  out
+ 19    146  =
+ 20    974  640
+ 21      2  <EOE>
+```
+
+## ask
+
+```text
+09:15:01.512 ask action=ponder_zeta_flavor -> ok in=3015 out=57
+```
+
+```tokens
+  0    243  09
+  1    143  :
+  2    249  15
+  3    143  :
+  4    235  01
+  5    141  .
+  6    846  512
+  7     19  ask
+  8     35  action
+  9    146  =
+ 10   5345  ponder_zeta_flavor
+ 11    140  -
+ 12    147  >
+ 13     38  ok
+ 14     36  in
+ 15    146  =
+ 16    635  301
+ 17    229  5
+ 18     37  out
+ 19    146  =
+ 20    291  57
+ 21      2  <EOE>
+```
+
+## yield
+
+```text
+09:15:09.377 yield action=zeta_handback -> ok in=3104 out=212
+```
+
+```tokens
+  0    243  09
+  1    143  :
+  2    249  15
+  3    143  :
+  4    243  09
+  5    141  .
+  6    711  377
+  7     20  yield
+  8     35  action
+  9    146  =
+ 10   3504  zeta_handback
+ 11    140  -
+ 12    147  >
+ 13     38  ok
+ 14     36  in
+ 15    146  =
+ 16    644  310
+ 17    228  4
+ 18     37  out
+ 19    146  =
+ 20    546  212
+ 21      2  <EOE>
+```
+
+## revert of 7 files (more changed files than fit: the 5th line is replaced by a count)
+
+```text
+09:15:12.020 revert paths=zork/blorb.qx,zork/frotz.qx,zork/gnusto.qx,zork/plugh.qx,zork/rezrov.qx,zork/xyzzy.qx,zork/yomin.qx -> ok in=3190 out=902
+  @ zork/blorb.qx h2a6b8c4d1e > h61f0e2d9ab
+  @ zork/frotz.qx h4d7c1b0e5f > h0
+  @ zork/gnusto.qx h0 > h8a3e5f7c21
+  @ zork/plugh.qx h3f9a0c1d2e > h5c0d81f3b6
+  @ TRUNC 3
+```
+
+```tokens
+  0    243  09
+  1    143  :
+  2    249  15
+  3    143  :
+  4    246  12
+  5    141  .
+  6    354  020
+  7     12  revert
+  8     27  paths
+  9    146  =
+ 10   3432  zork/blorb.qx
+ 11    139  ,
+ 12   9004  zork/frotz.qx
+ 13    139  ,
+ 14   8119  zork/gnusto.qx
+ 15    139  ,
+ 16   2979  zork/plugh.qx
+ 17    139  ,
+ 18   8778  zork/rezrov.qx
+ 19    139  ,
+ 20   6754  zork/xyzzy.qx
+ 21    139  ,
+ 22   7221  zork/yomin.qx
+ 23    140  -
+ 24    147  >
+ 25     38  ok
+ 26     36  in
+ 27    146  =
+ 28    653  319
+ 29    224  0
+ 30     37  out
+ 31    146  =
+ 32   1236  902
+ 33      4  NL@
+ 34   3432  zork/blorb.qx
+ 35   2564  h2a6b8c4d1e
+ 36    147  >
+ 37   4074  h61f0e2d9ab
+ 38      4  NL@
+ 39   9004  zork/frotz.qx
+ 40   6665  h4d7c1b0e5f
+ 41    147  >
+ 42   5861  h0
+ 43      4  NL@
+ 44   8119  zork/gnusto.qx
+ 45   5861  h0
+ 46    147  >
+ 47   9006  h8a3e5f7c21
+ 48      4  NL@
+ 49   2979  zork/plugh.qx
+ 50   2227  h3f9a0c1d2e
+ 51    147  >
+ 52   8309  h5c0d81f3b6
+ 53      4  NL@
+ 54     48  TRUNC
+ 55    227  3
+ 56      2  <EOE>
+```
+
+THE NETWORK (the same architecture as the trained network it will be compared with): a transformer with 4 layers, residual width d = 128, 8 attention heads of width 16, MLP width 512, no normalisation, an event-distance attention bias and 4 output logits; 2,128,932 parameters. Below: its specification (§2.2), the table of its tensors and the exact source of model.py, the code that runs it. EVERY WEIGHT STARTS AT 0; you set the weights you need.
+
+### 2.2 Target model (immutable within a run)
+
+Notation: `V = 10,240`, `d = 128`, `L = 4`, `H = 8`, `d_h = 16`, `m = 512`, `R = 64` event-distance buckets plus one BOS column, `O = 192` offsets.
+
+- **Inputs:**
+  - `tokens: int64[n]`;
+  - `event_ord: int64[n]` (0 for `BOS`; *k*+1 for every token of the *k*-th rendered event block);
+  - `offset: int64[n]`, the 0-based offset within the event block. `BOS` has offset 0, and the tokeniser **raises** if any offset is ≥ `O`.
+- **Embedding:** `h⁰ = E[tokens] + P[offset]`, where `E ∈ ℝ^{V×d}` and `P ∈ ℝ^{O×d}`.
+- **Each layer ℓ = 1..4**, residual with no normalisation:
+  - `q = h W_qᵀ + b_q`, `k = h W_kᵀ + b_k`, `v = h W_vᵀ + b_v`, each `W ∈ ℝ^{d×d}`, split into `H` heads of width `d_h`.
+  - `score[h,i,j] = q_{h,i}·k_{h,j} / 4 + B_ℓ[h, c(i,j)]` for `j ≤ i`, and `−∞` for `j > i`. Here `c(i,j) = R` (the BOS column) if `j` is the BOS token, and otherwise `min(event_ord_i − event_ord_j, R−1)`. `B_ℓ ∈ ℝ^{H×(R+1)}`.
+  - `a = softmax_j(score)` and `o = concat_h(a_h v_h) W_oᵀ + b_o`; then `h ← h + o`.
+  - `h ← h + W₂ ReLU(W₁ h + b₁) + b₂`, where `W₁ ∈ ℝ^{m×d}` and `W₂ ∈ ℝ^{d×m}`.
+- **Head:** `logits_i = W_out h_i + b_out` with `W_out ∈ ℝ^{4×d}`. Logits are computed at every position and read only at `EOE` tokens.
+- **Classes and ties:** class order `[PRODUCTIVE, RECOVERY, STALLED, OSCILLATING]`. Argmax ties go to the first index, so all-zero logits mean PRODUCTIVE.
+- **Parameters:**
+  - `E` 1,310,720 + `P` 24,576;
+  - per layer: attention 66,048, `B` 520 and MLP 131,712, giving 198,280; four layers give 793,120;
+  - head 516.
+  - **Total 2,128,932.**
+- **Initial state:** all zero. CPU, float32, `torch.no_grad()`.
+- **Excluded:** normalisation, dropout, absolute token positions, recurrence, gating and a learned tokeniser.
+
+The tensors (torch state_dict names; layers.0 .. layers.3 are layers 1..4 of §2.2; every .weight of a linear
+map has the torch layout [out, in], so entry [i, j] is the weight from input j to output i):
+  tok_emb.weight           E: row t = token id t; column j = residual dimension j
+  off_emb.weight           P: row o = offset o within the event block (BOS has offset 0); column j = residual dimension j
+  layers.L.attn.rel_bias   B_l: row h = head h; column c = event-distance bucket c (0..63), column 64 = the BOS column
+  layers.L.attn.q.weight   W_q, [out, in]: row i = query unit i (head h = rows 16h..16h+15); column j = residual dimension j
+  layers.L.attn.q.bias     b_q: entry i = query unit i
+  layers.L.attn.k.weight   W_k, [out, in]: row i = key unit i (head h = rows 16h..16h+15); column j = residual dimension j
+  layers.L.attn.k.bias     b_k: entry i = key unit i
+  layers.L.attn.v.weight   W_v, [out, in]: row i = value unit i (head h = rows 16h..16h+15); column j = residual dimension j
+  layers.L.attn.v.bias     b_v: entry i = value unit i
+  layers.L.attn.o.weight   W_o, [out, in]: row j = residual dimension j; column i = concatenated head output i (head h = columns 16h..16h+15)
+  layers.L.attn.o.bias     b_o: entry j = residual dimension j
+  layers.L.mlp.fc1.weight  W_1, [out, in]: row u = MLP unit u; column j = residual dimension j
+  layers.L.mlp.fc1.bias    b_1: entry u = MLP unit u
+  layers.L.mlp.fc2.weight  W_2, [out, in]: row j = residual dimension j; column u = MLP unit u
+  layers.L.mlp.fc2.bias    b_2: entry j = residual dimension j
+  head.weight              W_out, [out, in]: row c = class c; column j = residual dimension j
+  head.bias                b_out: entry c = class c
+Every tensor, in state_dict order (name, shape; 2,128,932 parameters in all):
+  tok_emb.weight           [10240, 128]
+  off_emb.weight           [192, 128]
+  layers.0.attn.rel_bias   [8, 65]
+  layers.0.attn.q.weight   [128, 128]
+  layers.0.attn.q.bias     [128]
+  layers.0.attn.k.weight   [128, 128]
+  layers.0.attn.k.bias     [128]
+  layers.0.attn.v.weight   [128, 128]
+  layers.0.attn.v.bias     [128]
+  layers.0.attn.o.weight   [128, 128]
+  layers.0.attn.o.bias     [128]
+  layers.0.mlp.fc1.weight  [512, 128]
+  layers.0.mlp.fc1.bias    [512]
+  layers.0.mlp.fc2.weight  [128, 512]
+  layers.0.mlp.fc2.bias    [128]
+  layers.1.attn.rel_bias   [8, 65]
+  layers.1.attn.q.weight   [128, 128]
+  layers.1.attn.q.bias     [128]
+  layers.1.attn.k.weight   [128, 128]
+  layers.1.attn.k.bias     [128]
+  layers.1.attn.v.weight   [128, 128]
+  layers.1.attn.v.bias     [128]
+  layers.1.attn.o.weight   [128, 128]
+  layers.1.attn.o.bias     [128]
+  layers.1.mlp.fc1.weight  [512, 128]
+  layers.1.mlp.fc1.bias    [512]
+  layers.1.mlp.fc2.weight  [128, 512]
+  layers.1.mlp.fc2.bias    [128]
+  layers.2.attn.rel_bias   [8, 65]
+  layers.2.attn.q.weight   [128, 128]
+  layers.2.attn.q.bias     [128]
+  layers.2.attn.k.weight   [128, 128]
+  layers.2.attn.k.bias     [128]
+  layers.2.attn.v.weight   [128, 128]
+  layers.2.attn.v.bias     [128]
+  layers.2.attn.o.weight   [128, 128]
+  layers.2.attn.o.bias     [128]
+  layers.2.mlp.fc1.weight  [512, 128]
+  layers.2.mlp.fc1.bias    [512]
+  layers.2.mlp.fc2.weight  [128, 512]
+  layers.2.mlp.fc2.bias    [128]
+  layers.3.attn.rel_bias   [8, 65]
+  layers.3.attn.q.weight   [128, 128]
+  layers.3.attn.q.bias     [128]
+  layers.3.attn.k.weight   [128, 128]
+  layers.3.attn.k.bias     [128]
+  layers.3.attn.v.weight   [128, 128]
+  layers.3.attn.v.bias     [128]
+  layers.3.attn.o.weight   [128, 128]
+  layers.3.attn.o.bias     [128]
+  layers.3.mlp.fc1.weight  [512, 128]
+  layers.3.mlp.fc1.bias    [512]
+  layers.3.mlp.fc2.weight  [128, 512]
+  layers.3.mlp.fc2.bias    [128]
+  head.weight              [4, 128]
+  head.bias                [4]
+
+The model's exact source (model.py):
+
+```python
+"""Immutable target transformer (spec v0.3 §2.2).
+
+This file ships in the authoring packet as a top-level module (``import
+model``). It therefore imports only ``torch`` and the standard library and has
+no relative imports.
+
+Architecture (no normalisation, no dropout, no absolute token position)::
+
+    h0 = E[tokens] + P[offset]
+    for each of 4 layers:
+        q, k, v = h W_q^T + b_q, h W_k^T + b_k, h W_v^T + b_v   (8 heads x 16)
+        score[h,i,j] = q_{h,i} . k_{h,j} / 4 + B[h, c(i,j)]      (j <= i)
+        c(i,j) = R            if key j is BOS (event_ord_j == 0)
+               = min(event_ord_i - event_ord_j, R - 1) otherwise
+        h = h + concat_h(softmax_j(score) v_h) W_o^T + b_o
+        h = h + W_2 ReLU(W_1 h + b_1) + b_2
+    logits = W_out h + b_out                                       (4 classes)
+
+Parameter names (``state_dict`` order) are listed in :data:`PARAM_SHAPES`.
+Class order is ``[PRODUCTIVE, RECOVERY, STALLED, OSCILLATING]``; argmax ties
+go to the first index, so all-zero logits mean PRODUCTIVE.
+
+Implementation note (does not change the maths): the forward pass runs over
+fixed-size blocks of ``BLOCK`` query rows, and query block ``b`` always sees
+keys ``[0, (b + 1) * BLOCK)`` with not-yet-valid keys masked. Every tensor
+operation that touches a given row therefore has a shape that depends only on
+that row's block index, not on the session length, so appending events leaves
+every earlier position's logits bit-for-bit unchanged (spec §11 causal check;
+tested). It also bounds peak memory to ``H x BLOCK x n`` scores per layer.
+Query rows of the same event share one bias row, which is gathered once per
+row group and copied to the rows exactly.
+"""
+
+from __future__ import annotations
+
+import math
+from collections import OrderedDict
+
+import torch
+from torch import nn
+
+# -- frozen constants (must match tokenizer.py) --------------------------------
+
+V = 10240  # vocabulary size
+D = 128  # residual width d
+L = 4  # layers
+H = 8  # heads
+DH = 16  # head width d_h
+M = 512  # MLP width m
+R = 64  # event-distance buckets 0..R-1; column R is the BOS column
+O = 192  # within-event offsets
+N_CLASSES = 4
+
+PAD = 0
+BOS = 1
+EOE = 2
+
+CLASS_NAMES = ("PRODUCTIVE", "RECOVERY", "STALLED", "OSCILLATING")
+
+MASKED = R + 1  # internal bias-table row holding -inf (padding mask)
+QK_SCALE = 0.25  # 1 / sqrt(d_h), exact in binary floating point
+BLOCK = 128  # query rows per block (implementation detail, see module docstring)
+
+assert H * DH == D
+
+
+def _param_shapes() -> "OrderedDict[str, tuple[int, ...]]":
+    shapes: "OrderedDict[str, tuple[int, ...]]" = OrderedDict()
+    shapes["tok_emb.weight"] = (V, D)
+    shapes["off_emb.weight"] = (O, D)
+    for i in range(L):
+        p = f"layers.{i}."
+        # nn.Module lists a module's own parameters before its submodules'.
+        shapes[p + "attn.rel_bias"] = (H, R + 1)
+        for name in ("q", "k", "v", "o"):
+            shapes[p + f"attn.{name}.weight"] = (D, D)
+            shapes[p + f"attn.{name}.bias"] = (D,)
+        shapes[p + "mlp.fc1.weight"] = (M, D)
+        shapes[p + "mlp.fc1.bias"] = (M,)
+        shapes[p + "mlp.fc2.weight"] = (D, M)
+        shapes[p + "mlp.fc2.bias"] = (D,)
+    shapes["head.weight"] = (N_CLASSES, D)
+    shapes["head.bias"] = (N_CLASSES,)
+    return shapes
+
+
+PARAM_SHAPES = _param_shapes()
+PARAM_COUNT = sum(math.prod(s) for s in PARAM_SHAPES.values())
+assert PARAM_COUNT == 2_128_932, PARAM_COUNT
+
+
+# -- zero-initialised building blocks ------------------------------------------
+# Construction never draws a random number: reset_parameters zero-fills
+# instead of calling uniform_/normal_ (spec §2.2 initial state is all zero).
+
+
+class _ZeroLinear(nn.Linear):
+    def reset_parameters(self) -> None:
+        with torch.no_grad():
+            self.weight.zero_()
+            if self.bias is not None:
+                self.bias.zero_()
+
+
+class _ZeroEmbedding(nn.Embedding):
+    def reset_parameters(self) -> None:
+        with torch.no_grad():
+            self.weight.zero_()
+
+
+class Attention(nn.Module):
+    def __init__(self) -> None:
+        super().__init__()
+        self.q = _ZeroLinear(D, D, bias=True)
+        self.k = _ZeroLinear(D, D, bias=True)
+        self.v = _ZeroLinear(D, D, bias=True)
+        self.o = _ZeroLinear(D, D, bias=True)
+        self.rel_bias = nn.Parameter(torch.zeros(H, R + 1))
+
+
+class MLP(nn.Module):
+    def __init__(self) -> None:
+        super().__init__()
+        self.fc1 = _ZeroLinear(D, M, bias=True)
+        self.fc2 = _ZeroLinear(M, D, bias=True)
+
+    def forward(self, h: torch.Tensor) -> torch.Tensor:
+        return self.fc2(torch.relu(self.fc1(h)))
+
+
+class Layer(nn.Module):
+    def __init__(self) -> None:
+        super().__init__()
+        self.attn = Attention()
+        self.mlp = MLP()
+
+
+def _split_heads(x: torch.Tensor) -> torch.Tensor:
+    """[B, n, D] -> [B, H, n, DH]."""
+    b, n, _ = x.shape
+    return x.reshape(b, n, H, DH).transpose(1, 2)
+
+
+class DoomLoopTransformer(nn.Module):
+    """The fixed v0.3 target model. Every parameter starts at exactly 0.0."""
+
+    def __init__(self) -> None:
+        super().__init__()
+        self.tok_emb = _ZeroEmbedding(V, D)
+        self.off_emb = _ZeroEmbedding(O, D)
+        self.layers = nn.ModuleList(Layer() for _ in range(L))
+        self.head = _ZeroLinear(D, N_CLASSES, bias=True)
+
+    # -- public API -------------------------------------------------------------
+
+    def forward(self, tokens: torch.Tensor, event_ord: torch.Tensor, offset: torch.Tensor) -> torch.Tensor:
+        """Logits ``[n, 4]`` at every position of ONE session (1-D LongTensors)."""
+        tokens, event_ord, offset = _as_session(tokens, event_ord, offset)
+        n = tokens.shape[0]
+        valid = torch.ones(1, n, dtype=torch.bool)
+        logits, _ = self._run(tokens[None], event_ord[None], offset[None], valid, None)
+        return logits[0]
+
+    def forward_batch(
+        self,
+        tokens: torch.Tensor,
+        event_ord: torch.Tensor,
+        offset: torch.Tensor,
+        mask: torch.Tensor,
+    ) -> torch.Tensor:
+        """Logits ``[B, n, 4]`` for a right-padded batch of sessions.
+
+        ``mask[b, i]`` is True for real tokens; each row's real tokens must form
+        a prefix. Logits at padded positions are set to 0. Autograd-safe (no
+        in-place writes into saved tensors), so it also serves batched training.
+        """
+        tokens, event_ord, offset, mask = _as_batch(tokens, event_ord, offset, mask)
+        logits, _ = self._run(tokens, event_ord, offset, mask, None)
+        return logits.masked_fill(~mask[..., None], 0.0)
+
+    def activations(
+        self,
+        tokens: torch.Tensor,
+        event_ord: torch.Tensor,
+        offset: torch.Tensor,
+        query_positions: "list[int] | None" = None,
+    ) -> "dict[str, object]":
+        """Intermediate values of ONE session for the inspector.
+
+        Returns ``embed`` ``[n, D]``; ``resid_attn`` and ``resid_mlp``: lists
+        (one per layer) of ``[n, D]`` residuals after the attention and MLP
+        updates; ``attn``: list (one per layer) of ``[H, len(query_positions),
+        n]`` attention weights for the requested query rows (all rows when
+        ``query_positions`` is None, which is ``4 x H x n x n`` floats: keep
+        ``n`` small); ``query_positions``; and ``logits`` ``[n, 4]``.
+        """
+        tokens, event_ord, offset = _as_session(tokens, event_ord, offset)
+        n = tokens.shape[0]
+        if query_positions is None:
+            query_positions = list(range(n))
+        qp = [int(p) for p in query_positions]
+        for p in qp:
+            if not 0 <= p < n:
+                raise ValueError(f"query position {p} outside [0, {n})")
+        collect: dict = {"query_positions": qp}
+        valid = torch.ones(1, n, dtype=torch.bool)
+        logits, collect = self._run(tokens[None], event_ord[None], offset[None], valid, collect)
+        collect["logits"] = logits[0]
+        return collect
+
+    # -- core -------------------------------------------------------------------
+
+    def _run(
+        self,
+        tokens: torch.Tensor,
+        event_ord: torch.Tensor,
+        offset: torch.Tensor,
+        valid: torch.Tensor,
+        collect: "dict | None",
+    ) -> "tuple[torch.Tensor, dict | None]":
+        bsz, n = tokens.shape
+        nb = max(1, -(-n // BLOCK))
+        npad = nb * BLOCK
+        if npad != n:
+            pad = npad - n
+            tokens = torch.cat([tokens, torch.full((bsz, pad), PAD, dtype=torch.long)], dim=1)
+            event_ord = torch.cat([event_ord, torch.zeros(bsz, pad, dtype=torch.long)], dim=1)
+            offset = torch.cat([offset, torch.zeros(bsz, pad, dtype=torch.long)], dim=1)
+            valid = torch.cat([valid, torch.zeros(bsz, pad, dtype=torch.bool)], dim=1)
+
+        is_bos = event_ord == 0  # [B, npad]; padded keys are masked anyway
+        upper = torch.ones(BLOCK, BLOCK, dtype=torch.bool).triu(1)  # j > i inside a block
+
+        # Bias-table indices, shared by all layers. Within a block, query rows of
+        # the same event share one bias row, so indices are built per row group
+        # (a run of equal event_ord) and expanded to rows by an exact lookup.
+        # Index MASKED selects a -inf entry (padded keys); j > i inside the
+        # diagonal block is masked separately with ``upper``.
+        groups: list[torch.Tensor] = []  # [B*H*BLOCK] (batch, head, row) -> bias row
+        gidx: list[torch.Tensor] = []  # [B, U, e] group -> table row
+        for b in range(nb):
+            s, e = b * BLOCK, (b + 1) * BLOCK
+            eo_q = event_ord[:, s:e]
+            change = torch.ones_like(eo_q, dtype=torch.long)
+            change[:, 1:] = (eo_q[:, 1:] != eo_q[:, :-1]).long()
+            change[:, 0] = 0
+            grp = torch.cumsum(change, dim=1)  # [B, BLOCK]
+            u = int(grp.max()) + 1
+            geo = torch.zeros(bsz, u, dtype=torch.long).scatter_(1, grp, eo_q)
+            dist = geo[:, :, None] - event_ord[:, None, :e]  # [B, U, e]
+            c = dist.clamp(0, R - 1).masked_fill(is_bos[:, None, :e], R)
+            c = c.masked_fill(~valid[:, None, :e], MASKED)
+            # Row of the flattened [B*H*U, e] bias table for each (batch, head, query row).
+            bh = torch.arange(bsz * H, dtype=torch.long).view(bsz, H, 1)
+            groups.append((bh * u + grp[:, None, :]).reshape(-1))
+            gidx.append(c)
+
+        hs = [self.tok_emb(tokens[:, b * BLOCK : (b + 1) * BLOCK]) + self.off_emb(offset[:, b * BLOCK : (b + 1) * BLOCK]) for b in range(nb)]
+        if collect is not None:
+            collect["embed"] = torch.cat(hs, dim=1)[0, :n].detach().clone()
+            collect["resid_attn"] = []
+            collect["resid_mlp"] = []
+            collect["attn"] = []
+            qp = collect["query_positions"]
+            qpt = torch.tensor(qp, dtype=torch.long)
+
+        # With autograd live (training), keys/values are concatenated afresh per
+        # block; otherwise they are written into preallocated buffers.
+        grad_live = torch.is_grad_enabled() and any(p.requires_grad for p in self.parameters())
+        neg_inf = float("-inf")
+        neg_inf_col = torch.full((H, 1), neg_inf)
+        for layer in self.layers:
+            attn = layer.attn
+            table = torch.cat([attn.rel_bias, neg_inf_col], dim=1).t().contiguous()  # [R + 2, H]
+            qs: list[torch.Tensor] = []
+            ks: list[torch.Tensor] = []
+            vs: list[torch.Tensor] = []
+            if not grad_live:
+                kbuf = torch.empty(bsz * H, npad, DH)
+                vbuf = torch.empty(bsz * H, npad, DH)
+            for b in range(nb):
+                hb = hs[b]
+                qs.append((_split_heads(attn.q(hb)) * QK_SCALE).reshape(bsz * H, BLOCK, DH))
+                kb = _split_heads(attn.k(hb)).reshape(bsz * H, BLOCK, DH)
+                vb = _split_heads(attn.v(hb)).reshape(bsz * H, BLOCK, DH)
+                if grad_live:
+                    ks.append(kb)
+                    vs.append(vb)
+                else:
+                    kbuf[:, b * BLOCK : (b + 1) * BLOCK] = kb
+                    vbuf[:, b * BLOCK : (b + 1) * BLOCK] = vb
+            if collect is not None:
+                amap = torch.zeros(H, len(qp), npad)
+            new_hs: list[torch.Tensor] = []
+            for b in range(nb):
+                s, e = b * BLOCK, (b + 1) * BLOCK
+                if grad_live:
+                    kb = torch.cat(ks[: b + 1], dim=1)  # [B*H, e, DH]
+                    vb = torch.cat(vs[: b + 1], dim=1)
+                else:
+                    kb = kbuf[:, :e]
+                    vb = vbuf[:, :e]
+                bias_g = torch.embedding(table, gidx[b]).permute(0, 3, 1, 2).reshape(-1, e)  # [B*H*U, e]
+                bias = bias_g.index_select(0, groups[b]).view(bsz * H, BLOCK, e)
+                score = torch.bmm(qs[b], kb.transpose(1, 2)).add_(bias)
+                score[:, :, s:e].masked_fill_(upper, neg_inf)
+                a = torch.softmax(score, dim=-1)  # [B*H, BLOCK, e]
+                ctx = torch.bmm(a, vb).view(bsz, H, BLOCK, DH).transpose(1, 2).reshape(bsz, BLOCK, D)
+                hb = hs[b] + attn.o(ctx)
+                new_hs.append(hb)
+                if collect is not None:
+                    sel = ((qpt >= s) & (qpt < e)).nonzero().flatten()
+                    if sel.numel():
+                        amap[:, sel, :e] = a.view(bsz, H, BLOCK, e)[0][:, qpt[sel] - s, :].detach()
+            if collect is not None:
+                collect["attn"].append(amap[:, :, :n].clone())
+                collect["resid_attn"].append(torch.cat(new_hs, dim=1)[0, :n].detach().clone())
+            hs = [hb + layer.mlp(hb) for hb in new_hs]
+            if collect is not None:
+                collect["resid_mlp"].append(torch.cat(hs, dim=1)[0, :n].detach().clone())
+
+        logits = torch.cat([self.head(hb) for hb in hs], dim=1)[:, :n]
+        return logits, collect
+
+
+# -- input checks ---------------------------------------------------------------
+
+
+def _check_rows(tokens: torch.Tensor, event_ord: torch.Tensor, offset: torch.Tensor, where: str) -> None:
+    n = tokens.shape[0]
+    if n == 0:
+        raise ValueError(f"{where}: empty session")
+    if int(tokens[0]) != BOS or int(event_ord[0]) != 0:
+        raise ValueError(f"{where}: position 0 must be BOS with event_ord 0")
+    if n > 1:
+        if int(event_ord[1:].min()) < 1:
+            raise ValueError(f"{where}: event_ord must be >= 1 after BOS")
+        if bool((event_ord[1:] < event_ord[:-1]).any()):
+            raise ValueError(f"{where}: event_ord must be non-decreasing")
+    if int(tokens.min()) < 0 or int(tokens.max()) >= V:
+        raise ValueError(f"{where}: token id outside [0, {V})")
+    if int(offset.min()) < 0 or int(offset.max()) >= O:
+        raise ValueError(f"{where}: offset outside [0, {O})")
+
+
+def _as_long(x: object, name: str) -> torch.Tensor:
+    t = torch.as_tensor(x)
+    if t.dtype not in (torch.int64, torch.int32, torch.int16, torch.int8, torch.uint8):
+        raise ValueError(f"{name}: integer tensor required, got {t.dtype}")
+    return t.to(torch.long)
+
+
+def _as_session(tokens: object, event_ord: object, offset: object) -> "tuple[torch.Tensor, torch.Tensor, torch.Tensor]":
+    t, e, o = _as_long(tokens, "tokens"), _as_long(event_ord, "event_ord"), _as_long(offset, "offset")
+    if t.ndim != 1 or e.shape != t.shape or o.shape != t.shape:
+        raise ValueError(f"expected three equal 1-D tensors, got {tuple(t.shape)}, {tuple(e.shape)}, {tuple(o.shape)}")
+    _check_rows(t, e, o, "session")
+    return t, e, o
+
+
+def _as_batch(
+    tokens: object, event_ord: object, offset: object, mask: object
+) -> "tuple[torch.Tensor, torch.Tensor, torch.Tensor, torch.Tensor]":
+    t, e, o = _as_long(tokens, "tokens"), _as_long(event_ord, "event_ord"), _as_long(offset, "offset")
+    m = torch.as_tensor(mask).to(torch.bool)
+    if t.ndim != 2 or e.shape != t.shape or o.shape != t.shape or m.shape != t.shape:
+        raise ValueError("expected four equal 2-D tensors [B, n]")
+    lengths = m.sum(dim=1)
+    for b in range(t.shape[0]):
+        n = int(lengths[b])
+        if not bool(m[b, :n].all()):
+            raise ValueError(f"batch row {b}: real tokens must form a prefix")
+        _check_rows(t[b, :n], e[b, :n], o[b, :n], f"batch row {b}")
+    # Padded slots get neutral, in-range values.
+    t = t.masked_fill(~m, PAD)
+    e = e.masked_fill(~m, 0)
+    o = o.masked_fill(~m, 0)
+    return t, e, o, m
+
+
+# -- helpers --------------------------------------------------------------------
+
+
+def zero_model(requires_grad: bool = False) -> DoomLoopTransformer:
+    """Model with every parameter exactly 0.0 (spec §2.2 initial state).
+
+    Draws no random numbers. The direct-weight path uses ``requires_grad=False``.
+    """
+    model = DoomLoopTransformer()
+    with torch.no_grad():
+        for p in model.parameters():
+            p.zero_()
+            p.requires_grad_(requires_grad)
+    return model.to(dtype=torch.float32, device="cpu").eval()
+
+
+def predict(logits: torch.Tensor) -> torch.Tensor:
+    """argmax over the class dimension; ties go to the first maximal index."""
+    return torch.argmax(logits, dim=-1)
+```
+
+HOW YOUR NETWORK IS SCORED: on held-out sessions from the same simulator, which you do not see. Each session is rendered with renderer.py, tokenised with tokenizer.py and run through the network once (model.py, CPU, float32); attention is causal, so the logits at a block depend only on that block and the blocks before it. The class predicted for event block t is the argmax of the 4 logits at that block's EOE token (ties go to the first index, so all-zero logits mean PRODUCTIVE). The window ending at block t is blocks t-7 .. t, the agent's most recent eight operations, so windows ending before block 7 (counting from 0) are not scored. A window is scored when it passes the gate (§6: windows with withheld observations are not scored) and its oracle label (§6.3) is one of the four classes; windows labelled INSUFFICIENT_EVIDENCE are not scored. The score is the macro-F1 over the four classes on the scored windows (the mean of the four per-class F1 scores), with a 95% bootstrap confidence interval over sessions. The false-alarm rate is reported too: the share of scored windows labelled PRODUCTIVE or RECOVERY that the network classifies as STALLED or OSCILLATING. It is compared with a network of the same architecture trained on labelled windows.
+
+HOW TO WRITE THE WEIGHTS (numbers only; nothing is run). Write code blocks whose opening line is three backticks followed by the word edits, one statement per line ('#' starts a comment; a long list may continue over the next lines). Tensors: the names and shapes in the table under THE NETWORK.
+
+```edits
+tok_emb.weight[13, 0] = 2.5                       # one entry: token id 13 (run_tests), residual dimension 0
+off_emb.weight[0:4, 2] = [1, 0, -1, 0.5]          # explicit values along a range (as many values as entries)
+tok_emb.weight[7:21, 1] = 1                       # fill a range (a:b is half-open; ':' alone = the whole axis)
+layers.0.attn.q.weight[16:18, 0:3] = [[1, -1, 0.5], [0, 2, 0]]   # a 2-D list for a 2-D block (here 2 x 3)
+layers.0.attn.rel_bias[1, 0:3] = [0, -1, -2]      # head 1, event distances 0, 1 and 2
+layers.0.attn.rel_bias[1, 64] = -4                # head 1, the BOS column
+layers.1.mlp.fc1.bias[0:512:2] = -1               # a:b:s takes every s-th index (here every 2nd MLP unit)
+layers.1.mlp.fc2.weight[:, 0] *= 2                # scale (also += and -=)
+head.bias[3] = 0.25                               # one entry: the OSCILLATING logit
+```
+Ranges: a:b is half-open, a:b:s takes every s-th index. Indices are plain non-negative integers counted from 0: no negative indices and no arithmetic (write 48:64, not 3*16:4*16); every index and every range end must lie inside its axis (a range is not clamped to the axis); a:, :b and ::s are accepted. Addressing: row t of tok_emb.weight is token id t (the ids are listed under THE LOGS) and row o of off_emb.weight is offset o; column j of either is residual dimension j. A linear map's .weight is [out, in]: entry [i, j] is the weight from input j to output i. Head h (0..7) of a layer is rows 16h to 16h+15 of its attn.q.weight, attn.k.weight and attn.v.weight (for head 3: 48:64), the same entries of attn.q.bias, attn.k.bias and attn.v.bias, columns 16h to 16h+15 of its attn.o.weight, and row h of its attn.rel_bias. Column c of attn.rel_bias: c = 0..63 is the event distance event_ord_i - event_ord_j (0 = the same event block; column 63 also covers every larger distance) and c = 64 is the BOS column. MLP unit u of a layer is row u of mlp.fc1.weight, entry u of mlp.fc1.bias and column u of mlp.fc2.weight. Row c of head.weight and entry c of head.bias give the logit of class c (0 PRODUCTIVE, 1 RECOVERY, 2 STALLED, 3 OSCILLATING).
+Statements apply in order; a later statement overwrites an earlier one. Every edits block of every reply is read and applied, in the order written, so you can write the network in parts over several replies and change earlier statements later; do not write an edits block you do not want applied. A statement that cannot be read is skipped (the others still apply). If a reply is cut off inside an edits block, the statements before the cut are applied and the statement that was cut off is skipped: open a new edits block in your next reply and write that statement again in full (whatever message follows the cut). An edits block never continues into the next reply, and lines outside edits blocks are not read. Values: plain decimal numbers (|v| <= 1e6), stored as float32. When every weight you want is written, end your final reply with a line that is exactly END OF WEIGHTS (outside any edits block).
