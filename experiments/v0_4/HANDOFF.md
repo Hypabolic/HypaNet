@@ -4,18 +4,16 @@ For whoever picks up v0.4 next, human or Claude. `experiments/v0_4/STATUS.md` ha
 
 ## The result so far
 
-Fable (claude-fable-5-1) edited the weights of Qwen3.5-0.8B by hand to detect agent doom loops. Scored on the val quick look (1,000 val sessions, 18,222 windows; harness-only, never shown to Fable):
+v0.4 is compared with v0.3: Fable editing Qwen's weights (v0.4) against Fable building a small network from scratch (v0.3), with the same labelled data in rows A and B (none, then the same 200 disclosed val windows); row C is trained networks, with no v0.4 counterpart. The full summary, with CIs, false alarms and sources, is at the top of `experiments/v0_4/STATUS.md` ("Summary so far").
 
-| Column | Macro-F1 [95% CI] | Paired difference |
+| Val macro-F1 | v0.3 (small network) | v0.4 (edits Qwen) |
 | --- | --- | --- |
-| Prior: always PRODUCTIVE | 0.137 [0.131, 0.144] | |
-| Qwen-0 (base) | 0.223 [0.202, 0.243] | vs prior +0.086 [+0.062, +0.108] |
-| WSP-A (no labelled data) | 0.330 [0.309, 0.350] | vs Qwen-0 +0.107 [+0.083, +0.130] |
-| WSP-B (plus the 200 labelled val windows) | **0.419 [0.397, 0.441]** | vs Qwen-0 **+0.196 [+0.165, +0.226]**; vs WSP-A +0.089 [+0.065, +0.113] |
+| A: original, no labels | **0.750** | 0.330\* |
+| B: revision, 200 labelled windows | **0.954** | 0.419\* |
+| C: trained | 0.926 (C-all) | none (dropped) |
+| Starting point | | base Qwen 0.212 |
 
-The reports are `artifacts/reports/v04_val_quick_{qwen0,wspa,wspb}.json`. Fable's cost: WSP-A US$32.58 and WSP-B US$29.81, US$62.39 in total, against caps of US$500 and US$250.
-
-**Caveats:** these are val numbers, not sealed ones (Matthew chose "Val only, no sealed"). The full-val `excluding_disclosed` numbers are the result of record: Qwen-0's is in (below); WSP-A's and WSP-B's are still to come. WSP-B's disclosure followed deviation D1.
+\* Quick look (1,000 val sessions); WSP-A and WSP-B full val are still to run. The rest is full val `excluding_disclosed`. So far v0.3 wins clearly: on the quick look WSP-B nearly doubles base Qwen (WSP-A about 1.5×), but both reach less than half of their v0.3 counterpart. v0.3 C's val numbers are optimistic (early-stopped on part of val). Harness-only, never shown to Fable. Fable's v0.4 cost: US$62.39 (caps US$500 and US$250). These are val numbers, not sealed ones (Matthew chose "Val only, no sealed"); WSP-B's disclosure followed deviation D1.
 
 ## Qwen-0 full val: done (6 Nov, 12:55 AEDT)
 

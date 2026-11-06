@@ -2,6 +2,25 @@
 
 _Last update: 2026-11-06 (evening). Plan: `agent_doom_loop_detector_plan_v0_4.md`. Matthew accepted every recommendation in it, and the post-M0 revisions are in its "Revisions after M0" section. On 6 Nov, before G1, he dropped the training baselines and all cloud compute (plan revision 12), and then took sealed scoring out of v0.4 (plan revision 13). G1 was frozen on 6 Nov; WSP-A and WSP-B have run and been scored on the val quick look. **The handoff for the next session is `experiments/v0_4/HANDOFF.md`.**_
 
+## Summary so far: v0.4 against v0.3 (6 Nov)
+
+v0.4 asks whether Fable does better by editing the weights of a language model (Qwen3.5-0.8B) than it did in v0.3, where it built a small detector network from scratch. Rows A and B gave Fable the same labelled data: none for A, and the same 200 disclosed val windows for B (v0.3 B's disclosure also carried the reference-policy class, which v0.4 dropped; WSP-B's came from a WSP-A readout, D1). Row C is trained networks, not Fable, and has no v0.4 counterpart. Val macro-F1 (higher is better, 1.0 perfect; the constant prior scores 0.14), with the false-loop alarm rate:
+
+| | v0.3: Fable builds a small network | v0.4: Fable edits Qwen | Gap (v0.4 − v0.3) |
+| --- | --- | --- | --- |
+| **A**: original, no labels | **0.750** [0.740, 0.760]; alarms 2.0% | 0.330 [0.309, 0.350]\*; alarms 55.3% | −0.42 |
+| **B**: one revision, 200 labelled windows | **0.954** [0.950, 0.958]; alarms 2.4% | 0.419 [0.397, 0.441]\*; alarms 47.6% | −0.53 |
+| **C**: trained on labels | C-all 0.926 [0.920, 0.931]; alarms 5.8% | none (dropped by Matthew, 6 Nov) | |
+| Starting point | | base Qwen (Qwen-0) **0.212** [0.202, 0.222]; alarms 70.9% | |
+
+\* Quick look (1,000 val sessions, `artifacts/reports/v04_val_quick_{wspa,wspb}.json`); WSP-A and WSP-B full val have not run yet. Everything else is full val `excluding_disclosed` (3,804 sessions): Qwen-0 from `artifacts/reports/v04_val_qwen0.json`, v0.3 cited from its recorded val results in `artifacts/reports/v03_sealed.json` (not yet re-run under v0.4 scoring). The other v0.3 trained networks on val: C-32 0.35, C-128 0.44, C-512 0.71 (3-seed means), C-2048 0.77 (one seed).
+
+**What it says so far:**
+- **v0.3 wins clearly.** On the paired quick look, WSP-B nearly doubles base Qwen (0.223 → 0.419, +0.196 [+0.165, +0.226]) and cuts its false alarms (69% → 48%); WSP-A reaches 0.330 (+0.107 [+0.083, +0.130]). But both reach less than half of their v0.3 counterpart's score, and raise 20–28 times as many false alarms (B: 48% against 2.4%; A: 55% against 2.0%).
+- **The revision helps in both rounds**, more in v0.3 (A → B +0.20) than in v0.4 (+0.09, paired CI [+0.065, +0.113] on the quick look).
+- **Caveats:** the v0.4 edit figures are quick-look numbers, but base Qwen moved by only 0.01 between the quick look (0.223) and full val (0.212), so a gap this size is very unlikely to close. The formal tests, Q2 (WSP-B − v0.3 B) and WSP-A − v0.3 A, need WSP-A and WSP-B full val and the v0.3 columns re-run under v0.4 scoring (HANDOFF "Next", steps 2–4). v0.3 C's val figures are optimistic: its runs were early-stopped on a 500-session val subset that `excluding_disclosed` does not remove (PREREGISTRATION §9). These are val numbers, not a sealed set (Matthew: "Val only, no sealed").
+- **Cost:** Fable spent US$62.39 on v0.4 (WSP-A US$32.58, WSP-B US$29.81); v0.3's hand-written phases cost US$64.62 (Phase A US$42.73, Phase B US$21.89; the corrected figure, see "Corrections to earlier notes"), so about the same.
+
 ## Where things stand (6 Nov, evening)
 
 - **G1 frozen** (`experiments/registry_v0_4.yaml`, G1 freeze `494db5e3`), then three revisions, all deviations logged in PREREGISTRATION §13: D1 (revisions 1 and 2) and D2 (revision 3). Current freeze: `bf81354e`.
