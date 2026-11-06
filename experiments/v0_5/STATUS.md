@@ -18,7 +18,20 @@ that network with tools and the same 200 labelled val windows.
 Source reports: `artifacts/reports/v05_val_r1.json` (official) and
 `experiments/v0_5/phase_b/val_report/v05_val_v05b.json` (scored with the same scorer in its `--artifact`
 mode, so marked `"official": false`; the scorer's official mode only takes `experiments/v0_5/runs/RUN`).
-v0.3 rows: `experiments/v0_3/STATUS.md`. v0.5 B against v0.3 B has not been tested as a paired difference.
+v0.3 rows: `experiments/v0_3/STATUS.md`.
+
+**Paired on val** (excluding_disclosed, shared session bootstrap; `experiments/v0_5/sealed_dryrun/`, which
+also reproduced every v0.5 and v0.3 val report exactly):
+
+| Pair | Macro-F1 difference | False-alarm difference |
+|---|---|---|
+| v0.5 B − v0.3 B | +0.0028 [−0.0011, +0.0068] (level) | +0.0077 [+0.0062, +0.0092] |
+| v0.5 B − v0.3 C-all | +0.0313 [+0.0264, +0.0366] | −0.0256 [−0.0302, −0.0213] |
+| v0.5 B − v0.3 A | +0.2073 [+0.1976, +0.2171] | +0.0120 |
+| v0.5 r1 − v0.3 A | −0.4292 [−0.4420, −0.4168] | +0.9376 |
+
+**Sealed test and OOD:** pre-registered in `experiments/v0_5/sealed/README.md` (committed `abe8b83`); the
+one-time run started 6 Nov.
 
 - **r1:** OSCILLATING F1 0.83 (precision 0.98, recall 0.73) from a hand-reasoned hunk-reversion circuit and a
   residue code (token id mod 4, 5, 7; mod 3, 13) written as strided fills; STALLED predicted on most windows.
