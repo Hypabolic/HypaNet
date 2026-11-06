@@ -46,7 +46,7 @@ Costs: Phase A about $59, Phase B $40, all `claude-fable-5-1`.
 | v0.3 C-128 | 128 sessions | 0.450 ± 0.035 | 10–16% | 0.288 ± 0.035 | 35–44% |
 | v0.3 C-512 | 512 sessions | 0.707 ± 0.008 | 5–13% | 0.305 ± 0.034 | 49–80% |
 | v0.3 C-2048 (1 seed) | 2,048 sessions | 0.755 | 4.4% | 0.400 | 50.4% |
-| v0.3 C-all (1 seed) | 11,864 sessions | 0.924 | 6.1% | 0.488 | 34.6% |
+| v0.3 C-all (1 seed) | 11,864 sessions | 0.923 | 6.1% | 0.488 | 34.5% |
 | v0.2 A (hand-written MLP, engineered features) | 0 | 0.667 | 2.5% | 0.810 | 1.3% |
 | v0.2 B | 200 windows | 0.936 | 3.1% | 0.870 | 8.5% |
 | v0.2 C-all (trained MLP, 3 seeds) | 223,930 windows | 0.992 | 0.8% | 0.843 | 11.6% |
@@ -58,7 +58,7 @@ Costs: Phase A about $59, Phase B $40, all `claude-fable-5-1`.
 - **Counterfactual consistency** (strict endpoint rate): v0.3 A 0.750, v0.3 B 0.862, C-all 0.496, C-2048 0.047. The v0.2 figures are A 0.715 and B 0.961.
 
 **What it shows:**
-- **On raw logs, the hand-written transformer beats the trained one with about 60× fewer labelled sessions.** v0.3 B, from 200 labelled windows, scores 0.957 on test. C-all, trained on all 11,864 dev sessions, scores 0.924.
+- **On raw logs, the hand-written transformer beats the trained one with about 60× fewer labelled sessions.** v0.3 B, from 200 labelled windows, scores 0.957 on test. C-all, trained on all 11,864 dev sessions, scores 0.923.
 - **Out of distribution, the gap is very large.** v0.3 B scores 0.908 on OOD, the best OOD result of any model in the project; the previous best was v0.2 B at 0.870. Zero-label v0.3 A (0.815) beats every trained transformer.
 - **Trained transformers collapse on the separately written OOD generator.** They score 0.24–0.49, with 35–80% false loop alarms.
 - **Raw logs versus engineered features.** In distribution, the trained v0.2 MLP on engineered features is still the best model (0.992). The hand-written v0.3 network does not need the engineered features to beat v0.2's hand-written columns.
@@ -89,7 +89,7 @@ Costs: Phase A about $59, Phase B $40, all `claude-fable-5-1`.
   - **Interrupted 04:42** by the account's shared 5-hour usage limit (HTTP 429). It had made 14 tool calls, all reads of the packet plus a 153-byte directory-listing script in scratch, so nothing was authored. It had used 256K thinking tokens and cost $14.89.
   - **Audit note:** the audit's single `[EXECUTED]` finding is `./py -c "import os; print(sorted(os.listdir('.'))); ..."`. The semicolons sit inside a quoted Python string that lists the author's own directory. The compound-command heuristic matched it, but it is not a redirection and reads nothing outside the sandbox. Reviewed and judged benign.
   - **Continuation 1** was launched at 09:17 with `scripts/v03_launch.sh continue 1`, using the fixed `prompt_continue.md` (sha256 matches HANDOVER).
-  - **Submitted final at 10:51.** Continuation 1 made 64 tool calls and cost $42.73, so Phase A cost $57.62 in total. The audit found 0 violations and 0 denials.
+  - **Submitted final at 10:51.** Continuation 1 made 64 tool calls. Phase A cost $42.73 in total: the logged `total_cost_usd` is cumulative across resumed launches, so it already includes the interrupted launch's $14.89, and continuation 1 itself cost $27.84. (Corrected 6 Nov 2026; this line said $57.62, double-counting the $14.89.) The audit found 0 violations and 0 denials.
   - **Archived at 10:52** in `weight_program/v0_3/phase-a/`:
     - artifact sha256 `ba6f4743e6c4c32a0a71124357511146889a94204d8263d547edaa85b251dfb6`;
     - the rebuild is byte-identical and the packet is registered;
@@ -109,7 +109,7 @@ Costs: Phase A about $59, Phase B $40, all `claude-fable-5-1`.
 
     - The main weakness, as in v0.2, is STALLED recall: stalls are mostly called PRODUCTIVE.
 - **Phase B:** the disclosure (200 windows, sha256 `27c8deb0…`) was handed over and Fable resumed at 10:54 (`scripts/v03_launch.sh phase-b`). Cost cap US$250.
-  - **Submitted final at 11:53.** The session cost $64.62 and the audit is clean. v0.3 hand-written work has cost $122.24 in total.
+  - **Submitted final at 11:53.** The audit is clean. Phase B cost $21.89 (the cumulative `total_cost_usd` went from $42.73 to $64.62), so v0.3 hand-written work cost $64.62 in total. (Corrected 6 Nov 2026; this line said the session cost $64.62 and the total $122.24, summing cumulative figures.)
   - **Fable's self-report:** Phase A's policy got 141/200 on the disclosure, and the revised policy gets 199/200 (V053 left deliberately). The changes are listed in `REVISION.md`:
     - repetition is judged over the whole session;
     - failed validations are treated as episodes, with retries and resolutions;
