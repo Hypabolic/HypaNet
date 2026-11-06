@@ -20,3 +20,5 @@ experiments/v0_4/logs/*/journal/
 weight_program/v0_4/*/edit.safetensors
 weight_program/v0_4/*/author_output/**/*.npz
 experiments/v0_4/columns/*.partial.npz
+experiments/v0_4/columns/*.shards/*.npz
+experiments/v0_4/columns/*.shards/*.partial.npz

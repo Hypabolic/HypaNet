@@ -1,0 +1,19 @@
+{
+ "device": "mps",
+ "dtype": "fp32",
+ "edit_build_record_sha256": null,
+ "format": "v04-parallel-readout/1",
+ "seed_partial": {
+  "file": "qwen0.val.partial.npz",
+  "sessions": 1700,
+  "sha256": "92868f27373c2436c946476845bc53467138a7749626c958fb261173e6312f95"
+ },
+ "shards": [
+  "f2d788e42a74732c84db934307db7c2032a1b2e34f67c1287c1b2e156d2a1cd3",
+  "4c980077004aaf49c7d0f604dfe36b13432883f368e43c67501c6c57a0b840b4",
+  "8f2eb304673d236c60bb65ffb7047d99a3611931d60e21fd42ba851fd112dbe0"
+ ],
+ "subset": null,
+ "tasks_sha256": "db72cc13afa5611afc53d4fff98964557d1024a0da1fc52af6c6a67b6d735e77",
+ "workers": 3
+}
