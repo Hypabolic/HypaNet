@@ -1,0 +1,498 @@
+# REVISION.edits: Phase C revision, applied in order on top of Phase B's weights (phase_b/artifact.dlw).
+# See REVISION.md (changes and reasons) and CIRCUITS.md (the revised network). Blank lines and # comments are ignored.
+
+# ================ A. token embedding ================
+# A1. d30 = the hunk id 'h0' (word id 5861): an empty removed-lines side of a hunk line
+tok_emb.weight[5861, 30] = 1
+# A2. d127 = read_file tool flag (on the tool token; layer-0 head 2 broadcasts it over the event)
+tok_emb.weight[7, 127] = 1
+
+# ================ B. layer 0 attention ================
+# B1. head 2 (tool-class broadcast): add the read_file flag d127 as a ninth broadcast value
+layers.0.attn.v.weight[40, 127] = 1
+layers.0.attn.o.weight[127, 40] = 1
+
+# ================ C. layer 0 MLP: new keys and flags ================
+# C1. units 242-257: mutation path key, code A (hashed token at offset 10 of an edit/write/revert event):
+#     written with weight -3 so the path carries -2x code A in block 3 A (role-signed: only mutation queries match it)
+layers.0.mlp.fc1.weight[242, 32] = 1
+layers.0.mlp.fc1.weight[243, 33] = 1
+layers.0.mlp.fc1.weight[244, 34] = 1
+layers.0.mlp.fc1.weight[245, 35] = 1
+layers.0.mlp.fc1.weight[246, 36] = 1
+layers.0.mlp.fc1.weight[247, 37] = 1
+layers.0.mlp.fc1.weight[248, 38] = 1
+layers.0.mlp.fc1.weight[249, 39] = 1
+layers.0.mlp.fc1.weight[250, 40] = 1
+layers.0.mlp.fc1.weight[251, 41] = 1
+layers.0.mlp.fc1.weight[252, 42] = 1
+layers.0.mlp.fc1.weight[253, 43] = 1
+layers.0.mlp.fc1.weight[254, 44] = 1
+layers.0.mlp.fc1.weight[255, 45] = 1
+layers.0.mlp.fc1.weight[256, 46] = 1
+layers.0.mlp.fc1.weight[257, 47] = 1
+layers.0.mlp.fc1.weight[242:258, 1] = 1
+layers.0.mlp.fc1.weight[242:258, 22] = 1
+layers.0.mlp.fc1.weight[242:258, 8] = 1
+layers.0.mlp.fc1.bias[242:258] = -3
+layers.0.mlp.fc2.weight[32, 242] = -3
+layers.0.mlp.fc2.weight[33, 243] = -3
+layers.0.mlp.fc2.weight[34, 244] = -3
+layers.0.mlp.fc2.weight[35, 245] = -3
+layers.0.mlp.fc2.weight[36, 246] = -3
+layers.0.mlp.fc2.weight[37, 247] = -3
+layers.0.mlp.fc2.weight[38, 248] = -3
+layers.0.mlp.fc2.weight[39, 249] = -3
+layers.0.mlp.fc2.weight[40, 250] = -3
+layers.0.mlp.fc2.weight[41, 251] = -3
+layers.0.mlp.fc2.weight[42, 252] = -3
+layers.0.mlp.fc2.weight[43, 253] = -3
+layers.0.mlp.fc2.weight[44, 254] = -3
+layers.0.mlp.fc2.weight[45, 255] = -3
+layers.0.mlp.fc2.weight[46, 256] = -3
+layers.0.mlp.fc2.weight[47, 257] = -3
+# C2. units 258-273: mutation path key, code B -> block 3 B with weight -1 (raw code B is cancelled by units 162-177)
+layers.0.mlp.fc1.weight[258, 48] = 1
+layers.0.mlp.fc1.weight[259, 49] = 1
+layers.0.mlp.fc1.weight[260, 50] = 1
+layers.0.mlp.fc1.weight[261, 51] = 1
+layers.0.mlp.fc1.weight[262, 52] = 1
+layers.0.mlp.fc1.weight[263, 53] = 1
+layers.0.mlp.fc1.weight[264, 54] = 1
+layers.0.mlp.fc1.weight[265, 55] = 1
+layers.0.mlp.fc1.weight[266, 56] = 1
+layers.0.mlp.fc1.weight[267, 57] = 1
+layers.0.mlp.fc1.weight[268, 58] = 1
+layers.0.mlp.fc1.weight[269, 59] = 1
+layers.0.mlp.fc1.weight[270, 60] = 1
+layers.0.mlp.fc1.weight[271, 61] = 1
+layers.0.mlp.fc1.weight[272, 62] = 1
+layers.0.mlp.fc1.weight[273, 63] = 1
+layers.0.mlp.fc1.weight[258:274, 1] = 1
+layers.0.mlp.fc1.weight[258:274, 22] = 1
+layers.0.mlp.fc1.weight[258:274, 8] = 1
+layers.0.mlp.fc1.bias[258:274] = -3
+layers.0.mlp.fc2.weight[48, 258] = -1
+layers.0.mlp.fc2.weight[49, 259] = -1
+layers.0.mlp.fc2.weight[50, 260] = -1
+layers.0.mlp.fc2.weight[51, 261] = -1
+layers.0.mlp.fc2.weight[52, 262] = -1
+layers.0.mlp.fc2.weight[53, 263] = -1
+layers.0.mlp.fc2.weight[54, 264] = -1
+layers.0.mlp.fc2.weight[55, 265] = -1
+layers.0.mlp.fc2.weight[56, 266] = -1
+layers.0.mlp.fc2.weight[57, 267] = -1
+layers.0.mlp.fc2.weight[58, 268] = -1
+layers.0.mlp.fc2.weight[59, 269] = -1
+layers.0.mlp.fc2.weight[60, 270] = -1
+layers.0.mlp.fc2.weight[61, 271] = -1
+layers.0.mlp.fc2.weight[62, 272] = -1
+layers.0.mlp.fc2.weight[63, 273] = -1
+# C3. units 274-289: plan action key at offset 12 (the word after 'verb:'), code A -> block 3 A (+1, i.e. a target);
+#     the offset gate is 1 - (o - 12)^2 = 24*o - o^2 - 143 from the offset features d19 = o, d20 = o^2
+layers.0.mlp.fc1.weight[274, 32] = 1
+layers.0.mlp.fc1.weight[275, 33] = 1
+layers.0.mlp.fc1.weight[276, 34] = 1
+layers.0.mlp.fc1.weight[277, 35] = 1
+layers.0.mlp.fc1.weight[278, 36] = 1
+layers.0.mlp.fc1.weight[279, 37] = 1
+layers.0.mlp.fc1.weight[280, 38] = 1
+layers.0.mlp.fc1.weight[281, 39] = 1
+layers.0.mlp.fc1.weight[282, 40] = 1
+layers.0.mlp.fc1.weight[283, 41] = 1
+layers.0.mlp.fc1.weight[284, 42] = 1
+layers.0.mlp.fc1.weight[285, 43] = 1
+layers.0.mlp.fc1.weight[286, 44] = 1
+layers.0.mlp.fc1.weight[287, 45] = 1
+layers.0.mlp.fc1.weight[288, 46] = 1
+layers.0.mlp.fc1.weight[289, 47] = 1
+layers.0.mlp.fc1.weight[274:290, 1] = 1
+layers.0.mlp.fc1.weight[274:290, 24] = 1
+layers.0.mlp.fc1.weight[274:290, 18] = 1
+layers.0.mlp.fc1.weight[274:290, 19] = 24
+layers.0.mlp.fc1.weight[274:290, 20] = -1
+layers.0.mlp.fc1.bias[274:290] = -147
+layers.0.mlp.fc2.weight[32, 274] = 1
+layers.0.mlp.fc2.weight[33, 275] = 1
+layers.0.mlp.fc2.weight[34, 276] = 1
+layers.0.mlp.fc2.weight[35, 277] = 1
+layers.0.mlp.fc2.weight[36, 278] = 1
+layers.0.mlp.fc2.weight[37, 279] = 1
+layers.0.mlp.fc2.weight[38, 280] = 1
+layers.0.mlp.fc2.weight[39, 281] = 1
+layers.0.mlp.fc2.weight[40, 282] = 1
+layers.0.mlp.fc2.weight[41, 283] = 1
+layers.0.mlp.fc2.weight[42, 284] = 1
+layers.0.mlp.fc2.weight[43, 285] = 1
+layers.0.mlp.fc2.weight[44, 286] = 1
+layers.0.mlp.fc2.weight[45, 287] = 1
+layers.0.mlp.fc2.weight[46, 288] = 1
+layers.0.mlp.fc2.weight[47, 289] = 1
+# C4. units 290-305: the same key, code B -> block 3 B (+1)
+layers.0.mlp.fc1.weight[290, 48] = 1
+layers.0.mlp.fc1.weight[291, 49] = 1
+layers.0.mlp.fc1.weight[292, 50] = 1
+layers.0.mlp.fc1.weight[293, 51] = 1
+layers.0.mlp.fc1.weight[294, 52] = 1
+layers.0.mlp.fc1.weight[295, 53] = 1
+layers.0.mlp.fc1.weight[296, 54] = 1
+layers.0.mlp.fc1.weight[297, 55] = 1
+layers.0.mlp.fc1.weight[298, 56] = 1
+layers.0.mlp.fc1.weight[299, 57] = 1
+layers.0.mlp.fc1.weight[300, 58] = 1
+layers.0.mlp.fc1.weight[301, 59] = 1
+layers.0.mlp.fc1.weight[302, 60] = 1
+layers.0.mlp.fc1.weight[303, 61] = 1
+layers.0.mlp.fc1.weight[304, 62] = 1
+layers.0.mlp.fc1.weight[305, 63] = 1
+layers.0.mlp.fc1.weight[290:306, 1] = 1
+layers.0.mlp.fc1.weight[290:306, 24] = 1
+layers.0.mlp.fc1.weight[290:306, 18] = 1
+layers.0.mlp.fc1.weight[290:306, 19] = 24
+layers.0.mlp.fc1.weight[290:306, 20] = -1
+layers.0.mlp.fc1.bias[290:306] = -147
+layers.0.mlp.fc2.weight[48, 290] = 1
+layers.0.mlp.fc2.weight[49, 291] = 1
+layers.0.mlp.fc2.weight[50, 292] = 1
+layers.0.mlp.fc2.weight[51, 293] = 1
+layers.0.mlp.fc2.weight[52, 294] = 1
+layers.0.mlp.fc2.weight[53, 295] = 1
+layers.0.mlp.fc2.weight[54, 296] = 1
+layers.0.mlp.fc2.weight[55, 297] = 1
+layers.0.mlp.fc2.weight[56, 298] = 1
+layers.0.mlp.fc2.weight[57, 299] = 1
+layers.0.mlp.fc2.weight[58, 300] = 1
+layers.0.mlp.fc2.weight[59, 301] = 1
+layers.0.mlp.fc2.weight[60, 302] = 1
+layers.0.mlp.fc2.weight[61, 303] = 1
+layers.0.mlp.fc2.weight[62, 304] = 1
+layers.0.mlp.fc2.weight[63, 305] = 1
+# C5. unit 306: H0 = relu(h0 + prev2'NL@' + mutation - 2) -> d112: a hunk line whose removed side is empty (an append)
+layers.0.mlp.fc1.weight[306, 30] = 1
+layers.0.mlp.fc1.weight[306, 27] = 1
+layers.0.mlp.fc1.weight[306, 8] = 1
+layers.0.mlp.fc1.bias[306] = -2
+layers.0.mlp.fc2.weight[112, 306] = 1
+
+# ================ E. layer 1 MLP ================
+# E1. unit 0 (REVg): gate on the mutation class so http_call hunk lines never count as reversions
+layers.1.mlp.fc1.weight[0, 8] = 1
+layers.1.mlp.fc1.bias[0] = -4
+# E2. units 1,2 (REPg -> REPg_np): exclude plan keys (d18) and mutation path keys (d8); they get their own flags
+layers.1.mlp.fc1.weight[1, 18] = -10
+layers.1.mlp.fc1.weight[1, 8] = -10
+layers.1.mlp.fc1.weight[2, 18] = -10
+layers.1.mlp.fc1.weight[2, 8] = -10
+# E3. units 13,14 (KV -> d127) dropped: d127 is now the read_file flag
+layers.1.mlp.fc1.weight[13:15, :] = 0
+layers.1.mlp.fc1.bias[13:15] = 0
+layers.1.mlp.fc2.weight[:, 13:15] = 0
+# E4. units 18,19 (SAMEFAILED -> FAILREP): a FAILED passed-count digit whose count was seen within 31 events
+#     = clip(8*d113 + (10/3)*sum(block2) + 10*FAILED + 10*digit - 31.5) -> d52
+layers.1.mlp.fc1.weight[18:20, :] = 0
+layers.1.mlp.fc1.weight[18, 113] = 8
+layers.1.mlp.fc1.weight[18, 96:112] = 3.3333333
+layers.1.mlp.fc1.weight[18, 28] = 10
+layers.1.mlp.fc1.weight[18, 2] = 10
+layers.1.mlp.fc1.bias[18] = -31.5
+layers.1.mlp.fc1.weight[19, 113] = 8
+layers.1.mlp.fc1.weight[19, 96:112] = 3.3333333
+layers.1.mlp.fc1.weight[19, 28] = 10
+layers.1.mlp.fc1.weight[19, 2] = 10
+layers.1.mlp.fc1.bias[19] = -32.5
+# E5. units 91,92: REPg_plan = clip(2*REP_A + 4*REP_B + (2/3)*sum(block3A) - 9 - 10 + 10*plan - 20*offset7) -> d89
+#     (the class flag is 2 on the tool token at offset 7, hence the -20*offset7 term)
+layers.1.mlp.fc1.weight[91, 26] = 2
+layers.1.mlp.fc1.weight[91, 9] = 4
+layers.1.mlp.fc1.weight[91, 32:48] = 0.6666667
+layers.1.mlp.fc1.weight[91, 18] = 10
+layers.1.mlp.fc1.weight[91, 21] = -20
+layers.1.mlp.fc1.bias[91] = -19
+layers.1.mlp.fc1.weight[92, 26] = 2
+layers.1.mlp.fc1.weight[92, 9] = 4
+layers.1.mlp.fc1.weight[92, 32:48] = 0.6666667
+layers.1.mlp.fc1.weight[92, 18] = 10
+layers.1.mlp.fc1.weight[92, 21] = -20
+layers.1.mlp.fc1.bias[92] = -20
+layers.1.mlp.fc2.weight[89, 91] = 1
+layers.1.mlp.fc2.weight[89, 92] = -1
+# E6. units 93,94: REPMUT = clip(-2*REP_A - 4*REP_B - (2/3)*sum(block3A) - 9 - 10 + 10*mutation - 20*offset7) -> d91:
+#     a mutation of a path mutated within the last 31 events (the role-signed keys of C1/C2 give REP_A = -2, REP_B = -1)
+layers.1.mlp.fc1.weight[93, 26] = -2
+layers.1.mlp.fc1.weight[93, 9] = -4
+layers.1.mlp.fc1.weight[93, 32:48] = -0.6666667
+layers.1.mlp.fc1.weight[93, 8] = 10
+layers.1.mlp.fc1.weight[93, 21] = -20
+layers.1.mlp.fc1.bias[93] = -19
+layers.1.mlp.fc1.weight[94, 26] = -2
+layers.1.mlp.fc1.weight[94, 9] = -4
+layers.1.mlp.fc1.weight[94, 32:48] = -0.6666667
+layers.1.mlp.fc1.weight[94, 8] = 10
+layers.1.mlp.fc1.weight[94, 21] = -20
+layers.1.mlp.fc1.bias[94] = -20
+layers.1.mlp.fc2.weight[91, 93] = 1
+layers.1.mlp.fc2.weight[91, 94] = -1
+# E7. units 95,96: CNT15g = clip(8*d113 + (10/3)*sum(block2) + 10*digit - 21.5) -> d87: a passed count seen within 31 events
+layers.1.mlp.fc1.weight[95, 113] = 8
+layers.1.mlp.fc1.weight[95, 96:112] = 3.3333333
+layers.1.mlp.fc1.weight[95, 2] = 10
+layers.1.mlp.fc1.bias[95] = -21.5
+layers.1.mlp.fc1.weight[96, 113] = 8
+layers.1.mlp.fc1.weight[96, 96:112] = 3.3333333
+layers.1.mlp.fc1.weight[96, 2] = 10
+layers.1.mlp.fc1.bias[96] = -22.5
+layers.1.mlp.fc2.weight[87, 95] = 1
+layers.1.mlp.fc2.weight[87, 96] = -1
+# E8. units 97,98: kpenC = clip(100*d113 + (10/3)*sum(block2) + 10*digit - 101.5) -> d88: at least 5 earlier equal counts
+layers.1.mlp.fc1.weight[97, 113] = 100
+layers.1.mlp.fc1.weight[97, 96:112] = 3.3333333
+layers.1.mlp.fc1.weight[97, 2] = 10
+layers.1.mlp.fc1.bias[97] = -101.5
+layers.1.mlp.fc1.weight[98, 113] = 100
+layers.1.mlp.fc1.weight[98, 96:112] = 3.3333333
+layers.1.mlp.fc1.weight[98, 2] = 10
+layers.1.mlp.fc1.bias[98] = -102.5
+layers.1.mlp.fc2.weight[88, 97] = 1
+layers.1.mlp.fc2.weight[88, 98] = -1
+# E9. units 99,100: clip partners of units 22 (line retry penalty) and 23 (poll penalty) so kpen (d54) is 0 or 1
+layers.1.mlp.fc1.weight[99, 118] = -50
+layers.1.mlp.fc1.bias[99] = -39.5
+layers.1.mlp.fc2.weight[54, 99] = -1
+layers.1.mlp.fc1.weight[100, 113] = -100
+layers.1.mlp.fc1.bias[100] = -85.5
+layers.1.mlp.fc2.weight[54, 100] = -1
+# E10. units 101-118: zero d87-95 (block-1 B residue) so those dims can hold the flags above
+layers.1.mlp.fc1.weight[101, 87] = 1
+layers.1.mlp.fc2.weight[87, 101] = -1
+layers.1.mlp.fc1.weight[102, 87] = -1
+layers.1.mlp.fc2.weight[87, 102] = 1
+layers.1.mlp.fc1.weight[103, 88] = 1
+layers.1.mlp.fc2.weight[88, 103] = -1
+layers.1.mlp.fc1.weight[104, 88] = -1
+layers.1.mlp.fc2.weight[88, 104] = 1
+layers.1.mlp.fc1.weight[105, 89] = 1
+layers.1.mlp.fc2.weight[89, 105] = -1
+layers.1.mlp.fc1.weight[106, 89] = -1
+layers.1.mlp.fc2.weight[89, 106] = 1
+layers.1.mlp.fc1.weight[107, 90] = 1
+layers.1.mlp.fc2.weight[90, 107] = -1
+layers.1.mlp.fc1.weight[108, 90] = -1
+layers.1.mlp.fc2.weight[90, 108] = 1
+layers.1.mlp.fc1.weight[109, 91] = 1
+layers.1.mlp.fc2.weight[91, 109] = -1
+layers.1.mlp.fc1.weight[110, 91] = -1
+layers.1.mlp.fc2.weight[91, 110] = 1
+layers.1.mlp.fc1.weight[111, 92] = 1
+layers.1.mlp.fc2.weight[92, 111] = -1
+layers.1.mlp.fc1.weight[112, 92] = -1
+layers.1.mlp.fc2.weight[92, 112] = 1
+layers.1.mlp.fc1.weight[113, 93] = 1
+layers.1.mlp.fc2.weight[93, 113] = -1
+layers.1.mlp.fc1.weight[114, 93] = -1
+layers.1.mlp.fc2.weight[93, 114] = 1
+layers.1.mlp.fc1.weight[115, 94] = 1
+layers.1.mlp.fc2.weight[94, 115] = -1
+layers.1.mlp.fc1.weight[116, 94] = -1
+layers.1.mlp.fc2.weight[94, 116] = 1
+layers.1.mlp.fc1.weight[117, 95] = 1
+layers.1.mlp.fc2.weight[95, 117] = -1
+layers.1.mlp.fc1.weight[118, 95] = -1
+layers.1.mlp.fc2.weight[95, 118] = 1
+# E11. units 119-134: cancel the negative block-3 B key of mutation paths (relu(-d) -> +1), as units 29-44 cancel the positive keys
+layers.1.mlp.fc1.weight[119, 48] = -1
+layers.1.mlp.fc2.weight[48, 119] = 1
+layers.1.mlp.fc1.weight[120, 49] = -1
+layers.1.mlp.fc2.weight[49, 120] = 1
+layers.1.mlp.fc1.weight[121, 50] = -1
+layers.1.mlp.fc2.weight[50, 121] = 1
+layers.1.mlp.fc1.weight[122, 51] = -1
+layers.1.mlp.fc2.weight[51, 122] = 1
+layers.1.mlp.fc1.weight[123, 52] = -1
+layers.1.mlp.fc2.weight[52, 123] = 1
+layers.1.mlp.fc1.weight[124, 53] = -1
+layers.1.mlp.fc2.weight[53, 124] = 1
+layers.1.mlp.fc1.weight[125, 54] = -1
+layers.1.mlp.fc2.weight[54, 125] = 1
+layers.1.mlp.fc1.weight[126, 55] = -1
+layers.1.mlp.fc2.weight[55, 126] = 1
+layers.1.mlp.fc1.weight[127, 56] = -1
+layers.1.mlp.fc2.weight[56, 127] = 1
+layers.1.mlp.fc1.weight[128, 57] = -1
+layers.1.mlp.fc2.weight[57, 128] = 1
+layers.1.mlp.fc1.weight[129, 58] = -1
+layers.1.mlp.fc2.weight[58, 129] = 1
+layers.1.mlp.fc1.weight[130, 59] = -1
+layers.1.mlp.fc2.weight[59, 130] = 1
+layers.1.mlp.fc1.weight[131, 60] = -1
+layers.1.mlp.fc2.weight[60, 131] = 1
+layers.1.mlp.fc1.weight[132, 61] = -1
+layers.1.mlp.fc2.weight[61, 132] = 1
+layers.1.mlp.fc1.weight[133, 62] = -1
+layers.1.mlp.fc2.weight[62, 133] = 1
+layers.1.mlp.fc1.weight[134, 63] = -1
+layers.1.mlp.fc2.weight[63, 134] = 1
+# E12. units 135,136: plankey -> d90: 1 at the plan action word at offset 10, 2 at a word or digit at offset 12 after ':'
+layers.1.mlp.fc1.weight[135, 1] = 1
+layers.1.mlp.fc1.weight[135, 22] = 1
+layers.1.mlp.fc1.weight[135, 18] = 1
+layers.1.mlp.fc1.bias[135] = -2
+layers.1.mlp.fc2.weight[90, 135] = 1
+layers.1.mlp.fc1.weight[136, 1] = 1
+layers.1.mlp.fc1.weight[136, 2] = 1
+layers.1.mlp.fc1.weight[136, 24] = 1
+layers.1.mlp.fc1.weight[136, 18] = 1
+layers.1.mlp.fc1.weight[136, 19] = 24
+layers.1.mlp.fc1.weight[136, 20] = -1
+layers.1.mlp.fc1.bias[136] = -146
+layers.1.mlp.fc2.weight[90, 136] = 2
+
+# ================ F. layer 2 attention ================
+# F1. head 0 (error-line digit / poll resource gather): drop the SAMEFAILED and KV values (d61, d62 are re-used)
+layers.2.attn.v.weight[2, 52] = 0
+layers.2.attn.o.weight[61, 2] = 0
+layers.2.attn.v.weight[3, 127] = 0
+layers.2.attn.o.weight[62, 3] = 0
+# F2. head 1 (passed-count digit gather): add g_CNT15 -> d61 and g_kpenC -> d62
+layers.2.attn.v.weight[19, 87] = 1
+layers.2.attn.o.weight[61, 19] = 1
+layers.2.attn.v.weight[20, 88] = 1
+layers.2.attn.o.weight[62, 20] = 1
+# F3. head 3 (previous event): prevX = previous event was a mutation OR a read_file -> d69
+layers.2.attn.v.weight[48, 127] = 1
+# F4. head 4: one 'recent flag' head for the previous 1..3 events: keys HTTPERR, POLLPEND, FAILREP, CNTOKg; with m flagged
+#     tokens in range each present flag reads 1/m (m <= 3: one flagged token per event), so r_* is 0 or in [1/3, 1]
+layers.2.attn.k.weight[64, 51] = 80
+layers.2.attn.k.weight[64, 52] = 80
+layers.2.attn.k.weight[64, 123] = 80
+layers.2.attn.v.weight[65, 51] = 1
+layers.2.attn.o.weight[71, 65] = 1
+layers.2.attn.v.weight[66, 52] = 1
+layers.2.attn.o.weight[72, 66] = 1
+layers.2.attn.v.weight[67, 123] = 1
+layers.2.attn.o.weight[73, 67] = 1
+# F5. heads 5-7: clear Phase B's single-flag recent heads
+layers.2.attn.q.bias[80] = 0
+layers.2.attn.k.weight[80, 51] = 0
+layers.2.attn.v.weight[80, 51] = 0
+layers.2.attn.o.weight[71, 80] = 0
+layers.2.attn.q.bias[96] = 0
+layers.2.attn.k.weight[96, 52] = 0
+layers.2.attn.v.weight[96, 52] = 0
+layers.2.attn.o.weight[72, 96] = 0
+layers.2.attn.q.bias[112] = 0
+layers.2.attn.k.weight[112, 123] = 0
+layers.2.attn.v.weight[112, 123] = 0
+layers.2.attn.o.weight[73, 112] = 0
+layers.2.attn.rel_bias[5, 0] = 0
+layers.2.attn.rel_bias[5, 1:64] = -10000
+layers.2.attn.rel_bias[5, 64] = -10000
+layers.2.attn.rel_bias[6, 0] = 0
+layers.2.attn.rel_bias[6, 1:64] = -10000
+layers.2.attn.rel_bias[6, 64] = -10000
+layers.2.attn.rel_bias[7, 0] = 0
+layers.2.attn.rel_bias[7, 1:64] = -10000
+layers.2.attn.rel_bias[7, 64] = -10000
+# F6. head 5: H0 gather (same event) -> g_H0 d78
+layers.2.attn.q.bias[80] = 1
+layers.2.attn.k.weight[80, 112] = 80
+layers.2.attn.v.weight[80, 112] = 1
+layers.2.attn.o.weight[78, 80] = 1
+# F7. head 6: plan key gather (the offset-12 key wins over the offset-10 key) -> g_PLANREP d92
+layers.2.attn.q.bias[96] = 1
+layers.2.attn.k.weight[96, 90] = 80
+layers.2.attn.v.weight[96, 89] = 1
+layers.2.attn.o.weight[92, 96] = 1
+# F8. head 7: REPMUT gather -> g_REPMUT d93
+layers.2.attn.q.bias[112] = 1
+layers.2.attn.k.weight[112, 91] = 80
+layers.2.attn.v.weight[112, 91] = 1
+layers.2.attn.o.weight[93, 112] = 1
+
+# ================ G. layer 2 MLP: per-event features at the EOE ================
+# G1. units 0,1 (INEFF part 1): clip(g_REP + g_CNTOK + NOOP + g_PLANREP); the line match moves to G2
+layers.2.mlp.fc1.weight[0, 59] = 0
+layers.2.mlp.fc1.weight[0, 92] = 1
+layers.2.mlp.fc1.weight[1, 59] = 0
+layers.2.mlp.fc1.weight[1, 92] = 1
+# G2. units 13,14: SAME_lc = clip(g_SAME + g_CNT15 - g_hascount) -> d75: a failure whose error line was seen within 15 events
+#     AND (when it has a passed count) whose count was seen within 31 events
+layers.2.mlp.fc1.weight[13, 59] = 1
+layers.2.mlp.fc1.weight[13, 61] = 1
+layers.2.mlp.fc1.weight[13, 65] = -1
+layers.2.mlp.fc1.bias[13] = 0
+layers.2.mlp.fc1.weight[14, 59] = 1
+layers.2.mlp.fc1.weight[14, 61] = 1
+layers.2.mlp.fc1.weight[14, 65] = -1
+layers.2.mlp.fc1.bias[14] = -1
+layers.2.mlp.fc2.weight[75, 13] = 1
+layers.2.mlp.fc2.weight[75, 14] = -1
+# G3. units 15,16: H0RED = clip(g_H0 + g_REPMUT - 1 - 3*(r_FAILREP + r_CNTOK + g_REV)) -> d75: an append to a path mutated
+#     before, when the EDR unit (G of Phase B, units 2,3) does not already count the event
+layers.2.mlp.fc1.weight[15, 78] = 1
+layers.2.mlp.fc1.weight[15, 93] = 1
+layers.2.mlp.fc1.weight[15, 72] = -3
+layers.2.mlp.fc1.weight[15, 73] = -3
+layers.2.mlp.fc1.weight[15, 66] = -3
+layers.2.mlp.fc1.bias[15] = -1
+layers.2.mlp.fc1.weight[16, 78] = 1
+layers.2.mlp.fc1.weight[16, 93] = 1
+layers.2.mlp.fc1.weight[16, 72] = -3
+layers.2.mlp.fc1.weight[16, 73] = -3
+layers.2.mlp.fc1.weight[16, 66] = -3
+layers.2.mlp.fc1.bias[16] = -2
+layers.2.mlp.fc2.weight[75, 15] = 1
+layers.2.mlp.fc2.weight[75, 16] = -1
+# G4. unit 17: FRESH = relu(read_file - g_REP) -> d94: a read of a path not read in the last 31 events
+layers.2.mlp.fc1.weight[17, 127] = 1
+layers.2.mlp.fc1.weight[17, 67] = -1
+layers.2.mlp.fc2.weight[94, 17] = 1
+# G4b. units 6-11 (RES): the recent flag is now 1/m (m <= 3), so clip(2*ok + cls + r - 3) is 1/3..1; scale the output by 3
+#      so that RES is at least 1 whenever it fires (the resolution head and resw_b read it)
+layers.2.mlp.fc2.weight[76, 6] = 3
+layers.2.mlp.fc2.weight[76, 7] = -3
+layers.2.mlp.fc2.weight[76, 8] = 3
+layers.2.mlp.fc2.weight[76, 9] = -3
+layers.2.mlp.fc2.weight[76, 10] = 3
+layers.2.mlp.fc2.weight[76, 11] = -3
+# G5. unit 12 (INPOL) rewritten: relu(10*LINE2 + 10*POLL2 + 10*CNT2 - 6*hascount - 4*kpenL - 4*kpenC + 10*fail - 10*prevX - 19)
+#     = a retry (same failure within 2 events, no mutation or read between) with fewer than 4 line matches or fewer than 5 count matches
+layers.2.mlp.fc1.weight[12, :] = 0
+layers.2.mlp.fc1.weight[12, 60] = 10
+layers.2.mlp.fc1.weight[12, 68] = 10
+layers.2.mlp.fc1.weight[12, 64] = 10
+layers.2.mlp.fc1.weight[12, 65] = -6
+layers.2.mlp.fc1.weight[12, 74] = -4
+layers.2.mlp.fc1.weight[12, 62] = -4
+layers.2.mlp.fc1.weight[12, 114] = 10
+layers.2.mlp.fc1.weight[12, 115] = 10
+layers.2.mlp.fc1.weight[12, 28] = 10
+layers.2.mlp.fc1.weight[12, 69] = -10
+layers.2.mlp.fc1.bias[12] = -19
+
+# ================ H. layer 3 attention ================
+# H1. head 0 (window sums over the last 8 events): the reversion sum moves to head 3; add FRESH -> A3 d95
+layers.3.attn.v.weight[0, 66] = 0
+layers.3.attn.o.weight[79, 0] = 0
+layers.3.attn.v.weight[2, 94] = 1
+layers.3.attn.o.weight[95, 2] = 1
+# H2. head 3: reversion sum over the last 7 events only (the first event of a window cannot revert a state held in it), BOS sink -> A1 d79
+layers.3.attn.q.bias[48] = 1
+layers.3.attn.k.weight[48, 5] = 80
+layers.3.attn.v.weight[48, 66] = 1
+layers.3.attn.o.weight[79, 48] = 1
+layers.3.attn.rel_bias[3, 0:7] = 0
+layers.3.attn.rel_bias[3, 7:64] = -10000
+layers.3.attn.rel_bias[3, 64] = 20
+
+# ================ I. layer 3 MLP ================
+# I1. units 8,9: fresh_b = clip(18*A3 - 1) -> d112 (at least one fresh read among the last 8 events)
+layers.3.mlp.fc1.weight[8, 95] = 18
+layers.3.mlp.fc1.bias[8] = -1
+layers.3.mlp.fc1.weight[9, 95] = 18
+layers.3.mlp.fc1.bias[9] = -2
+layers.3.mlp.fc2.weight[112, 8] = 1
+layers.3.mlp.fc2.weight[112, 9] = -1
+
+# ================ J. head ================
+# J1. STALLED = 6*sc + 6*INEFF_t - 8*act_b - 12*fresh_b - 8
+head.weight[2, 112] = -12

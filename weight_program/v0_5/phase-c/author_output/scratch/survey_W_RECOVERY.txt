@@ -1,0 +1,650 @@
+=== W005 RECOVERY net=OSCILLATING t=27
+  16 OSCI W+        config/merge.conf                            merge.conf:h1e04>hffab                                                rev
+  17 OSCI p+        reconcile-conventions                                                                                              
+  18 OSCI W+        config/merge.conf                            merge.conf:hffab>h1e04                                                rev
+  19 OSCI W+        config/merge.conf                            merge.conf:h1e04>hffab                                                rev
+ *20 OSCI p+        reconcile-conventions                                                                                              rep
+ *21 OSCI W+        config/merge.conf                            merge.conf:hffab>h1e04                                                rev
+ *22 OSCI TF3/15    suite=busted:stream tests=replica-contract                                StreamOrderViolation at lib/shards/contr rep cnt cntw k0
+ *23 OSCI W+        config/merge.conf                            merge.conf:h1e04>hffab                                                rev
+ *24 OSCI TF3/15    suite=busted:stream tests=replica-contract                                StreamOrderViolation at lib/shards/contr rep cnt cntw k0
+ *25 OSCI TF3/15    suite=busted:stream tests=replica-contract                                StreamOrderViolation at lib/shards/contr rep cnt cntw nomut k0
+ *26 OSCI TF3/15    suite=busted:stream tests=replica-contract                                StreamOrderViolation at lib/shards/contr rep cnt cntw nomut k0
+ *27 OSCI TF3/15    suite=busted:stream tests=replica-contract                                StreamOrderViolation at lib/shards/contr rep cnt cntw nomut k0
+=== W011 RECOVERY net=RECOVERY t=37
+  26 STAL TF2/14    suite=exunit:replication tests=replica-contr                              AllocatorInvariant at lib/shards/contrac rep k0
+  27 PROD p+        record:lib/shards/contract_8.exs                                                                                   
+  28 PROD R+        lib/shards/contract_11.exs                                                                                         
+  29 PROD p+        isolate:lib/shards/contract_11.exs                                                                                 
+ *30 PROD W+        lib/shards/contract_11.exs                   contract_11.ex:hb7e5>h410d                                            
+ *31 PROD TF3/14    suite=exunit:replication tests=replica-contr                              AllocatorInvariant at lib/shards/contrac rep k0
+ *32 PROD W+        lib/shards/contract_0.exs                    contract_0.exs:h65a2>ha139                                            
+ *33 PROD TF4/14    suite=exunit:replication tests=replica-contr                              AllocatorInvariant at lib/shards/contrac rep k0
+ *34 PROD p+        record:lib/shards/contract_0.exs                                                                                   
+ *35 PROD H!        POST https://quorum-35-0.cedar.invalid/lease                              PeerReset at quorum-35-0.cedar.invalid:4 k0
+ *36 RECO H!        POST https://quorum-35-0.cedar.invalid/lease                              PeerReset at quorum-35-0.cedar.invalid:4 rep k0
+ *37 RECO H+        POST https://quorum-35-0.cedar.invalid/lease                                                                       rep res
+=== W012 RECOVERY net=RECOVERY t=45
+  34 PROD p+        isolate:lib/shards/contract_4.clj                                                                                  
+  35 STAL W+        lib/shards/contract_4.clj                    contract_4.clj:hdaf8>hfe1b                                            
+  36 STAL TF2/14    suite=kaocha:ledger tests=replica-contract                                AllocatorInvariant at lib/shards/contrac rep k0
+  37 STAL W+        lib/shards/contract_10.clj                   contract_10.cl:h996b>h98b1                                            
+ *38 STAL TF3/14    suite=kaocha:ledger tests=replica-contract                                AllocatorInvariant at lib/shards/contrac rep k0
+ *39 PROD R+        lib/shards/contract_10.clj                                                                                         
+ *40 STAL W+        lib/shards/contract_9.clj                    contract_9.clj:h3686>hd07c                                            
+ *41 STAL TF4/14    suite=kaocha:ledger tests=replica-contract                                AllocatorInvariant at lib/shards/contrac rep k0
+ *42 PROD p+        record:lib/shards/contract_9.clj                                                                                   
+ *43 PROD H!        POST https://quorum-43-0.cedar.invalid/lease                              PeerReset at quorum-43-0.cedar.invalid:1 k0
+ *44 RECO H!        POST https://quorum-43-0.cedar.invalid/lease                              PeerReset at quorum-43-0.cedar.invalid:1 rep k0
+ *45 RECO H+        POST https://quorum-43-0.cedar.invalid/lease                                                                       rep res
+=== W025 RECOVERY net=STALLED t=12
+   1 PROD TF1/17    suite=zig:allocator tests=replica-contract                                StreamOrderViolation at lib/shards/contr k0
+   2 PROD R+        lib/shards/contract_0.zig                                                                                          
+   3 PROD W+        lib/shards/contract_8.zig                    contract_8.zig:h7927>hd378                                            
+   4 PROD TF2/17    suite=zig:allocator tests=replica-contract                                StreamOrderViolation at lib/shards/contr rep k0
+ * 5 PROD p+        record:lib/shards/contract_8.zig                                                                                   
+ * 6 PROD W+        lib/shards/contract_16.zig                   contract_16.zi:hb4c4>hc6ce                                            
+ * 7 PROD TF3/17    suite=zig:allocator tests=replica-contract                                StreamOrderViolation at lib/shards/contr rep k0
+ * 8 PROD R+        lib/shards/contract_16.zig                                                                                         
+ * 9 RECO TF3/17    suite=zig:allocator tests=replica-contract                                StreamOrderViolation at lib/shards/contr rep cnt cntw nomut k0
+ *10 STAL TF3/17    suite=zig:allocator tests=replica-contract                                StreamOrderViolation at lib/shards/contr rep cnt cntw nomut k0
+ *11 STAL TF3/17    suite=zig:allocator tests=replica-contract                                StreamOrderViolation at lib/shards/contr rep cnt cntw nomut k0
+ *12 STAL TF3/17    suite=zig:allocator tests=replica-contract                                StreamOrderViolation at lib/shards/contr rep cnt cntw nomut k0
+=== W036 RECOVERY net=RECOVERY t=21
+  10 STAL TF5/12    suite=kaocha:ledger tests=replica-contract                                AllocatorInvariant at lib/shards/contrac rep k0
+  11 STAL W+        lib/shards/contract_8.clj                    contract_8.clj:h1336>h50f2                                            
+  12 STAL TF6/12    suite=kaocha:ledger tests=replica-contract                                AllocatorInvariant at lib/shards/contrac rep k0
+  13 STAL W+        lib/shards/contract_11.clj                   contract_11.cl:hd5d2>h9bdb                                            
+ *14 STAL TF7/12    suite=kaocha:ledger tests=replica-contract                                AllocatorInvariant at lib/shards/contrac rep k0
+ *15 STAL W+        lib/shards/contract_7.clj                    contract_7.clj:hfd34>hea11                                            
+ *16 STAL TF8/12    suite=kaocha:ledger tests=replica-contract                                AllocatorInvariant at lib/shards/contrac rep k0
+ *17 PROD Pp        quorum-17-0.cedar.invalid backoff=1                                                                                k0
+ *18 RECO Pp        quorum-17-0.cedar.invalid backoff=2                                                                                k0
+ *19 RECO Pr        quorum-17-0.cedar.invalid backoff=4                                                                                res
+ *20 RECO Pp        quorum-20-1.cedar.invalid backoff=1                                                                                k0
+ *21 RECO Pp        quorum-20-1.cedar.invalid backoff=2                                                                                k0
+=== W039 RECOVERY net=RECOVERY t=19
+   8 STAL TF4/18    suite=exunit:replication tests=replica-contr                              ReplicaDivergence at lib/shards/contract rep k0
+   9 STAL W+        lib/shards/contract_0.exs                    contract_0.exs:hb6af>h683b                                            
+  10 PROD TF5/18    suite=exunit:replication tests=replica-contr                              ReplicaDivergence at lib/shards/contract rep k0
+  11 STAL W+        lib/shards/contract_15.exs                   contract_15.ex:h6830>h5e45                                            
+ *12 STAL TF6/18    suite=exunit:replication tests=replica-contr                              ReplicaDivergence at lib/shards/contract rep k0
+ *13 STAL W+        lib/shards/contract_17.exs                   contract_17.ex:h4f37>h4644                                            
+ *14 STAL TF7/18    suite=exunit:replication tests=replica-contr                              ReplicaDivergence at lib/shards/contract rep k0
+ *15 STAL W+        lib/shards/contract_5.exs                    contract_5.exs:h0a78>h2646                                            
+ *16 STAL TF8/18    suite=exunit:replication tests=replica-contr                              ReplicaDivergence at lib/shards/contract rep k0
+ *17 PROD Pp        quorum-17-0.cedar.invalid backoff=1                                                                                k0
+ *18 RECO Pp        quorum-17-0.cedar.invalid backoff=2                                                                                k0
+ *19 RECO Pp        quorum-17-0.cedar.invalid backoff=4                                                                                k0
+=== W064 RECOVERY net=RECOVERY t=20
+   9 STAL W+        lib/shards/contract_9.lua                    contract_9.lua:h70ff>he944                                            
+  10 STAL TF5/17    suite=busted:stream tests=replica-contract                                AllocatorInvariant at lib/shards/contrac rep k0
+  11 STAL W+        lib/shards/contract_0.lua                    contract_0.lua:h9925>hcbb3                                            
+  12 PROD TF6/17    suite=busted:stream tests=replica-contract                                AllocatorInvariant at lib/shards/contrac rep k0
+ *13 STAL W+        lib/shards/contract_12.lua                   contract_12.lu:hd272>h4d15                                            
+ *14 STAL TF7/17    suite=busted:stream tests=replica-contract                                AllocatorInvariant at lib/shards/contrac rep k0
+ *15 STAL W+        lib/shards/contract_7.lua                    contract_7.lua:h5d19>ha2a0                                            
+ *16 STAL TF8/17    suite=busted:stream tests=replica-contract                                AllocatorInvariant at lib/shards/contrac rep k0
+ *17 PROD Pp        quorum-17-0.cedar.invalid backoff=1                                                                                k0
+ *18 RECO Pp        quorum-17-0.cedar.invalid backoff=2                                                                                k0
+ *19 RECO Pp        quorum-17-0.cedar.invalid backoff=4                                                                                k0
+ *20 RECO Pp        quorum-17-0.cedar.invalid backoff=8                                                                                k0
+=== W069 RECOVERY net=RECOVERY t=20
+   9 STAL W+        lib/shards/contract_13.zig                   contract_13.zi:h41b1>hdf4c                                            
+  10 STAL TF5/16    suite=zig:allocator tests=replica-contract                                AllocatorInvariant at lib/shards/contrac rep k0
+  11 STAL W+        lib/shards/contract_12.zig                   contract_12.zi:h7759>h3b2f                                            
+  12 STAL TF6/16    suite=zig:allocator tests=replica-contract                                AllocatorInvariant at lib/shards/contrac rep k0
+ *13 STAL W+        lib/shards/contract_8.zig                    contract_8.zig:h2db3>hb4f1                                            
+ *14 STAL TF7/16    suite=zig:allocator tests=replica-contract                                AllocatorInvariant at lib/shards/contrac rep k0
+ *15 STAL W+        lib/shards/contract_6.zig                    contract_6.zig:ha0b3>he7aa                                            
+ *16 STAL TF8/16    suite=zig:allocator tests=replica-contract                                AllocatorInvariant at lib/shards/contrac rep k0
+ *17 PROD H!        POST https://quorum-17-0.cedar.invalid/lease                              PeerReset at quorum-17-0.cedar.invalid:3 k0
+ *18 RECO H!        POST https://quorum-17-0.cedar.invalid/lease                              PeerReset at quorum-17-0.cedar.invalid:3 rep k0
+ *19 RECO H!        POST https://quorum-17-0.cedar.invalid/lease                              PeerReset at quorum-17-0.cedar.invalid:3 rep k0
+ *20 RECO H+        POST https://quorum-17-0.cedar.invalid/lease                                                                       rep res
+=== W074 RECOVERY net=RECOVERY t=24
+  13 STAL W+        lib/shards/contract_7.zig                    contract_7.zig:h430a>heb61                                            
+  14 STAL TF7/13    suite=zig:allocator tests=replica-contract                                StreamOrderViolation at lib/shards/contr rep k0
+  15 STAL W+        lib/shards/contract_10.zig                   contract_10.zi:h47d2>hac54                                            
+  16 STAL TF8/13    suite=zig:allocator tests=replica-contract                                StreamOrderViolation at lib/shards/contr rep k0
+ *17 PROD H!        POST https://quorum-17-0.cedar.invalid/lease                              PeerReset at quorum-17-0.cedar.invalid:3 k0
+ *18 RECO H!        POST https://quorum-17-0.cedar.invalid/lease                              PeerReset at quorum-17-0.cedar.invalid:3 rep k0
+ *19 RECO H!        POST https://quorum-17-0.cedar.invalid/lease                              PeerReset at quorum-17-0.cedar.invalid:3 rep k0
+ *20 RECO H+        POST https://quorum-17-0.cedar.invalid/lease                                                                       rep res
+ *21 RECO p+        record-quorum                                                                                                      
+ *22 RECO H!        POST https://quorum-22-1.cedar.invalid/lease                              PeerReset at quorum-22-1.cedar.invalid:2 k0
+ *23 RECO H!        POST https://quorum-22-1.cedar.invalid/lease                              PeerReset at quorum-22-1.cedar.invalid:2 rep k0
+ *24 RECO H+        POST https://quorum-22-1.cedar.invalid/lease                                                                       rep res
+=== W084 RECOVERY net=RECOVERY t=23
+  12 RECO Pp        quorum-10-0.cedar.invalid backoff=4                                                                                k0
+  13 RECO Pp        quorum-10-0.cedar.invalid backoff=8                                                                                k0
+  14 RECO Pr        quorum-10-0.cedar.invalid backoff=16                                                                               res
+  15 RECO Pp        quorum-15-1.cedar.invalid backoff=1                                                                                k0
+ *16 RECO Pp        quorum-15-1.cedar.invalid backoff=2                                                                                k0
+ *17 RECO Pp        quorum-15-1.cedar.invalid backoff=4                                                                                k0
+ *18 RECO Pp        quorum-15-1.cedar.invalid backoff=8                                                                                k0
+ *19 RECO Pr        quorum-15-1.cedar.invalid backoff=16                                                                               res
+ *20 RECO p+        record-quorum                                                                                                      
+ *21 RECO H!        POST https://quorum-21-0.cedar.invalid/lease                              PeerReset at quorum-21-0.cedar.invalid:7 k0
+ *22 RECO H!        POST https://quorum-21-0.cedar.invalid/lease                              PeerReset at quorum-21-0.cedar.invalid:7 rep k0
+ *23 RECO H!        POST https://quorum-21-0.cedar.invalid/lease                              PeerReset at quorum-21-0.cedar.invalid:7 rep k0
+=== W090 RECOVERY net=RECOVERY t=19
+   8 STAL TF4/18    suite=kaocha:ledger tests=replica-contract                                ReplicaDivergence at lib/shards/contract rep k0
+   9 STAL W+        lib/shards/contract_0.clj                    contract_0.clj:h45ea>hbd2c                                            
+  10 PROD TF5/18    suite=kaocha:ledger tests=replica-contract                                ReplicaDivergence at lib/shards/contract rep k0
+  11 STAL W+        lib/shards/contract_1.clj                    contract_1.clj:h6536>hf8d9                                            
+ *12 PROD TF6/18    suite=kaocha:ledger tests=replica-contract                                ReplicaDivergence at lib/shards/contract rep k0
+ *13 PROD W+        lib/shards/contract_8.clj                    contract_8.clj:hbccb>hdd2b                                            
+ *14 STAL TF7/18    suite=kaocha:ledger tests=replica-contract                                ReplicaDivergence at lib/shards/contract rep k0
+ *15 STAL W+        lib/shards/contract_3.clj                    contract_3.clj:h8b90>h39fc                                            
+ *16 STAL TF8/18    suite=kaocha:ledger tests=replica-contract                                ReplicaDivergence at lib/shards/contract rep k0
+ *17 PROD H!        POST https://quorum-17-0.cedar.invalid/lease                              PeerReset at quorum-17-0.cedar.invalid:7 k0
+ *18 RECO H!        POST https://quorum-17-0.cedar.invalid/lease                              PeerReset at quorum-17-0.cedar.invalid:7 rep k0
+ *19 RECO H+        POST https://quorum-17-0.cedar.invalid/lease                                                                       rep res
+=== W093 RECOVERY net=RECOVERY t=43
+  32 PROD R+        lib/shards/contract_6.zig                                                                                          
+  33 PROD H!        POST https://quorum-33-0.cedar.invalid/lease                              PeerReset at quorum-33-0.cedar.invalid:3 k0
+  34 RECO H!        POST https://quorum-33-0.cedar.invalid/lease                              PeerReset at quorum-33-0.cedar.invalid:3 rep k0
+  35 RECO H!        POST https://quorum-33-0.cedar.invalid/lease                              PeerReset at quorum-33-0.cedar.invalid:3 rep k0
+ *36 RECO H+        POST https://quorum-33-0.cedar.invalid/lease                                                                       rep res
+ *37 RECO p+        record-quorum                                                                                                      
+ *38 RECO H!        POST https://quorum-38-1.cedar.invalid/lease                              PeerReset at quorum-38-1.cedar.invalid:1 k0
+ *39 RECO H!        POST https://quorum-38-1.cedar.invalid/lease                              PeerReset at quorum-38-1.cedar.invalid:1 rep k0
+ *40 RECO H+        POST https://quorum-38-1.cedar.invalid/lease                                                                       rep res
+ *41 RECO W+        lib/shards/contract_2.zig                    contract_2.zig:hae83>h0ff3                                            
+ *42 RECO TF4/17    suite=zig:allocator tests=replica-contract                                StreamOrderViolation at lib/shards/contr rep k0
+ *43 RECO R+        lib/shards/contract_2.zig                                                                                          
+=== W094 RECOVERY net=RECOVERY t=22
+  11 STAL W+        lib/shards/contract_14.exs                   contract_14.ex:hb8e4>h7db4                                            
+  12 STAL TF6/18    suite=exunit:replication tests=replica-contr                              AllocatorInvariant at lib/shards/contrac rep k0
+  13 STAL W+        lib/shards/contract_10.exs                   contract_10.ex:h3701>h0a2a                                            
+  14 STAL TF7/18    suite=exunit:replication tests=replica-contr                              AllocatorInvariant at lib/shards/contrac rep k0
+ *15 STAL W+        lib/shards/contract_3.exs                    contract_3.exs:he0fd>h51bc                                            
+ *16 STAL TF8/18    suite=exunit:replication tests=replica-contr                              AllocatorInvariant at lib/shards/contrac rep k0
+ *17 PROD H!        POST https://quorum-17-0.cedar.invalid/lease                              PeerReset at quorum-17-0.cedar.invalid:3 k0
+ *18 RECO H!        POST https://quorum-17-0.cedar.invalid/lease                              PeerReset at quorum-17-0.cedar.invalid:3 rep k0
+ *19 RECO H+        POST https://quorum-17-0.cedar.invalid/lease                                                                       rep res
+ *20 RECO H!        POST https://quorum-20-1.cedar.invalid/lease                              PeerReset at quorum-20-1.cedar.invalid:1 k0
+ *21 RECO H!        POST https://quorum-20-1.cedar.invalid/lease                              PeerReset at quorum-20-1.cedar.invalid:1 rep k0
+ *22 RECO H!        POST https://quorum-20-1.cedar.invalid/lease                              PeerReset at quorum-20-1.cedar.invalid:1 rep k0
+=== W096 RECOVERY net=RECOVERY t=23
+  12 STAL TF6/15    suite=exunit:replication tests=replica-contr                              ReplicaDivergence at lib/shards/contract rep k0
+  13 STAL W+        lib/shards/contract_7.exs                    contract_7.exs:h3352>h3db7                                            
+  14 STAL TF7/15    suite=exunit:replication tests=replica-contr                              ReplicaDivergence at lib/shards/contract rep k0
+  15 STAL W+        lib/shards/contract_13.exs                   contract_13.ex:h539b>h1597                                            
+ *16 STAL TF8/15    suite=exunit:replication tests=replica-contr                              ReplicaDivergence at lib/shards/contract rep k0
+ *17 PROD Pp        quorum-17-0.cedar.invalid backoff=1                                                                                k0
+ *18 RECO Pp        quorum-17-0.cedar.invalid backoff=2                                                                                k0
+ *19 RECO Pp        quorum-17-0.cedar.invalid backoff=4                                                                                k0
+ *20 RECO Pr        quorum-17-0.cedar.invalid backoff=8                                                                                res
+ *21 RECO p+        record-quorum                                                                                                      
+ *22 RECO R+        lib/shards/contract_7.exs                                                                                          
+ *23 RECO W+        lib/shards/contract_7.exs                    contract_7.exs:h0>h2469                                               
+=== W105 RECOVERY net=RECOVERY t=18
+   7 STAL W+        lib/shards/contract_1.clj                    contract_1.clj:h5066>h6962                                            
+   8 STAL TF4/17    suite=kaocha:ledger tests=replica-contract                                ReplicaDivergence at lib/shards/contract rep k0
+   9 STAL W+        lib/shards/contract_16.clj                   contract_16.cl:h2d4c>h4818                                            
+  10 STAL TF5/17    suite=kaocha:ledger tests=replica-contract                                ReplicaDivergence at lib/shards/contract rep k0
+ *11 STAL W+        lib/shards/contract_3.clj                    contract_3.clj:h764c>h9f93                                            
+ *12 STAL TF6/17    suite=kaocha:ledger tests=replica-contract                                ReplicaDivergence at lib/shards/contract rep k0
+ *13 STAL W+        lib/shards/contract_7.clj                    contract_7.clj:h60e9>h426c                                            
+ *14 STAL TF7/17    suite=kaocha:ledger tests=replica-contract                                ReplicaDivergence at lib/shards/contract rep k0
+ *15 STAL W+        lib/shards/contract_9.clj                    contract_9.clj:ha423>h23a7                                            
+ *16 STAL TF8/17    suite=kaocha:ledger tests=replica-contract                                ReplicaDivergence at lib/shards/contract rep k0
+ *17 PROD H!        POST https://quorum-17-0.cedar.invalid/lease                              PeerReset at quorum-17-0.cedar.invalid:8 k0
+ *18 RECO H!        POST https://quorum-17-0.cedar.invalid/lease                              PeerReset at quorum-17-0.cedar.invalid:8 rep k0
+=== W107 RECOVERY net=RECOVERY t=43
+  32 PROD p+        isolate:lib/shards/contract_6.lua                                                                                  
+  33 PROD W+        lib/shards/contract_6.lua                    contract_6.lua:ha74b>h8b0d                                            
+  34 PROD TF3/14    suite=busted:stream tests=replica-contract                                StreamOrderViolation at lib/shards/contr rep k0
+  35 PROD W+        lib/shards/contract_8.lua                    contract_8.lua:hfce4>had05                                            
+ *36 PROD TF4/14    suite=busted:stream tests=replica-contract                                StreamOrderViolation at lib/shards/contr rep k0
+ *37 PROD R+        lib/shards/contract_8.lua                                                                                          
+ *38 PROD H!        POST https://quorum-38-0.cedar.invalid/lease                              PeerReset at quorum-38-0.cedar.invalid:5 k0
+ *39 RECO H!        POST https://quorum-38-0.cedar.invalid/lease                              PeerReset at quorum-38-0.cedar.invalid:5 rep k0
+ *40 RECO H!        POST https://quorum-38-0.cedar.invalid/lease                              PeerReset at quorum-38-0.cedar.invalid:5 rep k0
+ *41 RECO H+        POST https://quorum-38-0.cedar.invalid/lease                                                                       rep res
+ *42 RECO p+        record-quorum                                                                                                      
+ *43 RECO H!        POST https://quorum-43-1.cedar.invalid/lease                              PeerReset at quorum-43-1.cedar.invalid:3 k0
+=== W113 RECOVERY net=RECOVERY t=25
+  14 STAL TF7/12    suite=exunit:replication tests=replica-contr                              StreamOrderViolation at lib/shards/contr rep k0
+  15 STAL W+        lib/shards/contract_0.exs                    contract_0.exs:h62e3>h08cc                                            
+  16 PROD TF8/12    suite=exunit:replication tests=replica-contr                              StreamOrderViolation at lib/shards/contr rep k0
+  17 PROD Pp        quorum-17-0.cedar.invalid backoff=1                                                                                k0
+ *18 RECO Pp        quorum-17-0.cedar.invalid backoff=2                                                                                k0
+ *19 RECO Pp        quorum-17-0.cedar.invalid backoff=4                                                                                k0
+ *20 RECO Pp        quorum-17-0.cedar.invalid backoff=8                                                                                k0
+ *21 RECO Pr        quorum-17-0.cedar.invalid backoff=16                                                                               res
+ *22 RECO Pp        quorum-22-1.cedar.invalid backoff=1                                                                                k0
+ *23 RECO Pp        quorum-22-1.cedar.invalid backoff=2                                                                                k0
+ *24 RECO Pr        quorum-22-1.cedar.invalid backoff=4                                                                                res
+ *25 RECO Pp        quorum-25-2.cedar.invalid backoff=1                                                                                k0
+=== W119 RECOVERY net=RECOVERY t=18
+   7 PROD p+        isolate:lib/shards/contract_11.clj                                                                                 
+   8 PROD W+        lib/shards/contract_11.clj                   contract_11.cl:h9fc9>hbfc9                                            
+   9 PROD TF3/16    suite=kaocha:ledger tests=replica-contract                                AllocatorInvariant at lib/shards/contrac rep k0
+  10 PROD Pp        quorum-10-0.cedar.invalid backoff=1                                                                                k0
+ *11 RECO Pp        quorum-10-0.cedar.invalid backoff=2                                                                                k0
+ *12 RECO Pp        quorum-10-0.cedar.invalid backoff=4                                                                                k0
+ *13 RECO Pp        quorum-10-0.cedar.invalid backoff=8                                                                                k0
+ *14 RECO Pp        quorum-10-0.cedar.invalid backoff=16                                                                               k0
+ *15 RECO Pr        quorum-10-0.cedar.invalid backoff=32                                                                               res
+ *16 RECO Pp        quorum-16-1.cedar.invalid backoff=1                                                                                k0
+ *17 RECO Pp        quorum-16-1.cedar.invalid backoff=2                                                                                k0
+ *18 RECO Pr        quorum-16-1.cedar.invalid backoff=4                                                                                res
+=== W121 RECOVERY net=RECOVERY t=20
+   9 STAL W+        lib/shards/contract_13.zig                   contract_13.zi:h672e>hba2f                                            
+  10 STAL TF5/18    suite=zig:allocator tests=replica-contract                                ReplicaDivergence at lib/shards/contract rep k0
+  11 STAL W+        lib/shards/contract_6.zig                    contract_6.zig:h9c9c>h631a                                            
+  12 STAL TF6/18    suite=zig:allocator tests=replica-contract                                ReplicaDivergence at lib/shards/contract rep k0
+ *13 STAL W+        lib/shards/contract_5.zig                    contract_5.zig:h12f2>h2faf                                            
+ *14 STAL TF7/18    suite=zig:allocator tests=replica-contract                                ReplicaDivergence at lib/shards/contract rep k0
+ *15 STAL W+        lib/shards/contract_9.zig                    contract_9.zig:h4456>h067f                                            
+ *16 STAL TF8/18    suite=zig:allocator tests=replica-contract                                ReplicaDivergence at lib/shards/contract rep k0
+ *17 PROD Pp        quorum-17-0.cedar.invalid backoff=1                                                                                k0
+ *18 RECO Pp        quorum-17-0.cedar.invalid backoff=2                                                                                k0
+ *19 RECO Pr        quorum-17-0.cedar.invalid backoff=4                                                                                res
+ *20 RECO Pp        quorum-20-1.cedar.invalid backoff=1                                                                                k0
+=== W124 RECOVERY net=RECOVERY t=29
+  18 RECO H!        POST https://quorum-17-0.cedar.invalid/lease                              PeerReset at quorum-17-0.cedar.invalid:1 rep k0
+  19 RECO H+        POST https://quorum-17-0.cedar.invalid/lease                                                                       rep res
+  20 RECO H!        POST https://quorum-20-1.cedar.invalid/lease                              PeerReset at quorum-20-1.cedar.invalid:6 k0
+  21 RECO H!        POST https://quorum-20-1.cedar.invalid/lease                              PeerReset at quorum-20-1.cedar.invalid:6 rep k0
+ *22 RECO H!        POST https://quorum-20-1.cedar.invalid/lease                              PeerReset at quorum-20-1.cedar.invalid:6 rep k0
+ *23 RECO H+        POST https://quorum-20-1.cedar.invalid/lease                                                                       rep res
+ *24 RECO p+        record-quorum                                                                                                      
+ *25 RECO H!        POST https://quorum-25-2.cedar.invalid/lease                              PeerReset at quorum-25-2.cedar.invalid:1 k0
+ *26 RECO H!        POST https://quorum-25-2.cedar.invalid/lease                              PeerReset at quorum-25-2.cedar.invalid:1 rep k0
+ *27 RECO H!        POST https://quorum-25-2.cedar.invalid/lease                              PeerReset at quorum-25-2.cedar.invalid:1 rep k0
+ *28 RECO H+        POST https://quorum-25-2.cedar.invalid/lease                                                                       rep res
+ *29 RECO W+        lib/shards/contract_11.clj                   contract_11.cl:h184c>h19cd                                            
+=== W125 RECOVERY net=RECOVERY t=34
+  23 OSCI W+        config/merge.conf                            merge.conf:h67eb>h3711                                                rev
+  24 OSCI TF3/12    suite=kaocha:ledger tests=replica-contract                                AllocatorInvariant at lib/shards/contrac rep cnt cntw k0
+  25 OSCI H!        POST https://quorum-25-0.cedar.invalid/lease                              PeerReset at quorum-25-0.cedar.invalid:7 k0
+  26 OSCI H!        POST https://quorum-25-0.cedar.invalid/lease                              PeerReset at quorum-25-0.cedar.invalid:7 rep k0
+ *27 OSCI H!        POST https://quorum-25-0.cedar.invalid/lease                              PeerReset at quorum-25-0.cedar.invalid:7 rep k0
+ *28 OSCI H+        POST https://quorum-25-0.cedar.invalid/lease                                                                       rep res
+ *29 RECO p+        record-quorum                                                                                                      
+ *30 RECO H!        POST https://quorum-30-1.cedar.invalid/lease                              PeerReset at quorum-30-1.cedar.invalid:4 k0
+ *31 RECO H!        POST https://quorum-30-1.cedar.invalid/lease                              PeerReset at quorum-30-1.cedar.invalid:4 rep k0
+ *32 RECO H!        POST https://quorum-30-1.cedar.invalid/lease                              PeerReset at quorum-30-1.cedar.invalid:4 rep k0
+ *33 RECO H+        POST https://quorum-30-1.cedar.invalid/lease                                                                       rep res
+ *34 RECO p+        record-quorum                                                                                                      rep
+=== W127 RECOVERY net=RECOVERY t=36
+  25 STAL p+        isolate:lib/shards/contract_3.zig                                                                                  
+  26 STAL W+        lib/shards/contract_3.zig                    contract_3.zig:hd54d>h4220                                            
+  27 STAL TF3/17    suite=zig:allocator tests=replica-contract                                ReplicaDivergence at lib/shards/contract rep k0
+  28 STAL W+        lib/shards/contract_9.zig                    contract_9.zig:h2aba>h2807                                            
+ *29 STAL TF4/17    suite=zig:allocator tests=replica-contract                                ReplicaDivergence at lib/shards/contract rep k0
+ *30 STAL p+        record:lib/shards/contract_9.zig                                                                                   
+ *31 PROD H!        POST https://quorum-31-0.cedar.invalid/lease                              PeerReset at quorum-31-0.cedar.invalid:3 k0
+ *32 RECO H!        POST https://quorum-31-0.cedar.invalid/lease                              PeerReset at quorum-31-0.cedar.invalid:3 rep k0
+ *33 RECO H!        POST https://quorum-31-0.cedar.invalid/lease                              PeerReset at quorum-31-0.cedar.invalid:3 rep k0
+ *34 RECO H+        POST https://quorum-31-0.cedar.invalid/lease                                                                       rep res
+ *35 RECO H!        POST https://quorum-35-1.cedar.invalid/lease                              PeerReset at quorum-35-1.cedar.invalid:6 k0
+ *36 RECO H!        POST https://quorum-35-1.cedar.invalid/lease                              PeerReset at quorum-35-1.cedar.invalid:6 rep k0
+=== W129 RECOVERY net=RECOVERY t=33
+  22 OSCI R+        config/merge.conf                                                                                                  rep
+  23 OSCI W+        config/merge.conf                            merge.conf:h2de9>hec38                                                rev
+  24 OSCI W+        config/merge.conf                            merge.conf:hec38>h2de9                                                rev
+  25 OSCI TF3/15    suite=busted:stream tests=replica-contract                                AllocatorInvariant at lib/shards/contrac rep cnt cntw k0
+ *26 OSCI W+        config/merge.conf                            merge.conf:h2de9>hec38                                                rev
+ *27 OSCI R+        config/merge.conf                                                                                                  rep
+ *28 OSCI Pp        quorum-28-0.cedar.invalid backoff=1                                                                                k0
+ *29 OSCI Pp        quorum-28-0.cedar.invalid backoff=2                                                                                k0
+ *30 OSCI Pr        quorum-28-0.cedar.invalid backoff=4                                                                                res
+ *31 OSCI p+        record-quorum                                                                                                      
+ *32 RECO R+        lib/shards/contract_11.lua                                                                                         
+ *33 RECO p+        isolate:lib/shards/contract_11.lua                                                                                 
+=== W130 RECOVERY net=RECOVERY t=14
+   3 PROD R+        lib/shards/contract_3.zig                                                                                          
+   4 PROD p+        isolate:lib/shards/contract_3.zig                                                                                  
+   5 PROD W+        lib/shards/contract_3.zig                    contract_3.zig:ha2a1>h07bf                                            
+   6 PROD TF2/15    suite=zig:allocator tests=replica-contract                                StreamOrderViolation at lib/shards/contr rep k0
+ * 7 PROD W+        lib/shards/contract_5.zig                    contract_5.zig:h1062>h3b45                                            
+ * 8 PROD TF3/15    suite=zig:allocator tests=replica-contract                                StreamOrderViolation at lib/shards/contr rep k0
+ * 9 PROD R+        lib/shards/contract_5.zig                                                                                          
+ *10 PROD H!        POST https://quorum-10-0.cedar.invalid/lease                              PeerReset at quorum-10-0.cedar.invalid:8 k0
+ *11 RECO H!        POST https://quorum-10-0.cedar.invalid/lease                              PeerReset at quorum-10-0.cedar.invalid:8 rep k0
+ *12 RECO H!        POST https://quorum-10-0.cedar.invalid/lease                              PeerReset at quorum-10-0.cedar.invalid:8 rep k0
+ *13 RECO H+        POST https://quorum-10-0.cedar.invalid/lease                                                                       rep res
+ *14 RECO p+        record-quorum                                                                                                      
+=== W131 RECOVERY net=STALLED t=17
+   6 PROD TF2/12    suite=kaocha:ledger tests=replica-contract                                StreamOrderViolation at lib/shards/contr rep k0
+   7 PROD R+        lib/shards/contract_5.clj                                                                                          
+   8 PROD W+        lib/shards/contract_5.clj                    contract_5.clj:h249e>h1cd5                                            
+   9 PROD TF3/12    suite=kaocha:ledger tests=replica-contract                                StreamOrderViolation at lib/shards/contr rep k0
+ *10 PROD p+        handoff:10:0                                                                                                       
+ *11 PROD p+        handoff:11:1                                                                                                       
+ *12 STAL p+        handoff:12:2                                                                                                       
+ *13 STAL p+        handoff:13:3                                                                                                       
+ *14 STAL TF3/12    suite=kaocha:ledger tests=replica-contract                                StreamOrderViolation at lib/shards/contr rep cnt cntw nomut k0
+ *15 STAL TF3/12    suite=kaocha:ledger tests=replica-contract                                StreamOrderViolation at lib/shards/contr rep cnt cntw nomut k0
+ *16 STAL TF3/12    suite=kaocha:ledger tests=replica-contract                                StreamOrderViolation at lib/shards/contr rep cnt cntw nomut k0
+ *17 STAL TF3/12    suite=kaocha:ledger tests=replica-contract                                StreamOrderViolation at lib/shards/contr rep cnt cntw nomut k0
+=== W142 RECOVERY net=RECOVERY t=25
+  14 PROD TF7/14    suite=zig:allocator tests=replica-contract                                ReplicaDivergence at lib/shards/contract rep k0
+  15 STAL W+        lib/shards/contract_10.zig                   contract_10.zi:h2662>hed14                                            
+  16 STAL TF8/14    suite=zig:allocator tests=replica-contract                                ReplicaDivergence at lib/shards/contract rep k0
+  17 PROD Pp        quorum-17-0.cedar.invalid backoff=1                                                                                k0
+ *18 RECO Pp        quorum-17-0.cedar.invalid backoff=2                                                                                k0
+ *19 RECO Pp        quorum-17-0.cedar.invalid backoff=4                                                                                k0
+ *20 RECO Pp        quorum-17-0.cedar.invalid backoff=8                                                                                k0
+ *21 RECO Pr        quorum-17-0.cedar.invalid backoff=16                                                                               res
+ *22 RECO Pp        quorum-22-1.cedar.invalid backoff=1                                                                                k0
+ *23 RECO Pp        quorum-22-1.cedar.invalid backoff=2                                                                                k0
+ *24 RECO Pp        quorum-22-1.cedar.invalid backoff=4                                                                                k0
+ *25 RECO Pp        quorum-22-1.cedar.invalid backoff=8                                                                                k0
+=== W144 RECOVERY net=RECOVERY t=18
+   7 PROD TF3/15    suite=zig:allocator tests=replica-contract                                AllocatorInvariant at lib/shards/contrac rep k0
+   8 PROD p+        record:lib/shards/contract_3.zig                                                                                   
+   9 PROD Pp        quorum-9-0.cedar.invalid backoff=1                                                                                 k0
+  10 RECO Pp        quorum-9-0.cedar.invalid backoff=2                                                                                 k0
+ *11 RECO Pp        quorum-9-0.cedar.invalid backoff=4                                                                                 k0
+ *12 RECO Pp        quorum-9-0.cedar.invalid backoff=8                                                                                 k0
+ *13 RECO Pr        quorum-9-0.cedar.invalid backoff=16                                                                                res
+ *14 RECO p+        record-quorum                                                                                                      
+ *15 RECO Pp        quorum-15-1.cedar.invalid backoff=1                                                                                k0
+ *16 RECO Pp        quorum-15-1.cedar.invalid backoff=2                                                                                k0
+ *17 RECO Pp        quorum-15-1.cedar.invalid backoff=4                                                                                k0
+ *18 RECO Pp        quorum-15-1.cedar.invalid backoff=8                                                                                k0
+=== W146 RECOVERY net=RECOVERY t=11
+   0 PROD R+        lib/shards/contract_9.lua                                                                                          
+   1 PROD W+        lib/shards/contract_9.lua                    contract_9.lua:h80c1>h2e9c                                            
+   2 PROD TF1/18    suite=busted:stream tests=replica-contract                                StreamOrderViolation at lib/shards/contr k0
+   3 PROD R+        lib/shards/contract_3.lua                                                                                          
+ * 4 PROD W+        lib/shards/contract_3.lua                    contract_3.lua:hfbb4>hbf02                                            
+ * 5 PROD TF2/18    suite=busted:stream tests=replica-contract                                StreamOrderViolation at lib/shards/contr rep k0
+ * 6 PROD R+        lib/shards/contract_10.lua                                                                                         
+ * 7 PROD p+        isolate:lib/shards/contract_10.lua                                                                                 
+ * 8 PROD W+        lib/shards/contract_10.lua                   contract_10.lu:h1704>h5028                                            
+ * 9 PROD TF3/18    suite=busted:stream tests=replica-contract                                StreamOrderViolation at lib/shards/contr rep k0
+ *10 PROD H!        POST https://quorum-10-0.cedar.invalid/lease                              PeerReset at quorum-10-0.cedar.invalid:2 k0
+ *11 RECO H!        POST https://quorum-10-0.cedar.invalid/lease                              PeerReset at quorum-10-0.cedar.invalid:2 rep k0
+=== W148 RECOVERY net=RECOVERY t=20
+   9 STAL W+        lib/shards/contract_2.clj                    contract_2.clj:h2ece>h324e                                            
+  10 STAL TF5/14    suite=kaocha:ledger tests=replica-contract                                ReplicaDivergence at lib/shards/contract rep k0
+  11 STAL W+        lib/shards/contract_10.clj                   contract_10.cl:h9f98>hadc1                                            
+  12 STAL TF6/14    suite=kaocha:ledger tests=replica-contract                                ReplicaDivergence at lib/shards/contract rep k0
+ *13 STAL W+        lib/shards/contract_8.clj                    contract_8.clj:h87b8>h2cad                                            
+ *14 STAL TF7/14    suite=kaocha:ledger tests=replica-contract                                ReplicaDivergence at lib/shards/contract rep k0
+ *15 STAL W+        lib/shards/contract_6.clj                    contract_6.clj:hec07>h1418                                            
+ *16 STAL TF8/14    suite=kaocha:ledger tests=replica-contract                                ReplicaDivergence at lib/shards/contract rep k0
+ *17 PROD Pp        quorum-17-0.cedar.invalid backoff=1                                                                                k0
+ *18 RECO Pp        quorum-17-0.cedar.invalid backoff=2                                                                                k0
+ *19 RECO Pp        quorum-17-0.cedar.invalid backoff=4                                                                                k0
+ *20 RECO Pp        quorum-17-0.cedar.invalid backoff=8                                                                                k0
+=== W153 RECOVERY net=STALLED t=12
+   1 PROD p+        isolate:lib/shards/contract_2.lua                                                                                  
+   2 PROD W+        lib/shards/contract_2.lua                    contract_2.lua:h0d09>h25e3                                            
+   3 PROD TF1/16    suite=busted:stream tests=replica-contract                                AllocatorInvariant at lib/shards/contrac k0
+   4 PROD R+        lib/shards/contract_5.lua                                                                                          
+ * 5 PROD p+        isolate:lib/shards/contract_5.lua                                                                                  
+ * 6 PROD W+        lib/shards/contract_5.lua                    contract_5.lua:hc861>he6e2                                            
+ * 7 PROD TF2/16    suite=busted:stream tests=replica-contract                                AllocatorInvariant at lib/shards/contrac rep k0
+ * 8 PROD W+        lib/shards/contract_1.lua                    contract_1.lua:he06d>ha9be                                            
+ * 9 PROD TF3/16    suite=busted:stream tests=replica-contract                                AllocatorInvariant at lib/shards/contrac rep k0
+ *10 PROD p+        record:lib/shards/contract_1.lua                                                                                   
+ *11 RECO TF3/16    suite=busted:stream tests=replica-contract                                AllocatorInvariant at lib/shards/contrac rep cnt cntw nomut k0
+ *12 STAL TF3/16    suite=busted:stream tests=replica-contract                                AllocatorInvariant at lib/shards/contrac rep cnt cntw nomut k0
+=== W154 RECOVERY net=RECOVERY t=24
+  13 STAL W+        lib/shards/contract_1.clj                    contract_1.clj:h7e2f>h93ef                                            
+  14 PROD TF7/15    suite=kaocha:ledger tests=replica-contract                                ReplicaDivergence at lib/shards/contract rep k0
+  15 STAL W+        lib/shards/contract_13.clj                   contract_13.cl:hea18>h81cc                                            
+  16 STAL TF8/15    suite=kaocha:ledger tests=replica-contract                                ReplicaDivergence at lib/shards/contract rep k0
+ *17 PROD Pp        quorum-17-0.cedar.invalid backoff=1                                                                                k0
+ *18 RECO Pp        quorum-17-0.cedar.invalid backoff=2                                                                                k0
+ *19 RECO Pp        quorum-17-0.cedar.invalid backoff=4                                                                                k0
+ *20 RECO Pp        quorum-17-0.cedar.invalid backoff=8                                                                                k0
+ *21 RECO Pr        quorum-17-0.cedar.invalid backoff=16                                                                               res
+ *22 RECO Pp        quorum-22-1.cedar.invalid backoff=1                                                                                k0
+ *23 RECO Pp        quorum-22-1.cedar.invalid backoff=2                                                                                k0
+ *24 RECO Pr        quorum-22-1.cedar.invalid backoff=4                                                                                res
+=== W157 RECOVERY net=RECOVERY t=24
+  13 STAL W+        lib/shards/contract_6.clj                    contract_6.clj:h7b59>h9a46                                            
+  14 STAL TF7/13    suite=kaocha:ledger tests=replica-contract                                AllocatorInvariant at lib/shards/contrac rep k0
+  15 STAL W+        lib/shards/contract_8.clj                    contract_8.clj:h791e>h0f8d                                            
+  16 STAL TF8/13    suite=kaocha:ledger tests=replica-contract                                AllocatorInvariant at lib/shards/contrac rep k0
+ *17 PROD H!        POST https://quorum-17-0.cedar.invalid/lease                              PeerReset at quorum-17-0.cedar.invalid:4 k0
+ *18 RECO H!        POST https://quorum-17-0.cedar.invalid/lease                              PeerReset at quorum-17-0.cedar.invalid:4 rep k0
+ *19 RECO H+        POST https://quorum-17-0.cedar.invalid/lease                                                                       rep res
+ *20 RECO H!        POST https://quorum-20-1.cedar.invalid/lease                              PeerReset at quorum-20-1.cedar.invalid:5 k0
+ *21 RECO H!        POST https://quorum-20-1.cedar.invalid/lease                              PeerReset at quorum-20-1.cedar.invalid:5 rep k0
+ *22 RECO H+        POST https://quorum-20-1.cedar.invalid/lease                                                                       rep res
+ *23 RECO R+        lib/shards/contract_7.clj                                                                                          
+ *24 RECO W+        lib/shards/contract_7.clj                    contract_7.clj:h0>h2b1e                                               
+=== W163 RECOVERY net=STALLED t=14
+   3 PROD W+        lib/shards/contract_8.clj                    contract_8.clj:h8320>habee                                            
+   4 PROD TF2/14    suite=kaocha:ledger tests=replica-contract                                StreamOrderViolation at lib/shards/contr rep k0
+   5 PROD p+        record:lib/shards/contract_8.clj                                                                                   
+   6 PROD R+        lib/shards/contract_4.clj                                                                                          
+ * 7 PROD W+        lib/shards/contract_4.clj                    contract_4.clj:h3a5a>h62a8                                            
+ * 8 PROD TF3/14    suite=kaocha:ledger tests=replica-contract                                StreamOrderViolation at lib/shards/contr rep k0
+ * 9 PROD p+        handoff:9:0                                                                                                        
+ *10 STAL p+        handoff:10:1                                                                                                       
+ *11 STAL p+        handoff:11:2                                                                                                       
+ *12 STAL p+        handoff:12:3                                                                                                       
+ *13 STAL TF3/14    suite=kaocha:ledger tests=replica-contract                                StreamOrderViolation at lib/shards/contr rep cnt cntw nomut k0
+ *14 STAL TF3/14    suite=kaocha:ledger tests=replica-contract                                StreamOrderViolation at lib/shards/contr rep cnt cntw nomut k0
+=== W165 RECOVERY net=STALLED t=12
+   1 PROD p+        isolate:lib/shards/contract_13.clj                                                                                 
+   2 PROD W+        lib/shards/contract_13.clj                   contract_13.cl:h8cf3>hf72f                                            
+   3 PROD TF1/14    suite=kaocha:ledger tests=replica-contract                                StreamOrderViolation at lib/shards/contr k0
+   4 PROD R+        lib/shards/contract_10.clj                                                                                         
+ * 5 PROD W+        lib/shards/contract_10.clj                   contract_10.cl:h9f83>hd18b                                            
+ * 6 PROD TF2/14    suite=kaocha:ledger tests=replica-contract                                StreamOrderViolation at lib/shards/contr rep k0
+ * 7 PROD R+        lib/shards/contract_6.clj                                                                                          
+ * 8 PROD W+        lib/shards/contract_6.clj                    contract_6.clj:h4040>h7c09                                            
+ * 9 PROD TF3/14    suite=kaocha:ledger tests=replica-contract                                StreamOrderViolation at lib/shards/contr rep k0
+ *10 RECO TF3/14    suite=kaocha:ledger tests=replica-contract                                StreamOrderViolation at lib/shards/contr rep cnt cntw nomut k0
+ *11 STAL TF3/14    suite=kaocha:ledger tests=replica-contract                                StreamOrderViolation at lib/shards/contr rep cnt cntw nomut k0
+ *12 STAL TF3/14    suite=kaocha:ledger tests=replica-contract                                StreamOrderViolation at lib/shards/contr rep cnt cntw nomut k0
+=== W168 RECOVERY net=OSCILLATING t=30
+  19 OSCI p+        reconcile-conventions                                                                                              rep
+  20 OSCI W+        lib/shards/contract_12.clj                   contract_12.cl:h681f>hac58                                            rev
+  21 OSCI W+        lib/shards/contract_12.clj                   contract_12.cl:hac58>h681f                                            rev
+  22 OSCI p+        reconcile-conventions                                                                                              rep
+ *23 OSCI W+        lib/shards/contract_12.clj                   contract_12.cl:h681f>hac58                                            rev
+ *24 OSCI TF3/13    suite=kaocha:ledger tests=replica-contract                                AllocatorInvariant at lib/shards/contrac rep cnt cntw k0
+ *25 OSCI W+        lib/shards/contract_12.clj                   contract_12.cl:hac58>h681f                                            rev
+ *26 OSCI TF3/13    suite=kaocha:ledger tests=replica-contract                                AllocatorInvariant at lib/shards/contrac rep cnt cntw k0
+ *27 OSCI Pp        quorum-27-0.cedar.invalid backoff=1                                                                                k0
+ *28 OSCI Pp        quorum-27-0.cedar.invalid backoff=2                                                                                k0
+ *29 OSCI Pr        quorum-27-0.cedar.invalid backoff=4                                                                                res
+ *30 OSCI Pp        quorum-30-1.cedar.invalid backoff=1                                                                                k0
+=== W176 RECOVERY net=RECOVERY t=34
+  23 PROD TF2/13    suite=busted:stream tests=replica-contract                                AllocatorInvariant at lib/shards/contrac rep k0
+  24 PROD R+        lib/shards/contract_11.lua                                                                                         
+  25 PROD p+        isolate:lib/shards/contract_11.lua                                                                                 
+  26 PROD W+        lib/shards/contract_11.lua                   contract_11.lu:h733a>h816f                                            
+ *27 PROD TF3/13    suite=busted:stream tests=replica-contract                                AllocatorInvariant at lib/shards/contrac rep k0
+ *28 PROD R+        lib/shards/contract_12.lua                                                                                         
+ *29 STAL W+        lib/shards/contract_12.lua                   contract_12.lu:h11a0>h4059                                            
+ *30 STAL TF4/13    suite=busted:stream tests=replica-contract                                AllocatorInvariant at lib/shards/contrac rep k0
+ *31 PROD H!        POST https://quorum-31-0.cedar.invalid/lease                              PeerReset at quorum-31-0.cedar.invalid:7 k0
+ *32 RECO H!        POST https://quorum-31-0.cedar.invalid/lease                              PeerReset at quorum-31-0.cedar.invalid:7 rep k0
+ *33 RECO H!        POST https://quorum-31-0.cedar.invalid/lease                              PeerReset at quorum-31-0.cedar.invalid:7 rep k0
+ *34 RECO H+        POST https://quorum-31-0.cedar.invalid/lease                                                                       rep res
+=== W182 RECOVERY net=RECOVERY t=45
+  34 OSCI W+        config/merge.conf                            merge.conf:h4599>h60dd                                                rev
+  35 OSCI TF3/12    suite=exunit:replication tests=replica-contr                              ReplicaDivergence at lib/shards/contract rep cnt cntw k0
+  36 OSCI W+        config/merge.conf                            merge.conf:h60dd>h4599                                                rev
+  37 OSCI R+        config/merge.conf                                                                                                  rep
+ *38 OSCI W+        config/merge.conf                            merge.conf:h4599>h60dd                                                rev
+ *39 OSCI Pp        quorum-39-0.cedar.invalid backoff=1                                                                                k0
+ *40 OSCI Pp        quorum-39-0.cedar.invalid backoff=2                                                                                k0
+ *41 OSCI Pp        quorum-39-0.cedar.invalid backoff=4                                                                                k0
+ *42 OSCI Pr        quorum-39-0.cedar.invalid backoff=8                                                                                res
+ *43 OSCI p+        record-quorum                                                                                                      
+ *44 RECO W+        lib/shards/contract_11.exs                   contract_11.ex:h9344>ha178                                            
+ *45 RECO TF4/12    suite=exunit:replication tests=replica-contr                              ReplicaDivergence at lib/shards/contract rep k0
+=== W187 RECOVERY net=RECOVERY t=53
+  42 PROD p+        record:lib/shards/contract_2.clj                                                                                   
+  43 PROD W+        lib/shards/contract_6.clj                    contract_6.clj:h6e8d>h00ba                                            
+  44 STAL TF5/14    suite=kaocha:ledger tests=replica-contract                                AllocatorInvariant at lib/shards/contrac rep k0
+  45 PROD R+        lib/shards/contract_6.clj                                                                                          
+ *46 PROD H!        POST https://quorum-46-0.cedar.invalid/lease                              PeerReset at quorum-46-0.cedar.invalid:7 k0
+ *47 RECO H!        POST https://quorum-46-0.cedar.invalid/lease                              PeerReset at quorum-46-0.cedar.invalid:7 rep k0
+ *48 RECO H!        POST https://quorum-46-0.cedar.invalid/lease                              PeerReset at quorum-46-0.cedar.invalid:7 rep k0
+ *49 RECO H+        POST https://quorum-46-0.cedar.invalid/lease                                                                       rep res
+ *50 RECO H!        POST https://quorum-50-1.cedar.invalid/lease                              PeerReset at quorum-50-1.cedar.invalid:5 k0
+ *51 RECO H!        POST https://quorum-50-1.cedar.invalid/lease                              PeerReset at quorum-50-1.cedar.invalid:5 rep k0
+ *52 RECO H+        POST https://quorum-50-1.cedar.invalid/lease                                                                       rep res
+ *53 RECO p+        record-quorum                                                                                                      
+=== W188 RECOVERY net=RECOVERY t=25
+  14 STAL TF7/15    suite=zig:allocator tests=replica-contract                                AllocatorInvariant at lib/shards/contrac rep k0
+  15 STAL W+        lib/shards/contract_1.zig                    contract_1.zig:h81be>hddc6                                            
+  16 PROD TF8/15    suite=zig:allocator tests=replica-contract                                AllocatorInvariant at lib/shards/contrac rep k0
+  17 PROD Pp        quorum-17-0.cedar.invalid backoff=1                                                                                k0
+ *18 RECO Pp        quorum-17-0.cedar.invalid backoff=2                                                                                k0
+ *19 RECO Pp        quorum-17-0.cedar.invalid backoff=4                                                                                k0
+ *20 RECO Pp        quorum-17-0.cedar.invalid backoff=8                                                                                k0
+ *21 RECO Pr        quorum-17-0.cedar.invalid backoff=16                                                                               res
+ *22 RECO Pp        quorum-22-1.cedar.invalid backoff=1                                                                                k0
+ *23 RECO Pp        quorum-22-1.cedar.invalid backoff=2                                                                                k0
+ *24 RECO Pp        quorum-22-1.cedar.invalid backoff=4                                                                                k0
+ *25 RECO Pp        quorum-22-1.cedar.invalid backoff=8                                                                                k0
+=== W190 RECOVERY net=RECOVERY t=19
+   8 PROD W+        lib/shards/contract_3.zig                    contract_3.zig:h5b26>h1801                                            
+   9 PROD TF3/14    suite=zig:allocator tests=replica-contract                                AllocatorInvariant at lib/shards/contrac rep k0
+  10 PROD H!        POST https://quorum-10-0.cedar.invalid/lease                              PeerReset at quorum-10-0.cedar.invalid:1 k0
+  11 RECO H!        POST https://quorum-10-0.cedar.invalid/lease                              PeerReset at quorum-10-0.cedar.invalid:1 rep k0
+ *12 RECO H!        POST https://quorum-10-0.cedar.invalid/lease                              PeerReset at quorum-10-0.cedar.invalid:1 rep k0
+ *13 RECO H+        POST https://quorum-10-0.cedar.invalid/lease                                                                       rep res
+ *14 RECO p+        record-quorum                                                                                                      
+ *15 RECO H!        POST https://quorum-15-1.cedar.invalid/lease                              PeerReset at quorum-15-1.cedar.invalid:4 k0
+ *16 RECO H!        POST https://quorum-15-1.cedar.invalid/lease                              PeerReset at quorum-15-1.cedar.invalid:4 rep k0
+ *17 RECO H+        POST https://quorum-15-1.cedar.invalid/lease                                                                       rep res
+ *18 RECO H+        GET https://packages.cedar.invalid/cedar/2 r                                                                       
+ *19 RECO H+        GET https://packages.cedar.invalid/cedar/1 r                                                                       
+=== W191 RECOVERY net=RECOVERY t=20
+   9 STAL W+        lib/shards/contract_3.zig                    contract_3.zig:h50c1>h5d1d                                            
+  10 STAL TF5/18    suite=zig:allocator tests=replica-contract                                StreamOrderViolation at lib/shards/contr rep k0
+  11 STAL W+        lib/shards/contract_12.zig                   contract_12.zi:h2305>hac7f                                            
+  12 STAL TF6/18    suite=zig:allocator tests=replica-contract                                StreamOrderViolation at lib/shards/contr rep k0
+ *13 STAL W+        lib/shards/contract_6.zig                    contract_6.zig:h44ee>ha9dc                                            
+ *14 STAL TF7/18    suite=zig:allocator tests=replica-contract                                StreamOrderViolation at lib/shards/contr rep k0
+ *15 STAL W+        lib/shards/contract_4.zig                    contract_4.zig:hdf7a>h5273                                            
+ *16 STAL TF8/18    suite=zig:allocator tests=replica-contract                                StreamOrderViolation at lib/shards/contr rep k0
+ *17 PROD H!        POST https://quorum-17-0.cedar.invalid/lease                              PeerReset at quorum-17-0.cedar.invalid:7 k0
+ *18 RECO H!        POST https://quorum-17-0.cedar.invalid/lease                              PeerReset at quorum-17-0.cedar.invalid:7 rep k0
+ *19 RECO H!        POST https://quorum-17-0.cedar.invalid/lease                              PeerReset at quorum-17-0.cedar.invalid:7 rep k0
+ *20 RECO H+        POST https://quorum-17-0.cedar.invalid/lease                                                                       rep res
+=== W192 RECOVERY net=RECOVERY t=21
+  10 PROD TF3/16    suite=busted:stream tests=replica-contract                                ReplicaDivergence at lib/shards/contract rep k0
+  11 PROD Pp        quorum-11-0.cedar.invalid backoff=1                                                                                k0
+  12 RECO Pp        quorum-11-0.cedar.invalid backoff=2                                                                                k0
+  13 RECO Pp        quorum-11-0.cedar.invalid backoff=4                                                                                k0
+ *14 RECO Pp        quorum-11-0.cedar.invalid backoff=8                                                                                k0
+ *15 RECO Pp        quorum-11-0.cedar.invalid backoff=16                                                                               k0
+ *16 RECO Pr        quorum-11-0.cedar.invalid backoff=32                                                                               res
+ *17 RECO p+        record-quorum                                                                                                      
+ *18 RECO Pp        quorum-18-1.cedar.invalid backoff=1                                                                                k0
+ *19 RECO Pp        quorum-18-1.cedar.invalid backoff=2                                                                                k0
+ *20 RECO Pp        quorum-18-1.cedar.invalid backoff=4                                                                                k0
+ *21 RECO Pr        quorum-18-1.cedar.invalid backoff=8                                                                                res
+=== W193 RECOVERY net=RECOVERY t=19
+   8 PROD TF3/17    suite=busted:stream tests=replica-contract                                StreamOrderViolation at lib/shards/contr rep k0
+   9 PROD R+        lib/shards/contract_13.lua                                                                                         
+  10 PROD H!        POST https://quorum-10-0.cedar.invalid/lease                              PeerReset at quorum-10-0.cedar.invalid:3 k0
+  11 RECO H!        POST https://quorum-10-0.cedar.invalid/lease                              PeerReset at quorum-10-0.cedar.invalid:3 rep k0
+ *12 RECO H!        POST https://quorum-10-0.cedar.invalid/lease                              PeerReset at quorum-10-0.cedar.invalid:3 rep k0
+ *13 RECO H+        POST https://quorum-10-0.cedar.invalid/lease                                                                       rep res
+ *14 RECO p+        record-quorum                                                                                                      
+ *15 RECO H!        POST https://quorum-15-1.cedar.invalid/lease                              PeerReset at quorum-15-1.cedar.invalid:7 k0
+ *16 RECO H!        POST https://quorum-15-1.cedar.invalid/lease                              PeerReset at quorum-15-1.cedar.invalid:7 rep k0
+ *17 RECO H!        POST https://quorum-15-1.cedar.invalid/lease                              PeerReset at quorum-15-1.cedar.invalid:7 rep k0
+ *18 RECO H+        POST https://quorum-15-1.cedar.invalid/lease                                                                       rep res
+ *19 RECO W+        lib/shards/contract_16.lua                   contract_16.lu:h9a5a>h4508                                            
+=== W194 RECOVERY net=RECOVERY t=31
+  20 RECO Pp        quorum-17-0.cedar.invalid backoff=8                                                                                k0
+  21 RECO Pp        quorum-17-0.cedar.invalid backoff=16                                                                               k0
+  22 RECO Pr        quorum-17-0.cedar.invalid backoff=32                                                                               res
+  23 RECO Pp        quorum-23-1.cedar.invalid backoff=1                                                                                k0
+ *24 RECO Pp        quorum-23-1.cedar.invalid backoff=2                                                                                k0
+ *25 RECO Pp        quorum-23-1.cedar.invalid backoff=4                                                                                k0
+ *26 RECO Pp        quorum-23-1.cedar.invalid backoff=8                                                                                k0
+ *27 RECO Pp        quorum-23-1.cedar.invalid backoff=16                                                                               k0
+ *28 RECO Pr        quorum-23-1.cedar.invalid backoff=32                                                                               res
+ *29 RECO R+        lib/shards/contract_14.zig                                                                                         
+ *30 RECO W+        lib/shards/contract_14.zig                   contract_14.zi:h0>hdf09                                               
+ *31 RECO R+        lib/shards/contract_14.zig                                                                                         rep
+=== W195 RECOVERY net=RECOVERY t=21
+  10 STAL TF5/12    suite=zig:allocator tests=replica-contract                                AllocatorInvariant at lib/shards/contrac rep k0
+  11 STAL W+        lib/shards/contract_0.zig                    contract_0.zig:hecc4>h7c2c                                            
+  12 PROD TF6/12    suite=zig:allocator tests=replica-contract                                AllocatorInvariant at lib/shards/contrac rep k0
+  13 STAL W+        lib/shards/contract_5.zig                    contract_5.zig:h808e>h9f90                                            
+ *14 STAL TF7/12    suite=zig:allocator tests=replica-contract                                AllocatorInvariant at lib/shards/contrac rep k0
+ *15 STAL W+        lib/shards/contract_3.zig                    contract_3.zig:h4072>h2577                                            
+ *16 STAL TF8/12    suite=zig:allocator tests=replica-contract                                AllocatorInvariant at lib/shards/contrac rep k0
+ *17 PROD Pp        quorum-17-0.cedar.invalid backoff=1                                                                                k0
+ *18 RECO Pp        quorum-17-0.cedar.invalid backoff=2                                                                                k0
+ *19 RECO Pp        quorum-17-0.cedar.invalid backoff=4                                                                                k0
+ *20 RECO Pr        quorum-17-0.cedar.invalid backoff=8                                                                                res
+ *21 RECO p+        record-quorum                                                                                                      
+=== W196 RECOVERY net=STALLED t=18
+   7 PROD p+        isolate:lib/shards/contract_4.clj                                                                                  
+   8 PROD W+        lib/shards/contract_4.clj                    contract_4.clj:h177f>h7940                                            
+   9 PROD TF3/14    suite=kaocha:ledger tests=replica-contract                                StreamOrderViolation at lib/shards/contr rep k0
+  10 PROD p+        handoff:10:0                                                                                                       
+ *11 PROD p+        handoff:11:1                                                                                                       
+ *12 STAL p+        handoff:12:2                                                                                                       
+ *13 STAL p+        handoff:13:3                                                                                                       
+ *14 STAL p+        handoff:14:4                                                                                                       
+ *15 STAL TF3/14    suite=kaocha:ledger tests=replica-contract                                StreamOrderViolation at lib/shards/contr rep cnt cntw nomut k0
+ *16 STAL TF3/14    suite=kaocha:ledger tests=replica-contract                                StreamOrderViolation at lib/shards/contr rep cnt cntw nomut k0
+ *17 STAL TF3/14    suite=kaocha:ledger tests=replica-contract                                StreamOrderViolation at lib/shards/contr rep cnt cntw nomut k0
+ *18 STAL TF3/14    suite=kaocha:ledger tests=replica-contract                                StreamOrderViolation at lib/shards/contr rep cnt cntw nomut k0
+=== W197 RECOVERY net=RECOVERY t=25
+  14 STAL TF7/12    suite=exunit:replication tests=replica-contr                              AllocatorInvariant at lib/shards/contrac rep k0
+  15 STAL W+        lib/shards/contract_7.exs                    contract_7.exs:h28d5>h005d                                            
+  16 STAL TF8/12    suite=exunit:replication tests=replica-contr                              AllocatorInvariant at lib/shards/contrac rep k0
+  17 PROD Pp        quorum-17-0.cedar.invalid backoff=1                                                                                k0
+ *18 RECO Pp        quorum-17-0.cedar.invalid backoff=2                                                                                k0
+ *19 RECO Pp        quorum-17-0.cedar.invalid backoff=4                                                                                k0
+ *20 RECO Pr        quorum-17-0.cedar.invalid backoff=8                                                                                res
+ *21 RECO Pp        quorum-21-1.cedar.invalid backoff=1                                                                                k0
+ *22 RECO Pp        quorum-21-1.cedar.invalid backoff=2                                                                                k0
+ *23 RECO Pp        quorum-21-1.cedar.invalid backoff=4                                                                                k0
+ *24 RECO Pp        quorum-21-1.cedar.invalid backoff=8                                                                                k0
+ *25 RECO Pr        quorum-21-1.cedar.invalid backoff=16                                                                               res
+=== W198 RECOVERY net=RECOVERY t=18
+   7 STAL W+        lib/shards/contract_5.zig                    contract_5.zig:hf658>hae82                                            
+   8 STAL TF4/18    suite=zig:allocator tests=replica-contract                                AllocatorInvariant at lib/shards/contrac rep k0
+   9 STAL W+        lib/shards/contract_6.zig                    contract_6.zig:hbbc9>h1add                                            
+  10 STAL TF5/18    suite=zig:allocator tests=replica-contract                                AllocatorInvariant at lib/shards/contrac rep k0
+ *11 STAL W+        lib/shards/contract_15.zig                   contract_15.zi:h28ee>h86b8                                            
+ *12 STAL TF6/18    suite=zig:allocator tests=replica-contract                                AllocatorInvariant at lib/shards/contrac rep k0
+ *13 STAL W+        lib/shards/contract_4.zig                    contract_4.zig:h36d6>h8c44                                            
+ *14 STAL TF7/18    suite=zig:allocator tests=replica-contract                                AllocatorInvariant at lib/shards/contrac rep k0
+ *15 STAL W+        lib/shards/contract_3.zig                    contract_3.zig:h4798>hd79f                                            
+ *16 STAL TF8/18    suite=zig:allocator tests=replica-contract                                AllocatorInvariant at lib/shards/contrac rep k0
+ *17 PROD Pp        quorum-17-0.cedar.invalid backoff=1                                                                                k0
+ *18 RECO Pp        quorum-17-0.cedar.invalid backoff=2                                                                                k0
+=== W199 RECOVERY net=STALLED t=15
+   4 PROD TF2/14    suite=kaocha:ledger tests=replica-contract                                AllocatorInvariant at lib/shards/contrac rep k0
+   5 PROD p+        record:lib/shards/contract_4.clj                                                                                   
+   6 PROD R+        lib/shards/contract_8.clj                                                                                          
+   7 PROD p+        isolate:lib/shards/contract_8.clj                                                                                  
+ * 8 PROD W+        lib/shards/contract_8.clj                    contract_8.clj:h4ec9>had07                                            
+ * 9 PROD TF3/14    suite=kaocha:ledger tests=replica-contract                                AllocatorInvariant at lib/shards/contrac rep k0
+ *10 PROD p+        handoff:10:0                                                                                                       
+ *11 PROD p+        handoff:11:1                                                                                                       
+ *12 PROD p+        handoff:12:2                                                                                                       
+ *13 PROD TF3/14    suite=kaocha:ledger tests=replica-contract                                AllocatorInvariant at lib/shards/contrac rep cnt cntw nomut k0
+ *14 STAL TF3/14    suite=kaocha:ledger tests=replica-contract                                AllocatorInvariant at lib/shards/contrac rep cnt cntw nomut k0
+ *15 STAL TF3/14    suite=kaocha:ledger tests=replica-contract                                AllocatorInvariant at lib/shards/contrac rep cnt cntw nomut k0
+=== W200 RECOVERY net=RECOVERY t=32
+  21 STAL TF2/18    suite=zig:allocator tests=replica-contract                                AllocatorInvariant at lib/shards/contrac rep k0
+  22 PROD p+        record:lib/shards/contract_12.zig                                                                                  
+  23 PROD R+        lib/shards/contract_15.zig                                                                                         
+  24 STAL W+        lib/shards/contract_15.zig                   contract_15.zi:h315a>hafc9                                            
+ *25 STAL TF3/18    suite=zig:allocator tests=replica-contract                                AllocatorInvariant at lib/shards/contrac rep k0
+ *26 PROD R+        lib/shards/contract_6.zig                                                                                          
+ *27 PROD p+        isolate:lib/shards/contract_6.zig                                                                                  
+ *28 PROD W+        lib/shards/contract_6.zig                    contract_6.zig:hc8b7>h1340                                            
+ *29 PROD TF4/18    suite=zig:allocator tests=replica-contract                                AllocatorInvariant at lib/shards/contrac rep k0
+ *30 PROD H!        POST https://quorum-30-0.cedar.invalid/lease                              PeerReset at quorum-30-0.cedar.invalid:6 k0
+ *31 RECO H!        POST https://quorum-30-0.cedar.invalid/lease                              PeerReset at quorum-30-0.cedar.invalid:6 rep k0
+ *32 RECO H!        POST https://quorum-30-0.cedar.invalid/lease                              PeerReset at quorum-30-0.cedar.invalid:6 rep k0

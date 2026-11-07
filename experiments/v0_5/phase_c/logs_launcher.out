@@ -1,0 +1,51 @@
+v0.5 Phase C: US$0.0 spent, US$250.0 of US$250.0 left
+launching v05c: model=claude-fable-5-1 fallback=none effort=max max_output=128000 max_budget_usd=250.00 session=99e67aa0-c1bc-49b6-904c-f7b6fe31149e dir=/Users/matthew/Development/hypabolic/HypaNet-v05c-author
+transcript: /Users/matthew/Development/hypabolic/HypaNet/experiments/v0_5/phase_c/logs/v05c.stream.jsonl
+audit: 112 tool calls, models ['claude-fable-5-1'], 1 denials, 5 violations, 0 file findings -> /Users/matthew/Development/hypabolic/HypaNet/experiments/v0_5/phase_c/logs/v05c.stream.audit.json
+  VIOLATION: [EXECUTED] Bash command does not start with './py ': ls -la /Users/matthew/Development/hypabolic/HypaNet-v05c-author
+  VIOLATION: [EXECUTED] Bash command does not start with './py ': ls -laR /Users/matthew/Development/hypabolic/HypaNet-v05c-author/packet /Users/matthew/Development/hypabolic/HypaNet-v05c-author/phase_b /Users/matthew/Development/hypabolic/HypaNet-v05c-author/r1 /Us
+  VIOLATION: [refused] Read: refers to '/.claude/': /Users/matthew/.claude/projects/-Users-matthew-Development-hypabolic-HypaNet-v05c-author/99e67aa0-c1bc-49b6-904c-f7b6fe31149e/tool-results/bqng156ag.txt     
+  VIOLATION: [refused] Read: absolute path outside the author dir: /Users/matthew/.claude/projects/-Users-matthew-Development-hypabolic-HypaNet-v05c-author/99e67aa0-c1bc-49b6-904c-f7b6fe31149e/tool-results/bqng156ag.txt
+  VIOLATION: [refused] Read: path resolves outside the author dir: /Users/matthew/.claude/projects/-Users-matthew-Development-hypabolic-HypaNet-v05c-author/99e67aa0-c1bc-49b6-904c-f7b6fe31149e/tool-results/bqng156ag.txt
+  executed violations: 2 (refused attempts are listed but were blocked)
+AUDIT FOUND VIOLATIONS (see the .audit.json next to /Users/matthew/Development/hypabolic/HypaNet/experiments/v0_5/phase_c/logs/v05c.stream.jsonl)
+{
+  "launches": {
+    "v05c": {
+      "charged_as": "result delta",
+      "cost_usd": 56.581031,
+      "log": "v05c.stream.jsonl",
+      "max_budget_usd": 250.0,
+      "models": [
+        "claude-fable-5-1"
+      ],
+      "phase": "v05c",
+      "resolved": true,
+      "result_events": 1,
+      "session_totals_usd": {
+        "99e67aa0-c1bc-49b6-904c-f7b6fe31149e": 56.581031
+      },
+      "turns_after_last_result": 0
+    }
+  },
+  "method": "per-session-id delta of the cumulative total_cost_usd; unresolved launches at an operator figure, their --max-budget-usd ceiling, or a lower bound",
+  "not_phase_c": [],
+  "phases": {
+    "v05c": {
+      "cap_usd": 250.0,
+      "launches": [
+        "v05c"
+      ],
+      "lower_bound_only": [],
+      "overshoot_usd": 0.0,
+      "reached": false,
+      "remaining_usd": 193.418969,
+      "total_usd": 56.581031,
+      "unresolved": []
+    }
+  },
+  "sessions": [
+    "99e67aa0-c1bc-49b6-904c-f7b6fe31149e"
+  ],
+  "total_usd": 56.581031
+}

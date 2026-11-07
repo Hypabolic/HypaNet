@@ -1,0 +1,231 @@
+=== W-style repair (counts 1..7, same line): expect PRODUCTIVE throughout
+  0 PROD read_file path=lib/c0.ex -> ok in=1000 out=50                                             INEFF=0.0 RES=0.0 INPOL=0.0 FRESH=1.0 A1=0.00 A2=0.00 act=0.0 resw=0.0 fresh=1.0
+  1 PROD write_file path=lib/c1.ex -> ok in=1007 out=51             @ lib/c1.ex ha223f46d4a > h61a INEFF=0.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.00 act=0.0 resw=0.0 fresh=1.0
+  2 PROD run_tests suite=unit -> FAILED 1/12 passed in=1014 out=52  ! AssertionError at lib/c0.ex: INEFF=0.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.00 act=0.0 resw=0.0 fresh=1.0
+  3 PROD write_file path=lib/c2.ex -> ok in=1021 out=53             @ lib/c2.ex hf3749c72c0 > h41c INEFF=0.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.00 act=0.0 resw=0.0 fresh=1.0
+  4 PROD run_tests suite=unit -> FAILED 2/12 passed in=1028 out=54  ! AssertionError at lib/c0.ex: INEFF=0.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.00 act=0.0 resw=0.0 fresh=1.0
+  5 PROD write_file path=lib/c3.ex -> ok in=1035 out=55             @ lib/c3.ex h72535dc41e > h2f3 INEFF=0.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.00 act=0.0 resw=0.0 fresh=1.0
+  6 PROD run_tests suite=unit -> FAILED 3/12 passed in=1042 out=56  ! AssertionError at lib/c0.ex: INEFF=0.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.00 act=0.0 resw=0.0 fresh=1.0
+  7 PROD write_file path=lib/c4.ex -> ok in=1049 out=57             @ lib/c4.ex h17ef639076 > h27e INEFF=0.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.00 act=0.0 resw=0.0 fresh=1.0
+  8 PROD run_tests suite=unit -> FAILED 4/12 passed in=1056 out=58  ! AssertionError at lib/c0.ex: INEFF=0.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.00 act=0.0 resw=0.0 fresh=0.0
+  9 PROD write_file path=lib/c5.ex -> ok in=1063 out=59             @ lib/c5.ex h2361e99edc > hc9f INEFF=0.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.00 act=0.0 resw=0.0 fresh=0.0
+ 10 PROD run_tests suite=unit -> FAILED 5/12 passed in=1070 out=60  ! AssertionError at lib/c0.ex: INEFF=0.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.00 act=0.0 resw=0.0 fresh=0.0
+ 11 PROD write_file path=lib/c6.ex -> ok in=1077 out=61             @ lib/c6.ex heecc21ab3b > h049 INEFF=0.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.00 act=0.0 resw=0.0 fresh=0.0
+ 12 PROD run_tests suite=unit -> FAILED 6/12 passed in=1084 out=62  ! AssertionError at lib/c0.ex: INEFF=0.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.00 act=0.0 resw=0.0 fresh=0.0
+ 13 PROD write_file path=lib/c7.ex -> ok in=1091 out=63             @ lib/c7.ex h13c96f3060 > h8db INEFF=0.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.00 act=0.0 resw=0.0 fresh=0.0
+ 14 PROD run_tests suite=unit -> FAILED 7/12 passed in=1098 out=64  ! AssertionError at lib/c0.ex: INEFF=0.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.00 act=0.0 resw=0.0 fresh=0.0
+=== W-style append stall (h0 writes, count unchanged): expect STALLED from ~event 9
+  0 PROD read_file path=lib/c3.ex -> ok in=1000 out=50                                             INEFF=0.0 RES=0.0 INPOL=0.0 FRESH=1.0 A1=0.00 A2=0.00 act=0.0 resw=0.0 fresh=1.0
+  1 PROD write_file path=lib/c3.ex -> ok in=1007 out=51             @ lib/c3.ex h0 > hc2c9d245e9   INEFF=0.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.00 act=0.0 resw=0.0 fresh=1.0
+  2 PROD run_tests suite=unit -> FAILED 1/12 passed in=1014 out=52  ! AssertionError at lib/c0.ex: INEFF=0.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.00 act=0.0 resw=0.0 fresh=1.0
+  3 PROD write_file path=lib/c3.ex -> ok in=1021 out=53             @ lib/c3.ex h0 > h0b5e3408d3   INEFF=1.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.20 act=0.0 resw=0.0 fresh=1.0
+  4 PROD run_tests suite=unit -> FAILED 1/12 passed in=1028 out=54  ! AssertionError at lib/c0.ex: INEFF=1.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.33 act=0.0 resw=0.0 fresh=1.0
+  5 PROD write_file path=lib/c3.ex -> ok in=1035 out=55             @ lib/c3.ex h0 > h88bf1c76b2   INEFF=1.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.43 act=0.0 resw=0.0 fresh=1.0
+  6 PROD run_tests suite=unit -> FAILED 1/12 passed in=1042 out=56  ! AssertionError at lib/c0.ex: INEFF=1.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.50 act=0.0 resw=0.0 fresh=1.0
+  7 PROD write_file path=lib/c3.ex -> ok in=1049 out=57             @ lib/c3.ex h0 > h978f174f53   INEFF=1.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.56 act=0.0 resw=0.0 fresh=1.0
+  8 STAL run_tests suite=unit -> FAILED 1/12 passed in=1056 out=58  ! AssertionError at lib/c0.ex: INEFF=1.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.67 act=0.0 resw=0.0 fresh=0.0
+  9 STAL write_file path=lib/c3.ex -> ok in=1063 out=59             @ lib/c3.ex h0 > h70ead7dac5   INEFF=1.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.78 act=0.0 resw=0.0 fresh=0.0
+ 10 STAL run_tests suite=unit -> FAILED 1/12 passed in=1070 out=60  ! AssertionError at lib/c0.ex: INEFF=1.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.89 act=0.0 resw=0.0 fresh=0.0
+ 11 STAL write_file path=lib/c3.ex -> ok in=1077 out=61             @ lib/c3.ex h0 > h3acae0669e   INEFF=1.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.89 act=0.0 resw=0.0 fresh=0.0
+ 12 STAL run_tests suite=unit -> FAILED 1/12 passed in=1084 out=62  ! AssertionError at lib/c0.ex: INEFF=1.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.89 act=0.0 resw=0.0 fresh=0.0
+ 13 STAL write_file path=lib/c3.ex -> ok in=1091 out=63             @ lib/c3.ex h0 > h964b5aad03   INEFF=1.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.89 act=0.0 resw=0.0 fresh=0.0
+ 14 STAL run_tests suite=unit -> FAILED 1/12 passed in=1098 out=64  ! AssertionError at lib/c0.ex: INEFF=1.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.89 act=0.0 resw=0.0 fresh=0.0
+=== W-style retries after a progress failure: events 5-8 RECOVERY (retries 1-3 at 6-8), STALLED from 12
+  0 PROD write_file path=lib/c1.ex -> ok in=1000 out=50             @ lib/c1.ex hfe4b73befb > h7ee INEFF=0.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.00 act=0.0 resw=0.0 fresh=0.0
+  1 PROD run_tests suite=unit -> FAILED 2/12 passed in=1007 out=51  ! AssertionError at lib/c0.ex: INEFF=0.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.00 act=0.0 resw=0.0 fresh=0.0
+  2 PROD write_file path=lib/c2.ex -> ok in=1014 out=52             @ lib/c2.ex hd0efef1347 > hd52 INEFF=0.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.00 act=0.0 resw=0.0 fresh=0.0
+  3 PROD run_tests suite=unit -> FAILED 3/12 passed in=1021 out=53  ! AssertionError at lib/c0.ex: INEFF=0.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.00 act=0.0 resw=0.0 fresh=0.0
+  4 PROD read_file path=lib/c2.ex -> ok in=1028 out=54                                             INEFF=0.0 RES=0.0 INPOL=0.0 FRESH=1.0 A1=0.00 A2=0.00 act=0.0 resw=0.0 fresh=1.0
+  5 PROD run_tests suite=unit -> FAILED 3/12 passed in=1035 out=55  ! AssertionError at lib/c0.ex: INEFF=1.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.14 act=0.0 resw=0.0 fresh=1.0
+  6 RECO run_tests suite=unit -> FAILED 3/12 passed in=1042 out=56  ! AssertionError at lib/c0.ex: INEFF=1.0 RES=0.0 INPOL=5.0 FRESH=0.0 A1=0.00 A2=0.25 act=5.0 resw=0.0 fresh=1.0
+  7 RECO run_tests suite=unit -> FAILED 3/12 passed in=1049 out=57  ! AssertionError at lib/c0.ex: INEFF=1.0 RES=0.0 INPOL=1.0 FRESH=0.0 A1=0.00 A2=0.33 act=1.0 resw=0.0 fresh=1.0
+  8 RECO run_tests suite=unit -> FAILED 3/12 passed in=1056 out=58  ! AssertionError at lib/c0.ex: INEFF=1.0 RES=0.0 INPOL=1.0 FRESH=0.0 A1=0.00 A2=0.44 act=1.0 resw=0.0 fresh=1.0
+  9 PROD run_tests suite=unit -> FAILED 3/12 passed in=1063 out=59  ! AssertionError at lib/c0.ex: INEFF=1.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.56 act=0.0 resw=0.0 fresh=1.0
+ 10 PROD run_tests suite=unit -> FAILED 3/12 passed in=1070 out=60  ! AssertionError at lib/c0.ex: INEFF=1.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.67 act=0.0 resw=0.0 fresh=1.0
+ 11 PROD run_tests suite=unit -> FAILED 3/12 passed in=1077 out=61  ! AssertionError at lib/c0.ex: INEFF=1.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.78 act=0.0 resw=0.0 fresh=1.0
+ 12 STAL run_tests suite=unit -> FAILED 3/12 passed in=1084 out=62  ! AssertionError at lib/c0.ex: INEFF=1.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.89 act=0.0 resw=0.0 fresh=0.0
+=== handoff plans then 4 re-runs: handoffs not ineffective; 8-10 RECOVERY
+  0 PROD write_file path=lib/c1.ex -> ok in=1000 out=50             @ lib/c1.ex h40ffe3b496 > h008 INEFF=0.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.00 act=0.0 resw=0.0 fresh=0.0
+  1 PROD run_tests suite=unit -> FAILED 3/12 passed in=1007 out=51  ! AssertionError at lib/c0.ex: INEFF=0.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.00 act=0.0 resw=0.0 fresh=0.0
+  2 PROD plan action=handoff:2:0 -> ok in=1014 out=52                                              INEFF=0.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.00 act=0.0 resw=0.0 fresh=0.0
+  3 PROD plan action=handoff:3:1 -> ok in=1021 out=53                                              INEFF=0.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.00 act=0.0 resw=0.0 fresh=0.0
+  4 PROD plan action=handoff:4:2 -> ok in=1028 out=54                                              INEFF=0.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.00 act=0.0 resw=0.0 fresh=0.0
+  5 PROD plan action=handoff:5:3 -> ok in=1035 out=55                                              INEFF=0.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.00 act=0.0 resw=0.0 fresh=0.0
+  6 PROD plan action=handoff:6:4 -> ok in=1042 out=56                                              INEFF=0.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.00 act=0.0 resw=0.0 fresh=0.0
+  7 PROD run_tests suite=unit -> FAILED 3/12 passed in=1049 out=57  ! AssertionError at lib/c0.ex: INEFF=1.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.11 act=0.0 resw=0.0 fresh=0.0
+  8 RECO run_tests suite=unit -> FAILED 3/12 passed in=1056 out=58  ! AssertionError at lib/c0.ex: INEFF=1.0 RES=0.0 INPOL=5.0 FRESH=0.0 A1=0.00 A2=0.22 act=5.0 resw=0.0 fresh=0.0
+  9 RECO run_tests suite=unit -> FAILED 3/12 passed in=1063 out=59  ! AssertionError at lib/c0.ex: INEFF=1.0 RES=0.0 INPOL=5.0 FRESH=0.0 A1=0.00 A2=0.33 act=5.0 resw=0.0 fresh=0.0
+ 10 RECO run_tests suite=unit -> FAILED 3/12 passed in=1070 out=60  ! AssertionError at lib/c0.ex: INEFF=1.0 RES=0.0 INPOL=1.0 FRESH=0.0 A1=0.00 A2=0.44 act=1.0 resw=0.0 fresh=0.0
+=== read/isolate/write of fresh files: expect PRODUCTIVE
+  0 PROD read_file path=lib/c0.ex -> ok in=1000 out=50                                             INEFF=0.0 RES=0.0 INPOL=0.0 FRESH=1.0 A1=0.00 A2=0.00 act=0.0 resw=0.0 fresh=1.0
+  1 PROD plan action=isolate:lib/c0.ex -> ok in=1007 out=51                                        INEFF=1.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.33 act=0.0 resw=0.0 fresh=1.0
+  2 PROD write_file path=lib/c0.ex -> ok in=1014 out=52             @ lib/c0.ex h9d5daf3615 > h133 INEFF=0.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.25 act=0.0 resw=0.0 fresh=1.0
+  3 PROD read_file path=lib/c1.ex -> ok in=1021 out=53                                             INEFF=0.0 RES=0.0 INPOL=0.0 FRESH=1.0 A1=0.00 A2=0.20 act=0.0 resw=0.0 fresh=1.0
+  4 PROD plan action=isolate:lib/c1.ex -> ok in=1028 out=54                                        INEFF=1.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.33 act=0.0 resw=0.0 fresh=1.0
+  5 PROD write_file path=lib/c1.ex -> ok in=1035 out=55             @ lib/c1.ex h4a4fcd7f04 > hae3 INEFF=0.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.29 act=0.0 resw=0.0 fresh=1.0
+  6 PROD read_file path=lib/c2.ex -> ok in=1042 out=56                                             INEFF=0.0 RES=0.0 INPOL=0.0 FRESH=1.0 A1=0.00 A2=0.25 act=0.0 resw=0.0 fresh=1.0
+  7 PROD plan action=isolate:lib/c2.ex -> ok in=1049 out=57                                        INEFF=1.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.33 act=0.0 resw=0.0 fresh=1.0
+  8 PROD write_file path=lib/c2.ex -> ok in=1056 out=58             @ lib/c2.ex h94a18c08aa > h03b INEFF=0.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.33 act=0.0 resw=0.0 fresh=1.0
+  9 PROD read_file path=lib/c3.ex -> ok in=1063 out=59                                             INEFF=0.0 RES=0.0 INPOL=0.0 FRESH=1.0 A1=0.00 A2=0.22 act=0.0 resw=0.0 fresh=1.0
+ 10 PROD plan action=isolate:lib/c3.ex -> ok in=1070 out=60                                        INEFF=1.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.33 act=0.0 resw=0.0 fresh=1.0
+ 11 PROD write_file path=lib/c3.ex -> ok in=1077 out=61             @ lib/c3.ex ha784dc51b8 > h018 INEFF=0.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.33 act=0.0 resw=0.0 fresh=1.0
+ 12 PROD read_file path=lib/c4.ex -> ok in=1084 out=62                                             INEFF=0.0 RES=0.0 INPOL=0.0 FRESH=1.0 A1=0.00 A2=0.22 act=0.0 resw=0.0 fresh=1.0
+ 13 PROD plan action=isolate:lib/c4.ex -> ok in=1091 out=63                                        INEFF=1.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.33 act=0.0 resw=0.0 fresh=1.0
+ 14 PROD write_file path=lib/c4.ex -> ok in=1098 out=64             @ lib/c4.ex hc7595b0bd9 > h578 INEFF=0.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.33 act=0.0 resw=0.0 fresh=1.0
+ 15 PROD read_file path=lib/c5.ex -> ok in=1105 out=65                                             INEFF=0.0 RES=0.0 INPOL=0.0 FRESH=1.0 A1=0.00 A2=0.22 act=0.0 resw=0.0 fresh=1.0
+ 16 PROD plan action=isolate:lib/c5.ex -> ok in=1112 out=66                                        INEFF=1.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.33 act=0.0 resw=0.0 fresh=1.0
+ 17 PROD write_file path=lib/c5.ex -> ok in=1119 out=67             @ lib/c5.ex h2306ba341a > h57c INEFF=0.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.33 act=0.0 resw=0.0 fresh=1.0
+ 18 PROD read_file path=lib/c6.ex -> ok in=1126 out=68                                             INEFF=0.0 RES=0.0 INPOL=0.0 FRESH=1.0 A1=0.00 A2=0.22 act=0.0 resw=0.0 fresh=1.0
+ 19 PROD plan action=isolate:lib/c6.ex -> ok in=1133 out=69                                        INEFF=1.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.33 act=0.0 resw=0.0 fresh=1.0
+ 20 PROD write_file path=lib/c6.ex -> ok in=1140 out=70             @ lib/c6.ex h099de90d85 > hf68 INEFF=0.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.33 act=0.0 resw=0.0 fresh=1.0
+ 21 PROD read_file path=lib/c7.ex -> ok in=1147 out=71                                             INEFF=0.0 RES=0.0 INPOL=0.0 FRESH=1.0 A1=0.00 A2=0.22 act=0.0 resw=0.0 fresh=1.0
+ 22 PROD plan action=isolate:lib/c7.ex -> ok in=1154 out=72                                        INEFF=1.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.33 act=0.0 resw=0.0 fresh=1.0
+ 23 PROD write_file path=lib/c7.ex -> ok in=1161 out=73             @ lib/c7.ex h3f100507d7 > hd54 INEFF=0.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.33 act=0.0 resw=0.0 fresh=1.0
+=== V-style oscillation + multi-file reverts: OSCILLATING from the second reversion
+  0 PROD read_file path=src/a.py -> ok in=1000 out=50                                              INEFF=0.0 RES=0.0 INPOL=0.0 FRESH=1.0 A1=0.00 A2=0.00 act=0.0 resw=0.0 fresh=1.0
+  1 PROD read_file path=src/b.py -> ok in=1007 out=51                                              INEFF=0.0 RES=0.0 INPOL=0.0 FRESH=1.0 A1=0.00 A2=0.00 act=0.0 resw=0.0 fresh=1.0
+  2 PROD edit_file path=src/a.py -> ok in=1014 out=52               @ src/a.py h9dffe6ed2d > h6ee1 INEFF=0.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.00 act=0.0 resw=0.0 fresh=1.0
+  3 PROD run_tests suite=unit -> FAILED 3/8 passed in=1021 out=53   ! AssertionError at tests/test INEFF=0.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.00 act=0.0 resw=0.0 fresh=1.0
+  4 OSCI edit_file path=src/a.py -> ok in=1028 out=54               @ src/a.py h6ee17febe0 > h9dff INEFF=1.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.16 A2=0.17 act=0.0 resw=0.0 fresh=1.0
+  5 PROD run_tests suite=unit -> FAILED 3/8 passed in=1035 out=55   ! AssertionError at tests/test INEFF=1.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.14 A2=0.29 act=0.0 resw=0.0 fresh=1.0
+  6 OSCI edit_file path=src/a.py -> ok in=1042 out=56               @ src/a.py h9dffe6ed2d > h6ee1 INEFF=1.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.24 A2=0.38 act=0.0 resw=0.0 fresh=1.0
+  7 OSCI run_tests suite=unit -> FAILED 3/8 passed in=1049 out=57   ! AssertionError at tests/test INEFF=1.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.24 A2=0.44 act=0.0 resw=0.0 fresh=1.0
+  8 OSCI edit_file path=src/a.py -> ok in=1056 out=58               @ src/a.py h6ee17febe0 > h9dff INEFF=1.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.37 A2=0.56 act=0.0 resw=0.0 fresh=1.0
+  9 OSCI run_tests suite=unit -> FAILED 3/8 passed in=1063 out=59   ! AssertionError at tests/test INEFF=1.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.37 A2=0.67 act=0.0 resw=0.0 fresh=0.0
+ 10 OSCI edit_file path=src/a.py -> ok in=1070 out=60               @ src/a.py h9dffe6ed2d > h6ee1 INEFF=1.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.49 A2=0.78 act=0.0 resw=0.0 fresh=0.0
+ 11 OSCI run_tests suite=unit -> FAILED 3/8 passed in=1077 out=61   ! AssertionError at tests/test INEFF=1.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.37 A2=0.89 act=0.0 resw=0.0 fresh=0.0
+ 12 OSCI edit_file path=src/a.py -> ok in=1084 out=62               @ src/a.py h6ee17febe0 > h9dff INEFF=1.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.49 A2=0.89 act=0.0 resw=0.0 fresh=0.0
+ 13 OSCI run_tests suite=unit -> FAILED 3/8 passed in=1091 out=63   ! AssertionError at tests/test INEFF=1.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.37 A2=0.89 act=0.0 resw=0.0 fresh=0.0
+ 14 OSCI revert paths=src/f0.py,src/f1.py,src/f2.py,src/f3.py,src/f @ src/f0.py hede98b4deb > h4c2 INEFF=1.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.37 A2=0.89 act=0.0 resw=0.0 fresh=0.0
+ 15 OSCI revert paths=src/f0.py,src/f1.py,src/f2.py,src/f3.py,src/f @ src/f0.py h4c2992a5fb > hede INEFF=1.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.37 A2=0.89 act=0.0 resw=0.0 fresh=0.0
+ 16 OSCI revert paths=src/f0.py,src/f1.py,src/f2.py,src/f3.py,src/f @ src/f0.py hede98b4deb > h4c2 INEFF=1.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.49 A2=0.89 act=0.0 resw=0.0 fresh=0.0
+=== V-style long stall (re-reads between), then fresh reads: RECOVERY 1-3, STALLED later, PRODUCTIVE after reads
+  0 PROD run_tests suite=unit -> FAILED 5/9 passed in=1000 out=50   ! AssertionError at tests/test INEFF=0.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.00 act=0.0 resw=0.0 fresh=0.0
+  1 RECO run_tests suite=unit -> FAILED 5/9 passed in=1007 out=51   ! AssertionError at tests/test INEFF=1.0 RES=0.0 INPOL=5.0 FRESH=0.0 A1=0.00 A2=0.33 act=5.0 resw=0.0 fresh=0.0
+  2 RECO read_file path=src/x.py -> ok in=1014 out=52                                              INEFF=0.0 RES=0.0 INPOL=0.0 FRESH=1.0 A1=0.00 A2=0.25 act=5.0 resw=0.0 fresh=1.0
+  3 PROD run_tests suite=unit -> FAILED 5/9 passed in=1021 out=53   ! AssertionError at tests/test INEFF=1.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.40 act=0.0 resw=0.0 fresh=1.0
+  4 RECO run_tests suite=unit -> FAILED 5/9 passed in=1028 out=54   ! AssertionError at tests/test INEFF=1.0 RES=0.0 INPOL=5.0 FRESH=0.0 A1=0.00 A2=0.50 act=5.0 resw=0.0 fresh=1.0
+  5 RECO read_file path=src/x.py -> ok in=1035 out=55                                              INEFF=1.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.57 act=5.0 resw=0.0 fresh=1.0
+  6 PROD run_tests suite=unit -> FAILED 5/9 passed in=1042 out=56   ! AssertionError at tests/test INEFF=1.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.62 act=0.0 resw=0.0 fresh=1.0
+  7 PROD run_tests suite=unit -> FAILED 5/9 passed in=1049 out=57   ! AssertionError at tests/test INEFF=1.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.67 act=0.0 resw=0.0 fresh=1.0
+  8 PROD read_file path=src/x.py -> ok in=1056 out=58                                              INEFF=1.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.78 act=0.0 resw=0.0 fresh=1.0
+  9 PROD run_tests suite=unit -> FAILED 5/9 passed in=1063 out=59   ! AssertionError at tests/test INEFF=1.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.78 act=0.0 resw=0.0 fresh=1.0
+ 10 STAL run_tests suite=unit -> FAILED 5/9 passed in=1070 out=60   ! AssertionError at tests/test INEFF=1.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.89 act=0.0 resw=0.0 fresh=0.0
+ 11 STAL read_file path=src/x.py -> ok in=1077 out=61                                              INEFF=1.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.89 act=0.0 resw=0.0 fresh=0.0
+ 12 STAL run_tests suite=unit -> FAILED 5/9 passed in=1084 out=62   ! AssertionError at tests/test INEFF=1.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.89 act=0.0 resw=0.0 fresh=0.0
+ 13 STAL run_tests suite=unit -> FAILED 5/9 passed in=1091 out=63   ! AssertionError at tests/test INEFF=1.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.89 act=0.0 resw=0.0 fresh=0.0
+ 14 STAL read_file path=src/x.py -> ok in=1098 out=64                                              INEFF=1.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.89 act=0.0 resw=0.0 fresh=0.0
+ 15 STAL run_tests suite=unit -> FAILED 5/9 passed in=1105 out=65   ! AssertionError at tests/test INEFF=1.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.89 act=0.0 resw=0.0 fresh=0.0
+ 16 STAL run_tests suite=unit -> FAILED 5/9 passed in=1112 out=66   ! AssertionError at tests/test INEFF=1.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.89 act=0.0 resw=0.0 fresh=0.0
+ 17 STAL read_file path=src/x.py -> ok in=1119 out=67                                              INEFF=1.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.89 act=0.0 resw=0.0 fresh=0.0
+ 18 STAL run_tests suite=unit -> FAILED 5/9 passed in=1126 out=68   ! AssertionError at tests/test INEFF=1.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.89 act=0.0 resw=0.0 fresh=0.0
+ 19 STAL run_tests suite=unit -> FAILED 5/9 passed in=1133 out=69   ! AssertionError at tests/test INEFF=1.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.89 act=0.0 resw=0.0 fresh=0.0
+ 20 STAL read_file path=src/x.py -> ok in=1140 out=70                                              INEFF=1.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.89 act=0.0 resw=0.0 fresh=0.0
+ 21 STAL run_tests suite=unit -> FAILED 5/9 passed in=1147 out=71   ! AssertionError at tests/test INEFF=1.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.89 act=0.0 resw=0.0 fresh=0.0
+ 22 STAL run_tests suite=unit -> FAILED 5/9 passed in=1154 out=72   ! AssertionError at tests/test INEFF=1.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.89 act=0.0 resw=0.0 fresh=0.0
+ 23 STAL read_file path=src/x.py -> ok in=1161 out=73                                              INEFF=1.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.89 act=0.0 resw=0.0 fresh=0.0
+ 24 STAL run_tests suite=unit -> FAILED 5/9 passed in=1168 out=74   ! AssertionError at tests/test INEFF=1.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.89 act=0.0 resw=0.0 fresh=0.0
+ 25 STAL run_tests suite=unit -> FAILED 5/9 passed in=1175 out=75   ! AssertionError at tests/test INEFF=1.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.89 act=0.0 resw=0.0 fresh=0.0
+ 26 STAL read_file path=src/x.py -> ok in=1182 out=76                                              INEFF=1.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.89 act=0.0 resw=0.0 fresh=0.0
+ 27 STAL run_tests suite=unit -> FAILED 5/9 passed in=1189 out=77   ! AssertionError at tests/test INEFF=1.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.89 act=0.0 resw=0.0 fresh=0.0
+ 28 STAL run_tests suite=unit -> FAILED 5/9 passed in=1196 out=78   ! AssertionError at tests/test INEFF=1.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.89 act=0.0 resw=0.0 fresh=0.0
+ 29 STAL read_file path=src/x.py -> ok in=1203 out=79                                              INEFF=1.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.89 act=0.0 resw=0.0 fresh=0.0
+ 30 PROD read_file path=src/new30.py -> ok in=1210 out=80                                          INEFF=0.0 RES=0.0 INPOL=0.0 FRESH=1.0 A1=0.00 A2=0.78 act=0.0 resw=0.0 fresh=1.0
+ 31 PROD read_file path=src/new31.py -> ok in=1217 out=81                                          INEFF=0.0 RES=0.0 INPOL=0.0 FRESH=1.0 A1=0.00 A2=0.67 act=0.0 resw=0.0 fresh=1.0
+ 32 PROD read_file path=src/new32.py -> ok in=1224 out=82                                          INEFF=0.0 RES=0.0 INPOL=0.0 FRESH=1.0 A1=0.00 A2=0.56 act=0.0 resw=0.0 fresh=1.0
+ 33 PROD read_file path=src/new33.py -> ok in=1231 out=83                                          INEFF=0.0 RES=0.0 INPOL=0.0 FRESH=1.0 A1=0.00 A2=0.44 act=0.0 resw=0.0 fresh=1.0
+ 34 PROD read_file path=src/new34.py -> ok in=1238 out=84                                          INEFF=0.0 RES=0.0 INPOL=0.0 FRESH=1.0 A1=0.00 A2=0.33 act=0.0 resw=0.0 fresh=1.0
+ 35 PROD read_file path=src/new35.py -> ok in=1245 out=85                                          INEFF=0.0 RES=0.0 INPOL=0.0 FRESH=1.0 A1=0.00 A2=0.22 act=0.0 resw=0.0 fresh=1.0
+ 36 PROD read_file path=src/new36.py -> ok in=1252 out=86                                          INEFF=0.0 RES=0.0 INPOL=0.0 FRESH=1.0 A1=0.00 A2=0.11 act=0.0 resw=0.0 fresh=1.0
+ 37 PROD read_file path=src/new37.py -> ok in=1259 out=87                                          INEFF=0.0 RES=0.0 INPOL=0.0 FRESH=1.0 A1=0.00 A2=0.00 act=0.0 resw=0.0 fresh=1.0
+=== http retries with port, resolution, 'error' in a query: RECOVERY 3-9, then PRODUCTIVE
+  0 PROD list_dir path=src -> ok in=1000 out=50                                                    INEFF=0.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.00 act=0.0 resw=0.0 fresh=0.0
+  1 PROD search scope=src query="error handling" -> ok in=1007 out=                                INEFF=0.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.00 act=0.0 resw=0.0 fresh=0.0
+  2 PROD http_call GET https://localhost:8080/v1/jobs/{id} req=60e0 ! HTTP502 at localhost:8080/v1 INEFF=0.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.00 act=0.0 resw=0.0 fresh=0.0
+  3 RECO http_call GET https://localhost:8080/v1/jobs/{id} req=b6f9 ! HTTP502 at localhost:8080/v1 INEFF=1.0 RES=0.0 INPOL=1.0 FRESH=0.0 A1=0.00 A2=0.20 act=1.0 resw=0.0 fresh=0.0
+  4 RECO http_call GET https://localhost:8080/v1/jobs/{id} req=a946 ! HTTP502 at localhost:8080/v1 INEFF=1.0 RES=0.0 INPOL=1.0 FRESH=0.0 A1=0.00 A2=0.33 act=1.0 resw=0.0 fresh=0.0
+  5 RECO http_call GET https://localhost:8080/v1/jobs/{id} req=6c02                                INEFF=0.0 RES=3.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.29 act=0.0 resw=3.0 fresh=0.0
+  6 RECO read_file path=src/y.py -> ok in=1042 out=56                                              INEFF=0.0 RES=0.0 INPOL=0.0 FRESH=1.0 A1=0.00 A2=0.25 act=0.0 resw=3.0 fresh=1.0
+  7 RECO edit_file path=src/y.py -> ok in=1049 out=57               @ src/y.py hfa0917d003 > h0f78 INEFF=0.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.22 act=0.0 resw=3.0 fresh=1.0
+  8 RECO run_tests suite=unit -> ok 9/9 passed in=1056 out=58                                      INEFF=0.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.22 act=0.0 resw=3.0 fresh=1.0
+  9 PROD search scope=src query="error handling" -> ok in=1063 out=                                INEFF=0.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.22 act=0.0 resw=0.0 fresh=1.0
+ 10 PROD read_file path=src/z.py -> ok in=1070 out=60                                              INEFF=0.0 RES=0.0 INPOL=0.0 FRESH=1.0 A1=0.00 A2=0.22 act=0.0 resw=0.0 fresh=1.0
+ 11 PROD read_file path=src/w.py -> ok in=1077 out=61                                              INEFF=0.0 RES=0.0 INPOL=0.0 FRESH=1.0 A1=0.00 A2=0.11 act=0.0 resw=0.0 fresh=1.0
+=== V-style repair, six polls in policy, ready: PRODUCTIVE, RECOVERY during polls and after ready
+  0 PROD read_file path=src/p.py -> ok in=1000 out=50                                              INEFF=0.0 RES=0.0 INPOL=0.0 FRESH=1.0 A1=0.00 A2=0.00 act=0.0 resw=0.0 fresh=1.0
+  1 PROD edit_file path=src/p.py -> ok in=1007 out=51               @ src/p.py h53049600d7 > hbd90 INEFF=0.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.00 act=0.0 resw=0.0 fresh=1.0
+  2 PROD run_tests suite=unit -> FAILED 2/9 passed in=1014 out=52   ! AssertionError at tests/test INEFF=0.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.00 act=0.0 resw=0.0 fresh=1.0
+  3 PROD edit_file path=src/p.py -> ok in=1021 out=53               @ src/p.py hbd9025cf47 > h002a INEFF=0.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.00 act=0.0 resw=0.0 fresh=1.0
+  4 PROD run_tests suite=unit -> FAILED 5/9 passed in=1028 out=54   ! AssertionError at tests/test INEFF=0.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.00 act=0.0 resw=0.0 fresh=1.0
+  5 PROD edit_file path=src/p.py -> ok in=1035 out=55               @ src/p.py h002ac758b6 > h6078 INEFF=0.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.00 act=0.0 resw=0.0 fresh=1.0
+  6 PROD run_tests suite=unit -> FAILED 7/9 passed in=1042 out=56   ! AssertionError at tests/test INEFF=0.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.00 act=0.0 resw=0.0 fresh=1.0
+  7 PROD edit_file path=src/p.py -> ok in=1049 out=57               @ src/p.py h60781a16b9 > hd9c6 INEFF=0.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.00 act=0.0 resw=0.0 fresh=1.0
+  8 PROD run_tests suite=unit -> ok 9/9 passed in=1056 out=58                                      INEFF=0.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.00 act=0.0 resw=0.0 fresh=0.0
+  9 PROD poll_status resource=deploy/job/1 backoff=1 -> pending in=                                INEFF=0.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.00 act=0.0 resw=0.0 fresh=0.0
+ 10 RECO poll_status resource=deploy/job/1 backoff=2 -> pending in=                                INEFF=0.0 RES=0.0 INPOL=1.0 FRESH=0.0 A1=0.00 A2=0.00 act=1.0 resw=0.0 fresh=0.0
+ 11 RECO poll_status resource=deploy/job/1 backoff=4 -> pending in=                                INEFF=0.0 RES=0.0 INPOL=1.0 FRESH=0.0 A1=0.00 A2=0.00 act=1.0 resw=0.0 fresh=0.0
+ 12 RECO poll_status resource=deploy/job/1 backoff=8 -> pending in=                                INEFF=0.0 RES=0.0 INPOL=1.0 FRESH=0.0 A1=0.00 A2=0.00 act=1.0 resw=0.0 fresh=0.0
+ 13 RECO poll_status resource=deploy/job/1 backoff=16 -> pending in                                INEFF=0.0 RES=0.0 INPOL=1.0 FRESH=0.0 A1=0.00 A2=0.00 act=1.0 resw=0.0 fresh=0.0
+ 14 RECO poll_status resource=deploy/job/1 backoff=32 -> pending in                                INEFF=0.0 RES=0.0 INPOL=1.0 FRESH=0.0 A1=0.00 A2=0.00 act=1.0 resw=0.0 fresh=0.0
+ 15 RECO poll_status resource=deploy/job/1 -> ready in=1105 out=65                                 INEFF=0.0 RES=3.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.00 act=0.0 resw=3.0 fresh=0.0
+ 16 RECO read_file path=docs/x.md -> ok in=1112 out=66                                             INEFF=0.0 RES=0.0 INPOL=0.0 FRESH=1.0 A1=0.00 A2=0.00 act=0.0 resw=3.0 fresh=1.0
+=== polls beyond policy: RECOVERY up to the 6th pending, then not RECOVERY; STALLED once 5 are out of policy
+  0 PROD read_file path=a.md -> ok in=1000 out=50                                                  INEFF=0.0 RES=0.0 INPOL=0.0 FRESH=1.0 A1=0.00 A2=0.00 act=0.0 resw=0.0 fresh=1.0
+  1 PROD poll_status resource=ci/run/9 backoff=30 -> pending in=100                                INEFF=0.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.00 act=0.0 resw=0.0 fresh=1.0
+  2 RECO poll_status resource=ci/run/9 backoff=30 -> pending in=101                                INEFF=0.0 RES=0.0 INPOL=1.0 FRESH=0.0 A1=0.00 A2=0.00 act=1.0 resw=0.0 fresh=1.0
+  3 RECO poll_status resource=ci/run/9 backoff=30 -> pending in=102                                INEFF=0.0 RES=0.0 INPOL=1.0 FRESH=0.0 A1=0.00 A2=0.00 act=1.0 resw=0.0 fresh=1.0
+  4 RECO poll_status resource=ci/run/9 backoff=30 -> pending in=102                                INEFF=0.0 RES=0.0 INPOL=1.0 FRESH=0.0 A1=0.00 A2=0.00 act=1.0 resw=0.0 fresh=1.0
+  5 RECO poll_status resource=ci/run/9 backoff=30 -> pending in=103                                INEFF=0.0 RES=0.0 INPOL=1.0 FRESH=0.0 A1=0.00 A2=0.00 act=1.0 resw=0.0 fresh=1.0
+  6 RECO poll_status resource=ci/run/9 backoff=30 -> pending in=104                                INEFF=0.0 RES=0.0 INPOL=1.0 FRESH=0.0 A1=0.00 A2=0.00 act=1.0 resw=0.0 fresh=1.0
+  7 PROD poll_status resource=ci/run/9 backoff=30 -> pending in=104                                INEFF=1.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.11 act=0.0 resw=0.0 fresh=1.0
+  8 PROD poll_status resource=ci/run/9 backoff=30 -> pending in=105                                INEFF=1.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.22 act=0.0 resw=0.0 fresh=0.0
+  9 PROD poll_status resource=ci/run/9 backoff=30 -> pending in=106                                INEFF=1.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.33 act=0.0 resw=0.0 fresh=0.0
+ 10 PROD poll_status resource=ci/run/9 backoff=30 -> pending in=107                                INEFF=1.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.44 act=0.0 resw=0.0 fresh=0.0
+ 11 STAL poll_status resource=ci/run/9 backoff=30 -> pending in=107                                INEFF=1.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.56 act=0.0 resw=0.0 fresh=0.0
+=== V-style scenario 6 (edit, same failure): STALLED from ~event 9
+  0 PROD read_file path=src/q.py -> ok in=1000 out=50                                              INEFF=0.0 RES=0.0 INPOL=0.0 FRESH=1.0 A1=0.00 A2=0.00 act=0.0 resw=0.0 fresh=1.0
+  1 PROD run_tests suite=unit -> FAILED 8/11 passed in=1007 out=51  ! AssertionError at tests/test INEFF=0.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.00 act=0.0 resw=0.0 fresh=1.0
+  2 PROD edit_file path=src/q.py -> ok in=1014 out=52               @ src/q.py h3b40bee215 > haea4 INEFF=0.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.00 act=0.0 resw=0.0 fresh=1.0
+  3 PROD run_tests suite=unit -> FAILED 8/11 passed in=1021 out=53  ! AssertionError at tests/test INEFF=1.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.20 act=0.0 resw=0.0 fresh=1.0
+  4 PROD edit_file path=src/q.py -> ok in=1028 out=54               @ src/q.py h5165780345 > h80f0 INEFF=1.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.33 act=0.0 resw=0.0 fresh=1.0
+  5 PROD run_tests suite=unit -> FAILED 8/11 passed in=1035 out=55  ! AssertionError at tests/test INEFF=1.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.43 act=0.0 resw=0.0 fresh=1.0
+  6 PROD edit_file path=src/q.py -> ok in=1042 out=56               @ src/q.py h22f2aac39f > h68cb INEFF=1.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.50 act=0.0 resw=0.0 fresh=1.0
+  7 PROD run_tests suite=unit -> FAILED 8/11 passed in=1049 out=57  ! AssertionError at tests/test INEFF=1.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.56 act=0.0 resw=0.0 fresh=1.0
+  8 STAL edit_file path=src/q.py -> ok in=1056 out=58               @ src/q.py h63d254f68e > h5d23 INEFF=1.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.67 act=0.0 resw=0.0 fresh=0.0
+  9 STAL run_tests suite=unit -> FAILED 8/11 passed in=1063 out=59  ! AssertionError at tests/test INEFF=1.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.78 act=0.0 resw=0.0 fresh=0.0
+ 10 STAL edit_file path=src/q.py -> ok in=1070 out=60               @ src/q.py h48dbd89750 > hb217 INEFF=1.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.89 act=0.0 resw=0.0 fresh=0.0
+ 11 STAL run_tests suite=unit -> FAILED 8/11 passed in=1077 out=61  ! AssertionError at tests/test INEFF=1.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.89 act=0.0 resw=0.0 fresh=0.0
+ 12 STAL edit_file path=src/q.py -> ok in=1084 out=62               @ src/q.py h63545dad4f > hc47d INEFF=1.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.89 act=0.0 resw=0.0 fresh=0.0
+ 13 STAL run_tests suite=unit -> FAILED 8/11 passed in=1091 out=63  ! AssertionError at tests/test INEFF=1.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.89 act=0.0 resw=0.0 fresh=0.0
+=== repeated single-token plans: STALLED once 5 repeats accumulate
+  0 PROD read_file path=src/r.py -> ok in=1000 out=50                                              INEFF=0.0 RES=0.0 INPOL=0.0 FRESH=1.0 A1=0.00 A2=0.00 act=0.0 resw=0.0 fresh=1.0
+  1 PROD read_file path=src/r.py -> ok in=1007 out=51                                              INEFF=1.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.33 act=0.0 resw=0.0 fresh=1.0
+  2 PROD plan action=review_diff -> ok in=1014 out=52                                              INEFF=0.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.25 act=0.0 resw=0.0 fresh=1.0
+  3 PROD plan action=checkpoint -> ok in=1021 out=53                                               INEFF=0.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.20 act=0.0 resw=0.0 fresh=1.0
+  4 PROD plan action=review_diff -> ok in=1028 out=54                                              INEFF=1.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.33 act=0.0 resw=0.0 fresh=1.0
+  5 PROD plan action=checkpoint -> ok in=1035 out=55                                               INEFF=1.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.43 act=0.0 resw=0.0 fresh=1.0
+  6 PROD plan action=review_diff -> ok in=1042 out=56                                              INEFF=1.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.50 act=0.0 resw=0.0 fresh=1.0
+  7 PROD plan action=checkpoint -> ok in=1049 out=57                                               INEFF=1.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.56 act=0.0 resw=0.0 fresh=1.0
+  8 STAL plan action=review_diff -> ok in=1056 out=58                                              INEFF=1.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.67 act=0.0 resw=0.0 fresh=0.0
+  9 STAL plan action=checkpoint -> ok in=1063 out=59                                               INEFF=1.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.67 act=0.0 resw=0.0 fresh=0.0
+=== fresh writes after a repeated failure: EDR for the first 2 writes only, then PRODUCTIVE
+  0 PROD run_tests suite=unit -> FAILED 2/9 passed in=1000 out=50   ! AssertionError at tests/test INEFF=0.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.00 act=0.0 resw=0.0 fresh=0.0
+  1 RECO run_tests suite=unit -> FAILED 2/9 passed in=1007 out=51   ! AssertionError at tests/test INEFF=1.0 RES=0.0 INPOL=5.0 FRESH=0.0 A1=0.00 A2=0.33 act=5.0 resw=0.0 fresh=0.0
+  2 RECO write_file path=src/m2.py -> ok in=1014 out=52             @ src/m2.py h08eeb628f8 > h2a5 INEFF=1.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.50 act=5.0 resw=0.0 fresh=0.0
+  3 RECO write_file path=src/m3.py -> ok in=1021 out=53             @ src/m3.py h0e7fc16f39 > h0c3 INEFF=1.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.60 act=5.0 resw=0.0 fresh=0.0
+  4 RECO write_file path=src/m4.py -> ok in=1028 out=54             @ src/m4.py hcafb7fcf58 > h6a3 INEFF=1.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.67 act=5.0 resw=0.0 fresh=0.0
+  5 RECO write_file path=src/m5.py -> ok in=1035 out=55             @ src/m5.py hfa8b56e785 > hdd5 INEFF=0.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.57 act=5.0 resw=0.0 fresh=0.0
+  6 RECO write_file path=src/m6.py -> ok in=1042 out=56             @ src/m6.py h94c6481c5d > hc04 INEFF=0.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.50 act=5.0 resw=0.0 fresh=0.0
+  7 RECO write_file path=src/m7.py -> ok in=1049 out=57             @ src/m7.py he32e646ac4 > h24c INEFF=0.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.44 act=5.0 resw=0.0 fresh=0.0
+  8 RECO write_file path=src/m8.py -> ok in=1056 out=58             @ src/m8.py h4f94abb496 > hcb5 INEFF=0.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.44 act=5.0 resw=0.0 fresh=0.0
+  9 PROD write_file path=src/m9.py -> ok in=1063 out=59             @ src/m9.py hd421bc7b80 > hdcd INEFF=0.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.33 act=0.0 resw=0.0 fresh=0.0
+=== edit, ok, revert, edit again (one reversion), repeated ok count: PRODUCTIVE
+  0 PROD read_file path=src/r.py -> ok in=1000 out=50                                              INEFF=0.0 RES=0.0 INPOL=0.0 FRESH=1.0 A1=0.00 A2=0.00 act=0.0 resw=0.0 fresh=1.0
+  1 PROD edit_file path=src/r.py -> ok in=1007 out=51               @ src/r.py ha34659271d > hbc59 INEFF=0.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.00 act=0.0 resw=0.0 fresh=1.0
+  2 PROD run_tests suite=unit -> ok 9/9 passed in=1014 out=52                                      INEFF=0.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.00 A2=0.00 act=0.0 resw=0.0 fresh=1.0
+  3 OSCI revert paths=src/r.py -> ok in=1021 out=53                 @ src/r.py hbc594f9c95 > ha346 INEFF=1.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.19 A2=0.20 act=0.0 resw=0.0 fresh=1.0
+  4 OSCI read_file path=src/s.py -> ok in=1028 out=54                                              INEFF=0.0 RES=0.0 INPOL=0.0 FRESH=1.0 A1=0.16 A2=0.17 act=0.0 resw=0.0 fresh=1.0
+  5 PROD edit_file path=src/s.py -> ok in=1035 out=55               @ src/s.py hc9583d8c7c > h9bc0 INEFF=0.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.14 A2=0.14 act=0.0 resw=0.0 fresh=1.0
+  6 OSCI edit_file path=src/r.py -> ok in=1042 out=56               @ src/r.py ha34659271d > hbc59 INEFF=1.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.24 A2=0.25 act=0.0 resw=0.0 fresh=1.0
+  7 OSCI run_tests suite=unit -> ok 9/9 passed in=1049 out=57                                      INEFF=1.0 RES=0.0 INPOL=0.0 FRESH=0.0 A1=0.24 A2=0.33 act=0.0 resw=0.0 fresh=1.0
+  8 OSCI read_file path=src/t.py -> ok in=1056 out=58                                              INEFF=0.0 RES=0.0 INPOL=0.0 FRESH=1.0 A1=0.24 A2=0.33 act=0.0 resw=0.0 fresh=1.0

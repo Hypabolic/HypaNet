@@ -1,0 +1,650 @@
+=== W007 OSCILLATING net=OSCILLATING t=24
+  13 STAL p+        reconcile-conventions                                                                                              rep
+  14 OSCI W+        lib/shards/contract_11.clj                   contract_11.cl:h7db1>hdbe1                                            rev
+  15 OSCI TF3/12    suite=kaocha:ledger tests=replica-contract                                ReplicaDivergence at lib/shards/contract rep cnt cntw k0
+  16 OSCI W+        lib/shards/contract_11.clj                   contract_11.cl:hdbe1>h7db1                                            rev
+ *17 OSCI TF3/12    suite=kaocha:ledger tests=replica-contract                                ReplicaDivergence at lib/shards/contract rep cnt cntw k0
+ *18 OSCI W+        lib/shards/contract_11.clj                   contract_11.cl:h7db1>hdbe1                                            rev
+ *19 OSCI R+        lib/shards/contract_11.clj                                                                                         
+ *20 OSCI W+        lib/shards/contract_11.clj                   contract_11.cl:hdbe1>h7db1                                            rev
+ *21 OSCI R+        lib/shards/contract_11.clj                                                                                         rep
+ *22 OSCI W+        lib/shards/contract_11.clj                   contract_11.cl:h7db1>hdbe1                                            rev
+ *23 OSCI R+        lib/shards/contract_11.clj                                                                                         rep
+ *24 OSCI W+        lib/shards/contract_11.clj                   contract_11.cl:hdbe1>h7db1                                            rev
+=== W013 OSCILLATING net=OSCILLATING t=29
+  18 OSCI W+        config/merge.conf                            merge.conf:h66f8>h1806                                                rev
+  19 OSCI TF3/18    suite=zig:allocator tests=replica-contract                                StreamOrderViolation at lib/shards/contr rep cnt cntw k0
+  20 OSCI W+        config/merge.conf                            merge.conf:h1806>h66f8                                                rev
+  21 OSCI W+        config/merge.conf                            merge.conf:h66f8>h1806                                                rev
+ *22 OSCI W+        config/merge.conf                            merge.conf:h1806>h66f8                                                rev
+ *23 OSCI R+        config/merge.conf                                                                                                  rep
+ *24 OSCI W+        config/merge.conf                            merge.conf:h66f8>h1806                                                rev
+ *25 OSCI p+        reconcile-conventions                                                                                              rep
+ *26 OSCI W+        config/merge.conf                            merge.conf:h1806>h66f8                                                rev
+ *27 OSCI p+        reconcile-conventions                                                                                              rep
+ *28 OSCI W+        config/merge.conf                            merge.conf:h66f8>h1806                                                rev
+ *29 OSCI TF3/18    suite=zig:allocator tests=replica-contract                                StreamOrderViolation at lib/shards/contr rep cnt cntw k0
+=== W017 OSCILLATING net=OSCILLATING t=42
+  31 OSCI W+        lib/shards/contract_16.lua                   contract_16.lu:hceb2>h74f7                                            rev
+  32 OSCI TF3/17    suite=busted:stream tests=replica-contract                                AllocatorInvariant at lib/shards/contrac rep cnt cntw k0
+  33 OSCI W+        lib/shards/contract_16.lua                   contract_16.lu:h74f7>hceb2                                            rev
+  34 OSCI p+        reconcile-conventions                                                                                              rep
+ *35 OSCI W+        lib/shards/contract_16.lua                   contract_16.lu:hceb2>h74f7                                            rev
+ *36 OSCI R+        lib/shards/contract_16.lua                                                                                         
+ *37 OSCI W+        lib/shards/contract_16.lua                   contract_16.lu:h74f7>hceb2                                            rev
+ *38 OSCI R+        lib/shards/contract_16.lua                                                                                         rep
+ *39 OSCI W+        lib/shards/contract_16.lua                   contract_16.lu:hceb2>h74f7                                            rev
+ *40 OSCI TF3/17    suite=busted:stream tests=replica-contract                                AllocatorInvariant at lib/shards/contrac rep cnt cntw k0
+ *41 OSCI W+        lib/shards/contract_16.lua                   contract_16.lu:h74f7>hceb2                                            rev
+ *42 OSCI R+        lib/shards/contract_16.lua                                                                                         rep
+=== W020 OSCILLATING net=OSCILLATING t=22
+  11 PROD W+        config/merge.conf                            merge.conf:h69ee>ha729                                                rev
+  12 PROD p+        reconcile-conventions                                                                                              
+  13 OSCI W+        config/merge.conf                            merge.conf:ha729>h69ee                                                rev
+  14 OSCI W+        config/merge.conf                            merge.conf:h69ee>ha729                                                rev
+ *15 OSCI TF3/13    suite=kaocha:ledger tests=replica-contract                                AllocatorInvariant at lib/shards/contrac rep cnt cntw k0
+ *16 OSCI W+        config/merge.conf                            merge.conf:ha729>h69ee                                                rev
+ *17 OSCI TF3/13    suite=kaocha:ledger tests=replica-contract                                AllocatorInvariant at lib/shards/contrac rep cnt cntw k0
+ *18 OSCI W+        config/merge.conf                            merge.conf:h69ee>ha729                                                rev
+ *19 OSCI R+        config/merge.conf                                                                                                  
+ *20 OSCI W+        config/merge.conf                            merge.conf:ha729>h69ee                                                rev
+ *21 OSCI TF3/13    suite=kaocha:ledger tests=replica-contract                                AllocatorInvariant at lib/shards/contrac rep cnt cntw k0
+ *22 OSCI W+        config/merge.conf                            merge.conf:h69ee>ha729                                                rev
+=== W026 OSCILLATING net=OSCILLATING t=23
+  12 PROD p+        reconcile-conventions                                                                                              
+  13 PROD W+        config/merge.conf                            merge.conf:h8db8>haa39                                                rev
+  14 PROD TF3/13    suite=zig:allocator tests=replica-contract                                StreamOrderViolation at lib/shards/contr rep cnt cntw k0
+  15 OSCI W+        config/merge.conf                            merge.conf:haa39>h8db8                                                rev
+ *16 OSCI p+        reconcile-conventions                                                                                              rep
+ *17 OSCI W+        config/merge.conf                            merge.conf:h8db8>haa39                                                rev
+ *18 OSCI W+        config/merge.conf                            merge.conf:haa39>h8db8                                                rev
+ *19 OSCI TF3/13    suite=zig:allocator tests=replica-contract                                StreamOrderViolation at lib/shards/contr rep cnt cntw k0
+ *20 OSCI W+        config/merge.conf                            merge.conf:h8db8>haa39                                                rev
+ *21 OSCI W+        config/merge.conf                            merge.conf:haa39>h8db8                                                rev
+ *22 OSCI p+        reconcile-conventions                                                                                              rep
+ *23 OSCI W+        config/merge.conf                            merge.conf:h8db8>haa39                                                rev
+=== W032 OSCILLATING net=OSCILLATING t=28
+  17 OSCI W+        config/merge.conf                            merge.conf:h6dfb>hb95d                                                rev
+  18 OSCI W+        config/merge.conf                            merge.conf:hb95d>h6dfb                                                rev
+  19 OSCI R+        config/merge.conf                                                                                                  rep
+  20 OSCI W+        config/merge.conf                            merge.conf:h6dfb>hb95d                                                rev
+ *21 OSCI p+        reconcile-conventions                                                                                              rep
+ *22 OSCI W+        config/merge.conf                            merge.conf:hb95d>h6dfb                                                rev
+ *23 OSCI p+        reconcile-conventions                                                                                              rep
+ *24 OSCI W+        config/merge.conf                            merge.conf:h6dfb>hb95d                                                rev
+ *25 OSCI W+        config/merge.conf                            merge.conf:hb95d>h6dfb                                                rev
+ *26 OSCI R+        config/merge.conf                                                                                                  rep
+ *27 OSCI W+        config/merge.conf                            merge.conf:h6dfb>hb95d                                                rev
+ *28 OSCI p+        reconcile-conventions                                                                                              rep
+=== W034 OSCILLATING net=OSCILLATING t=26
+  15 OSCI W+        config/merge.conf                            merge.conf:h3d71>hc197                                                rev
+  16 OSCI p+        reconcile-conventions                                                                                              rep
+  17 OSCI W+        config/merge.conf                            merge.conf:hc197>h3d71                                                rev
+  18 OSCI W+        config/merge.conf                            merge.conf:h3d71>hc197                                                rev
+ *19 OSCI p+        reconcile-conventions                                                                                              rep
+ *20 OSCI W+        config/merge.conf                            merge.conf:hc197>h3d71                                                rev
+ *21 OSCI W+        config/merge.conf                            merge.conf:h3d71>hc197                                                rev
+ *22 OSCI W+        config/merge.conf                            merge.conf:hc197>h3d71                                                rev
+ *23 OSCI R+        config/merge.conf                                                                                                  rep
+ *24 OSCI W+        config/merge.conf                            merge.conf:h3d71>hc197                                                rev
+ *25 OSCI W+        config/merge.conf                            merge.conf:hc197>h3d71                                                rev
+ *26 OSCI W+        config/merge.conf                            merge.conf:h3d71>hc197                                                rev
+=== W045 OSCILLATING net=OSCILLATING t=46
+  35 OSCI H+        POST https://packages.cedar.invalid/install/ cedar.artifact:h58af>ha361                                            
+  36 OSCI B+1/1     target=cedar:dependency-link                                                                                       rep
+  37 PROD W+        config/merge.conf                            merge.conf:h296e>hc705                                                
+  38 PROD W+        config/merge.conf                            merge.conf:hc705>h296e                                                rev
+ *39 PROD TF3/16    suite=exunit:replication tests=replica-contr                              AllocatorInvariant at lib/shards/contrac rep cntw k0
+ *40 OSCI W+        config/merge.conf                            merge.conf:h296e>hc705                                                rev
+ *41 OSCI W+        config/merge.conf                            merge.conf:hc705>h296e                                                rev
+ *42 OSCI W+        config/merge.conf                            merge.conf:h296e>hc705                                                rev
+ *43 OSCI W+        config/merge.conf                            merge.conf:hc705>h296e                                                rev
+ *44 OSCI W+        config/merge.conf                            merge.conf:h296e>hc705                                                rev
+ *45 OSCI TF3/16    suite=exunit:replication tests=replica-contr                              AllocatorInvariant at lib/shards/contrac rep cnt cntw k0
+ *46 OSCI W+        config/merge.conf                            merge.conf:hc705>h296e                                                rev
+=== W046 OSCILLATING net=OSCILLATING t=26
+  15 OSCI TF3/15    suite=exunit:replication tests=replica-contr                              AllocatorInvariant at lib/shards/contrac rep cnt cntw k0
+  16 OSCI W+        config/merge.conf                            merge.conf:h6f69>h60a2                                                rev
+  17 OSCI p+        reconcile-conventions                                                                                              rep
+  18 OSCI W+        config/merge.conf                            merge.conf:h60a2>h6f69                                                rev
+ *19 OSCI TF3/15    suite=exunit:replication tests=replica-contr                              AllocatorInvariant at lib/shards/contrac rep cnt cntw k0
+ *20 OSCI W+        config/merge.conf                            merge.conf:h6f69>h60a2                                                rev
+ *21 OSCI p+        reconcile-conventions                                                                                              rep
+ *22 OSCI W+        config/merge.conf                            merge.conf:h60a2>h6f69                                                rev
+ *23 OSCI TF3/15    suite=exunit:replication tests=replica-contr                              AllocatorInvariant at lib/shards/contrac rep cnt cntw k0
+ *24 OSCI W+        config/merge.conf                            merge.conf:h6f69>h60a2                                                rev
+ *25 OSCI p+        reconcile-conventions                                                                                              rep
+ *26 OSCI W+        config/merge.conf                            merge.conf:h60a2>h6f69                                                rev
+=== W050 OSCILLATING net=OSCILLATING t=22
+  11 STAL W+        config/merge.conf                            merge.conf:h30ce>hb66d                                                rev
+  12 STAL R+        config/merge.conf                                                                                                  rep
+  13 OSCI W+        config/merge.conf                            merge.conf:hb66d>h30ce                                                rev
+  14 OSCI p+        reconcile-conventions                                                                                              
+ *15 OSCI W+        config/merge.conf                            merge.conf:h30ce>hb66d                                                rev
+ *16 OSCI TF3/18    suite=busted:stream tests=replica-contract                                ReplicaDivergence at lib/shards/contract rep cnt cntw k0
+ *17 OSCI W+        config/merge.conf                            merge.conf:hb66d>h30ce                                                rev
+ *18 OSCI R+        config/merge.conf                                                                                                  rep
+ *19 OSCI W+        config/merge.conf                            merge.conf:h30ce>hb66d                                                rev
+ *20 OSCI TF3/18    suite=busted:stream tests=replica-contract                                ReplicaDivergence at lib/shards/contract rep cnt cntw k0
+ *21 OSCI W+        config/merge.conf                            merge.conf:hb66d>h30ce                                                rev
+ *22 OSCI R+        config/merge.conf                                                                                                  rep
+=== W051 OSCILLATING net=OSCILLATING t=23
+  12 PROD W+        lib/shards/contract_12.lua                   contract_12.lu:h7298>hbbe3                                            rev
+  13 PROD p+        reconcile-conventions                                                                                              
+  14 OSCI W+        lib/shards/contract_12.lua                   contract_12.lu:hbbe3>h7298                                            rev
+  15 OSCI R+        lib/shards/contract_12.lua                                                                                         rep
+ *16 OSCI W+        lib/shards/contract_12.lua                   contract_12.lu:h7298>hbbe3                                            rev
+ *17 OSCI p+        reconcile-conventions                                                                                              rep
+ *18 OSCI W+        lib/shards/contract_12.lua                   contract_12.lu:hbbe3>h7298                                            rev
+ *19 OSCI R+        lib/shards/contract_12.lua                                                                                         rep
+ *20 OSCI W+        lib/shards/contract_12.lua                   contract_12.lu:h7298>hbbe3                                            rev
+ *21 OSCI TF3/13    suite=busted:stream tests=replica-contract                                ReplicaDivergence at lib/shards/contract rep cnt cntw k0
+ *22 OSCI W+        lib/shards/contract_12.lua                   contract_12.lu:hbbe3>h7298                                            rev
+ *23 OSCI p+        reconcile-conventions                                                                                              rep
+=== W054 OSCILLATING net=OSCILLATING t=23
+  12 PROD p+        reconcile-conventions                                                                                              
+  13 OSCI W+        lib/shards/contract_13.exs                   contract_13.ex:h9cda>hbb2c                                            rev
+  14 OSCI R+        lib/shards/contract_13.exs                                                                                         rep
+  15 OSCI W+        lib/shards/contract_13.exs                   contract_13.ex:hbb2c>h9cda                                            rev
+ *16 OSCI R+        lib/shards/contract_13.exs                                                                                         rep
+ *17 OSCI W+        lib/shards/contract_13.exs                   contract_13.ex:h9cda>hbb2c                                            rev
+ *18 OSCI R+        lib/shards/contract_13.exs                                                                                         rep
+ *19 OSCI W+        lib/shards/contract_13.exs                   contract_13.ex:hbb2c>h9cda                                            rev
+ *20 OSCI p+        reconcile-conventions                                                                                              rep
+ *21 OSCI W+        lib/shards/contract_13.exs                   contract_13.ex:h9cda>hbb2c                                            rev
+ *22 OSCI TF3/14    suite=exunit:replication tests=replica-contr                              ReplicaDivergence at lib/shards/contract rep cnt cntw k0
+ *23 OSCI W+        lib/shards/contract_13.exs                   contract_13.ex:hbb2c>h9cda                                            rev
+=== W087 OSCILLATING net=OSCILLATING t=25
+  14 RECO H!        POST https://quorum-13-1.cedar.invalid/lease                              PeerReset at quorum-13-1.cedar.invalid:1 rep k0
+  15 RECO H+        POST https://quorum-13-1.cedar.invalid/lease                                                                       rep res
+  16 RECO p+        record-quorum                                                                                                      
+  17 RECO W+        config/merge.conf                            merge.conf:he58e>h3681                                                
+ *18 RECO R+        config/merge.conf                                                                                                  
+ *19 PROD W+        config/merge.conf                            merge.conf:h3681>he58e                                                rev
+ *20 PROD R+        config/merge.conf                                                                                                  rep
+ *21 OSCI W+        config/merge.conf                            merge.conf:he58e>h3681                                                rev
+ *22 OSCI R+        config/merge.conf                                                                                                  rep
+ *23 OSCI W+        config/merge.conf                            merge.conf:h3681>he58e                                                rev
+ *24 OSCI p+        reconcile-conventions                                                                                              
+ *25 OSCI W+        config/merge.conf                            merge.conf:he58e>h3681                                                rev
+=== W089 OSCILLATING net=OSCILLATING t=42
+  31 OSCI TF3/15    suite=zig:allocator tests=replica-contract                                StreamOrderViolation at lib/shards/contr rep cnt cntw k0
+  32 OSCI W+        config/merge.conf                            merge.conf:h8667>h245c                                                rev
+  33 OSCI p+        reconcile-conventions                                                                                              rep
+  34 OSCI W+        config/merge.conf                            merge.conf:h245c>h8667                                                rev
+ *35 OSCI W+        config/merge.conf                            merge.conf:h8667>h245c                                                rev
+ *36 OSCI W+        config/merge.conf                            merge.conf:h245c>h8667                                                rev
+ *37 OSCI TF3/15    suite=zig:allocator tests=replica-contract                                StreamOrderViolation at lib/shards/contr rep cnt cntw k0
+ *38 OSCI W+        config/merge.conf                            merge.conf:h8667>h245c                                                rev
+ *39 OSCI R+        config/merge.conf                                                                                                  
+ *40 OSCI W+        config/merge.conf                            merge.conf:h245c>h8667                                                rev
+ *41 OSCI p+        reconcile-conventions                                                                                              rep
+ *42 OSCI W+        config/merge.conf                            merge.conf:h8667>h245c                                                rev
+=== W092 OSCILLATING net=OSCILLATING t=22
+  11 PROD p+        reconcile-conventions                                                                                              
+  12 OSCI W+        config/merge.conf                            merge.conf:h4cb0>h0969                                                rev
+  13 OSCI p+        reconcile-conventions                                                                                              rep
+  14 OSCI W+        config/merge.conf                            merge.conf:h0969>h4cb0                                                rev
+ *15 OSCI p+        reconcile-conventions                                                                                              rep
+ *16 OSCI W+        config/merge.conf                            merge.conf:h4cb0>h0969                                                rev
+ *17 OSCI W+        config/merge.conf                            merge.conf:h0969>h4cb0                                                rev
+ *18 OSCI TF3/15    suite=busted:stream tests=replica-contract                                StreamOrderViolation at lib/shards/contr rep cnt cntw k0
+ *19 OSCI W+        config/merge.conf                            merge.conf:h4cb0>h0969                                                rev
+ *20 OSCI p+        reconcile-conventions                                                                                              rep
+ *21 OSCI W+        config/merge.conf                            merge.conf:h0969>h4cb0                                                rev
+ *22 OSCI TF3/15    suite=busted:stream tests=replica-contract                                StreamOrderViolation at lib/shards/contr rep cnt cntw k0
+=== W098 OSCILLATING net=OSCILLATING t=27
+  16 OSCI W+        lib/shards/contract_12.clj                   contract_12.cl:h5307>ha4b3                                            rev
+  17 OSCI p+        reconcile-conventions                                                                                              rep
+  18 OSCI W+        lib/shards/contract_12.clj                   contract_12.cl:ha4b3>h5307                                            rev
+  19 OSCI p+        reconcile-conventions                                                                                              rep
+ *20 OSCI W+        lib/shards/contract_12.clj                   contract_12.cl:h5307>ha4b3                                            rev
+ *21 OSCI R+        lib/shards/contract_12.clj                                                                                         rep
+ *22 OSCI W+        lib/shards/contract_12.clj                   contract_12.cl:ha4b3>h5307                                            rev
+ *23 OSCI W+        lib/shards/contract_12.clj                   contract_12.cl:h5307>ha4b3                                            rev
+ *24 OSCI TF3/13    suite=kaocha:ledger tests=replica-contract                                AllocatorInvariant at lib/shards/contrac rep cnt cntw k0
+ *25 OSCI W+        lib/shards/contract_12.clj                   contract_12.cl:ha4b3>h5307                                            rev
+ *26 OSCI R+        lib/shards/contract_12.clj                                                                                         rep
+ *27 OSCI W+        lib/shards/contract_12.clj                   contract_12.cl:h5307>ha4b3                                            rev
+=== W101 OSCILLATING net=OSCILLATING t=16
+   5 PROD W+        lib/shards/contract_2.exs                    contract_2.exs:h5513>h5aa8                                            
+   6 PROD TF2/13    suite=exunit:replication tests=replica-contr                              ReplicaDivergence at lib/shards/contract rep k0
+   7 PROD R+        lib/shards/contract_10.exs                                                                                         
+   8 PROD W+        lib/shards/contract_10.exs                   contract_10.ex:ha10a>hf34a                                            
+ * 9 PROD TF3/13    suite=exunit:replication tests=replica-contr                              ReplicaDivergence at lib/shards/contract rep k0
+ *10 PROD W+        config/merge.conf                            merge.conf:h099d>h7250                                                
+ *11 PROD p+        reconcile-conventions                                                                                              
+ *12 STAL W+        config/merge.conf                            merge.conf:h7250>h099d                                                rev
+ *13 STAL TF3/13    suite=exunit:replication tests=replica-contr                              ReplicaDivergence at lib/shards/contract rep cnt cntw k0
+ *14 OSCI W+        config/merge.conf                            merge.conf:h099d>h7250                                                rev
+ *15 OSCI R+        config/merge.conf                                                                                                  
+ *16 OSCI W+        config/merge.conf                            merge.conf:h7250>h099d                                                rev
+=== W102 OSCILLATING net=OSCILLATING t=27
+  16 OSCI W+        config/merge.conf                            merge.conf:hc9b1>h026f                                                rev
+  17 OSCI R+        config/merge.conf                                                                                                  rep
+  18 OSCI W+        config/merge.conf                            merge.conf:h026f>hc9b1                                                rev
+  19 OSCI p+        reconcile-conventions                                                                                              
+ *20 OSCI W+        config/merge.conf                            merge.conf:hc9b1>h026f                                                rev
+ *21 OSCI R+        config/merge.conf                                                                                                  rep
+ *22 OSCI W+        config/merge.conf                            merge.conf:h026f>hc9b1                                                rev
+ *23 OSCI p+        reconcile-conventions                                                                                              rep
+ *24 OSCI W+        config/merge.conf                            merge.conf:hc9b1>h026f                                                rev
+ *25 OSCI p+        reconcile-conventions                                                                                              rep
+ *26 OSCI W+        config/merge.conf                            merge.conf:h026f>hc9b1                                                rev
+ *27 OSCI TF3/16    suite=zig:allocator tests=replica-contract                                StreamOrderViolation at lib/shards/contr rep cnt cntw k0
+=== W104 OSCILLATING net=OSCILLATING t=44
+  33 OSCI B+1/1     target=cedar:dependency-link                                                                                       rep
+  34 PROD W+        config/merge.conf                            merge.conf:hdb16>h3b72                                                
+  35 PROD R+        config/merge.conf                                                                                                  
+  36 PROD W+        config/merge.conf                            merge.conf:h3b72>hdb16                                                rev
+ *37 PROD TF3/15    suite=exunit:replication tests=replica-contr                              ReplicaDivergence at lib/shards/contract rep cntw k0
+ *38 OSCI W+        config/merge.conf                            merge.conf:hdb16>h3b72                                                rev
+ *39 OSCI W+        config/merge.conf                            merge.conf:h3b72>hdb16                                                rev
+ *40 OSCI TF3/15    suite=exunit:replication tests=replica-contr                              ReplicaDivergence at lib/shards/contract rep cnt cntw k0
+ *41 OSCI W+        config/merge.conf                            merge.conf:hdb16>h3b72                                                rev
+ *42 OSCI TF3/15    suite=exunit:replication tests=replica-contr                              ReplicaDivergence at lib/shards/contract rep cnt cntw k0
+ *43 OSCI W+        config/merge.conf                            merge.conf:h3b72>hdb16                                                rev
+ *44 OSCI TF3/15    suite=exunit:replication tests=replica-contr                              ReplicaDivergence at lib/shards/contract rep cnt cntw k0
+=== W108 OSCILLATING net=OSCILLATING t=33
+  22 OSCI W+        config/merge.conf                            merge.conf:h72bc>hfd09                                                rev
+  23 OSCI W+        config/merge.conf                            merge.conf:hfd09>h72bc                                                rev
+  24 OSCI TF3/13    suite=busted:stream tests=replica-contract                                StreamOrderViolation at lib/shards/contr rep cnt cntw k0
+  25 OSCI W+        config/merge.conf                            merge.conf:h72bc>hfd09                                                rev
+ *26 OSCI TF3/13    suite=busted:stream tests=replica-contract                                StreamOrderViolation at lib/shards/contr rep cnt cntw k0
+ *27 OSCI W+        config/merge.conf                            merge.conf:hfd09>h72bc                                                rev
+ *28 OSCI W+        config/merge.conf                            merge.conf:h72bc>hfd09                                                rev
+ *29 OSCI W+        config/merge.conf                            merge.conf:hfd09>h72bc                                                rev
+ *30 OSCI p+        reconcile-conventions                                                                                              rep
+ *31 OSCI W+        config/merge.conf                            merge.conf:h72bc>hfd09                                                rev
+ *32 OSCI W+        config/merge.conf                            merge.conf:hfd09>h72bc                                                rev
+ *33 OSCI TF3/13    suite=busted:stream tests=replica-contract                                StreamOrderViolation at lib/shards/contr rep cnt cntw k0
+=== W109 OSCILLATING net=OSCILLATING t=25
+  14 OSCI p+        reconcile-conventions                                                                                              rep
+  15 OSCI W+        config/merge.conf                            merge.conf:hb6cb>h2620                                                rev
+  16 OSCI p+        reconcile-conventions                                                                                              rep
+  17 OSCI W+        config/merge.conf                            merge.conf:h2620>hb6cb                                                rev
+ *18 OSCI p+        reconcile-conventions                                                                                              rep
+ *19 OSCI W+        config/merge.conf                            merge.conf:hb6cb>h2620                                                rev
+ *20 OSCI TF3/14    suite=busted:stream tests=replica-contract                                AllocatorInvariant at lib/shards/contrac rep cnt cntw k0
+ *21 OSCI W+        config/merge.conf                            merge.conf:h2620>hb6cb                                                rev
+ *22 OSCI TF3/14    suite=busted:stream tests=replica-contract                                AllocatorInvariant at lib/shards/contrac rep cnt cntw k0
+ *23 OSCI W+        config/merge.conf                            merge.conf:hb6cb>h2620                                                rev
+ *24 OSCI p+        reconcile-conventions                                                                                              rep
+ *25 OSCI W+        config/merge.conf                            merge.conf:h2620>hb6cb                                                rev
+=== W110 OSCILLATING net=OSCILLATING t=37
+  26 OSCI TF3/16    suite=kaocha:ledger tests=replica-contract                                AllocatorInvariant at lib/shards/contrac rep cnt cntw k0
+  27 OSCI W+        config/merge.conf                            merge.conf:he953>hfc14                                                rev
+  28 OSCI p+        reconcile-conventions                                                                                              rep
+  29 OSCI W+        config/merge.conf                            merge.conf:hfc14>he953                                                rev
+ *30 OSCI p+        reconcile-conventions                                                                                              rep
+ *31 OSCI W+        config/merge.conf                            merge.conf:he953>hfc14                                                rev
+ *32 OSCI TF3/16    suite=kaocha:ledger tests=replica-contract                                AllocatorInvariant at lib/shards/contrac rep cnt cntw k0
+ *33 OSCI W+        config/merge.conf                            merge.conf:hfc14>he953                                                rev
+ *34 OSCI R+        config/merge.conf                                                                                                  rep
+ *35 OSCI W+        config/merge.conf                            merge.conf:he953>hfc14                                                rev
+ *36 OSCI p+        reconcile-conventions                                                                                              rep
+ *37 OSCI W+        config/merge.conf                            merge.conf:hfc14>he953                                                rev
+=== W111 OSCILLATING net=OSCILLATING t=14
+   3 PROD W+        lib/shards/contract_10.exs                   contract_10.ex:h28c0>h1337                                            
+   4 PROD TF2/14    suite=exunit:replication tests=replica-contr                              ReplicaDivergence at lib/shards/contract rep k0
+   5 PROD p+        record:lib/shards/contract_10.exs                                                                                  
+   6 PROD W+        lib/shards/contract_3.exs                    contract_3.exs:hd809>h7f86                                            
+ * 7 PROD TF3/14    suite=exunit:replication tests=replica-contr                              ReplicaDivergence at lib/shards/contract rep k0
+ * 8 PROD R+        lib/shards/contract_3.exs                                                                                          
+ * 9 PROD W+        config/merge.conf                            merge.conf:ha162>h3fb4                                                
+ *10 STAL W+        config/merge.conf                            merge.conf:h3fb4>ha162                                                rev
+ *11 STAL TF3/14    suite=exunit:replication tests=replica-contr                              ReplicaDivergence at lib/shards/contract rep cnt cntw k0
+ *12 OSCI W+        config/merge.conf                            merge.conf:ha162>h3fb4                                                rev
+ *13 OSCI R+        config/merge.conf                                                                                                  
+ *14 OSCI W+        config/merge.conf                            merge.conf:h3fb4>ha162                                                rev
+=== W112 OSCILLATING net=OSCILLATING t=28
+  17 OSCI R+        config/merge.conf                                                                                                  
+  18 OSCI W+        config/merge.conf                            merge.conf:haf1f>hfa79                                                rev
+  19 OSCI W+        config/merge.conf                            merge.conf:hfa79>haf1f                                                rev
+  20 OSCI R+        config/merge.conf                                                                                                  rep
+ *21 OSCI W+        config/merge.conf                            merge.conf:haf1f>hfa79                                                rev
+ *22 OSCI R+        config/merge.conf                                                                                                  rep
+ *23 OSCI W+        config/merge.conf                            merge.conf:hfa79>haf1f                                                rev
+ *24 OSCI R+        config/merge.conf                                                                                                  rep
+ *25 OSCI W+        config/merge.conf                            merge.conf:haf1f>hfa79                                                rev
+ *26 OSCI TF3/13    suite=busted:stream tests=replica-contract                                StreamOrderViolation at lib/shards/contr rep cnt cntw k0
+ *27 OSCI W+        config/merge.conf                            merge.conf:hfa79>haf1f                                                rev
+ *28 OSCI p+        reconcile-conventions                                                                                              rep
+=== W118 OSCILLATING net=OSCILLATING t=18
+   7 PROD TF3/18    suite=zig:allocator tests=replica-contract                                AllocatorInvariant at lib/shards/contrac rep k0
+   8 PROD R+        lib/shards/contract_1.zig                                                                                          
+   9 PROD W+        config/merge.conf                            merge.conf:hb0d4>he19e                                                
+  10 PROD R+        config/merge.conf                                                                                                  
+ *11 STAL W+        config/merge.conf                            merge.conf:he19e>hb0d4                                                rev
+ *12 OSCI W+        config/merge.conf                            merge.conf:hb0d4>he19e                                                rev
+ *13 OSCI p+        reconcile-conventions                                                                                              
+ *14 OSCI W+        config/merge.conf                            merge.conf:he19e>hb0d4                                                rev
+ *15 OSCI W+        config/merge.conf                            merge.conf:hb0d4>he19e                                                rev
+ *16 OSCI R+        config/merge.conf                                                                                                  rep
+ *17 OSCI W+        config/merge.conf                            merge.conf:he19e>hb0d4                                                rev
+ *18 OSCI TF3/18    suite=zig:allocator tests=replica-contract                                AllocatorInvariant at lib/shards/contrac rep cnt cntw k0
+=== W123 OSCILLATING net=OSCILLATING t=33
+  22 OSCI W+        config/merge.conf                            merge.conf:h5eae>h4678                                                rev
+  23 OSCI W+        config/merge.conf                            merge.conf:h4678>h5eae                                                rev
+  24 OSCI p+        reconcile-conventions                                                                                              rep
+  25 OSCI W+        config/merge.conf                            merge.conf:h5eae>h4678                                                rev
+ *26 OSCI p+        reconcile-conventions                                                                                              rep
+ *27 OSCI W+        config/merge.conf                            merge.conf:h4678>h5eae                                                rev
+ *28 OSCI W+        config/merge.conf                            merge.conf:h5eae>h4678                                                rev
+ *29 OSCI W+        config/merge.conf                            merge.conf:h4678>h5eae                                                rev
+ *30 OSCI R+        config/merge.conf                                                                                                  rep
+ *31 OSCI W+        config/merge.conf                            merge.conf:h5eae>h4678                                                rev
+ *32 OSCI p+        reconcile-conventions                                                                                              rep
+ *33 OSCI R+        lib/shards/contract_5.zig                                                                                          
+=== W126 OSCILLATING net=OSCILLATING t=27
+  16 OSCI p+        reconcile-conventions                                                                                              
+  17 OSCI W+        config/merge.conf                            merge.conf:h9797>h51a5                                                rev
+  18 OSCI R+        config/merge.conf                                                                                                  rep
+  19 OSCI W+        config/merge.conf                            merge.conf:h51a5>h9797                                                rev
+ *20 OSCI W+        config/merge.conf                            merge.conf:h9797>h51a5                                                rev
+ *21 OSCI R+        config/merge.conf                                                                                                  rep
+ *22 OSCI W+        config/merge.conf                            merge.conf:h51a5>h9797                                                rev
+ *23 OSCI R+        config/merge.conf                                                                                                  rep
+ *24 OSCI W+        config/merge.conf                            merge.conf:h9797>h51a5                                                rev
+ *25 OSCI TF3/14    suite=kaocha:ledger tests=replica-contract                                ReplicaDivergence at lib/shards/contract rep cnt cntw k0
+ *26 OSCI W+        config/merge.conf                            merge.conf:h51a5>h9797                                                rev
+ *27 OSCI TF3/14    suite=kaocha:ledger tests=replica-contract                                ReplicaDivergence at lib/shards/contract rep cnt cntw k0
+=== W133 OSCILLATING net=OSCILLATING t=33
+  22 STAL TF3/18    suite=exunit:replication tests=replica-contr                              StreamOrderViolation at lib/shards/contr rep cnt cntw nomut k0
+  23 STAL TF3/18    suite=exunit:replication tests=replica-contr                              StreamOrderViolation at lib/shards/contr rep cnt cntw nomut k0
+  24 STAL TF3/18    suite=exunit:replication tests=replica-contr                              StreamOrderViolation at lib/shards/contr rep cnt cntw nomut k0
+  25 STAL TF3/18    suite=exunit:replication tests=replica-contr                              StreamOrderViolation at lib/shards/contr rep cnt cntw nomut k0
+ *26 STAL TF3/18    suite=exunit:replication tests=replica-contr                              StreamOrderViolation at lib/shards/contr rep cnt cntw nomut k0
+ *27 STAL W+        lib/shards/contract_17.exs                   contract_17.ex:h434e>hbaae                                            
+ *28 PROD p+        reconcile-conventions                                                                                              
+ *29 STAL W+        lib/shards/contract_17.exs                   contract_17.ex:hbaae>h434e                                            rev
+ *30 STAL p+        reconcile-conventions                                                                                              rep
+ *31 OSCI W+        lib/shards/contract_17.exs                   contract_17.ex:h434e>hbaae                                            rev
+ *32 OSCI W+        lib/shards/contract_17.exs                   contract_17.ex:hbaae>h434e                                            rev
+ *33 OSCI TF3/18    suite=exunit:replication tests=replica-contr                              StreamOrderViolation at lib/shards/contr rep cnt cntw k0
+=== W135 OSCILLATING net=OSCILLATING t=32
+  21 STAL TF3/15    suite=exunit:replication tests=replica-contr                              StreamOrderViolation at lib/shards/contr rep cnt cntw nomut k0
+  22 STAL TF3/15    suite=exunit:replication tests=replica-contr                              StreamOrderViolation at lib/shards/contr rep cnt cntw nomut k0
+  23 STAL TF3/15    suite=exunit:replication tests=replica-contr                              StreamOrderViolation at lib/shards/contr rep cnt cntw nomut k0
+  24 STAL TF3/15    suite=exunit:replication tests=replica-contr                              StreamOrderViolation at lib/shards/contr rep cnt cntw nomut k0
+ *25 STAL TF3/15    suite=exunit:replication tests=replica-contr                              StreamOrderViolation at lib/shards/contr rep cnt cntw nomut k0
+ *26 STAL TF3/15    suite=exunit:replication tests=replica-contr                              StreamOrderViolation at lib/shards/contr rep cnt cntw nomut k0
+ *27 STAL W+        lib/shards/contract_14.exs                   contract_14.ex:h8512>h5708                                            
+ *28 PROD R+        lib/shards/contract_14.exs                                                                                         
+ *29 STAL W+        lib/shards/contract_14.exs                   contract_14.ex:h5708>h8512                                            rev
+ *30 STAL TF3/15    suite=exunit:replication tests=replica-contr                              StreamOrderViolation at lib/shards/contr rep cnt cntw k0
+ *31 OSCI W+        lib/shards/contract_14.exs                   contract_14.ex:h8512>h5708                                            rev
+ *32 OSCI TF3/15    suite=exunit:replication tests=replica-contr                              StreamOrderViolation at lib/shards/contr rep cnt cntw k0
+=== W137 OSCILLATING net=OSCILLATING t=29
+  18 OSCI p+        reconcile-conventions                                                                                              rep
+  19 OSCI W+        config/merge.conf                            merge.conf:h39f2>h002c                                                rev
+  20 OSCI p+        reconcile-conventions                                                                                              rep
+  21 OSCI W+        config/merge.conf                            merge.conf:h002c>h39f2                                                rev
+ *22 OSCI TF3/17    suite=exunit:replication tests=replica-contr                              StreamOrderViolation at lib/shards/contr rep cnt cntw k0
+ *23 OSCI W+        config/merge.conf                            merge.conf:h39f2>h002c                                                rev
+ *24 OSCI R+        config/merge.conf                                                                                                  rep
+ *25 OSCI W+        config/merge.conf                            merge.conf:h002c>h39f2                                                rev
+ *26 OSCI R+        config/merge.conf                                                                                                  rep
+ *27 OSCI W+        config/merge.conf                            merge.conf:h39f2>h002c                                                rev
+ *28 OSCI W+        config/merge.conf                            merge.conf:h002c>h39f2                                                rev
+ *29 OSCI TF3/17    suite=exunit:replication tests=replica-contr                              StreamOrderViolation at lib/shards/contr rep cnt cntw k0
+=== W139 OSCILLATING net=OSCILLATING t=21
+  10 PROD W+        config/merge.conf                            merge.conf:hd8a2>h15d1                                                
+  11 PROD TF3/15    suite=kaocha:ledger tests=replica-contract                                ReplicaDivergence at lib/shards/contract rep cnt cntw k0
+  12 PROD W+        config/merge.conf                            merge.conf:h15d1>hd8a2                                                rev
+  13 PROD R+        config/merge.conf                                                                                                  
+ *14 OSCI W+        config/merge.conf                            merge.conf:hd8a2>h15d1                                                rev
+ *15 OSCI TF3/15    suite=kaocha:ledger tests=replica-contract                                ReplicaDivergence at lib/shards/contract rep cnt cntw k0
+ *16 OSCI W+        config/merge.conf                            merge.conf:h15d1>hd8a2                                                rev
+ *17 OSCI p+        reconcile-conventions                                                                                              
+ *18 OSCI W+        config/merge.conf                            merge.conf:hd8a2>h15d1                                                rev
+ *19 OSCI p+        reconcile-conventions                                                                                              rep
+ *20 OSCI W+        config/merge.conf                            merge.conf:h15d1>hd8a2                                                rev
+ *21 OSCI TF3/15    suite=kaocha:ledger tests=replica-contract                                ReplicaDivergence at lib/shards/contract rep cnt cntw k0
+=== W140 OSCILLATING net=OSCILLATING t=26
+  15 OSCI TF3/18    suite=exunit:replication tests=replica-contr                              AllocatorInvariant at lib/shards/contrac rep cnt cntw k0
+  16 OSCI W+        config/merge.conf                            merge.conf:h8384>h0607                                                rev
+  17 OSCI p+        reconcile-conventions                                                                                              
+  18 OSCI W+        config/merge.conf                            merge.conf:h0607>h8384                                                rev
+ *19 OSCI W+        config/merge.conf                            merge.conf:h8384>h0607                                                rev
+ *20 OSCI TF3/18    suite=exunit:replication tests=replica-contr                              AllocatorInvariant at lib/shards/contrac rep cnt cntw k0
+ *21 OSCI W+        config/merge.conf                            merge.conf:h0607>h8384                                                rev
+ *22 OSCI p+        reconcile-conventions                                                                                              rep
+ *23 OSCI W+        config/merge.conf                            merge.conf:h8384>h0607                                                rev
+ *24 OSCI p+        reconcile-conventions                                                                                              rep
+ *25 OSCI W+        config/merge.conf                            merge.conf:h0607>h8384                                                rev
+ *26 OSCI TF3/18    suite=exunit:replication tests=replica-contr                              AllocatorInvariant at lib/shards/contrac rep cnt cntw k0
+=== W143 OSCILLATING net=OSCILLATING t=17
+   6 PROD R+        lib/shards/contract_12.zig                                                                                         
+   7 PROD W+        lib/shards/contract_12.zig                   contract_12.zi:h6bbd>hcfae                                            
+   8 PROD TF3/13    suite=zig:allocator tests=replica-contract                                StreamOrderViolation at lib/shards/contr rep k0
+   9 PROD W+        config/merge.conf                            merge.conf:hc25b>hfbfc                                                
+ *10 PROD TF3/13    suite=zig:allocator tests=replica-contract                                StreamOrderViolation at lib/shards/contr rep cnt cntw k0
+ *11 PROD W+        config/merge.conf                            merge.conf:hfbfc>hc25b                                                rev
+ *12 PROD p+        reconcile-conventions                                                                                              
+ *13 OSCI W+        config/merge.conf                            merge.conf:hc25b>hfbfc                                                rev
+ *14 OSCI p+        reconcile-conventions                                                                                              rep
+ *15 OSCI W+        config/merge.conf                            merge.conf:hfbfc>hc25b                                                rev
+ *16 OSCI TF3/13    suite=zig:allocator tests=replica-contract                                StreamOrderViolation at lib/shards/contr rep cnt cntw k0
+ *17 OSCI W+        config/merge.conf                            merge.conf:hc25b>hfbfc                                                rev
+=== W152 OSCILLATING net=OSCILLATING t=21
+  10 PROD p+        reconcile-conventions                                                                                              
+  11 PROD W+        config/merge.conf                            merge.conf:hdcb5>h6ed8                                                rev
+  12 OSCI W+        config/merge.conf                            merge.conf:h6ed8>hdcb5                                                rev
+  13 OSCI TF3/18    suite=kaocha:ledger tests=replica-contract                                ReplicaDivergence at lib/shards/contract rep cnt cntw k0
+ *14 OSCI W+        config/merge.conf                            merge.conf:hdcb5>h6ed8                                                rev
+ *15 OSCI p+        reconcile-conventions                                                                                              rep
+ *16 OSCI W+        config/merge.conf                            merge.conf:h6ed8>hdcb5                                                rev
+ *17 OSCI p+        reconcile-conventions                                                                                              rep
+ *18 OSCI W+        config/merge.conf                            merge.conf:hdcb5>h6ed8                                                rev
+ *19 OSCI R+        config/merge.conf                                                                                                  
+ *20 OSCI W+        config/merge.conf                            merge.conf:h6ed8>hdcb5                                                rev
+ *21 OSCI W+        config/merge.conf                            merge.conf:hdcb5>h6ed8                                                rev
+=== W158 OSCILLATING net=OSCILLATING t=19
+   8 PROD R+        lib/shards/contract_1.lua                                                                                          
+   9 PROD W+        config/merge.conf                            merge.conf:hacb8>h308d                                                
+  10 PROD R+        config/merge.conf                                                                                                  
+  11 STAL W+        config/merge.conf                            merge.conf:h308d>hacb8                                                rev
+ *12 PROD p+        reconcile-conventions                                                                                              
+ *13 OSCI W+        config/merge.conf                            merge.conf:hacb8>h308d                                                rev
+ *14 OSCI p+        reconcile-conventions                                                                                              rep
+ *15 OSCI W+        config/merge.conf                            merge.conf:h308d>hacb8                                                rev
+ *16 OSCI R+        config/merge.conf                                                                                                  rep
+ *17 OSCI W+        config/merge.conf                            merge.conf:hacb8>h308d                                                rev
+ *18 OSCI W+        config/merge.conf                            merge.conf:h308d>hacb8                                                rev
+ *19 OSCI TF3/17    suite=busted:stream tests=replica-contract                                ReplicaDivergence at lib/shards/contract rep cnt cntw k0
+=== W159 OSCILLATING net=OSCILLATING t=41
+  30 OSCI W+        config/merge.conf                            merge.conf:h0b4e>h2d12                                                rev
+  31 OSCI TF3/12    suite=zig:allocator tests=replica-contract                                ReplicaDivergence at lib/shards/contract rep cnt cntw k0
+  32 OSCI W+        config/merge.conf                            merge.conf:h2d12>h0b4e                                                rev
+  33 OSCI p+        reconcile-conventions                                                                                              rep
+ *34 OSCI W+        config/merge.conf                            merge.conf:h0b4e>h2d12                                                rev
+ *35 OSCI TF3/12    suite=zig:allocator tests=replica-contract                                ReplicaDivergence at lib/shards/contract rep cnt cntw k0
+ *36 OSCI W+        config/merge.conf                            merge.conf:h2d12>h0b4e                                                rev
+ *37 OSCI W+        config/merge.conf                            merge.conf:h0b4e>h2d12                                                rev
+ *38 OSCI Pp        quorum-38-0.cedar.invalid backoff=1                                                                                k0
+ *39 OSCI Pp        quorum-38-0.cedar.invalid backoff=2                                                                                k0
+ *40 OSCI Pp        quorum-38-0.cedar.invalid backoff=4                                                                                k0
+ *41 OSCI Pr        quorum-38-0.cedar.invalid backoff=8                                                                                res
+=== W161 OSCILLATING net=OSCILLATING t=20
+   9 PROD R+        lib/shards/contract_9.zig                                                                                          
+  10 PROD W+        config/merge.conf                            merge.conf:h52da>ha5c5                                                
+  11 STAL TF3/13    suite=zig:allocator tests=replica-contract                                ReplicaDivergence at lib/shards/contract rep cnt cntw k0
+  12 OSCI W+        config/merge.conf                            merge.conf:ha5c5>h52da                                                rev
+ *13 OSCI p+        reconcile-conventions                                                                                              
+ *14 OSCI W+        config/merge.conf                            merge.conf:h52da>ha5c5                                                rev
+ *15 OSCI R+        config/merge.conf                                                                                                  
+ *16 OSCI W+        config/merge.conf                            merge.conf:ha5c5>h52da                                                rev
+ *17 OSCI p+        reconcile-conventions                                                                                              rep
+ *18 OSCI W+        config/merge.conf                            merge.conf:h52da>ha5c5                                                rev
+ *19 OSCI R+        config/merge.conf                                                                                                  rep
+ *20 OSCI W+        config/merge.conf                            merge.conf:ha5c5>h52da                                                rev
+=== W162 OSCILLATING net=OSCILLATING t=28
+  17 OSCI TF3/15    suite=exunit:replication tests=replica-contr                              ReplicaDivergence at lib/shards/contract rep cnt cntw k0
+  18 OSCI W+        config/merge.conf                            merge.conf:h0639>hf31a                                                rev
+  19 OSCI R+        config/merge.conf                                                                                                  rep
+  20 OSCI W+        config/merge.conf                            merge.conf:hf31a>h0639                                                rev
+ *21 OSCI TF3/15    suite=exunit:replication tests=replica-contr                              ReplicaDivergence at lib/shards/contract rep cnt cntw k0
+ *22 OSCI W+        config/merge.conf                            merge.conf:h0639>hf31a                                                rev
+ *23 OSCI R+        config/merge.conf                                                                                                  rep
+ *24 OSCI W+        config/merge.conf                            merge.conf:hf31a>h0639                                                rev
+ *25 OSCI TF3/15    suite=exunit:replication tests=replica-contr                              ReplicaDivergence at lib/shards/contract rep cnt cntw k0
+ *26 OSCI W+        config/merge.conf                            merge.conf:h0639>hf31a                                                rev
+ *27 OSCI p+        reconcile-conventions                                                                                              rep
+ *28 OSCI W+        config/merge.conf                            merge.conf:hf31a>h0639                                                rev
+=== W167 OSCILLATING net=OSCILLATING t=16
+   5 PROD W+        lib/shards/contract_5.exs                    contract_5.exs:ha5bd>h8448                                            
+   6 PROD TF2/14    suite=exunit:replication tests=replica-contr                              ReplicaDivergence at lib/shards/contract rep k0
+   7 PROD W+        lib/shards/contract_8.exs                    contract_8.exs:haf04>h34e4                                            
+   8 PROD TF3/14    suite=exunit:replication tests=replica-contr                              ReplicaDivergence at lib/shards/contract rep k0
+ * 9 PROD p+        record:lib/shards/contract_8.exs                                                                                   
+ *10 PROD W+        config/merge.conf                            merge.conf:h1524>hd9f2                                                
+ *11 STAL W+        config/merge.conf                            merge.conf:hd9f2>h1524                                                rev
+ *12 STAL TF3/14    suite=exunit:replication tests=replica-contr                              ReplicaDivergence at lib/shards/contract rep cnt cntw k0
+ *13 OSCI W+        config/merge.conf                            merge.conf:h1524>hd9f2                                                rev
+ *14 OSCI TF3/14    suite=exunit:replication tests=replica-contr                              ReplicaDivergence at lib/shards/contract rep cnt cntw k0
+ *15 OSCI W+        config/merge.conf                            merge.conf:hd9f2>h1524                                                rev
+ *16 OSCI W+        config/merge.conf                            merge.conf:h1524>hd9f2                                                rev
+=== W169 OSCILLATING net=OSCILLATING t=27
+  16 OSCI p+        reconcile-conventions                                                                                              rep
+  17 OSCI W+        config/merge.conf                            merge.conf:hb14a>hed95                                                rev
+  18 OSCI p+        reconcile-conventions                                                                                              rep
+  19 OSCI W+        config/merge.conf                            merge.conf:hed95>hb14a                                                rev
+ *20 OSCI R+        config/merge.conf                                                                                                  rep
+ *21 OSCI W+        config/merge.conf                            merge.conf:hb14a>hed95                                                rev
+ *22 OSCI W+        config/merge.conf                            merge.conf:hed95>hb14a                                                rev
+ *23 OSCI p+        reconcile-conventions                                                                                              rep
+ *24 OSCI W+        config/merge.conf                            merge.conf:hb14a>hed95                                                rev
+ *25 OSCI TF3/17    suite=kaocha:ledger tests=replica-contract                                ReplicaDivergence at lib/shards/contract rep cnt cntw k0
+ *26 OSCI W+        config/merge.conf                            merge.conf:hed95>hb14a                                                rev
+ *27 OSCI W+        config/merge.conf                            merge.conf:hb14a>hed95                                                rev
+=== W170 OSCILLATING net=OSCILLATING t=24
+  13 RECO H!        POST https://quorum-13-1.cedar.invalid/lease                              PeerReset at quorum-13-1.cedar.invalid:8 k0
+  14 RECO H!        POST https://quorum-13-1.cedar.invalid/lease                              PeerReset at quorum-13-1.cedar.invalid:8 rep k0
+  15 RECO H+        POST https://quorum-13-1.cedar.invalid/lease                                                                       rep res
+  16 RECO W+        lib/shards/contract_15.zig                   contract_15.zi:h596e>hd853                                            
+ *17 RECO p+        reconcile-conventions                                                                                              
+ *18 RECO W+        lib/shards/contract_15.zig                   contract_15.zi:hd853>h596e                                            rev
+ *19 PROD p+        reconcile-conventions                                                                                              rep
+ *20 OSCI W+        lib/shards/contract_15.zig                   contract_15.zi:h596e>hd853                                            rev
+ *21 OSCI W+        lib/shards/contract_15.zig                   contract_15.zi:hd853>h596e                                            rev
+ *22 OSCI R+        lib/shards/contract_15.zig                                                                                         
+ *23 OSCI W+        lib/shards/contract_15.zig                   contract_15.zi:h596e>hd853                                            rev
+ *24 OSCI p+        reconcile-conventions                                                                                              rep
+=== W171 OSCILLATING net=OSCILLATING t=24
+  13 OSCI p+        reconcile-conventions                                                                                              
+  14 OSCI W+        config/merge.conf                            merge.conf:h54da>h73c1                                                rev
+  15 OSCI TF3/15    suite=exunit:replication tests=replica-contr                              StreamOrderViolation at lib/shards/contr rep cnt cntw k0
+  16 OSCI W+        config/merge.conf                            merge.conf:h73c1>h54da                                                rev
+ *17 OSCI p+        reconcile-conventions                                                                                              rep
+ *18 OSCI W+        config/merge.conf                            merge.conf:h54da>h73c1                                                rev
+ *19 OSCI W+        config/merge.conf                            merge.conf:h73c1>h54da                                                rev
+ *20 OSCI p+        reconcile-conventions                                                                                              rep
+ *21 OSCI W+        config/merge.conf                            merge.conf:h54da>h73c1                                                rev
+ *22 OSCI R+        config/merge.conf                                                                                                  rep
+ *23 OSCI W+        config/merge.conf                            merge.conf:h73c1>h54da                                                rev
+ *24 OSCI p+        reconcile-conventions                                                                                              rep
+=== W172 OSCILLATING net=OSCILLATING t=18
+   7 PROD p+        isolate:lib/shards/contract_12.exs                                                                                 
+   8 PROD W+        lib/shards/contract_12.exs                   contract_12.ex:h0c12>hba02                                            
+   9 PROD TF3/15    suite=exunit:replication tests=replica-contr                              AllocatorInvariant at lib/shards/contrac rep k0
+  10 PROD W+        config/merge.conf                            merge.conf:h4d31>h1883                                                
+ *11 PROD R+        config/merge.conf                                                                                                  
+ *12 PROD W+        config/merge.conf                            merge.conf:h1883>h4d31                                                rev
+ *13 OSCI W+        config/merge.conf                            merge.conf:h4d31>h1883                                                rev
+ *14 OSCI p+        reconcile-conventions                                                                                              
+ *15 OSCI W+        config/merge.conf                            merge.conf:h1883>h4d31                                                rev
+ *16 OSCI W+        config/merge.conf                            merge.conf:h4d31>h1883                                                rev
+ *17 OSCI R+        config/merge.conf                                                                                                  rep
+ *18 OSCI W+        config/merge.conf                            merge.conf:h1883>h4d31                                                rev
+=== W173 OSCILLATING net=OSCILLATING t=26
+  15 OSCI p+        reconcile-conventions                                                                                              
+  16 OSCI W+        config/merge.conf                            merge.conf:h6647>he74b                                                rev
+  17 OSCI W+        config/merge.conf                            merge.conf:he74b>h6647                                                rev
+  18 OSCI W+        config/merge.conf                            merge.conf:h6647>he74b                                                rev
+ *19 OSCI TF3/13    suite=zig:allocator tests=replica-contract                                StreamOrderViolation at lib/shards/contr rep cnt cntw k0
+ *20 OSCI W+        config/merge.conf                            merge.conf:he74b>h6647                                                rev
+ *21 OSCI R+        config/merge.conf                                                                                                  rep
+ *22 OSCI W+        config/merge.conf                            merge.conf:h6647>he74b                                                rev
+ *23 OSCI W+        config/merge.conf                            merge.conf:he74b>h6647                                                rev
+ *24 OSCI R+        config/merge.conf                                                                                                  rep
+ *25 OSCI W+        config/merge.conf                            merge.conf:h6647>he74b                                                rev
+ *26 OSCI R+        config/merge.conf                                                                                                  rep
+=== W179 OSCILLATING net=OSCILLATING t=24
+  13 PROD H+        POST https://packages.cedar.invalid/install/ cedar.artifact:ha15a>h324a                                            
+  14 PROD BF0/1     target=cedar:dependency-link                                              DependencyAbiMismatch at config/replica. k0
+  15 PROD R+        config/replica.lock                                                                                                
+  16 PROD W+        config/replica.lock                          replica.lock:h1e25>he79b                                              rev
+ *17 OSCI H+        POST https://packages.cedar.invalid/install/ cedar.artifact:h324a>ha15a                                            
+ *18 OSCI BF0/1     target=cedar:dependency-link                                              DependencyAbiMismatch at config/replica. rep cnt cntw k0
+ *19 OSCI W+        config/replica.lock                          replica.lock:he79b>h1e25                                              rev
+ *20 OSCI H+        POST https://packages.cedar.invalid/install/ cedar.artifact:ha15a>h324a                                            rep
+ *21 OSCI BF0/1     target=cedar:dependency-link                                              DependencyAbiMismatch at config/replica. rep cnt cntw k0
+ *22 OSCI W+        config/replica.lock                          replica.lock:h1e25>he79b                                              rev
+ *23 OSCI H+        POST https://packages.cedar.invalid/install/ cedar.artifact:h324a>ha15a                                            rep
+ *24 OSCI BF0/1     target=cedar:dependency-link                                              DependencyAbiMismatch at config/replica. rep cnt cntw k0
+=== W183 OSCILLATING net=OSCILLATING t=23
+  12 STAL W+        config/merge.conf                            merge.conf:h4494>h9f83                                                rev
+  13 PROD R+        config/merge.conf                                                                                                  
+  14 OSCI W+        config/merge.conf                            merge.conf:h9f83>h4494                                                rev
+  15 OSCI R+        config/merge.conf                                                                                                  rep
+ *16 OSCI W+        config/merge.conf                            merge.conf:h4494>h9f83                                                rev
+ *17 OSCI TF3/15    suite=zig:allocator tests=replica-contract                                ReplicaDivergence at lib/shards/contract rep cnt cntw k0
+ *18 OSCI W+        config/merge.conf                            merge.conf:h9f83>h4494                                                rev
+ *19 OSCI TF3/15    suite=zig:allocator tests=replica-contract                                ReplicaDivergence at lib/shards/contract rep cnt cntw k0
+ *20 OSCI W+        config/merge.conf                            merge.conf:h4494>h9f83                                                rev
+ *21 OSCI W+        config/merge.conf                            merge.conf:h9f83>h4494                                                rev
+ *22 OSCI TF3/15    suite=zig:allocator tests=replica-contract                                ReplicaDivergence at lib/shards/contract rep cnt cntw k0
+ *23 OSCI W+        config/merge.conf                            merge.conf:h4494>h9f83                                                rev
+=== W184 OSCILLATING net=OSCILLATING t=31
+  20 OSCI W+        config/merge.conf                            merge.conf:hc5bc>hc7ca                                                rev
+  21 OSCI TF3/16    suite=exunit:replication tests=replica-contr                              ReplicaDivergence at lib/shards/contract rep cnt cntw k0
+  22 OSCI W+        config/merge.conf                            merge.conf:hc7ca>hc5bc                                                rev
+  23 OSCI TF3/16    suite=exunit:replication tests=replica-contr                              ReplicaDivergence at lib/shards/contract rep cnt cntw k0
+ *24 OSCI W+        config/merge.conf                            merge.conf:hc5bc>hc7ca                                                rev
+ *25 OSCI R+        config/merge.conf                                                                                                  rep
+ *26 OSCI W+        config/merge.conf                            merge.conf:hc7ca>hc5bc                                                rev
+ *27 OSCI W+        config/merge.conf                            merge.conf:hc5bc>hc7ca                                                rev
+ *28 OSCI R+        config/merge.conf                                                                                                  rep
+ *29 OSCI W+        config/merge.conf                            merge.conf:hc7ca>hc5bc                                                rev
+ *30 OSCI R+        config/merge.conf                                                                                                  rep
+ *31 OSCI W+        config/merge.conf                            merge.conf:hc5bc>hc7ca                                                rev
+=== W185 OSCILLATING net=OSCILLATING t=25
+  14 OSCI W+        config/merge.conf                            merge.conf:h1989>h7aec                                                rev
+  15 OSCI p+        reconcile-conventions                                                                                              rep
+  16 OSCI W+        config/merge.conf                            merge.conf:h7aec>h1989                                                rev
+  17 OSCI R+        config/merge.conf                                                                                                  
+ *18 OSCI W+        config/merge.conf                            merge.conf:h1989>h7aec                                                rev
+ *19 OSCI p+        reconcile-conventions                                                                                              rep
+ *20 OSCI W+        config/merge.conf                            merge.conf:h7aec>h1989                                                rev
+ *21 OSCI p+        reconcile-conventions                                                                                              rep
+ *22 OSCI W+        config/merge.conf                            merge.conf:h1989>h7aec                                                rev
+ *23 OSCI TF3/18    suite=busted:stream tests=replica-contract                                AllocatorInvariant at lib/shards/contrac rep cnt cntw k0
+ *24 OSCI W+        config/merge.conf                            merge.conf:h7aec>h1989                                                rev
+ *25 OSCI R+        config/merge.conf                                                                                                  rep
+=== W186 OSCILLATING net=OSCILLATING t=22
+  11 PROD H+        GET https://packages.cedar.invalid/cedar/1 r                                                                       
+  12 PROD W+        config/replica.lock                          replica.lock:h04b0>h095c                                              
+  13 PROD H+        POST https://packages.cedar.invalid/install/ cedar.artifact:h848b>h37a4                                            
+  14 PROD BF0/1     target=cedar:dependency-link                                              DependencyAbiMismatch at config/replica. k0
+ *15 PROD R+        config/replica.lock                                                                                                
+ *16 PROD W+        config/replica.lock                          replica.lock:h095c>h04b0                                              rev
+ *17 OSCI H+        POST https://packages.cedar.invalid/install/ cedar.artifact:h37a4>h848b                                            
+ *18 OSCI BF0/1     target=cedar:dependency-link                                              DependencyAbiMismatch at config/replica. rep cnt cntw k0
+ *19 OSCI W+        config/replica.lock                          replica.lock:h04b0>h095c                                              rev
+ *20 OSCI H+        POST https://packages.cedar.invalid/install/ cedar.artifact:h848b>h37a4                                            rep
+ *21 OSCI BF0/1     target=cedar:dependency-link                                              DependencyAbiMismatch at config/replica. rep cnt cntw k0
+ *22 OSCI W+        config/replica.lock                          replica.lock:h095c>h04b0                                              rev
+=== W189 OSCILLATING net=OSCILLATING t=23
+  12 OSCI W+        config/merge.conf                            merge.conf:h8a03>h807c                                                rev
+  13 OSCI W+        config/merge.conf                            merge.conf:h807c>h8a03                                                rev
+  14 OSCI W+        config/merge.conf                            merge.conf:h8a03>h807c                                                rev
+  15 OSCI R+        config/merge.conf                                                                                                  rep
+ *16 OSCI W+        config/merge.conf                            merge.conf:h807c>h8a03                                                rev
+ *17 OSCI W+        config/merge.conf                            merge.conf:h8a03>h807c                                                rev
+ *18 OSCI W+        config/merge.conf                            merge.conf:h807c>h8a03                                                rev
+ *19 OSCI W+        config/merge.conf                            merge.conf:h8a03>h807c                                                rev
+ *20 OSCI TF3/16    suite=busted:stream tests=replica-contract                                ReplicaDivergence at lib/shards/contract rep cnt cntw k0
+ *21 OSCI W+        config/merge.conf                            merge.conf:h807c>h8a03                                                rev
+ *22 OSCI W+        config/merge.conf                            merge.conf:h8a03>h807c                                                rev
+ *23 OSCI R+        config/merge.conf                                                                                                  rep

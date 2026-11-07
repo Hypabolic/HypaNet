@@ -1,0 +1,635 @@
+=== W001 PRODUCTIVE net=PRODUCTIVE t=39
+  28 OSCI p+        isolate:lib/shards/contract_9.lua                                                                                  
+  29 OSCI W+        lib/shards/contract_9.lua                    contract_9.lua:had49>h1000                                            
+  30 OSCI TF4/16    suite=busted:stream tests=replica-contract                                ReplicaDivergence at lib/shards/contract rep k0
+  31 PROD W+        lib/shards/contract_0.lua                    contract_0.lua:h2923>h31d3                                            
+ *32 PROD TF5/16    suite=busted:stream tests=replica-contract                                ReplicaDivergence at lib/shards/contract rep k0
+ *33 PROD p+        record:lib/shards/contract_0.lua                                                                                   
+ *34 PROD R+        lib/shards/contract_6.lua                                                                                          
+ *35 PROD W+        lib/shards/contract_6.lua                    contract_6.lua:hfe8a>h41f6                                            
+ *36 PROD TF6/16    suite=busted:stream tests=replica-contract                                ReplicaDivergence at lib/shards/contract rep k0
+ *37 PROD R+        lib/shards/contract_12.lua                                                                                         
+ *38 PROD W+        lib/shards/contract_12.lua                   contract_12.lu:hd625>h5d01                                            
+ *39 PROD TF7/16    suite=busted:stream tests=replica-contract                                ReplicaDivergence at lib/shards/contract rep k0
+=== W002 PRODUCTIVE net=OSCILLATING t=32
+  21 OSCI W+        config/merge.conf                            merge.conf:h354e>hd48e                                                rev
+  22 OSCI p+        reconcile-conventions                                                                                              rep
+  23 OSCI W+        config/merge.conf                            merge.conf:hd48e>h354e                                                rev
+  24 OSCI W+        config/merge.conf                            merge.conf:h354e>hd48e                                                rev
+ *25 OSCI p+        reconcile-conventions                                                                                              rep
+ *26 OSCI W+        config/merge.conf                            merge.conf:hd48e>h354e                                                rev
+ *27 OSCI W+        config/merge.conf                            merge.conf:h354e>hd48e                                                rev
+ *28 OSCI W+        config/merge.conf                            merge.conf:hd48e>h354e                                                rev
+ *29 OSCI R+        config/merge.conf                                                                                                  
+ *30 OSCI R+        lib/shards/contract_17.clj                                                                                         
+ *31 OSCI p+        isolate:lib/shards/contract_17.clj                                                                                 
+ *32 OSCI W+        lib/shards/contract_17.clj                   contract_17.cl:h9f82>h9f47                                            
+=== W004 PRODUCTIVE net=PRODUCTIVE t=11
+   0 PROD R+        lib/shards/contract_8.zig                                                                                          
+   1 PROD p+        trace:lib/shards/contract_8.zig                                                                                    
+   2 PROD R+        lib/shards/contract_9.zig                                                                                          
+   3 PROD p+        trace:lib/shards/contract_9.zig                                                                                    
+ * 4 PROD R+        lib/shards/contract_10.zig                                                                                         
+ * 5 PROD p+        trace:lib/shards/contract_10.zig                                                                                   
+ * 6 PROD R+        lib/shards/contract_7.zig                                                                                          
+ * 7 PROD TF0/14    suite=zig:allocator tests=replica-contract                                AllocatorInvariant at lib/shards/contrac k0
+ * 8 PROD R+        lib/shards/contract_1.zig                                                                                          
+ * 9 RECO TF0/14    suite=zig:allocator tests=replica-contract                                AllocatorInvariant at lib/shards/contrac rep cnt cntw nomut k0
+ *10 RECO W+        lib/shards/contract_1.zig                    contract_1.zig:h47f8>hf4e1                                            
+ *11 PROD TF1/14    suite=zig:allocator tests=replica-contract                                AllocatorInvariant at lib/shards/contrac rep k0
+=== W006 PRODUCTIVE net=PRODUCTIVE t=37
+  26 STAL W+        lib/shards/contract_2.exs                    contract_2.exs:h0>h8407                                               
+  27 STAL TF1/17    suite=exunit:replication tests=replica-contr                              ReplicaDivergence at lib/shards/contract rep cnt cntw k0
+  28 STAL W+        lib/shards/contract_2.exs                    contract_2.exs:h0>hbb1f                                               
+  29 STAL R+        lib/shards/contract_2.exs                                                                                          rep
+ *30 STAL W+        lib/shards/contract_2.exs                    contract_2.exs:h0>h8cf2                                               
+ *31 STAL R+        lib/shards/contract_2.exs                                                                                          rep
+ *32 PROD W+        lib/shards/contract_2.exs                    contract_2.exs:h0>h38a7                                               
+ *33 STAL TF1/17    suite=exunit:replication tests=replica-contr                              ReplicaDivergence at lib/shards/contract rep cnt cntw k0
+ *34 PROD R+        lib/shards/contract_0.exs                                                                                          
+ *35 PROD p+        isolate:lib/shards/contract_0.exs                                                                                  
+ *36 STAL W+        lib/shards/contract_0.exs                    contract_0.exs:hca01>h53de                                            
+ *37 PROD TF2/17    suite=exunit:replication tests=replica-contr                              ReplicaDivergence at lib/shards/contract rep k0
+=== W008 PRODUCTIVE net=STALLED t=38
+  27 STAL R+        lib/shards/contract_1.clj                                                                                          rep
+  28 PROD R+        lib/shards/contract_9.clj                                                                                          
+  29 PROD W+        lib/shards/contract_9.clj                    contract_9.clj:h02c5>hfa2e                                            
+  30 STAL TF1/13    suite=kaocha:ledger tests=replica-contract                                ReplicaDivergence at lib/shards/contract rep k0
+ *31 PROD R+        lib/shards/contract_6.clj                                                                                          
+ *32 PROD W+        lib/shards/contract_6.clj                    contract_6.clj:h0e18>h6bad                                            
+ *33 PROD TF2/13    suite=kaocha:ledger tests=replica-contract                                ReplicaDivergence at lib/shards/contract rep k0
+ *34 STAL W+        lib/shards/contract_4.clj                    contract_4.clj:hb58d>hf57a                                            
+ *35 STAL TF3/13    suite=kaocha:ledger tests=replica-contract                                ReplicaDivergence at lib/shards/contract rep k0
+ *36 PROD R+        lib/shards/contract_4.clj                                                                                          
+ *37 STAL W+        lib/shards/contract_10.clj                   contract_10.cl:h4613>h8b7d                                            
+ *38 STAL TF4/13    suite=kaocha:ledger tests=replica-contract                                ReplicaDivergence at lib/shards/contract rep k0
+=== W009 PRODUCTIVE net=PRODUCTIVE t=10
+   0 PROD W+        lib/shards/contract_15.exs                   contract_15.ex:h4763>h6808                                            
+   1 PROD TF1/18    suite=exunit:replication tests=replica-contr                              ReplicaDivergence at lib/shards/contract k0
+   2 PROD R+        lib/shards/contract_15.exs                                                                                         
+ * 3 PROD R+        lib/shards/contract_17.exs                                                                                         
+ * 4 PROD p+        isolate:lib/shards/contract_17.exs                                                                                 
+ * 5 PROD W+        lib/shards/contract_17.exs                   contract_17.ex:h6e45>h769b                                            
+ * 6 PROD TF2/18    suite=exunit:replication tests=replica-contr                              ReplicaDivergence at lib/shards/contract rep k0
+ * 7 PROD R+        lib/shards/contract_13.exs                                                                                         
+ * 8 PROD W+        lib/shards/contract_13.exs                   contract_13.ex:hb03d>h0288                                            
+ * 9 PROD TF3/18    suite=exunit:replication tests=replica-contr                              ReplicaDivergence at lib/shards/contract rep k0
+ *10 PROD p+        handoff:10:0                                                                                                       
+=== W015 PRODUCTIVE net=PRODUCTIVE t=9
+   0 PROD W+        lib/shards/contract_10.zig                   contract_10.zi:h4e85>h0222                                            
+   1 PROD TF1/15    suite=zig:allocator tests=replica-contract                                StreamOrderViolation at lib/shards/contr k0
+ * 2 PROD p+        record:lib/shards/contract_10.zig                                                                                  
+ * 3 PROD R+        lib/shards/contract_6.zig                                                                                          
+ * 4 PROD W+        lib/shards/contract_6.zig                    contract_6.zig:h0f07>h4bbb                                            
+ * 5 PROD TF2/15    suite=zig:allocator tests=replica-contract                                StreamOrderViolation at lib/shards/contr rep k0
+ * 6 PROD W+        lib/shards/contract_9.zig                    contract_9.zig:h4cf0>h17ed                                            
+ * 7 PROD TF3/15    suite=zig:allocator tests=replica-contract                                StreamOrderViolation at lib/shards/contr rep k0
+ * 8 PROD R+        lib/shards/contract_9.zig                                                                                          
+ * 9 PROD W+        config/merge.conf                            merge.conf:h2b6c>h3e64                                                
+=== W019 PRODUCTIVE net=PRODUCTIVE t=38
+  27 STAL TF3/18    suite=kaocha:ledger tests=replica-contract                                StreamOrderViolation at lib/shards/contr rep cnt cntw nomut k0
+  28 PROD R+        lib/shards/contract_12.clj                                                                                         
+  29 PROD p+        isolate:lib/shards/contract_12.clj                                                                                 
+  30 STAL W+        lib/shards/contract_12.clj                   contract_12.cl:h4e23>h00c6                                            
+ *31 STAL TF4/18    suite=kaocha:ledger tests=replica-contract                                StreamOrderViolation at lib/shards/contr rep k0
+ *32 PROD R+        lib/shards/contract_9.clj                                                                                          
+ *33 STAL W+        lib/shards/contract_9.clj                    contract_9.clj:h4efb>h538f                                            
+ *34 STAL TF5/18    suite=kaocha:ledger tests=replica-contract                                StreamOrderViolation at lib/shards/contr rep k0
+ *35 STAL W+        lib/shards/contract_7.clj                    contract_7.clj:h5cfb>hf1f8                                            
+ *36 STAL TF6/18    suite=kaocha:ledger tests=replica-contract                                StreamOrderViolation at lib/shards/contr rep k0
+ *37 PROD R+        lib/shards/contract_7.clj                                                                                          
+ *38 PROD R+        lib/shards/contract_2.clj                                                                                          
+=== W021 PRODUCTIVE net=PRODUCTIVE t=51
+  40 RECO p+        record-quorum                                                                                                      rep
+  41 RECO R+        lib/shards/contract_8.exs                                                                                          
+  42 RECO p+        isolate:lib/shards/contract_8.exs                                                                                  
+  43 PROD W+        lib/shards/contract_8.exs                    contract_8.exs:h949d>h723d                                            
+ *44 PROD TF4/16    suite=exunit:replication tests=replica-contr                              AllocatorInvariant at lib/shards/contrac rep k0
+ *45 PROD R+        lib/shards/contract_1.exs                                                                                          
+ *46 PROD p+        isolate:lib/shards/contract_1.exs                                                                                  
+ *47 PROD W+        lib/shards/contract_1.exs                    contract_1.exs:h3e38>h623b                                            
+ *48 PROD TF5/16    suite=exunit:replication tests=replica-contr                              AllocatorInvariant at lib/shards/contrac rep k0
+ *49 PROD R+        lib/shards/contract_6.exs                                                                                          
+ *50 PROD W+        lib/shards/contract_6.exs                    contract_6.exs:h9380>hb047                                            
+ *51 PROD TF6/16    suite=exunit:replication tests=replica-contr                              AllocatorInvariant at lib/shards/contrac rep k0
+=== W022 PRODUCTIVE net=PRODUCTIVE t=34
+  23 STAL W+        lib/shards/contract_11.clj                   contract_11.cl:h0>h9211                                               
+  24 STAL TF0/14    suite=kaocha:ledger tests=replica-contract                                ReplicaDivergence at lib/shards/contract rep cnt cntw k0
+  25 STAL W+        lib/shards/contract_11.clj                   contract_11.cl:h0>h7873                                               
+  26 STAL R+        lib/shards/contract_11.clj                                                                                         rep
+ *27 STAL W+        lib/shards/contract_11.clj                   contract_11.cl:h0>h8f4e                                               
+ *28 STAL TF0/14    suite=kaocha:ledger tests=replica-contract                                ReplicaDivergence at lib/shards/contract rep cnt cntw k0
+ *29 STAL W+        lib/shards/contract_11.clj                   contract_11.cl:h0>h5f02                                               
+ *30 STAL R+        lib/shards/contract_11.clj                                                                                         rep
+ *31 STAL R+        lib/shards/contract_11.clj                                                                                         rep
+ *32 PROD W+        lib/shards/contract_11.clj                   contract_11.cl:hee2e>hbe4b                                            
+ *33 STAL TF1/14    suite=kaocha:ledger tests=replica-contract                                ReplicaDivergence at lib/shards/contract rep k0
+ *34 PROD R+        lib/shards/contract_9.clj                                                                                          
+=== W023 PRODUCTIVE net=PRODUCTIVE t=38
+  27 OSCI W+        config/merge.conf                            merge.conf:h89d9>h8459                                                rev
+  28 OSCI W+        config/merge.conf                            merge.conf:h8459>h89d9                                                rev
+  29 OSCI R+        config/merge.conf                                                                                                  rep
+  30 OSCI W+        config/merge.conf                            merge.conf:h89d9>h8459                                                rev
+ *31 OSCI R+        config/merge.conf                                                                                                  rep
+ *32 OSCI W+        lib/shards/contract_11.clj                   contract_11.cl:hf38f>h7fc8                                            
+ *33 OSCI TF4/14    suite=kaocha:ledger tests=replica-contract                                ReplicaDivergence at lib/shards/contract rep k0
+ *34 OSCI p+        record:lib/shards/contract_11.clj                                                                                  
+ *35 OSCI W+        lib/shards/contract_1.clj                    contract_1.clj:h2256>hff86                                            
+ *36 PROD TF5/14    suite=kaocha:ledger tests=replica-contract                                ReplicaDivergence at lib/shards/contract rep k0
+ *37 PROD R+        lib/shards/contract_1.clj                                                                                          
+ *38 PROD W+        lib/shards/contract_5.clj                    contract_5.clj:h9a08>h6aa1                                            
+=== W024 PRODUCTIVE net=STALLED t=34
+  23 STAL R+        lib/shards/contract_10.clj                                                                                         rep
+  24 STAL W+        lib/shards/contract_10.clj                   contract_10.cl:h0>h8e70                                               
+  25 STAL TF1/17    suite=kaocha:ledger tests=replica-contract                                StreamOrderViolation at lib/shards/contr rep cnt cntw k0
+  26 STAL W+        lib/shards/contract_10.clj                   contract_10.cl:h0>h0ba2                                               
+ *27 STAL TF1/17    suite=kaocha:ledger tests=replica-contract                                StreamOrderViolation at lib/shards/contr rep cnt cntw k0
+ *28 STAL W+        lib/shards/contract_10.clj                   contract_10.cl:h0>h3ad0                                               
+ *29 STAL TF1/17    suite=kaocha:ledger tests=replica-contract                                StreamOrderViolation at lib/shards/contr rep cnt cntw k0
+ *30 STAL W+        lib/shards/contract_10.clj                   contract_10.cl:h0>h4fdc                                               
+ *31 STAL TF1/17    suite=kaocha:ledger tests=replica-contract                                StreamOrderViolation at lib/shards/contr rep cnt cntw k0
+ *32 STAL W+        lib/shards/contract_10.clj                   contract_10.cl:h0>he6cd                                               
+ *33 STAL R+        lib/shards/contract_10.clj                                                                                         rep
+ *34 STAL W+        lib/shards/contract_6.clj                    contract_6.clj:h6581>h32e3                                            
+=== W027 PRODUCTIVE net=PRODUCTIVE t=15
+   4 PROD TF2/17    suite=busted:stream tests=replica-contract                                StreamOrderViolation at lib/shards/contr rep k0
+   5 PROD p+        record:lib/shards/contract_14.lua                                                                                  
+   6 PROD R+        lib/shards/contract_5.lua                                                                                          
+   7 PROD p+        isolate:lib/shards/contract_5.lua                                                                                  
+ * 8 PROD W+        lib/shards/contract_5.lua                    contract_5.lua:h75a0>h572d                                            
+ * 9 PROD TF3/17    suite=busted:stream tests=replica-contract                                StreamOrderViolation at lib/shards/contr rep k0
+ *10 PROD H+        GET https://packages.cedar.invalid/cedar/1 r                                                                       
+ *11 PROD H+        GET https://packages.cedar.invalid/cedar/2 r                                                                       
+ *12 PROD W+        config/replica.lock                          replica.lock:ha899>h425d                                              
+ *13 PROD H+        POST https://packages.cedar.invalid/install/ cedar.artifact:hc276>h363c                                            
+ *14 PROD BF0/1     target=cedar:dependency-link                                              DependencyAbiMismatch at config/replica. k0
+ *15 PROD W+        config/replica.lock                          replica.lock:h425d>ha899                                              rev
+=== W029 PRODUCTIVE net=PRODUCTIVE t=12
+   1 PROD p+        isolate:lib/shards/contract_10.lua                                                                                 
+   2 PROD W+        lib/shards/contract_10.lua                   contract_10.lu:h2b1b>h5527                                            
+   3 PROD TF1/18    suite=busted:stream tests=replica-contract                                ReplicaDivergence at lib/shards/contract k0
+   4 PROD R+        lib/shards/contract_5.lua                                                                                          
+ * 5 PROD W+        lib/shards/contract_5.lua                    contract_5.lua:h49d0>hcd70                                            
+ * 6 PROD TF2/18    suite=busted:stream tests=replica-contract                                ReplicaDivergence at lib/shards/contract rep k0
+ * 7 PROD R+        lib/shards/contract_16.lua                                                                                         
+ * 8 PROD p+        isolate:lib/shards/contract_16.lua                                                                                 
+ * 9 PROD W+        lib/shards/contract_16.lua                   contract_16.lu:h7360>h5509                                            
+ *10 PROD TF3/18    suite=busted:stream tests=replica-contract                                ReplicaDivergence at lib/shards/contract rep k0
+ *11 STAL W+        config/merge.conf                            merge.conf:h7e05>hbec9                                                
+ *12 PROD R+        config/merge.conf                                                                                                  
+=== W033 PRODUCTIVE net=STALLED t=22
+  11 STAL W+        lib/shards/contract_4.exs                    contract_4.exs:h0>h63d2                                               
+  12 STAL TF0/12    suite=exunit:replication tests=replica-contr                              ReplicaDivergence at lib/shards/contract rep cnt cntw k0
+  13 STAL W+        lib/shards/contract_4.exs                    contract_4.exs:h0>h45a5                                               
+  14 STAL TF0/12    suite=exunit:replication tests=replica-contr                              ReplicaDivergence at lib/shards/contract rep cnt cntw k0
+ *15 STAL W+        lib/shards/contract_4.exs                    contract_4.exs:h0>h8536                                               
+ *16 STAL TF0/12    suite=exunit:replication tests=replica-contr                              ReplicaDivergence at lib/shards/contract rep cnt cntw k0
+ *17 PROD R+        lib/shards/contract_3.exs                                                                                          
+ *18 PROD p+        isolate:lib/shards/contract_3.exs                                                                                  
+ *19 STAL W+        lib/shards/contract_3.exs                    contract_3.exs:hf0cd>h26c1                                            
+ *20 STAL TF1/12    suite=exunit:replication tests=replica-contr                              ReplicaDivergence at lib/shards/contract rep k0
+ *21 PROD R+        lib/shards/contract_9.exs                                                                                          
+ *22 STAL p+        isolate:lib/shards/contract_9.exs                                                                                  
+=== W035 PRODUCTIVE net=STALLED t=40
+  29 STAL TF3/15    suite=kaocha:ledger tests=replica-contract                                AllocatorInvariant at lib/shards/contrac rep cnt cntw nomut k0
+  30 STAL TF3/15    suite=kaocha:ledger tests=replica-contract                                AllocatorInvariant at lib/shards/contrac rep cnt cntw nomut k0
+  31 STAL TF3/15    suite=kaocha:ledger tests=replica-contract                                AllocatorInvariant at lib/shards/contrac rep cnt cntw nomut k0
+  32 STAL TF3/15    suite=kaocha:ledger tests=replica-contract                                AllocatorInvariant at lib/shards/contrac rep cnt cntw nomut k0
+ *33 STAL TF3/15    suite=kaocha:ledger tests=replica-contract                                AllocatorInvariant at lib/shards/contrac rep cnt cntw nomut k0
+ *34 STAL TF3/15    suite=kaocha:ledger tests=replica-contract                                AllocatorInvariant at lib/shards/contrac rep cnt cntw nomut k0
+ *35 PROD R+        lib/shards/contract_8.clj                                                                                          
+ *36 STAL p+        isolate:lib/shards/contract_8.clj                                                                                  
+ *37 STAL W+        lib/shards/contract_8.clj                    contract_8.clj:h6bd2>h8c29                                            
+ *38 STAL TF4/15    suite=kaocha:ledger tests=replica-contract                                AllocatorInvariant at lib/shards/contrac rep k0
+ *39 STAL W+        lib/shards/contract_12.clj                   contract_12.cl:h0ede>hc617                                            
+ *40 STAL TF5/15    suite=kaocha:ledger tests=replica-contract                                AllocatorInvariant at lib/shards/contrac rep k0
+=== W037 PRODUCTIVE net=PRODUCTIVE t=39
+  28 STAL TF3/15    suite=exunit:replication tests=replica-contr                              AllocatorInvariant at lib/shards/contrac rep cnt cntw nomut k0
+  29 STAL TF3/15    suite=exunit:replication tests=replica-contr                              AllocatorInvariant at lib/shards/contrac rep cnt cntw nomut k0
+  30 STAL TF3/15    suite=exunit:replication tests=replica-contr                              AllocatorInvariant at lib/shards/contrac rep cnt cntw nomut k0
+  31 STAL TF3/15    suite=exunit:replication tests=replica-contr                              AllocatorInvariant at lib/shards/contrac rep cnt cntw nomut k0
+ *32 STAL TF3/15    suite=exunit:replication tests=replica-contr                              AllocatorInvariant at lib/shards/contrac rep cnt cntw nomut k0
+ *33 STAL TF3/15    suite=exunit:replication tests=replica-contr                              AllocatorInvariant at lib/shards/contrac rep cnt cntw nomut k0
+ *34 STAL TF3/15    suite=exunit:replication tests=replica-contr                              AllocatorInvariant at lib/shards/contrac rep cnt cntw nomut k0
+ *35 STAL TF3/15    suite=exunit:replication tests=replica-contr                              AllocatorInvariant at lib/shards/contrac rep cnt cntw nomut k0
+ *36 PROD R+        lib/shards/contract_1.exs                                                                                          
+ *37 PROD R+        lib/shards/contract_4.exs                                                                                          
+ *38 PROD p+        trace:lib/shards/contract_4.exs                                                                                    
+ *39 PROD R+        lib/shards/contract_0.exs                                                                                          
+=== W038 PRODUCTIVE net=PRODUCTIVE t=50
+  39 PROD W+        lib/shards/contract_3.lua                    contract_3.lua:h40d7>hcf15                                            
+  40 PROD TF5/18    suite=busted:stream tests=replica-contract                                ReplicaDivergence at lib/shards/contract rep k0
+  41 PROD R+        lib/shards/contract_7.lua                                                                                          
+  42 PROD W+        lib/shards/contract_7.lua                    contract_7.lua:h116d>h42c2                                            
+ *43 STAL TF6/18    suite=busted:stream tests=replica-contract                                ReplicaDivergence at lib/shards/contract rep k0
+ *44 PROD R+        lib/shards/contract_11.lua                                                                                         
+ *45 STAL W+        lib/shards/contract_11.lua                   contract_11.lu:hc8e8>h9716                                            
+ *46 STAL TF7/18    suite=busted:stream tests=replica-contract                                ReplicaDivergence at lib/shards/contract rep k0
+ *47 STAL W+        lib/shards/contract_15.lua                   contract_15.lu:ha78e>h2a96                                            
+ *48 STAL TF8/18    suite=busted:stream tests=replica-contract                                ReplicaDivergence at lib/shards/contract rep k0
+ *49 PROD R+        lib/shards/contract_15.lua                                                                                         
+ *50 PROD p+        handoff:50:0                                                                                                       
+=== W040 PRODUCTIVE net=PRODUCTIVE t=7
+ * 0 PROD W+        lib/shards/contract_9.exs                    contract_9.exs:h2382>h7047                                            
+ * 1 PROD TF1/13    suite=exunit:replication tests=replica-contr                              ReplicaDivergence at lib/shards/contract k0
+ * 2 PROD p+        record:lib/shards/contract_9.exs                                                                                   
+ * 3 PROD W+        lib/shards/contract_10.exs                   contract_10.ex:h5856>ha658                                            
+ * 4 PROD TF2/13    suite=exunit:replication tests=replica-contr                              ReplicaDivergence at lib/shards/contract rep k0
+ * 5 PROD R+        lib/shards/contract_10.exs                                                                                         
+ * 6 PROD W+        lib/shards/contract_4.exs                    contract_4.exs:hc2da>h7926                                            
+ * 7 PROD TF3/13    suite=exunit:replication tests=replica-contr                              ReplicaDivergence at lib/shards/contract rep k0
+=== W041 PRODUCTIVE net=STALLED t=37
+  26 STAL TF3/18    suite=kaocha:ledger tests=replica-contract                                ReplicaDivergence at lib/shards/contract rep cnt cntw nomut k0
+  27 STAL TF3/18    suite=kaocha:ledger tests=replica-contract                                ReplicaDivergence at lib/shards/contract rep cnt cntw nomut k0
+  28 PROD R+        lib/shards/contract_14.clj                                                                                         
+  29 STAL TF3/18    suite=kaocha:ledger tests=replica-contract                                ReplicaDivergence at lib/shards/contract rep cnt cntw nomut k0
+ *30 PROD R+        lib/shards/contract_4.clj                                                                                          
+ *31 STAL W+        lib/shards/contract_3.clj                    contract_3.clj:h298a>h3d5a                                            
+ *32 STAL TF4/18    suite=kaocha:ledger tests=replica-contract                                ReplicaDivergence at lib/shards/contract rep k0
+ *33 STAL p+        record:lib/shards/contract_3.clj                                                                                   
+ *34 PROD R+        lib/shards/contract_7.clj                                                                                          
+ *35 STAL W+        lib/shards/contract_7.clj                    contract_7.clj:h872b>hcf23                                            
+ *36 STAL TF5/18    suite=kaocha:ledger tests=replica-contract                                ReplicaDivergence at lib/shards/contract rep k0
+ *37 STAL R+        lib/shards/contract_14.clj                                                                                         rep
+=== W042 PRODUCTIVE net=PRODUCTIVE t=12
+   1 PROD R+        lib/shards/contract_12.zig                                                                                         
+   2 PROD TF0/15    suite=zig:allocator tests=replica-contract                                AllocatorInvariant at lib/shards/contrac k0
+   3 PROD R+        lib/shards/contract_13.zig                                                                                         
+   4 PROD R+        lib/shards/contract_9.zig                                                                                          
+ * 5 PROD TF0/15    suite=zig:allocator tests=replica-contract                                AllocatorInvariant at lib/shards/contrac rep cnt cntw nomut k0
+ * 6 PROD R+        lib/shards/contract_14.zig                                                                                         
+ * 7 PROD R+        lib/shards/contract_1.zig                                                                                          
+ * 8 PROD TF0/15    suite=zig:allocator tests=replica-contract                                AllocatorInvariant at lib/shards/contrac rep cnt cntw nomut k0
+ * 9 PROD R+        lib/shards/contract_2.zig                                                                                          
+ *10 PROD W+        lib/shards/contract_2.zig                    contract_2.zig:h0>h4c19                                               
+ *11 PROD R+        lib/shards/contract_2.zig                                                                                          rep
+ *12 PROD W+        lib/shards/contract_2.zig                    contract_2.zig:h0>he4b2                                               
+=== W043 PRODUCTIVE net=PRODUCTIVE t=9
+   0 PROD W+        lib/shards/contract_3.clj                    contract_3.clj:hd223>h56c1                                            
+   1 PROD TF1/16    suite=kaocha:ledger tests=replica-contract                                AllocatorInvariant at lib/shards/contrac k0
+ * 2 PROD R+        lib/shards/contract_3.clj                                                                                          
+ * 3 PROD R+        lib/shards/contract_7.clj                                                                                          
+ * 4 PROD W+        lib/shards/contract_7.clj                    contract_7.clj:haff2>h51bc                                            
+ * 5 PROD TF2/16    suite=kaocha:ledger tests=replica-contract                                AllocatorInvariant at lib/shards/contrac rep k0
+ * 6 PROD R+        lib/shards/contract_12.clj                                                                                         
+ * 7 PROD W+        lib/shards/contract_12.clj                   contract_12.cl:h8362>h7d08                                            
+ * 8 PROD TF3/16    suite=kaocha:ledger tests=replica-contract                                AllocatorInvariant at lib/shards/contrac rep k0
+ * 9 PROD W+        config/merge.conf                            merge.conf:hc581>hee73                                                
+=== W044 PRODUCTIVE net=PRODUCTIVE t=44
+  33 STAL W+        lib/shards/contract_9.exs                    contract_9.exs:haa7a>h6175                                            
+  34 STAL TF2/16    suite=exunit:replication tests=replica-contr                              AllocatorInvariant at lib/shards/contrac rep k0
+  35 PROD R+        lib/shards/contract_10.exs                                                                                         
+  36 STAL W+        lib/shards/contract_10.exs                   contract_10.ex:hd811>h6670                                            
+ *37 STAL TF3/16    suite=exunit:replication tests=replica-contr                              AllocatorInvariant at lib/shards/contrac rep k0
+ *38 STAL W+        lib/shards/contract_8.exs                    contract_8.exs:h5d37>hb0fb                                            
+ *39 STAL TF4/16    suite=exunit:replication tests=replica-contr                              AllocatorInvariant at lib/shards/contrac rep k0
+ *40 PROD p+        record:lib/shards/contract_8.exs                                                                                   
+ *41 STAL W+        lib/shards/contract_3.exs                    contract_3.exs:hac6a>h896f                                            
+ *42 STAL TF5/16    suite=exunit:replication tests=replica-contr                              AllocatorInvariant at lib/shards/contrac rep k0
+ *43 PROD R+        lib/shards/contract_3.exs                                                                                          
+ *44 PROD R+        lib/shards/contract_7.exs                                                                                          rep
+=== W047 PRODUCTIVE net=STALLED t=35
+  24 STAL TF3/12    suite=exunit:replication tests=replica-contr                              AllocatorInvariant at lib/shards/contrac rep cnt cntw nomut k0
+  25 STAL TF3/12    suite=exunit:replication tests=replica-contr                              AllocatorInvariant at lib/shards/contrac rep cnt cntw nomut k0
+  26 STAL TF3/12    suite=exunit:replication tests=replica-contr                              AllocatorInvariant at lib/shards/contrac rep cnt cntw nomut k0
+  27 STAL TF3/12    suite=exunit:replication tests=replica-contr                              AllocatorInvariant at lib/shards/contrac rep cnt cntw nomut k0
+ *28 STAL TF3/12    suite=exunit:replication tests=replica-contr                              AllocatorInvariant at lib/shards/contrac rep cnt cntw nomut k0
+ *29 STAL TF3/12    suite=exunit:replication tests=replica-contr                              AllocatorInvariant at lib/shards/contrac rep cnt cntw nomut k0
+ *30 STAL TF3/12    suite=exunit:replication tests=replica-contr                              AllocatorInvariant at lib/shards/contrac rep cnt cntw nomut k0
+ *31 STAL TF3/12    suite=exunit:replication tests=replica-contr                              AllocatorInvariant at lib/shards/contrac rep cnt cntw nomut k0
+ *32 STAL TF3/12    suite=exunit:replication tests=replica-contr                              AllocatorInvariant at lib/shards/contrac rep cnt cntw nomut k0
+ *33 STAL TF3/12    suite=exunit:replication tests=replica-contr                              AllocatorInvariant at lib/shards/contrac rep cnt cntw nomut k0
+ *34 PROD R+        lib/shards/contract_5.exs                                                                                          
+ *35 STAL TF3/12    suite=exunit:replication tests=replica-contr                              AllocatorInvariant at lib/shards/contrac rep cnt cntw nomut k0
+=== W048 PRODUCTIVE net=PRODUCTIVE t=46
+  35 OSCI Pp        quorum-32-0.cedar.invalid backoff=8                                                                                k0
+  36 RECO Pp        quorum-32-0.cedar.invalid backoff=16                                                                               k0
+  37 RECO Pr        quorum-32-0.cedar.invalid backoff=32                                                                               res
+  38 RECO p+        record-quorum                                                                                                      
+ *39 RECO R+        lib/shards/contract_1.lua                                                                                          
+ *40 RECO W+        lib/shards/contract_1.lua                    contract_1.lua:h0639>ha532                                            
+ *41 PROD TF4/12    suite=busted:stream tests=replica-contract                                ReplicaDivergence at lib/shards/contract rep k0
+ *42 PROD W+        lib/shards/contract_11.lua                   contract_11.lu:hf512>h6a51                                            
+ *43 PROD TF5/12    suite=busted:stream tests=replica-contract                                ReplicaDivergence at lib/shards/contract rep k0
+ *44 PROD R+        lib/shards/contract_11.lua                                                                                         
+ *45 PROD R+        lib/shards/contract_9.lua                                                                                          
+ *46 PROD W+        lib/shards/contract_9.lua                    contract_9.lua:hf580>h67b3                                            
+=== W049 PRODUCTIVE net=STALLED t=37
+  26 STAL TF3/15    suite=busted:stream tests=replica-contract                                AllocatorInvariant at lib/shards/contrac rep cnt cntw nomut k0
+  27 STAL TF3/15    suite=busted:stream tests=replica-contract                                AllocatorInvariant at lib/shards/contrac rep cnt cntw nomut k0
+  28 STAL TF3/15    suite=busted:stream tests=replica-contract                                AllocatorInvariant at lib/shards/contrac rep cnt cntw nomut k0
+  29 STAL TF3/15    suite=busted:stream tests=replica-contract                                AllocatorInvariant at lib/shards/contrac rep cnt cntw nomut k0
+ *30 STAL TF3/15    suite=busted:stream tests=replica-contract                                AllocatorInvariant at lib/shards/contrac rep cnt cntw nomut k0
+ *31 STAL TF3/15    suite=busted:stream tests=replica-contract                                AllocatorInvariant at lib/shards/contrac rep cnt cntw nomut k0
+ *32 STAL TF3/15    suite=busted:stream tests=replica-contract                                AllocatorInvariant at lib/shards/contrac rep cnt cntw nomut k0
+ *33 STAL TF3/15    suite=busted:stream tests=replica-contract                                AllocatorInvariant at lib/shards/contrac rep cnt cntw nomut k0
+ *34 STAL TF3/15    suite=busted:stream tests=replica-contract                                AllocatorInvariant at lib/shards/contrac rep cnt cntw nomut k0
+ *35 PROD R+        lib/shards/contract_0.lua                                                                                          
+ *36 STAL W+        lib/shards/contract_6.lua                    contract_6.lua:h334a>h55e3                                            
+ *37 STAL TF4/15    suite=busted:stream tests=replica-contract                                AllocatorInvariant at lib/shards/contrac rep k0
+=== W052 PRODUCTIVE net=STALLED t=44
+  33 STAL TF3/12    suite=zig:allocator tests=replica-contract                                AllocatorInvariant at lib/shards/contrac rep cnt cntw nomut k0
+  34 STAL TF3/12    suite=zig:allocator tests=replica-contract                                AllocatorInvariant at lib/shards/contrac rep cnt cntw nomut k0
+  35 STAL TF3/12    suite=zig:allocator tests=replica-contract                                AllocatorInvariant at lib/shards/contrac rep cnt cntw nomut k0
+  36 STAL W+        lib/shards/contract_4.zig                    contract_4.zig:h3753>h3bf0                                            
+ *37 STAL TF4/12    suite=zig:allocator tests=replica-contract                                AllocatorInvariant at lib/shards/contrac rep k0
+ *38 STAL p+        record:lib/shards/contract_4.zig                                                                                   
+ *39 PROD R+        lib/shards/contract_10.zig                                                                                         
+ *40 STAL W+        lib/shards/contract_10.zig                   contract_10.zi:h9e98>h585e                                            
+ *41 STAL TF5/12    suite=zig:allocator tests=replica-contract                                AllocatorInvariant at lib/shards/contrac rep k0
+ *42 PROD R+        lib/shards/contract_1.zig                                                                                          
+ *43 PROD p+        isolate:lib/shards/contract_1.zig                                                                                  
+ *44 STAL W+        lib/shards/contract_1.zig                    contract_1.zig:h6c8d>h90c9                                            
+=== W053 PRODUCTIVE net=RECOVERY t=9
+   0 PROD R+        lib/shards/contract_3.lua                                                                                          
+   1 PROD p+        trace:lib/shards/contract_3.lua                                                                                    
+ * 2 PROD R+        lib/shards/contract_14.lua                                                                                         
+ * 3 PROD TF0/15    suite=busted:stream tests=replica-contract                                AllocatorInvariant at lib/shards/contrac k0
+ * 4 PROD R+        lib/shards/contract_8.lua                                                                                          
+ * 5 RECO TF0/15    suite=busted:stream tests=replica-contract                                AllocatorInvariant at lib/shards/contrac rep cnt cntw nomut k0
+ * 6 RECO R+        lib/shards/contract_4.lua                                                                                          
+ * 7 RECO TF0/15    suite=busted:stream tests=replica-contract                                AllocatorInvariant at lib/shards/contrac rep cnt cntw nomut k0
+ * 8 RECO R+        lib/shards/contract_0.lua                                                                                          
+ * 9 RECO TF0/15    suite=busted:stream tests=replica-contract                                AllocatorInvariant at lib/shards/contrac rep cnt cntw nomut k0
+=== W055 PRODUCTIVE net=STALLED t=45
+  34 OSCI TF4/16    suite=busted:stream tests=replica-contract                                AllocatorInvariant at lib/shards/contrac rep k0
+  35 OSCI p+        record:lib/shards/contract_9.lua                                                                                   
+  36 OSCI W+        lib/shards/contract_7.lua                    contract_7.lua:h2fb2>he133                                            
+  37 OSCI TF5/16    suite=busted:stream tests=replica-contract                                AllocatorInvariant at lib/shards/contrac rep k0
+ *38 STAL p+        record:lib/shards/contract_7.lua                                                                                   
+ *39 STAL W+        lib/shards/contract_13.lua                   contract_13.lu:h7d2b>h6ecb                                            
+ *40 STAL TF6/16    suite=busted:stream tests=replica-contract                                AllocatorInvariant at lib/shards/contrac rep k0
+ *41 PROD R+        lib/shards/contract_13.lua                                                                                         
+ *42 PROD p+        handoff:42:0                                                                                                       
+ *43 STAL p+        handoff:43:1                                                                                                       
+ *44 STAL p+        handoff:44:2                                                                                                       
+ *45 STAL p+        handoff:45:3                                                                                                       
+=== W056 PRODUCTIVE net=PRODUCTIVE t=33
+  22 RECO R+        lib/shards/contract_14.clj                                                                                         
+  23 RECO W+        lib/shards/contract_14.clj                   contract_14.cl:hd590>h751d                                            
+  24 PROD TF9/15    suite=kaocha:ledger tests=replica-contract                                StreamOrderViolation at lib/shards/contr rep k0
+  25 PROD W+        lib/shards/contract_12.clj                   contract_12.cl:he072>h8a86                                            
+ *26 PROD TF10/15   suite=kaocha:ledger tests=replica-contract                                StreamOrderViolation at lib/shards/contr rep k0
+ *27 PROD R+        lib/shards/contract_12.clj                                                                                         
+ *28 PROD W+        lib/shards/contract_13.clj                   contract_13.cl:h7996>h9a2e                                            
+ *29 STAL TF11/15   suite=kaocha:ledger tests=replica-contract                                StreamOrderViolation at lib/shards/contr rep k0
+ *30 PROD p+        record:lib/shards/contract_13.clj                                                                                  
+ *31 PROD R+        lib/shards/contract_9.clj                                                                                          
+ *32 PROD p+        isolate:lib/shards/contract_9.clj                                                                                  
+ *33 PROD W+        lib/shards/contract_9.clj                    contract_9.clj:h6cdd>hd665                                            
+=== W057 PRODUCTIVE net=STALLED t=33
+  22 PROD R+        lib/shards/contract_13.zig                                                                                         
+  23 PROD R+        lib/shards/contract_2.zig                                                                                          
+  24 PROD p+        isolate:lib/shards/contract_2.zig                                                                                  
+  25 PROD W+        lib/shards/contract_2.zig                    contract_2.zig:h062a>hf90c                                            
+ *26 PROD TF3/14    suite=zig:allocator tests=replica-contract                                StreamOrderViolation at lib/shards/contr rep k0
+ *27 PROD R+        lib/shards/contract_10.zig                                                                                         
+ *28 PROD W+        lib/shards/contract_10.zig                   contract_10.zi:he531>h47e3                                            
+ *29 PROD TF4/14    suite=zig:allocator tests=replica-contract                                StreamOrderViolation at lib/shards/contr rep k0
+ *30 PROD p+        handoff:30:0                                                                                                       
+ *31 PROD p+        handoff:31:1                                                                                                       
+ *32 STAL p+        handoff:32:2                                                                                                       
+ *33 STAL p+        handoff:33:3                                                                                                       
+=== W058 PRODUCTIVE net=STALLED t=20
+   9 STAL W+        lib/shards/contract_8.zig                    contract_8.zig:h0>hbed2                                               
+  10 STAL TF0/17    suite=zig:allocator tests=replica-contract                                AllocatorInvariant at lib/shards/contrac rep cnt cntw k0
+  11 STAL W+        lib/shards/contract_8.zig                    contract_8.zig:h0>h8a67                                               
+  12 STAL TF0/17    suite=zig:allocator tests=replica-contract                                AllocatorInvariant at lib/shards/contrac rep cnt cntw k0
+ *13 STAL W+        lib/shards/contract_8.zig                    contract_8.zig:h0>hf9ec                                               
+ *14 STAL TF0/17    suite=zig:allocator tests=replica-contract                                AllocatorInvariant at lib/shards/contrac rep cnt cntw k0
+ *15 STAL W+        lib/shards/contract_8.zig                    contract_8.zig:h0>h6806                                               
+ *16 STAL TF0/17    suite=zig:allocator tests=replica-contract                                AllocatorInvariant at lib/shards/contrac rep cnt cntw k0
+ *17 PROD R+        lib/shards/contract_8.zig                                                                                          
+ *18 STAL W+        lib/shards/contract_8.zig                    contract_8.zig:h0>h7bc7                                               
+ *19 STAL TF0/17    suite=zig:allocator tests=replica-contract                                AllocatorInvariant at lib/shards/contrac rep cnt cntw k0
+ *20 STAL W+        lib/shards/contract_8.zig                    contract_8.zig:h0>hbe53                                               
+=== W060 PRODUCTIVE net=PRODUCTIVE t=19
+   8 PROD p+        trace:lib/shards/contract_8.exs                                                                                    
+   9 PROD R+        lib/shards/contract_2.exs                                                                                          
+  10 PROD p+        trace:lib/shards/contract_2.exs                                                                                    
+  11 PROD R+        lib/shards/contract_4.exs                                                                                          
+ *12 PROD p+        isolate:lib/shards/contract_4.exs                                                                                  
+ *13 PROD W+        lib/shards/contract_4.exs                    contract_4.exs:hb8dc>he74e                                            
+ *14 PROD TF1/13    suite=exunit:replication tests=replica-contr                              AllocatorInvariant at lib/shards/contrac rep k0
+ *15 PROD R+        lib/shards/contract_11.exs                                                                                         
+ *16 PROD W+        lib/shards/contract_11.exs                   contract_11.ex:h0>h5ba5                                               
+ *17 PROD R+        lib/shards/contract_11.exs                                                                                         rep
+ *18 PROD W+        lib/shards/contract_11.exs                   contract_11.ex:h0>h40a5                                               
+ *19 PROD TF1/13    suite=exunit:replication tests=replica-contr                              AllocatorInvariant at lib/shards/contrac rep cnt cntw k0
+=== W061 PRODUCTIVE net=STALLED t=19
+   8 RECO R+        lib/shards/contract_14.clj                                                                                         
+   9 RECO R+        lib/shards/contract_2.clj                                                                                          
+  10 RECO p+        trace:lib/shards/contract_2.clj                                                                                    
+  11 RECO R+        lib/shards/contract_12.clj                                                                                         
+ *12 RECO p+        trace:lib/shards/contract_12.clj                                                                                   
+ *13 RECO W+        lib/shards/contract_15.clj                   contract_15.cl:h54e1>had93                                            
+ *14 PROD TF1/16    suite=kaocha:ledger tests=replica-contract                                ReplicaDivergence at lib/shards/contract rep k0
+ *15 PROD p+        record:lib/shards/contract_15.clj                                                                                  
+ *16 PROD R+        lib/shards/contract_13.clj                                                                                         rep
+ *17 STAL W+        lib/shards/contract_13.clj                   contract_13.cl:h0>h874b                                               
+ *18 STAL TF1/16    suite=kaocha:ledger tests=replica-contract                                ReplicaDivergence at lib/shards/contract rep cnt cntw k0
+ *19 STAL W+        lib/shards/contract_13.clj                   contract_13.cl:h0>h8e6f                                               
+=== W063 PRODUCTIVE net=STALLED t=62
+  51 RECO TF5/18    suite=kaocha:ledger tests=replica-contract                                StreamOrderViolation at lib/shards/contr rep k0
+  52 RECO p+        record:lib/shards/contract_2.clj                                                                                   
+  53 STAL W+        lib/shards/contract_4.clj                    contract_4.clj:hdf4c>h6efa                                            
+  54 STAL TF6/18    suite=kaocha:ledger tests=replica-contract                                StreamOrderViolation at lib/shards/contr rep k0
+ *55 STAL p+        record:lib/shards/contract_4.clj                                                                                   
+ *56 STAL W+        lib/shards/contract_16.clj                   contract_16.cl:h0f94>h1b0a                                            
+ *57 STAL TF7/18    suite=kaocha:ledger tests=replica-contract                                StreamOrderViolation at lib/shards/contr rep k0
+ *58 STAL p+        record:lib/shards/contract_16.clj                                                                                  
+ *59 PROD p+        handoff:59:0                                                                                                       
+ *60 STAL p+        handoff:60:1                                                                                                       
+ *61 STAL p+        handoff:61:2                                                                                                       
+ *62 STAL p+        handoff:62:3                                                                                                       
+=== W067 PRODUCTIVE net=STALLED t=23
+  12 STAL TF0/13    suite=zig:allocator tests=replica-contract                                AllocatorInvariant at lib/shards/contrac rep cnt cntw k0
+  13 STAL W+        lib/shards/contract_3.zig                    contract_3.zig:h0>h94ec                                               
+  14 STAL TF0/13    suite=zig:allocator tests=replica-contract                                AllocatorInvariant at lib/shards/contrac rep cnt cntw k0
+  15 STAL W+        lib/shards/contract_3.zig                    contract_3.zig:h0>h46a2                                               
+ *16 STAL TF0/13    suite=zig:allocator tests=replica-contract                                AllocatorInvariant at lib/shards/contrac rep cnt cntw k0
+ *17 PROD R+        lib/shards/contract_4.zig                                                                                          
+ *18 STAL W+        lib/shards/contract_4.zig                    contract_4.zig:h0>h6a97                                               
+ *19 STAL R+        lib/shards/contract_4.zig                                                                                          rep
+ *20 PROD W+        lib/shards/contract_4.zig                    contract_4.zig:h0>h254a                                               
+ *21 STAL R+        lib/shards/contract_4.zig                                                                                          rep
+ *22 PROD W+        lib/shards/contract_6.zig                    contract_6.zig:hce11>h05da                                            
+ *23 STAL TF1/13    suite=zig:allocator tests=replica-contract                                AllocatorInvariant at lib/shards/contrac rep k0
+=== W068 PRODUCTIVE net=STALLED t=13
+   2 PROD W+        lib/shards/contract_3.clj                    contract_3.clj:h61bb>h6368                                            
+   3 PROD TF1/15    suite=kaocha:ledger tests=replica-contract                                StreamOrderViolation at lib/shards/contr k0
+   4 PROD R+        lib/shards/contract_7.clj                                                                                          
+   5 PROD p+        isolate:lib/shards/contract_7.clj                                                                                  
+ * 6 PROD W+        lib/shards/contract_7.clj                    contract_7.clj:h9e82>h3a12                                            
+ * 7 PROD TF2/15    suite=kaocha:ledger tests=replica-contract                                StreamOrderViolation at lib/shards/contr rep k0
+ * 8 PROD W+        lib/shards/contract_11.clj                   contract_11.cl:h4c76>h4893                                            
+ * 9 PROD TF3/15    suite=kaocha:ledger tests=replica-contract                                StreamOrderViolation at lib/shards/contr rep k0
+ *10 PROD R+        lib/shards/contract_11.clj                                                                                         
+ *11 STAL W+        config/merge.conf                            merge.conf:hf969>h1970                                                
+ *12 STAL W+        config/merge.conf                            merge.conf:h1970>hf969                                                rev
+ *13 STAL TF3/15    suite=kaocha:ledger tests=replica-contract                                StreamOrderViolation at lib/shards/contr rep cnt cntw k0
+=== W070 PRODUCTIVE net=PRODUCTIVE t=51
+  40 PROD W+        lib/shards/contract_5.lua                    contract_5.lua:h0>hf498                                               
+  41 PROD TF8/16    suite=busted:stream tests=replica-contract                                StreamOrderViolation at lib/shards/contr rep cnt cntw k0
+  42 PROD W+        lib/shards/contract_2.lua                    contract_2.lua:hb132>h2e85                                            
+  43 PROD TF9/16    suite=busted:stream tests=replica-contract                                StreamOrderViolation at lib/shards/contr rep k0
+ *44 PROD p+        record:lib/shards/contract_2.lua                                                                                   
+ *45 PROD R+        lib/shards/contract_0.lua                                                                                          
+ *46 PROD p+        isolate:lib/shards/contract_0.lua                                                                                  
+ *47 PROD W+        lib/shards/contract_0.lua                    contract_0.lua:h0f83>h90e0                                            
+ *48 PROD TF10/16   suite=busted:stream tests=replica-contract                                StreamOrderViolation at lib/shards/contr rep k0
+ *49 PROD R+        lib/shards/contract_1.lua                                                                                          
+ *50 PROD W+        lib/shards/contract_1.lua                    contract_1.lua:hb6cd>h9049                                            
+ *51 PROD TF11/16   suite=busted:stream tests=replica-contract                                StreamOrderViolation at lib/shards/contr rep k0
+=== W071 PRODUCTIVE net=STALLED t=34
+  23 STAL W+        lib/shards/contract_7.lua                    contract_7.lua:h0>hb24d                                               
+  24 STAL R+        lib/shards/contract_7.lua                                                                                          rep
+  25 STAL W+        lib/shards/contract_7.lua                    contract_7.lua:h0>hd907                                               
+  26 STAL TF1/16    suite=busted:stream tests=replica-contract                                AllocatorInvariant at lib/shards/contrac rep cnt cntw k0
+ *27 STAL W+        lib/shards/contract_7.lua                    contract_7.lua:h0>he029                                               
+ *28 STAL TF1/16    suite=busted:stream tests=replica-contract                                AllocatorInvariant at lib/shards/contrac rep cnt cntw k0
+ *29 STAL W+        lib/shards/contract_7.lua                    contract_7.lua:h0>h7a4e                                               
+ *30 STAL R+        lib/shards/contract_7.lua                                                                                          rep
+ *31 STAL W+        lib/shards/contract_7.lua                    contract_7.lua:h0>hc532                                               
+ *32 STAL R+        lib/shards/contract_7.lua                                                                                          rep
+ *33 PROD W+        lib/shards/contract_12.lua                   contract_12.lu:hc556>hddb7                                            
+ *34 STAL TF2/16    suite=busted:stream tests=replica-contract                                AllocatorInvariant at lib/shards/contrac rep k0
+=== W073 PRODUCTIVE net=STALLED t=37
+  26 STAL TF8/13    suite=exunit:replication tests=replica-contr                              ReplicaDivergence at lib/shards/contract rep cnt cntw k0
+  27 STAL W+        lib/shards/contract_12.exs                   contract_12.ex:h0>hef87                                               
+  28 STAL TF8/13    suite=exunit:replication tests=replica-contr                              ReplicaDivergence at lib/shards/contract rep cnt cntw k0
+  29 STAL W+        lib/shards/contract_12.exs                   contract_12.ex:h0>hb2f8                                               
+ *30 STAL R+        lib/shards/contract_12.exs                                                                                         rep
+ *31 STAL W+        lib/shards/contract_12.exs                   contract_12.ex:h0>h4822                                               
+ *32 STAL R+        lib/shards/contract_12.exs                                                                                         rep
+ *33 STAL R+        lib/shards/contract_12.exs                                                                                         rep
+ *34 PROD W+        lib/shards/contract_12.exs                   contract_12.ex:h1389>h58bd                                            
+ *35 STAL TF9/13    suite=exunit:replication tests=replica-contr                              ReplicaDivergence at lib/shards/contract rep k0
+ *36 STAL W+        lib/shards/contract_11.exs                   contract_11.ex:h435e>hf868                                            
+ *37 STAL TF10/13   suite=exunit:replication tests=replica-contr                              ReplicaDivergence at lib/shards/contract rep k0
+=== W075 PRODUCTIVE net=PRODUCTIVE t=13
+   2 PROD p+        record:lib/shards/contract_2.zig                                                                                   
+   3 PROD W+        lib/shards/contract_6.zig                    contract_6.zig:hebcb>h5caa                                            
+   4 PROD TF2/16    suite=zig:allocator tests=replica-contract                                ReplicaDivergence at lib/shards/contract rep k0
+   5 PROD p+        record:lib/shards/contract_6.zig                                                                                   
+ * 6 PROD R+        lib/shards/contract_3.zig                                                                                          
+ * 7 PROD p+        isolate:lib/shards/contract_3.zig                                                                                  
+ * 8 PROD W+        lib/shards/contract_3.zig                    contract_3.zig:h6492>hd3df                                            
+ * 9 PROD TF3/16    suite=zig:allocator tests=replica-contract                                ReplicaDivergence at lib/shards/contract rep k0
+ *10 PROD W+        config/merge.conf                            merge.conf:h7e05>h65ed                                                
+ *11 PROD R+        config/merge.conf                                                                                                  
+ *12 PROD W+        config/merge.conf                            merge.conf:h65ed>h7e05                                                rev
+ *13 PROD TF3/16    suite=zig:allocator tests=replica-contract                                ReplicaDivergence at lib/shards/contract rep cnt cntw k0
+=== W076 PRODUCTIVE net=PRODUCTIVE t=23
+  12 STAL TF3/17    suite=zig:allocator tests=replica-contract                                ReplicaDivergence at lib/shards/contract rep cnt cntw nomut k0
+  13 STAL TF3/17    suite=zig:allocator tests=replica-contract                                ReplicaDivergence at lib/shards/contract rep cnt cntw nomut k0
+  14 STAL TF3/17    suite=zig:allocator tests=replica-contract                                ReplicaDivergence at lib/shards/contract rep cnt cntw nomut k0
+  15 STAL TF3/17    suite=zig:allocator tests=replica-contract                                ReplicaDivergence at lib/shards/contract rep cnt cntw nomut k0
+ *16 STAL TF3/17    suite=zig:allocator tests=replica-contract                                ReplicaDivergence at lib/shards/contract rep cnt cntw nomut k0
+ *17 STAL TF3/17    suite=zig:allocator tests=replica-contract                                ReplicaDivergence at lib/shards/contract rep cnt cntw nomut k0
+ *18 STAL TF3/17    suite=zig:allocator tests=replica-contract                                ReplicaDivergence at lib/shards/contract rep cnt cntw nomut k0
+ *19 STAL TF3/17    suite=zig:allocator tests=replica-contract                                ReplicaDivergence at lib/shards/contract rep cnt cntw nomut k0
+ *20 STAL TF3/17    suite=zig:allocator tests=replica-contract                                ReplicaDivergence at lib/shards/contract rep cnt cntw nomut k0
+ *21 STAL TF3/17    suite=zig:allocator tests=replica-contract                                ReplicaDivergence at lib/shards/contract rep cnt cntw nomut k0
+ *22 STAL TF3/17    suite=zig:allocator tests=replica-contract                                ReplicaDivergence at lib/shards/contract rep cnt cntw nomut k0
+ *23 PROD R+        lib/shards/contract_2.zig                                                                                          
+=== W077 PRODUCTIVE net=STALLED t=42
+  31 PROD p+        isolate:lib/shards/contract_17.clj                                                                                 
+  32 PROD W+        lib/shards/contract_17.clj                   contract_17.cl:h8ba4>h8d38                                            
+  33 STAL TF3/18    suite=kaocha:ledger tests=replica-contract                                ReplicaDivergence at lib/shards/contract rep k0
+  34 STAL W+        lib/shards/contract_6.clj                    contract_6.clj:h355c>hc6f4                                            
+ *35 STAL TF4/18    suite=kaocha:ledger tests=replica-contract                                ReplicaDivergence at lib/shards/contract rep k0
+ *36 STAL p+        record:lib/shards/contract_6.clj                                                                                   
+ *37 PROD R+        lib/shards/contract_1.clj                                                                                          rep
+ *38 STAL W+        lib/shards/contract_1.clj                    contract_1.clj:h206e>h99b3                                            
+ *39 PROD TF5/18    suite=kaocha:ledger tests=replica-contract                                ReplicaDivergence at lib/shards/contract rep k0
+ *40 PROD p+        handoff:40:0                                                                                                       
+ *41 STAL p+        handoff:41:1                                                                                                       
+ *42 STAL p+        handoff:42:2                                                                                                       
+=== W079 PRODUCTIVE net=STALLED t=40
+  29 STAL W+        lib/shards/contract_11.clj                   contract_11.cl:h0>h6aa5                                               
+  30 STAL TF1/17    suite=kaocha:ledger tests=replica-contract                                StreamOrderViolation at lib/shards/contr rep cnt cntw k0
+  31 STAL W+        lib/shards/contract_11.clj                   contract_11.cl:h0>hc1b4                                               
+  32 STAL TF1/17    suite=kaocha:ledger tests=replica-contract                                StreamOrderViolation at lib/shards/contr rep cnt cntw k0
+ *33 STAL W+        lib/shards/contract_11.clj                   contract_11.cl:h0>h6ff1                                               
+ *34 STAL TF1/17    suite=kaocha:ledger tests=replica-contract                                StreamOrderViolation at lib/shards/contr rep cnt cntw k0
+ *35 STAL W+        lib/shards/contract_11.clj                   contract_11.cl:h0>h294a                                               
+ *36 STAL R+        lib/shards/contract_11.clj                                                                                         rep
+ *37 STAL W+        lib/shards/contract_11.clj                   contract_11.cl:h0>h664d                                               
+ *38 STAL TF1/17    suite=kaocha:ledger tests=replica-contract                                StreamOrderViolation at lib/shards/contr rep cnt cntw k0
+ *39 STAL R+        lib/shards/contract_1.clj                                                                                          rep
+ *40 STAL W+        lib/shards/contract_1.clj                    contract_1.clj:h4536>h8bd4                                            
+=== W080 PRODUCTIVE net=OSCILLATING t=29
+  18 OSCI W+        config/merge.conf                            merge.conf:h41b4>he4a6                                                rev
+  19 OSCI p+        reconcile-conventions                                                                                              
+  20 OSCI W+        config/merge.conf                            merge.conf:he4a6>h41b4                                                rev
+  21 OSCI R+        config/merge.conf                                                                                                  rep
+ *22 OSCI W+        config/merge.conf                            merge.conf:h41b4>he4a6                                                rev
+ *23 OSCI R+        config/merge.conf                                                                                                  rep
+ *24 OSCI W+        config/merge.conf                            merge.conf:he4a6>h41b4                                                rev
+ *25 OSCI p+        reconcile-conventions                                                                                              rep
+ *26 OSCI W+        lib/shards/contract_5.clj                    contract_5.clj:h33f0>hfe18                                            
+ *27 OSCI TF4/13    suite=kaocha:ledger tests=replica-contract                                StreamOrderViolation at lib/shards/contr rep k0
+ *28 OSCI p+        record:lib/shards/contract_5.clj                                                                                   
+ *29 OSCI R+        lib/shards/contract_9.clj                                                                                          
+=== W081 PRODUCTIVE net=STALLED t=35
+  24 STAL TF3/15    suite=exunit:replication tests=replica-contr                              StreamOrderViolation at lib/shards/contr rep cnt cntw nomut k0
+  25 STAL TF3/15    suite=exunit:replication tests=replica-contr                              StreamOrderViolation at lib/shards/contr rep cnt cntw nomut k0
+  26 STAL TF3/15    suite=exunit:replication tests=replica-contr                              StreamOrderViolation at lib/shards/contr rep cnt cntw nomut k0
+  27 STAL TF3/15    suite=exunit:replication tests=replica-contr                              StreamOrderViolation at lib/shards/contr rep cnt cntw nomut k0
+ *28 STAL TF3/15    suite=exunit:replication tests=replica-contr                              StreamOrderViolation at lib/shards/contr rep cnt cntw nomut k0
+ *29 STAL TF3/15    suite=exunit:replication tests=replica-contr                              StreamOrderViolation at lib/shards/contr rep cnt cntw nomut k0
+ *30 STAL TF3/15    suite=exunit:replication tests=replica-contr                              StreamOrderViolation at lib/shards/contr rep cnt cntw nomut k0
+ *31 STAL TF3/15    suite=exunit:replication tests=replica-contr                              StreamOrderViolation at lib/shards/contr rep cnt cntw nomut k0
+ *32 STAL TF3/15    suite=exunit:replication tests=replica-contr                              StreamOrderViolation at lib/shards/contr rep cnt cntw nomut k0
+ *33 PROD R+        lib/shards/contract_11.exs                                                                                         
+ *34 STAL p+        isolate:lib/shards/contract_11.exs                                                                                 
+ *35 STAL W+        lib/shards/contract_11.exs                   contract_11.ex:h1bdc>h28a0                                            
+=== W082 PRODUCTIVE net=STALLED t=10
+   0 PROD TF0/12    suite=kaocha:ledger tests=replica-contract                                ReplicaDivergence at lib/shards/contract k0
+   1 PROD W+        lib/shards/contract_6.clj                    contract_6.clj:h0f5a>hd7d6                                            
+   2 PROD TF1/12    suite=kaocha:ledger tests=replica-contract                                ReplicaDivergence at lib/shards/contract rep k0
+ * 3 PROD W+        lib/shards/contract_7.clj                    contract_7.clj:h92dc>h181c                                            
+ * 4 PROD TF2/12    suite=kaocha:ledger tests=replica-contract                                ReplicaDivergence at lib/shards/contract rep k0
+ * 5 STAL W+        lib/shards/contract_1.clj                    contract_1.clj:hef25>h4c58                                            
+ * 6 STAL TF3/12    suite=kaocha:ledger tests=replica-contract                                ReplicaDivergence at lib/shards/contract rep k0
+ * 7 STAL W+        lib/shards/contract_0.clj                    contract_0.clj:hab01>hc593                                            
+ * 8 PROD TF4/12    suite=kaocha:ledger tests=replica-contract                                ReplicaDivergence at lib/shards/contract rep k0
+ * 9 STAL W+        lib/shards/contract_3.clj                    contract_3.clj:h1e2e>h725a                                            
+ *10 STAL TF5/12    suite=kaocha:ledger tests=replica-contract                                ReplicaDivergence at lib/shards/contract rep k0
+=== W083 PRODUCTIVE net=STALLED t=37
+  26 STAL TF1/12    suite=zig:allocator tests=replica-contract                                ReplicaDivergence at lib/shards/contract rep cnt cntw k0
+  27 STAL W+        lib/shards/contract_2.zig                    contract_2.zig:h0>hd578                                               
+  28 STAL TF1/12    suite=zig:allocator tests=replica-contract                                ReplicaDivergence at lib/shards/contract rep cnt cntw k0
+  29 STAL W+        lib/shards/contract_2.zig                    contract_2.zig:h0>h895d                                               
+ *30 STAL R+        lib/shards/contract_2.zig                                                                                          rep
+ *31 STAL W+        lib/shards/contract_2.zig                    contract_2.zig:h0>h701f                                               
+ *32 STAL TF1/12    suite=zig:allocator tests=replica-contract                                ReplicaDivergence at lib/shards/contract rep cnt cntw k0
+ *33 PROD R+        lib/shards/contract_4.zig                                                                                          
+ *34 STAL p+        isolate:lib/shards/contract_4.zig                                                                                  
+ *35 STAL W+        lib/shards/contract_4.zig                    contract_4.zig:h49dc>h0ebb                                            
+ *36 STAL TF2/12    suite=zig:allocator tests=replica-contract                                ReplicaDivergence at lib/shards/contract rep k0
+ *37 STAL R+        lib/shards/contract_9.zig                                                                                          rep
+=== W085 PRODUCTIVE net=STALLED t=8
+   0 PROD TF0/18    suite=busted:stream tests=replica-contract                                AllocatorInvariant at lib/shards/contrac k0
+ * 1 PROD W+        lib/shards/contract_11.lua                   contract_11.lu:h53c8>h1fdd                                            
+ * 2 PROD TF1/18    suite=busted:stream tests=replica-contract                                AllocatorInvariant at lib/shards/contrac rep k0
+ * 3 PROD W+        lib/shards/contract_9.lua                    contract_9.lua:h6e66>ha6e9                                            
+ * 4 PROD TF2/18    suite=busted:stream tests=replica-contract                                AllocatorInvariant at lib/shards/contrac rep k0
+ * 5 STAL W+        lib/shards/contract_1.lua                    contract_1.lua:h590c>hff8e                                            
+ * 6 STAL TF3/18    suite=busted:stream tests=replica-contract                                AllocatorInvariant at lib/shards/contrac rep k0
+ * 7 STAL W+        lib/shards/contract_2.lua                    contract_2.lua:h03aa>h0404                                            
+ * 8 STAL TF4/18    suite=busted:stream tests=replica-contract                                AllocatorInvariant at lib/shards/contrac rep k0
+=== W086 PRODUCTIVE net=PRODUCTIVE t=46
+  35 OSCI Pp        quorum-34-0.cedar.invalid backoff=2                                                                                k0
+  36 OSCI Pp        quorum-34-0.cedar.invalid backoff=4                                                                                k0
+  37 OSCI Pp        quorum-34-0.cedar.invalid backoff=8                                                                                k0
+  38 OSCI Pr        quorum-34-0.cedar.invalid backoff=16                                                                               res
+ *39 RECO p+        record-quorum                                                                                                      
+ *40 RECO W+        lib/shards/contract_6.lua                    contract_6.lua:ha001>h3c0e                                            
+ *41 RECO TF4/12    suite=busted:stream tests=replica-contract                                AllocatorInvariant at lib/shards/contrac rep k0
+ *42 PROD p+        record:lib/shards/contract_6.lua                                                                                   
+ *43 PROD R+        lib/shards/contract_10.lua                                                                                         
+ *44 PROD p+        isolate:lib/shards/contract_10.lua                                                                                 
+ *45 PROD W+        lib/shards/contract_10.lua                   contract_10.lu:h98b0>h7376                                            
+ *46 PROD TF5/12    suite=busted:stream tests=replica-contract                                AllocatorInvariant at lib/shards/contrac rep k0
