@@ -1,0 +1,264 @@
+{
+ "data_root": "datasets/v0_5c",
+ "disjointness": {
+  "heldout_indist": {
+   "disjoint_from": [
+    "disclosed windows (experiments/v0_5/phase_c/DISCLOSURE_OOD_PRIVATE.json)",
+    "held-out set heldout_ood",
+    "master seed 20261104 (ood and standard formulas, k < 2000)",
+    "master seed 20261107 (ood and standard formulas, k < 2000)",
+    "master seed 20261108 (ood and standard formulas, k < 2000)",
+    "master seed 20261109 (ood and standard formulas, k < 2000)"
+   ],
+   "overlap": 0,
+   "sessions": 4000
+  },
+  "heldout_ood": {
+   "disjoint_from": [
+    "disclosed windows (experiments/v0_5/phase_c/DISCLOSURE_OOD_PRIVATE.json)",
+    "master seed 20261104 (ood and standard formulas, k < 2000)",
+    "master seed 20261107 (ood and standard formulas, k < 2000)",
+    "master seed 20261108 (ood and standard formulas, k < 2000)",
+    "master seed 20261109 (ood and standard formulas, k < 2000)"
+   ],
+   "overlap": 0,
+   "sessions": 2000
+  }
+ },
+ "encoding_definition": "sha256 over the sessions in file order of: session id, NUL, compact JSON [tokens, event_ord, offset, eoe_index], NUL",
+ "family_rule": {
+  "format": "20261109:v05c-family:{name}",
+  "keys": {
+   "annotation_spiral": "0b5631d72656c21558cc6ebceaf7658b21d5ab581b920c5b90f94b1b1c3e8bbb",
+   "fixture_archaeology": "0513b31d320418312ea4e841d5cc6700f38a1677d8a2de698af8f2a85bfde70d",
+   "index_watermark": "e0f97043a79b900f1d9511489dc3b6a7a462e001e9695143b843694f0711c5ef",
+   "lease_reconnect": "d44f34874473416197a8611225200204faafdb6d784b95f38ead686fa93ebe6e",
+   "lockfile_churn": "e2415843b07b7339d705396e1db347cb13777360864bd37f378034a7db0401af",
+   "merge_ping_pong": "7c39c57be365f02ebc4668cfb4bfdf5cd4530625f4d1f64cd65cf0f82a302213",
+   "pinned_validation": "cac523f1181a36faf7e780583fb1b51bbbafe75a510adfb35112ee84fa58a2af",
+   "serializer_duel": "e9ef68b41d3eadd3f130670ba4151474289956ffc6c8b6897cc96495d83464f4",
+   "shard_migration": "87676eb44ce03815ddb148e956c25a7101d5d46ee56a96395437147b6eb07c7b",
+   "telemetry_gaps": "ab01068d7c615523703089b6ca031a936db884deb6e6412dfc0cea904e59d209"
+  },
+  "n_seen": 6,
+  "seen": [
+   "fixture_archaeology",
+   "annotation_spiral",
+   "merge_ping_pong",
+   "shard_migration",
+   "telemetry_gaps",
+   "pinned_validation"
+  ],
+  "text": "sort the synth_ood family names by sha256(f\"20261109:v05c-family:{name}\").hexdigest() and take the first 6 (seen: the OOD disclosure draws only from them); the other 4 are unseen",
+  "unseen": [
+   "lease_reconnect",
+   "index_watermark",
+   "lockfile_churn",
+   "serializer_duel"
+  ]
+ },
+ "forbidden_seeds": {
+  "20261104": "the master seed of the sealed v0.2/v0.3 test and OOD sets (and of dev/val)",
+  "20261107": "used by the post-hoc OOD diagnosis (experiments/v0_5/ood_analysis/)",
+  "20261108": "used by the post-hoc OOD diagnosis, in-distribution arm (experiments/v0_5/ood_analysis/)"
+ },
+ "format": "v05-phase-c-heldout-manifest/1",
+ "gzip": {
+  "compresslevel": 6,
+  "header_filename": "",
+  "mtime": 0
+ },
+ "note": "Phase C held-out evaluation sets: generated and hashed before the Phase C author session is launched, never handed over; data files are gitignored, this manifest is committed",
+ "official": true,
+ "oracle_config": {
+  "eps_p": 0.02,
+  "f_prod": 2,
+  "k_rec": 4,
+  "n_grey": 3,
+  "n_rev": 2,
+  "n_stall": 5,
+  "p_max": 5,
+  "r_max": 3
+ },
+ "pre_registration": "experiments/v0_5/phase_c/heldout/README.md",
+ "role_seeds": {
+  "disclosure": 20261109,
+  "heldout_indist": 20261111,
+  "heldout_ood": 20261110
+ },
+ "rows_definition": "v03.sealed.rows_sha256: sha256 of compact JSON [[session_id, family, endpoint, oracle label, gate_passed], ...] in file order",
+ "scoring_code_sha256": {
+  "scripts/v05c_heldout_eval.py": "7d2fc2baf67fad15ff2acd9de781b7f6f68fb754eeb4b6dae860ab9afe46fbee",
+  "src/agent_loop_lab/eval/m4.py": "232bda7692fc62aef758e80ed8d2d8199598ce3a98ab7109054ba889575ba0f3",
+  "src/agent_loop_lab/eval/metrics.py": "12d3f7dd9dbf18b4515c825e25e4a5a1c2779f8056c5a24996fe5dc0e3eaef9c",
+  "src/agent_loop_lab/v03/infer.py": "e9ce5b69ab368c747a82897ee5d403a448663eaf32f6c5e2cef2d6d6e7b1a442",
+  "src/agent_loop_lab/v03/model.py": "11cb75636ac01911f1f2bdaf2e169596de972942ab6fcead0f72cebebd28613e",
+  "src/agent_loop_lab/v03/renderer.py": "b5451f7fe65152cb7c6c8401b8ee2bcb927e87c41985b379c6b5caf993ff920b",
+  "src/agent_loop_lab/v03/scoring.py": "29426db075299e146bdd06b19ae0b0b2933ffaebb436e8a223880c2409aa8fce",
+  "src/agent_loop_lab/v03/sealed.py": "0b1cdf06124b577cc85b1b117d1af15293bd9be0b230b667d3a53549af5d36b0",
+  "src/agent_loop_lab/v03/tokenizer.py": "dc26886cb75db9cebacdb9c68e31fcbb3072434e48ae19892d89707db57d614d",
+  "src/agent_loop_lab/v04/scoring.py": "7d2bcc01d36685b32a977b3bf2fb2e362cfb495c0eb04916b815c58d07a5572a",
+  "src/agent_loop_lab/v05/phase_c_data.py": "2731bcb9f5d893deb1c9d474c4a32ad3f9e979d78e28a05f513f3319646dd1d3",
+  "src/agent_loop_lab/v05/phase_c_eval.py": "1fe108069dd9f038d53bf29df06b89372fa546eb3b321c6c8f236d3307952336",
+  "src/agent_loop_lab/v05/scoring.py": "b7a47d4b5a1673c0958202d2105973ec6bf60db00cefc09240cbb2a962c84170",
+  "src/agent_loop_lab/v05/sealed.py": "5eb2e32fce6be6a20e7008bac7781cd9c0e2c55a5670bfb568e969e95f981876"
+ },
+ "sets": {
+  "heldout_indist": {
+   "encoding_sha256": "0f08302759dc0719b1154e2f045d49ba63b74d0c5d67ba9192bd390b81701e64",
+   "families": [
+    "incremental_repair",
+    "exploration",
+    "transient_external",
+    "bounded_retry",
+    "repeated_test_failure",
+    "cosmetic_churn",
+    "abab_oscillation",
+    "tool_oscillation",
+    "improving_tests",
+    "polling_recovery",
+    "rising_cost",
+    "under_instrumented"
+   ],
+   "family_count_rule": "n_family = N // 12, plus 1 for the first N % 12 families in FAMILY_NAMES order",
+   "files": {
+    "heldout_indist/heldout_indist.events.jsonl.gz": {
+     "bytes": 8232685,
+     "lines": 4000,
+     "sha256": "2ea77a31f6bad3194b44a84edcfc8df7b68522798435b9b0b44b8ab5c2b54160"
+    },
+    "heldout_indist/heldout_indist.oracle.jsonl.gz": {
+     "bytes": 3818360,
+     "lines": 4000,
+     "sha256": "d47e7f6104a32e97d304a8bf8697f8c6fb255fe5f3ab4fcb090bc649f8df4d07"
+    },
+    "heldout_indist/heldout_indist.raw.jsonl.gz": {
+     "bytes": 5370253,
+     "lines": 4000,
+     "sha256": "87d877fe22087f62653a32457eaa384ea3dfdf47305f12e663c947687995c159"
+    }
+   },
+   "gate_passed_windows": 84932,
+   "generator": "agent_loop_lab.synth (standard)",
+   "master_seed": 20261111,
+   "rows_sha256": "5e2c0bee0eb020e25bc24ebc2771333cc2823bf6dbfe63d901d087ab1a6a9ad0",
+   "seed_formula": "int.from_bytes(sha256(f\"{master_seed}:{family}:{k}\").digest()[:8], \"big\")",
+   "session_id_format": "s-{seed:016x}",
+   "session_ids_sha256": "ff89ff7438a39749a16e51b7574177c0435ce275a5c175660126c551cee1c00e",
+   "sessions": 4000,
+   "sessions_per_family": {
+    "abab_oscillation": 333,
+    "bounded_retry": 334,
+    "cosmetic_churn": 333,
+    "exploration": 334,
+    "improving_tests": 333,
+    "incremental_repair": 334,
+    "polling_recovery": 333,
+    "repeated_test_failure": 333,
+    "rising_cost": 333,
+    "tool_oscillation": 333,
+    "transient_external": 334,
+    "under_instrumented": 333
+   },
+   "sessions_requested": 4000,
+   "windows": 87387
+  },
+  "heldout_ood": {
+   "encoding_sha256": "f4bc7ef063ed532146d0e4e73d277239966fa504adc8ad0b0d62fe7ac336c312",
+   "families": [
+    "shard_migration",
+    "fixture_archaeology",
+    "lease_reconnect",
+    "index_watermark",
+    "pinned_validation",
+    "annotation_spiral",
+    "serializer_duel",
+    "merge_ping_pong",
+    "lockfile_churn",
+    "telemetry_gaps"
+   ],
+   "files": {
+    "heldout_ood/heldout_ood.events.jsonl.gz": {
+     "bytes": 5857458,
+     "lines": 2000,
+     "sha256": "423bc95474180911887812fba4af4927652f00ee3043eab17f8a069d8cbf8f9c"
+    },
+    "heldout_ood/heldout_ood.oracle.jsonl.gz": {
+     "bytes": 2054006,
+     "lines": 2000,
+     "sha256": "c1f69b0d9b237dc1302e1790ef56e0ba86c6a4e389aeceff49e992999e411ead"
+    },
+    "heldout_ood/heldout_ood.raw.jsonl.gz": {
+     "bytes": 2095170,
+     "lines": 2000,
+     "sha256": "9383f766b0d6d53a793628f8b86403d3a19aa22bd4bac472230bcf04fbb2afc3"
+    }
+   },
+   "gate_passed_windows": 79845,
+   "generator": "agent_loop_lab.synth_ood",
+   "master_seed": 20261110,
+   "populations": {
+    "all": [
+     "shard_migration",
+     "fixture_archaeology",
+     "lease_reconnect",
+     "index_watermark",
+     "pinned_validation",
+     "annotation_spiral",
+     "serializer_duel",
+     "merge_ping_pong",
+     "lockfile_churn",
+     "telemetry_gaps"
+    ],
+    "seen": [
+     "fixture_archaeology",
+     "annotation_spiral",
+     "merge_ping_pong",
+     "shard_migration",
+     "telemetry_gaps",
+     "pinned_validation"
+    ],
+    "unseen": [
+     "lease_reconnect",
+     "index_watermark",
+     "lockfile_churn",
+     "serializer_duel"
+    ]
+   },
+   "retime": {
+    "applies_to": "every synth_ood session Phase C generates (the OOD disclosure's candidates and the held-out OOD set); not the in-distribution set, val or the original disclosure",
+    "offset_formula": "int.from_bytes(sha256(f\"v05c-retime:{session_id}\").digest()[:8], \"big\") % 86400",
+    "text": "synth_ood starts every session's clock at 2026-03-14T00:00:00+00:00 (the standard generator starts at a random day and second of the day), so every timestamp of an OOD session, in its canonical events and its raw ops alike, is shifted by the session's offset before it is rendered or written; event order, gaps, every other field and the oracle record are unchanged (phase_c_data.retime_session)",
+    "unit": "whole seconds, in [0, 86399]"
+   },
+   "rows_sha256": "ebee1ed294c609bba8bc353ca62667877a25ebd4f433bb6278d6114fe3bfa0c8",
+   "seed_formula": "int.from_bytes(sha256(f\"{master_seed}:ood:{family}:{k}\").digest()[:8], \"big\")",
+   "session_id_format": "o-{seed:016x}",
+   "session_ids_sha256": "db240a8112c7a3d6a91115d3caf44d9f13966c4245da2670c0886a3a4c8afbe9",
+   "sessions": 2000,
+   "sessions_per_family": {
+    "ood:annotation_spiral": 200,
+    "ood:fixture_archaeology": 200,
+    "ood:index_watermark": 200,
+    "ood:lease_reconnect": 200,
+    "ood:lockfile_churn": 200,
+    "ood:merge_ping_pong": 200,
+    "ood:pinned_validation": 200,
+    "ood:serializer_duel": 200,
+    "ood:shard_migration": 200,
+    "ood:telemetry_gaps": 200
+   },
+   "sessions_per_family_requested": 200,
+   "windows": 82645
+  }
+ },
+ "source_sha256": {
+  "src/agent_loop_lab/v03/rawop.py": "bb2a9d0051f0c76ef625ec434d1daea5797739a7e42792079cac0d0320e06184",
+  "src/agent_loop_lab/v03/renderer.py": "b5451f7fe65152cb7c6c8401b8ee2bcb927e87c41985b379c6b5caf993ff920b",
+  "src/agent_loop_lab/v03/tokenizer.py": "dc26886cb75db9cebacdb9c68e31fcbb3072434e48ae19892d89707db57d614d",
+  "src/agent_loop_lab/v05/phase_c_data.py": "2731bcb9f5d893deb1c9d474c4a32ad3f9e979d78e28a05f513f3319646dd1d3",
+  "src/agent_loop_lab/windows.py": "bcaea09301b57d82cff22bb5eb15f1969d33727f5d74905c8455b373817bd9b4",
+  "synth (standard generator)": "9799c3e63b0cbee78187d31a468bae21b729a83d5e4154c65d233e932b5afb7b",
+  "synth_ood (OOD generator)": "1c071ec7290277aa0f8114b04aa7681a45c27f56779639b50fee159a319297a5"
+ }
+}
