@@ -76,7 +76,7 @@ after one is "a change after a repeated result" (EDR). That makes 8 of 8 events 
 v0.3 B sees 2 → 3 → 4 → 5 as new highs and calls it PRODUCTIVE.
 
 **(c) Target keys see only the first word.** v0.5 B keys a plan action on its first hashed word. OOD plans are
-`handoff:<path>`, `isolate:<path>`, `trace:<path>`, so different actions collide. Of the plan events flagged
+`isolate:<path>`, `trace:<path>`, `record:<path>`, `handoff:42:0`, so different actions collide. Of the plan events flagged
 as repeats, 88% are different actions OOD; in distribution 97% are exact repeats (single-word actions such as
 `summarise_findings`).
 
