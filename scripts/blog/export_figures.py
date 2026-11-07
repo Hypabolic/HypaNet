@@ -1,6 +1,10 @@
-"""Export compact JSON data for the HypaNet blog post figures (F6, F7, F12, F13, F14).
+"""Export compact JSON data for every HypaNet blog post figure.
 
 Run from the repo root:  uv run python scripts/blog/export_figures.py
+
+F6, F12 and F14 are built here. Every other figure has its own module in scripts/blog/figures/fNN.py exposing
+build() -> dict; this script imports each one and writes its result. F7 and F13 come from their modules, which
+reuse the f7() and f13() builders below unchanged (F7 adds the early-stopping inset).
 
 Reads only committed reports, committed v0.4 val-quick readout logits (label_logits, label-free) and the
 committed WSP-A / WSP-B author notes. Never opens test / OOD / counterfactual datasets or fresh_test.
@@ -10,9 +14,11 @@ Writes blog_figures/F*.json; each file carries a "_provenance" object.
 from __future__ import annotations
 
 import hashlib
+import importlib.util
 import json
 import re
 import subprocess
+import sys
 from pathlib import Path
 
 import numpy as np
@@ -34,6 +40,11 @@ COLS = ROOT / "experiments" / "v0_4" / "columns"
 NPZ = {"Qwen-0": COLS / "qwen0.val_quick.npz", "WSP-A": COLS / "wspa.val_quick.npz", "WSP-B": COLS / "wspb.val_quick.npz"}
 ITER_A = ROOT / "weight_program" / "v0_4" / "wsp-a" / "inputs" / "ITERATIONS.md"
 REV_B = ROOT / "weight_program" / "v0_4" / "wsp-b" / "inputs" / "REVISION.md"
+
+FIGURES_DIR = ROOT / "scripts" / "blog" / "figures"
+# One module per figure, in post order; each exposes build() -> dict and an OUT path.
+FIGURE_MODULES = ("f0", "f1", "f3", "f2", "f4c", "f4b", "f5", "f8", "f4", "f7", "f18", "f9", "f26", "f10", "f11",
+                  "f27", "f13", "f23", "f24", "f25", "f19", "f19b", "f21", "f22", "f15")
 
 QUICK_NOTE = ("quick look = 1,000 val sessions (VAL_QUICK.txt), excluding_disclosed; reported beside, never instead "
               "of, the full-val result (PREREGISTRATION §3.5)")
@@ -432,11 +443,30 @@ def f14(q0f, q0q, wa, wb) -> dict:
 
 # ---------------------------------------------------------------------------
 
+def load_figure_module(name: str):
+    """Import scripts/blog/figures/<name>.py by path (the folder is not a package)."""
+    path = FIGURES_DIR / f"{name}.py"
+    spec = importlib.util.spec_from_file_location(f"hypanet_blog_figure_{name}", path)
+    if spec is None or spec.loader is None:
+        raise SystemExit(f"cannot load {path}")
+    mod = importlib.util.module_from_spec(spec)
+    sys.modules[spec.name] = mod
+    spec.loader.exec_module(mod)
+    if not callable(getattr(mod, "build", None)) or not hasattr(mod, "OUT"):
+        raise SystemExit(f"{path} must expose build() and OUT")
+    return mod
+
+
 def main() -> None:
     v03, v02 = load(V03), load(V02)
     q0f, q0q, wa, wb = load(Q0_FULL), load(Q0_QUICK), load(WSPA_QUICK), load(WSPB_QUICK)
     figs = {"F6": f6(v03, v02), "F7": f7(v03, v02), "F12": f12(v03, q0f, q0q, wa, wb),
             "F13": f13(q0q, wa, wb), "F14": f14(q0f, q0q, wa, wb)}
+    # Per-figure modules; F7 and F13 replace the plain builders' output with their modules' (same builders, plus
+    # F7's early-stopping inset), so the JSON matches what each module writes on its own.
+    for mod_name in FIGURE_MODULES:
+        mod = load_figure_module(mod_name)
+        figs[Path(mod.OUT).stem] = mod.build()
     for name, obj in figs.items():
         write(name, obj)
     total = 0

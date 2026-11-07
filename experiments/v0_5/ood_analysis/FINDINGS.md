@@ -36,7 +36,7 @@ effect for that event:
 |---|---|---|---|
 | **EDR**: a file change within 3 events after a repeated test result (rule 7, "scenario 6") | 84% | **28%** | 69% PROGRESS |
 | **g_SAME**: a failure whose error line was seen in the last 15 events (rules 2, 7, "every scenario-5 window") | 62% | **44%** (21% below the 4th repeat) | mostly NONE |
-| **g_REP**: a repeated read/search/plan/build target (rule 7) | 80% | **36%** | mostly NONE |
+| **g_REP**: a repeated read/search/plan/build target (rule 7) | 79% | **36%** | mostly NONE |
 | REV: a reverting hunk (kept from r1) | 99.5% | 96% | |
 | NOOP, POLLOUT | 100% | (rare) | |
 

@@ -9,7 +9,7 @@ that network with tools and the same 200 labelled val windows.
 
 | Network | How it was made | Labels | Macro-F1 [95% CI] | False alarms | Cost |
 |---|---|---|---|---|---|
-| **v0.5 r1** | Fable, no tools, 4 replies (1 prompt + 3 "Continue.") | 0 | **0.321** [0.313, 0.328] | 95.8% | US$16.70 |
+| **v0.5 r1** | Fable, no tools, 4 replies (1 prompt + 3 "Continue.") | 0 | **0.320** [0.313, 0.328] | 95.8% | US$16.70 |
 | **v0.5 Phase B** | new Fable session, r1 + tools + 200 labelled windows, one revision | 200 | **0.957** [0.954, 0.960] | 3.2% | US$40.75 |
 | v0.3 A | Fable, with code | 0 | 0.750 [0.740, 0.760] | 2.0% | US$42.73 |
 | v0.3 B | Fable, same session as A, 200 labelled windows | 200 | 0.954 | 2.4% | US$21.89 |
@@ -70,9 +70,9 @@ Paired (pre-registered primaries first):
 
 - **r1:** OSCILLATING F1 0.83 (precision 0.98, recall 0.73) from a hand-reasoned hunk-reversion circuit and a
   residue code (token id mod 4, 5, 7; mod 3, 13) written as strided fills; STALLED predicted on most windows.
-  Turn 1 was ~233k thinking tokens (two 128k-capped messages) before any text.
+  Turn 1 was ~236k thinking tokens before any text; one message hit the 128k output cap (`replies/INDEX.json`: 001.p1 cut off).
 - **Phase B:** found one wrong bias in r1 (layer 0 MLP units 32–63, −2 instead of −3) that made the
-  target code fire everywhere, then rebuilt layers 1–3 around the oracle's rules (1,262 statements, 2,813
+  target code fire everywhere, then rebuilt the decision logic around the oracle's rules (1,262 statements, 2,813
   entries changed). Artifact `223d0743…`, base r1 `46d4b2a2…`. Its own account: `weight_program/v0_5/phase-b/`
   (`REVISION.md`, `CIRCUITS.md`, `ITERATIONS.md`, `author_output/scratch/`).
 
