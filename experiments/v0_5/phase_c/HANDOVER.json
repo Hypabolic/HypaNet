@@ -1,0 +1,158 @@
+{
+  "author_dir": "/Users/matthew/Development/hypabolic/HypaNet-v05c-author",
+  "b_artifact_sha256": "223d074372bf726a0c89f28afe1e1fcf9b53e3bb0ff3973f0cc3acd932661001",
+  "b_checks": {
+    "artifact_sha256": "223d074372bf726a0c89f28afe1e1fcf9b53e3bb0ff3973f0cc3acd932661001",
+    "author_output_files": 30,
+    "base_r1_sha256": "46d4b2a221dc0ecfb447d15b288ffb093d4612a9720cf87ed953221989ef56ac",
+    "rebuild_identical": true,
+    "revision_sha256": "ec5cdcf8afd94fa25862efb29288525b1312d230eb4ae15add6df6e664d95bd5"
+  },
+  "b_manifest_sha256": "e2e661f36e5626fed72b68ba75f32f054b56aec808133e60e076f92e04ec8665",
+  "b_source": "weight_program/v0_5/phase-b",
+  "disclosure_network_class_checked": "both disclosures, against Phase B's artefact",
+  "disclosure_same_windows_as": "experiments/v0_5/phase_b/disclosure/DISCLOSURE.json",
+  "disclosure_sha256": "fb0f9608b4703523bcc616b444e67ca29b4f9bff8d40b0b754c933ca56acf6d1",
+  "disclosure_source": "experiments/v0_5/phase_c/disclosure",
+  "disclosure_w_sha256": "96cad550f7461b3c1b1f9fbe0842a0deaae7d53e842743a8fa746d8628f48d1c",
+  "effort": "max",
+  "fallback_model": null,
+  "handed_over": {
+    "disclosure": {
+      "DISCLOSURE.json": "fb0f9608b4703523bcc616b444e67ca29b4f9bff8d40b0b754c933ca56acf6d1",
+      "DISCLOSURE.sha256": "9b9601d61476e253b212d3ec3530c0054ae427cdc6bb6f2ac9fa5e0357378073",
+      "DISCLOSURE_W.json": "96cad550f7461b3c1b1f9fbe0842a0deaae7d53e842743a8fa746d8628f48d1c",
+      "DISCLOSURE_W.sha256": "3349548d5dacb4d735229eca824cfb3fcdd100f8425afa02bd2b09191f55e3f4"
+    },
+    "packet": {
+      "AUTHOR_INSTRUCTIONS.md": "456abdea0ffa4e06647f6893b12820ca97ec75878b96567237211891342d1022",
+      "GRAMMAR_SHEET.md": "13341c152f837c8b047cde4900a83a33ca75ad7242e7447f3113b067e7488dd8",
+      "PACKET_MANIFEST.json": "72d2bebf0a4c2c8607fd1ca7f451ef56ff95dea444276f8a13132921d99045f2",
+      "SPEC.md": "da5ceedce5a28996ff37afd2ea2c1949a18c52e63f45326b48ecac6df4f1cc41",
+      "model.py": "11cb75636ac01911f1f2bdaf2e169596de972942ab6fcead0f72cebebd28613e",
+      "renderer.py": "b5451f7fe65152cb7c6c8401b8ee2bcb927e87c41985b379c6b5caf993ff920b",
+      "state_dict_template.json": "e5b2c19987d6fde1ae7cd4a54ea3179c0a866d334248feb797964575dee373ea",
+      "tokenizer.py": "dc26886cb75db9cebacdb9c68e31fcbb3072434e48ae19892d89707db57d614d"
+    },
+    "phase_b": {
+      "CIRCUITS.md": "1966126edd4c5b00307b7cc7951db3af063652717f699b25dc4b02979e381ce9",
+      "ITERATIONS.md": "f9ab0f51b5b2b19754ae8dff76e6ca72e1c27e6b51ac1e7c18bff13e50f2dab5",
+      "PHASE_B_MANIFEST.json": "e2e661f36e5626fed72b68ba75f32f054b56aec808133e60e076f92e04ec8665",
+      "REVISION.edits": "ec5cdcf8afd94fa25862efb29288525b1312d230eb4ae15add6df6e664d95bd5",
+      "REVISION.md": "940895034244a077b2866b34859eafa343a2efcfa93c51c246732a0c52326e89",
+      "artifact.dlw": "223d074372bf726a0c89f28afe1e1fcf9b53e3bb0ff3973f0cc3acd932661001",
+      "artifact.sha256": "699892bf98614486e029c0c1cb383f6db0f03f5c53e02b22068d60761a538950",
+      "scratch/attn_debug.py": "fe875c1fd624022a3d00745f5aef372ca06f68ba7238d7faafb36228e3f55fee",
+      "scratch/baseline.py": "369a9d20116e129b05554519336b823f45a95125661d763adcaea3106576a9d4",
+      "scratch/baseline_rows.json": "f1b589e0bde5044a4600bff06ae17febe250898dc6d7dddc2c992046d32457c6",
+      "scratch/debug_resw.py": "36d90a4ad09829f2b0018493b85c91cfb0d7cddc18b62dc4fbd454074c011776",
+      "scratch/dump.py": "491ce4f8c5e9fe667e956bdd9cb59893532f3e432f62a5aa17abde3085f2ad53",
+      "scratch/dump_OSCILLATING.txt": "7a32562b4b0b98ec2a91dc972f5d7cf499fa58cf37f735d4fe6a85a5e5659edb",
+      "scratch/dump_PRODUCTIVE.txt": "c9c8a92ef537d0635751c46d16f8462c26fec6d5ae4c51fa29b86cfec180fac7",
+      "scratch/dump_RECOVERY.txt": "2a3415cbdf72d04c8225b83b7277b8e2bc226a0a7be44cb8ef60b4e19a9d3dd5",
+      "scratch/dump_STALLED.txt": "4994c534c897e20c8ebb96cbf51c8896d953457c5d3cd43e48b11eabb42087cb",
+      "scratch/evalrev.py": "b1b33aa876d85c2ace6641a3607d382b49e0bec293fdb65a428e9a8111c8c454",
+      "scratch/features.py": "46c4520ca36265fec6824456cdb0f3c8a977045c9e0eaf2a12e1630b761607d6",
+      "scratch/features.txt": "19bc8ef852985c987a154aab8a750f090f562aae2b8b381ccfb8a6020c98d72e",
+      "scratch/features2.py": "f5b727ba94669d79f1f8ebb969d21297752ff55712bc6da20b93baca22ee956e",
+      "scratch/features2.txt": "637e777a612b62e352658af4c10f5f7e994b05b4668729b250412314ccf6f22a",
+      "scratch/gen_revision.py": "c2f5935b48b9c3bd26ae45ecdf6baea205639208241f1b12fe238d592adb157c",
+      "scratch/inspect.py": "36cf26eec8e5d96c612b2892fc810ae871fb49337d06d27f3d7379fe49fc716a",
+      "scratch/inspect2.py": "19bc4e6b1721e543ad98ff317d77cd21c02e1f6a69ddcc6ec7eec808e4d0b49a",
+      "scratch/nz_summary.py": "00139f1b64bfdf05fa32986fd0cb4801d50123d3f4c8078207896ee4eaa723df",
+      "scratch/nz_summary.txt": "7f8e9ce71b5f7c40d5ece4c117ae0942d001e2ab76e6719e5e49b54963b31c14",
+      "scratch/rev_a.edits": "f4b1d6527adac225df1d0d5d47332c27777dacf630df13d5b6cd40f3d8296067",
+      "scratch/survey.py": "b0bf1b2abeb8af0fb1616795c174d1eddd158e7844e5a51b59c62de465ac2eda",
+      "scratch/survey_OSCILLATING.txt": "9801c829d4ccc16d9b13afedf8df24314896e121341ed121c4e2c3d50abbfa71",
+      "scratch/survey_PRODUCTIVE.txt": "e41ffa9eb6055cff54fa1cdc83e8ffab060eaa0b12ac9a4831c34946cb81e62c",
+      "scratch/survey_RECOVERY.txt": "a05e72d62815f0822acc931c9554e4c44466db3be53ebdd79e8453633a426082",
+      "scratch/survey_STALLED.txt": "c68f88fb73961c2d9951b55f554735f3b2f2bbf5a57c07c787b99225521a0908",
+      "scratch/synth.py": "82b55c25e43bd64ceb51bf1c89eef6e677d644e2113b66665904d43a77e6f86f"
+    },
+    "py": "36e0947d89f5a281d5dbb0f1b9bf18227ee84e25844a40206571e507103dd51f",
+    "r1": {
+      "PROMPT.txt": "f4981981f7a706de4d22a86f8ae87f58d0c3ea2d65efa6c8fb70575f3fd5ed10",
+      "R1_MANIFEST.json": "2858782aaa5c73e38ddc4c0cd382b2ce4a3927d9e748d5484c2b1d541dec7a4a",
+      "artifact.dlw": "46d4b2a221dc0ecfb447d15b288ffb093d4612a9720cf87ed953221989ef56ac",
+      "artifact.sha256": "a10d0b90f03dc393a1e966ab9ff8c8ce6e3082847ac1bdfdee5d5a4981120433",
+      "replies/001.md": "361ed7f6fdd8ecf82beffdf4a15839e76776d751528618ad80328322427f9287",
+      "replies/001.p1.md": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "replies/001.p2.md": "361ed7f6fdd8ecf82beffdf4a15839e76776d751528618ad80328322427f9287",
+      "replies/002.md": "eebcb40fd5afb80092ecb10312bd832bb5dcdda6e31435882d6353ce815fada9",
+      "replies/003.md": "3cee6658c109280beb1ca0ba8b692cff338a5ab22069053ea5c55aaa1d3cbbfd",
+      "replies/004.md": "d7897752adde645838c710f9a0890d6190c7fc990bb3e8a33f403f8e543ec164",
+      "replies/INDEX.json": "ffc9ee91075f070f402f7b4204d0e407da1cbee90a8ddfc8ada84050525fb257"
+    },
+    "tools": {
+      "hn_guard/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "hn_guard/guards_v02.py": "a15bc11de8774d6e9f93ca2219af70a418a9d434f56d9adeac7cd5042868e001",
+      "hn_guard/guards_v03.py": "2c69d49ea3acad7e299341c2a59dbecf838b38a75c521e40e2900dfd44c9eaaf",
+      "launch.py": "8078e93d34e796910f85e552d271484e66bae8a6ed7c0e8a2477103b746f684c",
+      "lib/hn_v05/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "lib/hn_v05/dlw3.py": "36c2193326a00f6b7bac58ac03580c28156bb6f60eec7e4d7bb295c977ea5c5c",
+      "lib/hn_v05/edits.py": "9c4b08302f1288eb16651652eecedb95b90bf7f63e81c58de8677e6e27e1cf04",
+      "lib/hn_v05/revision.py": "ab48c2c0a718b23f9f1ad95c66817d37315111653614eec0b13f9365e8472fec",
+      "lib/hn_v05/revision_c.py": "12c3d2bcea855c3509f467e9874c1a423971f373e2b9121f897d4508f5ce4f58",
+      "lib/v05_load.py": "0f6c90e18af71f4179a1ff1123fa703505bc78b2d30323ba48c8164883a9e26e"
+    }
+  },
+  "kit": false,
+  "kit_files": {
+    "launch.py": "8078e93d34e796910f85e552d271484e66bae8a6ed7c0e8a2477103b746f684c",
+    "prompt_continue.md": "54d1dc30c1e4f7b805754944894952dec765ffcd7647134000ef41663f21249a",
+    "prompt_resubmit.md": "df8362bceba284ebc4fe7aae3d50f6edb61173ef7db69e7d6e7ca6c6b98412cf",
+    "prompt_v05_phase_c.md": "eb5b301374ad18eda3bb381442cb0172e04d3a9e6130614c985f50cf2bb9e93a",
+    "settings_v05_phase_c.json": "e8ae982e976add661d9d9bf2fddfd89d90891f4ca759b4cb11de897463dca241",
+    "v05_load.py": "0f6c90e18af71f4179a1ff1123fa703505bc78b2d30323ba48c8164883a9e26e"
+  },
+  "model": "claude-fable-5-1",
+  "output_dir": "output/v05-phase-c",
+  "output_entries": [
+    "v05-phase-c"
+  ],
+  "packet_sha256": "72d2bebf0a4c2c8607fd1ca7f451ef56ff95dea444276f8a13132921d99045f2",
+  "phase": "v05-phase-c",
+  "prompt_txt_sha256": "f4981981f7a706de4d22a86f8ae87f58d0c3ea2d65efa6c8fb70575f3fd5ed10",
+  "r1_artifact_sha256": "46d4b2a221dc0ecfb447d15b288ffb093d4612a9720cf87ed953221989ef56ac",
+  "r1_checks": {
+    "artifact_sha256": "46d4b2a221dc0ecfb447d15b288ffb093d4612a9720cf87ed953221989ef56ac",
+    "reading": "index",
+    "reading_units": [
+      "001.p1.md",
+      "001.p2.md",
+      "002.md",
+      "003.md",
+      "004.md"
+    ],
+    "rebuild_identical": true,
+    "status": "finished"
+  },
+  "r1_manifest_sha256": "2858782aaa5c73e38ddc4c0cd382b2ce4a3927d9e748d5484c2b1d541dec7a4a",
+  "r1_prompt_sha256": "f4981981f7a706de4d22a86f8ae87f58d0c3ea2d65efa6c8fb70575f3fd5ed10",
+  "r1_source": "experiments/v0_5/runs/r1",
+  "reference_policy_class": "absent: no session in the v0.5 lineage wrote a reference policy",
+  "registry_v0_3_sha256": "8b755d441f870cc6722b53cd82246ffbbbbe02e96299c17b000fec0d814b7f6e",
+  "root_entries": [
+    ".venv",
+    "disclosure",
+    "output",
+    "packet",
+    "phase_b",
+    "py",
+    "r1",
+    "tools"
+  ],
+  "venv": {
+    "kind": "private",
+    "numpy": "1.26.4",
+    "torch": "2.2.2"
+  },
+  "venv_state": {
+    "entries": 14586,
+    "inventory_sha256": "7e1a4b266df2c715535eabcdf5806756b5c101d70c003c83f84e47584cdd8e3a",
+    "startup_files": {
+      "lib/python3.12/site-packages/_virtualenv.pth": "69ac3d8f27e679c81b94ab30b3b56e9cd138219b1ba94a1fa3606d5a76a1433d",
+      "pyvenv.cfg": "ca7228d1b09c26434abbfb2046949593daf2715aacce65b9daa28ea38d1e13ce"
+    }
+  }
+}
