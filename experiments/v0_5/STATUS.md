@@ -90,3 +90,50 @@ Paired (pre-registered primaries first):
 - The Phase B reviewer found that v0.3's `./py` guard could be bypassed through macOS firmlink paths
   (`/System/Volumes/Data/...`); fixed for v0.5 B. Check the v0.3 transcripts before claiming sealed isolation
   for v0.3.
+
+## Phase C (7 Nov): another Fable round on B, with 200 windows from the second generator
+
+Matthew's design (`experiments/v0_5/phase_c/heldout/README.md`, pre-registered before launch, `d23acd3`): a NEW
+Fable session (effort max, no fallback, US$250 cap) revises v0.5 B. It is handed the original 200 val windows (with
+B's classes) and 200 labelled windows from the independent OOD generator (`synth_ood`, seed 20261109). These come
+from 6 of its 10 families, re-timed so the clock does not give the generator away. It is given nothing from the
+OOD diagnosis. It is scored once on fresh held-out sets built and hashed before launch: second generator, seed
+20261110, 2,000 sessions, all 10 families; standard generator, seed 20261111, 4,000 sessions. The sealed sets were
+not reused.
+
+- **Run:** US$56.58, 114 turns, 66 min. 430 statements on top of B (999 entries changed), artefact `a7f2890c…`
+  (`weight_program/v0_5/phase-c/`). Self-check on the disclosures: V 0.985, W 0.975 (B: 0.995, 0.795). Without
+  our diagnosis it found two of its three mechanisms: failure identity now uses line + passed count, and plan
+  repeats use `verb:argument`. It added no progress check as such.
+- **Source audit before scoring** (`phase_c/SOURCE_AUDIT.md`): no source switch. Clock, gaps and token counts
+  change 0 decisions, and vocabulary renames are at noise level. Three rules are tuned to the second generator
+  and applied to every log: a fresh `read_file` blocks STALLED (the largest effect, knowingly traded against V134
+  and V146); an append rule whose `h0` trigger only that generator emits; `verb:argument` plan keys. Compliant:
+  no search or fitting. About 31 hand-written rule variants were chosen by their disclosed scores, as Phase B did.
+
+**Held-out results** (one-time, `artifacts/reports/v05c_heldout.json`; macro-F1, FA; paired 95% CIs):
+
+| Population | Phase C | v0.5 B | v0.3 B | v0.3 C-all |
+|---|---|---|---|---|
+| Held-out OOD, 4 unseen families | **0.750**, 3.0% | 0.679, 19.4% | 0.718, 4.3% | 0.349, 12.5% |
+| Held-out OOD, 6 disclosed families | 0.957, 5.0% | 0.752, 39.5% | 0.883, 8.7% | 0.516, 50.3% |
+| Held-out OOD, all | 0.955, 4.2% | 0.766, 31.2% | 0.906, 6.9% | 0.494, 34.7% |
+| Held-out in-distribution | 0.949, 2.1% | 0.960, 3.2% | 0.954, 2.4% | 0.923, 6.4% |
+| Val (excluding disclosed) | 0.947, 2.1% | 0.957, 3.2% | 0.954, 2.4% | 0.926, 5.8% |
+
+| Pair | Unseen ΔF1 (primary) | Unseen ΔFA | OOD-all ΔF1 | In-dist ΔF1 | Val ΔF1 |
+|---|---|---|---|---|---|
+| C − B | **+0.071** [+0.064, +0.079] | −0.164 | +0.189 | −0.011 [−0.013, −0.009] | −0.010 |
+| C − v0.3 B | **+0.031** [+0.024, +0.039] | −0.012 | +0.048 | −0.006 [−0.010, −0.001] | −0.007 |
+
+- Both primaries are positive with CIs above 0. On the 4 families it never saw, Phase C beats both B and
+  v0.3 B, with the fewest false alarms of any column. Pooled unseen macro-F1 is low for every network because
+  STALLED windows there come almost only from lockfile_churn. Per family, C ≥ v0.3 B on lockfile_churn (0.667 vs
+  0.592) and serializer_duel (0.950 vs 0.933), and is level on index_watermark and lease_reconnect (0.997/0.996 vs 1.000).
+- In distribution, it pays a small, significant cost: −0.011 vs B and −0.006 vs v0.3 B, with fewer false alarms.
+  The audit traces part of this to the fresh-read rule and the rest to RECOVERY→PRODUCTIVE drift.
+- Caveat: the unseen families come from the same second generator as the disclosure, and the disclosed-family
+  gains rest partly on rules tuned to it (SOURCE_AUDIT.md). The held-out OOD sets were built with the same
+  re-timing as the disclosure.
+- Checks: held-out hashes verified before scoring; r1 and B reproduce their val reports, v0.3 its val blocks;
+  held-out sets disjoint from the disclosure and every earlier seed. Log: `phase_c/heldout/heldout_run.log`.
