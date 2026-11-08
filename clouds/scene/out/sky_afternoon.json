@@ -1,0 +1,38 @@
+{
+  "file": "sky_afternoon.f32",
+  "preset": "afternoon",
+  "width": 1024,
+  "height": 512,
+  "channels": 3,
+  "dtype": "float32 little-endian, RGB interleaved, row-major, row 0 = top (zenith)",
+  "units": "radiance in the scene's linear RGB units (top-of-atmosphere solar irradiance = 20)",
+  "mapping": "u = (col + 0.5) / W, v = (row + 0.5) / H, phi = 2 pi u, theta = pi v; direction = (sin theta sin phi, cos theta, -sin theta cos phi) (y up). Inverse: theta = acos(d.y), phi = atan2(d.x, -d.z) mod 2 pi. Same as Mitsuba 3 envmap with identity to_world (lookup with wi = -d).",
+  "lower_hemisphere": "rows 256..511 (theta > 90 deg) hold the constant ground radiance L_gnd",
+  "toward_sun": [
+    -0.8516507396391465,
+    0.42261826174069944,
+    0.3099755192194445
+  ],
+  "E_sun": [
+    17.302721074601287,
+    14.313077018659996,
+    10.55198638539921
+  ],
+  "L_sky": [
+    0.19141210312561832,
+    0.3278235234736826,
+    0.5235176721661953
+  ],
+  "L_gnd": [
+    0.24288798605200343,
+    0.21195806303608652,
+    0.17883702423221828
+  ],
+  "E_sky": [
+    0.3181052223297776,
+    0.6098912072460777,
+    1.1588686710690266
+  ],
+  "observer_altitude_m": 2000.0,
+  "sha256": "dac98cfcb21ce7253905217073677f578b43cf2f8cc4a8c5dcc97beae1666b4d"
+}

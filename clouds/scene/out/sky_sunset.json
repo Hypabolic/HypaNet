@@ -1,0 +1,38 @@
+{
+  "file": "sky_sunset.f32",
+  "preset": "sunset",
+  "width": 1024,
+  "height": 512,
+  "channels": 3,
+  "dtype": "float32 little-endian, RGB interleaved, row-major, row 0 = top (zenith)",
+  "units": "radiance in the scene's linear RGB units (top-of-atmosphere solar irradiance = 20)",
+  "mapping": "u = (col + 0.5) / W, v = (row + 0.5) / H, phi = 2 pi u, theta = pi v; direction = (sin theta sin phi, cos theta, -sin theta cos phi) (y up). Inverse: theta = acos(d.y), phi = atan2(d.x, -d.z) mod 2 pi. Same as Mitsuba 3 envmap with identity to_world (lookup with wi = -d).",
+  "lower_hemisphere": "rows 256..511 (theta > 90 deg) hold the constant ground radiance L_gnd",
+  "toward_sun": [
+    -0.9391201854309705,
+    0.03489949670250097,
+    0.34181179389542954
+  ],
+  "E_sun": [
+    6.054536581560591,
+    1.2664009451251519,
+    0.10244745888740657
+  ],
+  "L_sky": [
+    0.13267790211583294,
+    0.12553772930020507,
+    0.12413074264916703
+  ],
+  "L_gnd": [
+    0.013398148739879693,
+    0.009037057879452984,
+    0.010132146378526706
+  ],
+  "E_sky": [
+    0.20961497706574853,
+    0.23971079083311314,
+    0.3147354015251386
+  ],
+  "observer_altitude_m": 2000.0,
+  "sha256": "072c9bdd3c359a6d496d0afba277b2d099c8162c86d485c21a12e6d282774b93"
+}

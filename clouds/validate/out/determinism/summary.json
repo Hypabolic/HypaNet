@@ -1,0 +1,50 @@
+[
+ {
+  "mode": "net",
+  "net": "/Users/matthew/Development/hypabolic/HypaNet/clouds/validate/test_networks/exact_single_net.json",
+  "pair": "backlit_golden",
+  "png_sha256": [
+   "f1719c75cd4a4a10f3af7a0a28059c671998486e7a424302e212003b2e070f57",
+   "f1719c75cd4a4a10f3af7a0a28059c671998486e7a424302e212003b2e070f57",
+   "f1719c75cd4a4a10f3af7a0a28059c671998486e7a424302e212003b2e070f57"
+  ],
+  "npy_sha256": [
+   "f490eef6714b6f405dcfaf0fa2655c67bf652ba616c03ef38cf2e9af01dbbf8c",
+   "f490eef6714b6f405dcfaf0fa2655c67bf652ba616c03ef38cf2e9af01dbbf8c",
+   "f490eef6714b6f405dcfaf0fa2655c67bf652ba616c03ef38cf2e9af01dbbf8c"
+  ],
+  "identical": true
+ },
+ {
+  "mode": "net",
+  "net": "/Users/matthew/Development/hypabolic/HypaNet/clouds/validate/test_networks/act_sin.json",
+  "pair": "side_sunset",
+  "png_sha256": [
+   "782eb01614bf721d60a1c32db5a5e8762f2d9dadda046df6ae9707441b4c1191",
+   "782eb01614bf721d60a1c32db5a5e8762f2d9dadda046df6ae9707441b4c1191",
+   "782eb01614bf721d60a1c32db5a5e8762f2d9dadda046df6ae9707441b4c1191"
+  ],
+  "npy_sha256": [
+   "31a00cfb46e726c7d0aa0a97dda6a997f969a71db3e4ebb14019c3f600021f89",
+   "31a00cfb46e726c7d0aa0a97dda6a997f969a71db3e4ebb14019c3f600021f89",
+   "31a00cfb46e726c7d0aa0a97dda6a997f969a71db3e4ebb14019c3f600021f89"
+  ],
+  "identical": true
+ },
+ {
+  "mode": "exact",
+  "net": null,
+  "pair": "front_noon",
+  "png_sha256": [
+   "3b49ad30d956b343e8532b28c76bc4f9bbfe96d5d08d77bbedd68415240cf3f8",
+   "3b49ad30d956b343e8532b28c76bc4f9bbfe96d5d08d77bbedd68415240cf3f8",
+   "3b49ad30d956b343e8532b28c76bc4f9bbfe96d5d08d77bbedd68415240cf3f8"
+  ],
+  "npy_sha256": [
+   "ec20db10780e02decb890050aa7ca295947a36ff10e3b6659098f1aab050dd24",
+   "ec20db10780e02decb890050aa7ca295947a36ff10e3b6659098f1aab050dd24",
+   "ec20db10780e02decb890050aa7ca295947a36ff10e3b6659098f1aab050dd24"
+  ],
+  "identical": true
+ }
+]

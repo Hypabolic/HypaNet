@@ -1,0 +1,52 @@
+{
+  "pair": "side_sunset",
+  "shot": "side",
+  "preset": "sunset",
+  "mode": "single",
+  "exposure": 2.5198,
+  "variant": "metal_ad_rgb",
+  "mitsuba": "3.9.1",
+  "integrator": "volpath",
+  "scale": 1.0,
+  "density_sha256": "dd334e3fae4c57f5f825657771291d03b0dfd4c2002afecbadaae88301810140",
+  "pixel_filter": "box",
+  "grid": "cropped to occupied voxels + 2, software trilinear (accel=False)",
+  "parts": {
+    "sun_single": {
+      "file": "side_sunset_sun.npy",
+      "max_depth": 2,
+      "envmap": false,
+      "spp": 16384,
+      "seconds": 105.0,
+      "noise_pixels_fraction": 0.21908984375,
+      "tm8_noise_median": 0.25732426300236,
+      "tm8_noise_p90": 0.6255609427757804,
+      "tm8_noise_p99": 0.7560452120260139,
+      "tm8_noise_max": 0.8916008403005549,
+      "rel_se_median": 0.032932433206946166,
+      "rel_se_p90": 0.4920131718052095
+    },
+    "background": {
+      "file": "side_sunset_bg.npy",
+      "max_depth": 1,
+      "sun": false,
+      "spp": 4096,
+      "seconds": 8.7
+    }
+  },
+  "spp": 16384,
+  "seconds": 113.7,
+  "width": 640,
+  "height": 400,
+  "pass_spp": 64,
+  "lum_p50": 0.09319269413128495,
+  "lum_p99": 0.28463783189600705,
+  "lum_max": 0.30821936694011093,
+  "noise_pixels_fraction": 0.23212890625,
+  "tm8_noise_median": 0.3787936632340063,
+  "tm8_noise_p90": 1.0724892336366747,
+  "tm8_noise_p99": 1.9604803153875465,
+  "tm8_noise_max": 2.7522307297624735,
+  "rel_se_median": 0.021494324355698913,
+  "rel_se_p90": 0.4046889004978724
+}

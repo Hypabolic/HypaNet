@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>HypaNet Clouds harness</title>
+<script type="importmap">
+{ "imports": { "three": "./vendor/three.module.min.js", "three/addons/controls/OrbitControls.js": "./vendor/OrbitControls.js" } }
+</script>
+</head>
+<body style="margin:0;background:#000">
+<!-- Headless page driven by render.py / inspect.py through window.harness (see harness.js). -->
+<script type="module">
+import { installHarness } from './harness.js';
+installHarness();
+</script>
+</body>
+</html>

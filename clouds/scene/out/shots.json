@@ -1,0 +1,454 @@
+{
+  "version": 1,
+  "units": "metres; y is up; world frame: north = -z, east = +x",
+  "resolution": [
+    640,
+    400
+  ],
+  "camera_model": "pinhole; vertical field of view fov_y_deg; look_at with up = +y; aspect = width / height",
+  "medium": {
+    "sigma_t_max": 0.04,
+    "albedo": 0.999,
+    "phase": "0.8 * HG(mu; 0.9) + 0.2 * HG(mu; -0.3)"
+  },
+  "sun_model": {
+    "E_sun": "20 * T_atm(h), T_atm(h) = exp(-(beta_R * 8000 + beta_M_ext * 1200 + tau_O3) * m(h))",
+    "air_mass": "Kasten-Young: m(h) = 1 / (sin h + 0.50572 (h_deg + 6.07995)^-1.6364)",
+    "beta_R": [
+      5.802e-06,
+      1.3558e-05,
+      3.31e-05
+    ],
+    "beta_M_ext": 4.435560000000001e-06,
+    "tau_O3": [
+      0.00975,
+      0.028215,
+      0.0012749999999999999
+    ],
+    "wavelengths_nm": [
+      680,
+      550,
+      440
+    ],
+    "toward_sun": "(cos e sin a, sin e, -cos e cos a), e = elevation, a = azimuth clockwise from north (-z)"
+  },
+  "presets": {
+    "noon": {
+      "elevation_deg": 55.0,
+      "azimuth_deg": 250.0,
+      "toward_sun": [
+        -0.538985545,
+        0.819152044,
+        0.196174695
+      ],
+      "air_mass": 1.2198742289986713,
+      "T_atm": [
+        0.9277356503171643,
+        0.8409490696248781,
+        0.7181541596957527
+      ],
+      "E_sun": [
+        18.554713006343285,
+        16.818981392497562,
+        14.363083193915054
+      ],
+      "L_sky": [
+        0.17466789702934368,
+        0.3220332265781247,
+        0.5569939045057446
+      ],
+      "L_gnd": [
+        0.494439265480705,
+        0.4600416919629174,
+        0.417701453564484
+      ],
+      "E_sky": [
+        0.3341365504635159,
+        0.6753330076343061,
+        1.3569292185312332
+      ],
+      "sky_map": "sky_noon.f32",
+      "sky_json": "sky_noon.json"
+    },
+    "afternoon": {
+      "elevation_deg": 25.0,
+      "azimuth_deg": 250.0,
+      "toward_sun": [
+        -0.85165074,
+        0.422618262,
+        0.309975519
+      ],
+      "air_mass": 2.3560192822092514,
+      "T_atm": [
+        0.8651360537300643,
+        0.7156538509329998,
+        0.5275993192699605
+      ],
+      "E_sun": [
+        17.302721074601287,
+        14.313077018659996,
+        10.55198638539921
+      ],
+      "L_sky": [
+        0.19141210312561832,
+        0.3278235234736826,
+        0.5235176721661953
+      ],
+      "L_gnd": [
+        0.24288798605200343,
+        0.21195806303608652,
+        0.17883702423221828
+      ],
+      "E_sky": [
+        0.3181052223297776,
+        0.6098912072460777,
+        1.1588686710690266
+      ],
+      "sky_map": "sky_afternoon.f32",
+      "sky_json": "sky_afternoon.json"
+    },
+    "golden": {
+      "elevation_deg": 8.0,
+      "azimuth_deg": 250.0,
+      "toward_sun": [
+        -0.930547597,
+        0.139173101,
+        0.338691627
+      ],
+      "air_mass": 6.856529464259366,
+      "T_atm": [
+        0.6559971127875791,
+        0.37770619479221124,
+        0.15554096607997359
+      ],
+      "E_sun": [
+        13.119942255751582,
+        7.554123895844224,
+        3.1108193215994717
+      ],
+      "L_sky": [
+        0.17858005759462062,
+        0.2482899492222834,
+        0.326601556121655
+      ],
+      "L_gnd": [
+        0.0669652840259253,
+        0.047770040433430985,
+        0.037265937429108026
+      ],
+      "E_sky": [
+        0.27783339526406486,
+        0.44940923325237053,
+        0.7378015810507411
+      ],
+      "sky_map": "sky_golden.f32",
+      "sky_json": "sky_golden.json"
+    },
+    "sunset": {
+      "elevation_deg": 2.0,
+      "azimuth_deg": 250.0,
+      "toward_sun": [
+        -0.939120185,
+        0.034899497,
+        0.341811794
+      ],
+      "air_mass": 19.43324510757205,
+      "T_atm": [
+        0.30272682907802956,
+        0.06332004725625759,
+        0.0051223729443703285
+      ],
+      "E_sun": [
+        6.054536581560591,
+        1.2664009451251519,
+        0.10244745888740657
+      ],
+      "L_sky": [
+        0.13267790211583294,
+        0.12553772930020507,
+        0.12413074264916703
+      ],
+      "L_gnd": [
+        0.013398148739879693,
+        0.009037057879452984,
+        0.010132146378526706
+      ],
+      "E_sky": [
+        0.20961497706574853,
+        0.23971079083311314,
+        0.3147354015251386
+      ],
+      "sky_map": "sky_sunset.f32",
+      "sky_json": "sky_sunset.json"
+    }
+  },
+  "shots": {
+    "front": {
+      "position": [
+        -3100.986,
+        1150.0,
+        1128.666
+      ],
+      "look_at": [
+        0.0,
+        1930.0,
+        0.0
+      ],
+      "up": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "fov_y_deg": 30.0,
+      "width": 640,
+      "height": 400,
+      "description": "side view, camera on the sun side (sun behind the camera), from below cloud-base height looking slightly up"
+    },
+    "side": {
+      "position": [
+        -1128.666,
+        1150.0,
+        -3100.986
+      ],
+      "look_at": [
+        0.0,
+        1930.0,
+        0.0
+      ],
+      "up": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "fov_y_deg": 30.0,
+      "width": 640,
+      "height": 400,
+      "description": "side view, sun from the left at 90 degrees azimuth (terminator)"
+    },
+    "backlit": {
+      "position": [
+        3100.986,
+        1200.0,
+        -1128.666
+      ],
+      "look_at": [
+        0.0,
+        1950.0,
+        0.0
+      ],
+      "up": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "fov_y_deg": 32.0,
+      "width": 640,
+      "height": 400,
+      "description": "backlit: camera on the far side looking toward the sun, slightly upward (silver lining)"
+    },
+    "below": {
+      "position": [
+        164.966,
+        600.0,
+        -935.567
+      ],
+      "look_at": [
+        0.0,
+        1700.0,
+        0.0
+      ],
+      "up": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "fov_y_deg": 65.0,
+      "width": 640,
+      "height": 400,
+      "description": "from below the base near its edge, looking up into the flat base and the towers"
+    },
+    "distant": {
+      "position": [
+        -10724.622,
+        400.0,
+        -8999.027
+      ],
+      "look_at": [
+        -9961.493,
+        487.156,
+        -8358.685
+      ],
+      "up": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "fov_y_deg": 12.0,
+      "width": 640,
+      "height": 400,
+      "description": "distant view from 14 km near the ground, cloud low in the sky, horizon just above the bottom edge; sun behind-left"
+    },
+    "quarter": {
+      "position": [
+        1183.331,
+        2000.0,
+        -2537.662
+      ],
+      "look_at": [
+        0.0,
+        1900.0,
+        0.0
+      ],
+      "up": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "fov_y_deg": 36.0,
+      "width": 640,
+      "height": 400,
+      "description": "three-quarter backlit close-up from cloud-middle altitude (sun ahead-right of the camera)"
+    }
+  },
+  "pairs": {
+    "reference": [
+      {
+        "id": "front_noon",
+        "shot": "front",
+        "preset": "noon",
+        "exposure": 0.315
+      },
+      {
+        "id": "front_golden",
+        "shot": "front",
+        "preset": "golden",
+        "exposure": 0.5
+      },
+      {
+        "id": "front_sunset",
+        "shot": "front",
+        "preset": "sunset",
+        "exposure": 2.0
+      },
+      {
+        "id": "side_noon",
+        "shot": "side",
+        "preset": "noon",
+        "exposure": 0.315
+      },
+      {
+        "id": "side_afternoon",
+        "shot": "side",
+        "preset": "afternoon",
+        "exposure": 0.3969
+      },
+      {
+        "id": "side_sunset",
+        "shot": "side",
+        "preset": "sunset",
+        "exposure": 2.5198
+      },
+      {
+        "id": "backlit_afternoon",
+        "shot": "backlit",
+        "preset": "afternoon",
+        "exposure": 0.1984
+      },
+      {
+        "id": "backlit_golden",
+        "shot": "backlit",
+        "preset": "golden",
+        "exposure": 0.315
+      },
+      {
+        "id": "backlit_sunset",
+        "shot": "backlit",
+        "preset": "sunset",
+        "exposure": 1.5874
+      },
+      {
+        "id": "below_noon",
+        "shot": "below",
+        "preset": "noon",
+        "exposure": 0.25
+      },
+      {
+        "id": "below_golden",
+        "shot": "below",
+        "preset": "golden",
+        "exposure": 1.0
+      },
+      {
+        "id": "distant_sunset",
+        "shot": "distant",
+        "preset": "sunset",
+        "exposure": 2.5198
+      }
+    ],
+    "heldback": [
+      {
+        "id": "front_afternoon",
+        "shot": "front",
+        "preset": "afternoon",
+        "exposure": 0.315
+      },
+      {
+        "id": "side_golden",
+        "shot": "side",
+        "preset": "golden",
+        "exposure": 0.7937
+      },
+      {
+        "id": "backlit_noon",
+        "shot": "backlit",
+        "preset": "noon",
+        "exposure": 0.3969
+      },
+      {
+        "id": "below_sunset",
+        "shot": "below",
+        "preset": "sunset",
+        "exposure": 4.0
+      },
+      {
+        "id": "distant_golden",
+        "shot": "distant",
+        "preset": "golden",
+        "exposure": 0.63
+      },
+      {
+        "id": "quarter_afternoon",
+        "shot": "quarter",
+        "preset": "afternoon",
+        "exposure": 0.3969
+      }
+    ]
+  },
+  "exposure_table": {
+    "front_noon": 0.315,
+    "front_afternoon": 0.315,
+    "front_golden": 0.5,
+    "front_sunset": 2.0,
+    "side_noon": 0.315,
+    "side_afternoon": 0.3969,
+    "side_golden": 0.7937,
+    "side_sunset": 2.5198,
+    "backlit_noon": 0.3969,
+    "backlit_afternoon": 0.1984,
+    "backlit_golden": 0.315,
+    "backlit_sunset": 1.5874,
+    "below_noon": 0.25,
+    "below_afternoon": 0.3969,
+    "below_golden": 1.0,
+    "below_sunset": 4.0,
+    "distant_noon": 0.315,
+    "distant_afternoon": 0.3969,
+    "distant_golden": 0.63,
+    "distant_sunset": 2.5198,
+    "quarter_noon": 0.3969,
+    "quarter_afternoon": 0.3969,
+    "quarter_golden": 0.63,
+    "quarter_sunset": 2.5198
+  },
+  "exposure_note": "exposure is per (shot, preset) pair (exposure_table covers every combination; the pairs repeat it); chosen by scene/choose_exposure.py so the cloud's 90th-percentile luminance maps to ACES input ~1.0; tone map in scene/tonemap.py"
+}

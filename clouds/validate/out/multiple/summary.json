@@ -1,0 +1,65 @@
+[
+ {
+  "pair": "front_noon",
+  "cloud_px": 48752,
+  "single_fraction_of_inscatter_lum": 0.07086770051569233,
+  "full_over_single_inscatter_rgb": [
+   13.486865588015842,
+   14.187149622416257,
+   15.598591654047857
+  ],
+  "full_over_single_4x4_percentiles_10_50_90": [
+   5.629074115970551,
+   14.255260622828645,
+   749.5130694434541
+  ],
+  "total_image_full_over_single_cloud": 9.657314163605594,
+  "split_spp": 1024,
+  "share_sun_single": 0.07088797657139202,
+  "share_sun_multiple": 0.7234193826404973,
+  "share_sky_all_orders": 0.20569264078811067,
+  "split_vs_full_check": 0.9996649371356164
+ },
+ {
+  "pair": "backlit_golden",
+  "cloud_px": 46500,
+  "single_fraction_of_inscatter_lum": 0.4135500156549053,
+  "full_over_single_inscatter_rgb": [
+   2.3037876275377838,
+   2.4526487579149867,
+   3.0061951800596303
+  ],
+  "full_over_single_4x4_percentiles_10_50_90": [
+   1.7421700686983255,
+   2824.39268070169,
+   858335.5445040088
+  ],
+  "total_image_full_over_single_cloud": 2.239001967377885,
+  "split_spp": 1024,
+  "share_sun_single": 0.41256417886122826,
+  "share_sun_multiple": 0.48390340046091296,
+  "share_sky_all_orders": 0.10353242067785881,
+  "split_vs_full_check": 1.0009040631703043
+ },
+ {
+  "pair": "side_sunset",
+  "cloud_px": 57915,
+  "single_fraction_of_inscatter_lum": 0.03303357644647769,
+  "full_over_single_inscatter_rgb": [
+   23.164634182423434,
+   38.47564797491448,
+   262.6426149739811
+  ],
+  "full_over_single_4x4_percentiles_10_50_90": [
+   11.143592546691282,
+   137.60640137369012,
+   31115068.76891578
+  ],
+  "total_image_full_over_single_cloud": 7.562481789468402,
+  "split_spp": 1024,
+  "share_sun_single": 0.0330452237125206,
+  "share_sun_multiple": 0.5861428283541601,
+  "share_sky_all_orders": 0.38081194793331924,
+  "split_vs_full_check": 0.9994533466881036
+ }
+]

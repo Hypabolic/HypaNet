@@ -1,0 +1,38 @@
+{
+  "file": "sky_golden.f32",
+  "preset": "golden",
+  "width": 1024,
+  "height": 512,
+  "channels": 3,
+  "dtype": "float32 little-endian, RGB interleaved, row-major, row 0 = top (zenith)",
+  "units": "radiance in the scene's linear RGB units (top-of-atmosphere solar irradiance = 20)",
+  "mapping": "u = (col + 0.5) / W, v = (row + 0.5) / H, phi = 2 pi u, theta = pi v; direction = (sin theta sin phi, cos theta, -sin theta cos phi) (y up). Inverse: theta = acos(d.y), phi = atan2(d.x, -d.z) mod 2 pi. Same as Mitsuba 3 envmap with identity to_world (lookup with wi = -d).",
+  "lower_hemisphere": "rows 256..511 (theta > 90 deg) hold the constant ground radiance L_gnd",
+  "toward_sun": [
+    -0.9305475967963663,
+    0.13917310096006544,
+    0.3386916268018249
+  ],
+  "E_sun": [
+    13.119942255751582,
+    7.554123895844224,
+    3.1108193215994717
+  ],
+  "L_sky": [
+    0.17858005759462062,
+    0.2482899492222834,
+    0.326601556121655
+  ],
+  "L_gnd": [
+    0.0669652840259253,
+    0.047770040433430985,
+    0.037265937429108026
+  ],
+  "E_sky": [
+    0.27783339526406486,
+    0.44940923325237053,
+    0.7378015810507411
+  ],
+  "observer_altitude_m": 2000.0,
+  "sha256": "512edf6566ec2047ff26c9e25eb7c2ff3ed9ef322bec286b7871bb370576a6bc"
+}

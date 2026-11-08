@@ -1,0 +1,52 @@
+{
+  "pair": "below_noon",
+  "shot": "below",
+  "preset": "noon",
+  "mode": "single",
+  "exposure": 0.25,
+  "variant": "metal_ad_rgb",
+  "mitsuba": "3.9.1",
+  "integrator": "volpath",
+  "scale": 1.0,
+  "density_sha256": "dd334e3fae4c57f5f825657771291d03b0dfd4c2002afecbadaae88301810140",
+  "pixel_filter": "box",
+  "grid": "cropped to occupied voxels + 2, software trilinear (accel=False)",
+  "parts": {
+    "sun_single": {
+      "file": "below_noon_sun.npy",
+      "max_depth": 2,
+      "envmap": false,
+      "spp": 16384,
+      "seconds": 95.0,
+      "noise_pixels_fraction": 0.2576171875,
+      "tm8_noise_median": 0.07381098435680267,
+      "tm8_noise_p90": 0.9559996000701716,
+      "tm8_noise_p99": 2.1078652040582746,
+      "tm8_noise_max": 5.02779281280997,
+      "rel_se_median": 0.07814763757223528,
+      "rel_se_p90": 0.712037030910475
+    },
+    "background": {
+      "file": "below_noon_bg.npy",
+      "max_depth": 1,
+      "sun": false,
+      "spp": 4096,
+      "seconds": 7.2
+    }
+  },
+  "spp": 16384,
+  "seconds": 102.2,
+  "width": 640,
+  "height": 400,
+  "pass_spp": 64,
+  "lum_p50": 0.21317638899758456,
+  "lum_p99": 2.668135557713986,
+  "lum_max": 9.659361614799499,
+  "noise_pixels_fraction": 0.25862109375,
+  "tm8_noise_median": 0.2184753271053257,
+  "tm8_noise_p90": 0.9144614599812116,
+  "tm8_noise_p99": 1.8775276628491027,
+  "tm8_noise_max": 3.9000701865116554,
+  "rel_se_median": 0.048433995317380234,
+  "rel_se_p90": 0.4879497422513724
+}

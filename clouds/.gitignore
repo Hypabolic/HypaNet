@@ -1,0 +1,33 @@
+# HypaNet Clouds: large generated binaries are rebuilt by script; small JSON and PNGs are kept.
+.venv/
+__pycache__/
+*.pyc
+
+# scene/out: keep small JSON + PNG previews, drop large binaries
+scene/out/*.u8
+scene/out/*.f32
+scene/out/*.npy
+scene/out/previews/*.npy
+
+# reference: linear float dumps are large
+reference/out/*.npy
+reference/out/single/*.npy
+reference/out/accum/
+reference/out/single/accum/
+reference/out/*.log
+
+# renderer
+renderer/node_modules/
+
+# validate: keep only the comparison sheets and summaries (everything else is rebuilt by validate/run_all.sh)
+validate/out/**
+!validate/out/*/
+!validate/out/**/*compare.png
+!validate/out/**/multiple_vs_single.png
+!validate/out/**/summary.json
+validate/out/empty_scene/
+validate/out/diag/
+
+# kit: the sanitised scene the author tools serve (rebuilt by scripts/prepare_author_dir.sh)
+kit/build/
+runs/r1/smoke/

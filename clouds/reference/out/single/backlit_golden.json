@@ -1,0 +1,52 @@
+{
+  "pair": "backlit_golden",
+  "shot": "backlit",
+  "preset": "golden",
+  "mode": "single",
+  "exposure": 0.315,
+  "variant": "metal_ad_rgb",
+  "mitsuba": "3.9.1",
+  "integrator": "volpath",
+  "scale": 1.0,
+  "density_sha256": "dd334e3fae4c57f5f825657771291d03b0dfd4c2002afecbadaae88301810140",
+  "pixel_filter": "box",
+  "grid": "cropped to occupied voxels + 2, software trilinear (accel=False)",
+  "parts": {
+    "sun_single": {
+      "file": "backlit_golden_sun.npy",
+      "max_depth": 2,
+      "envmap": false,
+      "spp": 16384,
+      "seconds": 120.4,
+      "noise_pixels_fraction": 0.1645390625,
+      "tm8_noise_median": 0.26166768957548747,
+      "tm8_noise_p90": 3.037305131254244,
+      "tm8_noise_p99": 4.724081018277182,
+      "tm8_noise_max": 9.29704302932241,
+      "rel_se_median": 0.26572732101290075,
+      "rel_se_p90": 0.8548089237447473
+    },
+    "background": {
+      "file": "backlit_golden_bg.npy",
+      "max_depth": 1,
+      "sun": false,
+      "spp": 4096,
+      "seconds": 8.7
+    }
+  },
+  "spp": 16384,
+  "seconds": 129.1,
+  "width": 640,
+  "height": 400,
+  "pass_spp": 64,
+  "lum_p50": 0.3240277364060282,
+  "lum_p99": 3.405050625441559,
+  "lum_max": 25.037111052513122,
+  "noise_pixels_fraction": 0.17452734375,
+  "tm8_noise_median": 0.2148901585264582,
+  "tm8_noise_p90": 2.54953279602206,
+  "tm8_noise_p99": 4.433693719151424,
+  "tm8_noise_max": 7.62751142863879,
+  "rel_se_median": 0.19748076791564428,
+  "rel_se_p90": 0.8330663862942164
+}

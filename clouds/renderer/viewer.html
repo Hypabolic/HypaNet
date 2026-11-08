@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HypaNet Clouds Viewer</title>
+<script type="importmap">
+{ "imports": { "three": "./vendor/three.module.min.js", "three/addons/controls/OrbitControls.js": "./vendor/OrbitControls.js" } }
+</script>
+<style>
+  :root { --bg: #0e1013; --panel: #171a1f; --text: #e4e6ea; --muted: #8b919b; --accent: #e8a24a; --line: #2a2f37; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text); font: 13px/1.4 -apple-system, system-ui, sans-serif; }
+  main { display: flex; flex-wrap: wrap; gap: 16px; padding: 16px; align-items: flex-start; }
+  #view { position: relative; flex: 1 1 640px; max-width: 1280px; }
+  canvas { width: 100%; height: auto; display: block; background: #000; border-radius: 4px; cursor: grab; }
+  #stats { color: var(--muted); margin-top: 6px; font-variant-numeric: tabular-nums; }
+  #msg { position: absolute; inset: 0; display: none; align-items: center; justify-content: center; text-align: center;
+         padding: 24px; color: var(--text); background: rgba(0,0,0,.6); border-radius: 4px; white-space: pre-wrap; }
+  aside { flex: 0 1 300px; min-width: 260px; background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: 14px; }
+  h1 { font-size: 15px; margin: 0 0 10px; }
+  label { display: block; margin: 12px 0 4px; color: var(--muted); }
+  select, input[type=file] { width: 100%; background: #0f1216; color: var(--text); border: 1px solid var(--line); border-radius: 4px; padding: 5px; }
+  input[type=range] { width: 100%; accent-color: var(--accent); }
+  .row { display: flex; justify-content: space-between; color: var(--muted); }
+  .row b { color: var(--text); font-weight: 500; }
+  button { background: #222831; color: var(--text); border: 1px solid var(--line); border-radius: 4px; padding: 5px 8px; cursor: pointer; }
+  button:hover { border-color: var(--accent); }
+  .btns { display: flex; flex-wrap: wrap; gap: 6px; }
+  p.note { color: var(--muted); font-size: 12px; margin: 12px 0 0; }
+</style>
+</head>
+<body>
+<main>
+  <div id="view">
+    <canvas id="c" width="640" height="400"></canvas>
+    <div id="msg"></div>
+    <div id="stats">loading…</div>
+  </div>
+  <aside>
+    <h1>HypaNet Clouds</h1>
+    <label for="shot">Shot (camera, sun preset, exposure)</label>
+    <select id="shot"></select>
+    <label>Sun preset</label>
+    <div class="btns" id="presets"></div>
+    <label for="elev"><span class="row">Sun elevation <b id="elevv"></b></span></label>
+    <input id="elev" type="range" min="1" max="70" step="0.5">
+    <label for="azim"><span class="row">Sun azimuth <b id="azimv"></b></span></label>
+    <input id="azim" type="range" min="0" max="360" step="1">
+    <label for="expo"><span class="row">Exposure <b id="expov"></b></span></label>
+    <input id="expo" type="range" min="-4" max="3" step="0.0833">
+    <label for="res">Resolution</label>
+    <select id="res"><option value="1">640 × 400</option><option value="0.5">320 × 200 (faster)</option><option value="1.5">960 × 600</option></select>
+    <label for="mode">Light transport</label>
+    <select id="mode"><option value="net">network.json</option></select>
+    <label for="file">Load network.json (or drop it on the image)</label>
+    <input id="file" type="file" accept=".json,application/json">
+    <p class="note">Drag to orbit, scroll to zoom, right-drag to pan. The image keeps refining while nothing changes.
+      Sun sliders recompute the sun's colour exactly; the sky and the sky/ground colours blend between the two nearest presets.</p>
+  </aside>
+</main>
+<script type="module" src="./viewer.js"></script>
+</body>
+</html>

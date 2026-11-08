@@ -1,0 +1,8 @@
+{
+  "name": "hypanet-clouds-renderer",
+  "private": true,
+  "description": "three.js is vendored into vendor/ from this pinned version; node_modules is not used at render time",
+  "dependencies": {
+    "three": "0.183.2"
+  }
+}
