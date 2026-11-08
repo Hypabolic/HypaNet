@@ -43,7 +43,7 @@ REV_B = ROOT / "weight_program" / "v0_4" / "wsp-b" / "inputs" / "REVISION.md"
 
 FIGURES_DIR = ROOT / "scripts" / "blog" / "figures"
 # One module per figure, in post order; each exposes build() -> dict and an OUT path.
-FIGURE_MODULES = ("f0", "f1", "f3", "f2", "f4c", "f4b", "f5", "f8", "f4", "f7", "f18", "f9", "f26", "f10", "f11",
+FIGURE_MODULES = ("f0", "f28", "f1", "f3", "f2", "f4c", "f4b", "f5", "f8", "f4", "f7", "f18", "f9", "f26", "f10", "f11",
                   "f27", "f13", "f23", "f24", "f25", "f19", "f19b", "f21", "f22", "f15")
 
 QUICK_NOTE = ("quick look = 1,000 val sessions (VAL_QUICK.txt), excluding_disclosed; reported beside, never instead "
