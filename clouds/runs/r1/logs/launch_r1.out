@@ -1,0 +1,8 @@
+hand-over verified: 47 author files, 38 harness files
+settings cover every current entry of /Users/matthew/.claude (537 deny rules)
+HypaNet Clouds r1: US$10.0 spent, US$490.0 of US$500.0 left
+launching r1: model=claude-fable-5-1 fallback=none effort=max max_output=128000 max_budget_usd=490.00 (remaining cap 490.00, session total so far 0) session=952470cd-2ba5-4b9e-9071-0e51bbfe441a dir=/Users/matthew/Development/hypabolic/HypaNet-clouds-author
+transcript: /Users/matthew/Development/hypabolic/HypaNet/clouds/runs/r1/logs/r1.stream.jsonl
+audit: 277 tool calls, 279 turns, models ['claude-fable-5-1'], launch US$43.748181, run US$53.748181 (US$446.251819 left), 0 violations (0 executed), 0 file findings, 58 for review, 0 notes, 0 guard refusals, 0 denials, complete=False -> /Users/matthew/Development/hypabolic/HypaNet/clouds/runs/r1/logs/r1.audit.json
+HypaNet Clouds r1: US$53.748181 spent, US$446.251819 of US$500.0 left
+The session ended without NETWORK COMPLETE. If it stopped on an API or limit error, continue with: scripts/launch.sh continue <K>
