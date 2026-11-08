@@ -132,8 +132,12 @@ def summary(logs: Path, cap: float = CAP_USD) -> dict:
             unresolved.append(name)
             if r["charged_as"].startswith("lower bound"):
                 lower.append(name)
+    # spend by launches archived out of logs/ (aborted before the real run), charged against the same cap
+    prior = _json(logs / "PRIOR_SPEND.json")
+    prior = prior if isinstance(prior, list) else []
+    total += sum(float(p["usd"]) for p in prior if isinstance(p, dict) and isinstance(p.get("usd"), (int, float)))
     total = round(total, 6)
-    return {"phase": PHASE, "cap_usd": cap, "total_usd": total, "remaining_usd": round(max(0.0, cap - total), 6),
+    return {"phase": PHASE, "prior_spend": prior, "cap_usd": cap, "total_usd": total, "remaining_usd": round(max(0.0, cap - total), 6),
             "reached": total >= cap, "unresolved": unresolved, "lower_bound_only": lower, "launches": launches,
             "sessions": sorted(by_session),
             "method": "per-session-id delta of the cumulative total_cost_usd; unresolved launches at an operator "

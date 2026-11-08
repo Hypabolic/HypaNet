@@ -1,0 +1,2 @@
+[{"launch": "r1 (first attempt, archived in runs/r1/aborted_x1)", "usd": 10.0,
+  "reason": "killed by the orchestrator after about 15 minutes: the settings' Bash(python3:*) deny also denied every ./python3 call. Its transcript has no result event; token usage (630k cache-read, 80k cache-write, 12 turns) prices at roughly US$2-4, charged conservatively at US$10."}]

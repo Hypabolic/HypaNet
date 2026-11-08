@@ -28,7 +28,7 @@ HOME = Path.home()
 
 
 BASH_DENY = ("ls", "cat", "head", "tail", "less", "more", "find", "grep", "rg", "sed", "awk", "wc", "file", "stat",
-             "du", "tree", "xxd", "od", "strings", "cd", "echo", "printf", "open", "python", "python3", "uv", "git",
+             "du", "tree", "xxd", "od", "strings", "cd", "echo", "printf", "open", "uv", "git",
              "npx", "node", "curl", "env", "pwd", "sh", "bash", "zsh", "cp", "mv", "rm", "ln", "chmod", "touch",
              "mkdir", "tee", "xargs", "perl", "ruby", "osascript", "wget", "readlink", "realpath", "diff", "sort",
              "uniq", "cut", "tr", "basename", "dirname", "which", "type", "command", "export", "source", "test",
@@ -71,8 +71,10 @@ def main(argv: list[str]) -> int:
     for t in ("Edit", "Write"):
         deny.append(f"{t}({a(claude / 'projects' / own)}/**)")
     # Claude Code approves some read-only shell commands without an allow rule (v0.5 Phase C ran `ls -la` and
-    # `ls -laR` outside its dir that way); explicit denies take precedence. ./python3 still matches its own allow
-    # rule: a prefix rule matches from the start of the command, so Bash(python3:*) does not cover ./python3.
+    # `ls -laR` outside its dir that way); explicit denies take precedence. No python/python3 deny: in r1's first
+    # launch (2026-11-09) Bash(python3:*) also denied every ./python3 command, so a deny can match a command's base
+    # name, not only its prefix. Plain python3 is not auto-approved, so dontAsk denies it without a rule. Never add
+    # a deny whose name is render, inspect or python3.
     deny += [f"Bash({c}:*)" for c in BASH_DENY]
     for p in ("./KIT.md", "./PROMPT.md", "./HANDOVER.json", "./render", "./inspect", "./python3"):
         deny += [f"Edit({p})", f"Write({p})"]

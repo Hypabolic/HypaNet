@@ -211,9 +211,21 @@ def audit(log: Path, author: Path) -> dict:
     sources_seen = 0
     bodies: list[tuple[str, str, str, str, str]] = []  # (tag, tool, rel path, full path, written text)
     run_scripts: set[str] = set()
+    seen_denials: set = set()
     for ev in evs:
         if ev.get("type") == "result":
-            denials.extend(ev.get("permission_denials") or [])
+            for d in ev.get("permission_denials") or []:
+                if d.get("tool_use_id") not in seen_denials:
+                    seen_denials.add(d.get("tool_use_id"))
+                    denials.append(d)
+            continue
+        if ev.get("type") == "system" and ev.get("subtype") == "permission_denied":
+            # a killed launch has no result event; the per-call system events are the only record
+            if ev.get("tool_use_id") not in seen_denials:
+                seen_denials.add(ev.get("tool_use_id"))
+                denials.append({"tool_name": ev.get("tool_name"), "tool_use_id": ev.get("tool_use_id"),
+                                "message": ev.get("message")})
+            denied.add(ev.get("tool_use_id"))
             continue
         msg = ev.get("message") if isinstance(ev.get("message"), dict) else {}
         if ev.get("type") == "assistant" and isinstance(msg.get("model"), str) and msg["model"] != "<synthetic>":

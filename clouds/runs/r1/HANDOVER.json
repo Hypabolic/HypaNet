@@ -1,6 +1,6 @@
 {
   "kind": "hypanet-clouds-author",
-  "created_utc": "2026-11-08T13:33:20Z",
+  "created_utc": "2026-11-08T14:29:36Z",
   "test": false,
   "test_root": null,
   "author_dir": "/Users/matthew/Development/hypabolic/HypaNet-clouds-author",
@@ -74,7 +74,7 @@
     "kit/build/scene/sky_sunset.f32": "072c9bdd3c359a6d496d0afba277b2d099c8162c86d485c21a12e6d282774b93",
     "kit/build/scene/sky_sunset.json": "5f0d514dda2f0e57a1658cb7dbc161d780a2a8e24624fd1fd03b77245f0c0628",
     "kit/kit_build.py": "25103b5d001d932517a96499783918d4bc1244a347b8defcfd79a9af0caa4cdc",
-    "kit/make_settings.py": "56efc7833f32a7c743be956d2f4bcc625246892a055c25bb43b1b24a7e3e5c5d",
+    "kit/make_settings.py": "6c92a8f711eec2e34e835e5b2a233a3f6086505f8b06faafda8e6d47d6d25a59",
     "kit/prompt.md": "73db0c8c593d2a2cb2c041af7b28e78c25fec644717e8929ff47a21b2846bc1f",
     "kit/prompt_continue.md": "2f8543ca296a21f09978e47ca36d350b42881de8d7c92628205a3c65ecfc2a7b",
     "kit/tools/author_tool.py": "68b7c11bf32ada1de5a65bec87b00884a94af268e9a19097a21a8d7519665e85",
