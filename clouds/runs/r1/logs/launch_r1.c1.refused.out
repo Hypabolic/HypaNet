@@ -1,0 +1,13 @@
+hand-over verified: 47 author files, 38 harness files
+MISSING: Read(//Users/matthew/.claude/telemetry)
+MISSING: Read(//Users/matthew/.claude/telemetry/**)
+MISSING: Grep(//Users/matthew/.claude/telemetry)
+MISSING: Grep(//Users/matthew/.claude/telemetry/**)
+MISSING: Glob(//Users/matthew/.claude/telemetry)
+MISSING: Glob(//Users/matthew/.claude/telemetry/**)
+MISSING: Edit(//Users/matthew/.claude/telemetry)
+MISSING: Edit(//Users/matthew/.claude/telemetry/**)
+MISSING: Write(//Users/matthew/.claude/telemetry)
+MISSING: Write(//Users/matthew/.claude/telemetry/**)
+re-run: uv run python kit/make_settings.py
+refusing: /Users/matthew/Development/hypabolic/HypaNet/clouds/kit/settings.json does not cover every current entry of ~/.claude (re-run: uv run python kit/make_settings.py)
