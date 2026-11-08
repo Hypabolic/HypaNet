@@ -1,0 +1,20 @@
+GPU: ANGLE (Apple, ANGLE Metal Renderer: Apple M4 Pro, Unspecified Version) | startup 0.8s (pyramid 528 ms)
+network: 10 probes, layers [3, 2, 9], 68 params
+front_noon: 640x400, 16 frames, 0.68 s render (0.84 s wall; 16 tiles, 520 draws, max draw 8 ms, eval cap 256; 2.26 M evals/frame) -> runs/r1/score/single/front_noon_single.png
+front_golden: 640x400, 16 frames, 0.66 s render (0.75 s wall; 16 tiles, 512 draws, max draw 8 ms, eval cap 256; 2.26 M evals/frame) -> runs/r1/score/single/front_golden_single.png
+front_sunset: 640x400, 16 frames, 0.66 s render (0.75 s wall; 16 tiles, 512 draws, max draw 8 ms, eval cap 256; 2.26 M evals/frame) -> runs/r1/score/single/front_sunset_single.png
+side_noon: 640x400, 16 frames, 0.63 s render (0.72 s wall; 16 tiles, 512 draws, max draw 9 ms, eval cap 256; 2.52 M evals/frame) -> runs/r1/score/single/side_noon_single.png
+side_afternoon: 640x400, 16 frames, 0.63 s render (0.71 s wall; 16 tiles, 512 draws, max draw 7 ms, eval cap 256; 2.52 M evals/frame) -> runs/r1/score/single/side_afternoon_single.png
+side_sunset: 640x400, 16 frames, 0.64 s render (0.71 s wall; 16 tiles, 512 draws, max draw 7 ms, eval cap 256; 2.52 M evals/frame) -> runs/r1/score/single/side_sunset_single.png
+backlit_afternoon: 640x400, 16 frames, 0.59 s render (0.67 s wall; 16 tiles, 512 draws, max draw 11 ms, eval cap 256; 2.06 M evals/frame) -> runs/r1/score/single/backlit_afternoon_single.png
+backlit_golden: 640x400, 16 frames, 0.60 s render (0.67 s wall; 16 tiles, 512 draws, max draw 11 ms, eval cap 256; 2.06 M evals/frame) -> runs/r1/score/single/backlit_golden_single.png
+backlit_sunset: 640x400, 16 frames, 0.59 s render (0.67 s wall; 16 tiles, 512 draws, max draw 7 ms, eval cap 256; 2.06 M evals/frame) -> runs/r1/score/single/backlit_sunset_single.png
+below_noon: 640x400, 16 frames, 0.62 s render (0.70 s wall; 16 tiles, 512 draws, max draw 6 ms, eval cap 256; 2.62 M evals/frame) -> runs/r1/score/single/below_noon_single.png
+below_golden: 640x400, 16 frames, 0.64 s render (0.73 s wall; 16 tiles, 512 draws, max draw 6 ms, eval cap 256; 2.62 M evals/frame) -> runs/r1/score/single/below_golden_single.png
+distant_sunset: 640x400, 16 frames, 0.52 s render (0.59 s wall; 16 tiles, 512 draws, max draw 6 ms, eval cap 256; 0.85 M evals/frame) -> runs/r1/score/single/distant_sunset_single.png
+front_afternoon: 640x400, 16 frames, 0.66 s render (0.74 s wall; 16 tiles, 512 draws, max draw 8 ms, eval cap 256; 2.26 M evals/frame) -> runs/r1/score/single/front_afternoon_single.png
+side_golden: 640x400, 16 frames, 0.64 s render (0.72 s wall; 16 tiles, 512 draws, max draw 9 ms, eval cap 256; 2.52 M evals/frame) -> runs/r1/score/single/side_golden_single.png
+backlit_noon: 640x400, 16 frames, 0.59 s render (0.67 s wall; 16 tiles, 512 draws, max draw 7 ms, eval cap 256; 2.06 M evals/frame) -> runs/r1/score/single/backlit_noon_single.png
+below_sunset: 640x400, 16 frames, 0.62 s render (0.70 s wall; 16 tiles, 512 draws, max draw 6 ms, eval cap 256; 2.62 M evals/frame) -> runs/r1/score/single/below_sunset_single.png
+distant_golden: 640x400, 16 frames, 0.50 s render (0.58 s wall; 16 tiles, 512 draws, max draw 6 ms, eval cap 256; 0.85 M evals/frame) -> runs/r1/score/single/distant_golden_single.png
+quarter_afternoon: 640x400, 16 frames, 0.66 s render (0.74 s wall; 16 tiles, 512 draws, max draw 8 ms, eval cap 256; 2.44 M evals/frame) -> runs/r1/score/single/quarter_afternoon_single.png

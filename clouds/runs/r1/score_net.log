@@ -1,0 +1,20 @@
+GPU: ANGLE (Apple, ANGLE Metal Renderer: Apple M4 Pro, Unspecified Version) | startup 0.8s (pyramid 521 ms)
+network: 41 probes, layers [29, 26, 23, 13, 9], 3057 params
+front_noon: 640x400, 16 frames, 3.39 s render (3.55 s wall; 16 tiles, 614 draws, max draw 44 ms, eval cap 64; 2.26 M evals/frame) -> runs/r1/score/net/front_noon_network.png
+front_golden: 640x400, 16 frames, 3.36 s render (3.46 s wall; 16 tiles, 608 draws, max draw 44 ms, eval cap 64; 2.26 M evals/frame) -> runs/r1/score/net/front_golden_network.png
+front_sunset: 640x400, 16 frames, 3.36 s render (3.45 s wall; 16 tiles, 608 draws, max draw 44 ms, eval cap 64; 2.26 M evals/frame) -> runs/r1/score/net/front_sunset_network.png
+side_noon: 640x400, 16 frames, 3.10 s render (3.18 s wall; 16 tiles, 566 draws, max draw 51 ms, eval cap 64; 2.52 M evals/frame) -> runs/r1/score/net/side_noon_network.png
+side_afternoon: 640x400, 16 frames, 3.03 s render (3.12 s wall; 16 tiles, 541 draws, max draw 57 ms, eval cap 124; 2.52 M evals/frame) -> runs/r1/score/net/side_afternoon_network.png
+side_sunset: 640x400, 16 frames, 3.03 s render (3.12 s wall; 16 tiles, 538 draws, max draw 52 ms, eval cap 124; 2.52 M evals/frame) -> runs/r1/score/net/side_sunset_network.png
+backlit_afternoon: 640x400, 16 frames, 2.83 s render (2.91 s wall; 16 tiles, 573 draws, max draw 40 ms, eval cap 62; 2.06 M evals/frame) -> runs/r1/score/net/backlit_afternoon_network.png
+backlit_golden: 640x400, 16 frames, 2.86 s render (2.94 s wall; 16 tiles, 577 draws, max draw 40 ms, eval cap 62; 2.06 M evals/frame) -> runs/r1/score/net/backlit_golden_network.png
+backlit_sunset: 640x400, 16 frames, 2.87 s render (2.95 s wall; 16 tiles, 578 draws, max draw 41 ms, eval cap 62; 2.06 M evals/frame) -> runs/r1/score/net/backlit_sunset_network.png
+below_noon: 640x400, 16 frames, 3.17 s render (3.25 s wall; 16 tiles, 608 draws, max draw 38 ms, eval cap 62; 2.62 M evals/frame) -> runs/r1/score/net/below_noon_network.png
+below_golden: 640x400, 16 frames, 3.17 s render (3.25 s wall; 16 tiles, 608 draws, max draw 38 ms, eval cap 62; 2.62 M evals/frame) -> runs/r1/score/net/below_golden_network.png
+distant_sunset: 640x400, 16 frames, 2.63 s render (2.70 s wall; 16 tiles, 593 draws, max draw 34 ms, eval cap 124; 0.85 M evals/frame) -> runs/r1/score/net/distant_sunset_network.png
+front_afternoon: 640x400, 16 frames, 3.41 s render (3.48 s wall; 16 tiles, 608 draws, max draw 45 ms, eval cap 62; 2.26 M evals/frame) -> runs/r1/score/net/front_afternoon_network.png
+side_golden: 640x400, 16 frames, 2.97 s render (3.05 s wall; 16 tiles, 536 draws, max draw 42 ms, eval cap 124; 2.52 M evals/frame) -> runs/r1/score/net/side_golden_network.png
+backlit_noon: 640x400, 16 frames, 2.58 s render (2.65 s wall; 16 tiles, 512 draws, max draw 39 ms, eval cap 124; 2.06 M evals/frame) -> runs/r1/score/net/backlit_noon_network.png
+below_sunset: 640x400, 16 frames, 3.04 s render (3.12 s wall; 16 tiles, 563 draws, max draw 43 ms, eval cap 62; 2.62 M evals/frame) -> runs/r1/score/net/below_sunset_network.png
+distant_golden: 640x400, 16 frames, 2.63 s render (2.71 s wall; 16 tiles, 594 draws, max draw 33 ms, eval cap 124; 0.85 M evals/frame) -> runs/r1/score/net/distant_golden_network.png
+quarter_afternoon: 640x400, 16 frames, 2.93 s render (3.01 s wall; 16 tiles, 543 draws, max draw 66 ms, eval cap 104; 2.44 M evals/frame) -> runs/r1/score/net/quarter_afternoon_network.png

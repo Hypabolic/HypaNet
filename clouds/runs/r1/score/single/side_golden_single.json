@@ -1,0 +1,29 @@
+{
+ "pair": "side_golden",
+ "shot": "side",
+ "preset": "golden",
+ "exposure": 0.7937,
+ "mode": "net",
+ "no_background": false,
+ "network": "runs/r1/author/work/single.json",
+ "frames": 16,
+ "width": 640,
+ "height": 400,
+ "render_s": 0.643699999988079,
+ "wall_s": 0.7229896250064485,
+ "compile_ms": 0,
+ "draws": 512,
+ "passes": 256,
+ "tiles": 16,
+ "tile_splits": 0,
+ "max_draw_ms": 9.299999952316284,
+ "budget_ms": 40.0,
+ "evals_per_frame": 2517973.6875,
+ "final_eval_cap": 256,
+ "nonfinite_pixels": 0,
+ "tonemap_check": {
+  "max_abs_diff_8bit": 1,
+  "pixels_differing": 4
+ },
+ "gpu": "ANGLE (Apple, ANGLE Metal Renderer: Apple M4 Pro, Unspecified Version)"
+}

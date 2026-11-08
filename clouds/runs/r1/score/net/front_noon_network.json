@@ -1,0 +1,29 @@
+{
+ "pair": "front_noon",
+ "shot": "front",
+ "preset": "noon",
+ "exposure": 0.315,
+ "mode": "net",
+ "no_background": false,
+ "network": "runs/r1/author/work/network.json",
+ "frames": 16,
+ "width": 640,
+ "height": 400,
+ "render_s": 3.393899999976158,
+ "wall_s": 3.553320416016504,
+ "compile_ms": 37.69999998807907,
+ "draws": 614,
+ "passes": 358,
+ "tiles": 16,
+ "tile_splits": 0,
+ "max_draw_ms": 43.59999996423721,
+ "budget_ms": 40.0,
+ "evals_per_frame": 2255400.75,
+ "final_eval_cap": 64,
+ "nonfinite_pixels": 0,
+ "tonemap_check": {
+  "max_abs_diff_8bit": 1,
+  "pixels_differing": 4
+ },
+ "gpu": "ANGLE (Apple, ANGLE Metal Renderer: Apple M4 Pro, Unspecified Version)"
+}

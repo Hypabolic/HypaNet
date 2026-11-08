@@ -1,0 +1,29 @@
+{
+ "pair": "backlit_sunset",
+ "shot": "backlit",
+ "preset": "sunset",
+ "exposure": 1.5874,
+ "mode": "net",
+ "no_background": false,
+ "network": "runs/r1/author/work/network.json",
+ "frames": 16,
+ "width": 640,
+ "height": 400,
+ "render_s": 2.865800000011921,
+ "wall_s": 2.9457995000411756,
+ "compile_ms": 0,
+ "draws": 578,
+ "passes": 322,
+ "tiles": 16,
+ "tile_splits": 0,
+ "max_draw_ms": 41,
+ "budget_ms": 40.0,
+ "evals_per_frame": 2064235.9375,
+ "final_eval_cap": 62,
+ "nonfinite_pixels": 0,
+ "tonemap_check": {
+  "max_abs_diff_8bit": 1,
+  "pixels_differing": 4
+ },
+ "gpu": "ANGLE (Apple, ANGLE Metal Renderer: Apple M4 Pro, Unspecified Version)"
+}

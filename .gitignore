@@ -26,3 +26,6 @@ experiments/v0_4/benchmarks/*/runs/
 
 # v0.5 OOD diagnosis: window rows regenerate from analyse.py
 experiments/v0_5/ood_analysis/rows*.jsonl.gz
+
+# Clouds scoring: linear renders regenerate with renderer/render.py --set all (PNGs and JSON are committed)
+clouds/runs/r1/score/**/*.npy

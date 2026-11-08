@@ -1,5 +1,5 @@
 {
-  "log": "/Users/matthew/Development/hypabolic/HypaNet/clouds/runs/r1/logs/r1.stream.jsonl",
+  "log": "runs/r1/logs/r1.stream.jsonl",
   "author_dir": "/Users/matthew/Development/hypabolic/HypaNet-clouds-author",
   "tool_calls": 277,
   "models": [
@@ -8,8 +8,8 @@
   "num_turns": 279,
   "result_events": 1,
   "launch_cost_usd": 43.748181,
-  "run_total_usd": 53.748181,
-  "run_remaining_usd": 446.251819,
+  "run_total_usd": 75.770105,
+  "run_remaining_usd": 424.229895,
   "network_complete": false,
   "violations": [],
   "executed_violations": 0,
