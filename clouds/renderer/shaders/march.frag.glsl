@@ -61,6 +61,12 @@ uniform sampler2D uSkyB;
 uniform float uSkyMix;                // sky = mix(A, B, uSkyMix)
 uniform float uSkyRot;                // radians: map azimuth is shifted by this (viewer sun-azimuth slider)
 uniform float uBgScale;               // 1; HARNESS ONLY: 0 drops the background term L += T sky(v)
+// ---- optional (videos, clouds/video/): sun irradiance by altitude and a visible sun disk; both off for the references ----
+uniform int uEsunLutOn;               // 1: E_sun at a sample = uEsunLut interpolated at its altitude y (else uEsun)
+uniform vec3 uEsunLut[32];            // E_sun at y = uEsunLutY.x + k / uEsunLutY.y, k = 0..31 (Earth's shadow -> 0)
+uniform vec2 uEsunLutY;               // (y0, 1 / dy)
+uniform vec4 uSunDisk;                // (cos angular radius, on, view elevation lo, hi) in radians
+uniform vec3 uSunDiskLut[16];         // disk radiance (mean over the disk) at view elevations lo..hi
 
 // ---- network ----
 uniform sampler2D uNet;               // RGBA32F, width 1024 (see net.js)
@@ -159,6 +165,24 @@ vec3 sky(vec3 d) {
   vec3 a = skyTex(uSkyA, uv);
   if (uSkyMix <= 0.0) return a;
   return mix(a, skyTex(uSkyB, uv), uSkyMix);
+}
+
+vec3 esunAt(float y) {
+  if (uEsunLutOn == 0) return uEsun;
+  float u = clamp((y - uEsunLutY.x) * uEsunLutY.y, 0.0, 31.0);
+  int k = min(int(u), 30);
+  return mix(uEsunLut[k], uEsunLut[k + 1], u - float(k));
+}
+// sun disk seen along d (limb darkening 1 - 0.6 (1 - mu), normalised to the disk mean); only above the horizon
+vec3 sunDisk(vec3 d) {
+  if (uSunDisk.y <= 0.0 || d.y <= 0.0) return vec3(0.0);
+  float c = dot(d, uSun);
+  if (c < uSunDisk.x) return vec3(0.0);
+  float r = sqrt(max(0.0, 1.0 - c * c)) / sqrt(1.0 - uSunDisk.x * uSunDisk.x);
+  float limb = (1.0 - 0.6 * (1.0 - sqrt(max(0.0, 1.0 - r * r)))) / 0.8;
+  float u = clamp((asin(clamp(d.y, -1.0, 1.0)) - uSunDisk.z) / (uSunDisk.w - uSunDisk.z), 0.0, 1.0) * 15.0;
+  int k = min(int(u), 14);
+  return mix(uSunDiskLut[k], uSunDiskLut[k + 1], u - float(k)) * limb;
 }
 
 // ---- camera ray for pixel (column, row from top) ----
@@ -334,7 +358,7 @@ bool marchSegment(Ray R, ivec2 pix, int frame, inout int i, inout float T, inout
         capture(0, t); capture(1, x.x); capture(2, x.y); capture(3, x.z);
         capture(4, d); capture(5, T); capture(6, R.dt); capture(7, a);
         evalNet(x, R.rd, R.e2, R.e3, aSun, aSky, aGnd);
-        vec3 S = aSun * uEsun + aSky * uLsky + aGnd * uLgnd;
+        vec3 S = aSun * esunAt(x.y) + aSky * uLsky + aGnd * uLgnd;
         capture(sBase, S.r); capture(sBase + 1, S.g); capture(sBase + 2, S.b);
 #ifdef DEBUG_EXACT
         float Ts = sunTransmittance(x, fract(sj + float(nacc) * 0.6180339887));
@@ -347,7 +371,7 @@ bool marchSegment(Ray R, ivec2 pix, int frame, inout int i, inout float T, inout
       evalNet(x, R.rd, R.e2, R.e3, aSun, aSky, aGnd);
 #endif
 #if !defined(DEBUG_RAY)
-      vec3 S = aSun * uEsun + aSky * uLsky + aGnd * uLgnd;
+      vec3 S = aSun * esunAt(x.y) + aSky * uLsky + aGnd * uLgnd;
       L += T * uAlbedo * S * a;
 #endif
       T *= tr;
@@ -409,7 +433,9 @@ void main() {
   outL = vec4(L, 0.0);
 #elif defined(FINALIZE)
   vec4 s0 = texelFetch(uState0, fc, 0);
-  vec3 L = texelFetch(uState1, fc, 0).rgb + s0.y * uBgScale * sky(R.rd);
+  // the sun disk only through rays that left the box (a ray cut at T < 0.002 hit opaque cloud)
+  vec3 bg = sky(R.rd) + (s0.y >= 0.002 ? sunDisk(R.rd) : vec3(0.0));
+  vec3 L = texelFetch(uState1, fc, 0).rgb + s0.y * uBgScale * bg;
   // frames are numbered from uFrame0 within this accumulation; alpha carries the draw stamp (main.js)
   int n = uFrame - uFrame0;
   if (n == 0) {

@@ -29,3 +29,10 @@ experiments/v0_5/ood_analysis/rows*.jsonl.gz
 
 # Clouds scoring: linear renders regenerate with renderer/render.py --set all (PNGs and JSON are committed)
 clouds/runs/r1/score/**/*.npy
+
+# Clouds videos: per-frame scenes, linear frames and PNGs regenerate with clouds/video/make_video.py
+clouds/video/out/*/scene/
+clouds/video/out/*/linear/
+clouds/video/out/*/frames/
+clouds/video/out_full.log
+clouds/video/out/*/*.gif

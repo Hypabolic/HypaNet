@@ -119,6 +119,9 @@ export class CloudRenderer {
       uSun: { value: new THREE.Vector3(0, 1, 0) }, uLu: { value: new THREE.Vector3() }, uLw: { value: new THREE.Vector3() },
       uEsun: { value: new THREE.Vector3() }, uLsky: { value: new THREE.Vector3() }, uLgnd: { value: new THREE.Vector3() },
       uSkyA: { value: null }, uSkyB: { value: null }, uSkyMix: { value: 0 }, uSkyRot: { value: 0 }, uBgScale: { value: 1 },
+      uEsunLutOn: { value: 0 }, uEsunLut: { value: Array.from({ length: 32 }, () => new THREE.Vector3()) },
+      uEsunLutY: { value: new THREE.Vector2(0, 1) }, uSunDisk: { value: new THREE.Vector4(1, 0, 0, 1) },
+      uSunDiskLut: { value: Array.from({ length: 16 }, () => new THREE.Vector3()) },
       uNet: { value: dummyNet }, uNumProbes: { value: 0 }, uNumLayers: { value: 0 },
       uProbeA: { value: Array.from({ length: 64 }, zero4) }, uProbeB: { value: Array.from({ length: 64 }, zero4) },
       uLayer: { value: Array.from({ length: 6 }, zero4) },
@@ -223,6 +226,12 @@ export class CloudRenderer {
     tex.minFilter = tex.magFilter = THREE.NearestFilter;
     tex.generateMipmaps = false;
     tex.needsUpdate = true;
+    // per-frame sky maps (videos) would fill GPU memory: keep at most 6, oldest out first (references use 4)
+    while (this.skyCache.size >= 6) {
+      const [k, t] = this.skyCache.entries().next().value;
+      t.dispose();
+      this.skyCache.delete(k);
+    }
     this.skyCache.set(preset, tex);
     return tex;
   }
@@ -245,12 +254,33 @@ export class CloudRenderer {
     this.u.uEsun.value.set(...p.E_sun);
     this.u.uLsky.value.set(...p.L_sky);
     this.u.uLgnd.value.set(...p.L_gnd);
+    this.setVideoLight(p);
     const t = await this.skyTexture(name);
     this.u.uSkyA.value = t;
     this.u.uSkyB.value = t;
     this.u.uSkyMix.value = 0;
     this.u.uSkyRot.value = 0;
     this.preset = name;
+  }
+
+  /**
+   * Optional preset fields written by clouds/video/make_video.py (absent in scene/out/shots.json, so references and
+   * the viewer are unchanged): E_sun_lut {y0, dy, values[32]} gives E_sun by altitude (atmosphere path and Earth's
+   * shadow); sun_disk {cos_radius, el_lo, el_hi, radiance[16]} draws the sun disk behind the cloud.
+   */
+  setVideoLight(p) {
+    const lut = p.E_sun_lut, disk = p.sun_disk;
+    this.u.uEsunLutOn.value = lut ? 1 : 0;
+    if (lut) {
+      lut.values.forEach((v, k) => this.u.uEsunLut.value[k].set(...v));
+      this.u.uEsunLutY.value.set(lut.y0, 1 / lut.dy);
+    }
+    if (disk) {
+      this.u.uSunDisk.value.set(disk.cos_radius, 1, disk.el_lo, disk.el_hi);
+      disk.radiance.forEach((v, k) => this.u.uSunDiskLut.value[k].set(...v));
+    } else {
+      this.u.uSunDisk.value.set(1, 0, 0, 1);
+    }
   }
 
   /**
@@ -262,6 +292,7 @@ export class CloudRenderer {
     const sm = this.shots.sun_model;
     const e = elevDeg * RAD, a = azDeg * RAD;
     this.setSunVector([Math.cos(e) * Math.sin(a), Math.sin(e), -Math.cos(e) * Math.cos(a)]);
+    this.setVideoLight({});
     const m = 1 / (Math.sin(e) + 0.50572 * Math.pow(elevDeg + 6.07995, -1.6364));
     const E = [0, 1, 2].map((c) => 20 * Math.exp(-(sm.beta_R[c] * 8000 + sm.beta_M_ext * 1200 + sm.tau_O3[c]) * m));
     this.u.uEsun.value.set(...E);
