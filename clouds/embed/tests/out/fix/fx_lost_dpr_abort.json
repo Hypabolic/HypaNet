@@ -1,0 +1,159 @@
+{
+ "lost": {
+  "idle_while_lost": true,
+  "harness_max_rel": 0.004525395110249519,
+  "cloud_before": 0.14109628648883063,
+  "cloud_after": 0.14109659248024348,
+  "screenshot_mean_abs_diff": 0.4508258101851852,
+  "after2_mean_abs_diff": 0.4513773148148148,
+  "veil_after_3s": [
+   false,
+   "The graphics context was lost. Waiting for the browser to restore it\u2026"
+  ],
+  "veil_after_restore": [
+   true,
+   "The graphics context was lost. Waiting for the browser to restore it\u2026"
+  ],
+  "console": [
+   "[log] THREE.WebGLRenderer: Context Lost.",
+   "[log] THREE.WebGLRenderer: Context Restored.",
+   "[warning] WebGL: INVALID_OPERATION: delete: object does not belong to this context",
+   "[warning] WebGL: INVALID_OPERATION: delete: object does not belong to this context",
+   "[warning] WebGL: INVALID_OPERATION: delete: object does not belong to this context",
+   "[warning] WebGL: INVALID_OPERATION: delete: object does not belong to this context",
+   "[log] THREE.WebGLRenderer: Context Lost.",
+   "[log] THREE.WebGLRenderer: Context Restored.",
+   "[warning] WebGL: INVALID_OPERATION: delete: object does not belong to this context",
+   "[warning] WebGL: INVALID_OPERATION: delete: object does not belong to this context",
+   "[warning] WebGL: INVALID_OPERATION: delete: object does not belong to this context",
+   "[warning] WebGL: INVALID_OPERATION: delete: object does not belong to this context"
+  ]
+ },
+ "abort": {
+  "rows": [
+   {
+    "delay": 0,
+    "resolved": true,
+    "readyRejected": "AbortError",
+    "children": 0,
+    "disposed": true,
+    "allocated": false,
+    "gl": "null",
+    "loadKeys": []
+   },
+   {
+    "delay": -1,
+    "resolved": true,
+    "readyRejected": "AbortError",
+    "children": 0,
+    "disposed": true,
+    "allocated": false,
+    "gl": "null",
+    "loadKeys": []
+   },
+   {
+    "delay": 20,
+    "resolved": true,
+    "readyRejected": "AbortError",
+    "children": 0,
+    "disposed": true,
+    "allocated": false,
+    "gl": "null",
+    "loadKeys": [
+     "downloadMs",
+     "densityGzBytes"
+    ]
+   },
+   {
+    "delay": 100,
+    "resolved": true,
+    "readyRejected": "AbortError",
+    "children": 0,
+    "disposed": true,
+    "allocated": false,
+    "gl": "null",
+    "loadKeys": [
+     "downloadMs",
+     "densityGzBytes",
+     "inflateMs"
+    ]
+   },
+   {
+    "delay": 300,
+    "resolved": true,
+    "readyRejected": "AbortError",
+    "children": 0,
+    "disposed": true,
+    "allocated": false,
+    "gl": "null",
+    "loadKeys": [
+     "downloadMs",
+     "densityGzBytes",
+     "inflateMs"
+    ]
+   },
+   {
+    "delay": 600,
+    "resolved": true,
+    "readyRejected": null,
+    "children": 0,
+    "disposed": true,
+    "allocated": true,
+    "gl": "null",
+    "loadKeys": [
+     "downloadMs",
+     "densityGzBytes",
+     "inflateMs",
+     "pyramidMs",
+     "pyramidWallMs",
+     "pyramidWorker",
+     "uploadMs",
+     "compileMs",
+     "staticBakeMs",
+     "totalMs",
+     "firstFrameMs"
+    ]
+   }
+  ],
+  "console": []
+ },
+ "dpr": {
+  "start": [
+   800,
+   500,
+   1
+  ],
+  "after_cdp_only": [
+   800,
+   500,
+   2
+  ],
+  "after_mq_change": [
+   1600,
+   1000,
+   2
+  ],
+  "queries_armed": [
+   "(resolution: 1dppx)",
+   "(resolution: 2dppx)"
+  ],
+  "running_loop": [
+   1200,
+   750,
+   1.5
+  ]
+ },
+ "checks": [
+  "ok   context lost: the loop stops",
+  "FAIL context restore: harness render identical (max rel 4.53e-03)",
+  "ok   context restore: interactive image converges to the same image (mean |d| 0.451 levels)",
+  "ok   lost message after 3 s [False, 'The graphics context was lost. Waiting for the browser to restore it\u2026'], hidden after restore True",
+  "ok   context loss: no console errors",
+  "ok   abort while loading (5 cases): resolves destroyed, ready rejects AbortError, DOM removed, no GPU textures",
+  "ok   abort after loading: an ordinary destroy",
+  "ok   abort: no console errors []",
+  "ok   idle page: media-query change -> canvas [1600, 1000, 2], re-armed (resolution: 2dppx)",
+  "ok   running loop: DPR 1.5 picked up -> canvas [1200, 750, 1.5]",
+  "ok   dpr: console []"
+ ]
+}

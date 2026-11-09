@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cloud, lit by a network</title>
+<meta name="description" content="A cumulus cloud lit in real time by a hand-written neural network. Drag to move the sun.">
+<style>
+  html, body { margin: 0; height: 100%; background: #7d98b4; overflow: hidden; }
+  #clouds { position: fixed; inset: 0; }
+  noscript { position: fixed; inset: 0; display: grid; place-items: center; font: 14px system-ui, sans-serif; color: #fff; }
+</style>
+</head>
+<body>
+<!-- Full-viewport page for an <iframe>. Query parameters: ?view=front|backlit|arc|sunset &el=DEG &az=DEG
+     &autoplay=1 (ignored with prefers-reduced-motion) &harness=1 (tests: window.cloudsHarness). -->
+<div id="clouds"></div>
+<noscript>This page needs JavaScript and WebGL 2.</noscript>
+<script type="module">
+import { mountClouds } from './clouds.js';
+const q = new URLSearchParams(location.search);
+const num = (k) => (q.has(k) && q.get(k) !== '' && Number.isFinite(Number(q.get(k))) ? Number(q.get(k)) : undefined);
+const clouds = await mountClouds(document.getElementById('clouds'), {
+  view: q.get('view') || undefined, elevation: num('el'), azimuth: num('az'),
+  autoplay: q.get('autoplay') === '1', harness: q.get('harness') === '1',
+});
+window.clouds = clouds;
+</script>
+</body>
+</html>

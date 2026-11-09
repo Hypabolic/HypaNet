@@ -1,0 +1,191 @@
+{
+ "ui_320": {
+  "caption": [
+   10,
+   147.875,
+   441.8125,
+   470
+  ],
+  "bar": [
+   200,
+   308,
+   402,
+   468
+  ],
+  "text": "Sun 47.8\u00b0 \u00b7 266\u00b0 W",
+  "overflow": false
+ },
+ "ui_360": {
+  "caption": [
+   10,
+   151.265625,
+   521.8125,
+   550
+  ],
+  "overlaps": 0,
+  "text": "Sun \u22125.2\u00b0 \u00b7 135\u00b0 SE",
+  "overflow": false
+ },
+ "ui_400": {
+  "caption": [
+   10,
+   151.265625,
+   261.8125,
+   290
+  ],
+  "overlaps": 0,
+  "text": "Sun 12.0\u00b0 \u00b7 135\u00b0 SE",
+  "overflow": false
+ },
+ "ui_401": {
+  "caption": [
+   10,
+   219.953125,
+   217.8125,
+   246
+  ],
+  "overlaps": 0,
+  "text": "Sun 12.0\u00b0 up \u00b7 azimuth 135\u00b0 SE",
+  "overflow": false
+ },
+ "ui_460": {
+  "caption": [
+   10,
+   309.828125,
+   217.8125,
+   246
+  ],
+  "overlaps": 0,
+  "text": "Sun \u22125.2\u00b0 below the horizon \u00b7 azimuth 135\u00b0 SE",
+  "overflow": false
+ },
+ "ui_520": {
+  "caption": [
+   10,
+   309.828125,
+   247.8125,
+   276
+  ],
+  "overlaps": 0,
+  "text": "Sun \u22125.2\u00b0 below the horizon \u00b7 azimuth 135\u00b0 SE",
+  "overflow": false
+ },
+ "ui_521": {
+  "caption": [
+   12,
+   311.828125,
+   247.8125,
+   276
+  ],
+  "overlaps": 0,
+  "text": "Sun \u22125.2\u00b0 below the horizon \u00b7 azimuth 135\u00b0 SE",
+  "overflow": false
+ },
+ "ui_600": {
+  "caption": [
+   12,
+   311.828125,
+   292.8125,
+   321
+  ],
+  "overlaps": 0,
+  "text": "Sun \u22125.2\u00b0 below the horizon \u00b7 azimuth 135\u00b0 SE",
+  "overflow": false
+ },
+ "ui_620": {
+  "caption": [
+   12,
+   311.828125,
+   307.8125,
+   336
+  ],
+  "overlaps": 0,
+  "text": "Sun \u22125.2\u00b0 below the horizon \u00b7 azimuth 135\u00b0 SE",
+  "overflow": false
+ },
+ "ui_621": {
+  "caption": [
+   12,
+   311.828125,
+   307.8125,
+   336
+  ],
+  "overlaps": 0,
+  "text": "Sun \u22125.2\u00b0 below the horizon \u00b7 azimuth 135\u00b0 SE",
+  "overflow": false
+ },
+ "ui_700": {
+  "caption": [
+   12,
+   311.828125,
+   357.8125,
+   386
+  ],
+  "overlaps": 0,
+  "text": "Sun \u22125.2\u00b0 below the horizon \u00b7 azimuth 135\u00b0 SE",
+  "overflow": false
+ },
+ "ui_701": {
+  "caption": [
+   12,
+   311.828125,
+   399.8125,
+   428
+  ],
+  "overlaps": 0,
+  "text": "Sun \u22125.2\u00b0 below the horizon \u00b7 azimuth 135\u00b0 SE",
+  "overflow": false
+ },
+ "ui_760": {
+  "caption": [
+   12,
+   311.828125,
+   434.8125,
+   463
+  ],
+  "overlaps": 0,
+  "text": "Sun \u22125.2\u00b0 below the horizon \u00b7 azimuth 135\u00b0 SE",
+  "overflow": false
+ },
+ "ui_1000": {
+  "caption": [
+   12,
+   221.953125,
+   584.8125,
+   613
+  ],
+  "overlaps": 0,
+  "text": "Sun 20.0\u00b0 up \u00b7 azimuth 135\u00b0 SE",
+  "overflow": false
+ },
+ "ui_host460": {
+  "caption": [
+   30,
+   329.828125,
+   237.8125,
+   266
+  ],
+  "overlaps": 0,
+  "text": "Sun \u22125.2\u00b0 below the horizon \u00b7 azimuth 135\u00b0 SE"
+ },
+ "moving_sky_full": false,
+ "checks": [
+  "ok   320 px: caption [10, 147.875, 441.8125, 470] clears the bar [200, 308, 402, 468]: 'Sun 47.8\u00b0 \u00b7 266\u00b0 W'",
+  "ok   360 px: caption 'Sun \u22125.2\u00b0 \u00b7 135\u00b0 SE' [10, 151.265625, 521.8125, 550] clears the bar",
+  "ok   400 px: caption 'Sun 12.0\u00b0 \u00b7 135\u00b0 SE' [10, 151.265625, 261.8125, 290] clears the bar",
+  "ok   401 px: caption 'Sun 12.0\u00b0 up \u00b7 azimuth 135\u00b0 SE' [10, 219.953125, 217.8125, 246] clears the bar",
+  "ok   460 px: caption 'Sun \u22125.2\u00b0 below the horizon \u00b7 azimuth 135\u00b0 SE' [10, 309.828125, 217.8125, 246] clears the bar",
+  "ok   520 px: caption 'Sun \u22125.2\u00b0 below the horizon \u00b7 azimuth 135\u00b0 SE' [10, 309.828125, 247.8125, 276] clears the bar",
+  "ok   521 px: caption 'Sun \u22125.2\u00b0 below the horizon \u00b7 azimuth 135\u00b0 SE' [12, 311.828125, 247.8125, 276] clears the bar",
+  "ok   600 px: caption 'Sun \u22125.2\u00b0 below the horizon \u00b7 azimuth 135\u00b0 SE' [12, 311.828125, 292.8125, 321] clears the bar",
+  "ok   620 px: caption 'Sun \u22125.2\u00b0 below the horizon \u00b7 azimuth 135\u00b0 SE' [12, 311.828125, 307.8125, 336] clears the bar",
+  "ok   621 px: caption 'Sun \u22125.2\u00b0 below the horizon \u00b7 azimuth 135\u00b0 SE' [12, 311.828125, 307.8125, 336] clears the bar",
+  "ok   700 px: caption 'Sun \u22125.2\u00b0 below the horizon \u00b7 azimuth 135\u00b0 SE' [12, 311.828125, 357.8125, 386] clears the bar",
+  "ok   701 px: caption 'Sun \u22125.2\u00b0 below the horizon \u00b7 azimuth 135\u00b0 SE' [12, 311.828125, 399.8125, 428] clears the bar",
+  "ok   760 px: caption 'Sun \u22125.2\u00b0 below the horizon \u00b7 azimuth 135\u00b0 SE' [12, 311.828125, 434.8125, 463] clears the bar",
+  "ok   1000 px: caption 'Sun 20.0\u00b0 up \u00b7 azimuth 135\u00b0 SE' [12, 221.953125, 584.8125, 613] clears the bar",
+  "ok   460 px host in a 1280 px page: caption 'Sun \u22125.2\u00b0 below the horizon \u00b7 azimuth 135\u00b0 SE' [30, 329.828125, 237.8125, 266] clears the bar",
+  "ok   coarse sky while dragging, full sky when still",
+  "ok   ui: console []"
+ ]
+}

@@ -1,0 +1,52 @@
+{
+ "resize": {
+  "screenshot_mean": [
+   99.060446405607,
+   99.0551110860427,
+   99.04202076088959,
+   99.03797071318748,
+   99.03922294036687,
+   99.04756362302896,
+   99.05325374320103,
+   99.06452077269078,
+   99.05420803680747,
+   99.058192094566,
+   99.06335401891253,
+   99.07391104363825,
+   99.07566640508543,
+   99.07470073537287,
+   99.06482433688316,
+   99.07557495824737
+  ],
+  "displays_frames": [
+   359,
+   388
+  ],
+  "continuous_resize_displays_frames": [
+   89,
+   90
+  ],
+  "displays_in_200ms_after_big_resize": 11,
+  "state": {
+   "cw": 1920,
+   "ch": 1250,
+   "moveScale": 0.55,
+   "costMsPerMpx": 10.253264004534241,
+   "stillN": 96,
+   "moveSize": [
+    1056,
+    688
+   ],
+   "stillSize": [
+    1920,
+    1250
+   ]
+  }
+ },
+ "checks": [
+  "ok   resize drag: no black frames (min screenshot mean 99.0)",
+  "ok   big resize: 11 display passes in the first 200 ms",
+  "ok   continuous resize: 89 of 90 frames drew the canvas",
+  "ok   resize: console []"
+ ]
+}

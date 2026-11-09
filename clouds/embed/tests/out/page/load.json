@@ -1,0 +1,147 @@
+{
+ "wall_to_ready_s": 0.6524687500204891,
+ "timing_load": {
+  "downloadMs": 10.100000023841858,
+  "densityGzBytes": 1060310,
+  "inflateMs": 7.900000035762787,
+  "pyramidMs": 529.6000000238419,
+  "pyramidWallMs": 537.6999999880791,
+  "pyramidWorker": true,
+  "uploadMs": 6,
+  "compileMs": 40.30000001192093,
+  "staticBakeMs": 8.900000035762787,
+  "totalMs": 611.1000000238419,
+  "firstFrameMs": 629
+ },
+ "bakes": {
+  "static": [
+   {
+    "name": "uBake1",
+    "ms": 5.099999964237213
+   },
+   {
+    "name": "uBake2",
+    "ms": 3.700000047683716
+   }
+  ],
+  "sunFull": [],
+  "sunFast": []
+ },
+ "gl": {
+  "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M4 Pro, Unspecified Version)",
+  "max3D": 2048,
+  "timerQuery": true
+ },
+ "requests": [
+  [
+   "http://127.0.0.1:62149/web/data/density.u8.gz",
+   1060310
+  ],
+  [
+   "http://127.0.0.1:62149/web/vendor/three.core.min.js",
+   382617
+  ],
+  [
+   "http://127.0.0.1:62149/web/vendor/three.module.min.js",
+   359158
+  ],
+  [
+   "http://127.0.0.1:62149/web/data/light_table.json",
+   155807
+  ],
+  [
+   "http://127.0.0.1:62149/web/clouds.js",
+   64145
+  ],
+  [
+   "http://127.0.0.1:62149/web/gen/manifest.json",
+   11615
+  ],
+  [
+   "http://127.0.0.1:62149/web/sky.js",
+   8857
+  ],
+  [
+   "http://127.0.0.1:62149/web/shaders/march.frag.glsl",
+   7424
+  ],
+  [
+   "http://127.0.0.1:62149/web/gen/net_eval.glsl",
+   6060
+  ],
+  [
+   "http://127.0.0.1:62149/web/pyramid.js",
+   4818
+  ],
+  [
+   "http://127.0.0.1:62149/web/gen/bake.glsl",
+   4371
+  ],
+  [
+   "http://127.0.0.1:62149/web/shaders/sky_common.glsl",
+   4301
+  ],
+  [
+   "http://127.0.0.1:62149/web/shaders/tonemap.frag.glsl",
+   3665
+  ],
+  [
+   "http://127.0.0.1:62149/web/shaders/sky_view.frag.glsl",
+   2457
+  ],
+  [
+   "http://127.0.0.1:62149/web/shaders/sunvis.frag.glsl",
+   2057
+  ],
+  [
+   "http://127.0.0.1:62149/web/shaders/density.glsl",
+   1924
+  ],
+  [
+   "http://127.0.0.1:62149/web/shaders/exposure.frag.glsl",
+   1745
+  ],
+  [
+   "http://127.0.0.1:62149/web/index.html?harness=1",
+   1375
+  ],
+  [
+   "http://127.0.0.1:62149/web/shaders/sky_lut.frag.glsl",
+   1207
+  ],
+  [
+   "http://127.0.0.1:62149/web/data/density.json",
+   1041
+  ],
+  [
+   "http://127.0.0.1:62149/web/shaders/bake.frag.glsl",
+   755
+  ],
+  [
+   "http://127.0.0.1:62149/web/pyramid_worker.js",
+   630
+  ],
+  [
+   "http://127.0.0.1:62149/web/shaders/fullscreen.vert.glsl",
+   183
+  ]
+ ],
+ "download_bytes": 2086522,
+ "console": [],
+ "state": {
+  "cw": 1280,
+  "ch": 800,
+  "moveScale": 0.9,
+  "costMsPerMpx": 18.933711076725867,
+  "stillN": 96,
+  "moveSize": [
+   1152,
+   720
+  ],
+  "stillSize": [
+   1280,
+   800
+  ]
+ },
+ "_wall_s": 5.514918804168701
+}

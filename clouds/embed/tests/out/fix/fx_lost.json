@@ -1,0 +1,33 @@
+{
+ "lost_rerun_max_rel": 0.0,
+ "lost": {
+  "idle_while_lost": true,
+  "harness_max_rel": 0.004525395110249519,
+  "cloud_before": 0.14109628648883063,
+  "cloud_after": 0.14109659248024348,
+  "screenshot_mean_abs_diff": 0.4508275462962963,
+  "after2_mean_abs_diff": 0.4510503472222222,
+  "veil_after_3s": [
+   false,
+   "The graphics context was lost. Waiting for the browser to restore it\u2026"
+  ],
+  "veil_after_restore": [
+   true,
+   "The graphics context was lost. Waiting for the browser to restore it\u2026"
+  ],
+  "console": [
+   "[log] THREE.WebGLRenderer: Context Lost.",
+   "[log] THREE.WebGLRenderer: Context Restored.",
+   "[log] THREE.WebGLRenderer: Context Lost.",
+   "[log] THREE.WebGLRenderer: Context Restored."
+  ],
+  "harness_mean_rel": 2.9602349513879744e-06
+ },
+ "checks": [
+  "ok   context lost: the loop stops",
+  "ok   context restore: harness render equal to float precision (mean rel 2.96e-06, max rel 4.53e-03, cloud 0.141096 -> 0.141097; rerun after restore max rel 0.0e+00)",
+  "ok   context restore: interactive image converges to the same image (mean |d| 0.451 levels)",
+  "ok   lost message after 3 s [False, 'The graphics context was lost. Waiting for the browser to restore it\u2026'], hidden after restore True",
+  "ok   context loss: no console errors"
+ ]
+}

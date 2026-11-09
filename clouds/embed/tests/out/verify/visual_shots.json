@@ -1,0 +1,331 @@
+{
+ "front_default": {
+  "el": 24,
+  "az": 250,
+  "idle_s": 0.003120899200439453,
+  "mean": 99.5256545138889,
+  "std": 49.61485669676333,
+  "white_frac": 0.0,
+  "black_frac": 0.0,
+  "idle_flicker_maxdiff": 0.0,
+  "expo_log": -1.8789533376693726
+ },
+ "front_behind_cloud": {
+  "el": 14.44403501804491,
+  "az": 70.00000980346267,
+  "idle_s": 4.1412739753723145,
+  "mean": 99.87188773148148,
+  "std": 47.943753375279435,
+  "white_frac": 0.0,
+  "black_frac": 0.0,
+  "idle_flicker_maxdiff": 0.0,
+  "expo_log": -1.926472544670105
+ },
+ "front_horizon": {
+  "el": 0.0,
+  "az": 55.000009803462675,
+  "idle_s": 4.152568101882935,
+  "mean": 76.48405787037036,
+  "std": 48.01718175334417,
+  "white_frac": 0.0,
+  "black_frac": 0.00812673611111111,
+  "idle_flicker_maxdiff": 0.0,
+  "expo_log": -0.6107209324836731
+ },
+ "front_below_m5": {
+  "el": -5.0,
+  "az": 55.000009803462675,
+  "idle_s": 4.136602163314819,
+  "mean": 51.77771585648148,
+  "std": 45.19090429587557,
+  "white_frac": 0.0,
+  "black_frac": 0.03417534722222222,
+  "idle_flicker_maxdiff": 0.0,
+  "expo_log": 2.0225071907043457
+ },
+ "front_overhead": {
+  "el": 89.0,
+  "az": 70.00000980346267,
+  "idle_s": 4.126999855041504,
+  "mean": 95.64111979166667,
+  "std": 44.294687333190886,
+  "white_frac": 0.0,
+  "black_frac": 0.0,
+  "idle_flicker_maxdiff": 0.0,
+  "expo_log": -1.7691819667816162
+ },
+ "front_behind_camera": {
+  "el": 30.0,
+  "az": 250.00000980346266,
+  "idle_s": 4.1101038455963135,
+  "mean": 99.50856018518519,
+  "std": 50.17810367840007,
+  "white_frac": 0.0,
+  "black_frac": 0.0,
+  "idle_flicker_maxdiff": 0.0,
+  "expo_log": -1.880434274673462
+ },
+ "front_side": {
+  "el": 15.0,
+  "az": 160.00000980346266,
+  "idle_s": 4.126655340194702,
+  "mean": 90.30555902777778,
+  "std": 43.29286442974633,
+  "white_frac": 0.0,
+  "black_frac": 0.0,
+  "idle_flicker_maxdiff": 0.0,
+  "expo_log": -1.4873048067092896
+ },
+ "front_disk_leak": {
+  "max_lum_added_by_disk": 0.0,
+  "pixels_gt_1": 0,
+  "image_mean_lum": 1.0396914696235355
+ },
+ "backlit_default": {
+  "el": 8,
+  "az": 250,
+  "idle_s": 0.00263214111328125,
+  "mean": 94.99044444444445,
+  "std": 51.04106469156737,
+  "white_frac": 0.0,
+  "black_frac": 0.0,
+  "idle_flicker_maxdiff": 0.0,
+  "expo_log": -1.6655315160751343
+ },
+ "backlit_behind_cloud": {
+  "el": 13.626994190242478,
+  "az": 250.00000980346266,
+  "idle_s": 4.125000953674316,
+  "mean": 98.2483587962963,
+  "std": 49.731395770837864,
+  "white_frac": 0.0,
+  "black_frac": 0.0,
+  "idle_flicker_maxdiff": 0.0,
+  "expo_log": -1.8667240142822266
+ },
+ "backlit_horizon": {
+  "el": 0.0,
+  "az": 235.00000980346266,
+  "idle_s": 4.130384922027588,
+  "mean": 77.09199074074074,
+  "std": 49.90119220324771,
+  "white_frac": 9.375e-05,
+  "black_frac": 0.007371527777777778,
+  "idle_flicker_maxdiff": 0.0,
+  "expo_log": -0.5246884822845459
+ },
+ "backlit_below_m5": {
+  "el": -5.0,
+  "az": 235.00000980346266,
+  "idle_s": 4.142328262329102,
+  "mean": 52.19914467592593,
+  "std": 46.83570418287162,
+  "white_frac": 0.0,
+  "black_frac": 0.06408333333333334,
+  "idle_flicker_maxdiff": 0.0,
+  "expo_log": 2.11726713180542
+ },
+ "backlit_overhead": {
+  "el": 89.0,
+  "az": 250.00000980346266,
+  "idle_s": 4.1034650802612305,
+  "mean": 95.56312905092592,
+  "std": 44.52446739081661,
+  "white_frac": 0.0,
+  "black_frac": 0.0,
+  "idle_flicker_maxdiff": 0.0,
+  "expo_log": -1.7761151790618896
+ },
+ "backlit_behind_camera": {
+  "el": 30.0,
+  "az": 70.00000980346266,
+  "idle_s": 4.107194900512695,
+  "mean": 98.38810763888888,
+  "std": 52.076936460568064,
+  "white_frac": 0.0,
+  "black_frac": 0.0,
+  "idle_flicker_maxdiff": 0.0,
+  "expo_log": -1.8670377731323242
+ },
+ "backlit_side": {
+  "el": 15.0,
+  "az": 340.00000980346266,
+  "idle_s": 4.104887962341309,
+  "mean": 89.66299942129629,
+  "std": 45.56300899663614,
+  "white_frac": 0.0,
+  "black_frac": 0.0,
+  "idle_flicker_maxdiff": 0.0,
+  "expo_log": -1.4743608236312866
+ },
+ "backlit_disk_leak": {
+  "max_lum_added_by_disk": 0.0,
+  "pixels_gt_1": 0,
+  "image_mean_lum": 0.9129574060059157
+ },
+ "arc_default": {
+  "el": 22,
+  "az": 200,
+  "idle_s": 0.0023758411407470703,
+  "mean": 97.29370138888889,
+  "std": 47.0554517608756,
+  "white_frac": 0.0001388888888888889,
+  "black_frac": 0.0,
+  "idle_flicker_maxdiff": 0.0,
+  "expo_log": -1.7770916223526
+ },
+ "arc_behind_cloud": {
+  "el": 25.277722235552954,
+  "az": 180.0,
+  "idle_s": 4.094552040100098,
+  "mean": 96.21801273148148,
+  "std": 44.0624659635784,
+  "white_frac": 5.208333333333333e-06,
+  "black_frac": 0.0,
+  "idle_flicker_maxdiff": 0.0,
+  "expo_log": -1.8296664953231812
+ },
+ "arc_horizon": {
+  "el": 0.0,
+  "az": 165.0,
+  "idle_s": 4.108170032501221,
+  "mean": 74.36236747685186,
+  "std": 49.588915657948846,
+  "white_frac": 3.6458333333333336e-05,
+  "black_frac": 0.0,
+  "idle_flicker_maxdiff": 0.0,
+  "expo_log": -0.2579787075519562
+ },
+ "arc_below_m5": {
+  "el": -5.0,
+  "az": 165.0,
+  "idle_s": 4.11988091468811,
+  "mean": 49.751555555555555,
+  "std": 46.23230649931835,
+  "white_frac": 0.0,
+  "black_frac": 0.10943229166666667,
+  "idle_flicker_maxdiff": 0.0,
+  "expo_log": 2.3926000595092773
+ },
+ "arc_overhead": {
+  "el": 89.0,
+  "az": 180.0,
+  "idle_s": 4.102924823760986,
+  "mean": 91.76428067129629,
+  "std": 38.664711060878545,
+  "white_frac": 0.0,
+  "black_frac": 0.0,
+  "idle_flicker_maxdiff": 0.0,
+  "expo_log": -1.6250724792480469
+ },
+ "arc_behind_camera": {
+  "el": 30.0,
+  "az": 0.0,
+  "idle_s": 4.117922067642212,
+  "mean": 91.79244675925926,
+  "std": 46.99557443589413,
+  "white_frac": 0.0,
+  "black_frac": 0.0,
+  "idle_flicker_maxdiff": 0.0,
+  "expo_log": -1.5709656476974487
+ },
+ "arc_side": {
+  "el": 15.0,
+  "az": 270.0,
+  "idle_s": 4.088979959487915,
+  "mean": 85.27552893518518,
+  "std": 41.06494208038208,
+  "white_frac": 0.0,
+  "black_frac": 0.0,
+  "idle_flicker_maxdiff": 0.0,
+  "expo_log": -1.2802231311798096
+ },
+ "arc_disk_leak": {
+  "max_lum_added_by_disk": 0.0,
+  "pixels_gt_1": 0,
+  "image_mean_lum": 0.744112424685986
+ },
+ "sunset_default": {
+  "el": 6,
+  "az": 270,
+  "idle_s": 0.0030977725982666016,
+  "mean": 90.33144386574074,
+  "std": 59.72182614612309,
+  "white_frac": 0.00010416666666666667,
+  "black_frac": 0.0,
+  "idle_flicker_maxdiff": 0.0,
+  "expo_log": -1.0066754817962646
+ },
+ "sunset_behind_cloud": {
+  "el": 22.418098692347655,
+  "az": 321.99832778974576,
+  "idle_s": 4.134564161300659,
+  "mean": 94.87988715277778,
+  "std": 48.748626873930995,
+  "white_frac": 0.00015972222222222223,
+  "black_frac": 0.0,
+  "idle_flicker_maxdiff": 0.0,
+  "expo_log": -1.6782877445220947
+ },
+ "sunset_horizon": {
+  "el": 0.0,
+  "az": 283.0,
+  "idle_s": 4.122050046920776,
+  "mean": 80.18133159722223,
+  "std": 59.91083109996022,
+  "white_frac": 2.777777777777778e-05,
+  "black_frac": 0.0,
+  "idle_flicker_maxdiff": 0.0,
+  "expo_log": 0.11532190442085266
+ },
+ "sunset_below_m5": {
+  "el": -5.0,
+  "az": 283.0,
+  "idle_s": 4.109524965286255,
+  "mean": 56.72819386574074,
+  "std": 53.718064375879365,
+  "white_frac": 0.0,
+  "black_frac": 0.24215972222222223,
+  "idle_flicker_maxdiff": 0.0,
+  "expo_log": 2.797391176223755
+ },
+ "sunset_overhead": {
+  "el": 89.0,
+  "az": 298.0,
+  "idle_s": 4.119147062301636,
+  "mean": 91.84520659722222,
+  "std": 33.92889711230069,
+  "white_frac": 0.0,
+  "black_frac": 0.0,
+  "idle_flicker_maxdiff": 0.0,
+  "expo_log": -1.6821790933609009
+ },
+ "sunset_behind_camera": {
+  "el": 30.0,
+  "az": 118.0,
+  "idle_s": 4.133112192153931,
+  "mean": 90.4743125,
+  "std": 42.56782144212069,
+  "white_frac": 0.0,
+  "black_frac": 0.0,
+  "idle_flicker_maxdiff": 0.0,
+  "expo_log": -1.5418485403060913
+ },
+ "sunset_side": {
+  "el": 15.0,
+  "az": 28.0,
+  "idle_s": 4.1073126792907715,
+  "mean": 84.21703819444444,
+  "std": 41.136043994129615,
+  "white_frac": 0.0,
+  "black_frac": 0.0,
+  "idle_flicker_maxdiff": 0.0,
+  "expo_log": -1.1925873756408691
+ },
+ "sunset_disk_leak": {
+  "max_lum_added_by_disk": 0.0,
+  "pixels_gt_1": 0,
+  "image_mean_lum": 0.6954527659476666
+ },
+ "console_errors": []
+}

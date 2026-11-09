@@ -1,0 +1,197 @@
+{
+ "1280x800@1_front": {
+  "state": {
+   "cw": 1280,
+   "ch": 800,
+   "moveScale": 1,
+   "costMsPerMpx": 15.338715890536964,
+   "stillN": 96,
+   "moveSize": [
+    1280,
+    800
+   ],
+   "stillSize": [
+    1280,
+    800
+   ]
+  },
+  "full_frame": 15.014999999602635,
+  "march_only": 0.011666666467984517,
+  "bake_fast_only": 0.001666666070620219,
+  "light_only(sky view)": 0.011666667461395264,
+  "sunvis_only": 0.0016666670640309651,
+  "expo+display": 0.398333332935969,
+  "full_frame_fullbake": 16.061666666467985,
+  "full_frame_at_scale1": 14.95
+ },
+ "1280x800@1_backlit": {
+  "state": {
+   "cw": 1280,
+   "ch": 800,
+   "moveScale": 1,
+   "costMsPerMpx": 13.22698687909489,
+   "stillN": 96,
+   "moveSize": [
+    1280,
+    800
+   ],
+   "stillSize": [
+    1280,
+    800
+   ]
+  },
+  "full_frame": 14.063333333532016,
+  "march_only": 0.013333333532015483,
+  "full_frame_at_scale1": 14.225
+ },
+ "1280x800@1_arc": {
+  "state": {
+   "cw": 1280,
+   "ch": 800,
+   "moveScale": 1,
+   "costMsPerMpx": 6.886872681054641,
+   "stillN": 96,
+   "moveSize": [
+    1280,
+    800
+   ],
+   "stillSize": [
+    1280,
+    800
+   ]
+  },
+  "full_frame": 7.935000000397364,
+  "march_only": 0.03000000019868215,
+  "full_frame_at_scale1": 7.917500001192093
+ },
+ "1920x1080@1_front": {
+  "state": {
+   "cw": 1920,
+   "ch": 1080,
+   "moveScale": 0.65,
+   "costMsPerMpx": 13.548480241824342,
+   "stillN": 96,
+   "moveSize": [
+    1248,
+    702
+   ],
+   "stillSize": [
+    1920,
+    1080
+   ]
+  },
+  "full_frame": 13.484999999403954,
+  "march_only": 0.013333333532015483,
+  "bake_fast_only": 0.001666666070620219,
+  "light_only(sky view)": 0.011666666467984517,
+  "sunvis_only": 0.0016666670640309651,
+  "expo+display": 0.6949999998013179,
+  "full_frame_fullbake": 14.683333333333334,
+  "full_frame_at_scale1": 24.29750000089407
+ },
+ "1920x1080@1_backlit": {
+  "state": {
+   "cw": 1920,
+   "ch": 1080,
+   "moveScale": 0.8,
+   "costMsPerMpx": 11.325319519350424,
+   "stillN": 96,
+   "moveSize": [
+    1536,
+    864
+   ],
+   "stillSize": [
+    1920,
+    1080
+   ]
+  },
+  "full_frame": 15.55,
+  "march_only": 0.013333333532015483,
+  "full_frame_at_scale1": 22.6125
+ },
+ "1920x1080@1_arc": {
+  "state": {
+   "cw": 1920,
+   "ch": 1080,
+   "moveScale": 1,
+   "costMsPerMpx": 4.155030833850913,
+   "stillN": 96,
+   "moveSize": [
+    1920,
+    1080
+   ],
+   "stillSize": [
+    1920,
+    1080
+   ]
+  },
+  "full_frame": 10.139999999602635,
+  "march_only": 0.03333333333333333,
+  "full_frame_at_scale1": 10.160000000894069
+ },
+ "1280x800@2_front": {
+  "state": {
+   "cw": 2560,
+   "ch": 1600,
+   "moveScale": 0.65,
+   "costMsPerMpx": 16.156015124284004,
+   "stillN": 96,
+   "moveSize": [
+    1274,
+    796
+   ],
+   "stillSize": [
+    1960,
+    1225
+   ]
+  },
+  "full_frame": 15.808333333333334,
+  "march_only": 0.011666666467984517,
+  "bake_fast_only": 0.0016666670640309651,
+  "light_only(sky view)": 0.011666666467984517,
+  "sunvis_only": 0.001666666070620219,
+  "expo+display": 1.268333332737287,
+  "full_frame_fullbake": 16.8183333337307,
+  "full_frame_at_scale1": 29.18500000089407
+ },
+ "1280x800@2_backlit": {
+  "state": {
+   "cw": 2560,
+   "ch": 1600,
+   "moveScale": 0.65,
+   "costMsPerMpx": 15.558376676013726,
+   "stillN": 96,
+   "moveSize": [
+    1274,
+    796
+   ],
+   "stillSize": [
+    1960,
+    1225
+   ]
+  },
+  "full_frame": 14.833333333333334,
+  "march_only": 0.013333333532015483,
+  "full_frame_at_scale1": 27.025
+ },
+ "1280x800@2_arc": {
+  "state": {
+   "cw": 2560,
+   "ch": 1600,
+   "moveScale": 1,
+   "costMsPerMpx": 4.497720915516979,
+   "stillN": 96,
+   "moveSize": [
+    1960,
+    1225
+   ],
+   "stillSize": [
+    1960,
+    1225
+   ]
+  },
+  "full_frame": 11.92333333392938,
+  "march_only": 0.029999999205271403,
+  "full_frame_at_scale1": 11.925
+ }
+}

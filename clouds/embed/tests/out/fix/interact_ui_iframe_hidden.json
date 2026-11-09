@@ -1,0 +1,194 @@
+{
+ "compass": {
+  "centre": {
+   "el": 89,
+   "az": 180,
+   "view": "front",
+   "playing": false,
+   "stillN": 0,
+   "ready": true,
+   "idle": false,
+   "dragging": false
+  },
+  "east_rim": {
+   "el": -7.999936847485387,
+   "az": 90,
+   "view": "front",
+   "playing": false,
+   "stillN": 0,
+   "ready": true,
+   "idle": false,
+   "dragging": false
+  },
+  "south_horizon": {
+   "el": -4.695012020761169e-05,
+   "az": 180,
+   "view": "front",
+   "playing": false,
+   "stillN": 0,
+   "ready": true,
+   "idle": false,
+   "dragging": false
+  },
+  "north_beyond": {
+   "el": -8,
+   "az": 0,
+   "view": "front",
+   "playing": false,
+   "stillN": 0,
+   "ready": true,
+   "idle": false,
+   "dragging": false
+  },
+  "west_30": {
+   "el": 29.99996869991987,
+   "az": 270,
+   "view": "front",
+   "playing": false,
+   "stillN": 0,
+   "ready": true,
+   "idle": false,
+   "dragging": false
+  }
+ },
+ "compass_keys": [
+  {
+   "el": 47.25339510201182,
+   "az": 264.66123076923077,
+   "view": "front",
+   "playing": false,
+   "stillN": 0,
+   "ready": true,
+   "idle": false,
+   "dragging": false
+  },
+  {
+   "el": 48.25339510201182,
+   "az": 264.66123076923077,
+   "view": "front",
+   "playing": false,
+   "stillN": 0,
+   "ready": true,
+   "idle": false,
+   "dragging": false
+  }
+ ],
+ "ui_console": [],
+ "ui_requests_outside_web": [],
+ "iframe": {
+  "visible_marches_per_s": 60,
+  "offscreen_marches_2s": 0,
+  "back_marches_per_s": 61,
+  "states": [
+   {
+    "el": 49.680653838593024,
+    "az": 254.99923076923085,
+    "view": "front",
+    "playing": true,
+    "stillN": 0,
+    "ready": true,
+    "idle": false,
+    "dragging": false
+   },
+   {
+    "el": 48.81881162952004,
+    "az": 259.6146153846155,
+    "view": "front",
+    "playing": true,
+    "stillN": 0,
+    "ready": true,
+    "idle": false,
+    "dragging": false
+   },
+   {
+    "el": 48.51829190565416,
+    "az": 260.76846153846157,
+    "view": "front",
+    "playing": true,
+    "stillN": 0,
+    "ready": true,
+    "idle": true,
+    "dragging": false
+   },
+   {
+    "el": 48.51829190565416,
+    "az": 260.76846153846157,
+    "view": "front",
+    "playing": true,
+    "stillN": 0,
+    "ready": true,
+    "idle": true,
+    "dragging": false
+   },
+   {
+    "el": 46.85392298320839,
+    "az": 265.69123076923086,
+    "view": "front",
+    "playing": true,
+    "stillN": 0,
+    "ready": true,
+    "idle": false,
+    "dragging": false
+   },
+   {
+    "el": 44.691138765772465,
+    "az": 270.38323076923086,
+    "view": "front",
+    "playing": true,
+    "stillN": 0,
+    "ready": true,
+    "idle": false,
+    "dragging": false
+   }
+  ],
+  "console": []
+ },
+ "hidden": {
+  "before": [
+   61,
+   "visible"
+  ],
+  "hidden": [
+   61,
+   "hidden",
+   61,
+   "hidden"
+  ],
+  "back": [
+   123,
+   "visible"
+  ]
+ },
+ "checks": [
+  "ok   drag: sun under pointer, max ndc error 0.0000",
+  "ok   drag below horizon: el -1.47 (clamp -8)",
+  "ok   right-button drag ignored",
+  "ok   compass centre -> el 89.00",
+  "ok   compass east rim -> {'el': -7.999936847485387, 'az': 90, 'view': 'front', 'playing': False, 'stillN': 0, 'ready': True, 'idle': False, 'dragging': False}",
+  "ok   compass south horizon -> {'el': -4.695012020761169e-05, 'az': 180, 'view': 'front', 'playing': False, 'stillN': 0, 'ready': True, 'idle': False, 'dragging': False}",
+  "ok   compass west 30 -> {'el': 29.99996869991987, 'az': 270, 'view': 'front', 'playing': False, 'stillN': 0, 'ready': True, 'idle': False, 'dragging': False}",
+  "ok   compass beyond rim clamps -> {'el': -8, 'az': 0, 'view': 'front', 'playing': False, 'stillN': 0, 'ready': True, 'idle': False, 'dragging': False}",
+  "ok   compass drag around -> el 41.0 az 330.0",
+  "ok   view chip Backlit: backlit pressed ['Backlit']",
+  "ok   view chip Valley: arc pressed ['Valley']",
+  "ok   view chip Sunset: sunset pressed ['Sunset']",
+  "ok   view chip Front: front pressed ['Front']",
+  "ok   play: sweeping, label 'Pause'",
+  "ok   pause: the sun stops",
+  "ok   arrows: 49.7,255.1 -> 50.7,253.1",
+  "ok   shift+arrows 5x: -> 45.7,263.1",
+  "ok   space toggles play",
+  "ok   arrow keys while the compass has focus move the sun (47.3 -> 48.3)",
+  "ok   resize 600x900: canvas [600, 900, 600, 900], idle 2.71059513092041",
+  "ok   resize 1400x700: canvas [1400, 700, 1400, 700], idle 2.6766319274902344",
+  "ok   resize 320x480: canvas [320, 480, 320, 480], idle 2.66926908493042",
+  "ok   resize 1000x625: canvas [1000, 625, 1000, 625], idle 2.6662650108337402",
+  "ok   touch drag moves the sun (18.3,70.0)",
+  "ok   ui: no console errors/warnings []",
+  "ok   ui: no requests outside web/ []",
+  "ok   iframe autoplay running: 60 marches/s",
+  "ok   iframe scrolled off-screen: 0 marches in 2 s, idle True, sun 48.52->48.52",
+  "ok   iframe scrolled back: resumes 61 marches/s",
+  "ok   hidden tab: visibility hidden, marches while hidden 0, resumed 62"
+ ]
+}

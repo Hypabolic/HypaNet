@@ -1,0 +1,106 @@
+{
+ "compass": {
+  "centre": {
+   "el": 89,
+   "az": 180,
+   "view": "front",
+   "playing": false,
+   "stillN": 0,
+   "ready": true,
+   "idle": false,
+   "dragging": false
+  },
+  "east_rim": {
+   "el": -7.999936847485387,
+   "az": 90,
+   "view": "front",
+   "playing": false,
+   "stillN": 0,
+   "ready": true,
+   "idle": false,
+   "dragging": false
+  },
+  "south_horizon": {
+   "el": -4.695012020761169e-05,
+   "az": 180,
+   "view": "front",
+   "playing": false,
+   "stillN": 0,
+   "ready": true,
+   "idle": false,
+   "dragging": false
+  },
+  "north_beyond": {
+   "el": -8,
+   "az": 0,
+   "view": "front",
+   "playing": false,
+   "stillN": 0,
+   "ready": true,
+   "idle": false,
+   "dragging": false
+  },
+  "west_30": {
+   "el": 29.99996869991987,
+   "az": 270,
+   "view": "front",
+   "playing": false,
+   "stillN": 0,
+   "ready": true,
+   "idle": false,
+   "dragging": false
+  }
+ },
+ "compass_keys": [
+  {
+   "el": 46.78519694118342,
+   "az": 265.86169230769235,
+   "view": "front",
+   "playing": false,
+   "stillN": 0,
+   "ready": true,
+   "idle": false,
+   "dragging": false
+  },
+  {
+   "el": 47.78519694118342,
+   "az": 265.86169230769235,
+   "view": "front",
+   "playing": false,
+   "stillN": 0,
+   "ready": true,
+   "idle": false,
+   "dragging": false
+  }
+ ],
+ "ui_console": [],
+ "ui_requests_outside_web": [],
+ "checks": [
+  "ok   drag: sun under pointer, max ndc error 0.0000",
+  "ok   drag below horizon: el -1.47 (clamp -8)",
+  "ok   right-button drag ignored",
+  "ok   compass centre -> el 89.00",
+  "ok   compass east rim -> {'el': -7.999936847485387, 'az': 90, 'view': 'front', 'playing': False, 'stillN': 0, 'ready': True, 'idle': False, 'dragging': False}",
+  "ok   compass south horizon -> {'el': -4.695012020761169e-05, 'az': 180, 'view': 'front', 'playing': False, 'stillN': 0, 'ready': True, 'idle': False, 'dragging': False}",
+  "ok   compass west 30 -> {'el': 29.99996869991987, 'az': 270, 'view': 'front', 'playing': False, 'stillN': 0, 'ready': True, 'idle': False, 'dragging': False}",
+  "ok   compass beyond rim clamps -> {'el': -8, 'az': 0, 'view': 'front', 'playing': False, 'stillN': 0, 'ready': True, 'idle': False, 'dragging': False}",
+  "ok   compass drag around -> el 41.0 az 330.0",
+  "ok   view chip Backlit: backlit pressed ['Backlit']",
+  "ok   view chip Valley: arc pressed ['Valley']",
+  "ok   view chip Sunset: sunset pressed ['Sunset']",
+  "ok   view chip Front: front pressed ['Front']",
+  "ok   play: sweeping, label 'Pause'",
+  "ok   pause: the sun stops",
+  "ok   arrows: 49.7,255.2 -> 50.7,253.2",
+  "ok   shift+arrows 5x: -> 45.7,263.2",
+  "ok   space toggles play",
+  "ok   arrow keys while the compass has focus move the sun (46.8 -> 47.8)",
+  "ok   resize 600x900: canvas [600, 900, 600, 900], idle 3.8709869384765625",
+  "ok   resize 1400x700: canvas [1400, 700, 1400, 700], idle 3.8655309677124023",
+  "ok   resize 320x480: canvas [320, 480, 320, 480], idle 3.8422298431396484",
+  "ok   resize 1000x625: canvas [1000, 625, 1000, 625], idle 3.953728199005127",
+  "ok   touch drag moves the sun (18.3,70.0)",
+  "ok   ui: no console errors/warnings []",
+  "ok   ui: no requests outside web/ []"
+ ]
+}

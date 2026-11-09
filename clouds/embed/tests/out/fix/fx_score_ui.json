@@ -1,0 +1,196 @@
+{
+ "score": {
+  "front_noon|full": {
+   "bake": "full",
+   "page": {
+    "full": 0.058391742408275604,
+    "cloud": 0.13156952939659639,
+    "block8": 0.12114308141051063,
+    "ratio_rgb": [
+     1.0281639099121094,
+     1.018273115158081,
+     1.0029208660125732
+    ],
+    "floor": 0.03699377246294479,
+    "cloud_fraction": 0.1843828125
+   },
+   "interp_cloud": 0.13215405076669245,
+   "d_cloud": -0.0005845213700960694,
+   "finite": true,
+   "vs_before_fix_max_abs": 0.0,
+   "vs_interp_mean_rel": 0.0014795552706345916
+  },
+  "front_noon|fast": {
+   "bake": "fast",
+   "page": {
+    "full": 0.058104272931814194,
+    "cloud": 0.13089135582020975,
+    "block8": 0.12042127777639208,
+    "ratio_rgb": [
+     1.0257508754730225,
+     1.0160120725631714,
+     1.0009092092514038
+    ],
+    "floor": 0.03699377246294479,
+    "cloud_fraction": 0.1843828125
+   },
+   "interp_cloud": 0.13215405076669245,
+   "d_cloud": -0.0012626949464827064,
+   "finite": true,
+   "vs_interp_mean_rel": 0.00254929275251925
+  },
+  "backlit_golden|full": {
+   "bake": "full",
+   "page": {
+    "full": 0.05491524562239647,
+    "cloud": 0.14109628648883063,
+    "block8": 0.12836875766090008,
+    "ratio_rgb": [
+     0.9031417369842529,
+     0.9038884043693542,
+     0.9074879288673401
+    ],
+    "floor": 0.019496782720302825,
+    "cloud_fraction": 0.1855546875
+   },
+   "interp_cloud": 0.13909829109080651,
+   "d_cloud": 0.001997995398024116,
+   "finite": true,
+   "vs_before_fix_max_abs": 0.0,
+   "vs_interp_mean_rel": 0.001784038613550365
+  },
+  "backlit_golden|fast": {
+   "bake": "fast",
+   "page": {
+    "full": 0.057736992835998535,
+    "cloud": 0.1485829343348292,
+    "block8": 0.13547459765354414,
+    "ratio_rgb": [
+     0.895717442035675,
+     0.8971415758132935,
+     0.9023842811584473
+    ],
+    "floor": 0.019496782720302825,
+    "cloud_fraction": 0.1855546875
+   },
+   "interp_cloud": 0.13909829109080651,
+   "d_cloud": 0.009484643244022678,
+   "finite": true,
+   "vs_interp_mean_rel": 0.006673499010503292
+  },
+  "side_sunset|full": {
+   "bake": "full",
+   "page": {
+    "full": 0.05648317188024521,
+    "cloud": 0.17435848144626206,
+    "block8": 0.16767030033693123,
+    "ratio_rgb": [
+     1.0710973739624023,
+     1.0504478216171265,
+     1.0256843566894531
+    ],
+    "floor": 0.037229278120578385,
+    "cloud_fraction": 0.209890625
+   },
+   "interp_cloud": 0.17549151071854854,
+   "d_cloud": -0.0011330292722864788,
+   "finite": true,
+   "vs_before_fix_max_abs": 0.0,
+   "vs_interp_mean_rel": 0.0010413320269435644
+  },
+  "side_sunset|fast": {
+   "bake": "fast",
+   "page": {
+    "full": 0.05620214343070984,
+    "cloud": 0.17344258512586996,
+    "block8": 0.16667241168928162,
+    "ratio_rgb": [
+     1.068123459815979,
+     1.0487366914749146,
+     1.025444507598877
+    ],
+    "floor": 0.037229278120578385,
+    "cloud_fraction": 0.209890625
+   },
+   "interp_cloud": 0.17549151071854854,
+   "d_cloud": -0.00204892559267858,
+   "finite": true,
+   "vs_interp_mean_rel": 0.001843188307248056
+  }
+ },
+ "ui_320": {
+  "caption": [
+   10,
+   147.875,
+   441.8125,
+   470
+  ],
+  "bar": [
+   200,
+   308,
+   402,
+   468
+  ],
+  "text": "Sun 47.8\u00b0 \u00b7 266\u00b0 W",
+  "overflow": false
+ },
+ "ui_360": {
+  "caption": [
+   10,
+   151.265625
+  ],
+  "bar": [
+   240,
+   348
+  ],
+  "text": "Sun \u22125.2\u00b0 \u00b7 135\u00b0 SE",
+  "overflow": false
+ },
+ "ui_400": {
+  "caption": [
+   10,
+   151.265625
+  ],
+  "bar": [
+   280,
+   388
+  ],
+  "text": "Sun 12.0\u00b0 \u00b7 135\u00b0 SE",
+  "overflow": false
+ },
+ "ui_401": {
+  "caption": [
+   10,
+   219.953125
+  ],
+  "bar": [
+   58.65625,
+   389
+  ],
+  "text": "Sun 12.0\u00b0 up \u00b7 azimuth 135\u00b0 SE",
+  "overflow": false
+ },
+ "ui_1000": {
+  "caption": [
+   12,
+   221.953125
+  ],
+  "bar": [
+   629.65625,
+   988
+  ],
+  "text": "Sun 20.0\u00b0 up \u00b7 azimuth 135\u00b0 SE",
+  "overflow": false
+ },
+ "moving_sky_full": false,
+ "checks": [
+  "ok   score: console []",
+  "ok   320 px: caption [10, 147.875, 441.8125, 470] clears the bar [200, 308, 402, 468]: 'Sun 47.8\u00b0 \u00b7 266\u00b0 W'",
+  "ok   360 px: caption 'Sun \u22125.2\u00b0 \u00b7 135\u00b0 SE' clears the bar",
+  "ok   400 px: caption 'Sun 12.0\u00b0 \u00b7 135\u00b0 SE' clears the bar",
+  "FAIL 401 px: caption 'Sun 12.0\u00b0 up \u00b7 azimuth 135\u00b0 SE' clears the bar",
+  "ok   1000 px: caption 'Sun 20.0\u00b0 up \u00b7 azimuth 135\u00b0 SE' clears the bar",
+  "ok   coarse sky while dragging, full sky when still",
+  "ok   ui: console []"
+ ]
+}

@@ -1,0 +1,359 @@
+{
+ "iframe": {
+  "visible_marches_per_s": 61,
+  "offscreen_marches_2s": 0,
+  "back_marches_per_s": 61,
+  "states": [
+   {
+    "el": 49.69036707157133,
+    "az": 254.92261538461548,
+    "view": "front",
+    "playing": true,
+    "stillN": 0,
+    "ready": true,
+    "idle": false,
+    "dragging": false
+   },
+   {
+    "el": 48.81881162952004,
+    "az": 259.6146153846155,
+    "view": "front",
+    "playing": true,
+    "stillN": 0,
+    "ready": true,
+    "idle": false,
+    "dragging": false
+   },
+   {
+    "el": 48.56041047827744,
+    "az": 260.61430769230776,
+    "view": "front",
+    "playing": true,
+    "stillN": 0,
+    "ready": true,
+    "idle": true,
+    "dragging": false
+   },
+   {
+    "el": 48.56041047827744,
+    "az": 260.61430769230776,
+    "view": "front",
+    "playing": true,
+    "stillN": 0,
+    "ready": true,
+    "idle": true,
+    "dragging": false
+   },
+   {
+    "el": 46.915434742103855,
+    "az": 265.53707692307694,
+    "view": "front",
+    "playing": true,
+    "stillN": 0,
+    "ready": true,
+    "idle": false,
+    "dragging": false
+   },
+   {
+    "el": 44.7711345985141,
+    "az": 270.22907692307695,
+    "view": "front",
+    "playing": true,
+    "stillN": 0,
+    "ready": true,
+    "idle": false,
+    "dragging": false
+   }
+  ],
+  "console": []
+ },
+ "hidden": {
+  "before": [
+   60,
+   "visible"
+  ],
+  "hidden": [
+   93,
+   "visible",
+   184,
+   "visible"
+  ],
+  "back": [
+   244,
+   "visible"
+  ]
+ },
+ "destroy": {
+  "rows": [
+   {
+    "i": 0,
+    "children": 1,
+    "childrenAfter": 0,
+    "lostNow": false,
+    "heapMB": 3.92,
+    "gpu_rss_mb": [
+     134.0
+    ],
+    "lost": 0,
+    "dom_nodes": 87
+   },
+   {
+    "i": 1,
+    "children": 1,
+    "childrenAfter": 0,
+    "lostNow": false,
+    "heapMB": 4.41,
+    "gpu_rss_mb": [
+     158.6
+    ],
+    "lost": 0,
+    "dom_nodes": 156
+   },
+   {
+    "i": 2,
+    "children": 1,
+    "childrenAfter": 0,
+    "lostNow": false,
+    "heapMB": 4.77,
+    "gpu_rss_mb": [
+     178.7
+    ],
+    "lost": 0,
+    "dom_nodes": 225
+   },
+   {
+    "i": 3,
+    "children": 1,
+    "childrenAfter": 0,
+    "lostNow": false,
+    "heapMB": 5.11,
+    "gpu_rss_mb": [
+     197.5
+    ],
+    "lost": 0,
+    "dom_nodes": 294
+   },
+   {
+    "i": 4,
+    "children": 1,
+    "childrenAfter": 0,
+    "lostNow": false,
+    "heapMB": 5.52,
+    "gpu_rss_mb": [
+     217.3
+    ],
+    "lost": 0,
+    "dom_nodes": 363
+   },
+   {
+    "i": 5,
+    "children": 1,
+    "childrenAfter": 0,
+    "lostNow": false,
+    "heapMB": 5.86,
+    "gpu_rss_mb": [
+     235.4
+    ],
+    "lost": 0,
+    "dom_nodes": 432
+   },
+   {
+    "i": 6,
+    "children": 1,
+    "childrenAfter": 0,
+    "lostNow": false,
+    "heapMB": 6.18,
+    "gpu_rss_mb": [
+     253.9
+    ],
+    "lost": 0,
+    "dom_nodes": 501
+   },
+   {
+    "i": 7,
+    "children": 1,
+    "childrenAfter": 0,
+    "lostNow": false,
+    "heapMB": 6.48,
+    "gpu_rss_mb": [
+     273.3
+    ],
+    "lost": 0,
+    "dom_nodes": 570
+   },
+   {
+    "i": 8,
+    "children": 1,
+    "childrenAfter": 0,
+    "lostNow": false,
+    "heapMB": 6.96,
+    "gpu_rss_mb": [
+     291.8
+    ],
+    "lost": 0,
+    "dom_nodes": 639
+   },
+   {
+    "i": 9,
+    "children": 1,
+    "childrenAfter": 0,
+    "lostNow": false,
+    "heapMB": 7.29,
+    "gpu_rss_mb": [
+     309.8
+    ],
+    "lost": 0,
+    "dom_nodes": 708
+   },
+   {
+    "i": 10,
+    "children": 1,
+    "childrenAfter": 0,
+    "lostNow": false,
+    "heapMB": 7.59,
+    "gpu_rss_mb": [
+     327.8
+    ],
+    "lost": 0,
+    "dom_nodes": 777
+   },
+   {
+    "i": 11,
+    "children": 1,
+    "childrenAfter": 0,
+    "lostNow": false,
+    "heapMB": 7.91,
+    "gpu_rss_mb": [
+     345.6
+    ],
+    "lost": 0,
+    "dom_nodes": 846
+   },
+   {
+    "i": 12,
+    "children": 1,
+    "childrenAfter": 0,
+    "lostNow": false,
+    "heapMB": 8.21,
+    "gpu_rss_mb": [
+     363.4
+    ],
+    "lost": 0,
+    "dom_nodes": 915
+   },
+   {
+    "i": 13,
+    "children": 1,
+    "childrenAfter": 0,
+    "lostNow": false,
+    "heapMB": 8.58,
+    "gpu_rss_mb": [
+     381.3
+    ],
+    "lost": 0,
+    "dom_nodes": 984
+   },
+   {
+    "i": 14,
+    "children": 1,
+    "childrenAfter": 0,
+    "lostNow": false,
+    "heapMB": 8.9,
+    "gpu_rss_mb": [
+     398.9
+    ],
+    "lost": 0,
+    "dom_nodes": 1053
+   },
+   {
+    "i": 15,
+    "children": 1,
+    "childrenAfter": 0,
+    "lostNow": false,
+    "heapMB": 9.21,
+    "gpu_rss_mb": [
+     416.8
+    ],
+    "lost": 0,
+    "dom_nodes": 1122
+   },
+   {
+    "i": 16,
+    "children": 1,
+    "childrenAfter": 0,
+    "lostNow": false,
+    "heapMB": 9.5,
+    "gpu_rss_mb": [
+     417.2
+    ],
+    "lost": 1,
+    "dom_nodes": 1191
+   },
+   {
+    "i": 17,
+    "children": 1,
+    "childrenAfter": 0,
+    "lostNow": false,
+    "heapMB": 9.81,
+    "gpu_rss_mb": [
+     418.2
+    ],
+    "lost": 2,
+    "dom_nodes": 1260
+   },
+   {
+    "i": 18,
+    "children": 1,
+    "childrenAfter": 0,
+    "lostNow": false,
+    "heapMB": 10.11,
+    "gpu_rss_mb": [
+     418.6
+    ],
+    "lost": 3,
+    "dom_nodes": 1329
+   },
+   {
+    "i": 19,
+    "children": 1,
+    "childrenAfter": 0,
+    "lostNow": false,
+    "heapMB": 10.43,
+    "gpu_rss_mb": [
+     418.7
+    ],
+    "lost": 4,
+    "dom_nodes": 1398
+   }
+  ],
+  "final_keep": {
+   "children": 1,
+   "childrenAfter": 1,
+   "lostNow": false
+  },
+  "console": [
+   "[warning] WARNING: Too many active WebGL contexts. Oldest context will be lost.",
+   "[warning] WARNING: Too many active WebGL contexts. Oldest context will be lost.",
+   "[warning] WARNING: Too many active WebGL contexts. Oldest context will be lost.",
+   "[warning] WARNING: Too many active WebGL contexts. Oldest context will be lost.",
+   "[warning] WARNING: Too many active WebGL contexts. Oldest context will be lost."
+  ],
+  "context_warnings": [
+   "[warning] WARNING: Too many active WebGL contexts. Oldest context will be lost.",
+   "[warning] WARNING: Too many active WebGL contexts. Oldest context will be lost.",
+   "[warning] WARNING: Too many active WebGL contexts. Oldest context will be lost.",
+   "[warning] WARNING: Too many active WebGL contexts. Oldest context will be lost.",
+   "[warning] WARNING: Too many active WebGL contexts. Oldest context will be lost."
+  ],
+  "outside_web": []
+ },
+ "checks": [
+  "ok   iframe autoplay running: 61 marches/s",
+  "ok   iframe scrolled off-screen: 0 marches in 2 s, idle True, sun 48.56->48.56",
+  "ok   iframe scrolled back: resumes 61 marches/s",
+  "ok   hidden tab: visibility visible, marches while hidden 91, resumed 60",
+  "ok   destroy removes the DOM host",
+  "ok   destroy cycles: no errors []",
+  "FAIL destroy cycles: context warnings ['[warning] WARNING: Too many active WebGL contexts. Oldest context will be lost.', '[warning] WARNING: Too many active WebGL contexts. Oldest context will be lost.', '[warning] WARNING: Too many active WebGL contexts. Oldest context will be lost.']"
+ ]
+}

@@ -1,0 +1,143 @@
+{
+ "1280x800@1_front": {
+  "state": {
+   "cw": 1280,
+   "ch": 800,
+   "moveScale": 0.9,
+   "costMsPerMpx": 16.13889730448994,
+   "stillN": 96,
+   "moveSize": [
+    1152,
+    720
+   ],
+   "stillSize": [
+    1280,
+    800
+   ]
+  },
+  "full_frame": 12.408333333333333,
+  "march_only": 10.485000000397365,
+  "bake_fast_only": 0.005000000198682149,
+  "light_only(coarse sky view)": 0.016666666666666666,
+  "light_only(full sky view)": 1.6383333335320154,
+  "full_frame_fullsky": 13.740000000596046,
+  "sunvis_only": 0.009999999403953552,
+  "expo+display": 0.40500000019868215,
+  "full_frame_fullbake": 13.405000000198681,
+  "full_frame_at_scale1": 13.854999999701977
+ },
+ "1280x800@1_backlit": {
+  "state": {
+   "cw": 1280,
+   "ch": 800,
+   "moveScale": 0.95,
+   "costMsPerMpx": 13.670259774817856,
+   "stillN": 96,
+   "moveSize": [
+    1216,
+    760
+   ],
+   "stillSize": [
+    1280,
+    800
+   ]
+  },
+  "full_frame": 12.156666666269302,
+  "march_only": 10.17666666607062,
+  "full_frame_at_scale1": 12.902499999105931
+ },
+ "1920x1080@1_front": {
+  "state": {
+   "cw": 1920,
+   "ch": 1080,
+   "moveScale": 0.7,
+   "costMsPerMpx": 15.243721301585593,
+   "stillN": 96,
+   "moveSize": [
+    1344,
+    756
+   ],
+   "stillSize": [
+    1920,
+    1080
+   ]
+  },
+  "full_frame": 13.464999999602636,
+  "march_only": 11.271666666865348,
+  "bake_fast_only": 0.0066666672627131145,
+  "light_only(coarse sky view)": 0.016666666666666666,
+  "light_only(full sky view)": 1.6383333335320154,
+  "full_frame_fullsky": 14.675,
+  "sunvis_only": 0.010000000397364298,
+  "expo+display": 0.7,
+  "full_frame_fullbake": 14.544999999801318,
+  "full_frame_at_scale1": 23.05
+ },
+ "1920x1080@1_backlit": {
+  "state": {
+   "cw": 1920,
+   "ch": 1080,
+   "moveScale": 0.7,
+   "costMsPerMpx": 11.987714004821033,
+   "stillN": 96,
+   "moveSize": [
+    1344,
+    756
+   ],
+   "stillSize": [
+    1920,
+    1080
+   ]
+  },
+  "full_frame": 12.558333333333334,
+  "march_only": 10.281666666269302,
+  "full_frame_at_scale1": 21.23999999910593
+ },
+ "1280x800@2_front": {
+  "state": {
+   "cw": 2560,
+   "ch": 1600,
+   "moveScale": 0.6,
+   "costMsPerMpx": 19.34530921606709,
+   "stillN": 96,
+   "moveSize": [
+    1176,
+    735
+   ],
+   "stillSize": [
+    1960,
+    1225
+   ]
+  },
+  "full_frame": 13.4,
+  "march_only": 10.693333333730697,
+  "bake_fast_only": 0.005000000198682149,
+  "light_only(coarse sky view)": 0.01833333373069763,
+  "light_only(full sky view)": 1.6399999996026358,
+  "full_frame_fullsky": 14.619999999801317,
+  "sunvis_only": 0.011666666467984517,
+  "expo+display": 1.271666666865349,
+  "full_frame_fullbake": 14.536666666467985,
+  "full_frame_at_scale1": 27.829999999701975
+ },
+ "1280x800@2_backlit": {
+  "state": {
+   "cw": 2560,
+   "ch": 1600,
+   "moveScale": 0.7,
+   "costMsPerMpx": 13.461152438407813,
+   "stillN": 96,
+   "moveSize": [
+    1372,
+    858
+   ],
+   "stillSize": [
+    1960,
+    1225
+   ]
+  },
+  "full_frame": 14.616666666666667,
+  "march_only": 11.77833333313465,
+  "full_frame_at_scale1": 25.967499999701978
+ }
+}

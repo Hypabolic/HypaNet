@@ -11,6 +11,10 @@ export function installHarness() {
       state.r = r;
       return { ...info, shots: r.shots, voxelMean: r.voxelMean };
     },
+    // OPT-IN: load compiled network code (embed/compile/compile_net.py output served at `base`); mode 'compiled'
+    async setCompiled(base) {
+      return state.r.loadCompiled(base);
+    },
     setNetwork(text) {
       state.netText = text;
       return state.r.setNetwork(text);
@@ -23,12 +27,12 @@ export function installHarness() {
       r.setCamera(cam);
       await r.setPreset(preset);
     },
-    async render({ shot, preset, width, height, mode, frames, budgetMs, exposure, frame0, noBackground }) {
+    async render({ shot, preset, width, height, mode, frames, budgetMs, exposure, frame0, noBackground, tile }) {
       const r = state.r;
       await this.setup({ shot, preset, width, height });
       if (noBackground && !r.opts.harness) throw new Error('noBackground is harness-only');
       r.u.uBgScale.value = noBackground ? 0 : 1;
-      const stats = r.renderStill({ mode, frames, budgetMs, frame0: frame0 || 0 });
+      const stats = r.renderStill({ mode, frames, budgetMs, frame0: frame0 || 0, ...(tile ? { tile } : {}) });
       const t1 = performance.now();
       r.toneMap(exposure, false);
       const lin = r.readLinear();

@@ -1,0 +1,159 @@
+{
+ "front_afternoon|16|full": {
+  "split": "heldback",
+  "frames": 16,
+  "bake": "full",
+  "page": {
+   "full": 0.049566600471735,
+   "cloud": 0.11961487718076882,
+   "block8": 0.10725114943299892,
+   "ratio_rgb": [
+    1.009476900100708,
+    0.9988147616386414,
+    0.9808757305145264
+   ],
+   "floor": 0.04746159316343228,
+   "cloud_fraction": 0.1888359375
+  },
+  "interp_cloud": 0.12007991104681026,
+  "interp_block8": 0.10776117519545521,
+  "interp_full": 0.04974694922566414,
+  "d_cloud": -0.0004650338660414366,
+  "finite": true,
+  "median_frame_ms": 4.900000035762787,
+  "sun_bake_ms": 15.300000011920929,
+  "vs_interp_render_mean_rel": 0.0011520807165652514,
+  "vs_interp_render_max_rel": 0.040003105998039246
+ },
+ "side_golden|16|full": {
+  "split": "heldback",
+  "frames": 16,
+  "bake": "full",
+  "page": {
+   "full": 0.06693415343761444,
+   "cloud": 0.17781630646094057,
+   "block8": 0.16317535417620685,
+   "ratio_rgb": [
+    1.0392881631851196,
+    1.0352901220321655,
+    1.0280137062072754
+   ],
+   "floor": 0.06217106077444794,
+   "cloud_fraction": 0.21595703125
+  },
+  "interp_cloud": 0.17863672356965057,
+  "interp_block8": 0.16406006802619189,
+  "interp_full": 0.06724387407302856,
+  "d_cloud": -0.0008204171087100032,
+  "finite": true,
+  "median_frame_ms": 4.600000023841858,
+  "sun_bake_ms": 4.800000011920929,
+  "vs_interp_render_mean_rel": 0.001172158750705421,
+  "vs_interp_render_max_rel": 0.06559468805789948
+ },
+ "backlit_noon|16|full": {
+  "split": "heldback",
+  "frames": 16,
+  "bake": "full",
+  "page": {
+   "full": 0.04485129192471504,
+   "cloud": 0.14546664813106747,
+   "block8": 0.12721681004849078,
+   "ratio_rgb": [
+    0.9641436338424683,
+    0.9614469408988953,
+    0.9597490429878235
+   ],
+   "floor": 0.05983830818938786,
+   "cloud_fraction": 0.17824609375
+  },
+  "interp_cloud": 0.1449006829205496,
+  "interp_block8": 0.12657064097956006,
+  "interp_full": 0.044679850339889526,
+  "d_cloud": 0.0005659652105178548,
+  "finite": true,
+  "median_frame_ms": 5,
+  "sun_bake_ms": 4.199999988079071,
+  "vs_interp_render_mean_rel": 0.0011222942266613245,
+  "vs_interp_render_max_rel": 0.08860406279563904
+ },
+ "below_sunset|16|full": {
+  "split": "heldback",
+  "frames": 16,
+  "bake": "full",
+  "page": {
+   "full": 0.06254742294549942,
+   "cloud": 0.1515740446789708,
+   "block8": 0.1346801093029952,
+   "ratio_rgb": [
+    1.094388484954834,
+    0.9947114586830139,
+    0.8518339991569519
+   ],
+   "floor": 0.06035913856058007,
+   "cloud_fraction": 0.2380859375
+  },
+  "interp_cloud": 0.15182606956524844,
+  "interp_block8": 0.13493198344075027,
+  "interp_full": 0.06264601647853851,
+  "d_cloud": -0.00025202488627765196,
+  "finite": true,
+  "median_frame_ms": 3.899999976158142,
+  "sun_bake_ms": 5.5,
+  "vs_interp_render_mean_rel": 0.0006730134482495487,
+  "vs_interp_render_max_rel": 0.06548938155174255
+ },
+ "distant_golden|16|full": {
+  "split": "heldback",
+  "frames": 16,
+  "bake": "full",
+  "page": {
+   "full": 0.02006840892136097,
+   "cloud": 0.1559164514530153,
+   "block8": 0.13957892494039356,
+   "ratio_rgb": [
+    1.0819694995880127,
+    1.0710636377334595,
+    1.0546331405639648
+   ],
+   "floor": 0.055300466199495184,
+   "cloud_fraction": 0.076
+  },
+  "interp_cloud": 0.15738431550316156,
+  "interp_block8": 0.14107165296880222,
+  "interp_full": 0.020247027277946472,
+  "d_cloud": -0.0014678640501462614,
+  "finite": true,
+  "median_frame_ms": 2.699999988079071,
+  "sun_bake_ms": 9.5,
+  "vs_interp_render_mean_rel": 0.0004027465474791825,
+  "vs_interp_render_max_rel": 0.04188309609889984
+ },
+ "quarter_afternoon|16|full": {
+  "split": "heldback",
+  "frames": 16,
+  "bake": "full",
+  "page": {
+   "full": 0.0719313696026802,
+   "cloud": 0.17712280901465163,
+   "block8": 0.1657447270219993,
+   "ratio_rgb": [
+    0.8962973952293396,
+    0.9082204103469849,
+    0.9300501942634583
+   ],
+   "floor": 0.06123496731606854,
+   "cloud_fraction": 0.22874609375
+  },
+  "interp_cloud": 0.17607230401322083,
+  "interp_block8": 0.16447636594633436,
+  "interp_full": 0.07151155918836594,
+  "d_cloud": 0.001050505001430807,
+  "finite": true,
+  "median_frame_ms": 4.399999976158142,
+  "sun_bake_ms": 5.199999988079071,
+  "vs_interp_render_mean_rel": 0.0012496752897277474,
+  "vs_interp_render_max_rel": 0.13468319177627563
+ },
+ "_console": []
+}

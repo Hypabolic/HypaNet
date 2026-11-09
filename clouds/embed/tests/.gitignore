@@ -1,0 +1,7 @@
+# generated: compiled variants and linear renders (rebuilt by eval_compiled.py); keep only the summaries
+out/gen/
+out/interp/
+*.npy
+# screenshots: keep only the verification contact sheets
+out/**/*.png
+!out/verify/sheet_*.png

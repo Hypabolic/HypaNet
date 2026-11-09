@@ -1,0 +1,276 @@
+{
+ "hidden": {
+  "before": [
+   60,
+   "visible"
+  ],
+  "hidden": [
+   60,
+   "hidden",
+   60,
+   "hidden"
+  ],
+  "back": [
+   121,
+   "visible"
+  ]
+ },
+ "destroy": {
+  "rows": [
+   {
+    "i": 0,
+    "children": 1,
+    "childrenAfter": 0,
+    "lostNow": false,
+    "heapMB": 3.92,
+    "gpu_rss_mb": [
+     133.2
+    ],
+    "lost": 0,
+    "dom_nodes": 87
+   },
+   {
+    "i": 1,
+    "children": 1,
+    "childrenAfter": 0,
+    "lostNow": false,
+    "heapMB": 4.42,
+    "gpu_rss_mb": [
+     157.0
+    ],
+    "lost": 0,
+    "dom_nodes": 156
+   },
+   {
+    "i": 2,
+    "children": 1,
+    "childrenAfter": 0,
+    "lostNow": false,
+    "heapMB": 4.77,
+    "gpu_rss_mb": [
+     178.1
+    ],
+    "lost": 0,
+    "dom_nodes": 225
+   },
+   {
+    "i": 3,
+    "children": 1,
+    "childrenAfter": 0,
+    "lostNow": false,
+    "heapMB": 5.11,
+    "gpu_rss_mb": [
+     197.1
+    ],
+    "lost": 0,
+    "dom_nodes": 294
+   },
+   {
+    "i": 4,
+    "children": 1,
+    "childrenAfter": 0,
+    "lostNow": false,
+    "heapMB": 5.23,
+    "gpu_rss_mb": [
+     199.3
+    ],
+    "lost": 0,
+    "dom_nodes": 294
+   },
+   {
+    "i": 5,
+    "children": 1,
+    "childrenAfter": 0,
+    "lostNow": false,
+    "heapMB": 5.26,
+    "gpu_rss_mb": [
+     200.2
+    ],
+    "lost": 0,
+    "dom_nodes": 294
+   },
+   {
+    "i": 6,
+    "children": 1,
+    "childrenAfter": 0,
+    "lostNow": false,
+    "heapMB": 5.28,
+    "gpu_rss_mb": [
+     200.8
+    ],
+    "lost": 0,
+    "dom_nodes": 294
+   },
+   {
+    "i": 7,
+    "children": 1,
+    "childrenAfter": 0,
+    "lostNow": false,
+    "heapMB": 5.28,
+    "gpu_rss_mb": [
+     201.6
+    ],
+    "lost": 0,
+    "dom_nodes": 294
+   },
+   {
+    "i": 8,
+    "children": 1,
+    "childrenAfter": 0,
+    "lostNow": false,
+    "heapMB": 5.46,
+    "gpu_rss_mb": [
+     202.3
+    ],
+    "lost": 0,
+    "dom_nodes": 294
+   },
+   {
+    "i": 9,
+    "children": 1,
+    "childrenAfter": 0,
+    "lostNow": false,
+    "heapMB": 5.49,
+    "gpu_rss_mb": [
+     202.5
+    ],
+    "lost": 0,
+    "dom_nodes": 294
+   },
+   {
+    "i": 10,
+    "children": 1,
+    "childrenAfter": 0,
+    "lostNow": false,
+    "heapMB": 5.48,
+    "gpu_rss_mb": [
+     203.5
+    ],
+    "lost": 0,
+    "dom_nodes": 294
+   },
+   {
+    "i": 11,
+    "children": 1,
+    "childrenAfter": 0,
+    "lostNow": false,
+    "heapMB": 5.49,
+    "gpu_rss_mb": [
+     203.7
+    ],
+    "lost": 0,
+    "dom_nodes": 294
+   },
+   {
+    "i": 12,
+    "children": 1,
+    "childrenAfter": 0,
+    "lostNow": false,
+    "heapMB": 5.5,
+    "gpu_rss_mb": [
+     204.0
+    ],
+    "lost": 0,
+    "dom_nodes": 294
+   },
+   {
+    "i": 13,
+    "children": 1,
+    "childrenAfter": 0,
+    "lostNow": false,
+    "heapMB": 5.57,
+    "gpu_rss_mb": [
+     204.2
+    ],
+    "lost": 0,
+    "dom_nodes": 294
+   },
+   {
+    "i": 14,
+    "children": 1,
+    "childrenAfter": 0,
+    "lostNow": false,
+    "heapMB": 5.59,
+    "gpu_rss_mb": [
+     204.3
+    ],
+    "lost": 0,
+    "dom_nodes": 294
+   },
+   {
+    "i": 15,
+    "children": 1,
+    "childrenAfter": 0,
+    "lostNow": false,
+    "heapMB": 5.59,
+    "gpu_rss_mb": [
+     204.3
+    ],
+    "lost": 0,
+    "dom_nodes": 294
+   },
+   {
+    "i": 16,
+    "children": 1,
+    "childrenAfter": 0,
+    "lostNow": false,
+    "heapMB": 5.6,
+    "gpu_rss_mb": [
+     204.4
+    ],
+    "lost": 0,
+    "dom_nodes": 294
+   },
+   {
+    "i": 17,
+    "children": 1,
+    "childrenAfter": 0,
+    "lostNow": false,
+    "heapMB": 5.6,
+    "gpu_rss_mb": [
+     204.5
+    ],
+    "lost": 0,
+    "dom_nodes": 294
+   },
+   {
+    "i": 18,
+    "children": 1,
+    "childrenAfter": 0,
+    "lostNow": false,
+    "heapMB": 5.6,
+    "gpu_rss_mb": [
+     204.5
+    ],
+    "lost": 0,
+    "dom_nodes": 294
+   },
+   {
+    "i": 19,
+    "children": 1,
+    "childrenAfter": 0,
+    "lostNow": false,
+    "heapMB": 5.62,
+    "gpu_rss_mb": [
+     204.6
+    ],
+    "lost": 0,
+    "dom_nodes": 294
+   }
+  ],
+  "final_keep": {
+   "children": 1,
+   "childrenAfter": 1,
+   "lostNow": false
+  },
+  "console": [],
+  "context_warnings": [],
+  "outside_web": []
+ },
+ "checks": [
+  "ok   hidden tab: visibility hidden, marches while hidden 0, resumed 61",
+  "ok   destroy removes the DOM host",
+  "ok   destroy cycles: no errors []",
+  "ok   destroy cycles: context warnings []"
+ ]
+}

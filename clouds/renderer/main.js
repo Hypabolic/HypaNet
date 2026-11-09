@@ -135,9 +135,94 @@ export class CloudRenderer {
     return { loadMs: this.loadMs, pyramidMs: this.pyramidMs, gl: this.glInfo(), atlasDims: pyr.atlasDims };
   }
 
+  // ---------------------------------------------------------------------------------------------
+  // OPT-IN (render.py --compiled): straight-line GLSL from embed/compile/compile_net.py replaces the interpreter's
+  // evalNet in the 'compiled' material; bake textures (manifest.textures) are rendered into 3D targets, the static
+  // ones once and the sun ones whenever the sun moves. The default materials never see any of this.
+  async loadCompiled(base) {
+    const [manifest, netEval, bake] = await Promise.all([
+      fetchOk(base + 'manifest.json', 'json'), fetchOk(base + 'net_eval.glsl', 'text'), fetchOk(base + 'bake.glsl', 'text')]);
+    const frag = this.src.frag;
+    const a = frag.indexOf('void evalNet('), b = frag.indexOf('// ---- the march ----'), c = frag.indexOf('// ---- MLP interpreter ----');
+    if (a < 0 || b < a || c < 0) throw new Error('march.frag.glsl: cannot find the interpreter evalNet to replace');
+    if (this.compiled) this.compiled.delete('compiled');
+    delete this.materials.compiled;
+    if (this.capMem) delete this.capMem.compiled;
+    for (const k of Object.keys(this.materials)) if (k.startsWith('bake:')) { this.materials[k].dispose(); delete this.materials[k]; }
+    (this.bakes || []).forEach((t) => t.rt.dispose());
+    this.compiledFrag = frag.slice(0, a) + '// ---- compiled network (MODE_COMPILED) ----\n' + bake + '\n' + netEval + '\n' + frag.slice(b);
+    // bake pass: the march shader's declarations and densProbe, then bake.glsl and a per-layer main
+    this.bakeFrag = frag.slice(0, c) + bake + `
+uniform vec3 uBakeDims;
+uniform float uBakeLayer;
+void main() {
+  vec3 x = uBoxMin + vec3(gl_FragCoord.xy, uBakeLayer + 0.5) / uBakeDims * (uBoxMax - uBoxMin);
+  fragColor = BAKE_FN(x);
+}
+`;
+    this.bakes = manifest.textures.map((t) => {
+      const [nx, ny, nz] = t.dims;
+      const type = t.format === 'RGBA32F' ? THREE.FloatType : THREE.HalfFloatType;
+      const rt = new THREE.WebGL3DRenderTarget(nx, ny, nz, { type, format: THREE.RGBAFormat,
+        minFilter: THREE.LinearFilter, magFilter: THREE.LinearFilter, depthBuffer: false, stencilBuffer: false, generateMipmaps: false });
+      Object.assign(rt.texture, { wrapS: THREE.ClampToEdgeWrapping, wrapT: THREE.ClampToEdgeWrapping, wrapR: THREE.ClampToEdgeWrapping });
+      this.u[t.name] = { value: rt.texture };
+      return { ...t, rt, bakedKey: null };
+    });
+    this.manifest = manifest;
+    this.bakeStats = { bakes: 0, ms: 0 };
+    return { textures: manifest.textures.map((t) => `${t.name} ${t.class} ${t.dims.join('x')}`), stats: manifest.stats,
+      live: manifest.live_probes };
+  }
+
+  /** Bake every texture whose inputs changed (static: once; sun: when uSun/uLu/uLw change). Returns ms spent. */
+  ensureBakes() {
+    if (!this.bakes || !this.bakes.length) return 0;
+    const sunKey = [this.u.uSun.value, this.u.uLu.value, this.u.uLw.value].map((v) => v.toArray().join(',')).join(';');
+    const todo = this.bakes.filter((t) => t.bakedKey !== (t.class === 'sun' ? sunKey : 'static'));
+    if (!todo.length) return 0;
+    const t0 = performance.now();
+    const gl = this.gl;
+    const px = new Float32Array(4);
+    for (const t of todo) {
+      const key = 'bake:' + t.name;
+      if (!this.materials[key]) {
+        const uniforms = { ...this.u, uBakeDims: { value: new THREE.Vector3(...t.dims) }, uBakeLayer: { value: 0 } };
+        for (const o of this.bakes) delete uniforms[o.name];   // never sample a bake target while writing one
+        this.materials[key] = new THREE.RawShaderMaterial({ glslVersion: THREE.GLSL3, vertexShader: this.src.vert,
+          fragmentShader: this.bakeFrag, uniforms, defines: { BAKE_FN: t.fn }, depthTest: false, depthWrite: false });
+      }
+      const mat = this.materials[key];
+      this.quad.material = mat;
+      t.rt.viewport.set(0, 0, t.dims[0], t.dims[1]);
+      t.rt.scissorTest = false;
+      for (let z = 0; z < t.dims[2]; z++) {
+        mat.uniforms.uBakeLayer.value = z;
+        this.renderer.setRenderTarget(t.rt, z);
+        this.renderer.render(this.quadScene, this.quadCam);
+      }
+      gl.readPixels(0, 0, 1, 1, gl.RGBA, gl.FLOAT, px);   // last layer is still bound: wait for the bake
+      this.renderer.setRenderTarget(null);
+      this.checkErrors();
+      t.bakedKey = t.class === 'sun' ? sunKey : 'static';
+    }
+    const ms = performance.now() - t0;
+    this.bakeStats.bakes += todo.length;
+    this.bakeStats.ms += ms;
+    return ms;
+  }
+
   material(key) {
     if (this.materials[key]) return this.materials[key];
     const defines = {};
+    if (key === 'compiled') {
+      if (!this.compiledFrag) throw new Error('no compiled network loaded (loadCompiled)');
+      const m = new THREE.RawShaderMaterial({ glslVersion: THREE.GLSL3, vertexShader: this.src.vert,
+        fragmentShader: this.compiledFrag, uniforms: this.u, defines: { MODE_NET: 1, MODE_COMPILED: 1, SEGMENT: 1 },
+        depthTest: false, depthWrite: false });
+      this.materials[key] = m;
+      return m;
+    }
     if (key === 'net') { defines.MODE_NET = 1; defines.SEGMENT = 1; }
     else if (key === 'exact') {
       if (!this.opts.harness) throw new Error('exact single-scattering mode is harness-only');
@@ -447,6 +532,7 @@ export class CloudRenderer {
   renderStill({ mode = 'net', frames = 16, budgetMs = 40, frame0 = 0, tile = [160, 100] } = {}) {
     if (mode === 'net' && !this.net) throw new Error('no network loaded');
     this.ensureTargets();
+    const bakeMs = mode === 'compiled' ? this.ensureBakes() : 0;
     const compileMs = this.warmUp(mode) + this.warmUp('final');
     const t0 = performance.now();
     const W = this.width, H = this.height;
@@ -469,8 +555,10 @@ export class CloudRenderer {
     // with every tile getting the same number of frames, the result is in acc[frames % 2]
     this.accFront = frames % 2;
     const ms = performance.now() - t0;
-    return { ms, frames, draws: ctl.draws, passes: ctl.passes, tiles, splits, maxDrawMs: ctl.maxDraw, compileMs,
+    const stats = { ms, frames, draws: ctl.draws, passes: ctl.passes, tiles, splits, maxDrawMs: ctl.maxDraw, compileMs,
       evalsPerFrame: ctl.evals / frames, finalCap: ctl.cap };
+    if (mode === 'compiled') stats.bakeMs = bakeMs;
+    return stats;
   }
 
   /** Compile a program (first use) with a 1-pixel draw, so compile time is not counted as a slow tile. */
@@ -502,6 +590,7 @@ export class CloudRenderer {
   renderProgressive(mode, reset, budgetMs = 30, passBudgetMs = 25, tile = [160, 100]) {
     this.ensureTargets();
     if (reset || !this.job) {
+      if (mode === 'compiled') this.ensureBakes();
       this.warmUp(mode); this.warmUp('final');
       this.job = { gen: this.progressiveJob(mode, tile, this.makeCtl(mode, passBudgetMs)), frames: 0 };
     }

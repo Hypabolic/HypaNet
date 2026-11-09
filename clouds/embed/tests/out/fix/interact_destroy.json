@@ -1,0 +1,259 @@
+{
+ "destroy": {
+  "rows": [
+   {
+    "i": 0,
+    "children": 1,
+    "childrenAfter": 0,
+    "lostNow": true,
+    "heapMB": 3.94,
+    "gpu_rss_mb": [
+     116.8
+    ],
+    "lost": 1,
+    "dom_nodes": 91
+   },
+   {
+    "i": 1,
+    "children": 1,
+    "childrenAfter": 0,
+    "lostNow": true,
+    "heapMB": 4.44,
+    "gpu_rss_mb": [
+     122.9
+    ],
+    "lost": 2,
+    "dom_nodes": 164
+   },
+   {
+    "i": 2,
+    "children": 1,
+    "childrenAfter": 0,
+    "lostNow": true,
+    "heapMB": 4.78,
+    "gpu_rss_mb": [
+     125.6
+    ],
+    "lost": 3,
+    "dom_nodes": 237
+   },
+   {
+    "i": 3,
+    "children": 1,
+    "childrenAfter": 0,
+    "lostNow": true,
+    "heapMB": 5.14,
+    "gpu_rss_mb": [
+     126.9
+    ],
+    "lost": 4,
+    "dom_nodes": 310
+   },
+   {
+    "i": 4,
+    "children": 1,
+    "childrenAfter": 0,
+    "lostNow": true,
+    "heapMB": 5.56,
+    "gpu_rss_mb": [
+     127.3
+    ],
+    "lost": 5,
+    "dom_nodes": 383
+   },
+   {
+    "i": 5,
+    "children": 1,
+    "childrenAfter": 0,
+    "lostNow": true,
+    "heapMB": 5.89,
+    "gpu_rss_mb": [
+     128.4
+    ],
+    "lost": 6,
+    "dom_nodes": 456
+   },
+   {
+    "i": 6,
+    "children": 1,
+    "childrenAfter": 0,
+    "lostNow": true,
+    "heapMB": 6.21,
+    "gpu_rss_mb": [
+     128.9
+    ],
+    "lost": 7,
+    "dom_nodes": 529
+   },
+   {
+    "i": 7,
+    "children": 1,
+    "childrenAfter": 0,
+    "lostNow": true,
+    "heapMB": 6.52,
+    "gpu_rss_mb": [
+     130.3
+    ],
+    "lost": 8,
+    "dom_nodes": 602
+   },
+   {
+    "i": 8,
+    "children": 1,
+    "childrenAfter": 0,
+    "lostNow": true,
+    "heapMB": 7.0,
+    "gpu_rss_mb": [
+     130.7
+    ],
+    "lost": 9,
+    "dom_nodes": 675
+   },
+   {
+    "i": 9,
+    "children": 1,
+    "childrenAfter": 0,
+    "lostNow": true,
+    "heapMB": 7.33,
+    "gpu_rss_mb": [
+     131.0
+    ],
+    "lost": 10,
+    "dom_nodes": 748
+   },
+   {
+    "i": 10,
+    "children": 1,
+    "childrenAfter": 0,
+    "lostNow": true,
+    "heapMB": 7.64,
+    "gpu_rss_mb": [
+     131.5
+    ],
+    "lost": 11,
+    "dom_nodes": 821
+   },
+   {
+    "i": 11,
+    "children": 1,
+    "childrenAfter": 0,
+    "lostNow": true,
+    "heapMB": 7.94,
+    "gpu_rss_mb": [
+     131.6
+    ],
+    "lost": 12,
+    "dom_nodes": 894
+   },
+   {
+    "i": 12,
+    "children": 1,
+    "childrenAfter": 0,
+    "lostNow": true,
+    "heapMB": 8.24,
+    "gpu_rss_mb": [
+     131.7
+    ],
+    "lost": 13,
+    "dom_nodes": 967
+   },
+   {
+    "i": 13,
+    "children": 1,
+    "childrenAfter": 0,
+    "lostNow": true,
+    "heapMB": 8.64,
+    "gpu_rss_mb": [
+     132.1
+    ],
+    "lost": 14,
+    "dom_nodes": 1040
+   },
+   {
+    "i": 14,
+    "children": 1,
+    "childrenAfter": 0,
+    "lostNow": true,
+    "heapMB": 8.94,
+    "gpu_rss_mb": [
+     132.1
+    ],
+    "lost": 15,
+    "dom_nodes": 1113
+   },
+   {
+    "i": 15,
+    "children": 1,
+    "childrenAfter": 0,
+    "lostNow": true,
+    "heapMB": 9.24,
+    "gpu_rss_mb": [
+     132.1
+    ],
+    "lost": 16,
+    "dom_nodes": 1186
+   },
+   {
+    "i": 16,
+    "children": 1,
+    "childrenAfter": 0,
+    "lostNow": true,
+    "heapMB": 9.54,
+    "gpu_rss_mb": [
+     132.4
+    ],
+    "lost": 17,
+    "dom_nodes": 1259
+   },
+   {
+    "i": 17,
+    "children": 1,
+    "childrenAfter": 0,
+    "lostNow": true,
+    "heapMB": 9.85,
+    "gpu_rss_mb": [
+     132.5
+    ],
+    "lost": 18,
+    "dom_nodes": 1332
+   },
+   {
+    "i": 18,
+    "children": 1,
+    "childrenAfter": 0,
+    "lostNow": true,
+    "heapMB": 10.15,
+    "gpu_rss_mb": [
+     132.5
+    ],
+    "lost": 19,
+    "dom_nodes": 1405
+   },
+   {
+    "i": 19,
+    "children": 1,
+    "childrenAfter": 0,
+    "lostNow": true,
+    "heapMB": 10.46,
+    "gpu_rss_mb": [
+     132.6
+    ],
+    "lost": 20,
+    "dom_nodes": 1478
+   }
+  ],
+  "final_keep": {
+   "children": 1,
+   "childrenAfter": 1,
+   "lostNow": false
+  },
+  "console": [],
+  "context_warnings": [],
+  "outside_web": []
+ },
+ "checks": [
+  "ok   destroy removes the DOM host",
+  "ok   destroy cycles: no errors []",
+  "ok   destroy cycles: context warnings []"
+ ]
+}

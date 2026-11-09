@@ -1,0 +1,140 @@
+{
+ "drag_1280x800@1": {
+  "drag": {
+   "raf_n": 299,
+   "raf_median_ms": 16.69999999999891,
+   "raf_p90_ms": 16.700000000000728,
+   "raf_p99_ms": 16.800000000000182,
+   "raf_max_ms": 16.800000000000182,
+   "fps_mean": 60.002809496096816,
+   "loop_frames": 302,
+   "loop_dt_median": 16.699999999999818,
+   "loop_dt_p90": 16.700000000000728,
+   "cpu_ms_median": 0.5,
+   "cpu_ms_p90": 1.300000011920929,
+   "scale": [
+    0.8,
+    0.9
+   ],
+   "gpu": {
+    "light": {
+     "n": 161,
+     "median": 0.411499,
+     "p90": 0.436
+    },
+    "sunvis": {
+     "n": 161,
+     "median": 0.789374,
+     "p90": 1.029958
+    },
+    "sunFast": {
+     "n": 161,
+     "median": 1.497833,
+     "p90": 2.876875
+    },
+    "march_moving": {
+     "n": 301,
+     "median": 10.670625,
+     "p90": 11.519666
+    },
+    "expo": {
+     "n": 301,
+     "median": 10.78,
+     "p90": 11.565875
+    },
+    "display": {
+     "n": 301,
+     "median": 11.032416,
+     "p90": 11.827583
+    }
+   }
+  },
+  "accumulate": {
+   "raf_n": 251,
+   "raf_median_ms": 16.69999999999891,
+   "raf_p90_ms": 16.700000000000728,
+   "raf_p99_ms": 16.80000000000109,
+   "raf_max_ms": 16.80000000000109,
+   "fps_mean": 60.001912411550954,
+   "loop_frames": 254,
+   "loop_dt_median": 16.69999999999891,
+   "loop_dt_p90": 16.700000000000728,
+   "cpu_ms_median": 0.30000001192092896,
+   "cpu_ms_p90": 0.5,
+   "scale": [
+    0.9
+   ],
+   "gpu": {
+    "march_still": {
+     "n": 182,
+     "median": 7.964625,
+     "p90": 11.144874
+    },
+    "expo": {
+     "n": 254,
+     "median": 4.943499,
+     "p90": 7.7475
+    },
+    "display": {
+     "n": 254,
+     "median": 6.09575,
+     "p90": 9.404999
+    }
+   }
+  },
+  "converge_s": 4.247111083008349,
+  "idle": 4.247105121612549,
+  "state_drag": {
+   "cw": 1280,
+   "ch": 800,
+   "moveScale": 0.9,
+   "costMsPerMpx": 12.649297012801032,
+   "stillN": 0,
+   "moveSize": [
+    1152,
+    720
+   ],
+   "stillSize": [
+    1280,
+    800
+   ]
+  },
+  "state_still": {
+   "cw": 1280,
+   "ch": 800,
+   "moveScale": 0.9,
+   "costMsPerMpx": 15.27867468414627,
+   "stillN": 96,
+   "moveSize": [
+    1152,
+    720
+   ],
+   "stillSize": [
+    1280,
+    800
+   ]
+  },
+  "mem_drag": {
+   "JSHeapUsedMB": 6.474016,
+   "JSHeapTotalMB": 11.616256,
+   "gpu_estimate_bytes": {
+    "density": 10485760,
+    "atlas": 32350104,
+    "bakeFull": 19333120,
+    "bakeFast": 1310720,
+    "skyLut": 6291456,
+    "skyView": 8388608,
+    "accum": 32768000,
+    "moving": 26542080,
+    "scratch": 32,
+    "canvas": 8192000,
+    "totalMB": 145.66188
+   },
+   "gpu_process_rss_mb": [
+    135.71875
+   ]
+  },
+  "mouse_events": 161,
+  "console": []
+ }
+}

@@ -1,0 +1,649 @@
+{
+ "network": "runs/r1/author/work/network.json",
+ "network_sha256": "f40c4601f0edc62253b2d92a2548df0c414c70f04e7cec75ac9f6681567cbebb",
+ "density_sha256": "dd334e3fae4c57f5f825657771291d03b0dfd4c2002afecbadaae88301810140",
+ "voxel_mean": 6.979166666666667,
+ "mode": "bake",
+ "compile_args": {
+  "no_bake": false,
+  "live": [
+   0,
+   1,
+   2,
+   3
+  ],
+  "res": {
+   "sun": [
+    128,
+    80,
+    128
+   ],
+   "static": [
+    96,
+    60,
+    96
+   ]
+  },
+  "coarse_blur": null,
+  "format": "RGBA16F"
+ },
+ "live_probes": [
+  0,
+  1,
+  2,
+  3,
+  21,
+  22
+ ],
+ "analytic_probes": [
+  37,
+  38,
+  39
+ ],
+ "forced_live": [
+  0,
+  1,
+  2,
+  3
+ ],
+ "probe_basis_classes": [],
+ "textures": [
+  {
+   "name": "uBake0",
+   "fn": "bake0",
+   "class": "sun",
+   "tier": "sun",
+   "dims": [
+    128,
+    80,
+    128
+   ],
+   "format": "RGBA16F",
+   "channels": [
+    {
+     "channel": "x",
+     "combo": "tau_f+log_tf",
+     "probes": [
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+     ],
+     "coefs": [
+      2.4,
+      3.6,
+      5.2,
+      7.2,
+      10.0,
+      14.0
+     ],
+     "min_blur": 33.0,
+     "bound": 42.39999961853027,
+     "scale_note": "tau_f uses 1.0 x channel; log_tf uses 1.0 x channel"
+    },
+    {
+     "channel": "y",
+     "combo": "tau_c+log_tc",
+     "probes": [
+      10,
+      11,
+      12,
+      13,
+      14,
+      15
+     ],
+     "coefs": [
+      2.4,
+      4.0,
+      6.4,
+      9.6,
+      13.6,
+      20.0
+     ],
+     "min_blur": 150.0,
+     "bound": 56.000000953674316,
+     "scale_note": "tau_c uses 1.0 x channel; log_tc uses 1.0 x channel"
+    },
+    {
+     "channel": "z",
+     "combo": "Gs+aGs+rGs_p+rGs_m",
+     "probes": [
+      19,
+      20
+     ],
+     "coefs": [
+      2.0,
+      -2.0
+     ],
+     "min_blur": 200.0,
+     "bound": 4.0,
+     "scale_note": "Gs uses 1.0 x channel; aGs uses 1.0 x channel; rGs_p uses 2.0 x channel; rGs_m uses -2.0 x channel"
+    }
+   ]
+  },
+  {
+   "name": "uBake1",
+   "fn": "bake1",
+   "class": "static",
+   "tier": "static",
+   "dims": [
+    96,
+    60,
+    96
+   ],
+   "format": "RGBA16F",
+   "channels": [
+    {
+     "channel": "x",
+     "combo": "tau_up+log_tu",
+     "probes": [
+      23,
+      25,
+      27,
+      29,
+      31,
+      33
+     ],
+     "coefs": [
+      0.6,
+      1.0,
+      2.0,
+      3.6,
+      6.8,
+      12.0
+     ],
+     "min_blur": 15.0,
+     "bound": 26.00000011920929,
+     "scale_note": "tau_up uses 1.0 x channel; log_tu uses 1.0 x channel"
+    },
+    {
+     "channel": "y",
+     "combo": "tau_dn+log_td",
+     "probes": [
+      24,
+      26,
+      28,
+      30,
+      32,
+      34
+     ],
+     "coefs": [
+      0.6,
+      1.0,
+      2.0,
+      3.6,
+      6.8,
+      12.0
+     ],
+     "min_blur": 15.0,
+     "bound": 26.00000011920929,
+     "scale_note": "tau_dn uses 1.0 x channel; log_td uses 1.0 x channel"
+    },
+    {
+     "channel": "z",
+     "combo": "depth",
+     "probes": [
+      16
+     ],
+     "coefs": [
+      1.5
+     ],
+     "min_blur": 150.0,
+     "bound": 1.5,
+     "scale_note": "depth uses 1.0 x channel"
+    },
+    {
+     "channel": "w",
+     "combo": "aGup+sky_a+sky_b+gndside",
+     "probes": [
+      35,
+      36
+     ],
+     "coefs": [
+      2.0,
+      -2.0
+     ],
+     "min_blur": 300.0,
+     "bound": 4.0,
+     "scale_note": "aGup uses 1.0 x channel; sky_a uses 0.7 x channel; sky_b uses 0.7 x channel; gndside uses -0.5 x channel"
+    }
+   ]
+  },
+  {
+   "name": "uBake2",
+   "fn": "bake2",
+   "class": "static",
+   "tier": "static",
+   "dims": [
+    96,
+    60,
+    96
+   ],
+   "format": "RGBA16F",
+   "channels": [
+    {
+     "channel": "x",
+     "combo": "logE600+clos",
+     "probes": [
+      18
+     ],
+     "coefs": [
+      1.0
+     ],
+     "min_blur": 600.0,
+     "bound": 1.0,
+     "scale_note": "logE600 uses 1.0 x channel; clos uses 2.0 x channel"
+    }
+   ]
+  }
+ ],
+ "half_safe_bound": 60000.0,
+ "live_combos": [
+  {
+   "combo": "tau_f+log_tf",
+   "probes": [
+    0,
+    1,
+    2,
+    3
+   ],
+   "coefs": [
+    0.4,
+    0.6,
+    1.0,
+    1.6
+   ],
+   "scale_note": "tau_f uses 1.0 x channel; log_tf uses 1.0 x channel"
+  },
+  {
+   "combo": "Gv+rGv+rGv2",
+   "probes": [
+    21,
+    22
+   ],
+   "coefs": [
+    2.0,
+    -2.0
+   ],
+   "scale_note": "Gv uses 1.0 x channel; rGv uses 1.0 x channel; rGv2 uses 2.0 x channel"
+  }
+ ],
+ "probes": [
+  {
+   "index": 0,
+   "label": "p0:density[light (1,0,0) dist=5 blur=7]",
+   "class": "live",
+   "used": true,
+   "lo": 0,
+   "t": 0.0043001375161111355,
+   "fetches": 2
+  },
+  {
+   "index": 1,
+   "label": "p1:density[light (1,0,0) dist=17.5 blur=8.25]",
+   "class": "live",
+   "used": true,
+   "lo": 0,
+   "t": 0.24133934080600739,
+   "fetches": 2
+  },
+  {
+   "index": 2,
+   "label": "p2:density[light (1,0,0) dist=37.5 blur=13.75]",
+   "class": "live",
+   "used": true,
+   "lo": 0,
+   "t": 0.978304922580719,
+   "fetches": 2
+  },
+  {
+   "index": 3,
+   "label": "p3:density[light (1,0,0) dist=70 blur=22]",
+   "class": "live",
+   "used": true,
+   "lo": 1,
+   "t": 0.656376838684082,
+   "fetches": 2
+  },
+  {
+   "index": 4,
+   "label": "p4:density[light (1,0,0) dist=120 blur=33]",
+   "class": "sun",
+   "used": true,
+   "lo": 2,
+   "t": 0.24133934080600739,
+   "fetches": 2
+  },
+  {
+   "index": 5,
+   "label": "p5:density[light (1,0,0) dist=195 blur=49.5]",
+   "class": "sun",
+   "used": true,
+   "lo": 2,
+   "t": 0.8263018131256104,
+   "fetches": 2
+  },
+  {
+   "index": 6,
+   "label": "p6:density[light (1,0,0) dist=305 blur=71.5]",
+   "class": "sun",
+   "used": true,
+   "lo": 3,
+   "t": 0.3568165600299835,
+   "fetches": 2
+  },
+  {
+   "index": 7,
+   "label": "p7:density[light (1,0,0) dist=460 blur=99]",
+   "class": "sun",
+   "used": true,
+   "lo": 3,
+   "t": 0.8263018131256104,
+   "fetches": 2
+  },
+  {
+   "index": 8,
+   "label": "p8:density[light (1,0,0) dist=675 blur=137.5]",
+   "class": "sun",
+   "used": true,
+   "lo": 4,
+   "t": 0.30023303627967834,
+   "fetches": 2
+  },
+  {
+   "index": 9,
+   "label": "p9:density[light (1,0,0) dist=975 blur=192.5]",
+   "class": "sun",
+   "used": true,
+   "lo": 4,
+   "t": 0.7856598496437073,
+   "fetches": 2
+  },
+  {
+   "index": 10,
+   "label": "p10:density[light (1,0,0) dist=30 blur=150]",
+   "class": "sun",
+   "used": true,
+   "lo": 4,
+   "t": 0.42576390504837036,
+   "fetches": 2
+  },
+  {
+   "index": 11,
+   "label": "p11:density[light (1,0,0) dist=110 blur=200]",
+   "class": "sun",
+   "used": true,
+   "lo": 4,
+   "t": 0.8408014178276062,
+   "fetches": 2
+  },
+  {
+   "index": 12,
+   "label": "p12:density[light (1,0,0) dist=240 blur=280]",
+   "class": "sun",
+   "used": true,
+   "lo": 5,
+   "t": 0.32622823119163513,
+   "fetches": 2
+  },
+  {
+   "index": 13,
+   "label": "p13:density[light (1,0,0) dist=440 blur=380]",
+   "class": "sun",
+   "used": true,
+   "lo": 5,
+   "t": 0.7668008208274841,
+   "fetches": 2
+  },
+  {
+   "index": 14,
+   "label": "p14:density[light (1,0,0) dist=730 blur=500]",
+   "class": "sun",
+   "used": true,
+   "lo": 6,
+   "t": 0.16272950172424316,
+   "fetches": 2
+  },
+  {
+   "index": 15,
+   "label": "p15:density[light (1,0,0) dist=1150 blur=700]",
+   "class": "sun",
+   "used": true,
+   "lo": 6,
+   "t": 0.6481563448905945,
+   "fetches": 2
+  },
+  {
+   "index": 16,
+   "label": "p16:density[world (0,1,0) dist=0 blur=150]",
+   "class": "static",
+   "used": true,
+   "lo": 4,
+   "t": 0.42576390504837036,
+   "fetches": 2
+  },
+  {
+   "index": 17,
+   "label": "p17:density[world (0,1,0) dist=0 blur=300]",
+   "class": "static",
+   "used": false,
+   "lo": 5,
+   "t": 0.42576390504837036,
+   "fetches": 2
+  },
+  {
+   "index": 18,
+   "label": "p18:density[world (0,1,0) dist=0 blur=600]",
+   "class": "static",
+   "used": true,
+   "lo": 6,
+   "t": 0.42576390504837036,
+   "fetches": 2
+  },
+  {
+   "index": 19,
+   "label": "p19:density[light (-1,0,0) dist=50 blur=200]",
+   "class": "sun",
+   "used": true,
+   "lo": 4,
+   "t": 0.8408014178276062,
+   "fetches": 2
+  },
+  {
+   "index": 20,
+   "label": "p20:density[light (1,0,0) dist=50 blur=200]",
+   "class": "sun",
+   "used": true,
+   "lo": 4,
+   "t": 0.8408014178276062,
+   "fetches": 2
+  },
+  {
+   "index": 21,
+   "label": "p21:density[view (1,0,0) dist=50 blur=200]",
+   "class": "live",
+   "used": true,
+   "lo": 4,
+   "t": 0.8408014178276062,
+   "fetches": 2
+  },
+  {
+   "index": 22,
+   "label": "p22:density[view (-1,0,0) dist=50 blur=200]",
+   "class": "live",
+   "used": true,
+   "lo": 4,
+   "t": 0.8408014178276062,
+   "fetches": 2
+  },
+  {
+   "index": 23,
+   "label": "p23:density[world (0,1,0) dist=7.5 blur=15]",
+   "class": "static",
+   "used": true,
+   "lo": 1,
+   "t": 0.1038358137011528,
+   "fetches": 2
+  },
+  {
+   "index": 24,
+   "label": "p24:density[world (0,-1,0) dist=7.5 blur=15]",
+   "class": "static",
+   "used": true,
+   "lo": 1,
+   "t": 0.1038358137011528,
+   "fetches": 2
+  },
+  {
+   "index": 25,
+   "label": "p25:density[world (0,1,0) dist=27.5 blur=25]",
+   "class": "static",
+   "used": true,
+   "lo": 1,
+   "t": 0.8408014178276062,
+   "fetches": 2
+  },
+  {
+   "index": 26,
+   "label": "p26:density[world (0,-1,0) dist=27.5 blur=25]",
+   "class": "static",
+   "used": true,
+   "lo": 1,
+   "t": 0.8408014178276062,
+   "fetches": 2
+  },
+  {
+   "index": 27,
+   "label": "p27:density[world (0,1,0) dist=65 blur=50]",
+   "class": "static",
+   "used": true,
+   "lo": 2,
+   "t": 0.8408014178276062,
+   "fetches": 2
+  },
+  {
+   "index": 28,
+   "label": "p28:density[world (0,-1,0) dist=65 blur=50]",
+   "class": "static",
+   "used": true,
+   "lo": 2,
+   "t": 0.8408014178276062,
+   "fetches": 2
+  },
+  {
+   "index": 29,
+   "label": "p29:density[world (0,1,0) dist=135 blur=90]",
+   "class": "static",
+   "used": true,
+   "lo": 3,
+   "t": 0.6887983083724976,
+   "fetches": 2
+  },
+  {
+   "index": 30,
+   "label": "p30:density[world (0,-1,0) dist=135 blur=90]",
+   "class": "static",
+   "used": true,
+   "lo": 3,
+   "t": 0.6887983083724976,
+   "fetches": 2
+  },
+  {
+   "index": 31,
+   "label": "p31:density[world (0,1,0) dist=265 blur=170]",
+   "class": "static",
+   "used": true,
+   "lo": 4,
+   "t": 0.6063361763954163,
+   "fetches": 2
+  },
+  {
+   "index": 32,
+   "label": "p32:density[world (0,-1,0) dist=265 blur=170]",
+   "class": "static",
+   "used": true,
+   "lo": 4,
+   "t": 0.6063361763954163,
+   "fetches": 2
+  },
+  {
+   "index": 33,
+   "label": "p33:density[world (0,1,0) dist=500 blur=300]",
+   "class": "static",
+   "used": true,
+   "lo": 5,
+   "t": 0.42576390504837036,
+   "fetches": 2
+  },
+  {
+   "index": 34,
+   "label": "p34:density[world (0,-1,0) dist=500 blur=300]",
+   "class": "static",
+   "used": true,
+   "lo": 5,
+   "t": 0.42576390504837036,
+   "fetches": 2
+  },
+  {
+   "index": 35,
+   "label": "p35:density[world (0,-1,0) dist=75 blur=300]",
+   "class": "static",
+   "used": true,
+   "lo": 5,
+   "t": 0.42576390504837036,
+   "fetches": 2
+  },
+  {
+   "index": 36,
+   "label": "p36:density[world (0,1,0) dist=75 blur=300]",
+   "class": "static",
+   "used": true,
+   "lo": 5,
+   "t": 0.42576390504837036,
+   "fetches": 2
+  },
+  {
+   "index": 37,
+   "label": "p37:cos_view_sun",
+   "class": "analytic",
+   "used": true
+  },
+  {
+   "index": 38,
+   "label": "p38:view_up",
+   "class": "analytic",
+   "used": true
+  },
+  {
+   "index": 39,
+   "label": "p39:sun_up",
+   "class": "analytic",
+   "used": true
+  },
+  {
+   "index": 40,
+   "label": "p40:const[1]",
+   "class": "analytic",
+   "used": false
+  }
+ ],
+ "stats": {
+  "weights_total": 2957,
+  "weights_nonzero": 232,
+  "terms_emitted": 116,
+  "units_emitted": 61,
+  "units_total": 100,
+  "fetches_per_sample_before": 74,
+  "fetches_per_sample_after": 15,
+  "live_density_probes": 6,
+  "bake_textures": 3,
+  "bake_texels": 2416640,
+  "bake_fetches_per_texel": {
+   "uBake0": 28,
+   "uBake1": 30,
+   "uBake2": 2
+  }
+ }
+}

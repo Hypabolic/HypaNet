@@ -1,0 +1,366 @@
+{
+ "bakeTiming": {
+  "full": [
+   21.899999976158142,
+   5.399999976158142,
+   4.799999952316284,
+   4.600000023841858,
+   4.5,
+   4.199999988079071,
+   4.200000047683716,
+   4.200000047683716,
+   4.300000011920929,
+   4.300000011920929,
+   4.300000011920929,
+   4.400000035762787,
+   4.300000011920929,
+   4.300000011920929,
+   4.199999988079071,
+   4.100000023841858,
+   3.900000035762787,
+   3.899999976158142,
+   4.099999964237213,
+   4
+  ],
+  "fast": [
+   2.5,
+   1.7000000476837158,
+   1.600000023841858,
+   2.599999964237213,
+   1.399999976158142,
+   1.5,
+   2.299999952316284,
+   1.5,
+   1.300000011920929,
+   1.5,
+   1.399999976158142,
+   1.5,
+   1.5,
+   1.5,
+   1.5999999642372131,
+   1.399999976158142,
+   1.5,
+   1.600000023841858,
+   1.300000011920929,
+   1.399999976158142
+  ],
+  "fullDims": [
+   [
+    128,
+    80,
+    128
+   ]
+  ],
+  "fastDims": [
+   [
+    64,
+    40,
+    64
+   ]
+  ]
+ },
+ "static_bake_load": [
+  {
+   "name": "uBake1",
+   "ms": 5.699999988079071
+  },
+  {
+   "name": "uBake2",
+   "ms": 3.199999988079071
+  }
+ ],
+ "static_bake_repeat_ms": [
+  15.200000047683716,
+  4.899999976158142,
+  4,
+  3.899999976158142,
+  3.800000011920929,
+  4.600000023841858,
+  4,
+  3.699999988079071,
+  3.800000011920929,
+  3.899999976158142
+ ],
+ "harness_march_ms": {
+  "front_1280x800": {
+   "median": 12.900000035762787,
+   "min": 11.699999988079071,
+   "max": 16.100000023841858,
+   "ms_per_mpx": 12.597656284924597
+  },
+  "front_1920x1080": {
+   "median": 21.599999964237213,
+   "min": 20.600000023841858,
+   "max": 26.80000001192093,
+   "ms_per_mpx": 10.416666649419954
+  },
+  "backlit_1280x800": {
+   "median": 11.300000011920929,
+   "min": 10.400000035762787,
+   "max": 13.300000011920929,
+   "ms_per_mpx": 11.035156261641532
+  },
+  "backlit_1920x1080": {
+   "median": 19.80000001192093,
+   "min": 18.80000001192093,
+   "max": 24.80000001192093,
+   "ms_per_mpx": 9.548611116860016
+  },
+  "arc_1280x800": {
+   "median": 5.400000035762787,
+   "min": 4.399999976158142,
+   "max": 6.300000011920929,
+   "ms_per_mpx": 5.2734375349245965
+  },
+  "arc_1920x1080": {
+   "median": 7.199999988079071,
+   "min": 6.699999988079071,
+   "max": 9.400000035762787,
+   "ms_per_mpx": 3.4722222164733174
+  },
+  "sunset_1280x800": {
+   "median": 3.900000035762787,
+   "min": 3.100000023841858,
+   "max": 5.199999988079071,
+   "ms_per_mpx": 3.8085937849245965
+  },
+  "sunset_1920x1080": {
+   "median": 5.600000023841858,
+   "min": 4.899999976158142,
+   "max": 7.300000011920929,
+   "ms_per_mpx": 2.700617295448427
+  }
+ },
+ "console": [],
+ "loads": [
+  {
+   "wall_ready_s": 0.6542575829662383,
+   "wall_first_frame_s": 0.6636419579735957,
+   "load": {
+    "downloadMs": 10.400000035762787,
+    "densityGzBytes": 1060310,
+    "inflateMs": 13.899999976158142,
+    "pyramidMs": 537.8999999761581,
+    "pyramidWallMs": 547.1000000238419,
+    "pyramidWorker": true,
+    "uploadMs": 6,
+    "compileMs": 37.799999952316284,
+    "staticBakeMs": 6.100000023841858,
+    "totalMs": 621.3000000119209,
+    "firstFrameMs": 641
+   },
+   "converge_s_after_first": 5.770718097686768,
+   "n_requests": 23,
+   "bytes": 2076047,
+   "non_web": [],
+   "failed": [],
+   "requests": [
+    [
+     "http://127.0.0.1:58331/web/data/density.u8.gz",
+     1060310
+    ],
+    [
+     "http://127.0.0.1:58331/web/vendor/three.core.min.js",
+     382617
+    ],
+    [
+     "http://127.0.0.1:58331/web/vendor/three.module.min.js",
+     359158
+    ],
+    [
+     "http://127.0.0.1:58331/web/data/light_table.json",
+     155807
+    ],
+    [
+     "http://127.0.0.1:58331/web/clouds.js",
+     55313
+    ],
+    [
+     "http://127.0.0.1:58331/web/gen/manifest.json",
+     11377
+    ],
+    [
+     "http://127.0.0.1:58331/web/sky.js",
+     7452
+    ],
+    [
+     "http://127.0.0.1:58331/web/shaders/march.frag.glsl",
+     7424
+    ],
+    [
+     "http://127.0.0.1:58331/web/gen/net_eval.glsl",
+     6060
+    ],
+    [
+     "http://127.0.0.1:58331/web/pyramid.js",
+     4818
+    ],
+    [
+     "http://127.0.0.1:58331/web/gen/bake.glsl",
+     4371
+    ],
+    [
+     "http://127.0.0.1:58331/web/shaders/sky_common.glsl",
+     4301
+    ],
+    [
+     "http://127.0.0.1:58331/web/shaders/tonemap.frag.glsl",
+     3665
+    ],
+    [
+     "http://127.0.0.1:58331/web/shaders/sky_view.frag.glsl",
+     2457
+    ],
+    [
+     "http://127.0.0.1:58331/web/shaders/sunvis.frag.glsl",
+     2057
+    ],
+    [
+     "http://127.0.0.1:58331/web/shaders/density.glsl",
+     1924
+    ],
+    [
+     "http://127.0.0.1:58331/web/shaders/exposure.frag.glsl",
+     1745
+    ],
+    [
+     "http://127.0.0.1:58331/web/index.html?harness=1",
+     1375
+    ],
+    [
+     "http://127.0.0.1:58331/web/shaders/sky_lut.frag.glsl",
+     1207
+    ],
+    [
+     "http://127.0.0.1:58331/web/data/density.json",
+     1041
+    ],
+    [
+     "http://127.0.0.1:58331/web/shaders/bake.frag.glsl",
+     755
+    ],
+    [
+     "http://127.0.0.1:58331/web/pyramid_worker.js",
+     630
+    ],
+    [
+     "http://127.0.0.1:58331/web/shaders/fullscreen.vert.glsl",
+     183
+    ]
+   ],
+   "mem": {
+    "JSHeapUsedMB": 4.665984,
+    "JSHeapTotalMB": 10.56768,
+    "gpu_estimate_bytes": {
+     "density": 10485760,
+     "atlas": 32350104,
+     "bakeFull": 19333120,
+     "bakeFast": 1310720,
+     "skyLut": 6291456,
+     "skyView": 8388608,
+     "accum": 32768000,
+     "moving": 26542080,
+     "scratch": 32,
+     "canvas": 8192000,
+     "totalMB": 145.66188
+    },
+    "gpu_process_rss_mb": [
+     128.625
+    ]
+   },
+   "console": []
+  },
+  {
+   "wall_ready_s": 0.6530286250053905,
+   "wall_first_frame_s": 0.6623089999775402,
+   "load": {
+    "downloadMs": 11.200000047683716,
+    "densityGzBytes": 1060310,
+    "inflateMs": 11.5,
+    "pyramidMs": 539.4000000357628,
+    "pyramidWallMs": 544.3999999761581,
+    "pyramidWorker": true,
+    "uploadMs": 5.800000011920929,
+    "compileMs": 41.39999997615814,
+    "staticBakeMs": 7.200000047683716,
+    "totalMs": 621.7000000476837,
+    "firstFrameMs": 639.6000000238419
+   },
+   "converge_s_after_first": 5.781971216201782,
+   "n_requests": 23,
+   "bytes": 1015736,
+   "non_web": [],
+   "failed": [
+    "http://127.0.0.1:58331/web/data/density.u8.gz"
+   ],
+   "requests": null,
+   "mem": {
+    "JSHeapUsedMB": 5.720356,
+    "JSHeapTotalMB": 10.305536,
+    "gpu_estimate_bytes": {
+     "density": 10485760,
+     "atlas": 32350104,
+     "bakeFull": 19333120,
+     "bakeFast": 1310720,
+     "skyLut": 6291456,
+     "skyView": 8388608,
+     "accum": 32768000,
+     "moving": 26542080,
+     "scratch": 32,
+     "canvas": 8192000,
+     "totalMB": 145.66188
+    },
+    "gpu_process_rss_mb": [
+     128.296875
+    ]
+   },
+   "console": []
+  },
+  {
+   "wall_ready_s": 0.6471762079745531,
+   "wall_first_frame_s": 0.6614950419752859,
+   "load": {
+    "downloadMs": 10.5,
+    "densityGzBytes": 1060310,
+    "inflateMs": 11.699999988079071,
+    "pyramidMs": 531.3000000119209,
+    "pyramidWallMs": 536.6999999880791,
+    "pyramidWorker": true,
+    "uploadMs": 5.899999976158142,
+    "compileMs": 39.39999997615814,
+    "staticBakeMs": 11.300000011920929,
+    "totalMs": 615.5999999642372,
+    "firstFrameMs": 634.3000000119209
+   },
+   "converge_s_after_first": 5.731071949005127,
+   "n_requests": 23,
+   "bytes": 1015736,
+   "non_web": [],
+   "failed": [
+    "http://127.0.0.1:58331/web/data/density.u8.gz"
+   ],
+   "requests": null,
+   "mem": {
+    "JSHeapUsedMB": 5.646636,
+    "JSHeapTotalMB": 11.616256,
+    "gpu_estimate_bytes": {
+     "density": 10485760,
+     "atlas": 32350104,
+     "bakeFull": 19333120,
+     "bakeFast": 1310720,
+     "skyLut": 6291456,
+     "skyView": 8388608,
+     "accum": 32768000,
+     "moving": 26542080,
+     "scratch": 32,
+     "canvas": 8192000,
+     "totalMB": 145.66188
+    },
+    "gpu_process_rss_mb": [
+     129.65625
+    ]
+   },
+   "console": []
+  }
+ ]
+}

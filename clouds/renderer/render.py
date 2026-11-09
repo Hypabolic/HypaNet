@@ -3,6 +3,7 @@
     uv run python renderer/render.py NET.json --pair front_noon [--frames 16] [--out out.png] [--compare [REF.png]]
     uv run python renderer/render.py --mode exact-single --pair side_noon        # HARNESS ONLY
     uv run python renderer/render.py NET.json --set reference --out renderer/out/r1/
+    uv run python renderer/render.py NET.json --compiled ../embed/web/gen --pair front_noon    # OPT-IN compiled code
 
 For each pair writes <out>.png (tone-mapped by the shader's tone map), <out>.npy (linear float32 RGB, H x W x 3,
 row 0 at the top) and <out>.json (timings, settings, tone-map self-check). --compare makes <out>_compare.png
@@ -19,6 +20,7 @@ _HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path[:] = [p for p in sys.path if os.path.abspath(p or os.getcwd()) != _HERE] + [_HERE]
 
 import argparse  # noqa: E402
+import hashlib  # noqa: E402
 import json  # noqa: E402
 import time  # noqa: E402
 from pathlib import Path  # noqa: E402
@@ -104,6 +106,9 @@ def main(argv=None):
     ap.add_argument("--scene-dir", help="scene output directory (default ../scene/out)")
     ap.add_argument("--no-background", action="store_true",
                     help="HARNESS ONLY (with --mode exact-single): drop the background term T * sky(v)")
+    ap.add_argument("--compiled", metavar="DIR",
+                    help="OPT-IN: render with compiled GLSL from embed/compile/compile_net.py (DIR holds net_eval.glsl, "
+                         "bake.glsl, manifest.json; its network_sha256 must match NET.json) instead of the interpreter")
     ap.add_argument("--verbose", action="store_true")
     a = ap.parse_args(argv)
 
@@ -117,12 +122,24 @@ def main(argv=None):
         ap.error("--frames must be >= 1")
     res = [int(x) for x in a.res.lower().split("x")] if a.res else [None, None]
     net_text = read_net(a.net) if a.net else None
+    mounts = {}
+    if a.compiled:
+        if a.mode != "net":
+            ap.error("--compiled needs --mode net")
+        man = Path(a.compiled) / "manifest.json"
+        if not man.is_file():
+            ap.error(f"--compiled: no manifest.json in {a.compiled}")
+        sha = hashlib.sha256(Path(a.net).read_bytes()).hexdigest()
+        if json.loads(man.read_text()).get("network_sha256") != sha:
+            ap.error(f"--compiled: {man} was compiled from a different network than {a.net}")
+        mounts = {"/compiled/": Path(a.compiled)}
     tag = Path(a.net).stem if a.net else "exact_single"
 
     todo = None
     budget = a.budget_ms
     for attempt in range(3):
-        with Harness(scene_dir=a.scene_dir, harness_mode=(a.mode == "exact-single"), verbose=a.verbose) as h:
+        with Harness(scene_dir=a.scene_dir, harness_mode=(a.mode == "exact-single"), verbose=a.verbose,
+                     extra_mounts=mounts) as h:
             shots = h.shots
             if todo is None:
                 todo = []
@@ -149,6 +166,11 @@ def main(argv=None):
                     print(f"network error: {e}", file=sys.stderr)
                     return 2
             print(f"GPU: {h.info['gl']['renderer']} | startup {h.info['startupS']:.1f}s (pyramid {h.info['pyramidMs']:.0f} ms)")
+            if a.compiled:
+                ci = h.set_compiled("/compiled/")
+                if attempt == 0:
+                    print(f"compiled: {a.compiled}; bake textures {ci['textures'] or 'none'}; live probes {ci['live']}; "
+                          f"fetches/sample {ci['stats']['fetches_per_sample_before']} -> {ci['stats']['fetches_per_sample_after']}")
             if net_info and attempt == 0:
                 print(f"network: {net_info['probes']} probes, layers {net_info['layers']}, {net_info['params']} params")
             while todo:
@@ -160,7 +182,7 @@ def main(argv=None):
                 t0 = time.perf_counter()
                 try:
                     lin, ldr, stats = h.render(shot=shot, preset=preset, width=res[0], height=res[1],
-                                               mode="exact" if a.mode == "exact-single" else "net",
+                                               mode="exact" if a.mode == "exact-single" else ("compiled" if a.compiled else "net"),
                                                frames=a.frames, budgetMs=budget, exposure=exposure,
                                                noBackground=a.no_background)
                 except HarnessError as e:
@@ -190,6 +212,7 @@ def finish(a, h, png, pid, shot, preset, exposure, tag, lin, ldr, stats, wall, b
             "compile_ms": stats["compileMs"], "draws": stats["draws"], "passes": stats["passes"],
             "tiles": stats["tiles"], "tile_splits": stats["splits"], "max_draw_ms": stats["maxDrawMs"],
             "budget_ms": budget, "evals_per_frame": stats["evalsPerFrame"], "final_eval_cap": stats["finalCap"],
+            **({"compiled": str(a.compiled), "bake_ms": stats.get("bakeMs", 0)} if a.compiled else {}),
             "nonfinite_pixels": nonfinite,
             "tonemap_check": {"max_abs_diff_8bit": int(tm_diff.max()), "pixels_differing": int((tm_diff > 0).any(-1).sum())},
             "gpu": h.info["gl"]["renderer"]}

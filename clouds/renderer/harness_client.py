@@ -55,8 +55,10 @@ class _Server(socketserver.ThreadingMixIn, http.server.HTTPServer):
     allow_reuse_address = True
 
 
-def start_server(scene_dir: Path, port: int = 0):
-    handler = type("H", (_Handler,), {"mounts": {"/renderer/": RENDERER_DIR, "/scene/": Path(scene_dir).resolve()}})
+def start_server(scene_dir: Path, port: int = 0, extra_mounts: dict | None = None):
+    mounts = {"/renderer/": RENDERER_DIR, "/scene/": Path(scene_dir).resolve()}
+    mounts.update({k: Path(v).resolve() for k, v in (extra_mounts or {}).items()})
+    handler = type("H", (_Handler,), {"mounts": mounts})
     handler.extensions_map = {**http.server.SimpleHTTPRequestHandler.extensions_map, ".js": "text/javascript",
                               ".glsl": "text/plain", ".json": "application/json", ".f32": "application/octet-stream",
                               ".u8": "application/octet-stream"}
@@ -73,19 +75,22 @@ class HarnessError(RuntimeError):
 class Harness:
     """with Harness(harness_mode=True) as h: h.render(...)"""
 
-    def __init__(self, scene_dir: Path | None = None, harness_mode: bool = False, verbose: bool = False):
+    def __init__(self, scene_dir: Path | None = None, harness_mode: bool = False, verbose: bool = False,
+                 extra_mounts: dict | None = None):
         if harness_mode and not HARNESS_FEATURES:
             raise SystemExit("harness-only features are disabled in this copy")
         self.scene_dir = Path(scene_dir or DEFAULT_SCENE_DIR)
         self.harness_mode = harness_mode
         self.verbose = verbose
+        # OPT-IN: more static mounts, e.g. {"/compiled/": DIR} for compiled networks (set_compiled)
+        self.extra_mounts = extra_mounts or {}
         self.console: list[str] = []
 
     def __enter__(self):
         from playwright.sync_api import sync_playwright
 
         t0 = time.perf_counter()
-        self.srv = start_server(self.scene_dir)
+        self.srv = start_server(self.scene_dir, extra_mounts=self.extra_mounts)
         port = self.srv.server_address[1]
         self._pw = sync_playwright().start()
         self.browser = self._pw.chromium.launch(headless=True, args=GPU_ARGS)
@@ -130,6 +135,10 @@ class Harness:
 
     def set_network(self, text: str):
         return self._call("(t) => window.harness.setNetwork(t)", text)
+
+    def set_compiled(self, url: str):
+        """OPT-IN: load compile_net.py output served at url (a mount, e.g. "/compiled/"); then render(mode="compiled")."""
+        return self._call("(u) => window.harness.setCompiled(u)", url)
 
     def render(self, **kw):
         res = self._call("(a) => window.harness.render(a)", kw)

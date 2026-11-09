@@ -1,0 +1,588 @@
+{
+ "score": {
+  "front_noon|full": {
+   "bake": "full",
+   "page": {
+    "full": 0.058391742408275604,
+    "cloud": 0.13156952939659639,
+    "block8": 0.12114308141051063,
+    "ratio_rgb": [
+     1.0281639099121094,
+     1.018273115158081,
+     1.0029208660125732
+    ],
+    "floor": 0.03699377246294479,
+    "cloud_fraction": 0.1843828125
+   },
+   "interp_cloud": 0.13215405076669245,
+   "d_cloud": -0.0005845213700960694,
+   "finite": true,
+   "vs_before_fix_max_abs": 0.0,
+   "vs_interp_mean_rel": 0.0014795552706345916
+  },
+  "front_noon|fast": {
+   "bake": "fast",
+   "page": {
+    "full": 0.058104272931814194,
+    "cloud": 0.13089135582020975,
+    "block8": 0.12042127777639208,
+    "ratio_rgb": [
+     1.0257508754730225,
+     1.0160120725631714,
+     1.0009092092514038
+    ],
+    "floor": 0.03699377246294479,
+    "cloud_fraction": 0.1843828125
+   },
+   "interp_cloud": 0.13215405076669245,
+   "d_cloud": -0.0012626949464827064,
+   "finite": true,
+   "vs_interp_mean_rel": 0.00254929275251925
+  },
+  "backlit_golden|full": {
+   "bake": "full",
+   "page": {
+    "full": 0.05491524562239647,
+    "cloud": 0.14109628648883063,
+    "block8": 0.12836875766090008,
+    "ratio_rgb": [
+     0.9031417369842529,
+     0.9038884043693542,
+     0.9074879288673401
+    ],
+    "floor": 0.019496782720302825,
+    "cloud_fraction": 0.1855546875
+   },
+   "interp_cloud": 0.13909829109080651,
+   "d_cloud": 0.001997995398024116,
+   "finite": true,
+   "vs_before_fix_max_abs": 0.0,
+   "vs_interp_mean_rel": 0.001784038613550365
+  },
+  "backlit_golden|fast": {
+   "bake": "fast",
+   "page": {
+    "full": 0.057736992835998535,
+    "cloud": 0.1485829343348292,
+    "block8": 0.13547459765354414,
+    "ratio_rgb": [
+     0.895717442035675,
+     0.8971415758132935,
+     0.9023842811584473
+    ],
+    "floor": 0.019496782720302825,
+    "cloud_fraction": 0.1855546875
+   },
+   "interp_cloud": 0.13909829109080651,
+   "d_cloud": 0.009484643244022678,
+   "finite": true,
+   "vs_interp_mean_rel": 0.006673499010503292
+  },
+  "side_sunset|full": {
+   "bake": "full",
+   "page": {
+    "full": 0.05648317188024521,
+    "cloud": 0.17435848144626206,
+    "block8": 0.16767030033693123,
+    "ratio_rgb": [
+     1.0710973739624023,
+     1.0504478216171265,
+     1.0256843566894531
+    ],
+    "floor": 0.037229278120578385,
+    "cloud_fraction": 0.209890625
+   },
+   "interp_cloud": 0.17549151071854854,
+   "d_cloud": -0.0011330292722864788,
+   "finite": true,
+   "vs_before_fix_max_abs": 0.0,
+   "vs_interp_mean_rel": 0.0010413320269435644
+  },
+  "side_sunset|fast": {
+   "bake": "fast",
+   "page": {
+    "full": 0.05620214343070984,
+    "cloud": 0.17344258512586996,
+    "block8": 0.16667241168928162,
+    "ratio_rgb": [
+     1.068123459815979,
+     1.0487366914749146,
+     1.025444507598877
+    ],
+    "floor": 0.037229278120578385,
+    "cloud_fraction": 0.209890625
+   },
+   "interp_cloud": 0.17549151071854854,
+   "d_cloud": -0.00204892559267858,
+   "finite": true,
+   "vs_interp_mean_rel": 0.001843188307248056
+  }
+ },
+ "f32": {
+  "formats": [
+   "RGBA32F",
+   "RGBA32F",
+   "RGBA32F"
+  ],
+  "rows": {
+   "front_noon": {
+    "page": {
+     "full": 0.058423664420843124,
+     "cloud": 0.13164412749112453,
+     "block8": 0.12121898886962885,
+     "ratio_rgb": [
+      1.0284316539764404,
+      1.0185322761535645,
+      1.0031663179397583
+     ],
+     "floor": 0.03699377246294479,
+     "cloud_fraction": 0.1843828125
+    },
+    "d_cloud": -0.000509923275567925,
+    "finite": true
+   },
+   "backlit_golden": {
+    "page": {
+     "full": 0.05493157356977463,
+     "cloud": 0.1411397188769497,
+     "block8": 0.12842917442308632,
+     "ratio_rgb": [
+      0.902999222278595,
+      0.9037685394287109,
+      0.9074254631996155
+     ],
+     "floor": 0.019496782720302825,
+     "cloud_fraction": 0.1855546875
+    },
+    "d_cloud": 0.0020414277861431906,
+    "finite": true
+   }
+  },
+  "console": []
+ },
+ "lost_rerun_max_rel": 0.0,
+ "lost": {
+  "idle_while_lost": true,
+  "harness_max_rel": 0.004525395110249519,
+  "cloud_before": 0.14109628648883063,
+  "cloud_after": 0.14109659248024348,
+  "screenshot_mean_abs_diff": 0.4508275462962963,
+  "after2_mean_abs_diff": 0.450224537037037,
+  "veil_after_3s": [
+   false,
+   "The graphics context was lost. Waiting for it to come back\u2026"
+  ],
+  "veil_after_restore": [
+   true,
+   "The graphics context was lost. Waiting for it to come back\u2026"
+  ],
+  "console": [
+   "[log] THREE.WebGLRenderer: Context Lost.",
+   "[log] THREE.WebGLRenderer: Context Restored.",
+   "[log] THREE.WebGLRenderer: Context Lost.",
+   "[log] THREE.WebGLRenderer: Context Restored."
+  ],
+  "harness_mean_rel": 2.9602349513879744e-06
+ },
+ "abort": {
+  "rows": [
+   {
+    "delay": 0,
+    "resolved": true,
+    "readyRejected": "AbortError",
+    "children": 0,
+    "disposed": true,
+    "allocated": false,
+    "gl": "null",
+    "loadKeys": []
+   },
+   {
+    "delay": -1,
+    "resolved": true,
+    "readyRejected": "AbortError",
+    "children": 0,
+    "disposed": true,
+    "allocated": false,
+    "gl": "null",
+    "loadKeys": []
+   },
+   {
+    "delay": 20,
+    "resolved": true,
+    "readyRejected": "AbortError",
+    "children": 0,
+    "disposed": true,
+    "allocated": false,
+    "gl": "null",
+    "loadKeys": [
+     "downloadMs",
+     "densityGzBytes"
+    ]
+   },
+   {
+    "delay": 100,
+    "resolved": true,
+    "readyRejected": "AbortError",
+    "children": 0,
+    "disposed": true,
+    "allocated": false,
+    "gl": "null",
+    "loadKeys": [
+     "downloadMs",
+     "densityGzBytes",
+     "inflateMs"
+    ]
+   },
+   {
+    "delay": 300,
+    "resolved": true,
+    "readyRejected": "AbortError",
+    "children": 0,
+    "disposed": true,
+    "allocated": false,
+    "gl": "null",
+    "loadKeys": [
+     "downloadMs",
+     "densityGzBytes",
+     "inflateMs"
+    ]
+   },
+   {
+    "delay": 600,
+    "resolved": true,
+    "readyRejected": null,
+    "children": 0,
+    "disposed": true,
+    "allocated": true,
+    "gl": "null",
+    "loadKeys": [
+     "downloadMs",
+     "densityGzBytes",
+     "inflateMs",
+     "pyramidMs",
+     "pyramidWallMs",
+     "pyramidWorker",
+     "uploadMs",
+     "compileMs",
+     "staticBakeMs",
+     "totalMs",
+     "firstFrameMs"
+    ]
+   }
+  ],
+  "console": []
+ },
+ "resize": {
+  "screenshot_mean": [
+   99.060446405607,
+   99.05512279562913,
+   99.04147337048953,
+   99.04498536145935,
+   99.04688410173382,
+   99.0462235056839,
+   99.05289532755647,
+   99.06126293062027,
+   99.0546109771962,
+   99.0503302542954,
+   99.05426840594394,
+   99.06788391711272,
+   99.07453654433264,
+   99.07627439085198,
+   99.07063470298765,
+   99.07552215345319
+  ],
+  "displays_frames": [
+   344,
+   373
+  ],
+  "displays_in_200ms_after_big_resize": 12,
+  "state": {
+   "cw": 1920,
+   "ch": 1250,
+   "moveScale": 0.65,
+   "costMsPerMpx": 10.343893703983586,
+   "stillN": 96,
+   "moveSize": [
+    1248,
+    813
+   ],
+   "stillSize": [
+    1920,
+    1250
+   ]
+  }
+ },
+ "hold": {
+  "marks_s": {
+   "1": 0.163,
+   "48": 1.72,
+   "96": 3.315,
+   "idle": 4.536
+  },
+  "state": {
+   "el": 16.82490393934523,
+   "az": 69.67984168207488,
+   "view": "front",
+   "playing": false,
+   "stillN": 96,
+   "ready": true,
+   "idle": true,
+   "dragging": true
+  },
+  "full_bake_and_sky_bound": [
+   true,
+   true
+  ]
+ },
+ "dpr": {
+  "start": [
+   800,
+   500,
+   1
+  ],
+  "after_cdp_only": [
+   800,
+   500,
+   2
+  ],
+  "after_mq_change": [
+   1600,
+   1000,
+   2
+  ],
+  "queries_armed": [
+   "(resolution: 1dppx)",
+   "(resolution: 2dppx)"
+  ],
+  "running_loop": [
+   1200,
+   750,
+   1.5
+  ]
+ },
+ "tail": {
+  "1280x800": {
+   "1": 0.155,
+   "expo_at_1": 10,
+   "96": 1.747,
+   "expo_at_96": 106,
+   "idle": 2.947,
+   "expo_total": 176
+  },
+  "1920x1080": {
+   "1": 0.186,
+   "expo_at_1": 12,
+   "96": 3.351,
+   "expo_at_96": 202,
+   "idle": 4.553,
+   "expo_total": 273
+  }
+ },
+ "ui_320": {
+  "caption": [
+   10,
+   147.875,
+   441.8125,
+   470
+  ],
+  "bar": [
+   200,
+   308,
+   402,
+   468
+  ],
+  "text": "Sun 47.8\u00b0 \u00b7 266\u00b0 W",
+  "overflow": false
+ },
+ "ui_360": {
+  "caption": [
+   10,
+   151.265625,
+   521.8125,
+   550
+  ],
+  "overlaps": 0,
+  "text": "Sun \u22125.2\u00b0 \u00b7 135\u00b0 SE",
+  "overflow": false
+ },
+ "ui_400": {
+  "caption": [
+   10,
+   151.265625,
+   261.8125,
+   290
+  ],
+  "overlaps": 0,
+  "text": "Sun 12.0\u00b0 \u00b7 135\u00b0 SE",
+  "overflow": false
+ },
+ "ui_401": {
+  "caption": [
+   10,
+   219.953125,
+   217.8125,
+   246
+  ],
+  "overlaps": 0,
+  "text": "Sun 12.0\u00b0 up \u00b7 azimuth 135\u00b0 SE",
+  "overflow": false
+ },
+ "ui_460": {
+  "caption": [
+   10,
+   309.828125,
+   217.8125,
+   246
+  ],
+  "overlaps": 0,
+  "text": "Sun \u22125.2\u00b0 below the horizon \u00b7 azimuth 135\u00b0 SE",
+  "overflow": false
+ },
+ "ui_520": {
+  "caption": [
+   10,
+   309.828125,
+   247.8125,
+   276
+  ],
+  "overlaps": 0,
+  "text": "Sun \u22125.2\u00b0 below the horizon \u00b7 azimuth 135\u00b0 SE",
+  "overflow": false
+ },
+ "ui_521": {
+  "caption": [
+   12,
+   311.828125,
+   247.8125,
+   276
+  ],
+  "overlaps": 0,
+  "text": "Sun \u22125.2\u00b0 below the horizon \u00b7 azimuth 135\u00b0 SE",
+  "overflow": false
+ },
+ "ui_600": {
+  "caption": [
+   12,
+   311.828125,
+   292.8125,
+   321
+  ],
+  "overlaps": 0,
+  "text": "Sun \u22125.2\u00b0 below the horizon \u00b7 azimuth 135\u00b0 SE",
+  "overflow": false
+ },
+ "ui_620": {
+  "caption": [
+   12,
+   311.828125,
+   307.8125,
+   336
+  ],
+  "overlaps": 0,
+  "text": "Sun \u22125.2\u00b0 below the horizon \u00b7 azimuth 135\u00b0 SE",
+  "overflow": false
+ },
+ "ui_621": {
+  "caption": [
+   12,
+   311.828125,
+   307.8125,
+   336
+  ],
+  "overlaps": 0,
+  "text": "Sun \u22125.2\u00b0 below the horizon \u00b7 azimuth 135\u00b0 SE",
+  "overflow": false
+ },
+ "ui_700": {
+  "caption": [
+   12,
+   311.828125,
+   357.8125,
+   386
+  ],
+  "overlaps": 0,
+  "text": "Sun \u22125.2\u00b0 below the horizon \u00b7 azimuth 135\u00b0 SE",
+  "overflow": false
+ },
+ "ui_701": {
+  "caption": [
+   12,
+   311.828125,
+   399.8125,
+   428
+  ],
+  "overlaps": 0,
+  "text": "Sun \u22125.2\u00b0 below the horizon \u00b7 azimuth 135\u00b0 SE",
+  "overflow": false
+ },
+ "ui_760": {
+  "caption": [
+   12,
+   311.828125,
+   434.8125,
+   463
+  ],
+  "overlaps": 0,
+  "text": "Sun \u22125.2\u00b0 below the horizon \u00b7 azimuth 135\u00b0 SE",
+  "overflow": false
+ },
+ "ui_1000": {
+  "caption": [
+   12,
+   221.953125,
+   584.8125,
+   613
+  ],
+  "overlaps": 0,
+  "text": "Sun 20.0\u00b0 up \u00b7 azimuth 135\u00b0 SE",
+  "overflow": false
+ },
+ "ui_host460": {
+  "caption": [
+   30,
+   329.828125,
+   237.8125,
+   266
+  ],
+  "overlaps": 0,
+  "text": "Sun \u22125.2\u00b0 below the horizon \u00b7 azimuth 135\u00b0 SE"
+ },
+ "moving_sky_full": false,
+ "checks": [
+  "ok   score: console []",
+  "ok   RGBA32F bakes load and render: ['RGBA32F', 'RGBA32F', 'RGBA32F']",
+  "ok   context lost: the loop stops",
+  "ok   context restore: harness render equal to float precision (mean rel 2.96e-06, max rel 4.53e-03, cloud 0.141096 -> 0.141097; rerun after restore max rel 0.0e+00)",
+  "ok   context restore: interactive image converges to the same image (mean |d| 0.451 levels)",
+  "ok   lost message after 3 s [False, 'The graphics context was lost. Waiting for it to come back\u2026'], hidden after restore True",
+  "ok   context loss: no console errors",
+  "ok   abort while loading (5 cases): resolves destroyed, ready rejects AbortError, DOM removed, no GPU textures",
+  "ok   abort after loading: an ordinary destroy",
+  "ok   abort: no console errors []",
+  "ok   resize drag: no black frames (min screenshot mean 99.0)",
+  "ok   big resize: 12 display passes in the first 200 ms",
+  "ok   resize: console []",
+  "ok   held pointer: accumulates to 96 and idles at 4.536 s with the full bake/sky [True, True]",
+  "ok   idle page: media-query change -> canvas [1600, 1000, 2], re-armed (resolution: 2dppx)",
+  "ok   running loop: DPR 1.5 picked up -> canvas [1200, 750, 1.5]",
+  "ok   dpr: console []",
+  "ok   exposure tail after convergence: [1.2, 1.2] s",
+  "ok   320 px: caption [10, 147.875, 441.8125, 470] clears the bar [200, 308, 402, 468]: 'Sun 47.8\u00b0 \u00b7 266\u00b0 W'",
+  "ok   360 px: caption 'Sun \u22125.2\u00b0 \u00b7 135\u00b0 SE' [10, 151.265625, 521.8125, 550] clears the bar",
+  "ok   400 px: caption 'Sun 12.0\u00b0 \u00b7 135\u00b0 SE' [10, 151.265625, 261.8125, 290] clears the bar",
+  "ok   401 px: caption 'Sun 12.0\u00b0 up \u00b7 azimuth 135\u00b0 SE' [10, 219.953125, 217.8125, 246] clears the bar",
+  "ok   460 px: caption 'Sun \u22125.2\u00b0 below the horizon \u00b7 azimuth 135\u00b0 SE' [10, 309.828125, 217.8125, 246] clears the bar",
+  "ok   520 px: caption 'Sun \u22125.2\u00b0 below the horizon \u00b7 azimuth 135\u00b0 SE' [10, 309.828125, 247.8125, 276] clears the bar",
+  "ok   521 px: caption 'Sun \u22125.2\u00b0 below the horizon \u00b7 azimuth 135\u00b0 SE' [12, 311.828125, 247.8125, 276] clears the bar",
+  "ok   600 px: caption 'Sun \u22125.2\u00b0 below the horizon \u00b7 azimuth 135\u00b0 SE' [12, 311.828125, 292.8125, 321] clears the bar",
+  "ok   620 px: caption 'Sun \u22125.2\u00b0 below the horizon \u00b7 azimuth 135\u00b0 SE' [12, 311.828125, 307.8125, 336] clears the bar",
+  "ok   621 px: caption 'Sun \u22125.2\u00b0 below the horizon \u00b7 azimuth 135\u00b0 SE' [12, 311.828125, 307.8125, 336] clears the bar",
+  "ok   700 px: caption 'Sun \u22125.2\u00b0 below the horizon \u00b7 azimuth 135\u00b0 SE' [12, 311.828125, 357.8125, 386] clears the bar",
+  "ok   701 px: caption 'Sun \u22125.2\u00b0 below the horizon \u00b7 azimuth 135\u00b0 SE' [12, 311.828125, 399.8125, 428] clears the bar",
+  "ok   760 px: caption 'Sun \u22125.2\u00b0 below the horizon \u00b7 azimuth 135\u00b0 SE' [12, 311.828125, 434.8125, 463] clears the bar",
+  "ok   1000 px: caption 'Sun 20.0\u00b0 up \u00b7 azimuth 135\u00b0 SE' [12, 221.953125, 584.8125, 613] clears the bar",
+  "ok   460 px host in a 1280 px page: caption 'Sun \u22125.2\u00b0 below the horizon \u00b7 azimuth 135\u00b0 SE' [30, 329.828125, 237.8125, 266] clears the bar",
+  "ok   coarse sky while dragging, full sky when still",
+  "ok   ui: console []"
+ ]
+}

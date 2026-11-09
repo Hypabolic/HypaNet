@@ -1,0 +1,30 @@
+{
+ "skydiff": {
+  "front_24": {
+   "mean_rel": 0.004313337819068676,
+   "max_rel_to_mean": 0.3783869566015776,
+   "skyFull": true
+  },
+  "backlit_8": {
+   "mean_rel": 0.008097152641290328,
+   "max_rel_to_mean": 1.9408660755548357,
+   "skyFull": true
+  },
+  "arc_22": {
+   "mean_rel": 0.00023409649598977477,
+   "max_rel_to_mean": 0.05987586779718589,
+   "skyFull": true
+  },
+  "sunset_6": {
+   "mean_rel": 0.0005818662913441565,
+   "max_rel_to_mean": 0.4749716062511942,
+   "skyFull": true
+  },
+  "sunset_-3": {
+   "mean_rel": 0.004436508909019375,
+   "max_rel_to_mean": 2.3047764526244956,
+   "skyFull": true
+  }
+ },
+ "checks": []
+}

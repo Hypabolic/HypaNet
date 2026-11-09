@@ -1,0 +1,399 @@
+{
+ "drag_1280x800@1": {
+  "drag": {
+   "raf_n": 299,
+   "raf_median_ms": 16.69999999999891,
+   "raf_p90_ms": 16.700000000000728,
+   "raf_p99_ms": 16.80000000000109,
+   "raf_max_ms": 16.80000000000109,
+   "fps_mean": 60.00160539412427,
+   "loop_frames": 69,
+   "loop_dt_median": 16.69999999999891,
+   "loop_dt_p90": 16.700000000000728,
+   "cpu_ms_median": 0.19999998807907104,
+   "cpu_ms_p90": 0.30000001192092896,
+   "scale": [
+    0.95
+   ],
+   "gpu": {
+    "display": {
+     "n": 68,
+     "median": 12.150624,
+     "p90": 16.600375
+    },
+    "light": {
+     "n": 37,
+     "median": 1.642875,
+     "p90": 1.704333
+    },
+    "sunvis": {
+     "n": 37,
+     "median": 1.656499,
+     "p90": 1.874708
+    },
+    "sunFast": {
+     "n": 37,
+     "median": 4.824166,
+     "p90": 7.060541
+    },
+    "march_moving": {
+     "n": 67,
+     "median": 11.704375,
+     "p90": 16.623249
+    },
+    "expo": {
+     "n": 67,
+     "median": 11.862541,
+     "p90": 15.889125
+    }
+   }
+  },
+  "accumulate": {
+   "raf_n": 339,
+   "raf_median_ms": 16.69999999999891,
+   "raf_p90_ms": 16.700000000000728,
+   "raf_p99_ms": 16.799999999999272,
+   "raf_max_ms": 16.80000000000109,
+   "fps_mean": 60.00318600987664,
+   "loop_frames": 108,
+   "loop_dt_median": 16.69999999999709,
+   "loop_dt_p90": 16.700000000000728,
+   "cpu_ms_median": 0.30000001192092896,
+   "cpu_ms_p90": 0.3999999761581421,
+   "scale": [
+    0.95
+   ],
+   "gpu": {
+    "display": {
+     "n": 108,
+     "median": 1.940999,
+     "p90": 1.954749
+    },
+    "expo": {
+     "n": 107,
+     "median": 0.576083,
+     "p90": 0.589499
+    }
+   }
+  },
+  "converge_s": 5.717779166996479,
+  "idle": 5.7177650928497314,
+  "state_drag": {
+   "cw": 1280,
+   "ch": 800,
+   "moveScale": 0.95,
+   "costMsPerMpx": 12.51263697122258,
+   "stillN": 0,
+   "moveSize": [
+    1216,
+    760
+   ],
+   "stillSize": [
+    1280,
+    800
+   ]
+  },
+  "state_still": {
+   "cw": 1280,
+   "ch": 800,
+   "moveScale": 0.95,
+   "costMsPerMpx": 15.750505230629948,
+   "stillN": 96,
+   "moveSize": [
+    1216,
+    760
+   ],
+   "stillSize": [
+    1280,
+    800
+   ]
+  },
+  "mem_drag": {
+   "JSHeapUsedMB": 5.017392,
+   "JSHeapTotalMB": 9.781248,
+   "gpu_estimate_bytes": {
+    "density": 10485760,
+    "atlas": 32350104,
+    "bakeFull": 19333120,
+    "bakeFast": 1310720,
+    "skyLut": 6291456,
+    "skyView": 8388608,
+    "accum": 32768000,
+    "moving": 29573120,
+    "scratch": 32,
+    "canvas": 8192000,
+    "totalMB": 148.69292
+   },
+   "gpu_process_rss_mb": [
+    136.5625
+   ]
+  },
+  "mouse_events": 159,
+  "console": []
+ },
+ "drag_1920x1080@1": {
+  "drag": {
+   "raf_n": 297,
+   "raf_median_ms": 16.69999999999891,
+   "raf_p90_ms": 16.700000000000728,
+   "raf_p99_ms": 16.80000000000109,
+   "raf_max_ms": 16.80000000000109,
+   "fps_mean": 60.002424340377374,
+   "loop_frames": 50,
+   "loop_dt_median": 16.69999999999891,
+   "loop_dt_p90": 16.700000000000728,
+   "cpu_ms_median": 0.19999998807907104,
+   "cpu_ms_p90": 0.30000001192092896,
+   "scale": [
+    0.65
+   ],
+   "gpu": {
+    "march_moving": {
+     "n": 50,
+     "median": 10.7355,
+     "p90": 11.157999
+    },
+    "expo": {
+     "n": 50,
+     "median": 10.8655,
+     "p90": 11.286875
+    },
+    "display": {
+     "n": 50,
+     "median": 11.400874,
+     "p90": 11.870083
+    },
+    "light": {
+     "n": 49,
+     "median": 1.639708,
+     "p90": 1.669416
+    },
+    "sunvis": {
+     "n": 49,
+     "median": 1.96475,
+     "p90": 2.202125
+    },
+    "sunFast": {
+     "n": 49,
+     "median": 5.909124,
+     "p90": 7.177791
+    }
+   }
+  },
+  "accumulate": {
+   "raf_n": 355,
+   "raf_median_ms": 16.69999999999891,
+   "raf_p90_ms": 16.700000000000728,
+   "raf_p99_ms": 16.80000000000109,
+   "raf_max_ms": 16.80000000000291,
+   "fps_mean": 60.00270434723817,
+   "loop_frames": 129,
+   "loop_dt_median": 16.69999999999709,
+   "loop_dt_p90": 16.700000000000728,
+   "cpu_ms_median": 0.30000001192092896,
+   "cpu_ms_p90": 0.30000001192092896,
+   "scale": [
+    0.65
+   ],
+   "gpu": {
+    "display": {
+     "n": 129,
+     "median": 2.778999,
+     "p90": 3.327166
+    },
+    "expo": {
+     "n": 128,
+     "median": 0.594041,
+     "p90": 0.611624
+    }
+   }
+  },
+  "converge_s": 5.986631665960886,
+  "idle": 5.986616134643555,
+  "state_drag": {
+   "cw": 1920,
+   "ch": 1080,
+   "moveScale": 0.65,
+   "costMsPerMpx": 12.601324598327679,
+   "stillN": 0,
+   "moveSize": [
+    1248,
+    702
+   ],
+   "stillSize": [
+    1920,
+    1080
+   ]
+  },
+  "state_still": {
+   "cw": 1920,
+   "ch": 1080,
+   "moveScale": 0.65,
+   "costMsPerMpx": 13.576670346305919,
+   "stillN": 96,
+   "moveSize": [
+    1248,
+    702
+   ],
+   "stillSize": [
+    1920,
+    1080
+   ]
+  },
+  "mem_drag": {
+   "JSHeapUsedMB": 5.732636,
+   "JSHeapTotalMB": 11.091968,
+   "gpu_estimate_bytes": {
+    "density": 10485760,
+    "atlas": 32350104,
+    "bakeFull": 19333120,
+    "bakeFast": 1310720,
+    "skyLut": 6291456,
+    "skyView": 8388608,
+    "accum": 66355200,
+    "moving": 28035072,
+    "scratch": 32,
+    "canvas": 16588800,
+    "totalMB": 189.138872
+   },
+   "gpu_process_rss_mb": [
+    136.515625
+   ]
+  },
+  "mouse_events": 281,
+  "console": []
+ },
+ "drag_1280x800@2": {
+  "drag": {
+   "raf_n": 292,
+   "raf_median_ms": 16.69999999999891,
+   "raf_p90_ms": 16.700000000000728,
+   "raf_p99_ms": 33.30000000000109,
+   "raf_max_ms": 33.399999999999636,
+   "fps_mean": 58.99228251646532,
+   "loop_frames": 55,
+   "loop_dt_median": 16.69999999999891,
+   "loop_dt_p90": 16.700000000000728,
+   "cpu_ms_median": 0.19999998807907104,
+   "cpu_ms_p90": 0.20000004768371582,
+   "scale": [
+    0.6,
+    0.65
+   ],
+   "gpu": {
+    "sunvis": {
+     "n": 50,
+     "median": 2.041125,
+     "p90": 2.191541
+    },
+    "sunFast": {
+     "n": 50,
+     "median": 5.987333,
+     "p90": 8.009708
+    },
+    "march_moving": {
+     "n": 55,
+     "median": 11.808499,
+     "p90": 12.654041
+    },
+    "expo": {
+     "n": 55,
+     "median": 11.941291,
+     "p90": 12.679249
+    },
+    "display": {
+     "n": 55,
+     "median": 13.075,
+     "p90": 13.818583
+    },
+    "light": {
+     "n": 49,
+     "median": 1.640375,
+     "p90": 1.658541
+    }
+   }
+  },
+  "accumulate": {
+   "raf_n": 445,
+   "raf_median_ms": 16.69999999999891,
+   "raf_p90_ms": 16.700000000000728,
+   "raf_p99_ms": 16.80000000000291,
+   "raf_max_ms": 16.80000000000291,
+   "fps_mean": 60.00296643879024,
+   "loop_frames": 113,
+   "loop_dt_median": 16.700000000000728,
+   "loop_dt_p90": 16.700000000000728,
+   "cpu_ms_median": 0.2999999523162842,
+   "cpu_ms_p90": 0.30000001192092896,
+   "scale": [
+    0.5
+   ],
+   "gpu": {
+    "display": {
+     "n": 113,
+     "median": 3.347833,
+     "p90": 5.967749
+    },
+    "expo": {
+     "n": 112,
+     "median": 0.523374,
+     "p90": 0.607791
+    }
+   }
+  },
+  "converge_s": 7.487317957973573,
+  "idle": 7.487299919128418,
+  "state_drag": {
+   "cw": 2560,
+   "ch": 1600,
+   "moveScale": 0.65,
+   "costMsPerMpx": 12.380271781362547,
+   "stillN": 0,
+   "moveSize": [
+    1274,
+    796
+   ],
+   "stillSize": [
+    1960,
+    1225
+   ]
+  },
+  "state_still": {
+   "cw": 2560,
+   "ch": 1600,
+   "moveScale": 0.5,
+   "costMsPerMpx": 15.068974585222634,
+   "stillN": 96,
+   "moveSize": [
+    980,
+    613
+   ],
+   "stillSize": [
+    1960,
+    1225
+   ]
+  },
+  "mem_drag": {
+   "JSHeapUsedMB": 4.981284,
+   "JSHeapTotalMB": 9.781248,
+   "gpu_estimate_bytes": {
+    "density": 10485760,
+    "atlas": 32350104,
+    "bakeFull": 19333120,
+    "bakeFast": 1310720,
+    "skyLut": 6291456,
+    "skyView": 8388608,
+    "accum": 76832000,
+    "moving": 32451328,
+    "scratch": 32,
+    "canvas": 32768000,
+    "totalMB": 220.211128
+   },
+   "gpu_process_rss_mb": [
+    135.25
+   ]
+  },
+  "mouse_events": 271,
+  "console": []
+ }
+}
