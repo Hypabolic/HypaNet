@@ -1,0 +1,251 @@
+# slop/codex/lists/llm_promo_vocab.txt
+# Promotional vocabulary that LLMs reach for when asked to write app, website or marketing copy.
+# Patterns: L01 (hype verbs), L02 (inflating adjectives and adverbs), L03 (abstract nouns), L08 (AI-as-headline).
+#
+# Format: one entry per line, lower case, natural spelling (hyphens and apostrophes kept). Fold an entry the same way
+# the rule layer folds node text (rules/README.md, "Normalised string") before matching. Inflected forms are listed
+# explicitly because the rule layer has no stemmer. British and American spellings are both listed where copy uses
+# both. Lines starting with # are comments.
+#
+# Signal strength: one hit is weak evidence; two or more distinct entries in one node, or the same entry on several
+# nodes of one screen, is the useful signal (Wikipedia "Signs of AI writing" makes the same point for its word list).
+# Many entries are ordinary English in the right place ("transform" in an image editor, "robust" in a statistics
+# tool), so the rule layer should report density, not single words.
+#
+# Provenance: compiled for HypaNet from the catalogues cited per section (see SOURCES.md). The entries are
+# common English words; the selection and grouping are HypaNet's own. Licence: MIT (the HypaNet repo licence).
+# Sources that list these words: deslop-copy and slop_scan.py (samigiman/anti-slop-skills, MIT), unslop-ui TELLS.md §8
+# (claudiusararu/unslop-ui-skill, MIT), stop-slop phrases.md (hardikpandya/stop-slop, MIT), Sathya "Avoid landing
+# page words" (microcopyexamples.substack.com, cited only), Kobak et al. excess_words.csv (berenslab/llm-excess-vocab,
+# MIT), Wikipedia MOS:PUFFERY and WP:AIPUFFERY (cited only; no list copied wholesale).
+
+# --- L01 hype verbs (unslop-ui §8 "adjective reservoir"; deslop-copy symptoms; Sathya; Kobak style words) ---
+unlock
+unlocks
+unlocking
+unlocked
+unleash
+unleashes
+unleashing
+supercharge
+supercharges
+supercharging
+supercharged
+turbocharge
+turbocharged
+elevate
+elevates
+elevating
+empower
+empowers
+empowering
+empowered
+streamline
+streamlines
+streamlining
+streamlined
+revolutionise
+revolutionize
+revolutionises
+revolutionizes
+revolutionising
+revolutionizing
+transform
+transforms
+transforming
+reimagine
+reimagined
+reimagining
+redefine
+redefines
+redefining
+redefined
+harness
+harnesses
+harnessing
+leverage
+leverages
+leveraging
+skyrocket
+skyrockets
+amplify
+amplifies
+amplifying
+boost
+boosts
+boosting
+maximise
+maximize
+maximises
+maximizes
+optimise
+optimize
+optimises
+optimizes
+accelerate
+accelerates
+level up
+take it to the next level
+take your business to the next level
+discover
+embark
+embark on
+dive in
+dive into
+delve into
+navigate
+navigating
+foster
+fosters
+fostering
+cultivate
+elevate your
+unlock the power of
+unlock your
+unlock the full potential
+unleash your
+harness the power of
+supercharge your
+transform the way you
+transform your
+revolutionise the way
+revolutionize the way
+streamline your
+empower your
+empowers you to
+elevate every
+
+# --- L02 inflating adjectives (unslop-ui §8; deslop-copy; tasteskill copy.md §6; MOS:PUFFERY words that recur in copy) ---
+seamless
+effortless
+frictionless
+hassle-free
+robust
+powerful
+cutting-edge
+state-of-the-art
+next-level
+next-generation
+next-gen
+world-class
+best-in-class
+industry-leading
+enterprise-grade
+game-changing
+game-changer
+groundbreaking
+innovative
+revolutionary
+transformative
+unparalleled
+unmatched
+unrivalled
+unrivaled
+unprecedented
+unique
+ultimate
+premier
+comprehensive
+holistic
+all-in-one
+one-stop
+end-to-end
+intuitive
+user-friendly
+blazing-fast
+blazingly fast
+lightning-fast
+lightning fast
+ultra-fast
+beautiful
+stunning
+delightful
+magical
+smart
+intelligent
+dynamic
+vibrant
+curated
+bespoke
+tailored
+personalised
+personalized
+meticulous
+meticulously crafted
+thoughtfully designed
+thoughtfully crafted
+carefully crafted
+crafted
+handcrafted
+elevated
+exceptional
+remarkable
+incredible
+amazing
+awesome
+limitless
+endless possibilities
+boundless
+future-proof
+scalable
+mission-critical
+
+# --- L02 adverbs stacked on verbs (unslop-ui §8 "adverb stacking"; stop-slop phrases.md "Adverbs"; Kobak style words) ---
+seamlessly
+effortlessly
+instantly
+easily
+simply
+truly
+genuinely
+incredibly
+beautifully
+intelligently
+intuitively
+powerfully
+blazingly
+smoothly
+reliably
+securely
+automatically
+magically
+fundamentally
+ultimately
+
+# --- L03 abstract nouns used as decoration (Wikipedia WP:AIVOCAB; aismells "Delve and vocab tics"; Paech essay bigrams) ---
+journey
+experience
+experiences
+solution
+solutions
+ecosystem
+landscape
+realm
+tapestry
+synergy
+paradigm
+paradigm shift
+game changer
+workflow
+workflows
+productivity
+potential
+full potential
+possibilities
+peace of mind
+the next level
+your journey
+digital landscape
+ever-evolving landscape
+fast-paced world
+
+# --- L08 AI as the headline (unslop-ui §8 '"AI-powered" ... as the headline') ---
+ai-powered
+ai-driven
+ai-first
+ai-native
+powered by ai
+harness the power of ai
+leverage the power of ai
+supercharged by ai
+smart ai

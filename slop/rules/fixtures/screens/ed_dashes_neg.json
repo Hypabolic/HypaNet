@@ -1,0 +1,15 @@
+{"schema": "slop.screen/1", "id": "ec7ef5733d629d35", "framework": "tsx",
+ "source": {"repo": "slop-rules-fixtures", "path": "src/ed_dashes_neg.tsx", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "body", "line": 2},
+  {"k": 1, "kind": "list", "line": 10}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "body", "text": "Plan your week — and keep Sunday free.", "flags": [], "loc": [3, 7, 3, 45]},
+  {"i": 1, "k": 0, "role": "body", "text": "Fast — really fast.", "flags": [], "loc": [4, 7, 4, 26]},
+  {"i": 2, "k": 0, "role": "caption", "text": "— Sam, head baker", "flags": [], "loc": [5, 7, 5, 24]},
+  {"i": 3, "k": 0, "role": "body", "text": "Open 9–5 – closed on Sundays.", "flags": [], "loc": [6, 7, 6, 36]},
+  {"i": 4, "k": 0, "role": "caption", "text": "2019 — 2021", "flags": [], "loc": [7, 7, 7, 18]},
+  {"i": 5, "k": 0, "role": "caption", "text": "2015 — 2019", "flags": [], "loc": [8, 7, 8, 18]},
+  {"i": 6, "k": 0, "role": "caption", "text": "2012 — 2015", "flags": [], "loc": [9, 7, 9, 18]},
+  {"i": 7, "k": 1, "role": "cell", "text": "—", "flags": ["in_table", "in_list"], "loc": [11, 7, 11, 8]},
+  {"i": 8, "k": 1, "role": "cell", "text": "—", "flags": ["in_table", "in_list"], "loc": [12, 7, 12, 8]}]}

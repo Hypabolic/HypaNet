@@ -1,0 +1,148 @@
+# slop/codex/lists/ui_restating_frames.txt
+# Frames that wrap a restatement: the words a dialog body, subtitle or helper uses when it says its title or label
+# again. Patterns: U04 (subtitle echo), U05 (generic-verb subtitle), U10 (dialog body restating the title), U11
+# (body explaining the buttons), U18 (status body restating its title), U23 (helper restating the label), U32 (control
+# plus caption saying what it does).
+#
+# Use: strip these frames, then strip the words of the node the sentence would echo (and their synonyms). If nothing
+# is left, the sentence restates (ECHO, or NARRATE when it explains a visible control). If something is left, look it
+# up in ui_consequence_markers.txt and ui_instruction_markers.txt (CODEX.md §7). A frame on its own is never
+# evidence of slop: "Are you sure you want to leave? Your 3 unsent messages will be lost." keeps its second sentence.
+#
+# Format: one entry per line, lower case, natural spelling; fold as the rule layer does (rules/README.md,
+# "Normalised string"). Lines starting with # are comments.
+#
+# Provenance: written for HypaNet. Grounding: Microsoft Win32 UX guide, Confirmations ("Are you sure you want to
+# [perform an action]?" as the routine-confirmation phrasing; "Don't repeat the main instruction with slightly
+# different wording") and User interface text ("Don't have supplemental explanations that merely restate the label");
+# Apple HIG Alerts ("Avoid explaining alert buttons"); Atlassian empty state ("Avoid repeating content from the
+# title"). Licence: MIT (repo licence).
+
+# --- confirmation frames ---
+are you sure
+are you sure you want to
+are you sure that you want to
+do you really want to
+do you want to
+would you like to
+are about to
+you're about to
+you are going to
+you're going to
+this will
+this action will
+doing this will
+this would
+please confirm
+confirm that you want to
+confirm you want to
+please confirm that
+you have chosen to
+you've chosen to
+you have selected
+you've selected
+
+# --- section and settings frames (subtitle under a heading) ---
+manage your
+manage
+view your
+view and manage
+view, edit and manage
+configure your
+configure
+customise your
+customize your
+adjust your
+control your
+update your
+edit your
+change your
+set up your
+see your
+check your
+keep track of
+track your
+all your
+all of your
+everything about
+everything you need
+everything related to
+here you can
+here's where you
+this is where you
+this is your
+this section
+this page
+this screen
+in this section
+on this page
+from here
+below are
+below is
+below you'll find
+below you can
+you can
+you can also
+you'll find
+find all
+browse
+explore
+discover
+
+# --- capability frames (helper or card body restating a label) ---
+lets you
+allows you to
+enables you to
+helps you
+gives you
+makes it easy to
+use this to
+use this option to
+use this setting to
+use this field to
+this setting
+this option
+this field
+this toggle
+this button
+this switch
+when enabled
+when turned on
+when on
+when checked
+if enabled
+if checked
+turn this on to
+turn on to
+toggle to
+switch on to
+check this to
+tick this to
+select this to
+click to
+tap to
+
+# --- empty and status frames (body restating an empty or status title) ---
+there are no
+there is no
+there aren't any
+there isn't any
+you don't have any
+you do not have any
+you have no
+you haven't
+you have not
+no results
+nothing here
+nothing to show
+nothing to see here
+it looks like
+looks like
+it seems
+seems like
+successfully
+has been
+have been
+was successful
+were successful
+completed successfully

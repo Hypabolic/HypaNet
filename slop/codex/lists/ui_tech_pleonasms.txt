@@ -1,0 +1,45 @@
+# slop/codex/lists/ui_tech_pleonasms.txt
+# Redundant acronym phrases (RAS syndrome) and other doubled terms common in product copy. Pattern: U51.
+#
+# Use: rule layer only, out of scope for the network (the repetition is inside one node, not between nodes). Match a
+# whole phrase in the folded text (rules/README.md, "Normalised string").
+#
+# Format: one entry per line, lower case; lines starting with # are comments.
+#
+# Provenance: written for HypaNet. The idea and nine entries (pin number, pdf format, gui interface, lcd display,
+# gps system, isbn number, upc codes, atm machine, please rsvp) also appear in proselint's redundancy.ras_syndrome check
+# (github.com/amperser/proselint, BSD-3-Clause; notice in lists/ATTRIBUTION-ui.md). The other entries are
+# HypaNet's own. Licence: MIT (repo licence) for HypaNet's entries; BSD-3-Clause notice retained for the shared ones.
+
+pin number
+pin code
+pdf format
+pdf file format
+gui interface
+ui interface
+lcd display
+led light
+gps system
+isbn number
+upc code
+upc codes
+url address
+url link
+html language
+sms message
+sms text message
+otp password
+otp code
+api interface
+os system
+ram memory
+cpu processor
+usb bus
+faq questions
+frequently asked faqs
+rsvp please
+please rsvp
+atm machine
+vat tax
+2fa authentication
+mfa authentication

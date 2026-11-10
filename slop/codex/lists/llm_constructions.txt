@@ -1,0 +1,192 @@
+# slop/codex/lists/llm_constructions.txt
+# Sentence and headline templates that LLMs reuse in UI and marketing copy, written as simple patterns.
+# Patterns: L09-L19 (see CODEX.md for each id).
+#
+# Pattern syntax (deliberately small, so a rule can compile it to a regex over folded words):
+#   - Literal words are matched after folding (lower case, apostrophes removed, punctuation dropped), so write
+#     "it's" and "you're" naturally; they match "its" and "youre" in folded text.
+#   - {x}, {y}, {z}  one to eight words (lazy). {w} exactly one word. {n} a number, with optional %, x, +, k, m or
+#     a unit word after it.
+#   - A line may hold one pattern only. Patterns match anywhere in a node unless they start with ^ (node start) or end
+#     with $ (node end).
+#   - Several sentences in one node ("Simple. Powerful. Yours.") are matched across sentence ends; the rule layer
+#     keeps the sentence-end positions separately when a pattern needs them (the {w}. {w}. {w}. tricolon).
+# Lines starting with # are comments.
+#
+# Provenance: patterns written for HypaNet from the constructions named in the sources on each section header
+# (full citations in SOURCES.md). No pattern text is copied from a source file except where a source's
+# own wording is the construction itself (e.g. "not just X, but also Y", which Wikipedia and stop-slop both name).
+# Licence: MIT (the HypaNet repo licence).
+
+# --- L09 negative parallelism / correction (Wikipedia WP:AIPARALLEL; stop-slop structures.md "Binary contrasts";
+# unslop-ui §8; tasteskill copy.md "The correction") ---
+not just {x}, it's {y}
+not just {x}. it's {y}
+it's not just {x}, it's {y}
+it's not {x}, it's {y}
+it's not {x}. it's {y}
+isn't just {x}, it's {y}
+isn't {x}. it's {y}
+not only {x} but {y}
+not just {x} but {y}
+not just {x}, but also {y}
+more than just {x}
+more than a {x}
+more than an {x}
+not a {x}. a {y}
+no {x}. no {y}. just {z}
+no {x}, no {y}, just {z}
+without the {x}
+{x} rather than {y}
+{x}, not {y}
+stop {x}. start {y}
+less {x}, more {y}
+
+# --- L10 audience-spanning hedge (unslop-ui §8 "Audience-spanning hedge"; deslop-copy; Wikipedia lead image caption) ---
+^whether you're {x} or {y}
+whether you're a {x} or a {y}
+whether you're {x}, {y} or {z}
+whether you need {x} or {y}
+whether it's {x} or {y}
+from {x} to {y} and everything in between
+for teams of all sizes
+for businesses of all sizes
+for everyone from {x} to {y}
+built for {x} and {y} alike
+{x} and {y} alike
+
+# --- L11 false range (the WP:AIPUFFERY example on Wikipedia "Signs of AI writing" opens "From its scenic landscapes to
+# its historical landmarks"; the construction is HypaNet's own generalisation, not a named Wikipedia sign) ---
+^from {x} to {y}, {z}
+^from {x} to {y}
+everything from {x} to {y}
+
+# --- L12 rule of three / tricolon (Wikipedia WP:RO3; stop-slop "Three-item lists"; humanizer §6; unslop-ui §8;
+# deslop-copy "Triplets everywhere"; tasteskill "The tricolon") ---
+^{w}. {w}. {w}.$
+^{w}. {w}. {w}. {w}.$
+^{w}, {w} and {w}.$
+^{w}, {w}, and {w}.$
+^{w} {w}. {w} {w}. {w} {w}.$
+plan, build and ship
+plan. build. ship.
+simple. powerful. {w}.
+fast, secure and reliable
+fast, simple and secure
+
+# --- L13 rhetorical question, then the answer (stop-slop "Rhetorical setups"; unslop-ui "Model-voice FAQ"; deslop-copy
+# "a question in every heading") ---
+^tired of {x}?
+^sick of {x}?
+^struggling with {x}?
+^ready to {x}?
+^want to {x}?
+^looking for {x}?
+^what if {x}?
+^why {w} {x}? because {y}
+^need {x}? {y}
+^{x}? we've got you covered
+^{x}? meet {y}
+^{x}? say hello to {y}
+
+# --- L14 before/after pivot (unslop-ui §8 "Before/after pivots"; stop-slop "stops being X and starts being Y") ---
+say goodbye to {x}
+say hello to {x}
+no more {x}
+gone are the days of {x}
+the days of {x} are over
+bye-bye {x}
+{x}, reimagined
+{x}, redefined
+{x}, reinvented
+{x}, made simple
+{x}, made easy
+{x}, simplified
+{x} made simple
+{x} the way it should be
+{x} done right
+meet the new {x}
+meet {x}
+^introducing {x}
+
+# --- L15 mirrored benefit clause, "X so you can Y" on every card (unslop-ui §8 "Mirrored feature/benefit pairs") ---
+{x} so you can {y}
+{x} so that you can {y}
+{x}, so you can focus on what matters
+focus on what matters
+focus on what matters most
+focus on what you do best
+spend less time {x} and more time {y}
+less time {x}, more time {y}
+
+# --- L16 trailing participle "analysis" (Wikipedia "Superficial analyses"; Reinhart et al. 2025: present participial
+# clauses at 2-5x the human rate in instruction-tuned models) ---
+{x}, making it easy to {y}
+{x}, making it easier than ever to {y}
+{x}, making it simple to {y}
+{x}, ensuring {y}
+{x}, allowing you to {y}
+{x}, enabling you to {y}
+{x}, empowering you to {y}
+{x}, helping you {y}
+{x}, giving you {y}
+{x}, so nothing slips through the cracks
+
+# --- L17 grandiose opener and closer (unslop-ui §8 "Grandiose closers", "Context-padding openers"; tasteskill
+# "Welcome to ..."; stop-slop "In a world where") ---
+^welcome to {x}
+^meet {x}, {y}
+^in today's {x} world
+^in a world where {x}
+^in an era of {x}
+the future of {x} is here
+the future of {x}
+the future is {x}
+join the revolution
+join the {x} revolution
+experience the difference
+experience the future of {x}
+your {x}, your way
+your {x} journey starts here
+your journey starts here
+start your {x} journey
+it all starts here
+the possibilities are endless
+the only {x} you'll ever need
+everything you need to {x}
+everything you need, in one place
+in one place
+all in one {w}
+one {w} to rule them all
+built for the way you {x}
+designed with you in mind
+made for {x} like you
+
+# --- L18 copula substitutes and significance framing in product copy (Wikipedia "Avoidance of basic copulatives",
+# "Undue emphasis on significance") ---
+{x} serves as {y}
+{x} stands as {y}
+{x} acts as your {y}
+{x} is a testament to {y}
+{x} plays a {w} role in {y}
+at the heart of {x}
+at its core, {x}
+{x} lies at the heart of {y}
+
+# --- L19 staccato emphasis and closer fragments (stop-slop "Dramatic fragmentation", "Emphasis crutches";
+# humanizer §2 closers) ---
+^that's it.$
+^it's that simple.$
+^simple as that.$
+^no strings attached.$
+^no fluff.$
+^just {x}.$
+^period.$
+^full stop.$
+^and that's just the beginning
+^and that's not all
+^but that's not all
+^and the best part?
+^the best part?
+^the result?
+^the secret?

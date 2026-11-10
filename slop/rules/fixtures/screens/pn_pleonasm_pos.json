@@ -1,0 +1,9 @@
+{"schema": "slop.screen/1", "id": "0abc47db2a8acce6", "framework": "tsx",
+ "source": {"repo": "slop-rules-fixtures", "path": "src/pn_pleonasm_pos.tsx", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "control", "line": 2},
+  {"k": 1, "kind": "actions", "line": 5}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "label", "text": "PIN number", "flags": ["in_form", "in_control"], "loc": [3, 7, 3, 17]},
+  {"i": 1, "k": 0, "role": "helper", "text": "Download the PDF format of each invoice.", "flags": ["small", "in_form", "in_control"], "loc": [4, 7, 4, 47]},
+  {"i": 2, "k": 1, "role": "link", "text": "FAQ questions", "flags": [], "loc": [6, 7, 6, 20]}]}

@@ -1,0 +1,394 @@
+# slop/codex/lists/ui_consequence_markers.txt
+# Words and phrases that signal a UI sentence adds new information: a consequence, scope, time, cost, condition,
+# reason, audience or recovery path. Patterns: U09 (subtitle that adds), U13 (consequence body), U25 (useful
+# helper), U35 (empty body with a cause), and the decision aid in CODEX.md §7.
+#
+# Use: these are KEEP evidence, the counterweight to the restating frames in ui_restating_frames.txt. A marker counts
+# only when it is NOT already in the node the sentence would echo (the dialog title, heading or control label) and is
+# not a synonym of that node's verb ("Discard this draft?" / "...will be deleted": "deleted" restates "discard", but
+# "all 6 photos" in the same sentence is new scope). One marker that survives that check is enough to keep a sentence
+# out of ECHO; NARRATE still needs the LABELLING.md §7 consequence test.
+#
+# Format: one entry per line, lower case, natural spelling (hyphens and apostrophes kept); fold an entry the way the
+# rule layer folds node text (rules/README.md, "Normalised string") before matching. Inflected forms are listed
+# explicitly (no stemmer). British and American spellings are both listed. Lines starting with # are comments.
+#
+# Caution from the prose linters: Vale's Google package flags every "will" (Google.Will, after
+# developers.google.com/style/tense) and the weasels list (words/weasels, MIT) flags "all", "also", "only" and
+# "enough". In UI copy those words usually carry the consequence or the scope, so do not import them as slop cues.
+#
+# Provenance: written for HypaNet from the guidance cited in CODEX.md §7 (Microsoft Win32 UX guide,
+# Confirmations: "use the term permanently to indicate that an action can't be undone" and the loss categories
+# "data loss or financial loss", "system access", "privacy"; Apple HIG Alerts: "describe what happened, the context in
+# which it happened, and why"; Atlassian empty state: "Include the reason for the empty state and where they can go
+# next"). Entries are common English words; selection and grouping are HypaNet's own. Licence: MIT (repo licence).
+
+# --- future result (the sentence states what will happen) ---
+will
+won't
+will not
+will be
+will no longer
+would
+is going to
+are going to
+from now on
+going forward
+
+# --- irreversibility and permanence (Microsoft Confirmations: "permanently"; LABELLING §7 "irreversibility") ---
+permanently
+permanent
+irreversible
+irreversibly
+cannot be undone
+can't be undone
+can not be undone
+cannot undo
+can't undo
+can't reverse
+cannot be reversed
+cannot be recovered
+can't be recovered
+can't recover
+cannot be restored
+can't be restored
+there's no way to
+no way to undo
+for good
+forever
+for ever
+gone for good
+lost for good
+
+# --- loss (new only when the title or label verb is different; see header) ---
+lose
+loses
+losing
+lost
+will be lost
+deleted
+erased
+wiped
+removed
+discarded
+overwritten
+overwrite
+overwrites
+replaced
+replaces
+cleared
+destroyed
+reset
+resets
+
+# --- scope and inclusion (the action reaches further than the title's object) ---
+all
+all of
+every
+each
+entire
+whole
+also
+too
+as well
+as well as
+including
+includes
+include
+along with
+together with
+both
+any
+other
+others
+the rest
+everything
+everyone
+anything
+related
+linked
+nested
+child
+children
+sub-items
+subfolders
+attached
+attachments
+copies
+versions
+items in it
+inside it
+inside this
+
+# --- audience, visibility and privacy (LABELLING §7 "privacy"; Microsoft "privacy or control over confidential information") ---
+visible to
+visible
+invisible
+hidden from
+can see
+will see
+won't see
+can't see
+can view
+public
+publicly
+private
+privately
+shared
+shared with
+unshared
+anyone
+anyone with the link
+members
+collaborators
+teammates
+your team
+followers
+guests
+owner
+owners
+admins
+administrator
+notify
+notified
+notifies
+won't be notified
+will be notified
+not notified
+they'll
+they will
+recipients
+sent to
+emailed to
+third parties
+third-party
+tracked
+stored
+store
+kept
+retained
+retention
+shared data
+your data
+personal data
+
+# --- time and timing (LABELLING §7 "timing") ---
+until
+before
+after
+afterwards
+when
+whenever
+while
+during
+within
+by
+immediately
+instantly
+right away
+straight away
+at once
+at the end of
+end of
+next
+next time
+later
+soon
+in a few minutes
+minutes
+hours
+days
+weeks
+months
+expire
+expires
+expired
+expiry
+expiration
+deadline
+due
+overdue
+scheduled
+renew
+renews
+renewal
+renewed
+billing period
+billing cycle
+grace period
+trial ends
+ends
+ending
+starts
+starting
+takes effect
+take effect
+effective
+delayed
+delay
+paused until
+resumes
+temporarily
+temporary
+
+# --- money, cost and quota (LABELLING §7 "cost"; Microsoft "financial loss") ---
+charge
+charged
+charges
+charging
+bill
+billed
+billing
+pay
+paid
+payment
+refund
+refunded
+refunds
+non-refundable
+fee
+fees
+cost
+costs
+price
+prorated
+pro rata
+credit
+credits
+counts towards
+count towards
+counts toward
+quota
+limit
+limits
+allowance
+exceeds
+over the limit
+free
+for free
+no charge
+extra
+additional
+
+# --- condition and exception ---
+if
+only
+only if
+only when
+except
+except for
+unless
+as long as
+provided that
+otherwise
+instead
+regardless
+even if
+even when
+whether
+
+# --- reason and purpose (Microsoft supplemental instruction: "explain why the window is being displayed") ---
+because
+since
+so that
+so
+to keep
+to protect
+to prevent
+to avoid
+for security
+for your security
+for safety
+due to
+as a result
+caused by
+required by
+required for
+needed for
+needed to
+in case
+
+# --- state change and access ---
+no longer
+stop
+stops
+stopped
+stop working
+stops working
+disable
+disables
+disabled
+deactivate
+deactivated
+suspend
+suspended
+lock
+locked
+locks
+unlock
+sign out
+signs out
+signed out
+log out
+logged out
+disconnect
+disconnected
+disconnects
+revoke
+revoked
+revokes
+cancel
+cancels
+cancelled
+canceled
+unsubscribe
+unsubscribed
+leave
+leaves
+lose access
+loses access
+access
+read-only
+offline
+sync
+syncs
+synced
+restart
+restarts
+reboot
+reinstall
+downgrade
+downgraded
+upgrade
+upgraded
+transfer
+transferred
+moved to
+moves to
+converted
+convert
+
+# --- recovery path (the sentence tells the reader how to get back) ---
+restore
+restored
+recover
+recovered
+undo
+undone
+trash
+bin
+recycle bin
+recently deleted
+archive
+archived
+version history
+history
+backup
+back up
+backed up
+retrieve
+reinstate
+reactivate
+re-enable
+for 30 days
+for 7 days

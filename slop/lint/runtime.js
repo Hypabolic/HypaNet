@@ -1,12 +1,14 @@
 // Slop transformer runtime (SPEC.md section 7). The same forward pass as ui/model.py, in plain JS: weights come
 // from slop-net.bin as float32 and every computation runs in Float64. Bidirectional attention, signed node-distance
 // bias (column 127 for the BOS key), no normalisation, logits at each node's EON, argmax ties to the lower class,
-// and the pointer rule from the artefact's pointer_head. Node built-ins only.
+// and the pointer rule from the artefact's pointer_head. Reads slop.net/2 (id layout 1 or 2; tensors stored as row
+// runs or as sparse cells, see lint/compile.py) and r1's slop.net/1. Node built-ins only.
 
 import { createHash } from 'node:crypto';
-import { Vocab, encodeScreen, BOS, CLASSES } from './tokenizer.js';
+import { Vocab, encodeScreen, idLayout, BOS, CLASSES } from './tokenizer.js';
 
 export const MAGIC = 'SLOPNET1';
+export const FORMATS = Object.freeze(['slop.net/1', 'slop.net/2']);
 export const D = 128;
 export const L = 4;
 export const H = 8;
@@ -26,7 +28,10 @@ export function loadNet(bytes) {
   if (buf.subarray(0, 8).toString('latin1') !== MAGIC) throw new Error('not a SLOPNET1 file');
   const hlen = buf.readUInt32LE(8);
   const header = JSON.parse(buf.subarray(12, 12 + hlen).toString('utf8'));
-  if (header.format !== 'slop.net/1') throw new Error('wrong slop-net format tag');
+  if (!FORMATS.includes(header.format)) throw new Error('wrong slop-net format tag');
+  const v2 = header.format === 'slop.net/2';
+  const ids = v2 ? header.ids : 1;
+  const layout = idLayout(ids);
   const base = 12 + hlen;
   const tensors = new Map();
   for (const e of header.tensors) {
@@ -34,16 +39,43 @@ export function loadNet(bytes) {
     const cols = e.shape.length === 1 ? e.shape[0] : e.shape[1];
     const t = new Float64Array(rows * cols);
     let pos = base + e.offset;
-    for (const [a, b] of e.rows) {
-      for (let r = a; r < b; r++) {
-        for (let c = 0; c < cols; c++) {
-          t[r * cols + c] = buf.readFloatLE(pos);
-          pos += 4;
+    const enc = e.enc ?? 'rows';
+    if (enc === 'rows') {
+      for (const [a, b] of e.rows) {
+        for (let r = a; r < b; r++) {
+          for (let c = 0; c < cols; c++) {
+            t[r * cols + c] = buf.readFloatLE(pos);
+            pos += 4;
+          }
         }
       }
-    }
+    } else if (enc === 'cells' && v2) {
+      // nrows u32 row indices, then a ceil(cols / 8)-byte column mask per row, then the set cells' float32 values
+      const k = e.nrows;
+      const mb = (cols + 7) >> 3;
+      const idxPos = pos;
+      let maskPos = pos + 4 * k;
+      pos = maskPos + mb * k;
+      let prev = -1;
+      for (let i = 0; i < k; i++) {
+        const r = buf.readUInt32LE(idxPos + 4 * i);
+        if (r <= prev || r >= rows) throw new Error(`${e.name}: row index not ascending or out of range`);
+        prev = r;
+        for (let c = 0; c < cols; c++) {
+          if ((buf[maskPos + (c >> 3)] >> (c & 7)) & 1) {
+            t[r * cols + c] = buf.readFloatLE(pos);
+            pos += 4;
+          }
+        }
+        maskPos += mb;
+      }
+    } else throw new Error(`${e.name}: unknown encoding ${enc}`);
     if (pos !== base + e.offset + e.nbytes) throw new Error(`${e.name}: byte count mismatch`);
     tensors.set(e.name, t);
+  }
+  const tokShape = header.tensors.find((e) => e.name === 'tok_emb.weight')?.shape;
+  if (!tokShape || tokShape[0] !== layout.vocabSize || tokShape[1] !== D) {
+    throw new Error(`tok_emb.weight shape ${JSON.stringify(tokShape)} does not match id layout ${ids} ([${layout.vocabSize}, ${D}])`);
   }
   const vb = buf.subarray(base + header.vocab.offset, base + header.vocab.offset + header.vocab.nbytes);
   if (base + header.vocab.offset + header.vocab.nbytes !== buf.length) throw new Error('trailing bytes after the vocabulary');
@@ -54,7 +86,8 @@ export function loadNet(bytes) {
   return {
     header,
     tensors,
-    vocab: Vocab.fromText(vb.toString('utf8')),
+    ids,
+    vocab: Vocab.fromText(vb.toString('utf8'), ids),
     pointerHead: [ph[0], ph[1]],
     sha256: header.artifact_sha256,
   };

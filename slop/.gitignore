@@ -13,3 +13,14 @@ kit/build/
 # run transcripts hold real reference-screen copy; kept local
 runs/*/logs/*.stream.jsonl
 runs/*/work/scratch/
+
+# thesaurus: downloaded sources and the outputs over 5 MB (rebuilt by resources/thesaurus/build.py)
+resources/thesaurus/raw/
+resources/thesaurus/out/moby.tsv
+resources/thesaurus/out/related.tsv
+resources/thesaurus/out/stem_links.tsv
+resources/thesaurus/out/synsets.tsv
+resources/thesaurus/out/words.tsv
+
+# scripts/evaluate.py reports quote the owner's private copy; kept local
+runs/*/eval/

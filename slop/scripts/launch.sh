@@ -7,6 +7,18 @@
 #                                                      # or a reply that ended the session without MODEL COMPLETE
 #   slop/scripts/launch.sh check [smoke|continue K] [AUTHOR_DIR]   # every pre-launch check; launches nothing and
 #                                                      # writes nothing
+#   slop/scripts/launch.sh --run r2 start|continue K|check [continue K] [AUTHOR_DIR]   # round 2 (below)
+#
+# Round 2 (--run r2; without --run everything is r1 as before): AUTHOR_DIR defaults to ../HypaNet-slop-author-r2 and
+# its name must start with HypaNet-slop-author-r2 (an r1 dir is refused, and the reverse); record runs/r2/HANDOVER.json,
+# logs runs/r2/logs, session runs/r2/SESSION_ID, launches r2 and r2.c<K>; settings kit/settings.r2.json; prompt
+# kit/prompt_r2.md (= AUTHOR_DIR/PROMPT.md), approved by kit/PROMPT_R2_APPROVED.sha256; continue uses the same
+# kit/prompt_continue.md. Its own cap: the US$ figure in runs/r2/CAP_USD, which Matthew writes (one figure and nothing
+# else; every r2 mode refuses without it; nothing writes it); r1's spend is not charged to it. The whole figure, less
+# r2's spend so far, is the --max-budget-usd flag, so like r1's it can be passed by about one response (up to about
+# US$21): write about US$21 less than the most r2 may spend. No smoke launch: `smoke` is refused for r2, and
+# start needs no smoke transcript. start verifies --pristine, which for r2 means work/ is exactly the recorded seed
+# (r1's work/ without scratch/).
 #
 # AUTHOR_DIR defaults to ../HypaNet-slop-author (../HypaNet-slop-smoke for smoke), both built by
 # scripts/prepare_author_dir.sh, which writes the hand-over record runs/r1/HANDOVER.json (runs/smoke/HANDOVER.json).
@@ -35,7 +47,7 @@
 # Refuses before claude: an unknown mode; Claude Code older than 2.1.321 (the first with claude-fable-5-2);
 # CLAUDE_CONFIG_DIR set (the settings enumerate ~/.claude); an author dir inside the repo or not prepared; a TEST
 # hand-over record; an author dir that does not verify against its record (kit/kit_build.py verify; for smoke and
-# start also --pristine: work/ empty); kit/leakage.py --require-sealed failing on the author dir (SPEC §9: the sealed
+# start also --pristine: work/ empty for r1 and smoke, exactly the recorded seed for r2); kit/leakage.py --require-sealed failing on the author dir (SPEC §9: the sealed
 # n-gram check must have run, or be waived by name in kit/leakage_waivers.json); settings that kit/make_settings.py --check rejects, or that miss a rule
 # scripts/launch_checks.py requires (dontAsk, autoMemoryEnabled false, switchModelsOnFlag false, the repo, temp,
 # private-note and sealed-repo denies, a deny for every HypaNet* sibling, the tool allows); a prompt with a
@@ -50,15 +62,21 @@
 # A launch with no init event is moved aside as NAME.noinit.<UTC>.* and charged nothing (as Clouds).
 # Afterwards: scripts/audit.py on the transcript, the hand-over verify again, and the cost summary.
 set -eu
-MODE="${1:?usage: launch.sh smoke|start|continue K|check [smoke|continue K] [AUTHOR_DIR]}"
 SLOP="$(cd "$(dirname "$0")/.." && pwd -P)"
+die() { echo "refusing: $*" >&2; exit 2; }
+RUN_NAME=r1
+if [ "${1:-}" = "--run" ]; then
+  RUN_NAME="${2:-}"
+  shift 2 2>/dev/null || die "--run needs r1 or r2"
+fi
+case "$RUN_NAME" in r1|r2) ;; *) die "--run must be r1 or r2";; esac
+MODE="${1:?usage: launch.sh [--run r2] smoke|start|continue K|check [smoke|continue K] [AUTHOR_DIR]}"
 REPO="$(cd "$SLOP/.." && pwd -P)"
 PARENT="$(dirname "$REPO")"
 KIT="$SLOP/kit"
 MODEL="claude-fable-5-2"
 EFFORT="xhigh"
 MIN_CLAUDE="2.1.321"
-die() { echo "refusing: $*" >&2; exit 2; }
 
 CHECK=0
 if [ "$MODE" = check ]; then
@@ -81,16 +99,29 @@ fi
 if [ "$MODE" = continue ]; then
   case "$K" in [1-9]|[1-2][0-9]|30) ;; *) die "continue: K must be 1..30";; esac
 fi
-if [ "$MODE" = smoke ]; then
+PROMPT_MAIN="$KIT/prompt.md"
+APPROVED_FILE="$KIT/PROMPT_APPROVED.sha256"
+if [ "$RUN_NAME" = r2 ]; then
+  [ "$MODE" != smoke ] || die "run r2 has no smoke launch (start it with: launch.sh --run r2 start)"
+  RUN="$SLOP/runs/r2"; DEFAULT_DIR="$PARENT/HypaNet-slop-author-r2"; SETTINGS="$KIT/settings.r2.json"
+  PROMPT_MAIN="$KIT/prompt_r2.md"; APPROVED_FILE="$KIT/PROMPT_R2_APPROVED.sha256"
+  ALL_LOGS="--run r2"
+elif [ "$MODE" = smoke ]; then
   RUN="$SLOP/runs/smoke"; DEFAULT_DIR="$PARENT/HypaNet-slop-smoke"; SETTINGS="$KIT/settings.smoke.json"
+  ALL_LOGS="--logs $SLOP/runs/smoke/logs --logs $SLOP/runs/r1/logs"
 else
   RUN="$SLOP/runs/r1"; DEFAULT_DIR="$PARENT/HypaNet-slop-author"; SETTINGS="$KIT/settings.json"
+  ALL_LOGS="--logs $SLOP/runs/smoke/logs --logs $SLOP/runs/r1/logs"
 fi
 LOGDIR="$RUN/logs"
 SID_FILE="$RUN/SESSION_ID"
 RECORD="$RUN/HANDOVER.json"
 AUTHOR_DIR="${ARG_DIR:-$DEFAULT_DIR}"
-ALL_LOGS="--logs $SLOP/runs/smoke/logs --logs $SLOP/runs/r1/logs"
+PROMPT_NAME="kit/$(basename "$PROMPT_MAIN")"
+APPROVED_NAME="kit/$(basename "$APPROVED_FILE")"
+if [ "$RUN_NAME" = r2 ]; then
+  [ -s "$RUN/CAP_USD" ] || die "runs/r2/CAP_USD missing: Matthew writes r2's cap there (a US\$ figure); nothing else does"
+fi
 
 # 0. programs and Claude Code's version
 CLAUDE_BIN="$(command -v claude)" || die "claude not on PATH"
@@ -105,17 +136,23 @@ PY scripts/launch_checks.py version "$CLAUDE_VERSION" "$MIN_CLAUDE" >/dev/null 2
 [ -d "$AUTHOR_DIR" ] && [ -f "$AUTHOR_DIR/HANDOVER.json" ] || die "$AUTHOR_DIR is not a prepared author dir (scripts/prepare_author_dir.sh)"
 AUTHOR_DIR="$(cd "$AUTHOR_DIR" && pwd -P)"
 case "$AUTHOR_DIR" in "$REPO"|"$REPO"/*) die "author dir must be outside the repo";; esac
+case "$(basename "$AUTHOR_DIR")" in
+  HypaNet-slop-author-r2*) [ "$RUN_NAME" = r2 ] || die "$AUTHOR_DIR is an r2 author dir (use --run r2)";;
+  *) [ "$RUN_NAME" = r1 ] || die "an r2 author dir's name starts with HypaNet-slop-author-r2 ($AUTHOR_DIR)";;
+esac
 cd "$SLOP"
 [ -f "$RECORD" ] || die "$RECORD missing (scripts/prepare_author_dir.sh writes it)"
 grep -q '"test": false' "$RECORD" || die "$RECORD is a TEST hand-over; re-run scripts/prepare_author_dir.sh --force without --test-root"
 PRISTINE=""
 if [ "$MODE" != continue ]; then PRISTINE="--pristine"; fi
+if [ "$RUN_NAME" = r2 ]; then PRISTINE_MEANS="work/ must be exactly the recorded seed, r1's work/ without scratch/"
+else PRISTINE_MEANS="work/ must be empty"; fi
 # shellcheck disable=SC2086
 PY kit/kit_build.py verify "$AUTHOR_DIR" "$RECORD" $PRISTINE \
-  || die "the author dir does not verify against $RECORD$([ -z "$PRISTINE" ] || echo ' (pristine: work/ must be empty)') (see PROBLEM lines above)"
+  || die "the author dir does not verify against $RECORD$([ -z "$PRISTINE" ] || echo " (pristine: $PRISTINE_MEANS)") (see PROBLEM lines above)"
 
 # the leakage check, sealed n-grams required (SPEC §9); the hand-over is fixed, so it gives the same answer every time
-PY kit/leakage.py "$AUTHOR_DIR" --require-sealed > /dev/null \
+PY kit/leakage.py "$AUTHOR_DIR" --require-sealed --run "$RUN_NAME" > /dev/null \
   || die "kit/leakage.py --require-sealed fails on $AUTHOR_DIR (run it to see why; a sealed-ngrams not-run problem clears once scripts/build_sealed.py has written the n-grams, or by a named waiver in kit/leakage_waivers.json)"
 
 # 2. settings
@@ -125,19 +162,18 @@ PY kit/make_settings.py --check "$AUTHOR_DIR" --out "$SETTINGS" \
 PY scripts/launch_checks.py settings "$SETTINGS" "$AUTHOR_DIR" || die "$SETTINGS lacks a required rule (PROBLEM lines above)"
 
 # 3. prompts
-for f in prompt.md prompt_continue.md; do
+for f in "$(basename "$PROMPT_MAIN")" prompt_continue.md; do
   [ -s "$KIT/$f" ] || die "kit/$f missing"
   if grep -q '{[A-Z_][A-Z_0-9]*}' "$KIT/$f"; then die "unfilled placeholder in kit/$f"; fi
 done
-cmp -s "$KIT/prompt.md" "$AUTHOR_DIR/PROMPT.md" || die "AUTHOR_DIR/PROMPT.md differs from kit/prompt.md"
-APPROVED_FILE="$KIT/PROMPT_APPROVED.sha256"
-PROMPT_MD_SHA="$(shasum -a 256 "$KIT/prompt.md" | cut -d' ' -f1)"
+cmp -s "$PROMPT_MAIN" "$AUTHOR_DIR/PROMPT.md" || die "AUTHOR_DIR/PROMPT.md differs from $PROMPT_NAME"
+PROMPT_MD_SHA="$(shasum -a 256 "$PROMPT_MAIN" | cut -d' ' -f1)"
 APPROVED=no
 if [ -s "$APPROVED_FILE" ] && [ "$(head -1 "$APPROVED_FILE" | cut -d' ' -f1 | tr -d '[:space:]')" = "$PROMPT_MD_SHA" ]; then
   APPROVED=yes
 fi
 if [ "$CHECK" = 0 ] && [ "$MODE" != continue ] && [ "$APPROVED" != yes ]; then
-  die "kit/prompt.md is not approved: kit/PROMPT_APPROVED.sha256 must hold its sha256 $PROMPT_MD_SHA (Matthew: shasum -a 256 kit/prompt.md > kit/PROMPT_APPROVED.sha256)"
+  die "$PROMPT_NAME is not approved: $APPROVED_NAME must hold its sha256 $PROMPT_MD_SHA (Matthew: shasum -a 256 $PROMPT_NAME > $APPROVED_NAME)"
 fi
 # the session's own Claude Code project dir: the settings allow the author to Read it, so it must start empty
 OWN_PROJECT="$HOME/.claude/projects/$(printf '%s' "$AUTHOR_DIR" | sed 's/[^A-Za-z0-9]/-/g')"
@@ -151,9 +187,11 @@ if [ "$CHECK" = 0 ] && [ "$MODE" != continue ] && [ "$OWN_PROJECT_STATE" = "NOT 
   die "$OWN_PROJECT exists and is not empty (earlier transcripts the author could Read); move it aside first"
 fi
 
-# 4. cost: one cap over smoke and r1
+# 4. cost: one cap over smoke and r1; r2 has its own (runs/r2/CAP_USD)
 # shellcheck disable=SC2086
-(PY scripts/cost.py $ALL_LOGS --check > /dev/null) || die "the US\$200 cap is reached or a launch is unresolved (scripts/cost.py)"
+CAP="$(PY scripts/cost.py $ALL_LOGS --cap 2>/dev/null)" || die "could not read the $RUN_NAME cap (scripts/cost.py $ALL_LOGS --cap)"
+# shellcheck disable=SC2086
+(PY scripts/cost.py $ALL_LOGS --check > /dev/null) || die "the US\$$CAP cap is reached or a launch is unresolved (scripts/cost.py)"
 # shellcheck disable=SC2086
 REMAINING="$(PY scripts/cost.py $ALL_LOGS --remaining 2>/dev/null)"
 case "$REMAINING" in ''|*[!0-9.]*) die "could not read the remaining budget";; esac
@@ -168,32 +206,33 @@ case "$MODE" in
       NAME="smoke"
       if [ -n "$(find "$LOGDIR" -name 'smoke*.stream.jsonl' -print -quit 2>/dev/null)" ]; then die "a smoke transcript exists in $LOGDIR (one smoke launch, SPEC.md §12.7)"; fi
     else
-      NAME="r1"
+      NAME="$RUN_NAME"
       if [ -n "$(find "$LOGDIR" -name '*.stream.jsonl' -print -quit 2>/dev/null)" ]; then die "transcripts exist in $LOGDIR"; fi
-      if [ "$CHECK" = 0 ] && [ ! -e "$KIT/SMOKE_SKIPPED" ] && [ -z "$(find "$SLOP/runs/smoke/logs" -name 'smoke*.stream.jsonl' -print -quit 2>/dev/null)" ]; then
+      # r2 has no smoke requirement (Matthew skipped the smoke launch for the informal runs, kit/SMOKE_SKIPPED)
+      if [ "$RUN_NAME" = r1 ] && [ "$CHECK" = 0 ] && [ ! -e "$KIT/SMOKE_SKIPPED" ] && [ -z "$(find "$SLOP/runs/smoke/logs" -name 'smoke*.stream.jsonl' -print -quit 2>/dev/null)" ]; then
         die "no smoke transcript in runs/smoke/logs: SPEC.md §12.7 runs the smoke launch first (scripts/launch.sh smoke)"
       fi
     fi
     if [ -e "$SID_FILE" ]; then die "a session already exists ($SID_FILE)$([ "$MODE" = smoke ] || echo '; use continue')"; fi
     SID="$(uuidgen | tr 'A-Z' 'a-z')"
-    PROMPT_FILE="$KIT/prompt.md"
+    PROMPT_FILE="$PROMPT_MAIN"
     SESSION_ARGS="--session-id $SID"
     ;;
   continue)
-    [ -s "$SID_FILE" ] || die "no r1 session yet ($SID_FILE)"
+    [ -s "$SID_FILE" ] || die "no $RUN_NAME session yet ($SID_FILE)"
     SID="$(cat "$SID_FILE")"
     if PY scripts/audit.py --complete "$LOGDIR" > /dev/null; then
       die "a launch already ended with MODEL COMPLETE; the run is over"
     fi
-    [ -f "$LOGDIR/r1.stream.jsonl" ] || die "continue: no r1 transcript in $LOGDIR"
+    [ -f "$LOGDIR/$RUN_NAME.stream.jsonl" ] || die "continue: no $RUN_NAME transcript in $LOGDIR"
     i=1
     while [ "$i" -lt "$K" ]; do
-      [ -f "$LOGDIR/r1.c$i.stream.jsonl" ] || die "continue $K: r1.c$i has not run (continuations are numbered in order)"
+      [ -f "$LOGDIR/$RUN_NAME.c$i.stream.jsonl" ] || die "continue $K: $RUN_NAME.c$i has not run (continuations are numbered in order)"
       i=$((i + 1))
     done
     PROMPT_FILE="$KIT/prompt_continue.md"
     SESSION_ARGS="--resume $SID"
-    NAME="r1.c$K"
+    NAME="$RUN_NAME.c$K"
     # shellcheck disable=SC2086
     SESSION_TOTAL="$(PY scripts/cost.py $ALL_LOGS --session-total "$SID")"
     ;;
@@ -220,13 +259,15 @@ fi
 PY kit/kit_build.py verify "$AUTHOR_DIR" "$RECORD" $PRISTINE > /dev/null || die "the tool check changed the author dir"
 
 if [ "$CHECK" = 1 ]; then
-  echo "check passed: would launch $NAME model=$MODEL fallback=none effort=$EFFORT max_budget_usd=$BUDGET_FLAG (remaining cap $REMAINING)"
+  echo "check passed: would launch $NAME model=$MODEL fallback=none effort=$EFFORT max_budget_usd=$BUDGET_FLAG (remaining cap $REMAINING of US\$$CAP)"
   echo "  claude $CLAUDE_BIN ($CLAUDE_VERSION)"
   echo "  author dir $AUTHOR_DIR (verified against $RECORD)"
-  echo "  prompt approved (kit/PROMPT_APPROVED.sha256 = sha256 of kit/prompt.md): $APPROVED$([ "$APPROVED" = yes ] || echo ' -- smoke and start refuse until Matthew approves it')"
+  echo "  prompt approved ($APPROVED_NAME = sha256 of $PROMPT_NAME): $APPROVED$([ "$APPROVED" = yes ] || echo ' -- smoke and start refuse until Matthew approves it')"
   echo "  session project dir $OWN_PROJECT: $OWN_PROJECT_STATE$([ "$OWN_PROJECT_STATE" != "NOT EMPTY" ] || echo ' -- smoke and start refuse')"
   echo "  prompt $PROMPT_FILE sha256 $PROMPT_SHA (${#PROMPT} chars); settings sha256 $(shasum -a 256 "$SETTINGS" | cut -d' ' -f1)"
-  if [ -n "$(find "$SLOP/runs/smoke/logs" -name 'smoke*.stream.jsonl' -print -quit 2>/dev/null)" ]; then
+  if [ "$RUN_NAME" = r2 ]; then
+    echo "  smoke launch: not required for r2"
+  elif [ -n "$(find "$SLOP/runs/smoke/logs" -name 'smoke*.stream.jsonl' -print -quit 2>/dev/null)" ]; then
     echo "  smoke launch: done (runs/smoke/logs)"
   else
     echo "  smoke launch: not yet run -- start refuses until it has (SPEC.md §12.7: one smoke launch before start)"
@@ -310,7 +351,7 @@ if PY scripts/cost.py $ALL_LOGS --budget-stops | grep -qx "$NAME"; then
   LEFT="$(PY scripts/cost.py $ALL_LOGS --remaining 2>/dev/null || echo 0)"
   if [ "$MODE" != smoke ] && PY -c 'import sys; sys.exit(0 if float(sys.argv[1]) >= 1 else 1)' "${LEFT:-0}" 2>/dev/null; then
     echo "BUDGET STOP WITH MONEY LEFT: Claude Code ended $NAME with error_max_budget_usd (flag US\$$BUDGET_FLAG), but" >&2
-    echo "  scripts/cost.py still shows US\$$LEFT of the US\$200 cap. Its budget check must count something other than" >&2
+    echo "  scripts/cost.py still shows US\$$LEFT of the US\$$CAP cap. Its budget check must count something other than" >&2
     echo "  what launch.sh assumed (session total before this launch: US\$$SESSION_TOTAL; remaining then: US\$$REMAINING)." >&2
     echo "  Compare total_cost_usd in the last result event of $LOG with $LOGDIR/$NAME.launch.json, record the finding" >&2
     echo "  in kit/NOTES.md, and adjust the flag computation before 'continue <K+1>'. Nothing beyond the cap was spent." >&2
@@ -320,7 +361,7 @@ if [ "$MODE" = smoke ]; then
   echo "SMOKE LAUNCH DONE. Read $LOGDIR/smoke.audit.json (tokens per turn, refusals, thinking blocks with text), then"
   echo "move $AUTHOR_DIR and $OWN_PROJECT aside before 'start' (SPEC.md §12.7)."
 elif PY scripts/audit.py --complete "$LOGDIR" > /dev/null; then
-  echo "MODEL COMPLETE: the run is over. Archive work/ to runs/r1/ and score it."
+  echo "MODEL COMPLETE: the run is over. Archive work/ to runs/$RUN_NAME/ and score it."
 else
-  echo "The session ended without MODEL COMPLETE (an API or limit error, or a reply with no tool call). Read the end of $LOG; to resume, run: scripts/launch.sh continue <K>"
+  echo "The session ended without MODEL COMPLETE (an API or limit error, or a reply with no tool call). Read the end of $LOG; to resume, run: scripts/launch.sh$([ "$RUN_NAME" = r1 ] || echo " --run $RUN_NAME") continue <K>"
 fi

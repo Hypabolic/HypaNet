@@ -1,0 +1,9 @@
+{"schema": "slop.screen/1", "id": "d756c36fb1fc92f7", "framework": "tsx",
+ "source": {"repo": "slop-rules-fixtures", "path": "src/pv_density_pos.tsx", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "header", "line": 2},
+  {"k": 1, "kind": "body", "line": 5}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "h1", "text": "Recipes", "flags": [], "loc": [3, 7, 3, 14]},
+  {"i": 1, "k": 0, "role": "subtitle", "text": "Seamlessly supercharge your meal planning.", "flags": [], "loc": [4, 7, 4, 49]},
+  {"i": 2, "k": 1, "role": "body", "text": "A powerful, intuitive editor for every recipe.", "flags": [], "loc": [6, 7, 6, 53]}]}

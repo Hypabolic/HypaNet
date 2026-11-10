@@ -159,6 +159,39 @@ def test_vocab_and_hash_ids():
             tk.Vocab(bad)
 
 
+def test_id_layouts():
+    l1, l2 = tk.LAYOUTS[1], tk.LAYOUTS[2]
+    assert (l1.vocab_base, l1.vocab_max, l1.hash_base, l1.hash_buckets, l1.vocab_size) == (512, 3584, 4096, 6144, 10240)
+    assert (l2.vocab_base, l2.vocab_max, l2.hash_base, l2.hash_buckets, l2.vocab_size) == (512, 16384, 16896, 8192, 25088)
+    assert tk.layout(1) is l1 and tk.EMPTY_VOCAB.layout is l1 and tk.EMPTY_VOCABS[2].layout is l2
+    for bad in (0, 3, "2", True, None):
+        with pytest.raises(tk.TokenizerError):
+            tk.layout(bad)
+    digest = int.from_bytes(hashlib.sha256("resum".encode("utf-8")).digest()[:4], "big")
+    assert tk.hash_bucket("resum") == 4096 + digest % 6144 == tk.hash_bucket("resum", 1)
+    assert tk.hash_bucket("resum", 2) == 16896 + digest % 8192
+    assert ids("Resume", tk.EMPTY_VOCABS[2]) == [16896 + digest % 8192]
+    # ids below 512 do not move; a vocabulary line has the same id in both layouts
+    v1, v2 = tk.Vocab(["save", "set"]), tk.Vocab(["save", "set"], 2)
+    assert ids("Save settings: 42 ● ...", v1) == ids("Save settings: 42 ● ...", v2)
+    big = [f"w{i}" for i in range(16384)]
+    assert tk.Vocab(big, 2).word_id("w16383") == 16895
+    for stems, lay in ((big[:3585], 1), (big + ["x"], 2)):
+        with pytest.raises(tk.TokenizerError, match="max"):
+            tk.Vocab(stems, lay)
+    for w in ("resum", "configur", "zzzz", "naïve"):
+        assert l2.hash_base <= tk.hash_bucket(w, 2) < l2.vocab_size and l1.hash_base <= tk.hash_bucket(w) < l1.vocab_size
+
+
+def test_vocab_load_takes_the_layout_from_meta_beside_it(tmp_path):
+    (tmp_path / "vocab.txt").write_text("save\n")
+    assert tk.Vocab.load(tmp_path / "vocab.txt").ids_version == 1
+    assert tk.meta_ids({"format": "slop.artifact/1"}) == 1 and tk.meta_ids({"ids": 2}) == 2
+    (tmp_path / "meta.json").write_text(json.dumps({"format": "slop.artifact/1", "pointer_head": [4, 0], "ids": 2}))
+    assert tk.Vocab.load(tmp_path / "vocab.txt").ids_version == 2
+    assert tk.Vocab.load(tmp_path / "vocab.txt", ids=1).ids_version == 1
+
+
 def _screen(nodes):
     return {"schema": "slop.screen/1", "id": "t", "nodes": [{"i": i, "loc": [1, 1, 1, 1], "flags": [], **n} for i, n in enumerate(nodes)]}
 

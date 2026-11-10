@@ -1,0 +1,327 @@
+# slop/codex/lists/llm_excess_vocab.txt
+# "Excess vocabulary": words whose frequency rose sharply after LLM chatbots became common, measured in large corpora
+# (PubMed abstracts, conference peer reviews, Wikipedia edits). Pattern L04 ("delve"-class diction), L06 (era
+# drift: the GPT-6 list in section C), and the phrase entries of L05 (significance puffery) and L18 (copula
+# substitutes) taken from Wikipedia in section C; they feed the density rule of L01-L05.
+#
+# These lists were measured on scientific and encyclopaedic prose, not on UI copy. In app and site copy most of them
+# are rare, so a hit is a strong but uncommon signal; many entries ("offers", "serves", "valuable") are ordinary words,
+# and only density (several distinct entries in one node or screen) is meaningful. Wikipedia's advice page warns that
+# overuse of a word does not imply overuse of its synonyms: do not expand these entries with a thesaurus.
+#
+# Format: one entry per line, lower case, as spelled in the source (mostly American spelling). Lines starting with #
+# are comments. Section headers give the source of every entry below them. Each entry appears once, under the
+# first section that names it; a later source that names the same word is not repeated (so Kobak et al. and
+# Wikipedia also list most of section A).
+#
+# Provenance: each section header below names the source of every entry under it.
+# Licence: this file mixes entries from MIT-licensed data (Kobak et al.), facts reported in papers (Juzek & Ward;
+# Liang et al.; Reinhart et al.) and word lists from Wikipedia (CC BY-SA 4.0). To respect the share-alike terms of the
+# Wikipedia sections, this file as a whole is distributed under CC BY-SA 4.0
+# (https://creativecommons.org/licenses/by-sa/4.0/), with the MIT notice for the Kobak entries kept below. Attribution
+# and URLs: SOURCES.md.
+
+# --- Section A. Juzek & Ward (2025), "Why Does ChatGPT 'Delve' So Much?", COLING 2025, Appendix A Table 2: the 21
+# focal words over-used by ChatGPT in scientific writing. https://aclanthology.org/2025.coling-main.426 (arXiv
+# 2412.11385, CC BY-SA 4.0). Listed as reported.
+delves
+delved
+delving
+delve
+showcasing
+showcases
+boasts
+underscores
+underscoring
+underscore
+comprehending
+intricacies
+intricate
+surpassing
+surpasses
+garnered
+emphasizing
+realm
+groundbreaking
+advancements
+aligns
+
+# --- Section B. Liang et al. (2024), "Monitoring AI-Modified Content at Scale", ICML 2024, arXiv 2403.07183: the three
+# adjectives named in the Figure 1 caption (9.8x, 34.7x, 11.2x more likely per sentence in ICLR 2024 reviews), plus
+# "innovative" and "comprehensive" as reported in press coverage of the paper (The Register, 2024-03-19).
+commendable
+meticulous
+innovative
+comprehensive
+
+# --- Section C. Wikipedia, "Wikipedia:Signs of AI writing", section "High density of 'AI vocabulary' words" (WP:AIVOCAB),
+# revision read 2026-11-11. CC BY-SA 4.0. The general box, then the era lists the page gives (dates are the page's).
+additionally
+align with
+bolstered
+crucial
+deep dive
+enduring
+enhance
+fostering
+garner
+highlight
+interplay
+landscape
+meticulously
+pivotal
+robust
+showcase
+tapestry
+testament
+valuable
+vibrant
+# era 2023 to mid-2024 (GPT-4), additions to the box above
+key
+# era mid-2024 to mid-2025 (GPT-4o), additions
+highlighting
+# era mid-2025 to mid-2026 (GPT-5): "emphasizing", "enhance", "highlighting", "showcasing" (all above)
+# era mid-2026 onward (GPT-6), per the page; these are newer and lower-precision, and several are plain words
+challenge
+clearer
+dependable
+echoed
+foster
+leverage
+matters
+multifaceted
+practical
+prioritize
+quietly
+steady
+universally
+# Grok-specific, per the page
+causal
+empirical
+correlate
+# Same page, "Promotional and advertisement-like language (2023-2025)" (WP:AIPUFFERY), a historical indicator
+boasts a
+rich
+profound
+enhancing
+exemplifies
+commitment to
+natural beauty
+nestled
+in the heart of
+renowned
+featuring
+diverse array
+# Same page, "Avoidance of basic copulatives" (copula substitutes)
+serves as
+stands as
+functions as
+operates as
+acts as
+represents a
+marks a
+# Same page, "Undue emphasis on significance" (selected phrases that occur in product copy)
+is a testament to
+a testament to
+plays a pivotal role
+plays a crucial role
+plays a vital role
+plays a key role
+underscores the importance
+highlights the importance
+setting the stage for
+evolving landscape
+indelible mark
+deeply rooted
+valuable insights
+resonate with
+
+# --- Section D. Kobak, González-Márquez, Horvát & Lause (2025), "Delving into LLM-assisted writing in biomedical
+# publications through excess vocabulary", Science Advances 11(27) eadt3813 (arXiv 2406.07016).
+# Data: https://github.com/berenslab/llm-excess-vocab results/excess_words.csv, rows annotated type "style".
+# MIT License, Copyright (c) 2024 Dmitry Kobak, Rita González-Márquez. Permission is hereby granted, free of charge,
+# to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the
+# Software without restriction, including without limitation the rights to use, copy, modify, merge, publish,
+# distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished
+# to do so, subject to the following conditions: The above copyright notice and this permission notice shall be
+# included in all copies or substantial portions of the Software. THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY
+# OF ANY KIND, EXPRESS OR IMPLIED.
+# HypaNet selection: 216 of the 407 "style" rows; 40 of them already appear in sections A-C, so 176 are listed here.
+# Dropped: function words and research-procedure words that are
+# normal in abstracts and say nothing about copy ("this", "were", "using", "assessed", "findings", "conducted").
+accentuates
+achieving
+adept
+advancement
+advancing
+advocates
+advocating
+affirming
+akin
+align
+aligning
+augmenting
+avenue
+avenues
+bolster
+bolstering
+broader
+burgeoning
+capabilities
+capitalizing
+compelling
+consolidates
+contributing
+conversely
+crafted
+crafting
+customizing
+delineates
+dependability
+disrupts
+distinctions
+distinctive
+diverse
+effectively
+elevate
+elevated
+elevates
+elevating
+elucidate
+elucidates
+elucidating
+embracing
+emphasises
+emphasising
+emphasize
+emphasizes
+empowers
+emulating
+emulation
+enabling
+encapsulates
+encompass
+encompassed
+encompasses
+encompassing
+endeavors
+endeavours
+enhanced
+enhancements
+enhances
+ensuring
+equipping
+essentials
+evolving
+excels
+exceptional
+exceptionally
+facilitated
+facilitates
+facilitating
+formidable
+fosters
+foundational
+furnish
+garnering
+grappling
+groundwork
+harness
+harnesses
+harnessing
+heighten
+heightened
+highlights
+hinges
+illuminates
+illuminating
+impactful
+imperative
+impressive
+incorporates
+incorporating
+influencing
+inherent
+insights
+interconnectedness
+intricately
+invaluable
+leverages
+leveraging
+maintaining
+midst
+necessitate
+necessitates
+necessitating
+notable
+notably
+noteworthy
+nuanced
+nuances
+offer
+offering
+offers
+optimizing
+orchestrating
+outlines
+paving
+pioneering
+pioneers
+poised
+pressing
+prevalent
+promise
+promising
+pronounced
+propelling
+realms
+recognizing
+refine
+refines
+refining
+reframing
+remarkable
+revolutionize
+revolutionizing
+revolves
+seamless
+seamlessly
+serves
+serving
+shaping
+shedding
+showcased
+signifying
+solidify
+spurred
+stands
+strategically
+streamline
+streamlined
+streamlines
+streamlining
+substantial
+surmount
+surpass
+surpassed
+swift
+swiftly
+thereby
+thorough
+transformative
+ultimately
+uncharted
+uncovering
+underexplored
+underscored
+unexplored
+unlocking
+unparalleled
+unraveling
+unveil
+unveiled
+unveiling
+unveils
+uphold
+upholding
+versatility

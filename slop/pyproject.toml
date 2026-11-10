@@ -15,6 +15,6 @@ dev = ["pytest>=8"]
 package = false
 
 [tool.pytest.ini_options]
-testpaths = ["ui/tests", "lint/tests", "validate/tests", "scripts/tests", "rules/tests", "generator/tests", "kit/tests", "modellabel/tests"]
+testpaths = ["ui/tests", "lint/tests", "validate/tests", "scripts/tests", "rules/tests", "generator/tests", "kit/tests", "modellabel/tests", "resources/thesaurus/tests"]
 pythonpath = ["."]
 addopts = "-q"

@@ -1,0 +1,16 @@
+{"schema": "slop.screen/1", "id": "b57f6c88b0d8dd4d", "framework": "html",
+ "source": {"repo": "slop-rules-fixtures", "path": "src/ph_template_pos.html", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "header", "line": 2},
+  {"k": 1, "kind": "body", "line": 5},
+  {"k": 2, "kind": "body", "line": 9},
+  {"k": 3, "kind": "body", "line": 11}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "link", "text": "Your Brand", "flags": ["in_header"], "loc": [3, 7, 3, 17]},
+  {"i": 1, "k": 0, "role": "h1", "text": "Fresh flowers every Friday", "flags": ["in_header"], "loc": [4, 7, 4, 33]},
+  {"i": 2, "k": 1, "role": "body", "text": "Call (555) 123-4567 or visit us at 123 Main Street, Anytown.", "flags": [], "loc": [6, 7, 6, 67]},
+  {"i": 3, "k": 1, "role": "caption", "text": "Jane Doe, head of operations", "flags": [], "loc": [7, 7, 7, 35]},
+  {"i": 4, "k": 1, "role": "body", "text": "Questions go to [Your name] at the front desk.", "flags": [], "loc": [8, 7, 8, 53]},
+  {"i": 5, "k": 2, "role": "caption", "text": "© 2026 Your Company. All rights reserved.", "flags": ["small", "in_footer"], "loc": [10, 7, 10, 48]},
+  {"i": 6, "k": 3, "role": "body", "text": "Lorem ipsum dolor sit amet, consectetur.", "flags": [], "loc": [12, 7, 12, 47]},
+  {"i": 7, "k": 3, "role": "caption", "text": "Jane Smith, head of sales", "flags": [], "loc": [13, 7, 13, 32]}]}

@@ -1,0 +1,15 @@
+{"schema": "slop.screen/1", "id": "1c6d89a03fc7bc07", "framework": "tsx",
+ "source": {"repo": "slop-rules-fixtures", "path": "src/lc_constructions_pos.tsx", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "header", "line": 2},
+  {"k": 1, "kind": "body", "line": 5}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "h1", "text": "It’s not just a to-do list, it’s your second brain.", "flags": ["in_header"], "loc": [3, 7, 3, 58]},
+  {"i": 1, "k": 0, "role": "subtitle", "text": "Whether you’re a beginner or a pro, we’ve got you covered.", "flags": ["in_header"], "loc": [4, 7, 4, 65]},
+  {"i": 2, "k": 1, "role": "body", "text": "From grocery lists to wedding plans, Tally keeps it all.", "flags": [], "loc": [6, 7, 6, 63]},
+  {"i": 3, "k": 1, "role": "h2", "text": "Tired of losing receipts? Meet Stash.", "flags": [], "loc": [7, 7, 7, 44]},
+  {"i": 4, "k": 1, "role": "h2", "text": "Note-taking, reimagined.", "flags": [], "loc": [8, 7, 8, 31]},
+  {"i": 5, "k": 1, "role": "body", "text": "Say goodbye to messy group chats.", "flags": [], "loc": [9, 7, 9, 40]},
+  {"i": 6, "k": 1, "role": "body", "text": "Simple. Smart. Yours.", "flags": [], "loc": [10, 7, 10, 28]},
+  {"i": 7, "k": 1, "role": "body", "text": "Exports run nightly, so nothing slips through the cracks.", "flags": [], "loc": [11, 7, 11, 64]},
+  {"i": 8, "k": 1, "role": "h3", "text": "Welcome to Plotline", "flags": [], "loc": [12, 7, 12, 26]}]}

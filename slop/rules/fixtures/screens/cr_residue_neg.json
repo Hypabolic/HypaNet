@@ -1,0 +1,18 @@
+{"schema": "slop.screen/1", "id": "5da35ec60082e922", "framework": "tsx",
+ "source": {"repo": "slop-rules-fixtures", "path": "src/cr_residue_neg.tsx", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "state", "line": 2},
+  {"k": 1, "kind": "control", "line": 5},
+  {"k": 2, "kind": "body", "line": 7},
+  {"k": 3, "kind": "body", "line": 12}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "dialog_title", "text": "Leave this page?", "flags": ["in_dialog", "in_state"], "loc": [3, 7, 3, 23]},
+  {"i": 1, "k": 0, "role": "dialog_body", "text": "Would you like to save your changes first?", "flags": ["in_dialog", "in_state"], "loc": [4, 7, 4, 49]},
+  {"i": 2, "k": 1, "role": "label", "text": "Is there anything else we should know?", "flags": ["in_form", "in_control"], "loc": [6, 7, 6, 45]},
+  {"i": 3, "k": 2, "role": "body", "text": "Here are some ideas for your first week.", "flags": [], "loc": [8, 7, 8, 47]},
+  {"i": 4, "k": 2, "role": "body", "text": "Below is a list of devices signed in to this account.", "flags": [], "loc": [9, 7, 9, 60]},
+  {"i": 5, "k": 2, "role": "caption", "text": "Images for illustrative purposes only.", "flags": [], "loc": [10, 7, 10, 45]},
+  {"i": 6, "k": 2, "role": "list_item", "text": "Todo", "flags": ["in_list"], "loc": [11, 7, 11, 11]},
+  {"i": 7, "k": 3, "role": "caption", "text": "As an AI, the assistant can make mistakes.", "flags": [], "loc": [13, 7, 13, 49]},
+  {"i": 8, "k": 3, "role": "body", "text": "Let me know if you’d like to work together.", "flags": [], "loc": [14, 7, 14, 50]},
+  {"i": 9, "k": 3, "role": "body", "text": "Here’s a revised plan for this week.", "flags": [], "loc": [15, 7, 15, 43]}]}

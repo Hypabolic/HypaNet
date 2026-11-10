@@ -13,11 +13,11 @@ from ui import model as mdl
 from ui import tokenizer as tk
 
 
-def random_tensors(seed: int, scale: float = 1.0) -> "dict[str, np.ndarray]":
-    """Seeded random weights for tests (harness code, not an authored network)."""
+def random_tensors(seed: int, scale: float = 1.0, ids: int = 1) -> "dict[str, np.ndarray]":
+    """Seeded random weights for tests (harness code, not an authored network), for id layout ``ids``."""
     rng = np.random.default_rng(seed)
     out = {}
-    for name, shape in mdl.TENSOR_SHAPES.items():
+    for name, shape in mdl.tensor_shapes(ids).items():
         if name.endswith("rel_bias"):
             std = 1.0
         elif name.endswith("emb.weight"):
@@ -55,6 +55,82 @@ def test_save_load_and_sha256(tmp_path):
         assert np.array_equal(art.tensors[k], t[k])
     with np.load(tmp_path / "a" / "artifact.npz") as z:  # an ordinary npz to numpy
         assert sorted(z.files) == sorted(mdl.TENSOR_SHAPES)
+
+
+def test_layout_2_shapes():
+    s1, s2 = mdl.tensor_shapes(1), mdl.tensor_shapes(2)
+    assert s1 == mdl.TENSOR_SHAPES and list(s1) == list(s2)
+    assert s2["tok_emb.weight"] == (25088, 128) and s1["tok_emb.weight"] == (10240, 128)
+    assert all(s1[k] == s2[k] for k in s1 if k != "tok_emb.weight")
+    assert mdl.param_count(2) == 4_029_444 == mdl.PARAM_COUNT + (25088 - 10240) * 128
+    assert mdl.zero_tensors(2)["tok_emb.weight"].shape == (25088, 128)
+
+
+def test_layout_2_save_load_and_meta(tmp_path):
+    t = random_tensors(3, ids=2)
+    vocab = [f"w{i}" for i in range(5000)]  # more than layout 1's 3,584
+    sha = mdl.save_artifact(tmp_path / "a", t, vocab, (3, 1))  # layout inferred from tok_emb
+    meta = json.loads((tmp_path / "a" / "meta.json").read_text())
+    assert meta == {"format": "slop.artifact/1", "pointer_head": [3, 1], "ids": 2}
+    art = mdl.load_artifact(tmp_path / "a")
+    assert art.sha256 == sha and art.ids == 2 and art.vocab.ids_version == 2
+    assert art.vocab.word_id("w4999") == 512 + 4999 and art.vocab.word_id("zzz") == tk.hash_bucket("zzz", 2)
+    assert all(np.array_equal(art.tensors[k], t[k]) for k in mdl.tensor_shapes(2))
+    assert mdl.save_artifact(tmp_path / "b", t, vocab, (3, 1), ids=2) == sha
+    assert mdl.from_tensors(t, vocab, (3, 1)).ids == 2
+    # layout 1 writes no "ids" key (r1's meta.json, byte for byte), whether inferred or explicit
+    mdl.save_artifact(tmp_path / "c", mdl.zero_tensors(), ["save"], (4, 0), ids=1)
+    assert (tmp_path / "c" / "meta.json").read_text() == '{"format": "slop.artifact/1", "pointer_head": [4, 0]}\n'
+    assert mdl.load_artifact(tmp_path / "c").ids == 1
+    with pytest.raises(mdl.ArtifactError, match="tok_emb"):
+        mdl.save_artifact(tmp_path / "d", t, vocab, (3, 1), ids=1)
+    with pytest.raises(tk.TokenizerError, match="max"):
+        mdl.save_artifact(tmp_path / "e", mdl.zero_tensors(), vocab, (3, 1))
+
+
+def test_layout_mismatch_is_refused(tmp_path):
+    t2 = mdl.zero_tensors(2)
+    with pytest.raises(mdl.ArtifactError, match="tok_emb"):  # layout-2 tensors, meta without "ids"
+        mdl.load_artifact(_write(tmp_path, t2))
+    with pytest.raises(mdl.ArtifactError, match="tok_emb"):  # layout-1 tensors, meta naming layout 2
+        mdl.load_artifact(_write(tmp_path, mdl.zero_tensors(), meta={"format": "slop.artifact/1", "pointer_head": [4, 0], "ids": 2}))
+    for bad in (3, 0, "2", True, None):
+        with pytest.raises(mdl.ArtifactError, match="ids"):
+            mdl.load_artifact(_write(tmp_path, t2, meta={"format": "slop.artifact/1", "pointer_head": [4, 0], "ids": bad}))
+    meta1 = {"format": "slop.artifact/1", "pointer_head": [4, 0], "ids": 1}  # explicit 1 is allowed
+    assert mdl.load_artifact(_write(tmp_path, mdl.zero_tensors(), meta=meta1)).ids == 1
+    big = "".join(f"w{i}\n" for i in range(4000))
+    with pytest.raises(mdl.ArtifactError, match="vocab"):
+        mdl.load_artifact(_write(tmp_path, mdl.zero_tensors(), vocab=big))
+    assert mdl.load_artifact(_write(tmp_path, t2, meta={"format": "slop.artifact/1", "pointer_head": [4, 0], "ids": 2},
+                                    vocab=big)).vocab.word_id("w3999") == 512 + 3999
+
+
+def test_layout_2_forward_uses_the_moved_rows(test_screens):
+    """A layout-2 net whose tok_emb is a layout-1 net's rows moved to their layout-2 ids predicts exactly the same."""
+    from collections import Counter
+
+    stems = sorted({t.stem for s in test_screens for n in s["nodes"] for t in tk.tokenize_text(n["text"]).tokens if t.stem})
+    b1, b2 = Counter(tk.hash_bucket(st, 1) for st in stems), Counter(tk.hash_bucket(st, 2) for st in stems)
+    # stems sharing a bucket in either layout go in the vocabulary, so every hashed stem has a row of its own
+    vocab = ["save", "set"] + [st for st in stems if b1[tk.hash_bucket(st, 1)] > 1 or b2[tk.hash_bucket(st, 2)] > 1]
+    vocab = list(dict.fromkeys(vocab))
+    hashed = [st for st in stems if st not in vocab]
+    assert len(hashed) > 300
+    t1 = random_tensors(5, scale=0.5)
+    e2 = np.zeros((25088, 128), dtype=np.float32)
+    e2[: 512 + len(vocab)] = t1["tok_emb.weight"][: 512 + len(vocab)]
+    for st in hashed:
+        e2[tk.hash_bucket(st, 2)] = t1["tok_emb.weight"][tk.hash_bucket(st, 1)]
+    a1 = mdl.from_tensors(t1, vocab, (2, 3))
+    a2 = mdl.from_tensors({**t1, "tok_emb.weight": e2}, vocab, (2, 3))
+    assert (a1.ids, a2.ids) == (1, 2)
+    flagged = 0
+    for s in test_screens:
+        p1, p2 = mdl.predict_screen(a1, s), mdl.predict_screen(a2, s)
+        assert [(p.cls, p.pointer, p.logits) for p in p1] == [(p.cls, p.pointer, p.logits) for p in p2], s["id"]
+        flagged += sum(p.cls != "KEEP" for p in p1)
+    assert flagged > 20
 
 
 def _write(tmp_path, tensors, meta=None, vocab="save\n", compressed=False):

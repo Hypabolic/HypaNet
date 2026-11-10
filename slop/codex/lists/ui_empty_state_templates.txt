@@ -1,0 +1,70 @@
+# slop/codex/lists/ui_empty_state_templates.txt
+# Templates for empty-state and no-results bodies that restate the empty title. Patterns: U34 (empty body
+# restating the title), U35 (empty body with cause or next action, KEEP).
+#
+# Use: `{x}` stands for one to four words naming the missing things (normally the title's noun or a synonym). A body
+# that matches a template from this file and carries nothing else is ECHO -> the empty title (R4). A body that also
+# names a cause ("because", "for the dates you picked") or a next action (an instruction marker from
+# ui_instruction_markers.txt with a new object: "Import a CSV to add invoices") is KEEP (K8). The block "where it will
+# appear" is a judgement case: "{x} will appear here" alone narrates the layout (R16), but "{x} you create will appear
+# here" implies the next action and is usually KEEP (K8, conf: judgement).
+#
+# Format: one template per line, lower case; lines starting with # are comments.
+#
+# Provenance: written for HypaNet. Grounding: Atlassian empty state ("Avoid repeating content from the title";
+# "Include the reason for the empty state and where they can go next"); Atlassian content standards ('Avoid: "Nothing
+# here", "No data found"'); NN/g empty states ("Tell the user what could be displayed, and how to populate the area
+# with that content"); Apple HIG Writing ("guide people on actions they can take"). Licence: MIT (repo licence).
+
+# --- restating the title ---
+no {x}
+no {x} yet
+no {x} found
+no {x} to show
+no {x} to display
+no {x} here
+no {x} available
+there are no {x}
+there are no {x} yet
+there are no {x} to show
+there is no {x}
+there aren't any {x}
+there aren't any {x} yet
+you don't have any {x}
+you don't have any {x} yet
+you have no {x}
+you have no {x} yet
+you haven't added any {x}
+you haven't created any {x}
+you haven't got any {x}
+it looks like you don't have any {x}
+looks like you don't have any {x}
+it looks like there are no {x}
+looks like there's nothing here
+nothing here
+nothing here yet
+nothing to see here
+nothing to show
+nothing to show yet
+it's empty here
+it's quiet here
+it's a little quiet here
+all clear
+no data
+no data found
+no results
+no results found
+no matches
+no items
+empty
+your {x} list is empty
+your {x} is empty
+
+# --- where it will appear (judgement) ---
+{x} will appear here
+{x} will show up here
+{x} will be shown here
+your {x} will appear here
+your {x} will show up here
+once you have {x}, they'll appear here
+when you add {x}, they'll show up here

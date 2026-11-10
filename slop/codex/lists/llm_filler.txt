@@ -1,0 +1,157 @@
+# slop/codex/lists/llm_filler.txt
+# Filler phrases: openers, emphasis crutches, connectives and summary closers that add length and no information.
+# Patterns: L20 (throat-clearing openers), L21 (emphasis crutches and intensifiers), L22 (connective filler),
+# L34 (summary closers). The word-level UI filler of the existing rule (now, your, easily, simply, please; aside R15)
+# lives in rules/src/lists.js and is not repeated here.
+#
+# Format: one phrase per line, lower case, natural spelling; fold before matching (rules/README.md). A phrase matches
+# anywhere in a node unless the section header says "node start". Lines starting with # are comments.
+#
+# Provenance: phrases named by stop-slop references/phrases.md (hardikpandya/stop-slop, MIT, Copyright (c) 2025
+# Hardik Pandya), unslop-ui TELLS.md §8 (claudiusararu/unslop-ui-skill, MIT, Copyright (c) 2026 Claudiu Sararu),
+# Wikipedia MOS:EDITORIALIZING and "Signs of AI writing" §Section summaries (cited; the phrases are common English),
+# aismells "Delve and vocab tics" (cited only; no licence stated), plus HypaNet additions marked "added".
+# The selection is HypaNet's; the phrases themselves are stock English. Licence: MIT (the HypaNet repo licence).
+
+# --- L20 throat-clearing and context-padding openers (stop-slop "Throat-clearing openers", "filler phrases";
+# unslop-ui "Context-padding openers"); node start ---
+in today's fast-paced world
+in today's digital world
+in today's digital age
+in today's ever-changing world
+in today's competitive landscape
+in an ever-evolving world
+in a world where
+in an era of
+in the age of
+when it comes to
+at the end of the day
+at its core
+the truth is
+the reality is
+here's the thing
+here's how it works
+here's what you need to know
+here's why
+let's face it
+let's be honest
+let's dive in
+let's get started
+let's get you set up
+it turns out
+make no mistake
+imagine a world where
+picture this
+gone are the days
+look no further
+look no further than
+you've come to the right place
+
+# --- L21 emphasis crutches and intensifiers (stop-slop "Emphasis crutches", "Adverbs"; Wikipedia MOS:EDITORIALIZING;
+# unslop-ui "Hedging throat-clearing") ---
+it's important to note
+it's worth noting
+it's worth mentioning
+it is important to note that
+it should be noted
+needless to say
+rest assured
+let that sink in
+this matters because
+here's why that matters
+truly
+really
+literally
+genuinely
+honestly
+actually
+absolutely
+incredibly
+extremely
+super
+totally
+completely
+entirely
+definitely
+of course
+without a doubt
+best of all
+better yet
+even better
+and so much more
+and much more
+and more
+so much more
+and beyond
+like never before
+than ever before
+like no other
+every step of the way
+every single time
+every single
+at your fingertips
+right at your fingertips
+with just a few clicks
+in just a few clicks
+with a single click
+in one click
+with ease
+with confidence
+with peace of mind
+on the go
+anytime, anywhere
+whenever, wherever
+24/7
+
+# --- L22 connective filler that LLMs open sentences with (aismells "connective filler"; Wikipedia WP:AIVOCAB
+# "Additionally (especially beginning a sentence)"); node or sentence start ---
+additionally
+furthermore
+moreover
+notably
+importantly
+crucially
+ultimately
+essentially
+basically
+simply put
+put simply
+in other words
+that said
+with that in mind
+as such
+on top of that
+plus,
+
+# --- L34 summary closers and "in a nutshell" lines (Wikipedia "Section summaries": In summary, In conclusion, Overall;
+# humanizer §2; stop-slop "Dramatic fragmentation"); usually a whole node ---
+in summary
+in conclusion
+in short
+in a nutshell
+to sum up
+to summarise
+to summarize
+overall
+all in all
+the bottom line
+bottom line
+long story short
+tl;dr
+tldr
+that's it
+that's all there is to it
+it's that simple
+it's that easy
+simple as that
+easy as that
+and that's it
+as simple as 1, 2, 3
+as easy as 1-2-3
+everything you need, in one place
+everything you need in one place
+all you need
+in one place
+nothing more, nothing less
+no fuss, no hassle
+no fluff

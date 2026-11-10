@@ -4,8 +4,9 @@
 #   slop/scripts/prepare_author_dir.sh [--force] [--test-root DIR] [AUTHOR_DIR]
 #
 # AUTHOR_DIR defaults to ../HypaNet-slop-author (a sibling of the HypaNet repo); the smoke launch's directory,
-# ../HypaNet-slop-smoke (SPEC §12.7), is prepared the same way by naming it. It must be outside the repo, its name
-# must start with HypaNet-slop-author (run r1) or HypaNet-slop-smoke (run smoke), and it must not exist, unless
+# ../HypaNet-slop-smoke (SPEC §12.7), and round 2's, ../HypaNet-slop-author-r2, are prepared the same way by naming
+# them. It must be outside the repo, its name must start with HypaNet-slop-author-r2 (run r2), HypaNet-slop-author
+# (run r1) or HypaNet-slop-smoke (run smoke, with r1's kit), and it must not exist, unless
 # --force is given and it is an earlier slop hand-over (its HANDOVER.json says so): then it is deleted and rebuilt.
 # Refuses if that run's session was already launched (slop/runs/<run>/SESSION_ID or a transcript in
 # slop/runs/<run>/logs/): the record later launches verify against is never replaced after that.
@@ -18,14 +19,17 @@
 #
 # Steps:
 #   1. checks: kit/lib equals ui/ and tools/py_guard.py equals clouds' (kit/kit_build.py lib --check); the dev and
-#      reference sets exist; the run's settings (kit/settings.json for r1, kit/settings.smoke.json for smoke)
-#      regenerated for AUTHOR_DIR (kit/make_settings.py enumerates ~/.claude) and checked;
+#      reference sets exist; the run's settings (kit/settings.json for r1, kit/settings.r2.json for r2,
+#      kit/settings.smoke.json for smoke) regenerated for AUTHOR_DIR (kit/make_settings.py enumerates ~/.claude) and
+#      checked;
 #   2. AUTHOR_DIR: kit/kit_build.py tree writes KIT.md, PROMPT.md, LABELLING.md (the author's copy of the guide),
 #      kit/lib/, tools/py_guard.py and examples/ (the 400 disclosed dev screens, the reference screens and their
 #      sources, INDEX.txt, README.md); kit/leakage.py must pass on it, with --require-sealed on a real hand-over (the
 #      sealed n-gram check of SPEC §9 must have run, or be waived by name in kit/leakage_waivers.json); the wrappers ./tok, ./lint, ./score, ./inspect (kit/tools/author_tool.py on
 #      the harness side, with uv and node) and ./python3 (the private venv under tools/py_guard.py); .venv/ (Python
-#      3.12 + numpy, private); work/ (empty: the only writable place);
+#      3.12 + numpy, private); work/ (empty: the only writable place). Run r2 (kit/kit_build.py RUNS): 1,200 dev
+#      screens, PROMPT.md from kit/prompt_r2.md, resources/ (codex, thesaurus, r1 results; read-only) and work/
+#      seeded with runs/r1/work minus scratch/ (writable; the record keeps the seed's hashes);
 #   3. permissions: everything read-only except work/ (the author dir itself too, so nothing can be added beside);
 #   4. the hand-over record slop/runs/<run>/HANDOVER.json (sha256 of every handed-over file, the venv, node, the
 #      harness files the tools run and the data the kit was built from; the record the launcher verifies against),
@@ -53,10 +57,13 @@ mkdir -p "$(dirname "$AUTHOR_DIR")"
 AUTHOR_DIR="$(cd "$(dirname "$AUTHOR_DIR")" && pwd -P)/$(basename "$AUTHOR_DIR")"
 case "$AUTHOR_DIR" in "$REPO"|"$REPO"/*) die "author dir must be outside the repo";; esac
 case "$(basename "$AUTHOR_DIR")" in
-  HypaNet-slop-author*) RUN="$SLOP/runs/r1"; RUN_SETTINGS="$SLOP/kit/settings.json";;
-  HypaNet-slop-smoke*) RUN="$SLOP/runs/smoke"; RUN_SETTINGS="$SLOP/kit/settings.smoke.json";;
-  *) die "author dir name must start with HypaNet-slop-author or HypaNet-slop-smoke";;
+  HypaNet-slop-author-r2*) RUN="$SLOP/runs/r2"; RUN_SETTINGS="$SLOP/kit/settings.r2.json"; KIT_RUN=r2;;
+  HypaNet-slop-author*) RUN="$SLOP/runs/r1"; RUN_SETTINGS="$SLOP/kit/settings.json"; KIT_RUN=r1;;
+  HypaNet-slop-smoke*) RUN="$SLOP/runs/smoke"; RUN_SETTINGS="$SLOP/kit/settings.smoke.json"; KIT_RUN=r1;;
+  *) die "author dir name must start with HypaNet-slop-author-r2, HypaNet-slop-author or HypaNet-slop-smoke";;
 esac
+PROMPT_SRC=prompt.md
+if [ "$KIT_RUN" = r2 ]; then PROMPT_SRC=prompt_r2.md; fi
 if [ -n "$TEST_ROOT" ]; then
   [ -d "$TEST_ROOT" ] || die "--test-root $TEST_ROOT is not a directory"
   TEST_ROOT="$(cd "$TEST_ROOT" && pwd -P)"
@@ -83,7 +90,7 @@ for f in make_settings.py kit_build.py leakage.py tools/author_tool.py tools/lin
   [ -f "$SLOP/kit/$f" ] || die "kit/$f missing"
 done
 DOCS_FLAG=""
-for f in KIT.md prompt.md; do
+for f in KIT.md "$PROMPT_SRC"; do
   if [ ! -f "$SLOP/kit/$f" ]; then
     [ -n "$TEST_ROOT" ] || die "kit/$f missing (a real hand-over needs it)"
     DOCS_FLAG="--allow-missing-docs"
@@ -106,11 +113,11 @@ PY_V="$("$UV" run --no-sync --quiet python -c 'import sys; print("%d.%d" % sys.v
 "$UV" run --no-sync --quiet python kit/make_settings.py --check "$AUTHOR_DIR" --out "$SETTINGS"
 # 2. author dir
 mkdir -p "$AUTHOR_DIR/work"
-"$UV" run --no-sync --quiet python kit/kit_build.py tree "$AUTHOR_DIR" $DOCS_FLAG
+"$UV" run --no-sync --quiet python kit/kit_build.py tree "$AUTHOR_DIR" --run "$KIT_RUN" $DOCS_FLAG
 if [ -n "$TEST_ROOT" ]; then
-  "$UV" run --no-sync --quiet python kit/leakage.py "$AUTHOR_DIR" || die "the leakage check failed on $AUTHOR_DIR (see above)"
+  "$UV" run --no-sync --quiet python kit/leakage.py "$AUTHOR_DIR" --run "$KIT_RUN" || die "the leakage check failed on $AUTHOR_DIR (see above)"
 else
-  "$UV" run --no-sync --quiet python kit/leakage.py "$AUTHOR_DIR" --require-sealed \
+  "$UV" run --no-sync --quiet python kit/leakage.py "$AUTHOR_DIR" --run "$KIT_RUN" --require-sealed \
     || die "the leakage check failed on $AUTHOR_DIR (see above; a real hand-over needs the sealed n-gram check)"
 fi
 for tool in tok lint score inspect; do
@@ -133,19 +140,24 @@ EOF
 chmod 555 "$AUTHOR_DIR/tok" "$AUTHOR_DIR/lint" "$AUTHOR_DIR/score" "$AUTHOR_DIR/inspect" "$AUTHOR_DIR/python3"
 chmod -R a-w "$AUTHOR_DIR/examples" "$AUTHOR_DIR/kit" "$AUTHOR_DIR/tools" "$AUTHOR_DIR/.venv" \
   "$AUTHOR_DIR/KIT.md" "$AUTHOR_DIR/PROMPT.md" "$AUTHOR_DIR/LABELLING.md"
+if [ -d "$AUTHOR_DIR/resources" ]; then chmod -R a-w "$AUTHOR_DIR/resources"; fi
 chmod 755 "$AUTHOR_DIR/work"
+# the r2 seed (r1's work/) stays writable: directories 755, files 644
+find "$AUTHOR_DIR/work" -type d -exec chmod 755 {} +
+find "$AUTHOR_DIR/work" -type f -exec chmod 644 {} +
 # 4. record (HANDOVER.json is written before the author dir itself becomes read-only)
 if [ -n "$TEST_ROOT" ]; then
-  "$UV" run --no-sync --quiet python kit/kit_build.py record "$AUTHOR_DIR" "$RECORD" --node "$NODE" --test-root "$TEST_ROOT"
+  "$UV" run --no-sync --quiet python kit/kit_build.py record "$AUTHOR_DIR" "$RECORD" --node "$NODE" --run "$KIT_RUN" --test-root "$TEST_ROOT"
 else
-  "$UV" run --no-sync --quiet python kit/kit_build.py record "$AUTHOR_DIR" "$RECORD" --node "$NODE"
+  "$UV" run --no-sync --quiet python kit/kit_build.py record "$AUTHOR_DIR" "$RECORD" --node "$NODE" --run "$KIT_RUN"
 fi
 chmod 444 "$AUTHOR_DIR/HANDOVER.json"
 chmod 555 "$AUTHOR_DIR"
 "$UV" run --no-sync --quiet python kit/kit_build.py verify "$AUTHOR_DIR" "$RECORD" --pristine
-for d in examples kit tools .venv; do
+for d in examples kit tools .venv resources; do
+  [ -e "$AUTHOR_DIR/$d" ] || continue
   [ -z "$(find "$AUTHOR_DIR/$d" -perm -u+w -not -type l -print -quit)" ] || die "$AUTHOR_DIR/$d is still writable"
 done
-echo "author dir ready: $AUTHOR_DIR (record $RECORD)"
+echo "author dir ready ($KIT_RUN kit): $AUTHOR_DIR (record $RECORD)"
 if [ -n "$TEST_ROOT" ]; then echo "TEST hand-over (extra root $TEST_ROOT): the launcher will refuse it; re-run with --force and no --test-root"; fi
 exit 0

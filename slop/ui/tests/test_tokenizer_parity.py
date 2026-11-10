@@ -49,20 +49,24 @@ def _py_text(t: str, vocab: tk.Vocab) -> dict:
     return {"ids": tt.ids, "flags": tt.flags, "dropped": tt.dropped, "stems": [x.stem for x in tt.tokens]}
 
 
+# (vocab text or None, id layout): layout 2 moves the hash buckets, so both layouts are checked
+CASES = [(None, 1), (VOCAB_TEXT, 1), (None, 2), (VOCAB_TEXT, 2)]
+
+
 def test_text_parity_on_tricky_and_fuzzed_strings():
     texts = TRICKY + _fuzz(3000, 20261110)
-    for vtext in (None, VOCAB_TEXT):
-        vocab = tk.EMPTY_VOCAB if vtext is None else tk.Vocab.from_text(vtext)
-        js = run_node(TOK_DUMP, {"vocab": vtext, "texts": texts})["texts"]
+    for vtext, ids in CASES:
+        vocab = tk.EMPTY_VOCABS[ids] if vtext is None else tk.Vocab.from_text(vtext, ids)
+        js = run_node(TOK_DUMP, {"vocab": vtext, "ids": ids, "texts": texts})["texts"]
         diffs = [(t, _py_text(t, vocab), j) for t, j in zip(texts, js) if _py_text(t, vocab) != j]
-        print(f"\ntext parity ({'vocab' if vtext else 'no vocab'}): {len(texts) - len(diffs)}/{len(texts)} strings identical")
+        print(f"\ntext parity ({'vocab' if vtext else 'no vocab'}, ids {ids}): {len(texts) - len(diffs)}/{len(texts)} strings identical")
         assert diffs == []
 
 
 def test_screen_parity(test_screens):
-    for vtext in (None, VOCAB_TEXT):
-        vocab = tk.EMPTY_VOCAB if vtext is None else tk.Vocab.from_text(vtext)
-        js = run_node(TOK_DUMP, {"vocab": vtext, "screens": test_screens})["screens"]
+    for vtext, ids in CASES:
+        vocab = tk.EMPTY_VOCABS[ids] if vtext is None else tk.Vocab.from_text(vtext, ids)
+        js = run_node(TOK_DUMP, {"vocab": vtext, "ids": ids, "screens": test_screens})["screens"]
         n_nodes = n_same = 0
         for s, j in zip(test_screens, js):
             enc = tk.encode_screen(s, vocab)
@@ -71,7 +75,7 @@ def test_screen_parity(test_screens):
             n_same += sum(a == b for a, b in zip(py_nodes, j["nodes"]))
             assert py_nodes == j["nodes"], s["id"]
             assert [w.to_json() for w in enc.windows] == j["windows"], s["id"]
-        print(f"\nscreen parity ({'vocab' if vtext else 'no vocab'}): {len(test_screens)} screens, {n_same}/{n_nodes} nodes identical, windows identical")
+        print(f"\nscreen parity ({'vocab' if vtext else 'no vocab'}, ids {ids}): {len(test_screens)} screens, {n_same}/{n_nodes} nodes identical, windows identical")
 
 
 def test_js_case_folding_matches_python_on_every_assigned_code_point():

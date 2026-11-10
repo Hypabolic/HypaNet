@@ -14,9 +14,10 @@ Run from `slop/` (or pass --root). The record holds the sha256 of each frozen co
 - `tokeniser` (ui/tokenizer.py, ui/porter.py, their tables, lint/tokenizer.js, lint/porter.js), `model` (ui/model.py),
   `runtime` (lint/*.js, lint/*.py, lint/eslint-plugin/** when present), `rule_layer` (rules/ code and README);
 - `generator`: `sha256` exactly as generator/build.py computes it (it refuses to build test_gen unless this matches);
-- `kit`: the hand-over record runs/r1/HANDOVER.json (`handover_sha256`) and every kit/ file except kit/sealed_salt,
-  kit/build/ (gitignored output), kit/PROMPT_APPROVED.sha256 and kit/settings.json / kit/settings.smoke.json
-  (launch.sh checks and records those);
+- `kit`: the hand-over record runs/r1/HANDOVER.json (`handover_sha256`), once it exists round 2's
+  runs/r2/HANDOVER.json (`handover_r2_sha256`), and every kit/ file except kit/sealed_salt, kit/build/ (gitignored
+  output), the approvals kit/PROMPT_APPROVED.sha256 and kit/PROMPT_R2_APPROVED.sha256, and kit/settings.json /
+  kit/settings.smoke.json / kit/settings.r2.json (launch.sh checks and records those);
 - `harness`: every scripts/*.py and scripts/*.sh (the set builders, launcher, audit, cost, this script), the model
   labellers' harness (modellabel/*.py and its reply schemas: prompts, runners, adjudication) and the label record
   rules (labeller/labelkit.py, labeller/check.py);
@@ -27,6 +28,9 @@ Run from `slop/` (or pass --root). The record holds the sha256 of each frozen co
   labellers' raw responses, SPEC.md §5a);
 - `disclosed`: the 400 disclosed dev screens: kit/kit_build.py's dev_ids_sha256 (sha256 of the ids joined by
   newlines), count and rule, from the hand-over record runs/r1/HANDOVER.json (else kit/build/tree.json);
+  `disclosed_r2`: the same for round 2's 1,200 (r1's 400 plus 800), from runs/r2/HANDOVER.json, with the r1 ids'
+  hash it was checked against (`null` until the r2 hand-over; KIT.md §12's lexicon-overlap measure for an r2
+  artefact uses these 1,200);
 - `evaluation`: scripts/score.py and scripts/sealed_eval.py (`null` until written);
 - `comparisons`: the §10 list of paired comparisons, as data.
 
@@ -60,8 +64,8 @@ META_KEYS = ("schema", "frozen_utc", "pending", "revisions", "freeze_sha256", "n
 # not frozen with the kit: the salt is secret; Matthew's approval and the settings are written later and checked by
 # scripts/launch.sh (the launch record keeps their sha256); kit/build/ is gitignored build output (the hand-over
 # record hashes what reached the author)
-KIT_EXCLUDE = ("kit/sealed_salt", "kit/PROMPT_APPROVED.sha256", "kit/settings.json", "kit/settings.smoke.json",
-               "kit/build/")
+KIT_EXCLUDE = ("kit/sealed_salt", "kit/PROMPT_APPROVED.sha256", "kit/PROMPT_R2_APPROVED.sha256", "kit/settings.json",
+               "kit/settings.smoke.json", "kit/settings.r2.json", "kit/build/")
 REAL_SETS = ("reference_real", "calibration")
 GEN_SETS = ("dev", "val")
 LATER_SETS = ("sealed_real", "test_gen")
@@ -254,11 +258,12 @@ def incomplete_keys(root: Path) -> list[str]:
     return out
 
 
-def disclosed_entry(root: Path) -> dict | None:
-    """The 400 disclosed dev screens as kit/kit_build.py records them: sha256 of the ids joined by newlines (in the
-    selection order), the count and the rule, from the hand-over record runs/r1/HANDOVER.json ("examples"), else from
-    kit/build/tree.json (gitignored; written by kit_build.py tree)."""
-    for rel in ("runs/r1/HANDOVER.json", "kit/build/tree.json"):
+def disclosed_entry(root: Path, run: str = "r1") -> dict | None:
+    """A round's disclosed dev screens as kit/kit_build.py records them: sha256 of the ids joined by newlines (in the
+    selection order), the count and the rule, from the hand-over record runs/<run>/HANDOVER.json ("examples"); for r1
+    else from kit/build/tree.json (gitignored; written by kit_build.py tree). r2 adds how many screens it added to
+    r1's and the hash of r1's ids it was checked against."""
+    for rel in (f"runs/{run}/HANDOVER.json",) + (("kit/build/tree.json",) if run == "r1" else ()):
         p = root / rel
         if not p.is_file():
             continue
@@ -267,8 +272,11 @@ def disclosed_entry(root: Path) -> dict | None:
         if not isinstance(ex, dict) or not ex.get("dev_ids_sha256"):
             continue
         sel = ex.get("selection") or {}
-        return {"dev_ids_sha256": ex["dev_ids_sha256"], "count": sel.get("n"),
-                "rule": sel.get("rule"), "seed": sel.get("seed"), "namespace": sel.get("namespace")}
+        out = {"dev_ids_sha256": ex["dev_ids_sha256"], "count": sel.get("n"),
+               "rule": sel.get("rule"), "seed": sel.get("seed"), "namespace": sel.get("namespace")}
+        if run != "r1":
+            out.update(added_to_r1=sel.get("added_to_r1"), r1_ids_sha256=sel.get("r1_ids_sha256"))
+        return out
     return None
 
 
@@ -291,6 +299,7 @@ def compute(root: Path = SLOP) -> dict:
         if not (root / need).is_file():
             raise FreezeError(f"{need} missing")
     hand = root / "runs" / "r1" / "HANDOVER.json"
+    hand_r2 = root / "runs" / "r2" / "HANDOVER.json"
     kit = file_set(root, ["kit/**/*"], exclude=KIT_EXCLUDE, required=False)
     rec = {
         "schema": SCHEMA,
@@ -307,7 +316,8 @@ def compute(root: Path = SLOP) -> dict:
         "generator": ({"sha256": generator_sha256(root),
                        "files": file_set(root, ["generator/*.py", "generator/*.ts"])["files"]}
                       if (root / "generator").is_dir() else None),
-        "kit": ({"handover_sha256": sha256_file(hand) if hand.is_file() else None, **kit}
+        "kit": ({"handover_sha256": sha256_file(hand) if hand.is_file() else None,
+                 **({"handover_r2_sha256": sha256_file(hand_r2)} if hand_r2.is_file() else {}), **kit}
                 if kit or hand.is_file() else None),
         "harness": file_set(root, ["scripts/*.py", "scripts/*.sh", "modellabel/*.py", "modellabel/*.json",
                                    "labeller/labelkit.py", "labeller/check.py"]),
@@ -315,6 +325,7 @@ def compute(root: Path = SLOP) -> dict:
         "sets": {s: set_entry(root, s) for s in REAL_SETS + GEN_SETS + LATER_SETS},
         "labels": label_entries(root),
         "disclosed": disclosed_entry(root),
+        "disclosed_r2": disclosed_entry(root, "r2"),
         "evaluation": {"score.py": one_file(root, "scripts/score.py"),
                        "sealed_eval.py": one_file(root, "scripts/sealed_eval.py")},
         "comparisons": COMPARISONS,

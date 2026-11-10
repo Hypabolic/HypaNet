@@ -1,0 +1,105 @@
+{
+  "schema": "slop.thesaurus/1",
+  "note": "Built by resources/thesaurus/build.py; see README.md. committed=false outputs are gitignored.",
+  "stemmer": {
+    "path": "ui/porter.py",
+    "sha256": "e645fbfc571262976b0f333d1a8bf602d40f2d9889a1be7c58f1278795bad4ac",
+    "via": "ui/tokenizer.py tokenize_text"
+  },
+  "sources": [
+    {
+      "key": "oewn-2025",
+      "file": "raw/oewn-2025/english-wordnet-2025.xml.gz",
+      "sha256": "9ca6d1dcb75f822fdd66617f7d9da48142ace38dd544d6ad5e2feca1674ad3fe",
+      "bytes": 11363503,
+      "urls": [
+        "https://github.com/globalwordnet/english-wordnet/releases/download/2025-edition/english-wordnet-2025.xml.gz"
+      ],
+      "licence": "CC BY 4.0 (Open English WordNet), incorporating Princeton WordNet under the WordNet licence"
+    },
+    {
+      "key": "moby-thesaurus-ii",
+      "file": "raw/moby-thesaurus-ii/mthesaur.txt",
+      "sha256": "7c9742b1ed94435a893c0719b426725edb8a5242f8c526a75461bd6cee2dfd32",
+      "bytes": 24853275,
+      "urls": [
+        "https://aleph.pglaf.org/3/2/0/3202/files/mthesaur.txt",
+        "https://www.gutenberg.org/files/3202/files/mthesaur.txt"
+      ],
+      "licence": "public domain (grant from the author, Grady Ward, January 2001)"
+    }
+  ],
+  "oewn_lexicon": {
+    "id": "oewn",
+    "label": "Open English Wordnet",
+    "version": "2025",
+    "license": "https://creativecommons.org/licenses/by/4.0",
+    "url": "https://github.com/globalwordnet/english-wordnet"
+  },
+  "outputs": {
+    "out/moby.tsv": {
+      "rows": 30260,
+      "bytes": 25167578,
+      "sha256": "cf70c5ffe7c4dd0910a9c6a0a3006f97c2265f0345a8102abda15602b5706ab0",
+      "committed": false
+    },
+    "out/related.tsv": {
+      "rows": 236461,
+      "bytes": 9711779,
+      "sha256": "ec547e38dd0327bcbabc89d80d9ca75a2feb8016403b52d3a307f7f8cd7e063a",
+      "committed": false
+    },
+    "out/stem_links.tsv": {
+      "rows": 51618,
+      "bytes": 11929026,
+      "sha256": "9dee509258e31b97fba165f9a136ce3277a1a32db688392300462f7caa85a800",
+      "committed": false
+    },
+    "out/stems.tsv": {
+      "rows": 64632,
+      "bytes": 3416693,
+      "sha256": "b04953ce9893108a27114bdc81f65f4208da33cad6028e64ad0a9f3a729792ce",
+      "committed": true
+    },
+    "out/synsets.tsv": {
+      "rows": 107519,
+      "bytes": 11127482,
+      "sha256": "5a587a3ba75112fd320f4e5e270fce5ec40b13b4903a2a912aa7fb1f79f178ca",
+      "committed": false
+    },
+    "out/words.tsv": {
+      "rows": 140382,
+      "bytes": 6763053,
+      "sha256": "7943175a67e10633379996e3e79f4a5fd28aa8e6b29712fbd662eb4925c246af",
+      "committed": false
+    }
+  },
+  "stats": {
+    "oewn": {
+      "synsets": 107519,
+      "lexical_entries": 135969,
+      "multi_token_lemmas": 58956,
+      "inflected_forms": 4473,
+      "single_token_stems": 52928
+    },
+    "moby": {
+      "roots": 30260,
+      "related_items": 2520126,
+      "multi_token_items": 567519,
+      "distinct_terms": 103305,
+      "distinct_multi_token_terms": 41057,
+      "single_token_stems": 41092,
+      "root_stems": 18717
+    },
+    "stems_total": 64632,
+    "stems_both": 29388,
+    "stem_links": {
+      "wn_syn": 32903,
+      "wn_similar": 12062,
+      "wn_hyper": 37516,
+      "wn_deriv": 13104,
+      "wn_ant": 4523,
+      "moby_mutual": 18611
+    }
+  }
+}

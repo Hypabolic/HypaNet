@@ -1,0 +1,127 @@
+# slop/codex/lists/llm_cta_cliches.txt
+# Stock call-to-action labels and CTA-band headlines that LLMs produce by default. Patterns: L26 (stock CTA
+# labels), L27 (CTA-band question and closer headlines).
+#
+# The existing rule slop/vacuous-action (aside R7, rules/src/lists.js VACUOUS_LABELS) already flags a button or link
+# whose whole label is one of a short set of vacuous labels (the guide's R7 examples and a few more). This list
+# extends that set with the labels LLMs add around it; entries already in VACUOUS_LABELS are repeated here only so this
+# file stands alone, and are marked "(R7)". Whole-label match: a button or link whose folded text equals an entry.
+# Headline entries (section L27) match a heading or CTA-band body anywhere.
+#
+# Do not flag: a label that names its object ("Start free trial", "Book a demo" when a demo is the product's real
+# next step, "Download for Mac"). Several entries below are fine when the surrounding screen makes the outcome
+# concrete; the rule should treat them as R7 candidates, not as errors (rules/src/lists.js gives the same caveat for
+# "Continue" and "Next", which are deliberately absent here too).
+#
+# Format: one phrase per line (alphabetical within each block), lower case, natural spelling; fold before matching. Lines starting with # are comments.
+# Provenance: unslop-ui TELLS.md §5 and §8 "CTA clones" (MIT), Hallmark gates.md gate 19 "stock second action"
+# (Nutlope/hallmark, MIT), tasteskill copy.md §4 and lint.mjs (via an earlier HypaNet survey), deslop-copy (MIT);
+# the rest added for HypaNet. Licence: MIT (the HypaNet repo licence).
+
+# --- L26 stock CTA labels: whole-label match on button, link, menu_item ---
+begin now
+begin your journey
+book a demo
+buy now
+claim your free trial
+claim your spot
+click here
+contact sales
+contact us today
+continue
+discover more
+download now
+explore features
+explore more
+explore now
+explore the features
+find out more
+get a demo
+get access
+get early access
+get in touch
+get instant access
+get started
+get started for free
+get started free
+get started now
+get started today
+get yours
+get yours today
+go
+install now
+join for free
+join now
+join the waitlist
+join today
+join waitlist
+learn more
+let's chat
+let's do this
+let's go
+let's talk
+next
+order now
+read more
+request a demo
+schedule a demo
+see how it works
+see it in action
+shop now
+sign up for free
+sign up free
+sign up now
+sign up today
+start for free
+start free
+start now
+start today
+start your free trial
+start your journey
+submit
+talk to sales
+try for free
+try free
+try it free
+try it now
+try it today
+unlock access
+unlock now
+watch the demo
+# ("continue", "next" and "go" are listed for completeness and must be suppressed in flows and dialogs; see header)
+
+# --- L27 CTA-band headlines and closers: heading, body or subtitle of a closing band ---
+be part of the future
+don't miss out
+don't wait
+experience the difference
+it's time to
+it's your turn
+join the community
+join the movement
+join the revolution
+join thousands of
+join thousands of happy
+ready to dive in?
+ready to elevate
+ready to get started?
+ready to level up?
+ready to supercharge
+ready to take the next step?
+ready to transform your
+ready when you are
+see for yourself
+see the difference
+start building
+start building today
+take the first step
+take the next step
+the future starts now
+the future starts today
+try it for yourself
+what are you waiting for?
+why wait?
+your journey starts here
+your journey starts today
+# Reassurance lines that sit under CTAs ("No credit card required") are in llm_claims.txt (L31): they are KEEP once
+# (LABELLING.md K6) and only the repeats are redundant.

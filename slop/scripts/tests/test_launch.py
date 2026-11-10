@@ -80,15 +80,20 @@ if (author / "HANDOVER.json").read_text() != record.read_text():
     problems.append("HANDOVER.json differs from the record")
 if (author / "TAMPERED").exists():
     problems.append("a handed-over file changed")
-if "--pristine" in sys.argv and any((author / "work").iterdir()):
+import json
+seed = json.loads(record.read_text()).get("work_seed")
+have = sorted(p.name for p in (author / "work").iterdir())
+if "--pristine" in sys.argv and seed is None and have:
     problems.append("work/ is not empty")
+if "--pristine" in sys.argv and seed is not None and have != sorted(seed):
+    problems.append("work/ is not the seed")
 for p in problems:
     print("PROBLEM:", p)
 sys.exit(1 if problems else 0)
 '''
 STUB_LEAKAGE = r'''import pathlib, sys
-if "--require-sealed" not in sys.argv:
-    print("LEAK: the launcher must pass --require-sealed")
+if "--require-sealed" not in sys.argv or "--run" not in sys.argv:
+    print("LEAK: the launcher must pass --require-sealed and --run")
     sys.exit(1)
 if (pathlib.Path(__file__).parent / "LEAK").exists():
     print("LEAK: sealed-ngrams - 'not-run'")
@@ -111,6 +116,7 @@ class Tree:
         self.home = root / "home"
         self.author = root / "HypaNet-slop-author"
         self.smoke = root / "HypaNet-slop-smoke"
+        self.r2 = root / "HypaNet-slop-author-r2"
         self.calls = root / "calls"
 
     # ----------------------------------------------------------------------------------------------- building
@@ -128,14 +134,21 @@ class Tree:
         (kit / "leakage.py").write_text(STUB_LEAKAGE)
         (kit / "prompt.md").write_text("Write the network. End with MODEL COMPLETE on its own line.\n")
         (kit / "prompt_continue.md").write_text("The previous launch stopped on an API error. Carry on.\n")
+        (kit / "prompt_r2.md").write_text("Revise the network. End with MODEL COMPLETE on its own line.\n")
         (self.home / ".claude" / "projects").mkdir(parents=True)
-        for run, d in (("r1", self.author), ("smoke", self.smoke)):
-            record = json.dumps({"kind": "hypanet-slop-author", "test": False, "dir": str(d)}, indent=1) + "\n"
+        for run, d in (("r1", self.author), ("smoke", self.smoke), ("r2", self.r2)):
+            rec = {"kind": "hypanet-slop-author", "test": False, "dir": str(d)}
+            if run == "r2":
+                rec["work_seed"] = ["build.py", "MODEL.md"]
+            record = json.dumps(rec, indent=1) + "\n"
             (self.slop / "runs" / run).mkdir(parents=True)
             (self.slop / "runs" / run / "HANDOVER.json").write_text(record)
             (d / "work").mkdir(parents=True)
+            if run == "r2":
+                (d / "work" / "build.py").write_text("# r1's build\n")
+                (d / "work" / "MODEL.md").write_text("# r1's model\n")
             (d / "HANDOVER.json").write_text(record)
-            shutil.copyfile(kit / "prompt.md", d / "PROMPT.md")
+            shutil.copyfile(kit / ("prompt_r2.md" if run == "r2" else "prompt.md"), d / "PROMPT.md")
             (d / "tok").write_text("#!/bin/sh\necho \"tok: $*\"\n")
             (d / "tok").chmod(0o755)
         bin_ = self.root / "bin"
@@ -163,7 +176,8 @@ class Tree:
         s = {"autoMemoryEnabled": False, "switchModelsOnFlag": False, "showThinkingSummaries": True,
              "permissions": {"defaultMode": "dontAsk", "allow": allow, "deny": deny + override.pop("extra_deny", [])}}
         s.update(override)
-        name = "settings.smoke.json" if author.name.startswith("HypaNet-slop-smoke") else "settings.json"
+        name = ("settings.smoke.json" if author.name.startswith("HypaNet-slop-smoke") else "settings.r2.json"
+                if author.name.startswith("HypaNet-slop-author-r2") else "settings.json")
         (self.slop / "kit" / name).write_text(json.dumps(s, indent=1))
 
     def smoke_done(self, total: str = "0") -> None:
@@ -178,6 +192,13 @@ class Tree:
     def approve(self) -> None:
         h = hashlib.sha256((self.slop / "kit" / "prompt.md").read_bytes()).hexdigest()
         (self.slop / "kit" / "PROMPT_APPROVED.sha256").write_text(f"{h}  kit/prompt.md\n")
+
+    def approve_r2(self, cap: str | None = "250") -> None:
+        h = hashlib.sha256((self.slop / "kit" / "prompt_r2.md").read_bytes()).hexdigest()
+        (self.slop / "kit" / "PROMPT_R2_APPROVED.sha256").write_text(f"{h}  kit/prompt_r2.md\n")
+        if cap is not None:
+            (self.slop / "runs" / "r2" / "CAP_USD").write_text(cap + "\n")
+        self.settings(self.r2)
 
     # ----------------------------------------------------------------------------------------------- running
     def run(self, *args: str, **stub_env: str) -> subprocess.CompletedProcess:
@@ -308,7 +329,7 @@ def test_refuses_settings_gaps(tree):
 def test_refuses_a_dir_that_is_not_pristine_or_not_real(tree):
     tree.approve()
     (tree.author / "work" / "build.py").write_text("x = 1\n")
-    assert refused(tree.run("start"), "does not verify")
+    assert refused(tree.run("start"), "(pristine: work/ must be empty)")
     (tree.author / "work" / "build.py").unlink()
     (tree.author / "TAMPERED").write_text("")
     assert refused(tree.run("start"), "does not verify")
@@ -461,3 +482,72 @@ def test_no_init_event_is_moved_aside_and_not_charged(tree):
     res = tree.run("start", STUB_TOTAL="5")
     assert res.returncode == 0, res.stderr
     assert tree.launch("r1", "r1")["max_budget_usd"] == 200.0
+
+
+# ----------------------------------------------------------------------------------------------- round 2
+
+
+def test_r2_needs_its_cap_and_its_own_approval(tree):
+    tree.settings(tree.r2)
+    assert refused(tree.run("--run", "r2", "check"), "runs/r2/CAP_USD missing")
+    assert not (tree.slop / "runs" / "r2" / "CAP_USD").exists()  # the launcher never writes it
+    (tree.slop / "runs" / "r2" / "CAP_USD").write_text("250\n")
+    res = tree.run("--run", "r2", "check")
+    assert res.returncode == 0, res.stderr
+    assert "would launch r2" in res.stdout and "max_budget_usd=250.00" in res.stdout
+    assert "smoke launch: not required for r2" in res.stdout and "PROMPT_R2_APPROVED.sha256" in res.stdout
+    tree.approve()  # r1's approval does not approve r2's prompt
+    assert refused(tree.run("--run", "r2", "start"), "kit/prompt_r2.md is not approved")
+    assert refused(tree.run("--run", "r2", "smoke"), "run r2 has no smoke launch")
+    assert refused(tree.run("--run", "r3", "check"), "--run must be r1 or r2")
+    assert tree.ncalls() == 0
+
+
+def test_r2_and_r1_dirs_are_not_interchangeable(tree):
+    tree.approve()
+    tree.approve_r2()
+    assert refused(tree.run("--run", "r2", "check", str(tree.author)), "starts with HypaNet-slop-author-r2")
+    assert refused(tree.run("check", str(tree.r2)), "is an r2 author dir (use --run r2)")
+    assert tree.ncalls() == 0
+
+
+def test_r2_start_and_continue(tree):
+    tree.approve_r2()
+    # r1's spend is not charged to r2's cap
+    logs1 = tree.slop / "runs" / "r1" / "logs"
+    logs1.mkdir(parents=True)
+    (logs1 / "PRIOR_SPEND.json").write_text(json.dumps([{"usd": 199.5, "what": "r1"}]))
+    (tree.r2 / "work" / "extra.py").write_text("x = 1\n")
+    assert refused(tree.run("--run", "r2", "start"), "(pristine: work/ must be exactly the recorded seed")
+    (tree.r2 / "work" / "extra.py").unlink()
+    res = tree.run("--run", "r2", "start", STUB_TOTAL="40", STUB_RESULT="stopped on an API error")
+    assert res.returncode == 0, res.stderr + res.stdout
+    c = tree.call()
+    argv = c["argv"]
+    assert argv[1] == (tree.slop / "kit" / "prompt_r2.md").read_text().rstrip("\n")
+    assert argv[argv.index("--settings") + 1] == str(tree.slop / "kit" / "settings.r2.json")
+    assert argv[argv.index("--max-budget-usd") + 1] == "250.00"
+    assert c["cwd"] == str(tree.r2.resolve()) and c["launch_records"] == ["r2.launch.json"]
+    sid = argv[argv.index("--session-id") + 1]
+    assert (tree.slop / "runs" / "r2" / "SESSION_ID").read_text().strip() == sid
+    rec = tree.launch("r2", "r2")
+    assert rec["max_budget_usd"] == 250.0 and rec["prompt_approved"] == "yes"
+    audit = json.loads((tree.slop / "runs" / "r2" / "logs" / "r2.audit.json").read_text())
+    assert audit["run"] == "r2" and audit["run_remaining_usd"] == 210.0
+    assert "launch.sh --run r2 continue <K>" in res.stdout
+    assert refused(tree.run("--run", "r2", "start"), "transcripts exist")
+    (tree.r2 / "work" / "extra.py").write_text("x = 1\n")  # continue does not need the seed
+    res = tree.run("--run", "r2", "continue", "1", STUB_TOTAL="55")
+    assert res.returncode == 0, res.stderr
+    argv = tree.call()["argv"]
+    assert argv[1] == (tree.slop / "kit" / "prompt_continue.md").read_text().rstrip("\n")
+    assert argv[argv.index("--resume") + 1] == sid and argv[argv.index("--max-budget-usd") + 1] == "210.00"
+    assert tree.launch("r2", "r2.c1")["session_total_before_usd"] == 40.0
+    assert "MODEL COMPLETE: the run is over. Archive work/ to runs/r2/" in res.stdout
+    assert refused(tree.run("--run", "r2", "continue", "2"), "MODEL COMPLETE")
+    assert not (tree.slop / "runs" / "r1" / "SESSION_ID").exists()
+
+
+def test_r2_continue_needs_an_r2_session(tree):
+    tree.approve_r2()
+    assert refused(tree.run("--run", "r2", "continue", "1"), "no r2 session yet")

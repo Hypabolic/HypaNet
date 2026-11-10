@@ -19,10 +19,15 @@ Pointer: ``meta.json`` names ``pointer_head: [layer, head]`` (layer 1-4, head 0-
 NARRATE, that head's attention weights from the node's EON are summed over each other node's tokens; the target is
 the node with the largest sum (ties to the earlier node), or none if the weight on BOS is at least 0.5.
 
-Artefact directory: ``artifact.npz`` (uncompressed; exactly the tensors of :data:`TENSOR_SHAPES`, float32, finite),
-``vocab.txt``, ``meta.json`` (``{"format": "slop.artifact/1", "pointer_head": [L, H]}``). Its sha256 is the sha256 of
-the three files' lower-case hex sha256 digests concatenated in that order (192 ASCII characters). Tensor names
-follow the v0.3 ``state_dict`` names; layers are numbered 0-3 in names and 1-4 in ``pointer_head``.
+Artefact directory: ``artifact.npz`` (uncompressed; exactly the tensors of :func:`tensor_shapes`, float32, finite),
+``vocab.txt``, ``meta.json`` (``{"format": "slop.artifact/1", "pointer_head": [L, H]}``, plus ``"ids": 2`` for the
+second id layout; absent means 1). Its sha256 is the sha256 of the three files' lower-case hex sha256 digests
+concatenated in that order (192 ASCII characters). Tensor names follow the v0.3 ``state_dict`` names; layers are
+numbered 0-3 in names and 1-4 in ``pointer_head``.
+
+Id layouts (``tokenizer.LAYOUTS``): only ``tok_emb.weight`` depends on it, [10240, 128] in layout 1 (r1: 3,584 stems,
+6,144 hash buckets; 2,128,900 parameters) and [25088, 128] in layout 2 (r2: 16,384 stems, 8,192 hash buckets;
+4,029,444 parameters). :data:`TENSOR_SHAPES`, :data:`PARAM_COUNT` and :data:`V` are layout 1.
 
 Standalone: numpy, the standard library and ``tokenizer.py``.
 """
@@ -66,9 +71,10 @@ ARTIFACT_FILES = ("artifact.npz", "vocab.txt", "meta.json")
 assert H * DH == D
 
 
-def _tensor_shapes() -> "OrderedDict[str, tuple[int, ...]]":
+def tensor_shapes(ids: int = 1) -> "OrderedDict[str, tuple[int, ...]]":
+    """Tensor names and shapes in storage order for id layout ``ids``."""
     s: "OrderedDict[str, tuple[int, ...]]" = OrderedDict()
-    s["tok_emb.weight"] = (V, D)
+    s["tok_emb.weight"] = (tk.layout(ids).vocab_size, D)
     s["off_emb.weight"] = (O, D)
     s["role_emb.weight"] = (N_ROLES, D)
     s["cluster_emb.weight"] = (N_CLUSTERS, D)
@@ -88,33 +94,57 @@ def _tensor_shapes() -> "OrderedDict[str, tuple[int, ...]]":
     return s
 
 
-TENSOR_SHAPES = _tensor_shapes()
-PARAM_COUNT = sum(math.prod(v) for v in TENSOR_SHAPES.values())
+def param_count(ids: int = 1) -> int:
+    return sum(math.prod(v) for v in tensor_shapes(ids).values())
+
+
+TENSOR_SHAPES = tensor_shapes(1)
+PARAM_COUNT = param_count(1)
 assert PARAM_COUNT == 2_128_900, PARAM_COUNT
+assert param_count(2) == 4_029_444, param_count(2)
 
 
 class ArtifactError(ValueError):
     pass
 
 
-def zero_tensors() -> "OrderedDict[str, np.ndarray]":
-    """Every tensor at 0.0 (SPEC.md §7: the starting state)."""
-    return OrderedDict((k, np.zeros(s, dtype=np.float32)) for k, s in TENSOR_SHAPES.items())
+def zero_tensors(ids: int = 1) -> "OrderedDict[str, np.ndarray]":
+    """Every tensor at 0.0 (SPEC.md §7: the starting state), for id layout ``ids``."""
+    return OrderedDict((k, np.zeros(s, dtype=np.float32)) for k, s in tensor_shapes(ids).items())
 
 
-def validate_tensors(tensors: "dict[str, np.ndarray]") -> None:
-    """Exact names, shapes, float32 and finiteness."""
+def _check_ids(ids: object) -> int:
+    try:
+        return tk.layout(ids).version
+    except tk.TokenizerError as exc:
+        raise ArtifactError(str(exc)) from None
+
+
+def infer_ids(tensors: "dict[str, np.ndarray]") -> int:
+    """The id layout whose ``tok_emb.weight`` row count matches (1 when it matches none; validation then says why)."""
+    t = tensors.get("tok_emb.weight")
+    rows = t.shape[0] if isinstance(t, np.ndarray) and t.ndim == 2 else None
+    for k, lay in tk.LAYOUTS.items():
+        if rows == lay.vocab_size:
+            return k
+    return 1
+
+
+def validate_tensors(tensors: "dict[str, np.ndarray]", ids: int = 1) -> None:
+    """Exact names, shapes (for id layout ``ids``), float32 and finiteness."""
+    shapes = tensor_shapes(_check_ids(ids))
     names = set(tensors)
-    missing = [k for k in TENSOR_SHAPES if k not in names]
-    extra = sorted(names - set(TENSOR_SHAPES))
+    missing = [k for k in shapes if k not in names]
+    extra = sorted(names - set(shapes))
     if missing or extra:
         raise ArtifactError(f"tensor names differ from the template (missing {missing}, extra {extra})")
-    for k, shape in TENSOR_SHAPES.items():
+    for k, shape in shapes.items():
         t = tensors[k]
         if not isinstance(t, np.ndarray):
             raise ArtifactError(f"{k}: not an array")
         if tuple(t.shape) != shape:
-            raise ArtifactError(f"{k}: shape {tuple(t.shape)} != {shape}")
+            extra_note = f" (id layout {ids})" if k == "tok_emb.weight" else ""
+            raise ArtifactError(f"{k}: shape {tuple(t.shape)} != {shape}{extra_note}")
         if t.dtype != np.float32:
             raise ArtifactError(f"{k}: dtype {t.dtype} != float32")
         if not bool(np.isfinite(t).all()):
@@ -131,7 +161,21 @@ def validate_meta(meta: object) -> tuple[int, int]:
         or not 1 <= ph[0] <= L or not 0 <= ph[1] < H
     ):
         raise ArtifactError("meta.json: pointer_head must be [layer 1-4, head 0-7]")
+    if "ids" in meta:
+        try:
+            tk.layout(meta["ids"])
+        except tk.TokenizerError as exc:
+            raise ArtifactError(f'meta.json: "ids": {exc}') from None
     return ph[0], ph[1]
+
+
+def make_meta(pointer_head: tuple[int, int], ids: int = 1) -> dict:
+    """``meta.json`` content; ``"ids"`` is written only for layout 2, so a layout-1 artefact is unchanged from r1."""
+    meta: dict = {"format": ARTIFACT_FORMAT, "pointer_head": [int(pointer_head[0]), int(pointer_head[1])]}
+    if _check_ids(ids) != 1:
+        meta["ids"] = ids
+    validate_meta(meta)
+    return meta
 
 
 def sha256_hex(data: bytes) -> str:
@@ -147,12 +191,13 @@ def artifact_sha256(directory: str | Path) -> str:
     return combine_sha256(*(sha256_hex((d / f).read_bytes()) for f in ARTIFACT_FILES))
 
 
-def npz_bytes(tensors: "dict[str, np.ndarray]") -> bytes:
+def npz_bytes(tensors: "dict[str, np.ndarray]", ids: int | None = None) -> bytes:
     """Deterministic uncompressed npz (fixed member order and timestamps), readable by ``np.load``."""
-    validate_tensors(tensors)
+    ids = infer_ids(tensors) if ids is None else ids
+    validate_tensors(tensors, ids)
     buf = io.BytesIO()
     with zipfile.ZipFile(buf, "w", compression=zipfile.ZIP_STORED) as zf:
-        for k in TENSOR_SHAPES:
+        for k in tensor_shapes(ids):
             arr = io.BytesIO()
             np.lib.format.write_array(arr, np.ascontiguousarray(tensors[k], dtype=np.float32), allow_pickle=False)
             info = zipfile.ZipInfo(k + ".npy", date_time=(1980, 1, 1, 0, 0, 0))
@@ -162,14 +207,18 @@ def npz_bytes(tensors: "dict[str, np.ndarray]") -> bytes:
     return buf.getvalue()
 
 
-def save_artifact(directory: str | Path, tensors: "dict[str, np.ndarray]", vocab_stems: list[str], pointer_head: tuple[int, int]) -> str:
-    """Write the three artefact files (byte-for-byte reproducible) and return the artefact sha256."""
+def save_artifact(directory: str | Path, tensors: "dict[str, np.ndarray]", vocab_stems: list[str],
+                  pointer_head: tuple[int, int], ids: int | None = None) -> str:
+    """Write the three artefact files (byte-for-byte reproducible) and return the artefact sha256.
+
+    ``ids`` is the id layout; None takes it from ``tok_emb.weight``'s row count (10,240 -> 1, 25,088 -> 2)."""
     d = Path(directory)
+    ids = infer_ids(tensors) if ids is None else _check_ids(ids)
+    meta = make_meta(pointer_head, ids)
+    validate_tensors(tensors, ids)
+    tk.Vocab(vocab_stems, ids)  # validates
     d.mkdir(parents=True, exist_ok=True)
-    tk.Vocab(vocab_stems)  # validates
-    meta = {"format": ARTIFACT_FORMAT, "pointer_head": [int(pointer_head[0]), int(pointer_head[1])]}
-    validate_meta(meta)
-    (d / "artifact.npz").write_bytes(npz_bytes(tensors))
+    (d / "artifact.npz").write_bytes(npz_bytes(tensors, ids))
     (d / "vocab.txt").write_bytes("".join(s + "\n" for s in vocab_stems).encode("utf-8"))
     (d / "meta.json").write_bytes((json.dumps(meta) + "\n").encode("utf-8"))
     return artifact_sha256(d)
@@ -184,6 +233,7 @@ class Artifact:
     sha256: str | None = None
     vocab_sha256: str | None = None
     _f64: "dict[str, np.ndarray] | None" = None
+    ids: int = 1  # id layout (meta.json "ids", absent = 1)
 
     @property
     def f64(self) -> "dict[str, np.ndarray]":
@@ -192,12 +242,15 @@ class Artifact:
         return self._f64
 
 
-def from_tensors(tensors: "dict[str, np.ndarray]", vocab_stems: list[str], pointer_head: tuple[int, int]) -> Artifact:
-    """An in-memory artefact (no files, no sha256)."""
-    validate_tensors(tensors)
-    meta = {"format": ARTIFACT_FORMAT, "pointer_head": [int(pointer_head[0]), int(pointer_head[1])]}
+def from_tensors(tensors: "dict[str, np.ndarray]", vocab_stems: list[str], pointer_head: tuple[int, int],
+                 ids: int | None = None) -> Artifact:
+    """An in-memory artefact (no files, no sha256); ``ids`` as in :func:`save_artifact`."""
+    ids = infer_ids(tensors) if ids is None else _check_ids(ids)
+    validate_tensors(tensors, ids)
+    meta = make_meta(pointer_head, ids)
     ph = validate_meta(meta)
-    return Artifact(OrderedDict((k, tensors[k]) for k in TENSOR_SHAPES), tk.Vocab(vocab_stems), meta, ph)
+    return Artifact(OrderedDict((k, tensors[k]) for k in tensor_shapes(ids)), tk.Vocab(vocab_stems, ids), meta, ph,
+                    ids=ids)
 
 
 def load_artifact(directory: str | Path) -> Artifact:
@@ -212,19 +265,21 @@ def load_artifact(directory: str | Path) -> Artifact:
                 raise ArtifactError(f"artifact.npz: {info.filename} is compressed (must be uncompressed)")
     with np.load(io.BytesIO(raw["artifact.npz"]), allow_pickle=False) as z:
         tensors = {k: z[k] for k in z.files}
-    validate_tensors(tensors)
     try:
         meta = json.loads(raw["meta.json"].decode("utf-8"))
     except (UnicodeDecodeError, json.JSONDecodeError) as exc:
         raise ArtifactError(f"meta.json is not JSON: {exc}") from exc
     ph = validate_meta(meta)
+    ids = tk.meta_ids(meta)
+    validate_tensors(tensors, ids)
     try:
-        vocab = tk.Vocab.from_text(raw["vocab.txt"].decode("utf-8"))
+        vocab = tk.Vocab.from_text(raw["vocab.txt"].decode("utf-8"), ids)
     except (UnicodeDecodeError, tk.TokenizerError) as exc:
         raise ArtifactError(f"vocab.txt: {exc}") from exc
     shas = [sha256_hex(raw[f]) for f in ARTIFACT_FILES]
     return Artifact(
-        OrderedDict((k, tensors[k]) for k in TENSOR_SHAPES), vocab, meta, ph, combine_sha256(*shas), shas[1]
+        OrderedDict((k, tensors[k]) for k in tensor_shapes(ids)), vocab, meta, ph, combine_sha256(*shas), shas[1],
+        ids=ids,
     )
 
 

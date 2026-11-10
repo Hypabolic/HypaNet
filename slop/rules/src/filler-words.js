@@ -24,14 +24,19 @@ export function check(screen) {
   screen.nodes.forEach((n, x) => {
     if (!isScored(n)) return;
     const found = [];
-    const branches = nodeBranches(n).map((b) => literalWords(b.text, b.vw));
-    for (const words of branches) {
+    const bs = nodeBranches(n);
+    const branches = bs.map((b) => literalWords(b.text, b.vw));
+    const branchTexts = bs.map((b) => b.text);
+    for (const [bx, words] of branches.entries()) {
       for (const e of FILLER) {
         if (found.includes(e.phrase)) continue;
         if (e.scope === 'action' && !ACTION_ROLES.has(n.role)) continue;
         if (DEGREE.has(e.phrase) && VALUE_ROLES.has(n.role)) continue; // "Very high" on a scale is a value (K5)
         if (e.scope === 'title-lead') {
           if (!TITLE_ROLES.has(n.role) || words[0] !== e.phrase) continue;
+          // A title with a comma or a sentence mark is a slogan ("Your brand, your rules"), not the noun phrase
+          // "Your Favorites" whose "your" adds nothing.
+          if (/[,;:.!?]/u.test(branchTexts[bx])) continue;
           // "Your ALT Shared playlists" is `{mine ? "Your" : "Shared"} playlists`: the extractor joins the words after
           // the conditional to the last branch only, so a lone "your" beside a title branch of two to four words leads
           // a title of that length ("Your playlists").
@@ -40,8 +45,9 @@ export function check(screen) {
           continue;
         }
         // "now" as the first word names something ("Now playing", a time picker's "Now", a /now page); after another
-        // word it is the filler of "Book now".
-        if (e.phrase === 'now' ? words.indexOf('now') > 0 : contains(words, e.phrase)) found.push(e.phrase);
+        // word it is the filler of "Book now", except in "Not now", the standard label for putting a prompt off.
+        const at = words.indexOf('now');
+        if (e.phrase === 'now' ? at > 0 && words[at - 1] !== 'not' : contains(words, e.phrase)) found.push(e.phrase);
       }
     }
     if (found.length) {

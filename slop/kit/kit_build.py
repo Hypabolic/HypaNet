@@ -1,15 +1,24 @@
 """Build and check the slop author kit (SPEC §13). Called by scripts/prepare_author_dir.sh (and, later, launch.sh).
 
     uv run python kit/kit_build.py lib [--check]                 # kit/lib/: hashed copies of ui/ porter, tokeniser, model
-    uv run python kit/kit_build.py select                        # print the 400 disclosed dev screens and the rule's counts
-    uv run python kit/kit_build.py tree AUTHOR_DIR [--allow-missing-docs]   # write the kit files into AUTHOR_DIR
-    uv run python kit/kit_build.py record AUTHOR_DIR RECORD --node NODE [--test-root DIR]   # HANDOVER.json (both)
+    uv run python kit/kit_build.py select [--run r2]             # print the disclosed dev screens and the rule's counts
+    uv run python kit/kit_build.py tree AUTHOR_DIR [--run r2] [--allow-missing-docs]   # write the kit into AUTHOR_DIR
+    uv run python kit/kit_build.py record AUTHOR_DIR RECORD --node NODE [--run r2] [--test-root DIR]   # HANDOVER.json
     uv run python kit/kit_build.py verify AUTHOR_DIR RECORD [--pristine]        # exit 1 on any difference
-    uv run python kit/kit_build.py preview [--check]             # kit/PROMPT_RENDERED_PREVIEW.md from the prompts
+    uv run python kit/kit_build.py preview [--run r2] [--check]  # the rendered prompt preview of the run
+
+Runs (RUNS below; `--run` defaults to r1, whose kit is unchanged):
+
+    r1   400 disclosed dev screens, kit/prompt.md, work/ empty (the smoke launch uses the r1 kit too)
+    r2   1,200 disclosed dev screens (r1's 400 plus the next 800 by the same rule), kit/prompt_r2.md, work/ a copy of
+         runs/r1/work without scratch/, and resources/ (read-only): the codex (codex/CODEX.md, SOURCES.md, lists/),
+         the thesaurus (resources/thesaurus: out/*.tsv, README.md and ATTRIBUTION.md as the author's copies) and
+         resources/r1/RESULTS.md (kit/r1_results.md). The record keeps the seed's file hashes (`work_seed`), and
+         `verify --pristine` then means "work/ is exactly the seed" instead of "work/ is empty".
 
 What `tree` writes (everything else in the author dir comes from prepare_author_dir.sh):
 
-    KIT.md, PROMPT.md          kit/KIT.md and kit/prompt.md (a TEST hand-over may use placeholders)
+    KIT.md, PROMPT.md          kit/KIT.md and the run's prompt (a TEST hand-over may use placeholders)
     HANDOVER.json              the author's view of the record (kind, time, author dir, file hashes, venv, node);
                                the full record (harness, inputs, selection) stays in slop/runs/<run>/HANDOVER.json
     LABELLING.md               the label guide with its internal preamble and cross-references replaced
@@ -26,7 +35,8 @@ What `tree` writes (everything else in the author dir comes from prepare_author_
 Disclosure rule (SPEC §9): dev screens are ranked by sha256("disclose:20261112:<screen id>") (hex, ascending). Pass 1
 walks the ranking and takes a screen when it adds a node to a quota still short: every scored pattern of LABELLING.md §9
 (R1-R6, R8, R9, R11, R14, R16, R17; R18 is track C) needs 10 positive nodes and every K rule (K1-K9, K11-K14; K10 is
-track C) 10 KEEP nodes that name it. Pass 2 fills to 400 with the best-ranked screens not yet taken. A dev
+track C) 10 KEEP nodes that name it. Pass 2 fills to the run's n (400 in r1, 1,200 in r2) with the best-ranked
+screens not yet taken, so a larger n only adds screens (r2 checks that r1's 400 are all in its 1,200). A dev
 screen whose normalised node-text sequence equals a val, test_gen or ood_codex screen's is not eligible (24 of 20,000
 at the first build matched a val screen). Kind comes from the
 generator's harness-only sidecar (<set>.meta.jsonl): SPEC §13 puts it in INDEX.txt. The sidecar's `clean` flag and
@@ -62,6 +72,19 @@ KINDS = DATASETS / "kinds.json"
 GUIDE = SLOP / "LABELLING.md"
 PY_GUARD = KIT / "tools" / "py_guard.py"
 CLOUDS_PY_GUARD = REPO / "clouds" / "kit" / "tools" / "py_guard.py"
+CODEX_DIR = SLOP / "codex"
+THESAURUS = SLOP / "resources" / "thesaurus"
+R1_WORK = SLOP / "runs" / "r1" / "work"
+R1_RESULTS = KIT / "r1_results.md"
+# the runs this script builds kits for; the smoke launch uses r1's kit
+RUNS = {
+    "r1": {"n_dev": 400, "prompt": "prompt.md", "preview": "PROMPT_RENDERED_PREVIEW.md", "seed": False,
+           "resources": False},
+    "r2": {"n_dev": 1200, "prompt": "prompt_r2.md", "preview": "PROMPT_R2_PREVIEW.md", "seed": True,
+           "resources": True},
+}
+SEED_SKIP = ("scratch",)  # runs/r1/work/scratch: dumps of example screens and throwaway scripts, not handed over
+SEED_SKIP_NAMES = (".DS_Store", "__pycache__")
 
 LIB_FILES = ("porter.py", "tokenizer.py", "model.py", "ids.json", "unicode_tables.json")
 SEED = 20261112
@@ -82,6 +105,7 @@ RECORD_KIND = "hypanet-slop-author"
 # harness files the author's tools run or the hand-over depends on; recorded at hand-over, checked before every launch
 HARNESS_GLOBS = ("kit/tools/*.py", "kit/tools/*.mjs", "kit/lib/*", "kit/kit_build.py", "kit/make_settings.py",
                  "kit/leakage.py", "kit/leakage_waivers.json", "kit/KIT.md", "kit/prompt.md", "kit/prompt_continue.md",
+                 "kit/prompt_r2.md", "kit/r1_results.md",
                  "ui/*.py", "ui/*.json", "lint/*.js", "lint/compile.py", "extract/cli.js", "extract/src/*.ts",
                  "rules/index.js", "rules/src/*.js", "package.json", "package-lock.json", "pyproject.toml", "uv.lock")
 AUTHOR_SKIP_DIRS = (".venv", "work")
@@ -109,6 +133,11 @@ GUIDE_EDITS = (
 )
 # none of these may remain in the author's copy (checked here and by kit/leakage.py)
 GUIDE_FORBIDDEN = ("SPEC.md", "research/", "Matthew", "Codex", "corpus note", "sealed", "harness session", "Fable")
+
+
+def run_for_dir(author: Path | str) -> str:
+    """The run an author dir belongs to, by its name (scripts/prepare_author_dir.sh uses the same prefixes)."""
+    return "r2" if Path(author).name.startswith("HypaNet-slop-author-r2") else "r1"
 
 
 def sha256(p: Path) -> str:
@@ -243,7 +272,7 @@ def dev_counts() -> tuple[dict[str, Counter], set[str]]:
     return counts, seen
 
 
-def select_dev() -> dict:
+def select_dev(n: int = N_DEV) -> dict:
     held = heldout_hashes()
     ids, excluded = [], 0
     for s in iter_jsonl(DEV_DIR / "screens.jsonl"):
@@ -274,10 +303,10 @@ def select_dev() -> dict:
     if short:
         raise SystemExit(f"dev set cannot meet the disclosure quotas: {short}")
     pass1 = len(taken)
-    if pass1 > N_DEV:
-        raise SystemExit(f"the quotas need {pass1} screens, more than {N_DEV}")
+    if pass1 > n:
+        raise SystemExit(f"the quotas need {pass1} screens, more than {n}")
     for sid in ranked:
-        if len(taken) >= N_DEV:
+        if len(taken) >= n:
             break
         if sid not in taken_set:
             taken.append(sid)
@@ -288,17 +317,31 @@ def select_dev() -> dict:
     return {
         "rule": f'rank = sha256("{NAMESPACE}:{SEED}:<screen id>") hex ascending; pass 1 takes a screen that adds a '
                 f"node to an unmet quota ({QUOTA} positive nodes per scored pattern, {QUOTA} KEEP nodes per K rule); "
-                f"pass 2 fills to {N_DEV} in rank order; a screen whose node texts equal a held-out generated "
+                f"pass 2 fills to {n} in rank order; a screen whose node texts equal a held-out generated "
                 f"screen's is never taken",
-        "namespace": NAMESPACE, "seed": SEED, "quota": QUOTA, "n": N_DEV, "pass1_screens": pass1,
+        "namespace": NAMESPACE, "seed": SEED, "quota": QUOTA, "n": n, "pass1_screens": pass1,
         "excluded_heldout_duplicates": excluded,
         "ids": sorted(taken, key=rank_key),
         "counts": {c: final[c] for c in SCORED_PATTERNS + K_RULES},
     }
 
 
-def cmd_select(_a) -> int:
-    sel = select_dev()
+def select_run(run: str) -> dict:
+    """The run's disclosed dev screens. A run disclosing more than r1's 400 must disclose all of r1's: the rule's pass 2
+    only adds screens as n grows, and this checks it (the held-out sets could have changed since r1)."""
+    sel = select_dev(RUNS[run]["n_dev"])
+    if RUNS[run]["n_dev"] > N_DEV:
+        r1 = select_dev(N_DEV)["ids"]
+        lost = set(r1) - set(sel["ids"])
+        if lost:
+            raise SystemExit(f"{len(lost)} of r1's {N_DEV} disclosed dev screens are not in the {run} selection")
+        sel["r1_ids_sha256"] = hashlib.sha256("\n".join(r1).encode()).hexdigest()
+        sel["added_to_r1"] = len(sel["ids"]) - len(r1)
+    return sel
+
+
+def cmd_select(a) -> int:
+    sel = select_run(a.run)
     print(sel["rule"])
     print(f"pass 1: {sel['pass1_screens']} screens; total {len(sel['ids'])}; not eligible (held-out duplicates): "
           f"{sel['excluded_heldout_duplicates']}")
@@ -497,11 +540,11 @@ the screen file is the one that counts.
 """
 
 
-def write_examples(author: Path) -> dict:
+def write_examples(author: Path, run: str = "r1") -> dict:
     ex = author / "examples"
     if ex.exists():
         raise SystemExit(f"{ex} exists")
-    sel = select_dev()
+    sel = select_run(run)
     ids = sel["ids"]
     idset = set(ids)
     screens = {s["id"]: s for s in iter_jsonl(DEV_DIR / "screens.jsonl") if s["id"] in idset}
@@ -562,23 +605,193 @@ def write_examples(author: Path) -> dict:
         kinds="\n".join(f"- {r}: {kinds.get(r, '(not recorded)')}" for r in repos_used),
         ref_labels_row=ref_row, ref_label_note=ref_note)
     _dump(ex / "README.md", readme)
-    return {"selection": {k: sel[k] for k in ("rule", "namespace", "seed", "quota", "n", "pass1_screens",
-                                              "excluded_heldout_duplicates", "counts")},
+    return {"run": run,
+            "selection": {k: sel[k] for k in ("rule", "namespace", "seed", "quota", "n", "pass1_screens",
+                                              "excluded_heldout_duplicates", "counts", "r1_ids_sha256",
+                                              "added_to_r1") if k in sel},
             "dev_ids_sha256": hashlib.sha256("\n".join(ids).encode()).hexdigest(),
             "reference_screens": len(ref_ids), "reference_labels": have_labels,
             "guide_sha256": sha256(GUIDE),
             "kit_guide_sha256": hashlib.sha256(kit_guide().encode("utf-8")).hexdigest()}
 
 
+# -- r2: resources/ and the work/ seed ---------------------------------------------------------------------------------
+
+# the thesaurus README as the author receives it: the repo's build commands, coverage section (it is measured over the
+# whole dev set) and repo paths are replaced; each edit must apply exactly once, so a revised README fails the build
+THESAURUS_README_HEAD = """# Thesaurus
+
+A full open English thesaurus, reformatted so you can look up synonyms and related words **by the stems the slop
+tokeniser produces** (`kit/lib/tokenizer.py`, `KIT.md` §6). Two sources: Open English WordNet 2025 (sense-level
+synonym sets with glosses and typed links) and Moby Thesaurus II (broad, loose near-synonym lists). It is read-only
+reference data: which entries your lexicon takes from it, and how, is your judgement (`KIT.md` §11, §14). Licences and
+attribution: `ATTRIBUTION.md` (CC BY 4.0 and the WordNet licence for OEWN; Moby is public domain).
+
+"""
+THESAURUS_README_EDITS = (
+    ("`r` adverb. `MANIFEST.json` (committed) records each output's sha256, bytes, rows and whether it is committed,\n"
+     "plus the sources' pins, the `ui/porter.py` hash and the build statistics.", "`r` adverb."),
+    ("Files over 5 MB are gitignored and rebuilt by `build.py`; `tests/` checks every file against the manifest when it\n"
+     "is present. `related.tsv`", "`related.tsv`"),
+    ("Every word is run through `ui/tokenizer.py`'s `tokenize_text` (NFKC, letter runs, camel-case split, case fold,\n"
+     "accent strip, `ui/porter.py`)", "Every word is run through `kit/lib/tokenizer.py`'s `tokenize_text` (NFKC, letter runs, "
+     "camel-case split, case\nfold, accent strip, `kit/lib/porter.py`)"),
+    ("| File | Rows | Size | In git | Columns |\n| --- | ---: | ---: | --- | --- |",
+     "| File | Rows | Size | Columns |\n| --- | ---: | ---: | --- |"),
+)
+THESAURUS_OUT = ("stems.tsv", "stem_links.tsv", "synsets.tsv", "words.tsv", "related.tsv", "moby.tsv")
+
+
+def thesaurus_readme() -> str:
+    """The author's copy of resources/thesaurus/README.md (see THESAURUS_README_EDITS)."""
+    text = (THESAURUS / "README.md").read_text(encoding="utf-8")
+    try:
+        body = text[text.index("## Sources and why\n"):text.index("## Coverage\n")]
+    except ValueError:
+        raise SystemExit("resources/thesaurus/README.md: '## Sources and why' or '## Coverage' not found; update "
+                         "kit_build.thesaurus_readme") from None
+    for old, new in THESAURUS_README_EDITS:
+        if body.count(old) != 1:
+            raise SystemExit(f"resources/thesaurus/README.md: {old[:60]!r} occurs {body.count(old)} times, not once; "
+                             "update kit_build.THESAURUS_README_EDITS")
+        body = body.replace(old, new)
+    body = "\n".join(_drop_in_git(ln) for ln in body.splitlines())
+    if "ui/" in body or "gitignored" in body or "MANIFEST" in body:
+        raise SystemExit("resources/thesaurus/README.md: the author's copy still names repo files; extend "
+                         "kit_build.THESAURUS_README_EDITS")
+    return THESAURUS_README_HEAD + body.rstrip("\n") + "\n"
+
+
+# the thesaurus ATTRIBUTION.md as the author receives it: its opening paragraph names the repo's fetch and build
+# scripts and the gitignored raw/ directory, none of which is in the kit (and build.py could be mistaken for
+# work/build.py); the licences, sources and "Changes made" stay word for word.
+THESAURUS_ATTRIBUTION_EDIT = (
+    "The tables in `out/` are derived from the two sources below. `fetch.py` downloads them unchanged into `raw/`\n"
+    "(gitignored); `build.py` reformats them (see \"Changes made\"). The code in this directory (`fetch.py`, `build.py`,\n"
+    "`coverage.py`, `tests/`) is part of HypaNet and under the repository's licence.",
+    "The tables in `out/` are reformatted extracts of the two sources below (see \"Changes made\" under each).")
+
+
+def thesaurus_attribution() -> str:
+    """The author's copy of resources/thesaurus/ATTRIBUTION.md (see THESAURUS_ATTRIBUTION_EDIT)."""
+    text = (THESAURUS / "ATTRIBUTION.md").read_text(encoding="utf-8")
+    old, new = THESAURUS_ATTRIBUTION_EDIT
+    if text.count(old) != 1:
+        raise SystemExit("resources/thesaurus/ATTRIBUTION.md: its opening paragraph changed; update "
+                         "kit_build.THESAURUS_ATTRIBUTION_EDIT")
+    text = text.replace(old, new)
+    for word in ("fetch.py", "build.py", "raw/", "gitignored", "coverage.py"):
+        if word in text:
+            raise SystemExit(f"resources/thesaurus/ATTRIBUTION.md: the author's copy still names {word}; update "
+                             "kit_build.THESAURUS_ATTRIBUTION_EDIT")
+    return text
+
+
+def _drop_in_git(line: str) -> str:
+    """Rows of the README's file table lose their "In git" cell (committed / ignored)."""
+    cells = line.split(" | ")
+    if line.startswith("| `out/") and len(cells) == 5 and cells[3] in ("committed", "ignored"):
+        return " | ".join(cells[:3] + cells[4:])
+    return line
+
+
+def thesaurus_problems() -> list[str]:
+    """The built thesaurus outputs must exist and match resources/thesaurus/MANIFEST.json."""
+    try:
+        man = json.loads((THESAURUS / "MANIFEST.json").read_text())["outputs"]
+    except (OSError, ValueError, KeyError):
+        return ["resources/thesaurus/MANIFEST.json missing or unreadable (uv run python -I resources/thesaurus/build.py)"]
+    out = []
+    for f in THESAURUS_OUT:
+        p = THESAURUS / "out" / f
+        want = (man.get(f"out/{f}") or {}).get("sha256")
+        if not p.is_file():
+            out.append(f"resources/thesaurus/out/{f} missing (uv run python -I resources/thesaurus/build.py)")
+        elif sha256(p) != want:
+            out.append(f"resources/thesaurus/out/{f} does not match MANIFEST.json (rebuild the thesaurus)")
+    return out
+
+
+def resource_files() -> dict[str, Path | str]:
+    """resources/ of an r2 kit: author path -> source file (a byte copy) or text (the thesaurus README and
+    ATTRIBUTION.md, as the author's copies)."""
+    out: dict[str, Path | str] = {"resources/codex/CODEX.md": CODEX_DIR / "CODEX.md",
+                                  "resources/codex/SOURCES.md": CODEX_DIR / "SOURCES.md"}
+    for p in sorted((CODEX_DIR / "lists").glob("*")):
+        if p.is_file() and p.suffix in (".txt", ".md"):
+            out[f"resources/codex/lists/{p.name}"] = p
+    out["resources/thesaurus/README.md"] = thesaurus_readme()
+    out["resources/thesaurus/ATTRIBUTION.md"] = thesaurus_attribution()
+    for f in THESAURUS_OUT:
+        out[f"resources/thesaurus/out/{f}"] = THESAURUS / "out" / f
+    out["resources/r1/RESULTS.md"] = R1_RESULTS
+    return out
+
+
+def resource_problems() -> list[str]:
+    out = thesaurus_problems()
+    for f in ("CODEX.md", "SOURCES.md", "lists/ATTRIBUTION-ui.md"):
+        if not (CODEX_DIR / f).is_file():
+            out.append(f"codex/{f} missing")
+    if not R1_RESULTS.is_file():
+        out.append("kit/r1_results.md missing")
+    return out
+
+
+def work_seed_files() -> dict[str, Path]:
+    """r2's work/ seed: runs/r1/work without scratch/ (rel path -> source)."""
+    if not (R1_WORK / "build.py").is_file():
+        raise SystemExit(f"{R1_WORK} has no build.py: the r2 kit starts from r1's work/")
+    out = {}
+    for root, dirs, files in os.walk(R1_WORK):
+        rel_root = os.path.relpath(root, R1_WORK)
+        dirs[:] = sorted(d for d in dirs if d not in SEED_SKIP_NAMES and not (rel_root == "." and d in SEED_SKIP))
+        for f in sorted(files):
+            if f in SEED_SKIP_NAMES or f.endswith(".pyc"):
+                continue
+            out[os.path.normpath(os.path.join(rel_root, f))] = Path(root) / f
+    return dict(sorted(out.items()))
+
+
+def write_resources(author: Path) -> dict:
+    files = resource_files()
+    for rel, src in files.items():
+        dst = author / rel
+        dst.parent.mkdir(parents=True, exist_ok=True)
+        if isinstance(src, Path):
+            shutil.copyfile(src, dst)
+        else:
+            dst.write_text(src, encoding="utf-8")
+    return {"files": len(files), "bytes": sum((author / r).stat().st_size for r in files)}
+
+
+def write_seed(author: Path) -> dict[str, str]:
+    work = author / "work"
+    if any(work.iterdir()):
+        raise SystemExit(f"{work} is not empty")
+    seed = work_seed_files()
+    for rel, src in seed.items():
+        dst = work / rel
+        dst.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(src, dst)
+        os.chmod(dst, 0o644)
+    return {rel: sha256(work / rel) for rel in seed}
+
+
 def cmd_tree(a) -> int:
     author = Path(a.author_dir).resolve()
     if not author.is_dir():
         raise SystemExit(f"{author} is not a directory")
+    cfg = RUNS[a.run]
     probs = lib_problems()
     if probs:
         raise SystemExit("kit/lib or py_guard out of date: " + "; ".join(probs) + " (run kit_build.py lib)")
+    if cfg["resources"]:
+        probs = resource_problems()
+        if probs:
+            raise SystemExit("resources not ready: " + "; ".join(probs))
     for src, dst, what in ((KIT / "KIT.md", "KIT.md", "the author's manual"),
-                           (KIT / "prompt.md", "PROMPT.md", "the launch prompt")):
+                           (KIT / cfg["prompt"], "PROMPT.md", "the launch prompt")):
         if src.is_file():
             shutil.copyfile(src, author / dst)
         elif a.allow_missing_docs:
@@ -592,12 +805,21 @@ def cmd_tree(a) -> int:
         shutil.copyfile(LIB / f, author / "kit" / "lib" / f)
     (author / "tools").mkdir(exist_ok=True)
     shutil.copyfile(PY_GUARD, author / "tools" / "py_guard.py")
-    info = write_examples(author)
+    info = write_examples(author, a.run)
+    if cfg["resources"]:
+        info["resources"] = write_resources(author)
+    if cfg["seed"]:
+        info["work_seed"] = write_seed(author)
     (KIT / "build").mkdir(exist_ok=True)
     (KIT / "build" / "tree.json").write_text(json.dumps(info, indent=2) + "\n")
-    print(f"kit tree -> {author}: {info['selection']['n']} dev screens (pass 1 {info['selection']['pass1_screens']}), "
-          f"{info['reference_screens']} reference screens, reference labels "
-          f"{'included' if info['reference_labels'] else 'absent (unlabelled)'}")
+    extra = ""
+    if cfg["resources"]:
+        extra += f", {info['resources']['files']} resource files"
+    if cfg["seed"]:
+        extra += f", work/ seeded with {len(info['work_seed'])} files of runs/r1/work"
+    print(f"kit tree ({a.run}) -> {author}: {info['selection']['n']} dev screens (pass 1 "
+          f"{info['selection']['pass1_screens']}), {info['reference_screens']} reference screens, reference labels "
+          f"{'included' if info['reference_labels'] else 'absent (unlabelled)'}{extra}")
     return 0
 
 
@@ -654,8 +876,19 @@ def node_info(node: str) -> dict:
 def cmd_record(a) -> int:
     author = Path(a.author_dir).resolve()
     tree = KIT / "build" / "tree.json"
+    examples = json.loads(tree.read_text()) if tree.is_file() else None
+    if examples is not None and examples.get("run", "r1") != a.run:
+        raise SystemExit(f"kit/build/tree.json was written for run {examples.get('run', 'r1')}, not {a.run}")
+    seed = examples.pop("work_seed", None) if examples else None
+    if RUNS[a.run]["seed"]:
+        if seed is None:
+            raise SystemExit("kit/build/tree.json has no work_seed (run kit_build.py tree --run r2 first)")
+        now = {rel: sha256(author / "work" / rel) for rel in seed if (author / "work" / rel).is_file()}
+        if now != seed or work_files(author) != set(seed):
+            raise SystemExit("work/ is not the seed the tree wrote")
     rec = {
         "kind": RECORD_KIND,
+        "run": a.run,
         "created_utc": datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "test": bool(a.test_root),
         "test_root": a.test_root,
@@ -665,14 +898,25 @@ def cmd_record(a) -> int:
         "node": node_info(a.node),
         "harness": harness_files(),
         "inputs": inputs(),
-        "examples": json.loads(tree.read_text()) if tree.is_file() else None,
+        "examples": examples,
     }
+    if seed is not None:
+        rec["work_seed"] = seed
     text = json.dumps(rec, indent=2) + "\n"
     (author / "HANDOVER.json").write_text(json.dumps(author_record(rec), indent=2) + "\n")
     Path(a.record).parent.mkdir(parents=True, exist_ok=True)
     Path(a.record).write_text(text)
     print(f"hand-over record: {len(rec['files'])} author files, {len(rec['harness'])} harness files -> {a.record}")
     return 0
+
+
+def work_files(author: Path) -> set[str]:
+    work = author / "work"
+    out = set()
+    for root, _dirs, files in os.walk(work):
+        for f in files:
+            out.add(os.path.relpath(os.path.join(root, f), work))
+    return out
 
 
 def problems(author: Path, record: dict, pristine: bool) -> list[str]:
@@ -716,13 +960,23 @@ def problems(author: Path, record: dict, pristine: bool) -> list[str]:
         except (subprocess.CalledProcessError, OSError) as e:
             out.append(f"the recorded node does not run: {e}")
     work = author / "work"
+    seed = record.get("work_seed")
     if not work.is_dir():
         out.append("work/ missing")
-    elif pristine and any(work.iterdir()):
+    elif pristine and seed is None and any(work.iterdir()):
         out.append("work/ is not empty (a fresh session needs a pristine hand-over)")
+    elif pristine and seed is not None:
+        have = work_files(author)
+        for rel in sorted(set(seed) - have):
+            out.append(f"work/ seed file missing: {rel} (a fresh session needs the seed exactly)")
+        for rel in sorted(have - set(seed)):
+            out.append(f"work/ has a file the seed does not: {rel} (a fresh session needs the seed exactly)")
+        for rel in sorted(set(seed) & have):
+            if sha256(work / rel) != seed[rel]:
+                out.append(f"work/ seed file changed: {rel} (a fresh session needs the seed exactly)")
     if os.access(author, os.W_OK):
         out.append("the author dir itself is writable")
-    for d in ("examples", "kit", "tools"):
+    for d in ("examples", "kit", "tools") + (("resources",) if (author / "resources").exists() else ()):
         for p in [author / d, *(author / d).rglob("*")]:
             if os.access(p, os.W_OK):
                 out.append(f"writable: {p.relative_to(author)}")
@@ -741,40 +995,30 @@ def cmd_verify(a) -> int:
         print("PROBLEM:", p)
     if probs:
         return 1
-    print(f"hand-over verified: {len(record['files'])} author files, {len(record['harness'])} harness files"
-          + (" (TEST hand-over)" if record["test"] else ""))
+    print(f"hand-over verified ({record.get('run', 'r1')}): {len(record['files'])} author files, "
+          f"{len(record['harness'])} harness files" + (" (TEST hand-over)" if record["test"] else ""))
     return 0
 
 
-PREVIEW = KIT / "PROMPT_RENDERED_PREVIEW.md"
-PREVIEW_TEMPLATE = """# Prompt preview: what Fable 5.2 receives
+PREVIEW_TEMPLATE = """# Prompt preview: what Fable 5.2 receives{title_run}
 
-Rendered by `uv run python kit/kit_build.py preview` from the kit files below. This is a review copy only: the
-launcher reads `kit/prompt.md` and `kit/prompt_continue.md`, never this file. `preview --check` fails when any
-sha256 below no longer matches; re-render then.
+Rendered by `uv run python kit/kit_build.py preview{run_flag}` from the kit files below. This is a review copy only:
+the launcher reads `kit/{prompt_name}` and `kit/prompt_continue.md`, never this file. `preview{run_flag} --check`
+fails when any sha256 below no longer matches; re-render then.
 
 | File | sha256 at render time |
 |---|---|
-| `kit/prompt.md` | `{prompt}` |
+| `kit/{prompt_name}` | `{prompt}` |
 | `kit/prompt_continue.md` | `{cont}` |
 | `kit/KIT.md` | `{kit}` |
 | `LABELLING.md` (the frozen guide) | `{guide}` |
 | `LABELLING.md` as the author receives it (`kit_build.kit_guide()`) | `{kit_guide}` |
-
+{extra_rows}
 ## How it is delivered
 
-- `smoke` and `start`: the whole of `kit/prompt.md` is the one user message of a new headless session
-  (`claude -p "$PROMPT" --model claude-fable-5-2 --effort xhigh ...`, `SPEC.md` §13; the shell's `$(cat ...)` drops
-  the final newline), run in `../HypaNet-slop-smoke/` or `../HypaNet-slop-author/`. No other user text is sent.
-  Claude Code adds its own system prompt, which is not reproduced here; `CLAUDE.md` files and auto-memory are off.
-- `continue K`: the whole of `kit/prompt_continue.md` as the next user message of the same session (`--resume`),
-  only after a launch that ended without `MODEL COMPLETE` (an API or limit error, or a reply with no tool call).
-- In the author directory Fable can read `PROMPT.md` (a copy of `kit/prompt.md`), `KIT.md` (a copy of `kit/KIT.md`),
-  `LABELLING.md` (the guide with its internal preamble and its cross-references to `SPEC.md` replaced; the hash
-  above), `examples/` and `HANDOVER.json` (file hashes only). `KIT.md` and `LABELLING.md` are not inlined in any
-  message.
+{delivery}
 - The cost cap exists only as the launcher's `--max-budget-usd` flag; no message or kit file Fable receives states a
-  spending budget, a cost cap or a price (the word "cost" appears only in `LABELLING.md`'s consequence test).
+  spending budget, a cost cap or a price (the word "cost" appears only in `LABELLING.md`'s consequence test{cost_note}).
 
 ## Message 1: `start` (verbatim, {n_prompt} characters)
 
@@ -788,27 +1032,66 @@ sha256 below no longer matches; re-render then.
 {cont_text}
 ~~~~
 """
+DELIVERY = {
+    "r1": """- `smoke` and `start`: the whole of `kit/prompt.md` is the one user message of a new headless session
+  (`claude -p "$PROMPT" --model claude-fable-5-2 --effort xhigh ...`, `SPEC.md` §13; the shell's `$(cat ...)` drops
+  the final newline), run in `../HypaNet-slop-smoke/` or `../HypaNet-slop-author/`. No other user text is sent.
+  Claude Code adds its own system prompt, which is not reproduced here; `CLAUDE.md` files and auto-memory are off.
+- `continue K`: the whole of `kit/prompt_continue.md` as the next user message of the same session (`--resume`),
+  only after a launch that ended without `MODEL COMPLETE` (an API or limit error, or a reply with no tool call).
+- In the author directory Fable can read `PROMPT.md` (a copy of `kit/prompt.md`), `KIT.md` (a copy of `kit/KIT.md`),
+  `LABELLING.md` (the guide with its internal preamble and its cross-references to `SPEC.md` replaced; the hash
+  above), `examples/` and `HANDOVER.json` (file hashes only). `KIT.md` and `LABELLING.md` are not inlined in any
+  message.""",
+    "r2": """- `start` (`scripts/launch.sh --run r2 start`): the whole of `kit/prompt_r2.md` is the one user message of a
+  new headless session (`claude -p "$PROMPT" --model claude-fable-5-2 --effort xhigh ...`, `SPEC.md` §13; the
+  shell's `$(cat ...)` drops the final newline), run in `../HypaNet-slop-author-r2/`. No other user text is sent.
+  Claude Code adds its own system prompt, which is not reproduced here; `CLAUDE.md` files and auto-memory are off.
+  It is a new session: Fable does not see its r1 transcript, only what r1 left in `work/`.
+- `continue K` (`scripts/launch.sh --run r2 continue K`): the whole of `kit/prompt_continue.md` as the next user
+  message of the same session (`--resume`), only after a launch that ended without `MODEL COMPLETE`.
+- In the author directory Fable can read `PROMPT.md` (a copy of `kit/prompt_r2.md`), `KIT.md` (a copy of
+  `kit/KIT.md`), `LABELLING.md` (the hash above), `examples/` (1,200 dev screens and the reference screens),
+  `resources/` (the codex: `CODEX.md`, `SOURCES.md` and `lists/`; the thesaurus: `out/*.tsv`, `README.md` and
+  `ATTRIBUTION.md`; `r1/RESULTS.md`, the r1 results it may see), `HANDOVER.json` (file hashes only) and `work/`,
+  which starts as its r1 `work/` without `scratch/`. `KIT.md` and `LABELLING.md` are not inlined in any message.""",
+}
 
 
-def render_preview() -> str:
-    prompt = (KIT / "prompt.md").read_text(encoding="utf-8").rstrip("\n")
+def preview_path(run: str) -> Path:
+    return KIT / RUNS[run]["preview"]
+
+
+def render_preview(run: str = "r1") -> str:
+    name = RUNS[run]["prompt"]
+    prompt = (KIT / name).read_text(encoding="utf-8").rstrip("\n")
     cont = (KIT / "prompt_continue.md").read_text(encoding="utf-8").rstrip("\n")
+    extra = ""
+    if run == "r2":
+        extra = (f"| `kit/r1_results.md` (`resources/r1/RESULTS.md`) | `{sha256(R1_RESULTS)}` |\n"
+                 f"| `codex/CODEX.md` (`resources/codex/CODEX.md`) | `{sha256(CODEX_DIR / 'CODEX.md')}` |\n")
     return PREVIEW_TEMPLATE.format(
-        prompt=sha256(KIT / "prompt.md"), cont=sha256(KIT / "prompt_continue.md"), kit=sha256(KIT / "KIT.md"),
-        guide=sha256(GUIDE), kit_guide=hashlib.sha256(kit_guide().encode("utf-8")).hexdigest(),
+        title_run="" if run == "r1" else f" (run {run})", run_flag="" if run == "r1" else f" --run {run}",
+        prompt_name=name, prompt=sha256(KIT / name), cont=sha256(KIT / "prompt_continue.md"),
+        kit=sha256(KIT / "KIT.md"), guide=sha256(GUIDE),
+        kit_guide=hashlib.sha256(kit_guide().encode("utf-8")).hexdigest(), extra_rows=extra,
+        delivery=DELIVERY[run],
+        cost_note="" if run == "r1" else ", and in the codex's and thesaurus's ordinary uses of the word",
         n_prompt=len(prompt), prompt_text=prompt, n_cont=len(cont), cont_text=cont)
 
 
 def cmd_preview(a) -> int:
-    text = render_preview()
+    text = render_preview(a.run)
+    out = preview_path(a.run)
     if a.check:
-        if not PREVIEW.is_file() or PREVIEW.read_text(encoding="utf-8") != text:
-            print("PROBLEM: kit/PROMPT_RENDERED_PREVIEW.md is stale (uv run python kit/kit_build.py preview)")
+        if not out.is_file() or out.read_text(encoding="utf-8") != text:
+            print(f"PROBLEM: kit/{out.name} is stale (uv run python kit/kit_build.py preview"
+                  + (f" --run {a.run})" if a.run != "r1" else ")"))
             return 1
-        print("kit/PROMPT_RENDERED_PREVIEW.md is current")
+        print(f"kit/{out.name} is current")
         return 0
-    PREVIEW.write_text(text, encoding="utf-8")
-    print(f"preview -> {PREVIEW.relative_to(SLOP)} (kit/prompt.md sha256 {sha256(KIT / 'prompt.md')})")
+    out.write_text(text, encoding="utf-8")
+    print(f"preview -> {out.relative_to(SLOP)} (kit/{RUNS[a.run]['prompt']} sha256 {sha256(KIT / RUNS[a.run]['prompt'])})")
     return 0
 
 
@@ -817,20 +1100,24 @@ def main(argv=None) -> int:
     sub = ap.add_subparsers(dest="cmd", required=True)
     r = sub.add_parser("lib")
     r.add_argument("--check", action="store_true")
-    sub.add_parser("select")
+    r = sub.add_parser("select")
+    r.add_argument("--run", choices=sorted(RUNS), default="r1")
     r = sub.add_parser("tree")
     r.add_argument("author_dir")
+    r.add_argument("--run", choices=sorted(RUNS), default="r1")
     r.add_argument("--allow-missing-docs", action="store_true", help="TEST hand-overs only: placeholder KIT/PROMPT")
     r = sub.add_parser("record")
     r.add_argument("author_dir")
     r.add_argument("record")
     r.add_argument("--test-root")
+    r.add_argument("--run", choices=sorted(RUNS), default="r1")
     r.add_argument("--node", required=True, help="the node binary the wrappers run (recorded with its version)")
     r = sub.add_parser("verify")
     r.add_argument("author_dir")
     r.add_argument("record")
     r.add_argument("--pristine", action="store_true")
     r = sub.add_parser("preview")
+    r.add_argument("--run", choices=sorted(RUNS), default="r1")
     r.add_argument("--check", action="store_true")
     a = ap.parse_args(argv)
     return {"lib": cmd_lib, "select": cmd_select, "tree": cmd_tree, "record": cmd_record,

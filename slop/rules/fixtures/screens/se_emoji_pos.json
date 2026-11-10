@@ -1,0 +1,11 @@
+{"schema": "slop.screen/1", "id": "31e2d7b9e062738a", "framework": "tsx",
+ "source": {"repo": "slop-rules-fixtures", "path": "src/se_emoji_pos.tsx", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "header", "line": 2},
+  {"k": 1, "kind": "list", "line": 4},
+  {"k": 2, "kind": "actions", "line": 7}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "h3", "text": "✨ Smart search", "flags": ["emoji_lead"], "loc": [3, 7, 3, 21]},
+  {"i": 1, "k": 1, "role": "list_item", "text": "✅ Unlimited projects", "flags": ["emoji_lead", "in_list"], "loc": [5, 7, 5, 27]},
+  {"i": 2, "k": 1, "role": "list_item", "text": "✅ Shared folders", "flags": ["emoji_lead", "in_list"], "loc": [6, 7, 6, 23]},
+  {"i": 3, "k": 2, "role": "button", "text": "🚀 Open the shop", "flags": ["emoji_lead"], "loc": [8, 7, 8, 22]}]}

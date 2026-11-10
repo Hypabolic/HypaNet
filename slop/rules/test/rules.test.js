@@ -13,7 +13,11 @@ import { fileURLToPath } from 'node:url';
 import { encodeScreen } from '../../lint/tokenizer.js';
 import { RULE_IDS, RULES, runRules } from '../index.js';
 import { buildAll } from '../fixtures/make_fixtures.mjs';
+import { buildCodexLists, OUT as CODEX_OUT } from '../make_codex_lists.mjs';
+import { compile, match, matchTokens } from '../src/codex.js';
+import { isRound } from '../src/empty-claim.js';
 import { isQualifier } from '../src/repeated-chrome.js';
+import { leadingGlyph } from '../src/sparkle-emoji.js';
 import { hasArrowTail, literalWords, nodeBranches, normalised, parseIndex, tokens } from '../src/text.js';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
@@ -34,6 +38,9 @@ const compact = (fs) => fs.map((x) => {
 const key = (x) => JSON.stringify([RULE_IDS.indexOf(x.rule), x.nodes[0], x.condition ?? '', x.code]);
 const sorted = (xs) => [...xs].sort((a, b) => (key(a) < key(b) ? -1 : key(a) > key(b) ? 1 : 0));
 
+// Codes whose findings are screen-level: the R19 aside and the codex per-screen counts.
+const SCREEN_CODES = new Set(['R19', 'L48', 'L51']);
+
 const cli = (args, opts = {}) => spawnSync('node', [CLI, ...args], { encoding: 'utf8', cwd: SLOP, ...opts });
 
 // -- fixtures ------------------------------------------------------------------------------------------------------
@@ -52,7 +59,7 @@ for (const [name, entry] of Object.entries(EXPECTED)) {
     assert.deepEqual(sorted(compact(got)), sorted(entry.findings));
     for (const x of got) {
       assert.deepEqual(x.locs, x.nodes.map((i) => screen.nodes[i].loc), 'locs are the flagged nodes\' locs');
-      assert.equal(x.scope, x.code === 'R19' ? 'screen' : 'node');
+      assert.equal(x.scope, SCREEN_CODES.has(x.code) ? 'screen' : 'node');
       assert.ok(x.message.length > 10);
     }
   });
@@ -76,7 +83,8 @@ test('every rule has positive and near-miss negative fixtures, and every repeate
   const conditions = new Set(Object.values(EXPECTED).flatMap((e) => e.findings.map((x) => x.condition).filter(Boolean)));
   assert.deepEqual([...conditions].sort(), ['arrow-links', 'decorative-dot', 'eyebrow-quota', 'sibling-device', 'state-dots']);
   const codes = new Set(Object.values(EXPECTED).flatMap((e) => e.findings.map((x) => x.code)));
-  for (const c of ['R7', 'R8b', 'R9', 'R10', 'R12', 'R14', 'R15', 'R19']) assert.ok(codes.has(c), c);
+  for (const c of ['R7', 'R8b', 'R9', 'R10', 'R12', 'R14', 'R15', 'R19', 'R11g', 'L09', 'L10', 'L11', 'L12', 'L13', 'L14', 'L16', 'L17',
+    'L26', 'L27', 'L28', 'L29', 'L30', 'L32', 'L44', 'L45', 'L48', 'L51', 'U51']) assert.ok(codes.has(c), c);
 });
 
 test('the exact-repeat fixtures that need two windows have them', () => {
@@ -96,7 +104,41 @@ test('runRules is deterministic and filters by rule id', () => {
   assert.deepEqual(runRules(s, { only: ['slop/index-numbering'] }).map((x) => x.rule), ['slop/index-numbering']);
   assert.throws(() => runRules(s, { only: ['slop/nope'] }), /unknown rule/);
   assert.throws(() => runRules({ schema: 'other' }), /slop.screen\/1/);
-  assert.deepEqual(RULES.map((r) => r.code), ['R19', 'R7', 'R15', 'R8b', 'R10', 'R12', 'R14']);
+  assert.deepEqual(RULES.map((r) => r.code), ['R19', 'R7', 'R15', 'R8b', 'R10', 'R12', 'R14', 'L44', 'L45', 'L09-L19', 'L26-L27', 'L28-L32',
+    'L01-L08', 'R11g', 'L48', 'L51', 'U51']);
+  for (const r of RULES) assert.ok(['error', 'warning', 'info'].includes(r.severity), r.id);
+  assert.equal(RULES.find((r) => r.id === 'slop/chatbot-residue').severity, 'error');
+});
+
+// -- codex lists and matcher ---------------------------------------------------------------------------------------
+
+test('rules/src/codex-lists.js is up to date with slop/codex/lists (node rules/make_codex_lists.mjs)', () => {
+  assert.equal(readFileSync(CODEX_OUT, 'utf8'), buildCodexLists());
+});
+
+test('codex patterns: slots, anchors, punctuation, numbers and contractions', () => {
+  const slots = (entry, text) => {
+    const m = match(compile(entry), matchTokens(text));
+    return m && Object.fromEntries(Object.entries(m.slots).map(([k, v]) => [k, v.map((t) => t.w).join(' ')]));
+  };
+  assert.deepEqual(slots('not just {x}, it\'s {y}', 'It’s not just a list, it’s a plan.'), { x: 'a list', y: 'a' });
+  assert.deepEqual(slots('not just {x}, it\'s {y}', 'Not just a list — it’s a plan.'), { x: 'a list', y: 'a' }); // a dash reads as a comma
+  assert.equal(slots('not just {x}, it\'s {y}', 'Not just a list it’s a plan.'), null); // the comma is part of the construction
+  assert.deepEqual(slots('^{w}. {w}. {w}.$', 'Simple. Smart. Yours.'), { w: 'yours' });
+  assert.equal(slots('^{w}. {w}. {w}.$', 'Simple. Smart. Yours. Really.'), null);
+  assert.equal(slots('^tired of {x}?', 'Still tired of waiting?'), null);
+  assert.deepEqual(slots('^tired of {x}?', 'Tired of lost receipts? Meet Stash.'), { x: 'lost receipts' });
+  assert.deepEqual(slots('trusted by {n}+', 'Trusted by 10k+ teams'), { n: '10 k' });
+  assert.deepEqual(slots('rated {n}/5', 'Rated 4.9/5'), { n: '4.9' });
+  assert.equal(slots('{n}+ teams', 'Trusted by \uE000 count teams'), null); // an interpolated count is data
+  assert.deepEqual(slots('sure! here', 'Sure! Here’s a note.'), {}); // the last word matches a contraction's first part
+  assert.equal(slots('sure! here', 'Sure! Heres a note.'), null);
+  assert.equal(slots('{x}, reimagined', 'reimagined'), null); // a slot holds at least one word
+  for (const n of ['10', '10,000', '2.5', '4.9', '99.9', '300', '1.5']) assert.ok(isRound(n), n);
+  for (const n of ['12,483', '137', '4.75']) assert.ok(!isRound(n), n);
+  assert.equal(leadingGlyph('✨ Smart search'), '✨');
+  assert.equal(leadingGlyph('⚡️ Fast'), '⚡');
+  assert.equal(leadingGlyph('Smart search ✨'), null);
 });
 
 // -- text helpers --------------------------------------------------------------------------------------------------

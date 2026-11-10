@@ -26,7 +26,7 @@ def test_hashes_match_the_ones_their_consumers_check():
 def test_compute_records_every_component(fake_slop):
     rec = freeze.compute(fake_slop)
     for k in ("spec", "guide", "extractor", "tokeniser", "model", "runtime", "rule_layer", "generator", "harness",
-              "env", "sets", "labels", "disclosed", "evaluation", "comparisons", "bootstrap"):
+              "env", "sets", "labels", "disclosed", "disclosed_r2", "evaluation", "comparisons", "bootstrap"):
         assert k in rec
     assert rec["extractor"]["sha256"] == bs.extractor_sha256()
     assert rec["kit"] is None and "kit" in rec["pending"]
@@ -150,6 +150,20 @@ def test_kit_and_disclosed_come_from_the_hand_over_record(fake_slop):
     assert list(rec["kit"]["files"]) == ["kit/KIT.md"]
     assert rec["disclosed"] == {"dev_ids_sha256": "a" * 64, "count": 400, "rule": "rank", "seed": 20261112,
                                 "namespace": "disclose"}
+    assert rec["disclosed_r2"] is None and "disclosed_r2" in rec["pending"] and "handover_r2_sha256" not in rec["kit"]
+    (fake_slop / "kit" / "settings.r2.json").write_text("{}\n")  # not frozen either
+    (fake_slop / "kit" / "PROMPT_R2_APPROVED.sha256").write_text("b" * 64 + "\n")
+    hand2 = fake_slop / "runs" / "r2" / "HANDOVER.json"
+    hand2.parent.mkdir(parents=True)
+    hand2.write_text(json.dumps({"kind": "hypanet-slop-author", "run": "r2", "test": False, "examples": {
+        "selection": {"n": 1200, "rule": "rank", "seed": 20261112, "namespace": "disclose", "added_to_r1": 800,
+                      "r1_ids_sha256": "a" * 64}, "dev_ids_sha256": "c" * 64}}))
+    rec = freeze.compute(fake_slop)
+    assert rec["kit"]["handover_r2_sha256"] == freeze.sha256_file(hand2) and list(rec["kit"]["files"]) == ["kit/KIT.md"]
+    assert rec["disclosed"]["count"] == 400  # round 1's record is unchanged
+    assert rec["disclosed_r2"] == {"dev_ids_sha256": "c" * 64, "count": 1200, "rule": "rank", "seed": 20261112,
+                                   "namespace": "disclose", "added_to_r1": 800, "r1_ids_sha256": "a" * 64}
+    assert "disclosed_r2" not in rec["pending"]
 
 
 def test_model_labeller_raw_files_are_hashed_per_set(fake_slop):

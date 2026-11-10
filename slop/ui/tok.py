@@ -7,10 +7,12 @@
                                 that change when stemmed again (notes: Porter is not idempotent, so a real stem such
                                 as 'paus' can; the entry is live if some word stems to it, which --words shows); and
                                 (with the lexicon beside it, or --lexicon DIR) every stem that more than one lexicon
-                                word maps to
+                                word maps to. The problem count comes right after the header; each list gives its
+                                count and 50 entries (``--offset N`` for the next ones)
 
 ``--vocab-file VOCAB`` makes the first three modes look ids up in that vocabulary (otherwise every stem shows its
-hash bucket). ``--root DIR`` refuses file arguments that resolve outside DIR (the author kit passes its directory).
+hash bucket). The id layout (SPEC.md §6) is ``--ids 1|2``, else the one named by a ``meta.json`` beside the vocab
+file (``"ids"``, absent = 1), else 1. ``--root DIR`` refuses file arguments that resolve outside DIR (the author kit passes its directory).
 Output is capped at 20,000 characters (``--cap``) and says when it is cut.
 """
 
@@ -51,10 +53,11 @@ def id_kind(tid: int, vocab: tk.Vocab) -> str:
         return "DEC"
     if tk.NUMBER_BASE <= tid < tk.NUMBER_BASE + 100:
         return f"number {tid - tk.NUMBER_BASE}"
-    if tk.VOCAB_BASE <= tid < tk.HASH_BASE:
-        return f"vocab line {tid - tk.VOCAB_BASE + 1}"
-    if tid >= tk.HASH_BASE:
-        return f"hash bucket {tid - tk.HASH_BASE}"
+    lay = vocab.layout
+    if lay.vocab_base <= tid < lay.hash_base:
+        return f"vocab line {tid - lay.vocab_base + 1}"
+    if lay.hash_base <= tid < lay.vocab_size:
+        return f"hash bucket {tid - lay.hash_base}"
     return "?"
 
 
@@ -96,35 +99,51 @@ def show_words(lines: list[str], vocab: tk.Vocab) -> list[str]:
     return out
 
 
-def check_vocab(path: Path, lexicon_dir: Path | None) -> list[str]:
+SHOW = 50  # entries of each --vocab list shown from --offset
+
+
+def _page(name: str, items: list[str], offset: int, show: int) -> list[str]:
+    """One --vocab list: its count, then ``show`` of its lines from ``offset``."""
+    page = items[offset: offset + show]
+    if not items:
+        return [f"{name}: 0"]
+    if len(items) <= show and offset == 0:
+        return [f"{name}: {len(items)}", *page]
+    shown = f"{offset + 1}-{offset + len(page)}" if page else "none"
+    return [f"{name}: {len(items)}; showing {shown} (--offset N to page, {show} at a time)", *page]
+
+
+def check_vocab(path: Path, lexicon_dir: Path | None, ids: int | None = None, offset: int = 0,
+                show: int = SHOW) -> list[str]:
+    """The problem count comes right after the header, so it survives the output cap; each list (problems, merges,
+    notes) gives its count and then ``show`` entries from ``offset``."""
     lines = path.read_text(encoding="utf-8").split("\n")
     if lines and lines[-1] == "":
         lines.pop()
-    out = [f"{path}: {len(lines)} lines (max {tk.VOCAB_MAX})"]
+    lay = tk.layout(tk.layout_beside(path) if ids is None else ids)
+    head = f"{path}: {len(lines)} lines (max {lay.vocab_max}, id layout {lay.version})"
     seen: dict[str, int] = {}
-    problems = 0
+    problems: list[str] = []
     restem: list[tuple[int, str]] = []
     for n, s in enumerate(lines, start=1):
         if s in seen:
-            out.append(f"  duplicate: line {n} {s!r} repeats line {seen[s]}")
-            problems += 1
+            problems.append(f"  duplicate: line {n} {s!r} repeats line {seen[s]}")
         else:
             seen[s] = n
         if not s or s != s.lower() or any(ch.isspace() for ch in s):
-            out.append(f"  not a clean stem (empty, upper case or white space): line {n} {s!r}")
-            problems += 1
+            problems.append(f"  not a clean stem (empty, upper case or white space): line {n} {s!r}")
             continue
         toks = tk.tokenize_text(s)
         words = [t for t in toks.tokens if t.kind == "word"]
         if len(toks.tokens) != 1 or len(words) != 1 or words[0].word != s:
-            out.append(f"  does not tokenise to itself as one word: line {n} {s!r} -> "
-                       f"{[t.word if t.kind == 'word' else t.surface for t in toks.tokens]}")
-            problems += 1
+            problems.append(f"  does not tokenise to itself as one word: line {n} {s!r} -> "
+                            f"{[t.word if t.kind == 'word' else t.surface for t in toks.tokens]}")
         if porter.stem(s) != s:
             restem.append((n, s))
-    if len(lines) > tk.VOCAB_MAX:
-        out.append(f"  too many lines: {len(lines)} > {tk.VOCAB_MAX}")
-        problems += 1
+    if len(lines) > lay.vocab_max:
+        problems.insert(0, f"  too many lines: {len(lines)} > {lay.vocab_max}")
+    plist = _page("problems", problems, offset, show)
+    out = [head, f"{len(problems)} problem(s)", *(plist if "showing" in plist[0] else plist[1:])]
     lex = lexicon_dir if lexicon_dir is not None else path.parent / "lexicon"
     by_stem: dict[str, set[str]] = defaultdict(set)
     if lex.is_dir():
@@ -135,19 +154,19 @@ def check_vocab(path: Path, lexicon_dir: Path | None) -> list[str]:
                         if t.kind == "word":
                             by_stem[t.stem].add(t.word)
         merges = {s: ws for s, ws in by_stem.items() if len(ws) > 1}
-        out.append(f"lexicon {lex}: {sum(len(w) for w in by_stem.values())} words, {len(by_stem)} stems, {len(merges)} merges")
-        for s in sorted(merges):
-            out.append(f"  merge: {' '.join(sorted(merges[s]))} -> {s!r}{'' if s in seen else '  (stem not in vocab.txt)'}")
+        out.append(f"lexicon {lex}: {sum(len(w) for w in by_stem.values())} words, {len(by_stem)} stems")
+        out.extend(_page("merges (stems more than one lexicon word maps to)",
+                         [f"  merge: {' '.join(sorted(merges[s]))} -> {s!r}"
+                          f"{'' if s in seen else '  (stem not in vocab.txt)'}" for s in sorted(merges)], offset, show))
     else:
         out.append(f"no lexicon directory at {lex}")
-    if restem:
-        out.append(f"notes: {len(restem)} entr{'y' if len(restem) == 1 else 'ies'} change when stemmed again (Porter is "
-                   "not idempotent: fine when some word stems to the entry; check with --words)")
-        for n, s in restem:
-            words = sorted(by_stem.get(s, ()))
-            why = f"lexicon words stem to it: {' '.join(words)}" if words else "no lexicon word stems to it"
-            out.append(f"  changes when stemmed again: line {n} {s!r} -> {porter.stem(s)!r} ({why})")
-    out.append(f"{problems} problem(s)")
+    notes = []
+    for n, s in restem:
+        words = sorted(by_stem.get(s, ()))
+        why = f"lexicon words stem to it: {' '.join(words)}" if words else "no lexicon word stems to it"
+        notes.append(f"  changes when stemmed again: line {n} {s!r} -> {porter.stem(s)!r} ({why})")
+    out.extend(_page("notes (entries that change when stemmed again; Porter is not idempotent: fine when some word "
+                     "stems to the entry, check with --words)", notes, offset, show))
     return out
 
 
@@ -166,6 +185,10 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--vocab", help="check this vocab.txt")
     ap.add_argument("--lexicon", help="lexicon directory for --vocab (default: lexicon/ beside the vocab file)")
     ap.add_argument("--vocab-file", help="look ids up in this vocab.txt")
+    ap.add_argument("--ids", type=int, choices=sorted(tk.LAYOUTS), help="id layout (default: the meta.json beside the "
+                                                                         "vocab file, else 1)")
+    ap.add_argument("--offset", type=int, default=0, help=f"--vocab: skip this many entries of each list ({SHOW} "
+                                                           "are shown)")
     ap.add_argument("--root", help="refuse file arguments outside this directory")
     ap.add_argument("--cap", type=int, default=CAP)
     args = ap.parse_args(argv)
@@ -173,14 +196,17 @@ def main(argv: list[str] | None = None) -> int:
     modes = [m for m in (args.file, args.text, args.words, args.vocab) if m is not None]
     if len(modes) != 1:
         ap.error("give exactly one of FILE, --text, --words, --vocab")
-    vocab = tk.Vocab.load(_resolve(args.vocab_file, root)) if args.vocab_file else tk.EMPTY_VOCAB
+    if args.vocab_file:
+        vocab = tk.Vocab.load(_resolve(args.vocab_file, root), args.ids)
+    else:
+        vocab = tk.EMPTY_VOCABS[args.ids or 1]
     if args.text is not None:
         lines = show_text(args.text, vocab)
     elif args.words is not None:
         lines = show_words(_resolve(args.words, root).read_text(encoding="utf-8").splitlines(), vocab)
     elif args.vocab is not None:
         lex = _resolve(args.lexicon, root) if args.lexicon else None
-        lines = check_vocab(_resolve(args.vocab, root), lex)
+        lines = check_vocab(_resolve(args.vocab, root), lex, args.ids, max(args.offset, 0))
     else:
         lines = show_screen(json.loads(_resolve(args.file, root).read_text(encoding="utf-8")), vocab)
     text = "\n".join(lines) + "\n"

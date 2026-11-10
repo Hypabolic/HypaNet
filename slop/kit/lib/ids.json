@@ -1,6 +1,6 @@
 {
   "format": "slop.ids/1",
-  "note": "Fixed ids for the slop tokeniser (SPEC.md section 6) and the closed role and flag lists (section 4). Read by ui/tokenizer.py and lint/tokenizer.js; never reorder.",
+  "note": "Fixed ids for the slop tokeniser (SPEC.md section 6; two word-id layouts, see id_layouts) and the closed role and flag lists (section 4). Read by ui/tokenizer.py and lint/tokenizer.js; never reorder.",
   "roles": [
     "h1", "h2", "h3", "h4", "h5", "h6", "eyebrow", "subtitle", "body", "list_item",
     "caption", "label", "helper", "placeholder", "input_value", "button", "link", "nav", "tab", "breadcrumb",
@@ -41,6 +41,11 @@
   "hash_base": 4096,
   "hash_buckets": 6144,
   "vocab_size": 10240,
+  "id_layouts": {
+    "1": {"vocab_base": 512, "vocab_max": 3584, "hash_base": 4096, "hash_buckets": 6144, "vocab_size": 10240},
+    "2": {"vocab_base": 512, "vocab_max": 16384, "hash_base": 16896, "hash_buckets": 8192, "vocab_size": 25088}
+  },
+  "id_layouts_note": "An artefact's meta.json \"ids\" names its layout (absent = 1, the r1 layout). The top-level vocab_base ... vocab_size keys above are layout 1. A stem on vocab.txt line n is vocab_base + n - 1; any other stem is hash_base + (first 4 bytes of sha256(stem), big-endian, mod hash_buckets).",
   "max_node_tokens": 31,
   "max_window_nodes": 64,
   "max_window_positions": 1024

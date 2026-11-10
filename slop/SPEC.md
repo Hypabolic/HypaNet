@@ -292,10 +292,16 @@ it (the two are ORed).
 | Ids | Use |
 |---|---|
 | 0–511 | 0–5 `PAD`, `BOS`, `EON` (end of node; the readout position), `VAR`, `ALT`, `LZ`; 64–95 glyph classes; 96–191 ASCII punctuation; 192–319 numbers 0–99, `YEAR`, `NUM`, `DEC`; the rest spare (roles and flags enter as embeddings, §7) |
-| 512–4,095 | Fable's vocabulary: line *n* (from 0) of `vocab.txt` is id 512 + *n*; at most 3,584 stems |
-| 4,096–10,239 | hash buckets for any other stem: 4,096 + (first 4 bytes of sha256(stem), big-endian, mod 6,144) |
+| 512–4,095 | layout 1 (r1): Fable's vocabulary: line *n* (from 0) of `vocab.txt` is id 512 + *n*; at most 3,584 stems |
+| 4,096–10,239 | layout 1: hash buckets for any other stem: 4,096 + (first 4 bytes of sha256(stem), big-endian, mod 6,144) |
+| 512–16,895 | layout 2 (r2 onwards): vocabulary, id 512 + *n*; at most 16,384 stems |
+| 16,896–25,087 | layout 2: hash buckets, 16,896 + (the same number mod 8,192) |
 
-Two unrelated out-of-vocabulary stems share a bucket with probability 1/6,144 per pair; `KIT.md` states this.
+Id layouts (`ids.json` `id_layouts`): an artefact's `meta.json` names its layout as `"ids": 2`; absent means 1, so
+r1's artefact is unchanged. Ids below 512 and vocabulary ids are the same in both; only the bucket range and
+`tok_emb`'s row count move. A `Vocab` (Python and JS) carries its layout; the bare module constants are layout 1's.
+Two unrelated out-of-vocabulary stems share a bucket with probability 1/6,144 per pair (1/8,192 in layout 2);
+`KIT.md` states this.
 `vocab.txt` is UTF-8, one Porter stem per line, unique, lowercase, no spaces. Fable chooses its entries; the
 tokeniser only looks them up. Porter merges some UI words (new/news → `new`; general/generate/generic → `gener`);
 `./tok --vocab` shows every merge (§13).
@@ -323,19 +329,23 @@ bias uses signed node distance, and role, cluster and flag embeddings are added 
 
 | Tensor | Shape |
 |---|---|
-| `tok_emb` E | 10,240 × 128 |
+| `tok_emb` E | 10,240 × 128 (id layout 1); 25,088 × 128 (layout 2) |
 | `off_emb` P, `role_emb` Rr, `cluster_emb` Cc, `flag_emb` F | 32 × 128, 48 × 128, 64 × 128, 32 × 128 |
 | per layer: `rel_bias` B; `q`, `k`, `v`, `o` weight and bias; `fc1`; `fc2` | 8 × 128; 128 × 128 and 128 each; 512 × 128 + 512; 128 × 512 + 128 |
 | `head` | 4 × 128 + 4 |
 
-Total 2,128,900 parameters, 61.6% of them in `tok_emb` (computed from the shapes above; v0.3 had 2,128,932). Every
-tensor starts at 0.0.
+Total 2,128,900 parameters, 61.6% of them in `tok_emb` (computed from the shapes above; v0.3 had 2,128,932); in id
+layout 2, 4,029,444, 79.7% in `tok_emb`. D, L, H and M are the same in both layouts. Every tensor starts at 0.0.
 
 **Artefact** (`work/`): `artifact.npz` (uncompressed, float32, exactly the tensor names above, each shape as listed,
-all finite), `vocab.txt`, `meta.json` (`{"format": "slop.artifact/1", "pointer_head": [L, H]}`). Its sha256 is the
-sha256 of the three files' sha256s in that order. `lint/compile.py` turns it into `slop-net.bin`: the bytes
-`SLOPNET1`, a little-endian u32 header length, a JSON header (tensor names, shapes, byte offsets, artefact sha256,
-vocab sha256), float32 little-endian data, then `vocab.txt`. About 8.5 MB dense; zero rows are stored sparse.
+all finite), `vocab.txt`, `meta.json` (`{"format": "slop.artifact/1", "pointer_head": [L, H]}`, plus `"ids": 2` in
+layout 2). Its sha256 is the sha256 of the three files' sha256s in that order. `lint/compile.py` turns it into
+`slop-net.bin`: the bytes `SLOPNET1`, a little-endian u32 header length, a JSON header (format `slop.net/2`, id layout,
+tensor names, shapes, encodings, byte offsets, artefact sha256, vocab sha256), the data, then `vocab.txt`. Each
+tensor is stored as runs of whole float32 rows or, when smaller, as sparse cells (a u32 row index, a column bit mask
+per stored row, then the non-zero float32 values); zero rows and zero cells are not stored. About 8.5 MB fully dense
+in layout 1; r1's artefact is 0.74 MB (4.3 MB as r1's `slop.net/1`, which `lint/compile.py` and `lint/runtime.js`
+still read).
 
 ## 8. Plain-code rule layer (`rules/`, no network credit)
 
@@ -467,7 +477,8 @@ nodes and adjudicated false alarms; track C as its own column.
 **Lexicon overlap.** Recall on `ECHO` nodes is split by whether the (node, target) stem pair, or a pair sharing a stem
 with it, occurs in any disclosed screen (`examples/dev`, `examples/reference`). Also reported: the share of Fable's
 `vocab.txt` stems that occur in the disclosed screens against the share in a matched sample of 400 undisclosed `dev`
-screens.
+screens. For an r2 artefact the disclosed screens are r2's 1,200 (`registry.yaml` `disclosed_r2`, from
+`runs/r2/HANDOVER.json`) and the matched sample is 1,200 undisclosed `dev` screens.
 
 **Fixtures.** The pause-menu fixture node by node, labelled "disclosed to Fable", beside the sealed sibling fixture
 (§9) node by node.
@@ -645,6 +656,38 @@ are the result.
   with the numpy reference); write `INTEGRITY.md`, with the share of thinking blocks that have text; commit the
   archive (transcripts and `examples/reference/` redacted to ids and hashes unless Matthew clears those repos, §16 Q5)
   before any sealed scoring; run the sealed evaluation once.
+- **Round 2 (r2).** Fable revises its r1 network in a new session (`kit/kit_build.py` `RUNS["r2"]`;
+  `scripts/prepare_author_dir.sh ../HypaNet-slop-author-r2`; `scripts/launch.sh --run r2 start|continue K|check`).
+  - **Kit.** `work/` starts as a copy of `runs/r1/work` without `scratch/` (the record keeps the seed's hashes, and
+    `verify --pristine` means "work/ is exactly the seed"); `examples/dev/` holds 1,200 screens, r1's 400 plus the next
+    800 by the same disclosure rule (held-out duplicates still excluded; the build checks that all of r1's 400 are
+    in); `PROMPT.md` is `kit/prompt_r2.md`; the v2 id layout (§6, `meta.json` `"ids": 2`) is the one `KIT.md` asks
+    for. New, read-only `resources/`: the codex (`codex/CODEX.md`, `SOURCES.md`, `lists/`), the thesaurus
+    (`resources/thesaurus/out/*.tsv`, its README and `ATTRIBUTION.md` as `kit_build.thesaurus_readme()` and
+    `thesaurus_attribution()` write them, without the repo's build scripts) and `resources/r1/RESULTS.md`
+    (`kit/r1_results.md`: r1's dev score, the held-out generated headline as one line, and the real-copy false-alarm
+    and miss categories with invented examples that reproduce on r1's network, checked by `kit/tests/test_kit_r2.py`;
+    no per-pattern held-out numbers).
+  - **Rules change.** `build.py` may read the files in `work/` (hand-written, or written by the author's own scripts
+    from `resources/` and its own lists) and the read-only `resources/`; which thesaurus and codex entries to use, and
+    how, is the author's judgement. It still computes no weight from scores, labels, the examples or the network's
+    outputs, never reads `examples/`, and runs no search over settings. The files in `resources/` (the thesaurus and
+    the codex lists) are the only lexical material allowed besides the author's own knowledge. `scripts/audit.py`
+    applies this to r2 transcripts: naming WordNet is no longer a violation (importing a lexical library still is),
+    and a script that reads `examples/` and writes the artefact still is.
+  - **Launch.** Settings `kit/settings.r2.json` (the r1 author dir and every other HypaNet* sibling denied;
+    `resources/` read-only); approval `kit/PROMPT_R2_APPROVED.sha256` (Matthew writes it); its own cap, the US$ figure
+    in `runs/r2/CAP_USD` (Matthew writes it, one figure and nothing else; every r2 mode refuses without it; r1's spend
+    is not charged to it). The figure less r2's spend is the `--max-budget-usd` flag, which, as for r1, spend can pass
+    by about one response (up to about US$21): the hard ceiling is about the figure plus US$21. No
+    smoke launch; logs `runs/r2/logs/` with launches `r2` and `r2.c<K>`. `kit/leakage.py` runs on the r2 tree
+    (resources included, the sealed-ngrams waiver still applies) and adds `heldout-text`: no held-out node string of
+    four or more words in any other text file of the tree (thesaurus tables, the work seed at its source), except a
+    disclosed node's text or the guide's own examples.
+  - **Afterwards.** As for r1, and the rebuild runs in a copy of the author dir with `examples/` deleted: `work/build.py`
+    must give the same artefact sha256 there. `./python3` lets `build.py` read anything in the author dir,
+    `examples/` included (`kit/tools/py_guard.py` stays a byte copy of Clouds'), and `scripts/audit.py`'s static check
+    of the transcript is otherwise the only barrier.
 
 ## 14. Deliverable: the linter
 

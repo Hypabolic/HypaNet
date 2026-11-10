@@ -1,6 +1,9 @@
 """Leakage check of a built author kit (SPEC §9 "Leakage check", §13). Opens no sealed file.
 
-    uv run python kit/leakage.py AUTHOR_DIR [--require-sealed] [--json OUT]
+    uv run python kit/leakage.py AUTHOR_DIR [--require-sealed] [--run r1|r2] [--json OUT]
+
+The run (kit_build.RUNS) defaults to the author dir's: HypaNet-slop-author-r2* is r2, anything else r1. An r2 kit also
+has resources/ (the codex, the thesaurus, the r1 results) and a work/ seed (runs/r1/work without scratch/).
 
 Exit 0 when nothing unwaived is found, 1 otherwise. scripts/prepare_author_dir.sh runs it on every hand-over.
 
@@ -14,9 +17,12 @@ files               Only the kit's own files are present (the allowed list below
                     dev id) and examples/reference exactly the reference_real screens; screen files carry only screen
                     keys and label files only label keys (a contested record's candidates only candidate keys);
                     nothing carries the generator's `clean` flag, its attempt number or styling idiom.
+                    In r2, resources/ holds exactly kit_build.resource_files() (byte copies, and the thesaurus
+                    README as kit_build.thesaurus_readme() writes it).
 internal-names      No document names the people, labellers, generators or notes behind the kit, nor a held-out
                     set (INTERNAL_NAMES: "Matthew", "Codex", "research/", "slop-private", "corpus note", "test_gen",
-                    "ood_codex", "SPEC", ...).
+                    "ood_codex", "SPEC", ...). Case is ignored except for "Codex", which is matched as a capitalised
+                    word: the codex (resources/codex/CODEX.md) is a catalogue, not the labelling tool.
 sealed-file         No kit file is byte-identical to a sealed file (datasets/sealed_sha256.txt) or to a calibration
                     screen or source (datasets/calibration: manifest hashes and the files themselves).
 calibration-copy    No calibration node string of four or more words occurs in a kit document or example screen.
@@ -30,11 +36,18 @@ generator-code      No generator identifier (a table, function or class name) or
 generator-strings   No generator string of four or more words occurs in a kit document unless it is also the text
                     of a disclosed screen's node (a document must not show undisclosed generator copy).
 rules-lists         No run of 3 consecutive entries of a rule-layer list (rules/src/lists.js) occurs, in order, in a
-                    kit document or code file.
+                    kit document or code file. In a codex word list (one entry per line) the runs of these two checks
+                    are matched as consecutive whole lines; its # comments are matched as prose.
 heldout             For val, test_gen and ood_codex where they exist: no screen id and no node-text sequence of an
                     example screen is theirs, and no node string of four or more words of theirs occurs in a kit
                     document unless a disclosed screen has it too. (In LABELLING.md, which predates the generator,
                     such a match is a note: the generator quoted the guide.)
+heldout-text        The same strings (val, test_gen, ood_codex; four or more words) in every other text file of the
+                    tree, word sequence against word sequence: the resource data (thesaurus tables), kit/lib, tools/,
+                    INDEX.txt, HANDOVER.json and, in r2, the work/ seed (checked at its source, runs/r1/work, so the
+                    answer does not change as the author works). Exempt: a string that is the text of a disclosed
+                    screen's node, or that occurs in the author's LABELLING.md (the guide's own examples, which the
+                    generator quoted). Table cells are matched one at a time (tab, "|" and line ends separate them).
 sealed-ngrams       SPEC §9: salted sha256 of every normalised whole node string of 2+ words and every 3-stem run in
                     KIT.md, LABELLING.md, PROMPT.md, examples/ and the generator tables, against
                     datasets/sealed_ngrams.json (written by scripts/build_sealed.py: {"format": "slop.sealed_ngrams/1",
@@ -44,7 +57,13 @@ sealed-ngrams       SPEC §9: salted sha256 of every normalised whole node strin
                     launch). To go ahead without it, waive {"check": "sealed-ngrams", "file": "-", "match":
                     "not-run"} in kit/leakage_waivers.json, with the reason.
 
-Documents are KIT.md, PROMPT.md, LABELLING.md and examples/README.md; code files are kit/lib/* and tools/*.
+A match in another document that the author's LABELLING.md also contains (the same string, or the same run of list
+entries in order) is a note, not a problem: the guide has disclosed it already (generator-table, generator-strings,
+rules-lists, heldout and heldout-text alike).
+
+Documents are KIT.md, PROMPT.md, LABELLING.md and examples/README.md, and in r2 the resource documents (the codex's
+CODEX.md, SOURCES.md and lists, the thesaurus README and ATTRIBUTION, the r1 results); code files are kit/lib/* and
+tools/*.
 Waivers (SPEC §9: listed for Matthew to waive one by one, each with its reason) are kept in kit/leakage_waivers.json:
 [{"check", "file", "match", "reason"}]; a waiver matches a problem with the same check, file and match.
 """
@@ -88,7 +107,12 @@ SHARED_VOCAB = tuple(sorted((SLOP / "ui").glob("*.py"))) + (SLOP / "ui" / "ids.j
                                                             SLOP / "LABELLING.md")
 # names that tell the author who or what is behind the kit, or which held-out sets exist (internal-names)
 INTERNAL_NAMES = ("Matthew", "Codex", "research/", "slop-private", "corpus note", "corpus-scout", "test_gen",
-                  "ood_codex", "SPEC.md", "SPEC §", "modellabel", "labeller \"mg\"", "Fable 5")
+                  "ood_codex", "SPEC.md", "SPEC §", "modellabel", "labeller \"mg\"", "Fable 5", "codex exec")
+CASE_SENSITIVE_NAMES = {"Codex": re.compile(r"(?<![\w/])Codex(?![\w])")}
+# r2 resource documents (the thesaurus tables are data: they get the files, sealed-file and heldout-text checks only)
+RESOURCE_DOC_RE = re.compile(r"^resources/(codex/.*\.(md|txt)|thesaurus/(README|ATTRIBUTION)\.md|r1/RESULTS\.md)$")
+TSV_SEP = re.compile(r"[\t|\n]")
+LIST_FILE_RE = re.compile(r"^resources/codex/lists/[^/]+\.txt$")
 MIN_WORDS = 4  # generator-strings and heldout: shorter strings are common English ("is not a", "word of mouth")
 # LABELLING.md predates the generator and the held-out sets; when they share a string, the generator quoted the
 # guide. Such matches are reported as notes, not problems (the sealed n-gram check still covers the guide).
@@ -153,7 +177,7 @@ def example_screens(author: Path) -> dict[str, dict]:
     return out
 
 
-def check_files(author: Path, files: list[str], rep: Report) -> None:
+def check_files(author: Path, files: list[str], rep: Report, run: str = "r1") -> None:
     man = json.loads((kb.REF_DIR / "manifest.json").read_text())
     ref_ids = {e["id"] for e in man["screens"]}
     if man.get("fixture", {}).get("id"):
@@ -165,7 +189,15 @@ def check_files(author: Path, files: list[str], rep: Report) -> None:
         ref_sources[f"examples/reference/{sid}.source{Path(path).suffix}"] = \
             kb.REF_DIR / "sources" / s["source"]["repo"] / path
     dev_ids = {s["id"] for s in kb.iter_jsonl(kb.DEV_DIR / "screens.jsonl")}
-    want_dev = set(kb.select_dev()["ids"])
+    want_dev = set(kb.select_run(run)["ids"])
+    resources = kb.resource_files() if kb.RUNS[run]["resources"] else {}
+    for f, src in resources.items():
+        if f not in files:
+            rep.add("files", f, f, "missing")
+        elif isinstance(src, Path) and kb.sha256(author / f) != kb.sha256(src):
+            rep.add("files", f, f, f"not a byte copy of {src.relative_to(SLOP)}")
+        elif isinstance(src, str) and (author / f).read_text(encoding="utf-8") != src:
+            rep.add("files", f, f, "not the author's copy written by kit_build")
     seen_dev: dict[str, set[str]] = {}
     seen_ref: dict[str, set[str]] = {}
     ex = re.compile(r"^examples/(dev|reference)/([0-9a-f]{16})\.(screen\.json|labels\.jsonl|txt)$")
@@ -175,7 +207,7 @@ def check_files(author: Path, files: list[str], rep: Report) -> None:
             if kb.sha256(author / f) != kb.sha256(ref_sources[f]):
                 rep.add("files", f, f, "not a byte copy of its reference source")
             continue
-        if f in TOP_FILES or f in LIB_ALLOWED:
+        if f in TOP_FILES or f in LIB_ALLOWED or f in resources:
             continue
         if m:
             (seen_dev if m.group(1) == "dev" else seen_ref).setdefault(m.group(2), set()).add(m.group(3))
@@ -359,6 +391,29 @@ def run_found(entries: list[str], text: str, k: int, span: int = 400) -> str | N
     return None
 
 
+def run_in_lines(entries: list[str], lines: list[str], k: int) -> str | None:
+    """The first k consecutive entries that are k consecutive lines of a word list (whole lines, normalised): the
+    form a dumped table takes in a one-entry-per-line file."""
+    ents = [norm(e) for e in entries]
+    have = {tuple(lines[i: i + k]) for i in range(len(lines) - k + 1)}
+    for i in range(len(ents) - k + 1):
+        run = tuple(ents[i: i + k])
+        if all(run) and run in have:
+            return " | ".join(run)
+    return None
+
+
+def list_parts(raw: str) -> tuple[list[str], str]:
+    """A codex word list: its entries (normalised, one per line) and its comment text (normalised prose)."""
+    entries, comments = [], []
+    for ln in raw.splitlines():
+        if ln.startswith("#"):
+            comments.append(ln[1:])
+        elif ln.strip():
+            entries.append(norm(ln))
+    return entries, norm("\n".join(comments))
+
+
 def rule_lists() -> dict[str, list[str]]:
     src = RULE_LISTS.read_text(encoding="utf-8")
     out = {}
@@ -380,6 +435,63 @@ def heldout_screens() -> dict[str, list[dict]]:
 
 
 seq_hash = kb.seq_hash
+
+
+# -- held-out strings in the rest of the tree -----------------------------------------------------------------------
+
+
+def heldout_index(held: dict[str, list[dict]], exempt_strings: set[str], guide: str) -> tuple[dict, set, int]:
+    """{first four words: [(words, set name, string)]} over the held-out node strings of MIN_WORDS+ words that are
+    not exempt (a disclosed node's text, or a string the author's guide contains), the set of first words, and how
+    many strings the guide exempted."""
+    idx: dict[tuple, list] = {}
+    in_guide = 0
+    for name, screens in held.items():
+        for s in screens:
+            for t in set(screen_strings(s)):
+                words = tuple(WORD.findall(t))
+                if len(words) < MIN_WORDS or t in exempt_strings:
+                    continue
+                if t in guide:
+                    in_guide += 1
+                    continue
+                idx.setdefault(words[:MIN_WORDS], []).append((words, name, t))
+    return idx, {k[0] for k in idx}, in_guide
+
+
+def word_hits(text: str, idx: dict, firsts: set) -> set[tuple[str, str]]:
+    words = WORD.findall(text)
+    hits = set()
+    for i, w in enumerate(words):
+        if w not in firsts:
+            continue
+        for full, name, t in idx.get(tuple(words[i: i + MIN_WORDS]), ()):
+            if tuple(words[i: i + len(full)]) == full:
+                hits.add((name, t))
+    return hits
+
+
+def check_heldout_text(author: Path, files: list[str], docs: set[str], held: dict[str, list[dict]],
+                       disclosed: set[str], run_name: str, rep: Report) -> None:
+    if not held:
+        return
+    idx, firsts, in_guide = heldout_index(held, disclosed, norm(kb.kit_guide()))
+    targets: dict[str, Path] = {f: author / f for f in files if f not in docs and not f.startswith("examples/")}
+    if kb.RUNS[run_name]["seed"]:
+        targets.update({f"work/{rel}": src for rel, src in kb.work_seed_files().items()})
+    n = 0
+    for f, path in sorted(targets.items()):
+        try:
+            text = path.read_text(encoding="utf-8")
+        except (UnicodeDecodeError, OSError):
+            continue  # binary (artifact.npz): no text to match
+        n += 1
+        if f.endswith(".tsv"):
+            text = TSV_SEP.sub(" \x00sep\x00 ", text)  # cells never run into each other
+        for name, t in sorted(word_hits(norm(text).replace("\x00sep\x00", " zzcellzz "), idx, firsts)):
+            rep.add("heldout-text", f, f"{name}: {t}")
+    rep.notes.append(f"heldout-text: {n} text files checked against {sum(len(v) for v in idx.values())} held-out "
+                     f"strings of {MIN_WORDS}+ words ({in_guide} more are the guide's own examples and exempt)")
 
 
 # -- sealed n-grams ------------------------------------------------------------------------------------------------
@@ -443,14 +555,17 @@ def check_sealed_ngrams(author: Path, docs: dict[str, str], ex_screens: dict[str
 # -- main ----------------------------------------------------------------------------------------------------------
 
 
-def run(author: Path, require_sealed: bool = False) -> Report:
+def run(author: Path, require_sealed: bool = False, run_name: str | None = None) -> Report:
+    run_name = run_name or kb.run_for_dir(author)
     waivers = json.loads(WAIVERS.read_text()) if WAIVERS.is_file() else []
     rep = Report(waivers)
     files = kit_files(author)
-    check_files(author, files, rep)
+    check_files(author, files, rep, run_name)
     check_sealed_files(author, files, rep)
-    docs = {f: norm(read_text(author / f) or "") for f in DOCS if (author / f).is_file()}
-    raw_all = {f: read_text(author / f) for f in files}
+    doc_names = list(DOCS) + sorted(f for f in files if RESOURCE_DOC_RE.match(f))
+    docs = {f: norm(read_text(author / f) or "") for f in doc_names if (author / f).is_file()}
+    raw_all = {f: read_text(author / f) for f in files if f not in docs and not f.endswith(".tsv")}
+    raw_all.update({f: read_text(author / f) for f in docs})
     code = {f: norm(t) for f, t in raw_all.items() if t is not None and f.startswith(("kit/lib/", "tools/"))}
     ex_screens = example_screens(author)
     disclosed = set()
@@ -464,7 +579,8 @@ def run(author: Path, require_sealed: bool = False) -> Report:
     for f in docs:
         raw = raw_all.get(f) or ""
         for name in INTERNAL_NAMES:
-            if name.lower() in raw.lower():
+            pat = CASE_SENSITIVE_NAMES.get(name)
+            if (pat.search(raw) if pat else name.lower() in raw.lower()):
                 rep.add("internal-names", f, name)
     for f, t in raw_all.items():
         if t is None:
@@ -472,12 +588,29 @@ def run(author: Path, require_sealed: bool = False) -> Report:
         for tpl in templates:
             if tpl in t:
                 rep.add("generator-template", f, tpl)
+    guide_t = docs.get(GUIDE_FILE) or norm(kb.kit_guide())
+
+    def in_guide(hit: str, k: int, span: int = 400) -> bool:
+        """The matched run occurs, in order, in the author's LABELLING.md: the guide disclosed it already."""
+        ents = hit.split(" | ")
+        return run_found(ents, guide_t, len(ents), span) == hit
+
+    # a codex word list is matched line against line (its entries) and as prose (its comments)
+    lists = {f: list_parts(raw_all.get(f) or "") for f in docs if LIST_FILE_RE.match(f)}
+
+    def find_run(tab: list[str], f: str, t: str, k: int, span: int = 400) -> str | None:
+        if f in lists:
+            return run_in_lines(tab, lists[f][0], k) or run_found(tab, lists[f][1], k, span)
+        return run_found(tab, t, k, span)
+
     for f, t in {**docs, **code}.items():
         for tab in tables:
-            hit = run_found(tab, t, 4)
+            hit = find_run(tab, f, t, 4)
             if hit:
                 if f == GUIDE_FILE:
                     rep.notes.append(f"generator-table: the generator uses the guide's list {hit!r}")
+                elif in_guide(hit, 4):
+                    rep.notes.append(f"generator-table: {f} repeats the guide's list {hit!r}, which the generator uses")
                 else:
                     rep.add("generator-table", f, hit)
     for f in list(docs) + list(code):
@@ -491,13 +624,18 @@ def run(author: Path, require_sealed: bool = False) -> Report:
             if s in t:
                 if f == GUIDE_FILE:
                     rep.notes.append(f"generator-strings: the generator uses the guide's example {s!r}")
+                elif s in guide_t:
+                    rep.notes.append(f"generator-strings: {f} repeats the guide's example {s!r}")
                 else:
                     rep.add("generator-strings", f, s)
     for name, ents in rule_lists().items():
         for f, t in {**docs, **code}.items():
-            hit = run_found(ents, t, 3, span=120)
+            hit = find_run(ents, f, t, 3, span=120)
             if hit:
-                rep.add("rules-lists", f, f"{name}: {hit}")
+                if f != GUIDE_FILE and in_guide(hit, 3, 120):
+                    rep.notes.append(f"rules-lists: {f} repeats the guide's list {hit!r} ({name} is drawn from it)")
+                else:
+                    rep.add("rules-lists", f, f"{name}: {hit}")
     held = heldout_screens()
     ex_ids = {s.get("id"): f for f, s in ex_screens.items()}
     ex_seq = {seq_hash(s): f for f, s in ex_screens.items()}
@@ -514,10 +652,13 @@ def run(author: Path, require_sealed: bool = False) -> Report:
                 if s in t:
                     if f == GUIDE_FILE:
                         rep.notes.append(f"heldout: {name} holds the guide's example {s!r}")
+                    elif s in guide_t:
+                        rep.notes.append(f"heldout: {f} repeats the guide's example {s!r}, which {name} holds")
                     else:
                         rep.add("heldout", f, f"{name}: {s}")
     rep.notes.append("heldout: sets checked: " + (", ".join(held) or "none") + "; absent: "
                      + (", ".join(s for s in HELDOUT_SETS if s not in held) or "none"))
+    check_heldout_text(author, files, set(docs), held, disclosed, run_name, rep)
     check_sealed_ngrams(author, docs, ex_screens, rep, require_sealed)
     unused = [w for i, w in enumerate(waivers) if i not in rep.used]
     for w in unused:
@@ -529,13 +670,14 @@ def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("author_dir")
     ap.add_argument("--require-sealed", action="store_true", help="fail when the sealed n-gram check cannot run")
+    ap.add_argument("--run", choices=sorted(kb.RUNS), help="the kit's run (default: from the author dir's name)")
     ap.add_argument("--json", help="write the full report here")
     a = ap.parse_args(argv)
     author = Path(a.author_dir).resolve()
     if not (author / "examples").is_dir():
         print(f"{author}: no examples/ (not a built kit)")
         return 2
-    rep = run(author, a.require_sealed)
+    rep = run(author, a.require_sealed, a.run)
     for n in rep.notes:
         print("note:", n)
     for w in rep.waived:

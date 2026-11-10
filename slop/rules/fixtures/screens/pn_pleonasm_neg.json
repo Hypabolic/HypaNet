@@ -1,0 +1,9 @@
+{"schema": "slop.screen/1", "id": "8f4c3f3647b25c04", "framework": "tsx",
+ "source": {"repo": "slop-rules-fixtures", "path": "src/pn_pleonasm_neg.tsx", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "control", "line": 2},
+  {"k": 1, "kind": "body", "line": 4}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "label", "text": "PIN code", "flags": ["in_form", "in_control"], "loc": [3, 7, 3, 15]},
+  {"i": 1, "k": 1, "role": "body", "text": "LED light strips are back in stock.", "flags": [], "loc": [5, 7, 5, 42]},
+  {"i": 2, "k": 1, "role": "body", "text": "Upload a PDF of the invoice.", "flags": [], "loc": [6, 7, 6, 35]}]}

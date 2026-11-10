@@ -6,6 +6,11 @@ placeholders used as labels, shared lead-ins, index numbering and exact repeats 
 linter beside the network rule and are scored separately against the `aside` codes of `LABELLING.md`; the network
 gets no credit for them.
 
+Ten **codex rules** follow them: the LLM-writing patterns of the slop codex (`codex/llm.md`, `codex/ui.md`) that a
+word list, a construction or a glyph count decides, so they belong in plain code and not in the network (codex
+`llm.md` §5 finding 1: most LLM markers are not redundancy). They report with the codex id of the pattern (L01–L52,
+U01–U52), or with aside R11g for the leading emoji, and carry a severity. See "Codex rules" below.
+
 The code is plain ES modules with no dependencies beyond Node. It imports `lint/tokenizer.js` only for the window
 split that `slop/exact-repeat` needs; every other rule uses its own small word splitter (`src/text.js`), because the
 tokeniser cuts a node at 31 tokens and the rules need every word.
@@ -36,10 +41,13 @@ node slop/rules/cli.js <screen.json|dir> [...] [--format text|json] [--rules id,
   kept.
 - `--rules` runs only the named rules; `--list` prints the rule ids.
 - Exit status: 0 no findings, 1 findings, 2 a file could not be read or checked (the other files are still reported).
+- `scope` is `screen` for R19 and for the two per-screen counts (L48, L51), `node` otherwise.
 
 From Python, run it with `subprocess` and read stdout as JSON (`rules/tests/test_rules_cli.py` does this). From
 JavaScript, `import { runRules, RULES } from './rules/index.js'`; `runRules(screen, {only})` returns the findings
-for one screen and `RULES` lists `{id, code, description}` in report order, for the ESLint packaging later (§14).
+for one screen and `RULES` lists `{id, code, severity, description}` in report order, for the ESLint packaging later
+(§14). `severity` is `error` (never meant to ship), `warning` (style: fix it) or `info` (check it: a density or a
+claim); the seven original rules are `warning`.
 
 ## Shared definitions
 
@@ -128,11 +136,13 @@ One finding per node, naming every filler phrase found in its branches (`FILLER`
 
 - in any scored role: please, simply, easily, quickly, effectively, very, quite, in order to, oops, whoops, uh oh;
 - in a `button`, `link`, `menu_item`, `nav` or `tab` only, and not as the first word: now ("Book now"; in a sentence
-  it is often a fact, and first it names something: a "Now" page, a "Now playing" tab, a time picker's "Now");
+  it is often a fact, and first it names something: a "Now" page, a "Now playing" tab, a time picker's "Now"; after
+  "not" it is the meaning of "Not now", the standard label for putting a prompt off);
 - only as the first word of an `h1`–`h6`, `nav`, `tab`, `menu_item`, `empty_title` or `dialog_title` of two to four
   words: your, my ("Your Favourites"). A field label "Your name" is not flagged: Microsoft recommends it over "Type
   your name". A branch that is "your" or "my" alone counts when another branch has two to four words: `{mine ?
-  "Your" : "Shared"} playlists` comes out "Your ALT Shared playlists", whose first branch reads "Your playlists".
+  "Your" : "Shared"} playlists` comes out "Your ALT Shared playlists", whose first branch reads "Your playlists". A
+  title with a comma or a sentence mark is a slogan, not a noun phrase, and is not flagged ("Your brand, your rules").
 
 "very" and "quite" are not flagged in a `menu_item`, `input_value` or `cell`: there "Very low" … "Very high" names a
 value on a scale (K5).
@@ -211,6 +221,49 @@ sits in another window, with the best such copy as `target`, unless a non-exempt
 own window: that repeat is within one window and left to the network. The code is R9 when both copies are titles, R14
 otherwise.
 
+## Codex rules
+
+Lists come from `slop/codex/lists/*.txt`. `node rules/make_codex_lists.mjs` bundles the seven lists the rules read into
+`src/codex-lists.js` (sections, entries, licence line and the source file's sha256), so the linter reads no files at
+run time and the kit carries the lists with `rules/src/`; `--check` reports a stale bundle and a test fails on one.
+`llm_excess_vocab.txt` (CC BY-SA 4.0) is not bundled. Each rule names the sections it reads and, in an `EXCLUDE`
+table, every entry it leaves out with the reason (an entry with ordinary, deliberate uses in shipped UI); an exclusion
+that names no list entry fails at import, so a list edit cannot silently void it.
+
+**Matching** (`src/codex.js`). The list syntax of `llm_constructions.txt`: words folded as elsewhere (NFKC, lower
+case, marks and inner apostrophes dropped: "it's" is "its"); `{x}` `{y}` `{z}` one to eight words (commas allowed
+inside, never a sentence end); `{w}` one word; `{n}` one literal number, optionally followed by k, m, thousand or
+million (an interpolated value never counts); `^` and `$` anchor at the start and end of the text. The token stream
+keeps the punctuation that shapes a construction (`, . ? ! : ; % + /`), so "not just {x}, it's {y}" needs its comma
+and "^tired of {x}?" its question mark; an em or en dash reads as a comma, "…" as a full stop, "&" as "and". The last
+word of a pattern also matches the first part of a contraction ("sure! here" matches "Sure! Here's"). Identifier
+words after a VAR marker become one token that a slot may cover and a literal word never matches. Each ALT branch is
+matched on its own. A hit inside a longer hit counts once, as the longer.
+
+**Roles.** "Prose roles" are all scored roles except controls, labels, field values, cells and stats (`button link
+nav tab menu_item breadcrumb label placeholder input_value cell stat`). "Titles" are `h1`–`h6`, `subtitle`,
+`eyebrow`, `empty_title`, `dialog_title` and `badge`.
+
+| Rule | Codes | Severity | Fires on |
+|---|---|---|---|
+| `slop/chatbot-residue` | L44 | error | any scored node containing an entry of `llm_residue.txt` §L44 ("Certainly!", "Sure! Here's", "I hope this helps", "Let me know if you'd like", "As an AI language model", "As of my last update"). 29 entries are excluded as ordinary UI copy ("Would you like to…" in a dialog, "Is there anything else…" on a form, "Here are some…", "Below is a…", "for illustrative purposes", "Todo"), and "Lorem ipsum" / "dolor sit amet" are left to `slop/placeholder-copy`. "As an AI" counts only as "As an AI, I…" (an AI product may write "As an AI, the assistant can make mistakes."), and the reply phrases in `SOFT` ("Let me know if you'd like…", "Here's a revised…", "Here's the updated…") not in `body`, `subtitle` or `caption`, where a person or a planner writes them on purpose. |
+| `slop/placeholder-copy` | L45 | warning | an entry of §L45 ("Acme Inc", "Jane Doe", "(555) 123-4567", "123 Main Street", "Anytown", "example.com", "[Your name]"; bracketed entries on the raw text). Never in `placeholder` or `input_value`, nor in a branch that gives an example ("e.g.", "for example", "such as"): a format hint is not residue. Slot names ("Your company", "Company name", "Logo") only in a copyright line or as a header link's whole text (the wordmark). Plausible real names and job titles are excluded. Also "Lorem ipsum" and "dolor sit amet" (in §L44 of the list; CODEX.md L45 names them as template text). Not reported: an entry right after "like", "not" or "instead of" ("Like you@example.com"); the reserved example domains (example.com, .org, .net) in a `helper` or `tooltip`; "John Smith" and "Jane Smith" except as a byline (opening a node of at most eight words, or beside a quotation), so "Photo by John Smith on Unsplash" is not reported, while "John Doe" and "Jane Doe" always are. |
+| `slop/llm-construction` | L09–L19 (the section's id) | warning | a kept pattern of `llm_constructions.txt` in a prose role: negative parallelism ("It's not just X, it's Y", "No X, no Y, just Z"), the audience hedge ("Whether you're X or Y", "for teams of all sizes"), the false range ("From X to Y, Z"), tricolon slogans ("Simple. Smart. Yours."), rhetorical openers ("Tired of X?", "X? We've got you covered"), the pivot ("Say goodbye to X", "X, reimagined"), "so you can focus on what matters", the trailing-participle tails ("…, making it easy to", "…, so nothing slips through the cracks"), grandiose openers and closers ("In today's fast-paced world", "The future of X is here", "Everything you need, all in one place"), significance framing ("at the heart of") and staccato closers ("That's it.", "The best part?"). 28 patterns are excluded (`EXCLUDE`: real contrasts such as "X, not Y", help text such as "Need help? …" and "Want to …?", "Meet the team", "No more results", "Just now."). Suffix and slogan forms ("X, reimagined", "made simple", "Welcome to X", "The future of X", "Everything you need to X", "X and Y alike") count in titles only, and "Welcome to X" not in a dialog or state view (onboarding). In L09–L11 a slot holding a number is a real contrast or range, and in L11 so is a date or time word ("From 9 to 5"). |
+| `slop/stock-cta` | L26, L27 | warning | L26: a `button` or `link` whose whole label is a stock CTA of `llm_cta_cliches.txt` §L26 beyond `slop/vacuous-action`'s list ("Start your journey", "Explore features", "See it in action", "Let's go", "Claim your spot", "Get yours"). Labels R7 or R15 already report, labels that state the cost ("Start for free") and real next steps ("Book a demo", "Contact sales", "Join the waitlist") are excluded. L27: a CTA-band headline of §L27 in a prose role ("Ready to get started?", "What are you waiting for?", "Ready when you are", "Start building today"). |
+| `slop/empty-claim` | L28, L29, L30, L32 | info | a claim of `llm_claims.txt` in a promotional role (titles, `body`, `list_item`, `caption`, `stat`, `button`, `link`): speed and ease promises ("Get started in seconds", "No coding required", "Up and running in minutes"), invented precision ("10x faster", "Trusted by 10,000+ teams", "Rated 4.9/5"), vague social proof ("Loved by thousands", "Don't just take our word for it") and false urgency ("Limited time offer", "Act now"). A `{n}` counts only when the number is round (one or two significant figures, or a run of nines) and not the top of a range ("2-4x faster" is a measured result); urgency in a `dynamic` node is real. A branch that states its source ("in our benchmarks", "in tests", "according to…", "measured on…", "source:") is a measured claim: only its urgency is reported. §L31 reassurance ("No credit card required") is the network's (K6). |
+| `slop/promo-vocab` | L01, L02, L03, L08 (first hit) | info | two or more distinct entries of `llm_promo_vocab.txt` in one branch ("Seamlessly supercharge your planning", "A powerful, intuitive editor"). One word is weak evidence; words with literal uses (smart, unique, tailored, automatically, workflow, experience, solution, landscape, …) and R15's filler are excluded. Not in `placeholder`, `input_value`, `cell` or `menu_item`. |
+| `slop/sparkle-emoji` | R11g | info | an emoji of `llm_glyphs.txt` §L46 leading a node with words ("✨ Smart search", "✅ Unlimited projects"); variation selectors ignored. Not in a `cell` or `input_value` (a table's ✅ is the value); an emoji-only node is the network's (R11); leading dots are `slop/repeated-chrome`'s. |
+| `slop/em-dash-density` | L48 (screen) | info | three or more nodes on a screen using an em dash (or "--") between two words as a clause connector. A spaced en dash (the British parenthetical dash), a spaced hyphen, a lone dash in a cell, a dash before a byline and a range of numbers ("2019 — 2021") do not count; nor do cells, field values and stats. |
+| `slop/exclamation-density` | L51 (screen) | info | three or more nodes on a screen ending a sentence with "!" (§L51), not counting cells, field values and stats. |
+| `slop/pleonasm` | U51 | warning | an acronym followed by the word it stands for (`ui_tech_pleonasms.txt`: "PIN number", "PDF format", "ATM machine", "FAQ questions", "2FA authentication"); "LED light" (a product) and "PIN code" (the Indian postcode) are excluded. |
+
+Not implemented here, by the codex's own mapping: patterns whose redundant instances are the network's (L33–L43,
+L47), patterns that need meaning (L35 paraphrase, L41, L43), the case test (L49, `LABELLING.md` §2: case never
+decides) and the weak single-word lists (L04–L06 excess vocabulary, L20–L25 filler and hedges, whose words carry the
+consequence in UI copy, `codex/ui.md` §5 note 7). Firing rates as a guide: on the 20,000 generated dev screens
+(362,131 nodes) the codex rules fire 977 times, all on planted LLM patterns in a spot check; on the 22 real reference
+screens, never.
+
 ## Lists and their sources
 
 Every list is in `src/lists.js` (and the index-number grammar in `src/text.js`), each entry citing the line of
@@ -222,18 +275,21 @@ on `LABELLING.md` K13 rather than the research notes.
 ## Tests and fixtures
 
 ```
-npm run test:rules          # in slop/: node --test rules/test/rules.test.js
-uv run pytest rules/tests   # the CLI called from Python
+npm run test:rules                 # in slop/: node --test rules/test/rules.test.js
+uv run pytest rules/tests          # the CLI called from Python
+node rules/make_codex_lists.mjs    # after editing codex/lists/*.txt (--check: is the bundle stale?)
 ```
 
-`fixtures/make_fixtures.mjs` holds 98 invented screens as compact tables and writes `fixtures/screens/*.json` (in the
+`fixtures/make_fixtures.mjs` holds 118 invented screens as compact tables and writes `fixtures/screens/*.json` (in the
 extractor's serialised layout, with the VAR and ALT markers and `vw`) and `fixtures/expected.json`, which lists, for
 each screen, the rules it is a positive or near-miss negative for and the exact findings expected from every rule.
 Fifteen of them are the screens of the adversarial review of 2026-11-10, one per bug it found, and 30 come from the
 second review the same day: 18 found bugs (b01–b18; b13 and b14 record known false negatives), four the lead's
 decisions (j01–j04: footer links out of the arrow count, site-bar links out of exact-repeat, K13 qualifier badges out
 of sibling-device, the filler list unchanged), five controls (c01–c05) and three guards for the fixes (c06–c08).
-`fw_markers_mixed` has no `vw`, to keep the fallback covered. Run
+Twenty more (`cr_`, `ph_`, `lc_`, `sc_`, `ec_`, `pv_`, `se_`, `ed_`, `ex_`, `pn_`) are a positive and a near-miss
+negative for each codex rule; the negatives carry the exclusions (real contrasts, help text, onboarding greetings,
+measured ranges, year ranges, format hints). `fw_markers_mixed` has no `vw`, to keep the fallback covered. Run
 `node rules/fixtures/make_fixtures.mjs` after editing the tables and `--check` to see whether the files are stale; the
 tests fail on a stale file. The tests also run every rule over the extractor fixtures, the tokeniser test screens and
 the labeller fixtures, twice, and check that the output is the same. All copy in the fixtures is invented; never paste

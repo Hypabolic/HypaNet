@@ -199,6 +199,12 @@ def margin(logits) -> float:
 # -- ./tok ---------------------------------------------------------------------------------------------------------
 
 
+def kit_layout(roots: Roots) -> int:
+    """The id layout ./tok uses with neither --ids nor a vocabulary: 2 in a kit with resources/ (round 2 on, where
+    KIT.md asks for layout 2), else 1."""
+    return 2 if os.path.isdir(os.path.join(roots.author, "resources")) else 1
+
+
 def cmd_tok(argv: list[str], roots: Roots, node: str, out: list[str]) -> int:
     ap = argparse.ArgumentParser(
         prog="./tok", description="What the slop tokeniser does with a screen or a text (KIT.md §6, §10).")
@@ -210,8 +216,17 @@ def cmd_tok(argv: list[str], roots: Roots, node: str, out: list[str]) -> int:
     ap.add_argument("--lexicon", metavar="DIR", help="lexicon directory for --vocab (default: lexicon/ beside it)")
     ap.add_argument("--vocab-file", metavar="VOCAB", help="look ids up in this vocab.txt (without it every stem "
                                                           "shows its hash bucket)")
+    ap.add_argument("--ids", type=int, choices=sorted(tk.LAYOUTS), help="id layout (KIT.md §6; default: the meta.json "
+                                                                         "beside --vocab-file or --vocab, else this "
+                                                                         "kit's layout)")
     ap.add_argument("--node", type=int, metavar="K", help="with FILE: only the node whose i is K (and the windows)")
+    ap.add_argument("--offset", type=int, default=0, help=f"with --vocab: skip this many entries of each list "
+                                                         f"({tokrep.SHOW} are shown)")
     a = ap.parse_args(argv)
+    if a.offset < 0:
+        ap.error("--offset must be 0 or more")
+    if a.offset and a.vocab is None:
+        ap.error("--offset goes with --vocab")
     modes = [m for m in (a.file, a.text, a.words, a.vocab) if m is not None]
     if len(modes) != 1:
         ap.error("give exactly one of FILE, --text, --words, --vocab")
@@ -219,14 +234,19 @@ def cmd_tok(argv: list[str], roots: Roots, node: str, out: list[str]) -> int:
         ap.error("--node needs FILE")
     if a.vocab is not None:
         lex = roots.resolve(a.lexicon, what="lexicon directory") if a.lexicon else None
-        out.extend(tokrep.check_vocab(roots.resolve(a.vocab, what="vocab file"), lex))
+        out.extend(tokrep.check_vocab(roots.resolve(a.vocab, what="vocab file"), lex, a.ids, a.offset))
         return 0
     vpath = roots.resolve(a.vocab_file, what="vocab file") if a.vocab_file else None
+    default = kit_layout(roots)
     try:
-        vocab = tk.Vocab.load(vpath) if vpath else tk.EMPTY_VOCAB
+        vocab = tk.Vocab.load(vpath, ids=a.ids) if vpath else tk.EMPTY_VOCABS[a.ids or default]
     except tk.TokenizerError as e:
         raise ToolError(f"{vpath}: {e}") from None
-    out.append(f"ids from {roots.rel(vpath) if vpath else 'no vocabulary (hash buckets only)'}")
+    why = ("" if a.ids or vpath else
+           f" (this kit's default; --ids {3 - default} for layout {3 - default})" if len(tk.LAYOUTS) == 2 else
+           " (this kit's default)")
+    out.append(f"ids from {roots.rel(vpath) if vpath else 'no vocabulary (hash buckets only)'}, id layout "
+               f"{vocab.ids_version}{why}")
     if a.text is not None:
         out.extend(tokrep.show_text(a.text, vocab))
     elif a.words is not None:
@@ -776,12 +796,13 @@ def cmd_inspect(argv: list[str], roots: Roots, node: str, out: list[str]) -> int
 COMMANDS = {"tok": cmd_tok, "lint": cmd_lint, "score": cmd_score, "inspect": cmd_inspect}
 
 
-def cap(text: str, limit: int = CAP) -> str:
-    """At most ``limit`` characters of output (cut at a line end when one is near), then a notice."""
+def cap(text: str, limit: int = CAP, offset: bool = True) -> str:
+    """At most ``limit`` characters of output (cut at a line end when one is near), then a notice. ``offset``: the
+    command takes --offset, so the notice names it."""
     if len(text) <= limit:
         return text
-    notice = f"[output truncated at {limit:,} characters of {len(text):,}; narrow it with the tool's filters or " \
-             "--offset]\n"
+    notice = f"[output truncated at {limit:,} characters of {len(text):,}; narrow it with the tool's filters" \
+             + (" or --offset]\n" if offset else " (see --help)]\n")
     room = limit - len(notice)
     cut = text.rfind("\n", 0, room)
     if cut < room * 0.8:
@@ -812,7 +833,8 @@ def main(argv: list[str]) -> int:
         out.append(f"error: the tool failed on this input ({type(e).__name__}: {e}); check the file against KIT.md §4")
         code = 2
     text = buf.getvalue() + ("\n".join(out) + "\n" if out else "")
-    sys.stdout.write(cap(text))
+    pages = tool == "score" or (tool == "tok" and "--vocab" in argv[4:])
+    sys.stdout.write(cap(text, offset=pages))
     return code
 
 

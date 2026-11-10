@@ -1,0 +1,217 @@
+# slop/codex/lists/llm_claims.txt
+# Unsupported claims LLMs write into product copy: speed and ease promises, invented precision, vague social proof,
+# reassurance boilerplate and manufactured urgency. Patterns: L28 (speed and ease promises), L29 (invented
+# numbers; see the regex notes, not a word list), L30 (vague social proof), L31 (reassurance boilerplate), L32 (false
+# urgency).
+#
+# None of these is redundancy in the LABELLING.md sense; they are claims a linter cannot verify. The rule layer should
+# report them as "check this claim" findings, never as errors, and only in promotional slots (hero, subtitle, feature
+# card, stat, CTA band, testimonial). A number with a source, a date or a link beside it is not a finding.
+#
+# Format: one phrase per line, lower case, natural spelling; fold before matching. Section L29 holds patterns in the
+# llm_constructions.txt syntax ({n} a number with optional %, x, +, k, m or unit word; {x} one to eight words).
+# Lines starting with # are comments.
+# Provenance: deslop-copy and slop_scan.py "fake-stats" (samigiman/anti-slop-skills, MIT), unslop-ui TELLS.md §5 and
+# §8 "Fabricated social proof", "Fake urgency", "Newsletter ... No spam. Unsubscribe anytime." (MIT), tasteskill
+# copy.md §5 (cited), Wikipedia "Marketing buzzspeak" essay ("award-winning", "cutting edge"; cited); the rest added
+# for HypaNet. Licence: MIT (the HypaNet repo licence).
+
+# --- L28 speed and ease promises (unslop-ui "Hero copy cliches"; added) ---
+in seconds
+in minutes
+in just seconds
+in just minutes
+in under a minute
+in under 5 minutes
+in no time
+in a few clicks
+in just a few clicks
+with a few clicks
+in one click
+with one click
+with a single click
+get started in seconds
+get started in minutes
+set up in minutes
+setup in minutes
+up and running
+up and running in seconds
+launch in minutes
+deploy in seconds
+no coding required
+no code required
+no code needed
+no technical skills required
+no experience needed
+no learning curve
+zero learning curve
+zero setup
+zero config
+zero configuration
+works out of the box
+out of the box
+plug and play
+plug-and-play
+just works
+it just works
+instantly
+instant
+real-time
+in real time
+10x faster
+10x your
+save hours
+save hours every week
+save time
+save time and money
+save you hours
+hours of work
+hours saved
+
+# --- L29 invented precision: patterns ({n} = number) (slop_scan.py fake-stats: "10k+", "99.9%", "24/7", "10x",
+# "4.9/5"; unslop-ui "round vanity stats") ---
+{n}x faster
+{n}x more
+{n}% faster
+{n}% more
+{n}% less
+{n}% of teams
+{n}% of users
+{n}% satisfaction
+{n}% customer satisfaction
+{n}% uptime
+{n}+ users
+{n}+ customers
+{n}+ happy customers
+{n}+ teams
+{n}+ companies
+{n}+ businesses
+{n}+ developers
+{n}+ downloads
+{n}+ integrations
+{n}+ countries
+{n}/5 rating
+{n}/5 stars
+rated {n}/5
+rated {n} stars
+save {n} hours
+save {n} hours a week
+save {n} hours per week
+save up to {n}
+up to {n}x
+up to {n}%
+trusted by {n}+
+used by {n}+
+join {n}+
+join over {n}
+over {n} customers
+over {n} users
+more than {n} users
+# Round-number test for the rule: a figure ending in "+", "k+" or "%" with a round mantissa (10, 50, 99.9, 100, 500,
+# 1,000, 10,000) and no source, date or link on the screen.
+
+# --- L30 vague social proof (unslop-ui "Fabricated social proof", "Avatar stack + 'Join 10,000+ developers'";
+# Wikipedia buzzspeak essay) ---
+trusted by
+trusted by teams
+trusted by teams worldwide
+trusted by industry leaders
+trusted by the best
+trusted by leading companies
+trusted by thousands
+loved by
+loved by teams
+loved by thousands
+loved by users
+loved by developers
+loved by creators
+used by teams at
+used by the world's best
+join thousands
+join thousands of
+join the thousands
+join millions
+thousands of happy customers
+thousands of teams
+millions of users
+our customers love us
+customers love
+what our customers say
+what people are saying
+don't just take our word for it
+hear from our customers
+award-winning
+best-rated
+top-rated
+highly rated
+5-star
+five-star
+#1
+number one
+the leading
+the world's leading
+the world's first
+the world's most
+industry-leading
+market-leading
+
+# --- L31 reassurance boilerplate (unslop-ui §5 newsletter, §4 final CTA band; LABELLING.md K6: KEEP once beside the
+# primary action, ECHO when repeated) ---
+no credit card required
+no credit card needed
+no card required
+cancel anytime
+cancel any time
+no commitment
+no strings attached
+no hidden fees
+no hidden costs
+free forever
+free to start
+free to get started
+it's free
+100% free
+completely free
+no spam
+no spam, ever
+no spam. unsubscribe anytime.
+unsubscribe anytime
+unsubscribe at any time
+we respect your privacy
+we'll never share your email
+your data stays yours
+bank-level security
+bank-grade security
+enterprise-grade security
+military-grade encryption
+secure and private
+safe and secure
+private and secure
+gdpr compliant
+money-back guarantee
+satisfaction guaranteed
+risk-free
+risk free
+
+# --- L32 false urgency and scarcity (unslop-ui "Fake urgency") ---
+limited time
+limited time only
+limited time offer
+for a limited time
+while it lasts
+while supplies last
+only a few spots left
+spots are limited
+spots left
+seats left
+act now
+hurry
+don't miss out
+before it's too late
+last chance
+ending soon
+offer ends soon
+today only
+exclusive offer
+exclusive access
+early bird

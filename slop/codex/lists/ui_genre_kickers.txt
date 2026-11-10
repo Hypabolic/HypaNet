@@ -1,0 +1,233 @@
+# slop/codex/lists/ui_genre_kickers.txt
+# Section-genre words: eyebrows, kickers and overlines that name the KIND of section rather than its subject.
+# Patterns: U01 (kicker restating the heading), U02 (genre kicker), U03 (decorative label strip).
+#
+# Use: LABELLING.md K1. An eyebrow whose whole text is one of these is not a category label: it is ECHO -> the
+# heading when the heading contains the same word or its stem, or is itself a genre word of the same kind, and DECOR
+# otherwise. A word that names the product's real subject (Camping, Security, Recipes) is K1 KEEP and is not here.
+# Match the WHOLE folded eyebrow text (rules/README.md, "Normalised string"), optionally after stripping a leading
+# index ("01", "02 /") or glyph.
+#
+# Block A is the list LABELLING.md K1 freezes with the guide. Block B holds close variants proposed by this codex
+# under K1's "and their close variants" clause; they are candidates until LABELLING.md is revised, and the labeller,
+# not this file, decides a disputed one. Block C holds message-genre titles, kept separate because they sit on
+# dialogs and banners, not sections (see ui_status_genre_titles.txt for the full set).
+#
+# Format: one entry per line (alphabetical within each block), lower case, natural spelling; lines starting with # are comments.
+#
+# Provenance: Block A copied from slop/LABELLING.md §6 K1 (HypaNet). Block B written for HypaNet from common landing
+# page section names; grounding: REI Cedar eyebrow guidance ("Do use eyebrows for categories or groupings", "Don't use
+# eyebrows as headings"; [anti-slop-guides] B9), GOV.UK Service Manual ("Headings should describe the purpose
+# of the text that follows"). Licence: MIT (repo licence).
+
+# --- Block A: frozen K1 list (LABELLING.md §6) ---
+about
+about us
+capabilities
+contact
+faq
+features
+get started
+how it works
+our team
+overview
+pricing
+products
+services
+testimonials
+why us
+
+# --- Block B: close variants (candidates) ---
+# features
+all features
+benefits
+core features
+feature
+highlights
+key benefits
+key features
+offerings
+the toolkit
+tools
+top features
+what it does
+what we do
+what we offer
+what you get
+what's included
+whats included
+# pricing
+choose a plan
+choose your plan
+cost
+our plans
+plans
+plans & pricing
+plans and pricing
+pricing plans
+simple pricing
+transparent pricing
+# faq
+common questions
+faqs
+frequently asked questions
+got questions
+help
+q & a
+q&a
+questions
+questions and answers
+# about
+background
+company
+mission
+our mission
+our story
+our values
+our vision
+the company
+the story
+values
+vision
+who we are
+# overview
+at a glance
+in brief
+intro
+introduction
+our approach
+summary
+the approach
+the basics
+the big idea
+the idea
+the problem
+the solution
+# how it works
+getting started
+how we work
+in three steps
+our process
+process
+quick start
+quickstart
+setup
+step by step
+the process
+three steps
+# testimonials
+as featured in
+as seen in
+case studies
+clients
+customer reviews
+customers
+kind words
+love letters
+loved by
+our clients
+our customers
+our partners
+partners
+reviews
+social proof
+success stories
+testimonial
+trusted by
+wall of love
+what customers say
+what our customers say
+what people are saying
+what people say
+word of mouth
+# contact
+book a call
+contact us
+drop us a line
+get in touch
+hire us
+let's talk
+lets talk
+reach out
+say hello
+say hi
+talk to us
+work with us
+# get started
+begin
+call to action
+cta
+join
+join us
+ready
+ready to get started
+ready to start
+sign up
+start
+start here
+# products
+catalog
+catalogue
+collection
+collections
+our products
+product
+shop
+store
+# services
+expertise
+our services
+our solutions
+service
+solutions
+specialities
+specialties
+what we can do
+# our team
+founders
+leadership
+meet the team
+our people
+people
+team
+the team
+# why us
+advantages
+our edge
+the difference
+what makes us different
+why
+why choose us
+why it matters
+# capabilities
+blog
+capability
+community
+gallery
+insights
+integrations
+latest
+latest news
+news
+newsletter
+our work
+portfolio
+projects
+recent work
+resources
+selected work
+showcase
+skills
+stack
+stories
+tech stack
+updates
+use cases
+work
+
+# --- Block C: message-genre titles (see ui_status_genre_titles.txt) ---
+announcement
+coming soon
+introducing
+new
+now available

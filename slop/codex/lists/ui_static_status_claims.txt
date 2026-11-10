@@ -1,0 +1,90 @@
+# slop/codex/lists/ui_static_status_claims.txt
+# Status words that appear in pills, badges and dot labels. Patterns: U42 (decorative status marker), U43 (bound
+# status, KEEP), U44 (repeated device).
+#
+# Use: LABELLING.md §6 "Static status claims" and K2. A pill whose whole text is one of these is DECOR (R11) when its
+# text and colour are fixed in the markup and it is not the only statement of a real, dated fact; it is KEEP (K2) when
+# the text or colour is bound to data (`stateful`), differs between siblings, or is part of a legend. The list says
+# which words to inspect; the binding decides. Match the whole folded pill text after dropping a leading dot, sparkle
+# or emoji glyph (those glyphs are aside R11g when the words are KEEP).
+#
+# Format: one entry per line (alphabetical within each block), lower case; lines starting with # are comments.
+#
+# Provenance: written for HypaNet. Grounding: GOV.UK Design System, Tag ("Tags are only used to indicate a status";
+# "The more you add, the harder it is for users to remember them"; [anti-slop-guides] B4); Hallmark gate 63
+# ("decorative status dots before labels", legal for "a live state"); Microsoft Win32 UX guide (exclamation points
+# acceptable to "call attention to Web content ('New!')", which is the one sanctioned use of "New"). Licence: MIT.
+
+# --- availability and presence ---
+accepting clients
+accepting projects
+active
+available
+available for hire
+available for work
+available now
+booking now
+in stock
+live
+live now
+now available
+now live
+offline
+online
+open
+open for work
+open to work
+taking projects
+# --- system health ---
+all systems go
+all systems operational
+encrypted
+healthy
+operational
+protected
+running
+secure
+synced
+systems normal
+up
+uptime
+verified
+# --- release stage ---
+2.0
+alpha
+beta
+coming soon
+early access
+experimental
+in beta
+just launched
+just released
+labs
+launching soon
+new
+new!
+now in beta
+preview
+private beta
+public beta
+soon
+v2
+# --- promotion ---
+ai
+ai-powered
+best value
+editor's pick
+exclusive
+featured
+free
+hot
+limited
+limited time
+most popular
+our pick
+popular
+powered by ai
+premium
+pro
+recommended
+trending

@@ -7,13 +7,19 @@ tool and an ESLint rule): deterministic, on CPU, with no language model at lint 
 vocabulary, write its lexicon into the embedding table, and set every weight and bias, from your own knowledge of UI
 writing and from what the tools show you.
 
+**This is round 2.** You wrote this network once already. `work/` starts as your round-1 `work/` (`build.py`,
+`lexicon/`, `probes/`, `MODEL.md`, `vocab.txt` and the artefact; the `scratch/` directory was not carried over), and
+you revise it. New in this round: a read-only `resources/` directory with a full open thesaurus, a codex of LLM
+writing patterns and UI copy patterns, and the round-1 results (section 14); a larger id layout with room for a
+thesaurus-scale vocabulary (section 6); and 1,200 dev examples instead of 400.
+
 The question behind the experiment is how weights written by reasoning compare with weights trained by gradient
 descent, and with hand-written rules, on a task that needs lexical knowledge: telling that two short strings say the
 same thing ("OPERATION ON HOLD" and "PAUSED") or do not ("Playlists" and "New playlist"). That knowledge has to live in
 the weights you write.
 
-Everything you need is in this file and in `LABELLING.md`, which defines what counts as redundant. `PROMPT.md` is
-your task statement.
+Everything you need is in this file, in `LABELLING.md`, which defines what counts as redundant, and in `resources/`.
+`PROMPT.md` is your task statement.
 
 ## 1. Your directory
 
@@ -22,12 +28,13 @@ your task statement.
 | `KIT.md` | This file |
 | `PROMPT.md` | The task statement you were given |
 | `LABELLING.md` | The definition of the labels: classes, decision procedure, precedence, K rules, pattern codes. It is the answer key's definition |
-| `examples/dev/` | 400 generated screens with exact labels (section 9) |
+| `examples/dev/` | 1,200 generated screens with exact labels (section 9) |
 | `examples/reference/` | Real screens from three projects plus the pause-menu fixture, each with its whole source file, and labels to `LABELLING.md` when the kit includes their answer key (section 9; `examples/README.md` says whether it does) |
 | `examples/INDEX.txt` | One line per example screen: set, screen id, kind, framework, node count, window count, codes present |
 | `kit/lib/` | Read-only copies of the code the linter runs: `porter.py`, `tokenizer.py`, `model.py` and the two tables `tokenizer.py` reads (`ids.json`, `unicode_tables.json`) |
+| `resources/` | Read-only reference material (section 14): `codex/` (pattern catalogue, word lists, sources), `thesaurus/` (Open English WordNet and Moby, keyed by stem) and `r1/RESULTS.md` (the round-1 results) |
 | `./tok`, `./lint`, `./score`, `./inspect`, `./python3` | The tools (section 10) |
-| `work/` | Your working directory and the only place you can write. Your deliverables go here |
+| `work/` | Your working directory and the only place you can write. It starts as your round-1 `work/`; your deliverables go here |
 | `tools/`, `.venv/`, `HANDOVER.json` | The kit's guard, the private interpreter and the hand-over record (the hash of every file you were given). Read-only |
 
 Everything except `work/` is read-only.
@@ -175,7 +182,8 @@ Per node text, in order:
    two letter runs, every run starting with a capital) from the text; the extractor sets them from styling and text.
    A node has each flag if either side sets it.
 
-**Ids.** The table has 10,240 rows:
+**Ids.** There are two id layouts, and `work/meta.json` says which one an artefact uses (`"ids": 2`; no `"ids"` key
+means layout 1). **Use layout 2**, which has room for a thesaurus-scale lexicon: its table has 25,088 rows.
 
 | Ids | Use |
 |---|---|
@@ -184,12 +192,22 @@ Per node text, in order:
 | 96–127 | the 32 ASCII punctuation characters, one id each, in code-point order (`!` = 96 … `~` = 127) |
 | 192–291 | numbers 0–99 (id = 192 + n); 292 `YEAR`, 293 `NUM`, 294 `DEC` |
 | other ids below 512 | never produced |
-| 512–4,095 | **your vocabulary**: the entry on line *n* of `work/vocab.txt` (counted from 1, as the Read tool and `./tok` count) is id 511 + *n*; at most 3,584 stems |
-| 4,096–10,239 | hash buckets: any stem not in `vocab.txt` gets 4,096 + (first 4 bytes of sha256 of the UTF-8 stem, big-endian, mod 6,144) |
+| 512–16,895 | **your vocabulary**: the entry on line *n* of `work/vocab.txt` (counted from 1, as the Read tool and `./tok` count) is id 511 + *n*; at most 16,384 stems |
+| 16,896–25,087 | hash buckets: any stem not in `vocab.txt` gets 16,896 + (first 4 bytes of sha256 of the UTF-8 stem, big-endian, mod 8,192) |
+
+Layout 1 (round 1's, still loaded and run unchanged) differs only in the last two rows: vocabulary 512–4,095 (at most
+3,584 stems) and buckets 4,096 + (the same number mod 6,144), 10,240 rows in all. Ids below 512 and a vocabulary
+line's id are the same in both layouts; a hash bucket is not. In code: `tk.LAYOUTS[2]` holds `vocab_base`,
+`vocab_max`, `hash_base`, `hash_buckets` and `vocab_size`; `tk.hash_bucket(stem, 2)` is a stem's layout-2 bucket;
+`tk.Vocab(stems, 2)` (or the `art.vocab` of a loaded layout-2 artefact) gives layout-2 ids. The bare constants
+`tk.VOCAB_BASE`, `tk.VOCAB_MAX`, `tk.HASH_BASE`, `tk.HASH_BUCKETS`, `tk.V`, `tk.hash_bucket(stem)` and
+`tk.EMPTY_VOCAB` are layout 1's. `./tok --vocab-file work/vocab.txt` and `./tok --vocab work/vocab.txt` take the
+layout from the `meta.json` beside the file; with neither a vocabulary nor `--ids`, `./tok` uses layout 2 in this kit
+(its first line says so) and `--ids 1` shows round 1's hash buckets.
 
 Every row of `tok_emb.weight` is yours to write, the hash-bucket rows included. Two unrelated out-of-vocabulary stems
-share a bucket with probability 1/6,144 per pair, so within one screen two different unknown stems almost never share
-a row, and the same unknown word in two nodes always gets the same id.
+share a bucket with probability 1/8,192 per pair (1/6,144 in layout 1), so within one screen two different unknown
+stems almost never share a row, and the same unknown word in two nodes always gets the same id.
 
 **`vocab.txt`**: UTF-8, one Porter stem per line, unique, lower case, no spaces. You choose its entries; the tokeniser
 only looks them up, so an entry is only ever used if some word stems to exactly it. Write stems, not words: find a
@@ -252,7 +270,7 @@ let a decision hinge on a smaller difference.
 
 | Name | Shape | Symbol |
 |---|---|---|
-| `tok_emb.weight` | 10240 × 128 | E |
+| `tok_emb.weight` | 25088 × 128 (layout 2; 10240 × 128 in layout 1) | E |
 | `off_emb.weight` | 32 × 128 | P |
 | `role_emb.weight` | 48 × 128 | Rr |
 | `cluster_emb.weight` | 64 × 128 | Cc |
@@ -264,9 +282,14 @@ let a decision hinge on a smaller difference.
 | `layers.{0-3}.mlp.fc2.weight`, `.fc2.bias` | 128 × 512, 128 | W2, b2 |
 | `head.weight`, `head.bias` | 4 × 128, 4 | Wout, bout |
 
-2,128,900 parameters in all, 61.6% of them in `tok_emb.weight`. Every tensor starts at 0.0. You do not have to use
-every layer, head or unit; anything left at zero contributes nothing (and zero rows are not stored in the compiled
-file).
+4,029,444 parameters in all in layout 2, 79.7% of them in `tok_emb.weight` (2,128,900 and 61.6% in layout 1); only
+`tok_emb.weight` differs between the layouts. Every tensor starts at 0.0: `mdl.zero_tensors(2)` gives the layout-2
+set (`mdl.zero_tensors()` is layout 1), `mdl.tensor_shapes(2)` the shapes, and `mdl.save_artifact` takes the layout
+from `tok_emb.weight`'s row count and writes `"ids": 2` into `meta.json` for layout 2 (pass `ids=2` to make it
+explicit). `mdl.TENSOR_SHAPES` and `mdl.PARAM_COUNT` are layout 1's. You do not have to use every layer, head or unit;
+anything left at zero contributes nothing. The compiled file stores only non-zero values: a mostly-zero row costs 20
+bytes plus 4 per non-zero value (12,000 rows with about 19 values each is about 1.2 MB), so a large lexicon is cheap
+when each stem writes a few dimensions.
 
 ## 8. The artefact
 
@@ -274,7 +297,8 @@ file).
 
 - `artifact.npz`: uncompressed, float32, exactly the tensors of section 7 with those shapes, all finite;
 - `vocab.txt`: as in section 6;
-- `meta.json`: `{"format": "slop.artifact/1", "pointer_head": [L, H]}`.
+- `meta.json`: `{"format": "slop.artifact/1", "pointer_head": [L, H], "ids": 2}` (no `"ids"` key means layout 1,
+  which is what round 1 wrote).
 
 The artefact's sha256 is the sha256 of the three files' hex sha256 digests concatenated in that order. The harness
 compiles it into the linter's binary (`slop-net.bin`) unchanged.
@@ -292,7 +316,7 @@ import model as mdl        # numpy reference; imports tokenizer and porter
 import tokenizer as tk     # tk.tokenize_text(text, vocab), tk.ROLE_IDS, tk.FLAG_IDS, tk.Vocab, ...
 import porter              # porter.stem(word)
 
-T = mdl.zero_tensors()     # {name: float32 zeros of the exact shape}, in order
+T = mdl.zero_tensors(2)    # {name: float32 zeros of the exact shape}, in order; id layout 2 (section 6)
 # ... set T["tok_emb.weight"][...] and the rest ...
 sha = mdl.save_artifact(WORK, T, vocab_stems, (layer, head))   # writes artifact.npz, vocab.txt, meta.json
 ```
@@ -304,9 +328,10 @@ produce, use `tk.tokenize_text(word).tokens` (it applies the case splitting, fol
 
 ## 9. The examples
 
-`examples/dev/` holds 400 screens from a program that generates TSX, HTML and SwiftUI source files from the guide
+`examples/dev/` holds 1,200 screens from a program that generates TSX, HTML and SwiftUI source files from the guide
 and labels them exactly; the files went through the real extractor. They were taken in a fixed hash order until every
-scored pattern had at least 10 redundant nodes and every K rule at least 10 kept ones, then filled to 400. They cover
+scored pattern had at least 10 redundant nodes and every K rule at least 10 kept ones, then filled to 1,200 in that
+order; filling only adds screens, so the 400 screens of round 1 are all among them. They cover
 the patterns and the hard negatives, but their phrasing is narrower than real copy, so treat them as a check on your
 reasoning, not as the distribution you are judged on.
 
@@ -344,7 +369,7 @@ Every tool has `--help`.
 ./tok FILE [--node K] [--vocab-file work/vocab.txt]  per node its text, flags and tokens, then its windows
 ./tok --text "TEXT" [--vocab-file work/vocab.txt]    one node's text
 ./tok --words FILE [--vocab-file work/vocab.txt]     a word list: word -> folded word -> stem -> id, for every word
-./tok --vocab work/vocab.txt [--lexicon DIR]         checks a vocabulary (below)
+./tok --vocab work/vocab.txt [--lexicon DIR] [--offset N]  checks a vocabulary (below)
 ```
 
 Each word token prints as surface → folded word → stem → id and what the id is (`vocab line N`, counted from 1, or
@@ -353,7 +378,8 @@ Each word token prints as surface → folded word → stem → id and what the i
 stems and entries that do not tokenise to themselves; as notes, entries that change when stemmed again (fine when
 some word stems to them, section 6); and, reading every word of every `*.txt` file in the lexicon directory
 (default `lexicon/` beside the vocabulary; it has no comment syntax: every word in the files counts), each stem that
-more than one lexicon word maps to, marking stems missing from `vocab.txt`.
+more than one lexicon word maps to, marking stems missing from `vocab.txt`. The problem count is the second line;
+each list then gives its count and 50 entries, and `--offset N` shows the entries from N + 1 on.
 
 ### `./lint`: the real linter
 
@@ -432,17 +458,22 @@ disabled, because fitting is not allowed (section 11).
    did, is fine, and so is reverting it once you can say why your reasoning was wrong; trying values you have no
    separate reason for (0.5, 1, 2, 4 …) and keeping whichever scores best is not. Setting a threshold or an output
    bias where the dev score is highest, by eye or in code, is a search: set it from what the mechanism computes (for
-   example the margin that one shared stem gives) and say so in `MODEL.md`.
+   example the margin that one shared stem gives) and say so in `MODEL.md`. Selecting thesaurus entries by a rule you
+   state (for example, keep a pair only when both sources list it, or only senses whose gloss is about software) is
+   construction; choosing between such rules by their dev score is a search.
 2. **No code that reads the examples to compute any weight, vocabulary entry or synonym group.** No counting words in
    the examples to choose the vocabulary, no thresholds or biases computed in code from scores or from the network's
    outputs on any screen. Measure with the tools, think, then type the number you choose into `build.py` with a
    comment saying why. Building weights in code from your own vectors and lists (orthonormalising a code book you
    chose, an outer product of two of your own directions) is construction, not fitting. Fixed pseudo-random vectors
    from a seeded numpy generator are a construction too; trying several seeds and keeping the best is a search.
-3. **Every vocabulary entry and synonym group is general UI vocabulary from your own knowledge**, not a key for one
-   disclosed screen. Seeing a gap in an example and adding the general group it belongs to is fine; adding the one
-   word pair that fixes that screen is not. There is no WordNet or other lexical resource in the kit, and none may be
-   used.
+   Code may read `resources/` (the thesaurus and the codex lists) to build your lexicon: which entries you take, and
+   how, is your judgement, but it must never be chosen from scores, labels, the examples or the network's outputs.
+3. **Every vocabulary entry and synonym group is general vocabulary**, from your own knowledge or from `resources/`,
+   not a key for one disclosed screen. Seeing a gap in an example and adding the general group it belongs to is fine;
+   adding the one word pair that fixes that screen is not. The files in `resources/` (the thesaurus and the codex
+   lists) are the only lexical material you may use besides your own knowledge; no other lexical resource may be used
+   (none is installed).
 4. **numpy only.** No scipy, torch, sklearn or similar libraries.
 5. **Don't modify or work around the tools or the `./python3` guard**, and don't read anything outside this
    directory, except the file Claude Code itself names when it saves a long tool output.
@@ -482,15 +513,40 @@ models) are scored on the same screens beside it. No pass mark is set; the compa
 
 All in `work/`:
 
-1. **`build.py`**: rewrites the artefact exactly (`./python3 work/build.py`). It may read only files under `work/`
-   that you wrote by hand (your lexicon and tables), never a file that a script produced from the examples, from
-   scores or from the network's outputs, and it may import `kit/lib/`; it never reads `examples/`. Every number in it
-   is a literal you chose, a formula, or a construction from your own vectors and lists, with a comment saying why.
-2. **`vocab.txt`**, written by `build.py`, which may stem the surface words of your lexicon files.
-3. **`lexicon/*.txt`** (optional): your hand-written word lists and synonym groups, in any layout `build.py` reads.
+1. **`build.py`**: rewrites the artefact exactly (`./python3 work/build.py`). It may read files under `work/` (your
+   lexicon and tables, written by hand or by your own scripts from `resources/` and your own lists) and the read-only
+   files under `resources/`, never a file that a script produced from the examples, from scores or from the network's
+   outputs, and it may import `kit/lib/`; it never reads `examples/`. Every number in it is a literal you chose, a
+   formula, or a construction from your own vectors and lists, with a comment saying why.
+2. **`vocab.txt`**, written by `build.py`, which may stem the surface words of your lexicon files and of the
+   thesaurus entries you chose.
+3. **`lexicon/*.txt`** (optional): your word lists and synonym groups, hand-written or selected from `resources/` by a
+   rule you state in `MODEL.md`, in any layout `build.py` reads.
 4. **`artifact.npz`** and **`meta.json`**, written by `build.py`.
 5. **`MODEL.md`**: the residual allocation (which dimensions carry what); what every head and every MLP group
-   computes; the lexicon and its synonym groups; the choice of pointer head; the revisions you made after scoring and
-   why; known failures; the command that rebuilds the artefact. Keep it current as you go, not only at the end.
+   computes; the lexicon and its synonym groups, and which thesaurus and codex entries you took and by what rule; the
+   choice of pointer head; the revisions you made after scoring and why (round 1's stay; add round 2's after them);
+   known failures; the command that rebuilds the artefact. Keep it current as you go, not only at the end.
 
 Probe screens, scratch scripts and notes may stay in `work/` too.
+
+## 14. Resources (`resources/`, read-only, new in round 2)
+
+| Path | What it is |
+|---|---|
+| `resources/r1/RESULTS.md` | Your round-1 network's scores and, with invented examples, the kinds of false alarm and miss it made on real copy you are not shown |
+| `resources/codex/CODEX.md` | A catalogue of 104 patterns. L01–L52: how language models write UI copy (hype vocabulary, stock constructions, filler, slot-filling redundancy, leftover chatbot text, glyphs). U01–U52: what UI-writing guides say about redundant, decorative and narrating copy, including eight KEEP guards (copy a detector must not flag). §2 maps every pattern onto `LABELLING.md`'s classes or the rule layer; §7 is a decision aid for sentences that add a consequence, instruction or reason; §9 has detection notes |
+| `resources/codex/lists/` | 24 word and phrase lists (about 3,250 entries) named in the catalogue: `llm_*.txt` (promotional and excess vocabulary, constructions, filler, hedges, stock CTAs, claims, narration cues, kickers, residue, glyphs) and `ui_*.txt` (consequence markers, instruction markers, restating frames, narration verbs, genre kickers, status words, input lead verbs, empty-state templates, generic CTAs, filler, padding, pleonasms). Natural lower-case words and phrases, not stems: `./tok --words` gives their stems. Each file's header gives its use, format, provenance and licence |
+| `resources/codex/SOURCES.md`, `resources/codex/lists/ATTRIBUTION-ui.md` | The codex's sources, licences and notices |
+| `resources/thesaurus/out/*.tsv` | Open English WordNet 2025 and Moby Thesaurus II, keyed by the stems the tokeniser produces: `stems.tsv` (each stem's words and synsets), `stem_links.tsv` (stem to stem: same synset, similar, hypernym, derivation, antonym, mutual Moby link), `synsets.tsv` (members and first gloss), `words.tsv` (multi-word and hyphenated entries by their tokens), `related.tsv` (typed links), `moby.tsv` (Moby's full lists). `README.md` explains every column; `ATTRIBUTION.md` holds the licences |
+
+- `LABELLING.md` is the definition; the codex is reference. Where they differ, the guide decides. Most of Part L is
+  rule-layer territory (codex §2): a node is not redundant because it contains hype words, and the network earns
+  nothing for findings the rule layer owns.
+- The thesaurus is broad and noisy. WordNet merges senses ("clear" = transparent and = empty), Porter merges words
+  into one stem, and Moby lists loose associates as well as synonyms. Antonyms and negations must never share a
+  concept (enable/disable, public/private, can/cannot): those differences are exactly the information that keeps a
+  sentence. The README's "Things to keep in mind" lists the traps.
+- The tables are large (up to 25 MB): look things up with Grep, or with a `./python3` script that reads them, rather
+  than reading a whole file.
+- `MODEL.md` should say which resources `build.py` reads and the rule by which it selects from them.

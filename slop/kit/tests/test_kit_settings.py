@@ -15,6 +15,7 @@ sys.path.insert(0, str(SLOP / "kit"))
 import make_settings as ms  # noqa: E402
 
 R1 = ms.DEFAULT_AUTHOR
+R2 = ms.R2_AUTHOR
 SMOKE = ms.SMOKE
 
 
@@ -81,7 +82,7 @@ def test_check_round_trip(tmp_path):
 
 
 @pytest.mark.skipif(not (SLOP / "scripts" / "launch_checks.py").is_file(), reason="launcher checks not present")
-@pytest.mark.parametrize("author", [R1, SMOKE])
+@pytest.mark.parametrize("author", [R1, SMOKE, R2])
 def test_launcher_accepts_the_settings(tmp_path, author):
     out = tmp_path / "settings.json"
     out.write_text(json.dumps(ms.build(author)))
@@ -96,3 +97,17 @@ def test_codex_and_claude_json_are_denied_and_runs_have_their_own_settings_file(
         assert rd(ms.CODEX_HOME) in deny and f"Read(/{ms.CLAUDE_JSON})" in deny
     assert ms.default_out(R1) == SLOP / "kit" / "settings.json"
     assert ms.default_out(SMOKE) == SLOP / "kit" / "settings.smoke.json"
+
+
+def test_r2_settings_deny_r1_and_keep_resources_read_only():
+    s = ms.build(R2)
+    deny = reads(s)
+    assert rd(R1) in deny and rd(SMOKE) in deny and rd(ms.REPO) in deny
+    assert rd(R2) not in deny and rd(str(R2) + "*") not in deny
+    own = ms.HOME / ".claude" / "projects" / ms.project_name(R2)
+    assert f"Read(/{own}/**)" in s["permissions"]["allow"] and rd(own) not in deny
+    assert rd(ms.HOME / ".claude" / "projects" / ms.project_name(R1)) in deny
+    for t in ("Edit", "Write"):
+        assert f"{t}(./resources/**)" in s["permissions"]["deny"]
+    assert ms.default_out(R2) == SLOP / "kit" / "settings.r2.json"
+    assert rd(R2) in reads(ms.build(R1))

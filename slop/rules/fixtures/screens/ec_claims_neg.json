@@ -1,0 +1,16 @@
+{"schema": "slop.screen/1", "id": "488b85d10cf4ba6f", "framework": "tsx",
+ "source": {"repo": "slop-rules-fixtures", "path": "src/ec_claims_neg.tsx", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "header", "line": 2},
+  {"k": 1, "kind": "control", "line": 6},
+  {"k": 2, "kind": "body", "line": 9}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "h2", "text": "Trusted by", "flags": [], "loc": [3, 7, 3, 17]},
+  {"i": 1, "k": 0, "role": "body", "text": "Trusted by 12,483 teams", "flags": [], "loc": [4, 7, 4, 30]},
+  {"i": 2, "k": 0, "role": "body", "text": "Delivered in seconds.", "flags": [], "loc": [5, 7, 5, 28]},
+  {"i": 3, "k": 1, "role": "label", "text": "Template", "flags": ["in_form", "in_control"], "loc": [7, 7, 7, 15]},
+  {"i": 4, "k": 1, "role": "helper", "text": "Get started in seconds with a blank page.", "flags": ["small", "in_form", "in_control"], "loc": [8, 7, 8, 48]},
+  {"i": 5, "k": 2, "role": "badge", "text": "Limited time offer, ends \ue000 date", "flags": ["small", "pill", "dynamic"], "loc": [10, 7, 10, 38]},
+  {"i": 6, "k": 2, "role": "body", "text": "99.9% uptime over the last 90 days.", "flags": [], "loc": [11, 7, 11, 42]},
+  {"i": 7, "k": 2, "role": "body", "text": "Exports are 2-4x faster on the new engine.", "flags": [], "loc": [12, 7, 12, 49]},
+  {"i": 8, "k": 2, "role": "body", "text": "Up to 2x faster than v1 in our benchmarks.", "flags": [], "loc": [13, 7, 13, 49]}]}

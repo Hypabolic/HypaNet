@@ -1,0 +1,229 @@
+# slop/codex/lists/ui_narration_verbs.txt
+# Words and frames that narrate the interface: gestures, control mechanics, layout and the screen talking about
+# itself. Patterns: U11 (body explaining the buttons), U24 (helper narrating the control), U30 (gesture lead),
+# U32 (caption saying what a control does), U37-U41 (self-description, literal counts, platform behaviour, hidden
+# inputs, tour narration).
+#
+# Use: NARRATE evidence (LABELLING.md §3 and §7, rule codes R6 and R16). A hit is a candidate only: the §7 consequence
+# test still decides. A hidden input (keyboard shortcut, long-press, drag, swipe action, multi-select modifier) that no
+# visible control exposes is KEEP (K4), so a gesture word next to a key name or a modifier ("Hold Shift and drag to
+# select a range") is evidence for KEEP, not NARRATE. Product-capability copy on a marketing page ("Exports let you
+# send a PDF to your accountant") uses the same frames about the product, not about a visible control; it is not
+# narration unless the control it describes is on the screen.
+#
+# Format: one entry per line, lower case, natural spelling; fold as the rule layer does (rules/README.md,
+# "Normalised string"). Inflected forms are listed explicitly. Lines starting with # are comments.
+#
+# Provenance: written for HypaNet. Grounding: GOV.UK Service Manual, Writing for user interfaces ("If you find yourself
+# having to explain how the user interface works, that's a sign something has gone wrong"); GOV.UK A to Z ("Don't use
+# 'click'"); Microsoft Writing Style Guide, Describing interactions with the UI ("Don't use input-specific verbs, such
+# as click or swipe"); Microsoft Win32 UX guide ("Omit instructional verbs that apply to all controls of the given
+# type"); Google developer documentation style guide, UI elements ("Don't use directional language to orient the
+# reader, such as above, below, or right-hand side"); Apple HIG Alerts ("Avoid explaining alert buttons"). Licence: MIT
+# (repo licence).
+
+# --- input-specific gestures (Microsoft UIVerbs; GOV.UK "click") ---
+click
+clicks
+clicking
+clicked
+click on
+click here
+double-click
+tap
+taps
+tapping
+tapped
+tap on
+tap here
+press
+pressing
+press here
+hit
+swipe
+swipes
+swiping
+scroll
+scrolls
+scrolling
+scroll down
+scroll up
+scroll to
+hover
+hovers
+hovering
+hover over
+mouse over
+point to
+long-press
+pinch
+drag
+dragging
+drag and drop
+drag-and-drop
+
+# --- control mechanics (what every control of its type does) ---
+toggle
+toggles
+toggling
+toggle on
+toggle off
+switch on or off
+turn on or off
+turn it on or off
+on or off
+check or uncheck
+tick or untick
+select or deselect
+expand
+expands
+collapse
+collapses
+expand or collapse
+show or hide
+open or close
+opens
+closes
+type in
+type into
+fill in the field
+enter in the field
+in the field below
+in the box below
+in the text box
+from the dropdown
+from the drop-down
+from the drop-down menu
+from the menu
+from the list
+from the list below
+pick from
+choose from
+select from
+select an option
+choose an option
+use the button
+use the buttons
+use the toggle
+use the slider
+use the menu
+use the tabs
+using the button
+the button below
+the button above
+the link below
+the form below
+the button
+the toggle
+the switch
+the slider
+the dropdown
+the checkbox
+the field
+the menu
+
+# --- directional and layout reference (Google style: no "above", "below") ---
+below
+above
+underneath
+beneath
+to the left
+to the right
+on the left
+on the right
+left-hand
+right-hand
+at the top
+at the bottom
+in the corner
+top right
+top-right
+top left
+bottom right
+bottom left
+sidebar
+side panel
+next to
+beside
+the following
+following
+shown below
+shown above
+listed below
+listed above
+see below
+see above
+as shown
+as you can see
+
+# --- the screen talking about itself (R16) ---
+this page
+this screen
+this view
+this section
+this panel
+this card
+this dashboard
+this tab
+this dialog
+this window
+this modal
+this form
+this list
+this table
+this area
+this space
+on this page
+on this screen
+in this section
+in this view
+here you can
+here you'll find
+here you will find
+here's where
+this is where
+this is your
+welcome to your
+at a glance
+in one place
+in a single view
+one place
+layout
+laid out
+organised
+organized
+arranged
+grouped
+grid
+cards
+tiles
+clean
+minimal
+simple interface
+intuitive
+easy to navigate
+
+# --- outcome narration (what a visible control will do) ---
+will open
+opens a
+will take you to
+takes you to
+will bring you to
+brings you to
+will show
+shows you
+will display
+displays
+will appear
+appears
+will be shown
+lets you
+allows you to
+enables you to
+so you can
+to see more
+to learn more
+to view
+to get started
+to continue
+to proceed

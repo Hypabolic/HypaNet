@@ -1,6 +1,8 @@
-"""Author API cost of the HypaNet Slop run: one cap of US$200 over every launch, smoke included (SPEC.md §13).
+"""Author API cost of the HypaNet Slop runs: r1's one cap of US$200 over every launch, smoke included (SPEC.md §13);
+r2's own cap, read from runs/r2/CAP_USD.
 
-    uv run python scripts/cost.py [--logs DIR ...]                # JSON summary
+    uv run python scripts/cost.py [--run r2] [--logs DIR ...]     # JSON summary
+    uv run python scripts/cost.py [--run r2] --cap                # print the run's cap (exit 2 if r2 has none)
     uv run python scripts/cost.py [--logs DIR ...] --check        # exit 3 at the cap, 4 while a launch is unresolved
     uv run python scripts/cost.py [--logs DIR ...] --remaining    # remaining US$, two decimals, rounded down
     uv run python scripts/cost.py [--logs DIR ...] --session-total SID   # the session's cumulative total so far
@@ -9,7 +11,12 @@
 Reads every ``*.stream.jsonl`` in each DIR (default: slop/runs/smoke/logs/ and slop/runs/r1/logs/, both charged
 against the one cap). Launch names are ``smoke*`` (the smoke launch, its own session), ``r1`` (the session) and
 ``r1.c<K>`` (technical continuations, which resume the r1 session). A transcript with any other name is still
-charged (the cap is never under-counted) and is listed under ``unexpected``. The accounting is Clouds' (and
+charged (the cap is never under-counted) and is listed under ``unexpected``.
+
+``--run r2`` reads slop/runs/r2/logs/ (or the --logs given) against r2's own cap: the US$ figure in
+slop/runs/r2/CAP_USD, which the owner writes (this script never does; without it every r2 mode except the plain
+summary exits 2, and launch.sh refuses). r2's launch names are ``r2`` and ``r2.c<K>``; r1's spend is not charged to
+r2's cap. The accounting is Clouds' (and
 v0.4/v0.5's, src/agent_loop_lab/v04/cost.py), re-implemented here so slop/ stands alone:
 
 * Claude Code's ``result`` event carries ``total_cost_usd``, cumulative per session id across resumed launches;
@@ -46,6 +53,49 @@ PRICES = {"claude-fable-5-2": (8.0, 40.0, 10.0, 16.0, 0.20),
           "claude-fable-5-1": (10.0, 50.0, 12.5, 20.0, 0.25)}
 MAX_PRICE = tuple(max(p[i] for p in PRICES.values()) for i in range(5))
 NAME_RE = re.compile(r"^(?:smoke[A-Za-z0-9._-]*|r1|r1\.c[1-9][0-9]*)$")
+R2_LOGS = SLOP / "runs" / "r2" / "logs"
+R2_CAP_FILE = SLOP / "runs" / "r2" / "CAP_USD"
+R2_NAME_RE = re.compile(r"^(?:r2|r2\.c[1-9][0-9]*)$")
+EXIT_NO_CAP = 2
+
+
+class NoCap(Exception):
+    pass
+
+
+CAP_FIGURE = re.compile(r"\s*(?:US)?\$?\s*(\d+(?:\.\d+)?)\s*")
+
+
+def read_cap(path: Path = R2_CAP_FILE) -> float:
+    """r2's cap in US$: runs/r2/CAP_USD holds one positive figure and nothing else ("250", "250.00", "$250" or
+    "US$250", white space around it allowed); anything else ("r2: 250", two numbers) is refused rather than guessed.
+    It becomes --max-budget-usd, which spend can pass by about one response (SPEC.md §13)."""
+    try:
+        text = path.read_text()
+    except OSError:
+        raise NoCap(f"{path} is missing: the owner writes r2's cap there (a US$ figure, e.g. 250)") from None
+    m = CAP_FIGURE.fullmatch(text)
+    if not m:
+        raise NoCap(f"{path} must hold a single US$ figure and nothing else (e.g. 250), not {text.strip()[:40]!r}")
+    if float(m.group(1)) <= 0:
+        raise NoCap(f"{path} holds no positive US$ figure")
+    return float(m.group(1))
+
+
+def run_config(run: str, logs=None, cap_file: Path = R2_CAP_FILE) -> tuple[list[Path], float, re.Pattern]:
+    """(log dirs, cap, launch-name pattern) of a run; r2's cap comes from its CAP_USD (NoCap if absent)."""
+    if run == "r2":
+        return (_dirs(logs) if logs is not None else [R2_LOGS]), read_cap(cap_file), R2_NAME_RE
+    return _dirs(logs), CAP_USD, NAME_RE
+
+
+def run_of_log_dir(d: Path) -> str:
+    """r2 for slop/runs/r2/logs (or a directory holding r2 transcripts), else r1."""
+    d = Path(d)
+    if d.resolve() == R2_LOGS.resolve() or any(R2_NAME_RE.match(p.name[: -len(SUFFIX)])
+                                               for p in d.glob("*" + SUFFIX)):
+        return "r2"
+    return "r1"
 
 
 def events(log: Path):
@@ -104,7 +154,7 @@ def _dirs(logs) -> list[Path]:
     return [Path(x) for x in logs]
 
 
-def summary(logs=None, cap: float = CAP_USD) -> dict:
+def summary(logs=None, cap: float = CAP_USD, name_re: re.Pattern = NAME_RE) -> dict:
     dirs = _dirs(logs)
     launches, by_session, prior, unexpected = {}, {}, [], []
     for d in dirs:
@@ -121,9 +171,9 @@ def summary(logs=None, cap: float = CAP_USD) -> dict:
             s = scan(log)
             rec = _json(d / f"{name}.launch.json")
             ceiling = rec.get("max_budget_usd") if isinstance(rec, dict) else None
-            if not NAME_RE.match(name):
+            if not name_re.match(name):
                 unexpected.append(name)
-            launches[name] = {"log": str(log), "expected_name": bool(NAME_RE.match(name)), "models": s["models"],
+            launches[name] = {"log": str(log), "expected_name": bool(name_re.match(name)), "models": s["models"],
                               "result_events": s["result_events"], "num_turns": s["num_turns"],
                               "session_totals_usd": {k: round(v, 6) for k, v in s["totals"].items()},
                               "cost_usd": 0.0, "resolved": bool(s["totals"]) and not s["tail_messages"],
@@ -210,8 +260,13 @@ def check(s: dict, accept_unresolved: bool = False) -> tuple[int, str]:
 
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--logs", type=Path, action="append", help="a log directory (repeatable; default: smoke and r1)")
+    ap.add_argument("--logs", type=Path, action="append", help="a log directory (repeatable; default: smoke and r1, "
+                                                               "or runs/r2/logs with --run r2)")
+    ap.add_argument("--run", choices=("r1", "r2"), default="r1", help="r2: its own logs and its cap from "
+                                                                       "runs/r2/CAP_USD")
+    ap.add_argument("--cap-file", type=Path, default=R2_CAP_FILE, help=argparse.SUPPRESS)  # tests only
     g = ap.add_mutually_exclusive_group()
+    g.add_argument("--cap", action="store_true", help="print the run's cap in US$")
     g.add_argument("--check", action="store_true")
     g.add_argument("--remaining", action="store_true")
     g.add_argument("--session-total", metavar="SID",
@@ -220,14 +275,27 @@ def main(argv=None) -> int:
                    help="print the launches whose last result has subtype error_max_budget_usd (exit 0 either way)")
     ap.add_argument("--accept-unresolved", action="store_true")
     a = ap.parse_args(argv)
+    try:
+        dirs, cap, name_re = run_config(a.run, a.logs, a.cap_file)
+    except NoCap as e:
+        if a.check or a.remaining or a.cap:
+            print(f"refusing: {e}", file=sys.stderr)
+            return EXIT_NO_CAP
+        dirs, cap, name_re = run_config("r1", a.logs if a.logs is not None else [R2_LOGS])
+        cap, name_re = float("nan"), R2_NAME_RE
+    if a.cap:
+        print(f"{cap:.2f}")
+        return 0
     if a.session_total is not None:
-        print(f"{session_total(a.logs, a.session_total):.6f}")
+        print(f"{session_total(dirs, a.session_total):.6f}")
         return 0
     if a.budget_stops:
-        for name in budget_stops(a.logs):
+        for name in budget_stops(dirs):
             print(name)
         return 0
-    s = summary(a.logs)
+    s = summary(dirs, cap, name_re)
+    if math.isnan(cap):
+        s.update(cap_usd=None, remaining_usd=None, reached=False, cap_note=f"{a.cap_file} is missing")
     if a.check or a.remaining:
         code, msg = check(s, a.accept_unresolved)
         print(msg, file=sys.stderr)

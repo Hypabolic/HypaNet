@@ -1,0 +1,9 @@
+{"schema": "slop.screen/1", "id": "4f3e5e3ba2ab58e3", "framework": "tsx",
+ "source": {"repo": "slop-rules-fixtures", "path": "src/pv_density_neg.tsx", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "body", "line": 2}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "body", "text": "Transform photos with layers and masks.", "flags": [], "loc": [3, 7, 3, 46]},
+  {"i": 1, "k": 0, "role": "body", "text": "Smart playlists update automatically.", "flags": [], "loc": [4, 7, 4, 44]},
+  {"i": 2, "k": 0, "role": "body", "text": "Unlock the power of templates.", "flags": [], "loc": [5, 7, 5, 37]},
+  {"i": 3, "k": 0, "role": "h3", "text": "Landscape", "flags": [], "loc": [6, 7, 6, 16]}]}

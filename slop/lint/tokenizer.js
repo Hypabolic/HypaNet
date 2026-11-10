@@ -36,6 +36,17 @@ for (const [cls, chars] of Object.entries(IDS.glyph_chars)) for (const ch of cha
 const PUNCT_IDS = new Map(Array.from(IDS.punct_chars).map((ch, i) => [ch, IDS.punct_base + i]));
 const NUMBER_BASE = IDS.number_base;
 const { YEAR, NUM, DEC } = IDS.number_tokens;
+// Word-id layouts (ids.json id_layouts): 1 is r1's (3,584 stems, 6,144 hash buckets), 2 is r2's (16,384 stems,
+// 8,192 hash buckets). The constants below are layout 1; a Vocab carries its layout.
+export const ID_LAYOUTS = new Map(Object.entries(IDS.id_layouts).map(([k, v]) => [Number(k), Object.freeze({
+  version: Number(k), vocabBase: v.vocab_base, vocabMax: v.vocab_max, hashBase: v.hash_base, hashBuckets: v.hash_buckets,
+  vocabSize: v.vocab_size,
+})]));
+export function idLayout(ids = 1) {
+  const lay = Number.isInteger(ids) ? ID_LAYOUTS.get(ids) : undefined;
+  if (!lay) throw new TokenizerError(`unknown id layout ${JSON.stringify(ids)} (known: ${[...ID_LAYOUTS.keys()].join(', ')})`);
+  return lay;
+}
 export const VOCAB_BASE = IDS.vocab_base;
 export const VOCAB_MAX = IDS.vocab_max;
 export const HASH_BASE = IDS.hash_base;
@@ -134,9 +145,10 @@ export function foldWord(part) {
   return out;
 }
 
-export function hashBucket(stem) {
+export function hashBucket(stem, ids = 1) {
+  const lay = idLayout(ids);
   const digest = createHash('sha256').update(stem, 'utf8').digest();
-  return HASH_BASE + (digest.readUInt32BE(0) % HASH_BUCKETS);
+  return lay.hashBase + (digest.readUInt32BE(0) % lay.hashBuckets);
 }
 
 export function numberTokens(text) {
@@ -157,8 +169,11 @@ export function numberTokens(text) {
 // -- vocabulary ------------------------------------------------------------------------------------------------
 
 export class Vocab {
-  constructor(stems) {
-    if (stems.length > VOCAB_MAX) throw new TokenizerError(`vocab has ${stems.length} stems (max ${VOCAB_MAX})`);
+  constructor(stems, ids = 1) {
+    this.layout = idLayout(ids);
+    if (stems.length > this.layout.vocabMax) {
+      throw new TokenizerError(`vocab has ${stems.length} stems (max ${this.layout.vocabMax} in id layout ${ids})`);
+    }
     this.stems = [...stems];
     this.ids = new Map();
     stems.forEach((s, n) => {
@@ -166,19 +181,19 @@ export class Vocab {
         throw new TokenizerError(`vocab line ${n + 1}: ${JSON.stringify(s)} is empty, not lower-case or has white space`);
       }
       if (this.ids.has(s)) throw new TokenizerError(`vocab line ${n + 1}: ${JSON.stringify(s)} is a duplicate`);
-      this.ids.set(s, VOCAB_BASE + n);
+      this.ids.set(s, this.layout.vocabBase + n);
     });
   }
 
-  static fromText(text) {
+  static fromText(text, ids = 1) {
     const lines = text.split('\n');
     if (lines.length && lines[lines.length - 1] === '') lines.pop();
-    return new Vocab(lines);
+    return new Vocab(lines, ids);
   }
 
   wordId(stem) {
     const id = this.ids.get(stem);
-    return id !== undefined ? id : hashBucket(stem);
+    return id !== undefined ? id : hashBucket(stem, this.layout.version);
   }
 }
 

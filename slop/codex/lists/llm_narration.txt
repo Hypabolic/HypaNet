@@ -1,0 +1,178 @@
+# slop/codex/lists/llm_narration.txt
+# Lexical cues for NARRATE copy: text that explains how the visible interface works, what a visible control does, or
+# what the reader can already see. Patterns: L36 (captions narrating controls), L37 (layout and
+# self-description). LABELLING.md §3 NARRATE, §7 consequence test; [anti-slop-guides] R6 and R16.
+#
+# These are cues, not verdicts. A cue makes a node a NARRATE *candidate*; the consequence test (LABELLING.md §7) still
+# decides: "Hold Shift to select a range." names a hidden input and is KEEP (K4), "Tap a card to open it." is NARRATE.
+# Entries in section "hidden-input cues" point the other way (towards KEEP) and are listed so a rule or a network
+# concept can tell them apart.
+#
+# Format: one phrase per line (alphabetical within each block), lower case, natural spelling; fold before matching. {x} = one to eight words, as in
+# llm_constructions.txt. Lines starting with # are comments.
+# Provenance: patterns written for HypaNet from GOV.UK ("If you find yourself having to explain how the user
+# interface works..."), Microsoft UI text ("don't explain the obvious"), unslop-ui TELLS.md §8 "Over-explained
+# microcopy/tooltips", tasteskill copy.md "Explainer captions that narrate the design", humanizer §25 "writing about
+# the document", stop-slop "Meta-commentary" (all cited in [anti-slop-guides] and SOURCES.md).
+# Licence: MIT (the HypaNet repo licence).
+
+# --- L36 gesture and control narration ---
+adjust the slider to
+after you click
+browse the {x} below
+choose any {x} to
+choose from the dropdown
+choose from the list below
+click any {x} to
+click below to
+click here to
+click on {x} to
+click the button above
+click the button below
+click the button to
+click {x} to {y}
+clicking {x} will
+complete the form below
+drag the slider to
+enter your {x} below
+enter your {x} in the field
+fill in the fields below
+fill in the form below
+fill out the form below
+hover over {x} to
+hover to
+just click
+just enter
+just select
+just tap
+once you click
+once you tap
+open the menu to
+pick an option
+press the button to
+pressing {x} will
+scroll down to
+scroll for more
+scroll to explore
+scroll to see
+select an option below
+select an option from the list
+select any {x} to
+select from the dropdown
+simply click
+simply enter
+simply select
+simply tap
+swipe to see more
+switch between tabs
+switch {x} on or off
+tap any {x} to
+tap below to
+tap here to
+tap on {x} to
+tap the button below
+tap the button to
+tap {x} to {y}
+tapping {x} will
+this button will
+this toggle will
+this will {x}
+toggle this to
+toggle to
+turn {x} on or off
+type below
+type in the box
+type in the field below
+use the button below
+use the button to
+use the dropdown to
+use the form below
+use the menu to
+use the search bar to
+use the search box to
+use the slider to
+use the switch to
+use the tabs above
+use the tabs to
+use the toggle to
+when you click
+when you tap
+
+# --- L37 layout and self-description (the screen describing itself) ---
+a beautiful, intuitive
+a clean and simple
+a clean, intuitive
+a clean, minimal
+a quick overview of
+a simple, intuitive
+a summary of
+all your {x} at a glance
+all your {x} in one place
+an overview of
+as shown below
+as you can see
+at a glance
+below are
+below is
+below you will find
+below you'll find
+designed for clarity
+designed to be simple
+each card shows
+each item shows
+each row shows
+everything at a glance
+here you can
+here you will find
+here you'll find
+here's a quick overview
+here's an overview
+here's everything you need
+in this section
+laid out so you can
+listed below
+on this page
+see below
+shown below
+the cards below
+the chart below
+the grid below
+the list below
+the table below
+this page contains
+this page lets you
+this page shows
+this screen lets you
+this screen shows
+this section contains
+this section covers
+this section shows
+your {x} at a glance
+
+# --- hidden-input cues (point towards KEEP under the consequence test: an input or gesture no visible control or
+# platform convention exposes; LABELLING.md §7 (b)) ---
+cmd-click
+ctrl-click
+double-click
+double-tap
+drag and drop
+drag to reorder
+hold alt
+hold cmd
+hold command
+hold ctrl
+hold option
+hold shift
+keyboard shortcut
+long press
+long-press
+option-click
+press /
+press and hold
+press enter
+press esc
+press space
+right-click
+shift-click
+swipe left
+swipe right

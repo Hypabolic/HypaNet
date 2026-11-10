@@ -44,6 +44,27 @@ T["layers.3.attn.rel_bias"][0, 64] = 3.0                 # the pointer head look
 print(mdl.save_artifact(WORK / "tiny", T, ["paus", "resum", "hold"], (4, 0)))
 '''
 
+# the same network in id layout 2 (SPEC.md §6), with more stems than layout 1 allows and a hashed stem's row in use
+BUILD2_PY = '''import sys
+from pathlib import Path
+
+WORK = Path(__file__).resolve().parent
+sys.path.insert(0, str(WORK.parent / "kit" / "lib"))
+import model as mdl
+import tokenizer as tk
+
+T = mdl.zero_tensors(2)
+assert T["tok_emb.weight"].shape == (tk.LAYOUTS[2].vocab_size, 128) == (25088, 128)
+T["role_emb.weight"][tk.ROLE_IDS["eyebrow"], 0] = 1.0
+T["head.weight"][1, 0] = 2.0
+T["head.bias"][0] = 1.0
+T["layers.3.attn.rel_bias"][0, 64] = 3.0
+T["tok_emb.weight"][tk.hash_bucket("oper", 2), 5] = 1.0     # a hashed stem's row ("OPERATION")
+T["tok_emb.weight"][16000 + 512, 1] = 1.0                    # line 16,001 of vocab.txt
+stems = ["paus", "resum", "hold"] + [f"x{i}" for i in range(15997)] + ["recaptur"]
+print(mdl.save_artifact(WORK / "tiny2", T, stems, (4, 0)))
+'''
+
 
 def chmod_writable(p: Path) -> None:
     for root, dirs, files in os.walk(p):
@@ -59,7 +80,9 @@ def kit(tmp_path_factory):
     base = tmp_path_factory.mktemp("slopkit")
     root = base / "root"
     root.mkdir()
-    author = base / "HypaNet-slop-author"
+    # a smoke-named dir: it gets r1's kit, and prepare_author_dir.sh refuses r1's own name once runs/r1/SESSION_ID
+    # exists (the r1 session was launched); runs/smoke has never been launched
+    author = base / "HypaNet-slop-smoke-kittest"
     r = subprocess.run(["sh", str(SLOP / "scripts" / "prepare_author_dir.sh"), "--test-root", str(root), str(author)],
                        capture_output=True, text=True)
     assert r.returncode == 0, r.stdout + r.stderr
@@ -120,6 +143,23 @@ def test_python3_guard_and_hand_made_artefact(kit):
         assert r.returncode != 0 and msg in (r.stdout + r.stderr), code
 
 
+def test_id_layout_2_artefact_through_the_tools(kit):
+    author, _ = kit
+    (author / "work" / "build2.py").write_text(BUILD2_PY)
+    assert len(ok(author, "python3", "work/build2.py").strip()) == 64
+    meta = json.loads((author / "work" / "tiny2" / "meta.json").read_text())
+    assert meta == {"format": "slop.artifact/1", "pointer_head": [4, 0], "ids": 2}
+    src = f"examples/reference/{PAUSE_ID}.source.tsx"
+    out = ok(author, "lint", src, "--art", "work/tiny2", "--emit", "work/probes/pause2.json")
+    assert 'ECHO     eyebrow "OPERATION ON HOLD" restates h1 "PAUSED"' in out
+    out = ok(author, "score", "work/tiny2", "--files", "work/probes/pause2.json")
+    assert "ECHO" in out
+    out = ok(author, "tok", "--text", "Resume recaptures operation", "--vocab-file", "work/tiny2/vocab.txt")
+    assert "vocab line 16001" in out and "id 16512" in out and "hash bucket" in out
+    out = ok(author, "inspect", "work/tiny2", "work/probes/pause2.json", "--node", "0")
+    assert "call ECHO" in out
+
+
 def test_tok(kit):
     author, _ = kit
     out = ok(author, "tok", "--text", "Resume recaptures the mouse.")
@@ -174,7 +214,7 @@ def test_lint_score_inspect(kit):
     assert "embed role     eyebrow +1.000  mix +0.000" in out and "logits KEEP +1.0000 ECHO +2.0000" in out
     out = ok(author, "inspect", str(root / "floor"), sorted((author / "examples/dev").glob("*.screen.json"))[0]
              .relative_to(author).as_posix(), "--node", "1", "--tokens", "--units", "40")
-    assert out.rstrip().endswith("--offset]") and "output truncated at 20,000 characters" in out
+    assert out.rstrip().endswith("filters (see --help)]") and "output truncated at 20,000 characters" in out  # no --offset
 
 
 def test_refusals(kit):
@@ -246,6 +286,9 @@ def test_leakage_require_sealed_and_its_waiver(kit, monkeypatch, tmp_path):
     author, _ = kit
     if leakage.SEALED_NGRAMS.is_file():
         pytest.skip("the sealed n-grams exist")
+    none = tmp_path / "no-waivers.json"
+    none.write_text("[]")
+    monkeypatch.setattr(leakage, "WAIVERS", none)  # the repo's own waiver list waives exactly this
     assert any(p["check"] == "sealed-ngrams" for p in leakage.run(author, require_sealed=True).problems)
     w = tmp_path / "waivers.json"
     w.write_text(json.dumps([{"check": "sealed-ngrams", "file": "-", "match": "not-run", "reason": "test"}]))

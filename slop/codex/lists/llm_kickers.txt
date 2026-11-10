@@ -1,0 +1,218 @@
+# slop/codex/lists/llm_kickers.txt
+# Words LLMs put in eyebrows, kickers, pills and section headings: section-genre words, "editorial" labels,
+# question-form genre headings and static status pills. Patterns: L38 (eyebrow pills and section-genre kickers),
+# L39 (editorial-label kickers), L40 (question-form genre headings), L47 (static status pills).
+#
+# IMPORTANT: LABELLING.md §6 K1 has its own section-genre list, frozen with the guide. This file does not change it.
+# It is a wider candidate list for the rule layer and the network's concept codes; an entry moves into K1 only with
+# a new version of the label guide. Sections L38a and L38b mark which entries
+# are already K1 words (or their close variants) and which are not.
+#
+# Whole-node match on eyebrow, badge, caption, h2-h6 (folded, with a leading glyph, ordinal or "/" stripped).
+# Format: one entry per line (alphabetical within each block), lower case; fold before matching. Lines starting with # are comments.
+# Provenance: K1 list (LABELLING.md §6); Hallmark gates.md gate 54 ("TRUSTED BY" over logos) and gate 66 ("BETA" pill)
+# (MIT); unslop-ui TELLS.md §1 ("WHY US", "FEATURES") and §5 ("Now with AI") (MIT); tasteskill copy.md §6 "Labels
+# pretending to be editorial: 'Field notes', 'The details', 'Our philosophy', 'Quietly trusted by'" and "Furniture
+# text" (cited); anti-ai-slop presentations.md "THE BIG IDEA"-style kickers (MIT, via [anti-slop-guides]);
+# the rest added for HypaNet. Licence: MIT (the HypaNet repo licence).
+
+# --- L38a section-genre words already named in LABELLING.md K1 (copied here for completeness; K1 is authoritative) ---
+about
+about us
+capabilities
+contact
+faq
+features
+get started
+how it works
+our team
+overview
+pricing
+products
+services
+testimonials
+why us
+
+# --- L38b further section-genre words and close variants (candidates; not in K1) ---
+all features
+as seen in
+benefits
+by the numbers
+careers
+case studies
+changelog
+community
+contact us
+core features
+customer stories
+customers
+feature highlights
+gallery
+get in touch
+help
+highlights
+impact
+in numbers
+integrations
+intro
+introduction
+key features
+let's talk
+newsletter
+next steps
+our approach
+our mission
+our process
+our story
+our values
+partners
+plans
+plans and pricing
+platform
+portfolio
+process
+product
+resources
+results
+reviews
+roadmap
+security
+selected work
+showcase
+simple pricing
+social proof
+solutions
+stats
+summary
+support
+team
+the challenge
+the platform
+the problem
+the process
+the result
+the solution
+trusted by
+updates
+use cases
+welcome
+what we do
+what we offer
+what's new
+who it's for
+who we are
+why choose
+why choose us
+why it matters
+work
+
+# --- L39 editorial-label kickers (second-order eyebrows that appear once the plain genre words are banned) ---
+appendix
+at a glance
+behind the scenes
+big idea
+built different
+chapter 01
+chapter one
+colophon
+craft
+essentials
+field notes
+fine print
+in brief
+index
+made different
+manifesto
+method
+notes
+our philosophy
+our promise
+part one
+philosophy
+principles
+proof
+quietly trusted by
+the basics
+the big idea
+the craft
+the detail
+the details
+the difference
+the edge
+the essentials
+the fine print
+the gist
+the long version
+the manifesto
+the method
+the numbers
+the promise
+the proof
+the receipts
+the short version
+the stack
+the system
+the toolkit
+toolkit
+under the hood
+
+# --- L40 question-form genre headings ---
+got questions?
+have questions?
+how does it work?
+how it works?
+is this for me?
+is {x} right for me?
+need help?
+questions?
+ready to dive in?
+ready to get started?
+still have questions?
+what makes us different?
+what makes {x} different?
+what's included?
+what's inside?
+who is it for?
+who is this for?
+why choose us?
+why us?
+why {x}?
+
+# --- L47 static status pills and launch badges (DECOR unless bound to data or the sole statement of a real fact;
+# LABELLING.md §6 "Static status claims", K2) ---
+accepting clients
+ai-powered
+alpha
+available for work
+available now
+beta
+coming soon
+early access
+featured
+hot
+in beta
+just launched
+launching soon
+live
+new
+new!
+new: ai
+now available
+now in beta
+now live
+now with ai
+online
+open for work
+popular
+powered by ai
+preview
+public beta
+taking clients
+trending
+v2 is here
+# The next four are KEEP on one sibling of several (LABELLING.md §8: "Most popular" on one of three plan cards, K2);
+# they are listed for the case where every sibling carries one, or a lone card carries one.
+best value
+most popular
+our pick
+recommended

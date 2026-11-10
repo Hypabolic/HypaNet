@@ -31,8 +31,12 @@ Per node text, in order:
    integer part of two or more digits that starts with ``0`` is preceded by ``LZ``.
 5. A node keeps at most 31 tokens; a longer one is cut and gets the ``truncated`` flag.
 
-Ids: see ``ids.json`` and SPEC.md §6. A stem in ``vocab.txt`` (line n) is 512 + n; any other stem is
-4096 + (first 4 bytes of sha256(stem), big-endian, mod 6144).
+Ids: see ``ids.json`` and SPEC.md §6. Word ids follow one of two layouts (``ids.json`` ``id_layouts``; an artefact's
+``meta.json`` ``"ids"`` names it, absent = 1). Layout 1 (r1): a stem in ``vocab.txt`` (line n, from 0) is 512 + n, at
+most 3,584 stems; any other stem is 4096 + (first 4 bytes of sha256(stem), big-endian, mod 6144); 10,240 ids.
+Layout 2 (r2): 512 + n with at most 16,384 stems; any other stem is 16896 + (the same number mod 8192); 25,088 ids.
+Every id below 512 is the same in both. The module constants ``VOCAB_BASE`` ... ``V`` are layout 1; ``LAYOUTS[2]``
+holds layout 2, and a :class:`Vocab` carries its layout.
 
 A screen (``slop.screen/1``) becomes one or more windows. A window is ``BOS`` and then, per node, its tokens and
 ``EON``; at most 64 nodes and 1,024 positions. Consecutive nodes with the same cluster index form a cluster run;
@@ -83,11 +87,36 @@ NUMBER_BASE = IDS["number_base"]
 YEAR = IDS["number_tokens"]["YEAR"]
 NUM = IDS["number_tokens"]["NUM"]
 DEC = IDS["number_tokens"]["DEC"]
+
+
+@dataclass(frozen=True)
+class IdLayout:
+    """One word-id layout (``ids.json`` ``id_layouts``)."""
+
+    version: int
+    vocab_base: int
+    vocab_max: int
+    hash_base: int
+    hash_buckets: int
+    vocab_size: int
+
+    def hash_bucket(self, stem: str) -> int:
+        digest = hashlib.sha256(stem.encode("utf-8")).digest()
+        return self.hash_base + int.from_bytes(digest[:4], "big") % self.hash_buckets
+
+
+LAYOUTS: dict[int, IdLayout] = {int(k): IdLayout(int(k), **v) for k, v in IDS["id_layouts"].items()}
+assert sorted(LAYOUTS) == [1, 2]
+for _lay in LAYOUTS.values():
+    assert _lay.vocab_base == 512 and _lay.vocab_base + _lay.vocab_max == _lay.hash_base
+    assert _lay.hash_base + _lay.hash_buckets == _lay.vocab_size
+
 VOCAB_BASE = IDS["vocab_base"]
 VOCAB_MAX = IDS["vocab_max"]
 HASH_BASE = IDS["hash_base"]
 HASH_BUCKETS = IDS["hash_buckets"]
 V = IDS["vocab_size"]
+assert LAYOUTS[1] == IdLayout(1, VOCAB_BASE, VOCAB_MAX, HASH_BASE, HASH_BUCKETS, V)
 MAX_NODE_TOKENS = IDS["max_node_tokens"]
 MAX_WINDOW_NODES = IDS["max_window_nodes"]
 MAX_WINDOW_POSITIONS = IDS["max_window_positions"]
@@ -175,9 +204,15 @@ def fold_word(part: str) -> str:
     return "".join(ch for ch in s if _cat(ch) not in ("Mn", "Me") and ch not in _APOSTROPHES)
 
 
-def hash_bucket(stem: str) -> int:
-    digest = hashlib.sha256(stem.encode("utf-8")).digest()
-    return HASH_BASE + int.from_bytes(digest[:4], "big") % HASH_BUCKETS
+def layout(ids: object = 1) -> IdLayout:
+    """The id layout numbered ``ids`` (1 or 2)."""
+    if isinstance(ids, bool) or not isinstance(ids, int) or ids not in LAYOUTS:
+        raise TokenizerError(f"unknown id layout {ids!r} (known: {sorted(LAYOUTS)})")
+    return LAYOUTS[ids]
+
+
+def hash_bucket(stem: str, ids: int = 1) -> int:
+    return layout(ids).hash_bucket(stem)
 
 
 def number_tokens(text: str) -> list[int]:
@@ -205,11 +240,12 @@ def number_tokens(text: str) -> list[int]:
 
 
 class Vocab:
-    """``vocab.txt``: one Porter stem per line; line n is id 512 + n."""
+    """``vocab.txt``: one Porter stem per line; line n is id 512 + n. ``ids`` is the id layout (1 or 2)."""
 
-    def __init__(self, stems: list[str]) -> None:
-        if len(stems) > VOCAB_MAX:
-            raise TokenizerError(f"vocab has {len(stems)} stems (max {VOCAB_MAX})")
+    def __init__(self, stems: list[str], ids: int = 1) -> None:
+        self.layout = layout(ids)
+        if len(stems) > self.layout.vocab_max:
+            raise TokenizerError(f"vocab has {len(stems)} stems (max {self.layout.vocab_max} in id layout {ids})")
         seen: dict[str, int] = {}
         for n, s in enumerate(stems):
             if not s or s != s.lower() or any(ch.isspace() for ch in s):
@@ -218,24 +254,48 @@ class Vocab:
                 raise TokenizerError(f"vocab line {n + 1}: {s!r} duplicates line {seen[s] + 1}")
             seen[s] = n
         self.stems = list(stems)
-        self.ids = {s: VOCAB_BASE + n for n, s in enumerate(stems)}
+        self.ids = {s: self.layout.vocab_base + n for n, s in enumerate(stems)}
+
+    @property
+    def ids_version(self) -> int:
+        return self.layout.version
 
     @classmethod
-    def from_text(cls, text: str) -> "Vocab":
+    def from_text(cls, text: str, ids: int = 1) -> "Vocab":
         lines = text.split("\n")
         if lines and lines[-1] == "":
             lines.pop()
-        return cls(lines)
+        return cls(lines, ids)
 
     @classmethod
-    def load(cls, path: str | Path) -> "Vocab":
-        return cls.from_text(Path(path).read_text(encoding="utf-8"))
+    def load(cls, path: str | Path, ids: int | None = None) -> "Vocab":
+        """``ids`` None: the layout named by a ``meta.json`` beside the file (an artefact directory), else 1."""
+        p = Path(path)
+        return cls.from_text(p.read_text(encoding="utf-8"), layout_beside(p) if ids is None else ids)
 
     def word_id(self, stem: str) -> int:
-        return self.ids.get(stem, hash_bucket(stem))
+        return self.ids.get(stem, self.layout.hash_bucket(stem))
+
+
+def meta_ids(meta: object) -> int:
+    """The id layout an artefact's ``meta.json`` names: ``"ids"`` absent is 1."""
+    if not isinstance(meta, dict) or "ids" not in meta:
+        return 1
+    return layout(meta["ids"]).version
+
+
+def layout_beside(vocab_path: str | Path) -> int:
+    """The id layout of the ``meta.json`` next to ``vocab_path`` (1 when there is none or it is unreadable)."""
+    m = Path(vocab_path).parent / "meta.json"
+    try:
+        meta = json.loads(m.read_text(encoding="utf-8"))
+    except (OSError, UnicodeDecodeError, json.JSONDecodeError):
+        return 1
+    return meta_ids(meta)
 
 
 EMPTY_VOCAB = Vocab([])
+EMPTY_VOCABS: dict[int, Vocab] = {k: Vocab([], k) for k in LAYOUTS}
 
 
 # -- one node -----------------------------------------------------------------------------------------------------

@@ -1,0 +1,12 @@
+{"schema": "slop.screen/1", "id": "70b3faad5e31c0e8", "framework": "tsx",
+ "source": {"repo": "slop-rules-fixtures", "path": "src/ec_claims_pos.tsx", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "header", "line": 2},
+  {"k": 1, "kind": "body", "line": 5}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "subtitle", "text": "Get started in seconds. No coding required.", "flags": [], "loc": [3, 7, 3, 50]},
+  {"i": 1, "k": 0, "role": "badge", "text": "Limited time offer", "flags": ["small", "pill"], "loc": [4, 7, 4, 25]},
+  {"i": 2, "k": 1, "role": "stat", "text": "10x faster", "flags": [], "loc": [6, 7, 6, 17]},
+  {"i": 3, "k": 1, "role": "caption", "text": "Trusted by 10,000+ teams", "flags": [], "loc": [7, 7, 7, 31]},
+  {"i": 4, "k": 1, "role": "body", "text": "Loved by thousands of bakers.", "flags": [], "loc": [8, 7, 8, 36]},
+  {"i": 5, "k": 1, "role": "body", "text": "Rated 4.9/5 by home cooks.", "flags": [], "loc": [9, 7, 9, 33]}]}

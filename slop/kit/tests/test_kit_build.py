@@ -3,6 +3,8 @@
 from __future__ import annotations
 
 import hashlib
+import os
+import re
 import sys
 from pathlib import Path
 
@@ -132,3 +134,47 @@ def test_author_copy_of_the_guide():
 def test_author_record_view():
     rec = {k: k for k in kb.AUTHOR_RECORD_KEYS} | {"harness": {}, "inputs": {}, "examples": {}, "test_root": "/x"}
     assert set(kb.author_record(rec)) == set(kb.AUTHOR_RECORD_KEYS)
+
+
+@pytest.mark.skipif(not HAVE_DEV, reason="dev set not built (datasets/dev is gitignored)")
+def test_r2_disclosure_adds_800_to_r1s_400():
+    r1 = kb.select_dev(kb.N_DEV)["ids"]
+    r2 = kb.select_run("r2")
+    assert len(r2["ids"]) == 1200 and set(r1) <= set(r2["ids"]) and r2["added_to_r1"] == 800
+    assert r2["excluded_heldout_duplicates"] == kb.select_dev()["excluded_heldout_duplicates"]
+
+
+def test_runs_and_dir_names():
+    assert kb.RUNS["r1"]["n_dev"] == 400 and kb.RUNS["r1"]["prompt"] == "prompt.md" and not kb.RUNS["r1"]["seed"]
+    assert kb.RUNS["r2"]["n_dev"] == 1200 and kb.RUNS["r2"]["seed"] and kb.RUNS["r2"]["resources"]
+    assert kb.run_for_dir("/x/HypaNet-slop-author-r2") == "r2" and kb.run_for_dir("/x/HypaNet-slop-author") == "r1"
+    assert kb.run_for_dir("/x/HypaNet-slop-smoke") == "r1"
+
+
+def test_r2_prompt_and_its_preview():
+    text = (kb.KIT / "prompt_r2.md").read_text(encoding="utf-8")
+    low = text.lower()
+    for word in ("budget", "cost", "price", "us$", "dollar", "spend"):
+        assert word not in low, word
+    assert text.rstrip().endswith("so do not stop to report progress or to ask.")
+    assert "\nMODEL COMPLETE\n" in text and "resources/thesaurus/" in text and "fourth layer" in text
+    for name in (r"\bMatthew\b", r"\bCodex\b", r"\bSPEC", r"\bval\b", "test_gen", "ood_codex"):
+        assert not re.search(name, text), name
+    assert kb.preview_path("r2").read_text(encoding="utf-8") == kb.render_preview("r2")
+
+
+def test_work_seed_leaves_out_scratch():
+    if not (kb.R1_WORK / "build.py").is_file():
+        pytest.skip("runs/r1/work not present")
+    seed = kb.work_seed_files()
+    assert "build.py" in seed and "MODEL.md" in seed and "artifact.npz" in seed
+    assert not any(k.split(os.sep)[0] == "scratch" or "__pycache__" in k for k in seed)
+
+
+def test_author_copy_of_the_thesaurus_readme():
+    if not (kb.THESAURUS / "README.md").is_file():
+        pytest.skip("thesaurus not present")
+    text = kb.thesaurus_readme()
+    assert text.startswith(kb.THESAURUS_README_HEAD) and "## Sources and why" in text
+    for word in ("## Coverage", "ui/", "MANIFEST", "gitignored", "datasets", "In git"):
+        assert word not in text, word

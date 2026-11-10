@@ -1,0 +1,191 @@
+# slop/codex/lists/ui_instruction_markers.txt
+# Words and frames that open an instruction: a sentence telling the reader what to do next. Patterns: U14
+# (instruction sentence, KEEP), U15 (instruction that only restates a visible control, ECHO/NARRATE), U19 (error body
+# with a remedy), U35 (empty state with next action), and the decision aid in CODEX.md §7.
+#
+# Use: an instruction is KEEP evidence (Microsoft's "main instruction" is the top-ranked copy in a window; LABELLING.md
+# K8 keeps an empty or error body that gives the next action) unless the rest of the sentence only (a) names a visible
+# control by its own label ("Save your changes." beside "Save changes"), (b) names a gesture on a visible control
+# ("Click the button below"), or (c) names ordinary platform behaviour ("Scroll to see more"). Those three are the
+# restating cases; see ui_narration_verbs.txt for the gesture and layout words that mark (b) and (c).
+#
+# Format: one entry per line, lower case, natural spelling; fold the same way as the rule layer (rules/README.md,
+# "Normalised string"). Match imperative leads at the start of a sentence; match frames anywhere. Lines starting with
+# # are comments.
+#
+# Provenance: written for HypaNet. Verb choice follows the Microsoft Writing Style Guide, "Describing interactions with
+# the UI" (input-neutral verbs: open, close, go to, select, choose, clear, switch, turn on, turn off, enter, move, drag,
+# zoom; learn.microsoft.com/en-us/style-guide/procedures-instructions/describing-interactions-with-ui), Apple HIG
+# Writing ("be clear about what someone can do to fix it") and NN/g error-message guidelines ("offer some potential
+# remedies"). Licence: MIT (repo licence).
+
+# --- imperative leads: input-neutral UI verbs (Microsoft) ---
+select
+choose
+pick
+enter
+type
+open
+close
+go to
+go back
+return to
+switch
+switch to
+turn on
+turn off
+clear
+move
+drag
+zoom
+expand
+collapse
+
+# --- imperative leads: task verbs ---
+add
+create
+make
+start
+begin
+finish
+complete
+continue
+save
+upload
+download
+import
+export
+attach
+connect
+reconnect
+link
+invite
+share
+send
+resend
+copy
+paste
+scan
+print
+review
+check
+confirm
+verify
+approve
+accept
+reject
+update
+upgrade
+install
+reinstall
+restart
+reload
+refresh
+retry
+try
+try again
+sign in
+sign up
+log in
+register
+contact
+ask
+call
+email
+message
+wait
+allow
+grant
+give
+enable
+disable
+remove
+delete
+rename
+edit
+change
+set
+set up
+reset
+choose a
+pick a
+use
+follow
+read
+keep
+leave
+skip
+fill in
+fill out
+provide
+tell us
+let us know
+
+# --- modal and obligation frames ---
+you need to
+you'll need to
+you will need to
+you must
+you have to
+you should
+you'll have to
+you may need to
+you can't
+you cannot
+make sure
+be sure to
+ensure
+remember to
+don't forget to
+do not
+don't
+never
+always
+first
+then
+next
+finally
+once you
+after you
+before you
+when you
+to continue
+to finish
+to start
+to use
+to see
+to get
+to add
+to turn on
+to change
+in order to
+required
+is required
+are required
+needed
+must be
+must have
+should be
+at least
+at most
+no more than
+up to
+between
+
+# --- remedy frames (errors; NN/g "offer some potential remedies") ---
+try again later
+check your
+check that
+make sure that
+contact support
+contact your administrator
+ask your admin
+ask an admin
+ask the owner
+request access
+go to settings
+open settings
+update to
+reconnect to
+sign in again
+refresh the page

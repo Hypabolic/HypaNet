@@ -1,0 +1,96 @@
+# slop/codex/lists/ui_input_lead_verbs.txt
+# Verbs and frames that open a placeholder, helper or label by telling the reader to use the input ("Enter your
+# email", "Select a country"). Patterns: U20 (placeholder repeating the label), U21 (placeholder as
+# instruction), U23 (helper restating the label), U27 (instructional verb in a label).
+#
+# Use: strip one of these from the start of a placeholder or helper, then strip "your", "a", "an", "the", "here" and a
+# trailing ellipsis. If what is left is the field's label, its stem or a synonym of it, the node is ECHO -> the label
+# (R8 for a placeholder, R5 for a helper). If what is left adds a format, example, limit or purpose ("Enter the
+# 6-digit code from the text we sent"), it is KEEP (K4). On a label itself (rank 1, never flagged) the verb is filler
+# for the rule layer: Microsoft "Omit instructional verbs that apply to all controls of the given type" ("Type your
+# name" -> "Your name").
+#
+# Format: one entry per line, lower case; lines starting with # are comments.
+#
+# Provenance: written for HypaNet. Grounding: Microsoft Win32 UX guide, User interface text (quoted above); GOV.UK
+# Design System, Text input ("Do not use placeholder text in place of a label, or for hints or examples"); NN/g
+# placeholders ("placeholders should not be used as replacements for field labels"); Apple HIG Writing (placeholder
+# may give an example, 'like "name@example.com"', or describe the information, 'such as "Your name"'). Licence: MIT.
+
+enter
+enter your
+enter a
+enter an
+enter the
+please enter
+please enter your
+type
+type your
+type a
+type here
+type something
+start typing
+start typing to
+input
+input your
+fill in
+fill in your
+fill out
+provide
+provide your
+provide a
+specify
+specify your
+add
+add your
+add a
+add an
+write
+write your
+write a
+write something
+insert
+insert your
+put
+put your
+give
+give your
+tell us
+tell us your
+let us know
+let us know your
+what's your
+what is your
+your
+select
+select a
+select an
+select your
+select one
+choose
+choose a
+choose an
+choose your
+choose one
+pick
+pick a
+pick your
+search
+search for
+search by
+search here
+find
+find a
+look up
+set
+set a
+set your
+upload
+upload a
+upload your
+drop
+drop a
+drop your
+paste
+paste your
+paste a

@@ -1,0 +1,149 @@
+# slop/codex/lists/llm_hedges.txt
+# Hedges, softeners and vague attributions: words that make a claim unfalsifiable or borrow authority without naming
+# a source. Patterns: L23 (capability hedges), L24 (vague attribution and authority), L25 (apologetic and
+# reassuring softeners in system messages).
+#
+# Hedges in UI copy are double-edged. "May take up to 24 hours" is a real constraint (KEEP, LABELLING.md K4); "can
+# help you" in a feature blurb says nothing. A rule should only report a hedge in promotional slots (hero, subtitle,
+# feature card body, CTA band) or when it stacks with L01-L03 vocabulary, never in helper, error or legal text.
+#
+# Format: one phrase per line, lower case, natural spelling; fold before matching (rules/README.md). Lines starting
+# with # are comments.
+#
+# Provenance: Wikipedia MOS:WEASEL and "Signs of AI writing" (vague attributions: "Industry reports", "Experts
+# argue"; hedging disclaimers: "based on available information") are cited, CC BY-SA 4.0; only short stock phrases
+# are reused. stop-slop phrases.md (MIT) names the softener adverbs. The UI-specific entries are HypaNet's own
+# ("added"). Licence: MIT (the HypaNet repo licence); phrases attributed to Wikipedia are common English and are
+# listed with attribution.
+
+# --- L23 capability hedges in promotional copy (added; Reinhart et al. 2025 note the instruction-tuned register;
+# stop-slop "no softeners, no hedges") ---
+can help
+can help you
+helps you
+may help
+might help
+designed to help
+designed to
+aims to
+strives to
+seeks to
+is designed to
+is built to
+is meant to
+can potentially
+potentially
+could
+may
+might
+up to
+as much as
+virtually
+practically
+nearly
+almost
+arguably
+in many cases
+in most cases
+for the most part
+to some extent
+a range of
+a variety of
+a wide range of
+a wide variety of
+various
+numerous
+a host of
+a myriad of
+myriad
+a plethora of
+plethora
+countless
+tons of
+dozens of
+hundreds of
+
+# --- L24 vague attribution and borrowed authority (Wikipedia "Vague attributions and overgeneralization of
+# opinions" and MOS:WEASEL; unslop-ui "Fabricated social proof") ---
+experts agree
+experts say
+experts recommend
+studies show
+research shows
+research has shown
+science-backed
+backed by science
+proven
+proven results
+clinically proven
+industry experts
+industry leaders
+industry-leading
+trusted by industry leaders
+trusted by leading
+trusted by thousands
+trusted by teams
+loved by
+loved by thousands
+loved by teams
+used by thousands
+used by teams worldwide
+teams worldwide
+users worldwide
+customers worldwide
+around the world
+across the globe
+widely regarded
+it is widely believed
+many people
+most people
+everyone loves
+award-winning
+recognised by
+recognized by
+as seen in
+as featured in
+featured in
+
+# --- L25 apologetic, reassuring and chirpy softeners in system messages (added; Apple HIG "oops" via
+# [anti-slop-guides] R15; unslop-ui "human copy" for toasts) ---
+sorry
+we're sorry
+we apologise
+we apologize
+apologies for the inconvenience
+sorry for the inconvenience
+something went wrong
+oops, something went wrong
+uh oh
+hmm
+looks like
+it looks like
+it seems like
+it seems that
+seems like
+don't worry
+no worries
+no need to worry
+not to worry
+hang tight
+sit tight
+hold tight
+bear with us
+just a moment
+just a sec
+just a second
+almost there
+we're on it
+we're working on it
+we've got you covered
+we've got your back
+you're in good hands
+rest assured
+your data is safe with us
+your privacy matters
+your privacy is our priority
+we take your privacy seriously
+we value your feedback
+your feedback matters
+we'd love to hear from you

@@ -3,8 +3,10 @@
     uv run python kit/make_settings.py [AUTHOR_DIR] [--out FILE]            # write the run's settings (or FILE)
     uv run python kit/make_settings.py --check [AUTHOR_DIR] [--out FILE]    # exit 1 if it misses a rule it would write now
 
-The run's settings file is kit/settings.json for an r1 author dir (HypaNet-slop-author*) and kit/settings.smoke.json
-for the smoke dir (HypaNet-slop-smoke*), so preparing one run never rewrites the other's.
+The run's settings file is kit/settings.json for an r1 author dir (HypaNet-slop-author*), kit/settings.r2.json for an
+r2 one (HypaNet-slop-author-r2*) and kit/settings.smoke.json for the smoke dir (HypaNet-slop-smoke*), so preparing one
+run never rewrites another's. An r2 session is denied the r1 author dir like every other HypaNet* sibling, and r2's
+resources/ is read-only like examples/.
 
 From clouds/kit/make_settings.py. Allowed: Read / Glob / Grep in the author dir; Write / Edit in work/; Bash only
 ./tok, ./lint, ./score, ./inspect, ./python3; Read of the session's own Claude Code project directory
@@ -40,6 +42,7 @@ sys.path.insert(0, str(SLOP))
 from scripts.build_sets import CALIBRATION_REPOS, REFERENCE_REPOS, SEALED_REPOS  # noqa: E402  (lists only)
 
 DEFAULT_AUTHOR = PARENT / "HypaNet-slop-author"
+R2_AUTHOR = PARENT / "HypaNet-slop-author-r2"
 SMOKE = PARENT / "HypaNet-slop-smoke"
 CODEX_HOME = HOME / ".codex"
 CLAUDE_JSON = HOME / ".claude.json"
@@ -49,7 +52,7 @@ PRIVATE_NOTES = HOME / "Development" / "hypabolic" / "slop-private"
 PUBLIC_CLEAN_ROOTS: list[Path] = []
 TOOLS = ("tok", "lint", "score", "inspect", "python3")
 READ_ONLY = ("./KIT.md", "./PROMPT.md", "./LABELLING.md", "./HANDOVER.json", *(f"./{t}" for t in TOOLS))
-READ_ONLY_DIRS = ("./examples/**", "./kit/**", "./tools/**", "./.venv/**", "./.claude/**")
+READ_ONLY_DIRS = ("./examples/**", "./kit/**", "./tools/**", "./.venv/**", "./.claude/**", "./resources/**")
 FS_TOOLS = ("Read", "Grep", "Glob", "Edit", "Write")
 # Never add a deny whose name is tok, lint, score, inspect or python3: in clouds r1's first launch Bash(python3:*)
 # also denied every ./python3 command (a deny can match a command's base name).
@@ -97,7 +100,8 @@ def build(author: Path) -> dict:
     a = lambda p: "/" + str(p)  # noqa: E731  (Claude Code: //abs/path is an absolute path)
     uid = os.getuid()
     siblings = sorted(PARENT / e for e in os.listdir(PARENT) if e.startswith("HypaNet") and PARENT / e != author)
-    roots = [REPO, *siblings, SMOKE, DEFAULT_AUTHOR, PARENT / "HypaNet-slop-author*", PARENT / "HypaNet-clouds*", PARENT / "HypaNet-v0*", PARENT / "HypaNet-v1*",
+    roots = [REPO, *siblings, SMOKE, DEFAULT_AUTHOR, R2_AUTHOR, PARENT / "HypaNet-slop-author-r2*",
+             PARENT / "HypaNet-slop-author*", PARENT / "HypaNet-clouds*", PARENT / "HypaNet-v0*", PARENT / "HypaNet-v1*",
              PARENT / "HypaNet-m*", PARENT / "HypaNet-slop-smoke*", Path(f"/private/tmp/claude-{uid}"),
              Path(f"/tmp/claude-{uid}"), Path("/private/var/folders"), Path("/var/folders"), PRIVATE_NOTES,
              CODEX_HOME, *repo_roots()]
@@ -120,7 +124,8 @@ def build(author: Path) -> dict:
     # project dirs that may appear later (sessions in the repo, other author dirs, the smoke dir, scratch dirs)
     hyp = project_name(PARENT)
     future = [f"{hyp}-HypaNet", f"{hyp}-HypaNet-clouds*", f"{hyp}-HypaNet-v*", f"{hyp}-HypaNet-m*",
-              f"{hyp}-HypaNet-slop-smoke*", "-private-tmp-*", "-tmp-*", "-private-var-*"]
+              f"{hyp}-HypaNet-slop-smoke*", f"{hyp}-HypaNet-slop-author", f"{hyp}-HypaNet-slop-author-r2*",
+              "-private-tmp-*", "-tmp-*", "-private-var-*"]
     for e in sorted(set(os.listdir(claude / "projects")) | set(future)):
         if e == own or fnmatch.fnmatchcase(own, e):
             continue
@@ -137,9 +142,13 @@ def build(author: Path) -> dict:
 
 
 def default_out(author: Path) -> Path:
-    """kit/settings.smoke.json for the smoke dir, kit/settings.json otherwise (r1)."""
-    smoke = author.name.startswith("HypaNet-slop-smoke")
-    return SLOP / "kit" / ("settings.smoke.json" if smoke else "settings.json")
+    """kit/settings.smoke.json for the smoke dir, kit/settings.r2.json for an r2 dir, kit/settings.json otherwise
+    (r1)."""
+    if author.name.startswith("HypaNet-slop-smoke"):
+        return SLOP / "kit" / "settings.smoke.json"
+    if author.name.startswith("HypaNet-slop-author-r2"):
+        return SLOP / "kit" / "settings.r2.json"
+    return SLOP / "kit" / "settings.json"
 
 
 def main(argv: list[str]) -> int:

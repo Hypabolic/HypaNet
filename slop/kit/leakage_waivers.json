@@ -1,4 +1,14 @@
 [
-  {"check": "sealed-ngrams", "file": "-", "match": "not-run",
-   "reason": "Matthew, 2026-11-11: an informal run, not a formal experiment; sealed_real is not selected before launch, so the sealed n-gram check is waived. The earlier salted leak checks (rounds 3-5) found no sealed phrase of 4+ words in the guide, generator or kit."}
+ {
+  "check": "sealed-ngrams",
+  "file": "-",
+  "match": "not-run",
+  "reason": "Matthew, 2026-11-11: an informal run, not a formal experiment; sealed_real is not selected before launch, so the sealed n-gram check is waived. The earlier salted leak checks (rounds 3-5) found no sealed phrase of 4+ words in the guide, generator or kit."
+ },
+ {
+  "check": "heldout-text",
+  "file": "work/MODEL.md",
+  "match": "val: all in one place",
+  "reason": "Accepted 2026-11-11: work/MODEL.md is r1's own file, written in a session that never saw val; the match is the stock four-word phrase in its own invented example \"Everything you need, all in one place.\" (codex L34)."
+ }
 ]

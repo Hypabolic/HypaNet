@@ -1,0 +1,11 @@
+{"schema": "slop.screen/1", "id": "6e1647524c81b35d", "framework": "tsx",
+ "source": {"repo": "slop-rules-fixtures", "path": "src/cr_residue_pos.tsx", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "state", "line": 2},
+  {"k": 1, "kind": "body", "line": 5}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "empty_title", "text": "No saved routes", "flags": ["in_state"], "loc": [3, 7, 3, 22]},
+  {"i": 1, "k": 0, "role": "empty_body", "text": "Sure! Here’s a friendly message for when there are no routes yet.", "flags": ["in_state"], "loc": [4, 7, 4, 72]},
+  {"i": 2, "k": 1, "role": "tooltip", "text": "Rename this board. Let me know if you’d like any changes!", "flags": [], "loc": [6, 7, 6, 64]},
+  {"i": 3, "k": 1, "role": "body", "text": "As an AI language model, I can’t see your screen.", "flags": [], "loc": [7, 7, 7, 56]},
+  {"i": 4, "k": 1, "role": "caption", "text": "As of my last update, the ferry runs twice a day.", "flags": [], "loc": [8, 7, 8, 56]}]}

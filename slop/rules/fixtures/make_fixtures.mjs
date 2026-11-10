@@ -30,6 +30,16 @@ const PL = 'slop/placeholder-as-label';
 const SL = 'slop/shared-lead-in';
 const IX = 'slop/index-numbering';
 const ER = 'slop/exact-repeat';
+const CR = 'slop/chatbot-residue';
+const PH = 'slop/placeholder-copy';
+const LC = 'slop/llm-construction';
+const SC = 'slop/stock-cta';
+const EC = 'slop/empty-claim';
+const PV = 'slop/promo-vocab';
+const SE = 'slop/sparkle-emoji';
+const ED = 'slop/em-dash-density';
+const EX = 'slop/exclamation-density';
+const PN = 'slop/pleonasm';
 
 // node: [k, role, text, flags, vw?]; finding: [rule, code, [i…], {condition, target}]
 const n = (k, role, text, flags = [], vw = undefined) => [k, role, text, flags, vw];
@@ -302,6 +312,8 @@ const FIXTURES = [
     n(1, 'label', 'Your name', ['in_form', 'in_control']),
     n(2, 'body', 'Your order ships on Monday.'),
     n(3, 'h2', 'Your account, your data and every setting you can change'),
+    n(3, 'h2', 'Your brand, your rules'),
+    n(3, 'button', 'Not Now', ['title_case']),
   ], expect: [] },
 
   { name: 'fw_adverbs_pos', fw: 'tsx', about: [pos(FW), neg(VA)], kinds: ['header', 'body'], nodes: [
@@ -921,6 +933,134 @@ const FIXTURES = [
     ['body', [['caption', '1'], ['body', 'Members only.'], ['caption', '2'], ['body', 'Weekdays from 9:30.'], ['caption', '3'], ['body', 'Closed in July.'],
               ['body', 'Rated 4.1 in spring and 4.2 in autumn.']]],
   ]), expect: [f(IX, 'R12', [1, 3, 5])] },
+
+  // -- codex rules (slop/codex/llm.md, ui.md) ----------------------------------------------------------------------
+  { name: 'cr_residue_pos', fw: 'tsx', about: [pos(CR)], ...clustered([
+    ['state', [['empty_title', 'No saved routes', ['in_state']], ['empty_body', 'Sure! Here’s a friendly message for when there are no routes yet.', ['in_state']]]],
+    ['body', [['tooltip', 'Rename this board. Let me know if you’d like any changes!'], ['body', 'As an AI language model, I can’t see your screen.'],
+              ['caption', 'As of my last update, the ferry runs twice a day.']]],
+  ]), expect: [f(CR, 'L44', [1]), f(CR, 'L44', [2]), f(CR, 'L44', [3]), f(CR, 'L44', [4])] },
+
+  { name: 'cr_residue_neg', fw: 'tsx', about: [neg(CR)], ...clustered([
+    ['state', [['dialog_title', 'Leave this page?', ['in_dialog', 'in_state']], ['dialog_body', 'Would you like to save your changes first?', ['in_dialog', 'in_state']]]],
+    ['control', [['label', 'Is there anything else we should know?', ['in_form', 'in_control']]]],
+    ['body', [['body', 'Here are some ideas for your first week.'], ['body', 'Below is a list of devices signed in to this account.'],
+              ['caption', 'Images for illustrative purposes only.'], ['list_item', 'Todo', ['in_list']]]],
+    ['body', [['caption', 'As an AI, the assistant can make mistakes.'], ['body', 'Let me know if you’d like to work together.'],
+              ['body', 'Here’s a revised plan for this week.']]],
+  ]), expect: [] },
+
+  { name: 'ph_template_pos', fw: 'html', about: [pos(PH)], ...clustered([
+    ['header', [['link', 'Your Brand', ['in_header']], ['h1', 'Fresh flowers every Friday', ['in_header']]]],
+    ['body', [['body', 'Call (555) 123-4567 or visit us at 123 Main Street, Anytown.'], ['caption', 'Jane Doe, head of operations'],
+              ['body', 'Questions go to [Your name] at the front desk.']]],
+    ['body', [['caption', '© 2026 Your Company. All rights reserved.', ['small', 'in_footer']]]],
+    ['body', [['body', 'Lorem ipsum dolor sit amet, consectetur.'], ['caption', 'Jane Smith, head of sales']]],
+  ]), expect: [f(PH, 'L45', [0]), f(PH, 'L45', [2]), f(PH, 'L45', [3]), f(PH, 'L45', [4]), f(PH, 'L45', [5]), f(PH, 'L45', [6]), f(PH, 'L45', [7])] },
+
+  { name: 'ph_template_neg', fw: 'html', about: [neg(PH)], ...clustered([
+    ['header', [['h2', 'About the business'], ['body', 'Tell us about the business you run.']]],
+    ['control', [['label', 'Company name', ['in_form', 'in_control']], ['placeholder', 'Acme Inc', ['in_form', 'in_control']]]],
+    ['control', [['label', 'Email', ['in_form', 'in_control']], ['helper', 'For example, jane@example.com', ['small', 'in_form', 'in_control']]]],
+    ['control', [['label', 'City, state', ['in_form', 'in_control']]]],
+    ['body', [['h3', 'Logo'], ['link', 'Your company']]],
+    ['control', [['label', 'Work email', ['in_form', 'in_control']], ['helper', 'Like you@example.com', ['small', 'in_form', 'in_control']]]],
+    ['control', [['label', 'Domain', ['in_form', 'in_control']], ['helper', 'Use your own domain, not example.com.', ['small', 'in_form', 'in_control']]]],
+    ['body', [['caption', 'Photo by John Smith on Unsplash'], ['body', 'Contact Jane Smith, our head of support.']]],
+  ]), expect: [] },
+
+  { name: 'lc_constructions_pos', fw: 'tsx', about: [pos(LC)], ...clustered([
+    ['header', [['h1', 'It’s not just a to-do list, it’s your second brain.', ['in_header']],
+                ['subtitle', 'Whether you’re a beginner or a pro, we’ve got you covered.', ['in_header']]]],
+    ['body', [['body', 'From grocery lists to wedding plans, Tally keeps it all.'], ['h2', 'Tired of losing receipts? Meet Stash.'],
+              ['h2', 'Note-taking, reimagined.'], ['body', 'Say goodbye to messy group chats.'], ['body', 'Simple. Smart. Yours.'],
+              ['body', 'Exports run nightly, so nothing slips through the cracks.'], ['h3', 'Welcome to Plotline']]],
+  ]), expect: [f(LC, 'L09', [0]), f(LC, 'L10', [1]), f(LC, 'L11', [2]), f(LC, 'L13', [3]), f(LC, 'L14', [4]), f(LC, 'L14', [5]),
+    f(LC, 'L12', [6]), f(LC, 'L16', [7]), f(LC, 'L17', [8])] },
+
+  { name: 'lc_constructions_neg', fw: 'tsx', about: [neg(LC)], ...clustered([
+    ['body', [['body', 'Not just the 3-seat plan, it’s every plan from May.'], ['body', 'Archived, not deleted. You can restore it for 30 days.'],
+              ['body', 'From 9 to 5, Monday to Saturday.'], ['h2', 'Meet the team'], ['body', 'No more results.'],
+              ['body', 'Want to change your plan? Contact us.'], ['list_item', 'What if I miss a payment?', ['in_list']], ['body', 'Pay all in one go.'],
+              ['body', 'Red, green and blue.'], ['caption', 'Just now.'], ['body', 'Welcome to the club newsletter archive.']]],
+    ['state', [['dialog_title', 'Ready to publish?', ['in_dialog', 'in_state']], ['button', 'Publish', ['in_dialog', 'in_state']]]],
+    ['state', [['dialog_title', 'Welcome to your workspace', ['in_dialog', 'in_state']], ['button', 'Take the tour', ['in_dialog', 'in_state']]]],
+    ['control', [['label', 'Script', ['in_form', 'in_control']], ['menu_item', 'Chinese, simplified', ['in_form', 'in_list', 'in_control']]]],
+  ]), expect: [] },
+
+  { name: 'sc_stock_pos', fw: 'tsx', about: [pos(SC)], ...clustered([
+    ['header', [['h2', 'Ready to get started?'], ['body', 'What are you waiting for?']]],
+    ['actions', [['button', 'Start your journey'], ['link', 'Explore features']]],
+  ]), expect: [f(SC, 'L27', [0]), f(SC, 'L27', [1]), f(SC, 'L26', [2]), f(SC, 'L26', [3])] },
+
+  { name: 'sc_stock_neg', fw: 'tsx', about: [neg(SC)], ...clustered([
+    ['header', [['h2', 'It’s time to renew your plan'], ['body', 'Your plan ends on 4 June.']]],
+    ['actions', [['button', 'Book a demo'], ['button', 'Start free trial'], ['button', 'Continue'], ['button', 'Ready to get started?']]],
+  ]), expect: [] },
+
+  { name: 'ec_claims_pos', fw: 'tsx', about: [pos(EC)], ...clustered([
+    ['header', [['subtitle', 'Get started in seconds. No coding required.'], ['badge', 'Limited time offer', ['small', 'pill']]]],
+    ['body', [['stat', '10x faster'], ['caption', 'Trusted by 10,000+ teams'], ['body', 'Loved by thousands of bakers.'], ['body', 'Rated 4.9/5 by home cooks.']]],
+  ]), expect: [f(EC, 'L28', [0]), f(EC, 'L32', [1]), f(EC, 'L29', [2]), f(EC, 'L29', [3]), f(EC, 'L30', [4]), f(EC, 'L29', [5])] },
+
+  { name: 'ec_claims_neg', fw: 'tsx', about: [neg(EC)], ...clustered([
+    ['header', [['h2', 'Trusted by'], ['body', 'Trusted by 12,483 teams'], ['body', 'Delivered in seconds.']]],
+    ['control', [['label', 'Template', ['in_form', 'in_control']], ['helper', 'Get started in seconds with a blank page.', ['small', 'in_form', 'in_control']]]],
+    ['body', [['badge', `Limited time offer, ends ${V} date`, ['small', 'pill', 'dynamic']], ['body', '99.9% uptime over the last 90 days.'],
+              ['body', 'Exports are 2-4x faster on the new engine.'], ['body', 'Up to 2x faster than v1 in our benchmarks.']]],
+  ]), expect: [] },
+
+  { name: 'pv_density_pos', fw: 'tsx', about: [pos(PV)], ...clustered([
+    ['header', [['h1', 'Recipes'], ['subtitle', 'Seamlessly supercharge your meal planning.']]],
+    ['body', [['body', 'A powerful, intuitive editor for every recipe.']]],
+  ]), expect: [f(PV, 'L02', [1]), f(PV, 'L02', [2])] },
+
+  { name: 'pv_density_neg', fw: 'tsx', about: [neg(PV)], ...clustered([
+    ['body', [['body', 'Transform photos with layers and masks.'], ['body', 'Smart playlists update automatically.'],
+              ['body', 'Unlock the power of templates.'], ['h3', 'Landscape']]],
+  ]), expect: [] },
+
+  { name: 'se_emoji_pos', fw: 'tsx', about: [pos(SE)], ...clustered([
+    ['header', [['h3', '✨ Smart search', ['emoji_lead']]]],
+    ['list', [['list_item', '✅ Unlimited projects', ['in_list', 'emoji_lead']], ['list_item', '✅ Shared folders', ['in_list', 'emoji_lead']]]],
+    ['actions', [['button', '🚀 Open the shop', ['emoji_lead']]]],
+  ]), expect: [f(SE, 'R11g', [0]), f(SE, 'R11g', [1]), f(SE, 'R11g', [2]), f(SE, 'R11g', [3])] },
+
+  { name: 'se_emoji_neg', fw: 'tsx', about: [neg(SE)], ...clustered([
+    ['list', [['cell', '✅', ['in_table', 'in_list']], ['cell', '❌ Not included', ['in_table', 'in_list']]]],
+    ['body', [['body', '🎉'], ['body', 'Ship it 🚀'], ['body', 'Bake at 200°C for 40 minutes.']]],
+  ]), expect: [] },
+
+  { name: 'ed_dashes_pos', fw: 'tsx', about: [pos(ED)], ...clustered([
+    ['header', [['h1', 'Weekly planner'], ['subtitle', 'Plan your week — and keep Sunday free.']]],
+    ['body', [['body', 'Fast — really fast.'], ['body', 'Exports run nightly—every night, even on holidays.'],
+              ['caption', 'Works offline — changes sync when you’re back.']]],
+  ]), expect: [f(ED, 'L48', [1, 2, 3, 4])] },
+
+  { name: 'ed_dashes_neg', fw: 'tsx', about: [neg(ED)], ...clustered([
+    ['body', [['body', 'Plan your week — and keep Sunday free.'], ['body', 'Fast — really fast.'], ['caption', '— Sam, head baker'],
+              ['body', 'Open 9–5 – closed on Sundays.'], ['caption', '2019 — 2021'], ['caption', '2015 — 2019'], ['caption', '2012 — 2015']]],
+    ['list', [['cell', '—', ['in_table', 'in_list']], ['cell', '—', ['in_table', 'in_list']]]],
+  ]), expect: [] },
+
+  { name: 'ex_bangs_pos', fw: 'tsx', about: [pos(EX)], ...clustered([
+    ['state', [['toast', 'Profile updated!', ['in_state']]]],
+    ['header', [['h2', 'You’re all set!'], ['body', 'Your first loaf is in the oven!']]],
+  ]), expect: [f(EX, 'L51', [0, 1, 2])] },
+
+  { name: 'ex_bangs_neg', fw: 'tsx', about: [neg(EX)], ...clustered([
+    ['header', [['h2', 'You’re all set!'], ['body', 'Your first loaf is in the oven!'], ['body', 'Use != to compare two values.'], ['cell', 'Yes!', ['in_table']]]],
+  ]), expect: [] },
+
+  { name: 'pn_pleonasm_pos', fw: 'tsx', about: [pos(PN)], ...clustered([
+    ['control', [['label', 'PIN number', ['in_form', 'in_control']], ['helper', 'Download the PDF format of each invoice.', ['small', 'in_form', 'in_control']]]],
+    ['actions', [['link', 'FAQ questions']]],
+  ]), expect: [f(PN, 'U51', [0]), f(PN, 'U51', [1]), f(PN, 'U51', [2])] },
+
+  { name: 'pn_pleonasm_neg', fw: 'tsx', about: [neg(PN)], ...clustered([
+    ['control', [['label', 'PIN code', ['in_form', 'in_control']]]],
+    ['body', [['body', 'LED light strips are back in stock.'], ['body', 'Upload a PDF of the invoice.']]],
+  ]), expect: [] },
 
   // -- a clean screen: no rule fires ------------------------------------------------------------------------------
   { name: 'clean_settings_neg', fw: 'swift', about: [neg(RC), neg(VA), neg(FW), neg(PL), neg(SL), neg(IX), neg(ER)],

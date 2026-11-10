@@ -1,0 +1,94 @@
+# slop/codex/lists/ui_padding_phrases.txt
+# Multi-word phrases that pad a UI sentence without adding a fact. Patterns: U49 (filler words), U50 (padding
+# phrases), U05 (generic-verb subtitle).
+#
+# Use: rule layer only (aside R15 family). The phrase is the padding; the rest of the node is labelled on its own
+# merits. Match whole phrases in the folded text (rules/README.md, "Normalised string").
+#
+# Format: one entry per line, lower case; lines starting with # are comments.
+#
+# Provenance: Block A written for HypaNet (grounding: Microsoft Writing Style Guide "Don't use two or three words when
+# one will do" and "Make every word count"; Microsoft Top 10 tips "Avoid weak phrasing like there is, there are, and
+# there were"; GOV.UK A to Z "in order to, usually not needed - do not use it"). Block B is the subset of retext-simplify
+# v8.0.0 patterns marked `omit: true` (phrases its authors say can simply be removed) that occur in UI copy;
+# github.com/retextjs/retext-simplify, Copyright (c) 2016 Titus Wormer, MIT licence; full notice in
+# lists/ATTRIBUTION-ui.md. Licence: MIT.
+
+# --- Block A: HypaNet ---
+in order to
+at this time
+at the moment
+at the present time
+at this point in time
+please note that
+please be aware that
+please be advised that
+it is important to note that
+it's important to note that
+note that
+keep in mind that
+bear in mind that
+as you can see
+as mentioned
+as mentioned above
+as noted above
+as described below
+the following
+there is
+there are
+there were
+you can
+you are able to
+you're able to
+you will be able to
+you'll be able to
+is able to
+has the ability to
+make sure to
+be sure to
+feel free to
+don't hesitate to
+do not hesitate to
+if you'd like
+if you would like
+if you wish
+whenever you're ready
+when you're ready
+at any time
+anytime
+at your convenience
+at your fingertips
+in one place
+everything you need
+everything you need to
+all you need
+and more
+and much more
+much more
+and so much more
+with ease
+quick and easy
+simple and easy
+fast and easy
+easy to use
+easy-to-use
+hassle-free
+in a few clicks
+with a few clicks
+in just a few steps
+step by step
+from start to finish
+from anywhere
+on the go
+right here
+right away
+
+# --- Block B: retext-simplify omit:true subset (MIT, Titus Wormer) ---
+be advised
+currently
+in the process of
+in terms of
+take action to
+the use of
+overall
+put simply

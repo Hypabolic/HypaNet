@@ -1,10 +1,11 @@
-// Test helper: reads {"vocab": text|null, "texts": [...], "screens": [...]} as JSON on stdin and prints the JS
-// tokeniser's output as JSON, for the Python parity tests (ui/tests/test_tokenizer_parity.py).
+// Test helper: reads {"vocab": text|null, "ids": 1|2 (id layout, default 1), "texts": [...], "screens": [...]} as JSON
+// on stdin and prints the JS tokeniser's output as JSON, for the Python parity tests (ui/tests/test_tokenizer_parity.py).
 import { readFileSync } from 'node:fs';
 import { Vocab, EMPTY_VOCAB, tokenizeText, encodeScreen } from '../tokenizer.js';
 
 const req = JSON.parse(readFileSync(0, 'utf8'));
-const vocab = req.vocab == null ? EMPTY_VOCAB : Vocab.fromText(req.vocab);
+const ids = req.ids ?? 1;
+const vocab = req.vocab == null ? (ids === 1 ? EMPTY_VOCAB : new Vocab([], ids)) : Vocab.fromText(req.vocab, ids);
 const texts = (req.texts || []).map((t) => {
   const tt = tokenizeText(t, vocab);
   return { ids: tt.ids, flags: tt.flags, dropped: tt.dropped, stems: tt.tokens.map((x) => x.stem ?? null) };

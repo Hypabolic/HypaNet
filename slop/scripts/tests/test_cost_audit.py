@@ -174,3 +174,64 @@ def test_settings_check(tmp_path, monkeypatch):
     p.write_text(json.dumps(s))
     probs = launch_checks.check_settings(p, author, parent, repo, home)
     assert any("~/.codex" in x for x in probs) and any("~/.claude.json" in x for x in probs)
+
+
+def test_r2_names_and_its_own_cap(tmp_path):
+    for good in ("r2", "r2.c1", "r2.c12"):
+        assert cost.R2_NAME_RE.match(good) and not cost.NAME_RE.match(good)
+    for bad in ("r1", "r2.c0", "smoke"):
+        assert not cost.R2_NAME_RE.match(bad)
+    capf = tmp_path / "CAP_USD"
+    with pytest.raises(cost.NoCap):
+        cost.read_cap(capf)
+    capf.write_text("0\n")
+    with pytest.raises(cost.NoCap):
+        cost.read_cap(capf)
+    for bad in ("r2: 250\n", "250 or 300\n", "250 USD max\n", "\n"):
+        capf.write_text(bad)
+        with pytest.raises(cost.NoCap):
+            cost.read_cap(capf)
+    for good in ("US$250\n", " $250.00 \n", "250"):
+        capf.write_text(good)
+        assert cost.read_cap(capf) == 250.0
+    capf.write_text("250\n")
+    assert cost.read_cap(capf) == 250.0
+    logs = tmp_path / "r2" / "logs"
+    _log(logs / "r2.stream.jsonl", [_result("t", 30.0)])
+    _log(logs / "r2.c1.stream.jsonl", [_result("t", 42.5)])
+    dirs, cap, name_re = cost.run_config("r2", [logs], capf)
+    s = cost.summary(dirs, cap, name_re)
+    assert s["cap_usd"] == 250.0 and s["total_usd"] == pytest.approx(42.5) and s["unexpected"] == []
+    assert cost.remaining_floor(s) == 207.5
+    assert cost.main(["--run", "r2", "--logs", str(logs), "--cap-file", str(tmp_path / "none"), "--cap"]) == 2
+    assert cost.main(["--run", "r2", "--logs", str(logs), "--cap-file", str(capf), "--check"]) == 0
+
+
+def _audit_named(tmp_path: Path, name: str, blocks: list[dict]) -> dict:
+    author = tmp_path / "HypaNet-slop-author-r2"
+    (author / "work").mkdir(parents=True, exist_ok=True)
+    events = [{"type": "system", "subtype": "init", "session_id": "s", "model": "claude-fable-5-2"},
+              _assistant("m1", blocks), _result("s", 2.0, "MODEL COMPLETE")]
+    log = _log(tmp_path / name / "logs" / f"{name}.stream.jsonl", events)
+    return audit.audit(log, author)
+
+
+def test_audit_r2_allows_the_thesaurus_but_not_the_examples(tmp_path):
+    reads_resources = ("import numpy as np\n# WordNet links from the kit's thesaurus\n"
+                       "rows = open('resources/thesaurus/out/stem_links.tsv').read()\n"
+                       "np.savez('work/artifact.npz', tok_emb=E)\n")
+    from_examples = "rows = open('examples/dev/x.json').read()\nnp.savez('work/artifact.npz', tok_emb=E)\n"
+    blocks = [_tool("Write", file_path="work/build.py", content=reads_resources),
+              _tool("Read", file_path="resources/thesaurus/README.md")]
+    rep = _audit_named(tmp_path / "a", "r2", blocks)
+    assert rep["run"] == "r2" and rep["violations"] == [], rep["violations"]
+    rep = _audit_named(tmp_path / "b", "r1", blocks)
+    assert any("WordNet" in v for v in rep["violations"])
+    rep = _audit_named(tmp_path / "c", "r2", [_tool("Write", file_path="work/b.py", content=from_examples),
+                                              _tool("Write", file_path="work/c.py", content="import nltk\n"),
+                                              _tool("Write", file_path="resources/codex/x.txt", content="x")])
+    v = "\n".join(rep["violations"])
+    assert "reads examples/ and writes the artefact" in v and "forbidden library" in v
+    assert "tool modification: resources/codex/x.txt" in v
+    assert audit.default_author(Path("/x/runs/r2/logs/r2.c3.stream.jsonl")).name == "HypaNet-slop-author-r2"
+    assert audit.default_author(Path("/x/runs/r1/logs/r1.stream.jsonl")).name == "HypaNet-slop-author"

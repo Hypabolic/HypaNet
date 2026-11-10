@@ -1,0 +1,107 @@
+# slop/codex/lists/ui_generic_ctas.txt
+# Action labels (buttons, links, menu items) that name a gesture or a stock phrase instead of the outcome.
+# Patterns: U29 (vacuous action label), U30 (gesture lead), U31 (CTA repeated across sections).
+#
+# Use: rule layer only (LABELLING.md aside R7). A control is never the flagged side of an echo (LABELLING §5 rank 1),
+# and these labels are not redundant copy; the network does not score them. The list is longer than
+# rules/src/lists.js VACUOUS_LABELS on purpose: the blocks below say which entries are always vacuous and which only
+# in context. Match the WHOLE folded label (rules/README.md, "Normalised string"), not a substring.
+#
+# Format: one entry per line (alphabetical within each block), lower case; lines starting with # are comments.
+#
+# Provenance: written for HypaNet. Grounding: Apple HIG Writing ('just saying "Send" often works better than "Let's do
+# it!"'; 'avoid using "Click here"'); Apple HIG Alerts ('Avoid using OK as the default button title unless the alert
+# is purely informational'); Mailchimp web elements ('Don't say things like "Click here!" or "Click for more
+# information" or "Read this."'; "Button copy should always include verbs"); NN/g writing links ("avoid generic links
+# such as Read more, or Click here"); Microsoft Win32 UX guide ("Prefer specific labels over generic ones");
+# Atlassian empty state ("Use action verbs ... rather than vague terms like OK"); Shopify ("start with a strong verb
+# that describes the action"). Licence: MIT (repo licence).
+
+# --- always vacuous: gesture or pointer (Apple, Mailchimp, NN/g, GOV.UK) ---
+click
+click for more
+click for more information
+click here
+click to learn more
+here
+link
+press here
+read this
+tap
+tap here
+tap to learn more
+this
+this link
+
+# --- always vacuous: stock "more" phrases (NN/g, Mailchimp) ---
+check it out
+check this out
+continue reading
+details
+discover more
+explore more
+find out more
+have a look
+info
+keep reading
+learn more
+more details
+more info
+more information
+read more
+read on
+see more details
+see what's new
+take a look
+
+# --- stock marketing CTAs (unslop-ui "CTA clones"; Hallmark gate 19; see [anti-slop-guides] R7) ---
+book now
+buy now
+claim now
+discover
+discover now
+dive in
+explore
+explore now
+get it now
+get started
+get started now
+get started today
+grab it
+join now
+jump in
+let's do it
+let's get started
+let's go
+shop now
+sign up now
+start here
+start now
+start today
+try it
+try it free
+try it now
+try it out
+try now
+
+# --- context-dependent: convention in a dialog or flow, vacuous elsewhere (Apple Alerts; Microsoft commit buttons) ---
+# OK is right for a purely informational alert and wrong for a confirmation; Yes/No are right only as answers to a
+# yes-or-no question; Submit is vacuous when a specific verb exists (Pay, Send, Book). Flag only in context.
+accept
+apply
+awesome
+confirm
+continue
+cool
+done
+go
+got it
+great
+next
+no
+ok
+okay
+proceed
+sounds good
+submit
+yes

@@ -1,0 +1,89 @@
+# slop/codex/lists/ui_status_genre_titles.txt
+# Message-genre words used as a whole title, prefix or label on an alert, banner, toast or dialog: they name the kind
+# of message (an error, a warning, a success) instead of saying what happened. Patterns: U16 (status-genre
+# title), U17 ("Warning:" and "Note:" prefixes), U49 (interjections).
+#
+# Use: a dialog_title, toast title or banner heading whose WHOLE folded text is one of these, above a body that says
+# what happened, carries no fact the body does not (LABELLING.md §4 step 6: DECOR). It is not an echo of the body
+# because it outranks it (§5). As a prefix ("Warning: this deletes...") it is filler for the rule layer (aside R15);
+# the rest of the sentence is labelled on its own. Keep it when it is the only statement of state (a toast "Saved"
+# with no body is KEEP: live state).
+#
+# Format: one entry per line, lower case; lines starting with # are comments.
+#
+# Provenance: written for HypaNet. Grounding: Apple HIG Alerts ('Avoid writing a title that doesn't convey useful
+# information — like "Error" or "Error 329347 occurred"'); Apple HIG Writing ('Interjections like "oops!" or "uh-oh"
+# are typically unnecessary'); Microsoft Win32 UX guide, Confirmations ('Don't use "warning" or "caution" in the
+# text'); Microsoft User interface text ("There is no need to add, for example, the term WARNING in all capital
+# letters"); NN/g error-message guidelines ("Generic messages such as An error occurred lack context"). Licence: MIT.
+
+# --- error ---
+error
+an error occurred
+error occurred
+something went wrong
+something's wrong
+something is wrong
+failed
+failure
+problem
+issue
+uh oh
+uh-oh
+oops
+whoops
+oh no
+oh snap
+sorry
+we're sorry
+we are sorry
+apologies
+yikes
+hmm
+# --- warning ---
+warning
+caution
+attention
+heads up
+heads-up
+important
+please note
+note
+notice
+alert
+be careful
+careful
+# --- information ---
+info
+information
+fyi
+tip
+pro tip
+hint
+did you know
+just so you know
+# --- success ---
+success
+successful
+success!
+done
+all done
+all set
+you're all set
+all good
+complete
+completed
+great
+great job
+nice
+nice work
+awesome
+congratulations
+congrats
+hooray
+yay
+woohoo
+well done
+perfect
+voila
+voilà

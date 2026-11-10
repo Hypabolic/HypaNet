@@ -1,0 +1,115 @@
+# slop/codex/lists/llm_glyphs.txt
+# Emoji, glyphs and punctuation habits of generated UI copy. Patterns: L46 (emoji bullets, sparkles and emoji
+# icons), L48 (em dash habit), L50 (middle-dot strips, arrow suffixes, slash strings), L51 (exclamation and hype
+# punctuation).
+#
+# One glyph per line (a sequence where the glyph is a ZWJ or variation-selector sequence). Matching is on the raw,
+# unfolded node text: the rule layer's folding drops glyphs, so these must be checked before folding.
+# LABELLING.md §6: "A dot, sparkle or emoji glyph that leads a node whose words are KEEP leaves the node KEEP, with
+# aside R11g"; an emoji-only node with no live state is DECOR (R11). Case and styling never decide a class.
+# Lines starting with # are comments; a glyph line never starts with #. Do not strip whitespace from lines in the
+# L48 section: " – " and " - " are a spaced en dash and a spaced hyphen, and the spaces are part of the entry.
+#
+# Provenance: Wikipedia "Signs of AI writing/Style" §Emoji as formatting (cited, CC BY-SA 4.0; no text reused);
+# The Fountain Institute, "7 Signs a UI Has Been Vibe Coded" ("Emojis used as icons, bullets, and navigation items";
+# cited); unslop-ui TELLS.md §7 ("The sparkle/star = 'AI'"; "Emoji used as icons") and §8 ("Em-dash as the default
+# connector"; "Checkmark-prefixed feature lists") (MIT); slop_scan.py EMOJI class (MIT); Hallmark gates.md gate 63
+# "template punctuation" (MIT). The selection of glyphs is HypaNet's. Licence: MIT (the HypaNet repo licence).
+
+# --- L46 the "AI" sparkle family ---
+✨
+⭐
+🌟
+💫
+⚡
+⚡️
+🪄
+🔮
+
+# --- L46 emoji used as feature icons and bullets (the pasted-chat-answer shape) ---
+🚀
+🔥
+💡
+🎯
+📈
+📊
+🔒
+🔐
+🛡️
+🧠
+💪
+🎉
+🙌
+👉
+👇
+✅
+✔️
+☑️
+❌
+⚙️
+🛠️
+🧩
+🌍
+🌐
+📱
+💻
+🤖
+💬
+📝
+📚
+🔍
+⏱️
+⏰
+💰
+💎
+🏆
+🥇
+❤️
+💜
+🫶
+👋
+🤝
+🧭
+🪷
+🔔
+📣
+🎨
+🌱
+♻️
+🔄
+
+# --- L47/L50 decorative status dots and bullets placed before a label (LABELLING.md R11) ---
+●
+•
+◉
+○
+◆
+◇
+▪
+▸
+►
+➜
+➤
+→
+↗
+›
+»
+·
+∙
+⋅
+|
+/
+//
+
+# --- L48 dashes: em dash, spaced en dash and spaced hyphen used as a clause connector ---
+—
+ –
+ -
+--
+
+# --- L51 hype punctuation ---
+!
+!!
+?!
+…
+...

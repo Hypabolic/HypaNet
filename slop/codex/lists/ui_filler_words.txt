@@ -1,0 +1,90 @@
+# slop/codex/lists/ui_filler_words.txt
+# Words that add length and no meaning in a UI string. Pattern: U49 (filler words; LABELLING.md aside R15).
+#
+# Use: rule layer only. The network does not score filler (LABELLING.md §9: aside R15), and a node that contains
+# filler is labelled on its other words. rules/src/lists.js FILLER already holds the guide-sourced core with scopes
+# ("now" only on actions, "your" only as a title lead); this file is the wider candidate set for that rule. Block B
+# entries are imported and need the same scoping before use: several are ordinary words in context ("just now",
+# "very large file" is still filler, "really" in a question is not).
+#
+# Format: one entry per line (alphabetical within each block), lower case; lines starting with # are comments.
+#
+# Provenance: Block A written for HypaNet from the guidance cited per line (GOV.UK Service Manual and A to Z; Apple HIG
+# Writing; Microsoft Writing Style Guide; Microsoft Win32 UX guide). Block B is a subset of the `fillers` list,
+# words/fillers v2.0.1 (github.com/words/fillers), Copyright (c) 2014 Titus Wormer, MIT licence; the full notice is in
+# lists/ATTRIBUTION-ui.md. Words from `fillers` that usually carry meaning in UI copy (might, most, start,
+# begin, try, right, real, well, usually, frequently, approximately, so, too, things) were left out. Licence: MIT.
+
+# --- Block A: guidance-sourced ---
+# GOV.UK: "There's usually no need to say 'please' or 'please note'."
+kindly
+please
+please note
+# GOV.UK: "You do not usually need the word 'now'." (actions only)
+now
+right now
+# Apple HIG Writing: 'Interjections like "oops!" or "uh-oh" are typically unnecessary and can sound insincere.'
+oops
+uh oh
+uh-oh
+whoops
+# GOV.UK Service Manual: "There's no need to say 'sorry' in validation error messages." ("unfortunately" added)
+sorry
+unfortunately
+we're sorry
+# Microsoft Writing Style Guide: "Omit unnecessary adverbs" (quite, very, quickly, easily, effectively)
+easily
+effectively
+quickly
+quite
+very
+# Microsoft Top 10 tips: "Edit out you can when it isn't necessary."
+you can
+# Apple HIG Writing: "Possessive pronouns like my and your are often unnecessary" (title lead only)
+my
+your
+# Microsoft Win32 Confirmations: 'Don't use "warning" or "caution" in the text.'
+caution
+warning
+# HypaNet additions in the same vein
+easy
+effortlessly
+hey
+hey there
+hi there
+in just a few clicks
+in seconds
+just
+seamlessly
+simply
+successfully
+with a single click
+with just one click
+
+# --- Block B: imported subset of words/fillers (MIT, Titus Wormer) ---
+absolutely
+actually
+basically
+certainly
+clearly
+completely
+definitely
+entirely
+essentially
+exactly
+extremely
+fully
+highly
+hopefully
+literally
+obviously
+particularly
+practically
+really
+seriously
+specifically
+surely
+totally
+truly
+ultimately
+virtually

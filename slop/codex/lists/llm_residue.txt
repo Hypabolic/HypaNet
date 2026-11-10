@@ -1,0 +1,146 @@
+# slop/codex/lists/llm_residue.txt
+# Chatbot residue and template leftovers pasted into shipped UI: the assistant's own voice, prompt echoes, and
+# placeholder identities or text that were never replaced. Patterns: L44 (chatbot residue), L45 (placeholder
+# identities and template text).
+#
+# These are the highest-precision entries in the codex: "Certainly! Here's" or "Acme Inc" in a shipped string is
+# almost never intended. They are not redundancy and belong to the rule layer. Exceptions the rule must allow: a
+# product that is itself a chat assistant (its transcript strings may say "Sure!"), documentation and fixtures,
+# example placeholders in a form field ("e.g. jane@example.com" is a legitimate format hint, LABELLING.md R8), and
+# test or storybook files.
+#
+# Format: one phrase per line, lower case, natural spelling; fold before matching. Lines starting with # are comments.
+# Provenance: Wikipedia "Signs of AI writing" §Collaborative communication (words to watch: "I hope this helps",
+# "Of course!", "Certainly!", "You're absolutely right!", "Would you like...", "is there anything else", "let me
+# know", "more detailed breakdown") and §Phrasal templates and placeholder text, CC BY-SA 4.0, cited; unslop-ui
+# TELLS.md §8 "Placeholder identities left in" and "Great question!" (MIT); slop_scan.py "placeholder" rule
+# (samigiman/anti-slop-skills, MIT); the rest added for HypaNet. The phrases are stock English or stock placeholders.
+# Licence: MIT (the HypaNet repo licence).
+
+# --- L44 chatbot voice and prompt echoes ---
+certainly!
+certainly, here
+sure! here
+sure, here's
+of course!
+of course, here
+absolutely!
+great question
+great question!
+good question
+you're absolutely right
+you're right to
+i hope this helps
+hope this helps
+let me know if
+let me know if you'd like
+let me know if you need
+feel free to
+feel free to reach out
+would you like me to
+would you like to
+is there anything else
+anything else i can help with
+happy to help
+i'd be happy to
+i'm happy to help
+here is a
+here's a
+here are some
+here's an updated
+here's the updated
+here's a revised
+here is the revised
+below is a
+below is the updated
+as an ai
+as an ai language model
+as a language model
+i don't have access to
+i can't browse
+my knowledge cutoff
+as of my last update
+as of my knowledge cutoff
+based on available information
+while specific details are limited
+not publicly available
+more detailed breakdown
+in this example
+for example purposes
+for illustrative purposes
+sample text
+example text
+replace this with
+replace with your
+insert {x} here
+add your {x} here
+your {x} here
+todo
+tbd
+lorem ipsum
+dolor sit amet
+
+# --- L45 placeholder identities and template text ---
+acme
+acme inc
+acme corp
+acme co
+your company
+your company name
+company name
+your brand
+your logo
+logo
+brand name
+product name
+your product
+john doe
+jane doe
+john smith
+jane smith
+sarah m.
+sarah johnson
+alex johnson
+jane@example.com
+john@example.com
+name@example.com
+you@example.com
+email@example.com
+example.com
+yourdomain.com
+yourwebsite.com
+(555) 123-4567
+555-123-4567
+555-0123
+123 main st
+123 main street
+anytown
+anytown, usa
+1234 street name
+city, state
+city, country
+founder & ceo
+ceo, company
+title at company
+marketing manager at
+head of growth at
+placeholder
+placeholder.com
+via.placeholder.com
+picsum.photos
+unsplash.it
+https://example.com
+javascript:void(0)
+[name]
+[your name]
+[company]
+[company name]
+[date]
+[link]
+[insert]
+{{name}}
+{{company}}
+2025-xx-xx
+2026-xx-xx
+xx/xx/xxxx
+insert_source_url
