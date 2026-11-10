@@ -1,0 +1,1119 @@
+{
+ "schema": "slop.screen/1",
+ "id": "ee4b0c06a0d14579",
+ "framework": "html",
+ "source": {
+  "repo": "slop-test-fixtures",
+  "path": "src/faq_long_24.html",
+  "commit": "0000000000000000000000000000000000000000",
+  "licence": "MIT"
+ },
+ "clusters": [
+  {
+   "k": 0,
+   "kind": "body",
+   "line": 5
+  },
+  {
+   "k": 1,
+   "kind": "body",
+   "line": 9
+  },
+  {
+   "k": 2,
+   "kind": "body",
+   "line": 13
+  },
+  {
+   "k": 3,
+   "kind": "body",
+   "line": 17
+  },
+  {
+   "k": 4,
+   "kind": "body",
+   "line": 21
+  },
+  {
+   "k": 5,
+   "kind": "body",
+   "line": 25
+  },
+  {
+   "k": 6,
+   "kind": "body",
+   "line": 29
+  },
+  {
+   "k": 7,
+   "kind": "body",
+   "line": 33
+  },
+  {
+   "k": 8,
+   "kind": "body",
+   "line": 37
+  },
+  {
+   "k": 9,
+   "kind": "body",
+   "line": 41
+  },
+  {
+   "k": 10,
+   "kind": "body",
+   "line": 45
+  },
+  {
+   "k": 11,
+   "kind": "body",
+   "line": 49
+  },
+  {
+   "k": 12,
+   "kind": "body",
+   "line": 53
+  },
+  {
+   "k": 13,
+   "kind": "body",
+   "line": 57
+  },
+  {
+   "k": 14,
+   "kind": "body",
+   "line": 61
+  },
+  {
+   "k": 15,
+   "kind": "body",
+   "line": 65
+  },
+  {
+   "k": 16,
+   "kind": "body",
+   "line": 69
+  },
+  {
+   "k": 17,
+   "kind": "body",
+   "line": 73
+  },
+  {
+   "k": 18,
+   "kind": "body",
+   "line": 77
+  },
+  {
+   "k": 19,
+   "kind": "body",
+   "line": 81
+  },
+  {
+   "k": 20,
+   "kind": "body",
+   "line": 85
+  },
+  {
+   "k": 21,
+   "kind": "body",
+   "line": 89
+  },
+  {
+   "k": 22,
+   "kind": "body",
+   "line": 93
+  },
+  {
+   "k": 23,
+   "kind": "body",
+   "line": 97
+  }
+ ],
+ "nodes": [
+  {
+   "i": 0,
+   "k": 0,
+   "role": "h3",
+   "text": "Question 1",
+   "flags": [
+    "section_first"
+   ],
+   "loc": [
+    6,
+    7,
+    6,
+    17
+   ]
+  },
+  {
+   "i": 1,
+   "k": 0,
+   "role": "body",
+   "text": "Your data is stored in the region you pick when you create the workspace and never leaves it unless you move it.",
+   "flags": [],
+   "loc": [
+    7,
+    7,
+    7,
+    119
+   ]
+  },
+  {
+   "i": 2,
+   "k": 0,
+   "role": "body",
+   "text": "Owners can export every board, card and comment as JSON or CSV at any time from the workspace settings page.",
+   "flags": [],
+   "loc": [
+    8,
+    7,
+    8,
+    115
+   ]
+  },
+  {
+   "i": 3,
+   "k": 1,
+   "role": "h3",
+   "text": "Question 2",
+   "flags": [
+    "section_first"
+   ],
+   "loc": [
+    10,
+    7,
+    10,
+    17
+   ]
+  },
+  {
+   "i": 4,
+   "k": 1,
+   "role": "body",
+   "text": "Owners can export every board, card and comment as JSON or CSV at any time from the workspace settings page.",
+   "flags": [],
+   "loc": [
+    11,
+    7,
+    11,
+    115
+   ]
+  },
+  {
+   "i": 5,
+   "k": 1,
+   "role": "body",
+   "text": "Guests see only the boards they are invited to and cannot create new boards, invite people or change billing.",
+   "flags": [],
+   "loc": [
+    12,
+    7,
+    12,
+    116
+   ]
+  },
+  {
+   "i": 6,
+   "k": 2,
+   "role": "h3",
+   "text": "Question 3",
+   "flags": [
+    "section_first"
+   ],
+   "loc": [
+    14,
+    7,
+    14,
+    17
+   ]
+  },
+  {
+   "i": 7,
+   "k": 2,
+   "role": "body",
+   "text": "Guests see only the boards they are invited to and cannot create new boards, invite people or change billing.",
+   "flags": [],
+   "loc": [
+    15,
+    7,
+    15,
+    116
+   ]
+  },
+  {
+   "i": 8,
+   "k": 2,
+   "role": "body",
+   "text": "Deleted boards stay in the trash for thirty days, after which they are removed from our servers and backups.",
+   "flags": [],
+   "loc": [
+    16,
+    7,
+    16,
+    115
+   ]
+  },
+  {
+   "i": 9,
+   "k": 3,
+   "role": "h3",
+   "text": "Question 4",
+   "flags": [
+    "section_first"
+   ],
+   "loc": [
+    18,
+    7,
+    18,
+    17
+   ]
+  },
+  {
+   "i": 10,
+   "k": 3,
+   "role": "body",
+   "text": "Deleted boards stay in the trash for thirty days, after which they are removed from our servers and backups.",
+   "flags": [],
+   "loc": [
+    19,
+    7,
+    19,
+    115
+   ]
+  },
+  {
+   "i": 11,
+   "k": 3,
+   "role": "body",
+   "text": "Your data is stored in the region you pick when you create the workspace and never leaves it unless you move it.",
+   "flags": [],
+   "loc": [
+    20,
+    7,
+    20,
+    119
+   ]
+  },
+  {
+   "i": 12,
+   "k": 4,
+   "role": "h3",
+   "text": "Question 5",
+   "flags": [
+    "section_first"
+   ],
+   "loc": [
+    22,
+    7,
+    22,
+    17
+   ]
+  },
+  {
+   "i": 13,
+   "k": 4,
+   "role": "body",
+   "text": "Your data is stored in the region you pick when you create the workspace and never leaves it unless you move it.",
+   "flags": [],
+   "loc": [
+    23,
+    7,
+    23,
+    119
+   ]
+  },
+  {
+   "i": 14,
+   "k": 4,
+   "role": "body",
+   "text": "Owners can export every board, card and comment as JSON or CSV at any time from the workspace settings page.",
+   "flags": [],
+   "loc": [
+    24,
+    7,
+    24,
+    115
+   ]
+  },
+  {
+   "i": 15,
+   "k": 5,
+   "role": "h3",
+   "text": "Question 6",
+   "flags": [
+    "section_first"
+   ],
+   "loc": [
+    26,
+    7,
+    26,
+    17
+   ]
+  },
+  {
+   "i": 16,
+   "k": 5,
+   "role": "body",
+   "text": "Owners can export every board, card and comment as JSON or CSV at any time from the workspace settings page.",
+   "flags": [],
+   "loc": [
+    27,
+    7,
+    27,
+    115
+   ]
+  },
+  {
+   "i": 17,
+   "k": 5,
+   "role": "body",
+   "text": "Guests see only the boards they are invited to and cannot create new boards, invite people or change billing.",
+   "flags": [],
+   "loc": [
+    28,
+    7,
+    28,
+    116
+   ]
+  },
+  {
+   "i": 18,
+   "k": 6,
+   "role": "h3",
+   "text": "Question 7",
+   "flags": [
+    "section_first"
+   ],
+   "loc": [
+    30,
+    7,
+    30,
+    17
+   ]
+  },
+  {
+   "i": 19,
+   "k": 6,
+   "role": "body",
+   "text": "Guests see only the boards they are invited to and cannot create new boards, invite people or change billing.",
+   "flags": [],
+   "loc": [
+    31,
+    7,
+    31,
+    116
+   ]
+  },
+  {
+   "i": 20,
+   "k": 6,
+   "role": "body",
+   "text": "Deleted boards stay in the trash for thirty days, after which they are removed from our servers and backups.",
+   "flags": [],
+   "loc": [
+    32,
+    7,
+    32,
+    115
+   ]
+  },
+  {
+   "i": 21,
+   "k": 7,
+   "role": "h3",
+   "text": "Question 8",
+   "flags": [
+    "section_first"
+   ],
+   "loc": [
+    34,
+    7,
+    34,
+    17
+   ]
+  },
+  {
+   "i": 22,
+   "k": 7,
+   "role": "body",
+   "text": "Deleted boards stay in the trash for thirty days, after which they are removed from our servers and backups.",
+   "flags": [],
+   "loc": [
+    35,
+    7,
+    35,
+    115
+   ]
+  },
+  {
+   "i": 23,
+   "k": 7,
+   "role": "body",
+   "text": "Your data is stored in the region you pick when you create the workspace and never leaves it unless you move it.",
+   "flags": [],
+   "loc": [
+    36,
+    7,
+    36,
+    119
+   ]
+  },
+  {
+   "i": 24,
+   "k": 8,
+   "role": "h3",
+   "text": "Question 9",
+   "flags": [
+    "section_first"
+   ],
+   "loc": [
+    38,
+    7,
+    38,
+    17
+   ]
+  },
+  {
+   "i": 25,
+   "k": 8,
+   "role": "body",
+   "text": "Your data is stored in the region you pick when you create the workspace and never leaves it unless you move it.",
+   "flags": [],
+   "loc": [
+    39,
+    7,
+    39,
+    119
+   ]
+  },
+  {
+   "i": 26,
+   "k": 8,
+   "role": "body",
+   "text": "Owners can export every board, card and comment as JSON or CSV at any time from the workspace settings page.",
+   "flags": [],
+   "loc": [
+    40,
+    7,
+    40,
+    115
+   ]
+  },
+  {
+   "i": 27,
+   "k": 9,
+   "role": "h3",
+   "text": "Question 10",
+   "flags": [
+    "section_first"
+   ],
+   "loc": [
+    42,
+    7,
+    42,
+    18
+   ]
+  },
+  {
+   "i": 28,
+   "k": 9,
+   "role": "body",
+   "text": "Owners can export every board, card and comment as JSON or CSV at any time from the workspace settings page.",
+   "flags": [],
+   "loc": [
+    43,
+    7,
+    43,
+    115
+   ]
+  },
+  {
+   "i": 29,
+   "k": 9,
+   "role": "body",
+   "text": "Guests see only the boards they are invited to and cannot create new boards, invite people or change billing.",
+   "flags": [],
+   "loc": [
+    44,
+    7,
+    44,
+    116
+   ]
+  },
+  {
+   "i": 30,
+   "k": 10,
+   "role": "h3",
+   "text": "Question 11",
+   "flags": [
+    "section_first"
+   ],
+   "loc": [
+    46,
+    7,
+    46,
+    18
+   ]
+  },
+  {
+   "i": 31,
+   "k": 10,
+   "role": "body",
+   "text": "Guests see only the boards they are invited to and cannot create new boards, invite people or change billing.",
+   "flags": [],
+   "loc": [
+    47,
+    7,
+    47,
+    116
+   ]
+  },
+  {
+   "i": 32,
+   "k": 10,
+   "role": "body",
+   "text": "Deleted boards stay in the trash for thirty days, after which they are removed from our servers and backups.",
+   "flags": [],
+   "loc": [
+    48,
+    7,
+    48,
+    115
+   ]
+  },
+  {
+   "i": 33,
+   "k": 11,
+   "role": "h3",
+   "text": "Question 12",
+   "flags": [
+    "section_first"
+   ],
+   "loc": [
+    50,
+    7,
+    50,
+    18
+   ]
+  },
+  {
+   "i": 34,
+   "k": 11,
+   "role": "body",
+   "text": "Deleted boards stay in the trash for thirty days, after which they are removed from our servers and backups.",
+   "flags": [],
+   "loc": [
+    51,
+    7,
+    51,
+    115
+   ]
+  },
+  {
+   "i": 35,
+   "k": 11,
+   "role": "body",
+   "text": "Your data is stored in the region you pick when you create the workspace and never leaves it unless you move it.",
+   "flags": [],
+   "loc": [
+    52,
+    7,
+    52,
+    119
+   ]
+  },
+  {
+   "i": 36,
+   "k": 12,
+   "role": "h3",
+   "text": "Question 13",
+   "flags": [
+    "section_first"
+   ],
+   "loc": [
+    54,
+    7,
+    54,
+    18
+   ]
+  },
+  {
+   "i": 37,
+   "k": 12,
+   "role": "body",
+   "text": "Your data is stored in the region you pick when you create the workspace and never leaves it unless you move it.",
+   "flags": [],
+   "loc": [
+    55,
+    7,
+    55,
+    119
+   ]
+  },
+  {
+   "i": 38,
+   "k": 12,
+   "role": "body",
+   "text": "Owners can export every board, card and comment as JSON or CSV at any time from the workspace settings page.",
+   "flags": [],
+   "loc": [
+    56,
+    7,
+    56,
+    115
+   ]
+  },
+  {
+   "i": 39,
+   "k": 13,
+   "role": "h3",
+   "text": "Question 14",
+   "flags": [
+    "section_first"
+   ],
+   "loc": [
+    58,
+    7,
+    58,
+    18
+   ]
+  },
+  {
+   "i": 40,
+   "k": 13,
+   "role": "body",
+   "text": "Owners can export every board, card and comment as JSON or CSV at any time from the workspace settings page.",
+   "flags": [],
+   "loc": [
+    59,
+    7,
+    59,
+    115
+   ]
+  },
+  {
+   "i": 41,
+   "k": 13,
+   "role": "body",
+   "text": "Guests see only the boards they are invited to and cannot create new boards, invite people or change billing.",
+   "flags": [],
+   "loc": [
+    60,
+    7,
+    60,
+    116
+   ]
+  },
+  {
+   "i": 42,
+   "k": 14,
+   "role": "h3",
+   "text": "Question 15",
+   "flags": [
+    "section_first"
+   ],
+   "loc": [
+    62,
+    7,
+    62,
+    18
+   ]
+  },
+  {
+   "i": 43,
+   "k": 14,
+   "role": "body",
+   "text": "Guests see only the boards they are invited to and cannot create new boards, invite people or change billing.",
+   "flags": [],
+   "loc": [
+    63,
+    7,
+    63,
+    116
+   ]
+  },
+  {
+   "i": 44,
+   "k": 14,
+   "role": "body",
+   "text": "Deleted boards stay in the trash for thirty days, after which they are removed from our servers and backups.",
+   "flags": [],
+   "loc": [
+    64,
+    7,
+    64,
+    115
+   ]
+  },
+  {
+   "i": 45,
+   "k": 15,
+   "role": "h3",
+   "text": "Question 16",
+   "flags": [
+    "section_first"
+   ],
+   "loc": [
+    66,
+    7,
+    66,
+    18
+   ]
+  },
+  {
+   "i": 46,
+   "k": 15,
+   "role": "body",
+   "text": "Deleted boards stay in the trash for thirty days, after which they are removed from our servers and backups.",
+   "flags": [],
+   "loc": [
+    67,
+    7,
+    67,
+    115
+   ]
+  },
+  {
+   "i": 47,
+   "k": 15,
+   "role": "body",
+   "text": "Your data is stored in the region you pick when you create the workspace and never leaves it unless you move it.",
+   "flags": [],
+   "loc": [
+    68,
+    7,
+    68,
+    119
+   ]
+  },
+  {
+   "i": 48,
+   "k": 16,
+   "role": "h3",
+   "text": "Question 17",
+   "flags": [
+    "section_first"
+   ],
+   "loc": [
+    70,
+    7,
+    70,
+    18
+   ]
+  },
+  {
+   "i": 49,
+   "k": 16,
+   "role": "body",
+   "text": "Your data is stored in the region you pick when you create the workspace and never leaves it unless you move it.",
+   "flags": [],
+   "loc": [
+    71,
+    7,
+    71,
+    119
+   ]
+  },
+  {
+   "i": 50,
+   "k": 16,
+   "role": "body",
+   "text": "Owners can export every board, card and comment as JSON or CSV at any time from the workspace settings page.",
+   "flags": [],
+   "loc": [
+    72,
+    7,
+    72,
+    115
+   ]
+  },
+  {
+   "i": 51,
+   "k": 17,
+   "role": "h3",
+   "text": "Question 18",
+   "flags": [
+    "section_first"
+   ],
+   "loc": [
+    74,
+    7,
+    74,
+    18
+   ]
+  },
+  {
+   "i": 52,
+   "k": 17,
+   "role": "body",
+   "text": "Owners can export every board, card and comment as JSON or CSV at any time from the workspace settings page.",
+   "flags": [],
+   "loc": [
+    75,
+    7,
+    75,
+    115
+   ]
+  },
+  {
+   "i": 53,
+   "k": 17,
+   "role": "body",
+   "text": "Guests see only the boards they are invited to and cannot create new boards, invite people or change billing.",
+   "flags": [],
+   "loc": [
+    76,
+    7,
+    76,
+    116
+   ]
+  },
+  {
+   "i": 54,
+   "k": 18,
+   "role": "h3",
+   "text": "Question 19",
+   "flags": [
+    "section_first"
+   ],
+   "loc": [
+    78,
+    7,
+    78,
+    18
+   ]
+  },
+  {
+   "i": 55,
+   "k": 18,
+   "role": "body",
+   "text": "Guests see only the boards they are invited to and cannot create new boards, invite people or change billing.",
+   "flags": [],
+   "loc": [
+    79,
+    7,
+    79,
+    116
+   ]
+  },
+  {
+   "i": 56,
+   "k": 18,
+   "role": "body",
+   "text": "Deleted boards stay in the trash for thirty days, after which they are removed from our servers and backups.",
+   "flags": [],
+   "loc": [
+    80,
+    7,
+    80,
+    115
+   ]
+  },
+  {
+   "i": 57,
+   "k": 19,
+   "role": "h3",
+   "text": "Question 20",
+   "flags": [
+    "section_first"
+   ],
+   "loc": [
+    82,
+    7,
+    82,
+    18
+   ]
+  },
+  {
+   "i": 58,
+   "k": 19,
+   "role": "body",
+   "text": "Deleted boards stay in the trash for thirty days, after which they are removed from our servers and backups.",
+   "flags": [],
+   "loc": [
+    83,
+    7,
+    83,
+    115
+   ]
+  },
+  {
+   "i": 59,
+   "k": 19,
+   "role": "body",
+   "text": "Your data is stored in the region you pick when you create the workspace and never leaves it unless you move it.",
+   "flags": [],
+   "loc": [
+    84,
+    7,
+    84,
+    119
+   ]
+  },
+  {
+   "i": 60,
+   "k": 20,
+   "role": "h3",
+   "text": "Question 21",
+   "flags": [
+    "section_first"
+   ],
+   "loc": [
+    86,
+    7,
+    86,
+    18
+   ]
+  },
+  {
+   "i": 61,
+   "k": 20,
+   "role": "body",
+   "text": "Your data is stored in the region you pick when you create the workspace and never leaves it unless you move it.",
+   "flags": [],
+   "loc": [
+    87,
+    7,
+    87,
+    119
+   ]
+  },
+  {
+   "i": 62,
+   "k": 20,
+   "role": "body",
+   "text": "Owners can export every board, card and comment as JSON or CSV at any time from the workspace settings page.",
+   "flags": [],
+   "loc": [
+    88,
+    7,
+    88,
+    115
+   ]
+  },
+  {
+   "i": 63,
+   "k": 21,
+   "role": "h3",
+   "text": "Question 22",
+   "flags": [
+    "section_first"
+   ],
+   "loc": [
+    90,
+    7,
+    90,
+    18
+   ]
+  },
+  {
+   "i": 64,
+   "k": 21,
+   "role": "body",
+   "text": "Owners can export every board, card and comment as JSON or CSV at any time from the workspace settings page.",
+   "flags": [],
+   "loc": [
+    91,
+    7,
+    91,
+    115
+   ]
+  },
+  {
+   "i": 65,
+   "k": 21,
+   "role": "body",
+   "text": "Guests see only the boards they are invited to and cannot create new boards, invite people or change billing.",
+   "flags": [],
+   "loc": [
+    92,
+    7,
+    92,
+    116
+   ]
+  },
+  {
+   "i": 66,
+   "k": 22,
+   "role": "h3",
+   "text": "Question 23",
+   "flags": [
+    "section_first"
+   ],
+   "loc": [
+    94,
+    7,
+    94,
+    18
+   ]
+  },
+  {
+   "i": 67,
+   "k": 22,
+   "role": "body",
+   "text": "Guests see only the boards they are invited to and cannot create new boards, invite people or change billing.",
+   "flags": [],
+   "loc": [
+    95,
+    7,
+    95,
+    116
+   ]
+  },
+  {
+   "i": 68,
+   "k": 22,
+   "role": "body",
+   "text": "Deleted boards stay in the trash for thirty days, after which they are removed from our servers and backups.",
+   "flags": [],
+   "loc": [
+    96,
+    7,
+    96,
+    115
+   ]
+  },
+  {
+   "i": 69,
+   "k": 23,
+   "role": "h3",
+   "text": "Question 24",
+   "flags": [
+    "section_first"
+   ],
+   "loc": [
+    98,
+    7,
+    98,
+    18
+   ]
+  },
+  {
+   "i": 70,
+   "k": 23,
+   "role": "body",
+   "text": "Deleted boards stay in the trash for thirty days, after which they are removed from our servers and backups.",
+   "flags": [],
+   "loc": [
+    99,
+    7,
+    99,
+    115
+   ]
+  },
+  {
+   "i": 71,
+   "k": 23,
+   "role": "body",
+   "text": "Your data is stored in the region you pick when you create the workspace and never leaves it unless you move it.",
+   "flags": [],
+   "loc": [
+    100,
+    7,
+    100,
+    119
+   ]
+  }
+ ]
+}

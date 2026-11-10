@@ -1,0 +1,181 @@
+# Rule layer
+
+The plain-code rules of `SPEC.md` §8. They read one `slop.screen/1` document (the extractor's output, `SPEC.md` §4)
+and report the patterns that are counts or fixed word lists: repeated chrome, vacuous action labels, filler words,
+placeholders used as labels, shared lead-ins, index numbering and exact repeats across windows. They ship with the
+linter beside the network rule and are scored separately against the `aside` codes of `LABELLING.md`; the network
+gets no credit for them.
+
+The code is plain ES modules with no dependencies beyond Node. It imports `lint/tokenizer.js` only for the window
+split that `slop/exact-repeat` needs; every other rule uses its own small word splitter (`src/text.js`), because the
+tokeniser cuts a node at 31 tokens and the rules need every word.
+
+## Running it
+
+```
+node slop/rules/cli.js <screen.json|dir> [...] [--format text|json] [--rules id,id] [--list]
+```
+
+- A directory is walked recursively for `.json` files. Files whose `schema` is not `slop.screen/1` are skipped and
+  counted; files that do not parse are reported as errors and the run carries on.
+- `--format text` (the default) prints one line per finding: `line:col  code  message  rule`, with `(+N more)` when
+  the finding lists more than one node.
+- `--format json` prints one document:
+
+  ```json
+  {"schema": "slop.rules/1",
+   "files": [{"file": "…/hero.json", "screen": "b3f1…", "findings": [
+     {"rule": "slop/vacuous-action", "code": "R7", "scope": "node", "nodes": [3], "locs": [[16, 11, 16, 21]],
+      "message": "link \"Learn more\" is a stock label; name the outcome or destination"}]}],
+   "skipped": 0, "errors": []}
+  ```
+
+  Each finding has `rule`, `code` (the pattern or aside code), `scope` (`screen` for R19, a screen-level aside;
+  `node` otherwise), `nodes` (the flagged nodes' `i`), `locs` (their `loc`, in the same order) and `message`.
+  `slop/repeated-chrome` adds `condition`; `slop/exact-repeat` adds `target`, `{"node", "loc"}` of the copy that is
+  kept.
+- `--rules` runs only the named rules; `--list` prints the rule ids.
+- Exit status: 0 no findings, 1 findings, 2 a file could not be read or checked (the other files are still reported).
+
+From Python, run it with `subprocess` and read stdout as JSON (`rules/tests/test_rules_cli.py` does this). From
+JavaScript, `import { runRules, RULES } from './rules/index.js'`; `runRules(screen, {only})` returns the findings
+for one screen and `RULES` lists `{id, code, description}` in report order, for the ESLint packaging later (§14).
+
+## Shared definitions
+
+- **Scored nodes.** Context-only roles (`aria`, `alt`, `code`, `comment`) and `sr_only` nodes are never labelled
+  (`LABELLING.md` §2), so no rule reports them. An `aria` label or an `sr_only` label never counts as a visible label.
+- **Branches.** Text joined by the ALT marker (U+E001) is split into its branches, and the word rules check each
+  branch on its own.
+- **Identifier words.** The extractor writes no boundary after the words that follow a VAR marker (U+E000), so up to
+  four words after it, up to the next punctuation, are treated as identifier words and never matched as copy. The
+  letters "VAR" and "ALT" are ordinary words.
+- **Normalised string.** NFKC, lower case, accents dropped, inner apostrophes removed, glyphs and punctuation dropped,
+  markers kept, words and numbers joined by single spaces.
+- **Section heading.** An `h1`–`h6` not flagged `in_card`, `repeated`, `in_list`, `in_table`, `in_nav`, `in_dialog`
+  or `in_state`. A node's section runs from the last section heading before it.
+- **Sibling groups.** A run of two or more consecutive `card` clusters (one item per card); a run of two or more
+  consecutive `control` clusters (one item per field); and the rows of one `list` cluster, a new row starting at each
+  node with the role of the first node whose role occurs at least twice (nodes before it, such as the list's own
+  title, belong to no row). Within a group, an aligned set is the first node of one role in every item, for each
+  role that every item has.
+- **Precedence** (`LABELLING.md` §5, lower is kept): controls, a `label` flagged `in_control`, `h1`, `dialog_title`
+  and `empty_title` 10; `h2`–`h6` 20–24; body roles and any other `label` 30; `subtitle`, `helper`, `caption` 40;
+  `eyebrow`, `badge`, `tooltip`, `placeholder` 50.
+
+## The rules
+
+### `slop/repeated-chrome` (screen aside R19)
+
+One finding per condition met, listing the nodes that carry the device; state dots give one finding per section.
+
+| Condition | Fires when |
+|---|---|
+| `eyebrow-quota` | the eyebrows directly above a section heading (the next scored node is one) number more than ceil(section headings / 3). Taste: design-taste-frontend-v2-experimental SKILL.md:254-256, a landing-page quota, "Hero counts as 1". |
+| `decorative-dot` | any scored node has `dot` and not `stateful` (v2-experimental SKILL.md:705). |
+| `state-dots` | one section holds two or more nodes with both `dot` and `stateful` (same line: "limited to one per page section"). |
+| `arrow-links` | there are two or more `link` nodes and every one has an arrow suffix: the `arrow_tail` flag, or the text ending in → ↗ » › ➔ ➜ ⟶ ↘ or `->` (tasteskill copy.md:126-127; Hallmark gate 63). |
+| `sibling-device` | in a card or row group of three or more items, one device sits on more than half of them: the same normalised text in a `badge`, `pill` or `eyebrow` node that is neither `stateful` nor `dynamic`; an arrow suffix on a `link` or `button`; or a member of a `slop/index-numbering` run. Dropped when every node it lists is already in another R19 finding. From `LABELLING.md` R19 ("the same eyebrow, pill, dot, arrow suffix or index-number device on most sibling sections, cards or rows"). |
+
+Known false positive: a static legend ("● Healthy ● Degraded ● Down", K2) has `dot` without `stateful`, so
+`decorative-dot` fires on it; the screen JSON does not say which dots form a legend.
+
+### `slop/vacuous-action` (aside R7)
+
+A node is flagged, once, when any branch of it
+
+- is a `button` or `link` whose whole label (its copy words joined by spaces) is in `VACUOUS_LABELS` for that role;
+- is a `button` or `link` whose label starts with a gesture lead: "click to", "tap to", "click here to", "tap here
+  to", "press here to";
+- in any scored role, contains a gesture phrase: "click here", "tap here", "click this link", "press here" (inline
+  links are merged into their paragraph, so "To change it, click here." is one body node).
+
+`VACUOUS_LABELS` (15): learn more, read more, find out more, discover more, explore now, explore more, click here,
+tap here, get started, submit, click, tap (buttons and links); here, more, this link (links only, since a "More"
+button is often an overflow menu). Left out on purpose: OK, Continue, Next, Done, Cancel, Close (platform
+conventions whose meaning the dialog or flow supplies) and Show more, See more (they say what they do).
+
+### `slop/filler-words` (aside R15)
+
+One finding per node, naming every filler phrase found in its branches (`FILLER`, 14 entries):
+
+- in any scored role: please, simply, easily, quickly, effectively, very, quite, in order to, oops, whoops, uh oh;
+- in a `button`, `link`, `menu_item`, `nav` or `tab` only: now ("Book now"; in a sentence it is often a fact);
+- only as the first word of an `h1`–`h6`, `nav`, `tab`, `menu_item`, `empty_title` or `dialog_title` of two to four
+  words: your, my ("Your Favourites"). A field label "Your name" is not flagged: Microsoft recommends it over "Type
+  your name".
+
+Matching is on whole words, so "pleased", "snowdrop" and "Nowcast" do not match.
+
+### `slop/placeholder-as-label` (aside R8b)
+
+A `placeholder` is flagged when its field has no visible label: in a `control` cluster, no scored `label` node in
+the cluster; outside one, the scored node just before it in the same cluster is not a `label`.
+
+### `slop/shared-lead-in` (aside R10)
+
+For each aligned set in each sibling group (roles `cell`, `stat`, `input_value` and `breadcrumb` aside), take each
+node's leading copy words up to the first marker or identifier word. One finding lists the whole set when
+
+- the common leading words number at least two for three or more items, or at least three for a pair (a single shared
+  word is parallel phrasing, "Add photo" / "Add video"), and
+- every item has at least one word after the shared ones (otherwise the items repeat rather than share a lead-in), and
+- not every item ends with "?" (questions open alike by grammar).
+
+### `slop/index-numbering` (aside R12)
+
+An index device is the whole text of a node, or its lead before a separator and a word:
+
+| Family | Examples |
+|---|---|
+| `padded` | "01", "02 /", "(003)", "#04", "01 / 04"; as a lead "01 / Connect", "02. Configure" |
+| `fraction` | "3 / 6" (the whole node) |
+| `label:<word>` | step, phase, stage, section, question, no.: "Step 2", "PHASE 02", "Stage 1 of 3"; as a lead "Step 1: Create an account" |
+| `plain` | "1", "2.", "3)" (the whole node) |
+
+Nodes in `nav`, `tab`, `breadcrumb`, `menu_item`, `link`, `button`, `cell`, `stat`, `input_value` and
+`placeholder` are skipped (a pager's "1 2 3", figures, table values). A run is a sequence of devices of one family
+and role whose values go up by one in reading order, other nodes between them allowed; one finding lists each run of
+at least two devices (three for `plain`). K3 is applied as far as text shows it: a lone "Step 2 of 4" never forms a
+run, and a labelled run is dropped when another node names one of its numbers ("go back to step 1"). Whether the items
+are steps to be done in order cannot be read from the text, so the rule flags them and the label decides. "Level",
+"round", "lesson", "module", "chapter" and "part" are not label words: they usually name content.
+
+### `slop/exact-repeat` (R14; R9 between two titles)
+
+The screen is split into windows exactly as the tokeniser does (`SPEC.md` §4). Nodes are grouped by normalised
+string, leaving out `nav`, `tab`, `breadcrumb`, `menu_item`, `cell`, `input_value`, `label` and `placeholder` nodes,
+nodes flagged `repeated` (the constant parts of one template on sibling cards or rows, such as a per-row "Not set" or
+"/month") and nodes with fewer than two copy words. In a group that spans two or more windows the highest-ranked copy
+is kept (the first at equal rank), and every copy in a window other than the kept copy's is flagged with the kept copy
+as `target`, unless either of the two is `conditional` (they may never be visible together, `LABELLING.md` §2a).
+Repeats within one window are left to the network. The code is R9 when both copies are titles (`h1`–`h6`,
+`dialog_title`, `empty_title`), R14 otherwise.
+
+## Lists and their sources
+
+Every list is in `src/lists.js` (and the index-number grammar in `src/text.js`), each entry citing the line of
+`research/anti-slop-guides.md` or `research/local-skills.md` it rests on, or marked as added. Added entries: "find out
+more", "explore more", "tap here", "this link", "click", "tap" (vacuous labels); "tap here", "click this link", "press
+here" (gesture phrases); the five gesture leads; "whoops" (filler).
+
+## Tests and fixtures
+
+```
+npm run test:rules          # in slop/: node --test rules/test/rules.test.js
+uv run pytest rules/tests   # the CLI called from Python
+```
+
+`fixtures/make_fixtures.mjs` holds 47 invented screens as compact tables and writes `fixtures/screens/*.json` (in the
+extractor's serialised layout, with the VAR and ALT markers) and `fixtures/expected.json`, which lists, for each
+screen, the rules it is a positive or near-miss negative for and the exact findings expected from every rule. Run
+`node rules/fixtures/make_fixtures.mjs` after editing the tables and `--check` to see whether the files are stale; the
+tests fail on a stale file. The tests also run every rule over the extractor fixtures, the tokeniser test screens and
+the labeller fixtures, twice, and check that the output is the same. All copy in the fixtures is invented; never paste
+strings from a real repo.
+
+## Not done here
+
+The ESLint plugin: under ESLint the rules need the extractor to turn the linted file into a screen first, and the
+extractor's Swift parser loads asynchronously while ESLint rules run synchronously. `RULES` carries the ids, codes
+and descriptions the plugin will map one to one; packaging is part of `SPEC.md` §14.

@@ -1,0 +1,16 @@
+{"schema": "slop.screen/1", "id": "fbbf04f063db38a1", "framework": "swift",
+ "source": {"repo": "slop-fixtures", "path": "PantryView.swift", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "control", "line": 10},
+  {"k": 1, "kind": "body", "line": 10},
+  {"k": 2, "kind": "state", "line": 10}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "placeholder", "text": "Search jars and tins", "flags": ["in_control"], "loc": [25, 48, 25, 68]},
+  {"i": 1, "k": 1, "role": "body", "text": "Three items are running low", "flags": ["conditional"], "loc": [12, 27, 12, 54]},
+  {"i": 2, "k": 1, "role": "body", "text": "\ue000 all stocked", "flags": ["dynamic", "stateful", "conditional"], "loc": [14, 26, 14, 77]},
+  {"i": 3, "k": 1, "role": "body", "text": "Restock soon \ue001 All good", "flags": ["stateful", "conditional"], "loc": [16, 22, 16, 60]},
+  {"i": 4, "k": 1, "role": "body", "text": "Best before Friday", "flags": [], "loc": [17, 23, 17, 52]},
+  {"i": 5, "k": 1, "role": "aria", "text": "Add pantry item", "flags": [], "loc": [23, 38, 23, 53]},
+  {"i": 6, "k": 2, "role": "dialog_title", "text": "New pantry item", "flags": ["conditional", "in_dialog", "in_state"], "loc": [27, 23, 27, 38]},
+  {"i": 7, "k": 2, "role": "label", "text": "Name", "flags": ["conditional", "in_dialog", "in_state", "in_control", "section_first"], "loc": [29, 28, 29, 32]},
+  {"i": 8, "k": 2, "role": "placeholder", "text": "e.g. Chickpeas", "flags": ["conditional", "in_dialog", "in_state", "in_control", "section_last"], "loc": [29, 63, 29, 77]}]}

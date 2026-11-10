@@ -1,0 +1,9 @@
+{
+  "classRoles": {
+    "masthead-overline": "eyebrow",
+    "lede-text": "subtitle"
+  },
+  "componentRoles": {
+    "Byline": "caption"
+  }
+}

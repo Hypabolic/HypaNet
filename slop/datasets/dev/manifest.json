@@ -1,0 +1,140 @@
+{
+ "schema": "slop.genset/1",
+ "set": "dev",
+ "seed": 20261112,
+ "namespace": "",
+ "screens": 20000,
+ "generator_sha256": "711f187313051e5554683282dbaca65715982dec71523d61a4975c94264aa8e5",
+ "extractor_sha256": "a07384168067ca94eaaecfe2dd04652cba856caad9b99060eab0f5fdf73ed18c",
+ "guide_sha256": "75596835f59fa276f044c5710d4f472350858f56bd39679ab97b0f8cd993c057",
+ "labeller": "gen",
+ "label_time": "2026-11-12T00:00:00Z",
+ "files": {
+  "screens.jsonl": "a9206bbfcd1a3272966834dceee8cba252a6191c57793c319b1c6a635251cc49",
+  "dev.gen.jsonl": "130fb9ce1435fbe0d0353328734e740c46aab4be65c2540864135cb93ee749c1",
+  "sources.jsonl": "b8d0d31d7d5d7a7944dfeefcf45af523f7fc806987cf4419da869a5ff1e31d3f"
+ },
+ "regenerated": {
+  "pattern_role": 2
+ },
+ "counts": {
+  "kinds": {
+   "app": 3130,
+   "dashboard": 2377,
+   "dialog": 1985,
+   "empty": 2015,
+   "game": 2807,
+   "marketing": 4458,
+   "settings": 3228
+  },
+  "frameworks": {
+   "html": 3280,
+   "swift": 4005,
+   "tsx": 12715
+  },
+  "idioms": {
+   "html/bem": 1487,
+   "html/inline": 806,
+   "html/tailwind": 987,
+   "swift/form": 477,
+   "swift/list": 824,
+   "swift/stack": 2704,
+   "tsx/cssmod": 2607,
+   "tsx/inline": 1903,
+   "tsx/shadcn": 3115,
+   "tsx/tailwind": 5090
+  },
+  "clean_screens": 3008,
+  "nodes": 339558,
+  "labelled": 337586,
+  "context": 1531,
+  "unresolved": 441,
+  "classes": {
+   "DECOR": 3294,
+   "ECHO": 13881,
+   "KEEP": 318172,
+   "NARRATE": 2239
+  },
+  "patterns": {
+   "DECOR R2": 1924,
+   "DECOR R11": 1370,
+   "ECHO R1": 3430,
+   "ECHO R3": 2790,
+   "ECHO R4": 1237,
+   "ECHO R5": 2586,
+   "ECHO R8": 1287,
+   "ECHO R9": 921,
+   "ECHO R14": 787,
+   "ECHO R17": 843,
+   "NARRATE R6": 1306,
+   "NARRATE R16": 933
+  },
+  "k_rules": {
+   "K1": 2706,
+   "K11": 6348,
+   "K12": 1782,
+   "K13": 2866,
+   "K14": 1703,
+   "K2": 7011,
+   "K3": 4464,
+   "K4": 8203,
+   "K5": 16350,
+   "K6": 1767,
+   "K7": 883,
+   "K8": 2159,
+   "K9": 2486
+  },
+  "asides": {
+   "R11g": 374,
+   "R12": 598,
+   "R7": 328
+  },
+  "screen_asides": {
+   "R19": 547
+  },
+  "ct": {
+   "KEEP": 1600,
+   "NARRATE": 1306
+  },
+  "partial": 335,
+  "conf": {
+   "clear": 330573,
+   "judgement": 7013
+  },
+  "echo_null_target": 544,
+  "equiv_records": 2414,
+  "roles": {
+   "aria": 1531,
+   "badge": 5551,
+   "body": 29072,
+   "breadcrumb": 838,
+   "button": 29788,
+   "caption": 22835,
+   "cell": 55198,
+   "dialog_body": 2017,
+   "dialog_title": 1985,
+   "empty_body": 2978,
+   "empty_title": 2978,
+   "error": 398,
+   "eyebrow": 8252,
+   "h1": 15896,
+   "h2": 15899,
+   "h3": 10947,
+   "h4": 3193,
+   "helper": 7111,
+   "label": 36075,
+   "link": 10721,
+   "list_item": 17503,
+   "menu_item": 6496,
+   "nav": 5861,
+   "placeholder": 3784,
+   "stat": 6989,
+   "subtitle": 21638,
+   "tab": 12187,
+   "tooltip": 1837
+  },
+  "screens_with_redundant": 11069,
+  "patterns_missing": [],
+  "k_rules_missing": []
+ }
+}

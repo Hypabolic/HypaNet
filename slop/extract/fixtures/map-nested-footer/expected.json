@@ -1,0 +1,20 @@
+{"schema": "slop.screen/1", "id": "89660fc0eb31bb70", "framework": "tsx",
+ "source": {"repo": "slop-fixtures", "path": "SiteFooter.tsx", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "card", "line": 26},
+  {"k": 1, "kind": "card", "line": 26},
+  {"k": 2, "kind": "body", "line": 40}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "h4", "text": "Workshop", "flags": ["in_list", "in_footer", "in_card", "repeated"], "loc": [3, 15, 3, 23]},
+  {"i": 1, "k": 0, "role": "link", "text": "Timetable", "flags": ["in_list", "in_footer", "in_card", "section_first", "repeated"], "loc": [5, 17, 5, 26]},
+  {"i": 2, "k": 0, "role": "aria", "text": "Go to Timetable", "flags": ["title_case", "in_list", "in_footer", "in_card", "repeated"], "loc": [5, 9, 5, 27]},
+  {"i": 3, "k": 0, "role": "link", "text": "Tool library", "flags": ["in_list", "in_footer", "in_card", "section_last", "repeated"], "loc": [6, 17, 6, 29]},
+  {"i": 4, "k": 0, "role": "aria", "text": "Go to Tool library", "flags": ["in_list", "in_footer", "in_card", "repeated"], "loc": [6, 9, 6, 30]},
+  {"i": 5, "k": 1, "role": "h4", "text": "Members", "flags": ["in_list", "in_footer", "in_card", "repeated"], "loc": [10, 15, 10, 22]},
+  {"i": 6, "k": 1, "role": "link", "text": "Join the guild", "flags": ["in_list", "in_footer", "in_card", "section_first", "repeated"], "loc": [12, 17, 12, 31]},
+  {"i": 7, "k": 1, "role": "aria", "text": "Go to Join the guild", "flags": ["in_list", "in_footer", "in_card", "repeated"], "loc": [12, 9, 12, 32]},
+  {"i": 8, "k": 1, "role": "link", "text": "Renew", "flags": ["in_list", "in_footer", "in_card", "repeated"], "loc": [13, 17, 13, 22]},
+  {"i": 9, "k": 1, "role": "aria", "text": "Go to Renew", "flags": ["title_case", "in_list", "in_footer", "in_card", "repeated"], "loc": [13, 9, 13, 23]},
+  {"i": 10, "k": 1, "role": "link", "text": "Lockers", "flags": ["in_list", "in_footer", "in_card", "section_last", "repeated"], "loc": [14, 17, 14, 24]},
+  {"i": 11, "k": 1, "role": "aria", "text": "Go to Lockers", "flags": ["title_case", "in_list", "in_footer", "in_card", "repeated"], "loc": [14, 9, 14, 25]},
+  {"i": 12, "k": 2, "role": "caption", "text": "\ue000 terms \ue000 privacy", "flags": ["small", "dynamic", "in_footer"], "loc": [19, 24, 19, 42]}]}

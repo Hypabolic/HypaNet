@@ -1,0 +1,12 @@
+{"schema": "slop.screen/1", "id": "31a50f5fd347ab61", "framework": "tsx",
+ "source": {"repo": "slop-fixtures", "path": "Notices.tsx", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "state", "line": 6},
+  {"k": 1, "kind": "state", "line": 10},
+  {"k": 2, "kind": "state", "line": 14}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "h4", "text": "Planned maintenance", "flags": ["in_state"], "loc": [7, 21, 7, 40]},
+  {"i": 1, "k": 0, "role": "body", "text": "The booking system is read-only on Sunday morning.", "flags": ["in_state", "section_first", "section_last"], "loc": [8, 27, 8, 77]},
+  {"i": 2, "k": 1, "role": "h4", "text": "Payment failed", "flags": ["in_state"], "loc": [11, 21, 11, 35]},
+  {"i": 3, "k": 1, "role": "error", "text": "Your card was declined by the bank.", "flags": ["in_state", "section_first", "section_last"], "loc": [12, 27, 12, 62]},
+  {"i": 4, "k": 2, "role": "error", "text": "The court you chose is already taken.", "flags": ["small", "in_state"], "loc": [14, 45, 14, 82]}]}

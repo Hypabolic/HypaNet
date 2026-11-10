@@ -1,0 +1,12 @@
+{"schema": "slop.screen/1", "id": "ecc42688e3458725", "framework": "swift",
+ "source": {"repo": "slop-fixtures", "path": "RootView.swift", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "list", "line": 8},
+  {"k": 1, "kind": "list", "line": 12},
+  {"k": 2, "kind": "header", "line": 20}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "tab", "text": "Map", "flags": ["icon", "in_nav"], "loc": [8, 28, 8, 31]},
+  {"i": 1, "k": 1, "role": "tab", "text": "Journal", "flags": ["icon", "in_nav"], "loc": [12, 28, 12, 35]},
+  {"i": 2, "k": 2, "role": "h1", "text": "Journal", "flags": [], "loc": [21, 19, 21, 26]},
+  {"i": 3, "k": 2, "role": "subtitle", "text": "Add an entry", "flags": ["icon", "section_first"], "loc": [23, 20, 23, 32]},
+  {"i": 4, "k": 2, "role": "link", "text": "How journaling works", "flags": ["icon", "arrow_tail", "section_last"], "loc": [26, 27, 26, 47]}]}

@@ -1,0 +1,1116 @@
+{
+ "schema": "slop.screen/1",
+ "id": "475288076c513d91",
+ "framework": "tsx",
+ "source": {
+  "repo": "slop-test-fixtures",
+  "path": "src/big_list_71.tsx",
+  "commit": "0000000000000000000000000000000000000000",
+  "licence": "MIT"
+ },
+ "clusters": [
+  {
+   "k": 0,
+   "kind": "header",
+   "line": 5
+  },
+  {
+   "k": 1,
+   "kind": "list",
+   "line": 8
+  }
+ ],
+ "nodes": [
+  {
+   "i": 0,
+   "k": 0,
+   "role": "h1",
+   "text": "All resources",
+   "flags": [],
+   "loc": [
+    6,
+    7,
+    6,
+    20
+   ]
+  },
+  {
+   "i": 1,
+   "k": 0,
+   "role": "subtitle",
+   "text": "Every resource in this workspace.",
+   "flags": [],
+   "loc": [
+    7,
+    7,
+    7,
+    40
+   ]
+  },
+  {
+   "i": 2,
+   "k": 1,
+   "role": "list_item",
+   "text": "Accounts",
+   "flags": [
+    "in_list"
+   ],
+   "loc": [
+    9,
+    7,
+    9,
+    15
+   ]
+  },
+  {
+   "i": 3,
+   "k": 1,
+   "role": "list_item",
+   "text": "Alerts",
+   "flags": [
+    "in_list"
+   ],
+   "loc": [
+    10,
+    7,
+    10,
+    13
+   ]
+  },
+  {
+   "i": 4,
+   "k": 1,
+   "role": "list_item",
+   "text": "Archive",
+   "flags": [
+    "in_list"
+   ],
+   "loc": [
+    11,
+    7,
+    11,
+    14
+   ]
+  },
+  {
+   "i": 5,
+   "k": 1,
+   "role": "list_item",
+   "text": "Assets",
+   "flags": [
+    "in_list"
+   ],
+   "loc": [
+    12,
+    7,
+    12,
+    13
+   ]
+  },
+  {
+   "i": 6,
+   "k": 1,
+   "role": "list_item",
+   "text": "Backups",
+   "flags": [
+    "in_list"
+   ],
+   "loc": [
+    13,
+    7,
+    13,
+    14
+   ]
+  },
+  {
+   "i": 7,
+   "k": 1,
+   "role": "list_item",
+   "text": "Budgets",
+   "flags": [
+    "in_list"
+   ],
+   "loc": [
+    14,
+    7,
+    14,
+    14
+   ]
+  },
+  {
+   "i": 8,
+   "k": 1,
+   "role": "list_item",
+   "text": "Campaigns",
+   "flags": [
+    "in_list"
+   ],
+   "loc": [
+    15,
+    7,
+    15,
+    16
+   ]
+  },
+  {
+   "i": 9,
+   "k": 1,
+   "role": "list_item",
+   "text": "Channels",
+   "flags": [
+    "in_list"
+   ],
+   "loc": [
+    16,
+    7,
+    16,
+    15
+   ]
+  },
+  {
+   "i": 10,
+   "k": 1,
+   "role": "list_item",
+   "text": "Clients",
+   "flags": [
+    "in_list"
+   ],
+   "loc": [
+    17,
+    7,
+    17,
+    14
+   ]
+  },
+  {
+   "i": 11,
+   "k": 1,
+   "role": "list_item",
+   "text": "Contracts",
+   "flags": [
+    "in_list"
+   ],
+   "loc": [
+    18,
+    7,
+    18,
+    16
+   ]
+  },
+  {
+   "i": 12,
+   "k": 1,
+   "role": "list_item",
+   "text": "Coupons",
+   "flags": [
+    "in_list"
+   ],
+   "loc": [
+    19,
+    7,
+    19,
+    14
+   ]
+  },
+  {
+   "i": 13,
+   "k": 1,
+   "role": "list_item",
+   "text": "Customers",
+   "flags": [
+    "in_list"
+   ],
+   "loc": [
+    20,
+    7,
+    20,
+    16
+   ]
+  },
+  {
+   "i": 14,
+   "k": 1,
+   "role": "list_item",
+   "text": "Deals",
+   "flags": [
+    "in_list"
+   ],
+   "loc": [
+    21,
+    7,
+    21,
+    12
+   ]
+  },
+  {
+   "i": 15,
+   "k": 1,
+   "role": "list_item",
+   "text": "Devices",
+   "flags": [
+    "in_list"
+   ],
+   "loc": [
+    22,
+    7,
+    22,
+    14
+   ]
+  },
+  {
+   "i": 16,
+   "k": 1,
+   "role": "list_item",
+   "text": "Domains",
+   "flags": [
+    "in_list"
+   ],
+   "loc": [
+    23,
+    7,
+    23,
+    14
+   ]
+  },
+  {
+   "i": 17,
+   "k": 1,
+   "role": "list_item",
+   "text": "Drafts",
+   "flags": [
+    "in_list"
+   ],
+   "loc": [
+    24,
+    7,
+    24,
+    13
+   ]
+  },
+  {
+   "i": 18,
+   "k": 1,
+   "role": "list_item",
+   "text": "Events",
+   "flags": [
+    "in_list"
+   ],
+   "loc": [
+    25,
+    7,
+    25,
+    13
+   ]
+  },
+  {
+   "i": 19,
+   "k": 1,
+   "role": "list_item",
+   "text": "Expenses",
+   "flags": [
+    "in_list"
+   ],
+   "loc": [
+    26,
+    7,
+    26,
+    15
+   ]
+  },
+  {
+   "i": 20,
+   "k": 1,
+   "role": "list_item",
+   "text": "Exports",
+   "flags": [
+    "in_list"
+   ],
+   "loc": [
+    27,
+    7,
+    27,
+    14
+   ]
+  },
+  {
+   "i": 21,
+   "k": 1,
+   "role": "list_item",
+   "text": "Forms",
+   "flags": [
+    "in_list"
+   ],
+   "loc": [
+    28,
+    7,
+    28,
+    12
+   ]
+  },
+  {
+   "i": 22,
+   "k": 1,
+   "role": "list_item",
+   "text": "Groups",
+   "flags": [
+    "in_list"
+   ],
+   "loc": [
+    29,
+    7,
+    29,
+    13
+   ]
+  },
+  {
+   "i": 23,
+   "k": 1,
+   "role": "list_item",
+   "text": "Imports",
+   "flags": [
+    "in_list"
+   ],
+   "loc": [
+    30,
+    7,
+    30,
+    14
+   ]
+  },
+  {
+   "i": 24,
+   "k": 1,
+   "role": "list_item",
+   "text": "Invoices",
+   "flags": [
+    "in_list"
+   ],
+   "loc": [
+    31,
+    7,
+    31,
+    15
+   ]
+  },
+  {
+   "i": 25,
+   "k": 1,
+   "role": "list_item",
+   "text": "Jobs",
+   "flags": [
+    "in_list"
+   ],
+   "loc": [
+    32,
+    7,
+    32,
+    11
+   ]
+  },
+  {
+   "i": 26,
+   "k": 1,
+   "role": "list_item",
+   "text": "Keys",
+   "flags": [
+    "in_list"
+   ],
+   "loc": [
+    33,
+    7,
+    33,
+    11
+   ]
+  },
+  {
+   "i": 27,
+   "k": 1,
+   "role": "list_item",
+   "text": "Labels",
+   "flags": [
+    "in_list"
+   ],
+   "loc": [
+    34,
+    7,
+    34,
+    13
+   ]
+  },
+  {
+   "i": 28,
+   "k": 1,
+   "role": "list_item",
+   "text": "Leads",
+   "flags": [
+    "in_list"
+   ],
+   "loc": [
+    35,
+    7,
+    35,
+    12
+   ]
+  },
+  {
+   "i": 29,
+   "k": 1,
+   "role": "list_item",
+   "text": "Licences",
+   "flags": [
+    "in_list"
+   ],
+   "loc": [
+    36,
+    7,
+    36,
+    15
+   ]
+  },
+  {
+   "i": 30,
+   "k": 1,
+   "role": "list_item",
+   "text": "Locations",
+   "flags": [
+    "in_list"
+   ],
+   "loc": [
+    37,
+    7,
+    37,
+    16
+   ]
+  },
+  {
+   "i": 31,
+   "k": 1,
+   "role": "list_item",
+   "text": "Logs",
+   "flags": [
+    "in_list"
+   ],
+   "loc": [
+    38,
+    7,
+    38,
+    11
+   ]
+  },
+  {
+   "i": 32,
+   "k": 1,
+   "role": "list_item",
+   "text": "Meetings",
+   "flags": [
+    "in_list"
+   ],
+   "loc": [
+    39,
+    7,
+    39,
+    15
+   ]
+  },
+  {
+   "i": 33,
+   "k": 1,
+   "role": "list_item",
+   "text": "Messages",
+   "flags": [
+    "in_list"
+   ],
+   "loc": [
+    40,
+    7,
+    40,
+    15
+   ]
+  },
+  {
+   "i": 34,
+   "k": 1,
+   "role": "list_item",
+   "text": "Notes",
+   "flags": [
+    "in_list"
+   ],
+   "loc": [
+    41,
+    7,
+    41,
+    12
+   ]
+  },
+  {
+   "i": 35,
+   "k": 1,
+   "role": "list_item",
+   "text": "Orders",
+   "flags": [
+    "in_list"
+   ],
+   "loc": [
+    42,
+    7,
+    42,
+    13
+   ]
+  },
+  {
+   "i": 36,
+   "k": 1,
+   "role": "list_item",
+   "text": "Pages",
+   "flags": [
+    "in_list"
+   ],
+   "loc": [
+    43,
+    7,
+    43,
+    12
+   ]
+  },
+  {
+   "i": 37,
+   "k": 1,
+   "role": "list_item",
+   "text": "Partners",
+   "flags": [
+    "in_list"
+   ],
+   "loc": [
+    44,
+    7,
+    44,
+    15
+   ]
+  },
+  {
+   "i": 38,
+   "k": 1,
+   "role": "list_item",
+   "text": "Payments",
+   "flags": [
+    "in_list"
+   ],
+   "loc": [
+    45,
+    7,
+    45,
+    15
+   ]
+  },
+  {
+   "i": 39,
+   "k": 1,
+   "role": "list_item",
+   "text": "Payouts",
+   "flags": [
+    "in_list"
+   ],
+   "loc": [
+    46,
+    7,
+    46,
+    14
+   ]
+  },
+  {
+   "i": 40,
+   "k": 1,
+   "role": "list_item",
+   "text": "Playlists",
+   "flags": [
+    "in_list"
+   ],
+   "loc": [
+    47,
+    7,
+    47,
+    16
+   ]
+  },
+  {
+   "i": 41,
+   "k": 1,
+   "role": "list_item",
+   "text": "Policies",
+   "flags": [
+    "in_list"
+   ],
+   "loc": [
+    48,
+    7,
+    48,
+    15
+   ]
+  },
+  {
+   "i": 42,
+   "k": 1,
+   "role": "list_item",
+   "text": "Products",
+   "flags": [
+    "in_list"
+   ],
+   "loc": [
+    49,
+    7,
+    49,
+    15
+   ]
+  },
+  {
+   "i": 43,
+   "k": 1,
+   "role": "list_item",
+   "text": "Profiles",
+   "flags": [
+    "in_list"
+   ],
+   "loc": [
+    50,
+    7,
+    50,
+    15
+   ]
+  },
+  {
+   "i": 44,
+   "k": 1,
+   "role": "list_item",
+   "text": "Queues",
+   "flags": [
+    "in_list"
+   ],
+   "loc": [
+    51,
+    7,
+    51,
+    13
+   ]
+  },
+  {
+   "i": 45,
+   "k": 1,
+   "role": "list_item",
+   "text": "Quotes",
+   "flags": [
+    "in_list"
+   ],
+   "loc": [
+    52,
+    7,
+    52,
+    13
+   ]
+  },
+  {
+   "i": 46,
+   "k": 1,
+   "role": "list_item",
+   "text": "Refunds",
+   "flags": [
+    "in_list"
+   ],
+   "loc": [
+    53,
+    7,
+    53,
+    14
+   ]
+  },
+  {
+   "i": 47,
+   "k": 1,
+   "role": "list_item",
+   "text": "Regions",
+   "flags": [
+    "in_list"
+   ],
+   "loc": [
+    54,
+    7,
+    54,
+    14
+   ]
+  },
+  {
+   "i": 48,
+   "k": 1,
+   "role": "list_item",
+   "text": "Releases",
+   "flags": [
+    "in_list"
+   ],
+   "loc": [
+    55,
+    7,
+    55,
+    15
+   ]
+  },
+  {
+   "i": 49,
+   "k": 1,
+   "role": "list_item",
+   "text": "Reviews",
+   "flags": [
+    "in_list"
+   ],
+   "loc": [
+    56,
+    7,
+    56,
+    14
+   ]
+  },
+  {
+   "i": 50,
+   "k": 1,
+   "role": "list_item",
+   "text": "Roles",
+   "flags": [
+    "in_list"
+   ],
+   "loc": [
+    57,
+    7,
+    57,
+    12
+   ]
+  },
+  {
+   "i": 51,
+   "k": 1,
+   "role": "list_item",
+   "text": "Routes",
+   "flags": [
+    "in_list"
+   ],
+   "loc": [
+    58,
+    7,
+    58,
+    13
+   ]
+  },
+  {
+   "i": 52,
+   "k": 1,
+   "role": "list_item",
+   "text": "Schedules",
+   "flags": [
+    "in_list"
+   ],
+   "loc": [
+    59,
+    7,
+    59,
+    16
+   ]
+  },
+  {
+   "i": 53,
+   "k": 1,
+   "role": "list_item",
+   "text": "Secrets",
+   "flags": [
+    "in_list"
+   ],
+   "loc": [
+    60,
+    7,
+    60,
+    14
+   ]
+  },
+  {
+   "i": 54,
+   "k": 1,
+   "role": "list_item",
+   "text": "Segments",
+   "flags": [
+    "in_list"
+   ],
+   "loc": [
+    61,
+    7,
+    61,
+    15
+   ]
+  },
+  {
+   "i": 55,
+   "k": 1,
+   "role": "list_item",
+   "text": "Servers",
+   "flags": [
+    "in_list"
+   ],
+   "loc": [
+    62,
+    7,
+    62,
+    14
+   ]
+  },
+  {
+   "i": 56,
+   "k": 1,
+   "role": "list_item",
+   "text": "Shipments",
+   "flags": [
+    "in_list"
+   ],
+   "loc": [
+    63,
+    7,
+    63,
+    16
+   ]
+  },
+  {
+   "i": 57,
+   "k": 1,
+   "role": "list_item",
+   "text": "Snippets",
+   "flags": [
+    "in_list"
+   ],
+   "loc": [
+    64,
+    7,
+    64,
+    15
+   ]
+  },
+  {
+   "i": 58,
+   "k": 1,
+   "role": "list_item",
+   "text": "Sprints",
+   "flags": [
+    "in_list"
+   ],
+   "loc": [
+    65,
+    7,
+    65,
+    14
+   ]
+  },
+  {
+   "i": 59,
+   "k": 1,
+   "role": "list_item",
+   "text": "Suppliers",
+   "flags": [
+    "in_list"
+   ],
+   "loc": [
+    66,
+    7,
+    66,
+    16
+   ]
+  },
+  {
+   "i": 60,
+   "k": 1,
+   "role": "list_item",
+   "text": "Surveys",
+   "flags": [
+    "in_list"
+   ],
+   "loc": [
+    67,
+    7,
+    67,
+    14
+   ]
+  },
+  {
+   "i": 61,
+   "k": 1,
+   "role": "list_item",
+   "text": "Tags",
+   "flags": [
+    "in_list"
+   ],
+   "loc": [
+    68,
+    7,
+    68,
+    11
+   ]
+  },
+  {
+   "i": 62,
+   "k": 1,
+   "role": "list_item",
+   "text": "Tasks",
+   "flags": [
+    "in_list"
+   ],
+   "loc": [
+    69,
+    7,
+    69,
+    12
+   ]
+  },
+  {
+   "i": 63,
+   "k": 1,
+   "role": "list_item",
+   "text": "Teams",
+   "flags": [
+    "in_list"
+   ],
+   "loc": [
+    70,
+    7,
+    70,
+    12
+   ]
+  },
+  {
+   "i": 64,
+   "k": 1,
+   "role": "list_item",
+   "text": "Templates",
+   "flags": [
+    "in_list"
+   ],
+   "loc": [
+    71,
+    7,
+    71,
+    16
+   ]
+  },
+  {
+   "i": 65,
+   "k": 1,
+   "role": "list_item",
+   "text": "Tickets",
+   "flags": [
+    "in_list"
+   ],
+   "loc": [
+    72,
+    7,
+    72,
+    14
+   ]
+  },
+  {
+   "i": 66,
+   "k": 1,
+   "role": "list_item",
+   "text": "Topics",
+   "flags": [
+    "in_list"
+   ],
+   "loc": [
+    73,
+    7,
+    73,
+    13
+   ]
+  },
+  {
+   "i": 67,
+   "k": 1,
+   "role": "list_item",
+   "text": "Users",
+   "flags": [
+    "in_list"
+   ],
+   "loc": [
+    74,
+    7,
+    74,
+    12
+   ]
+  },
+  {
+   "i": 68,
+   "k": 1,
+   "role": "list_item",
+   "text": "Vendors",
+   "flags": [
+    "in_list"
+   ],
+   "loc": [
+    75,
+    7,
+    75,
+    14
+   ]
+  },
+  {
+   "i": 69,
+   "k": 1,
+   "role": "list_item",
+   "text": "Webhooks",
+   "flags": [
+    "in_list"
+   ],
+   "loc": [
+    76,
+    7,
+    76,
+    15
+   ]
+  },
+  {
+   "i": 70,
+   "k": 1,
+   "role": "list_item",
+   "text": "Widgets",
+   "flags": [
+    "in_list"
+   ],
+   "loc": [
+    77,
+    7,
+    77,
+    14
+   ]
+  },
+  {
+   "i": 71,
+   "k": 1,
+   "role": "list_item",
+   "text": "Zones",
+   "flags": [
+    "in_list"
+   ],
+   "loc": [
+    78,
+    7,
+    78,
+    12
+   ]
+  },
+  {
+   "i": 72,
+   "k": 1,
+   "role": "list_item",
+   "text": "Archive",
+   "flags": [
+    "in_list"
+   ],
+   "loc": [
+    79,
+    7,
+    79,
+    14
+   ]
+  }
+ ]
+}

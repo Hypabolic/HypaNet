@@ -1,0 +1,161 @@
+{
+ "schema": "slop.screen/1",
+ "id": "895c00c1ce112ff2",
+ "framework": "html",
+ "source": {
+  "repo": "slop-test-fixtures",
+  "path": "src/checkout_summary.html",
+  "commit": "0000000000000000000000000000000000000000",
+  "licence": "MIT"
+ },
+ "clusters": [
+  {
+   "k": 0,
+   "kind": "header",
+   "line": 5
+  },
+  {
+   "k": 1,
+   "kind": "list",
+   "line": 7
+  },
+  {
+   "k": 2,
+   "kind": "actions",
+   "line": 14
+  }
+ ],
+ "nodes": [
+  {
+   "i": 0,
+   "k": 0,
+   "role": "h2",
+   "text": "Order summary",
+   "flags": [],
+   "loc": [
+    6,
+    7,
+    6,
+    20
+   ]
+  },
+  {
+   "i": 1,
+   "k": 1,
+   "role": "list_item",
+   "text": "Linen shirt × 2",
+   "flags": [
+    "in_list"
+   ],
+   "loc": [
+    8,
+    7,
+    8,
+    22
+   ]
+  },
+  {
+   "i": 2,
+   "k": 1,
+   "role": "list_item",
+   "text": "£80.00",
+   "flags": [
+    "in_list"
+   ],
+   "loc": [
+    9,
+    7,
+    9,
+    13
+   ]
+  },
+  {
+   "i": 3,
+   "k": 1,
+   "role": "list_item",
+   "text": "Delivery",
+   "flags": [
+    "in_list"
+   ],
+   "loc": [
+    10,
+    7,
+    10,
+    15
+   ]
+  },
+  {
+   "i": 4,
+   "k": 1,
+   "role": "list_item",
+   "text": "Free",
+   "flags": [
+    "in_list"
+   ],
+   "loc": [
+    11,
+    7,
+    11,
+    11
+   ]
+  },
+  {
+   "i": 5,
+   "k": 1,
+   "role": "list_item",
+   "text": "Total",
+   "flags": [
+    "in_list"
+   ],
+   "loc": [
+    12,
+    7,
+    12,
+    12
+   ]
+  },
+  {
+   "i": 6,
+   "k": 1,
+   "role": "list_item",
+   "text": "£80.00",
+   "flags": [
+    "in_list"
+   ],
+   "loc": [
+    13,
+    7,
+    13,
+    13
+   ]
+  },
+  {
+   "i": 7,
+   "k": 2,
+   "role": "button",
+   "text": "Pay now",
+   "flags": [],
+   "loc": [
+    15,
+    7,
+    15,
+    14
+   ]
+  },
+  {
+   "i": 8,
+   "k": 2,
+   "role": "caption",
+   "text": "You won’t be charged until your order ships.",
+   "flags": [
+    "small"
+   ],
+   "loc": [
+    16,
+    7,
+    16,
+    51
+   ]
+  }
+ ]
+}

@@ -1,0 +1,212 @@
+{
+ "schema": "slop.screen/1",
+ "id": "8e45099bb6a1e50c",
+ "framework": "html",
+ "source": {
+  "repo": "invoicer",
+  "path": "web/onboarding/step2.html",
+  "commit": "fixture",
+  "licence": "invented fixture"
+ },
+ "clusters": [
+  {
+   "k": 0,
+   "kind": "header",
+   "line": 2
+  },
+  {
+   "k": 1,
+   "kind": "list",
+   "line": 6
+  },
+  {
+   "k": 2,
+   "kind": "body",
+   "line": 13
+  },
+  {
+   "k": 3,
+   "kind": "actions",
+   "line": 17
+  },
+  {
+   "k": 4,
+   "kind": "body",
+   "line": 20
+  }
+ ],
+ "nodes": [
+  {
+   "i": 0,
+   "k": 0,
+   "role": "caption",
+   "text": "Step 2 of 4",
+   "flags": [
+    "small",
+    "section_first"
+   ],
+   "loc": [
+    2,
+    22,
+    2,
+    33
+   ]
+  },
+  {
+   "i": 1,
+   "k": 0,
+   "role": "h1",
+   "text": "Connect your bank",
+   "flags": [],
+   "loc": [
+    3,
+    7,
+    3,
+    24
+   ]
+  },
+  {
+   "i": 2,
+   "k": 0,
+   "role": "subtitle",
+   "text": "This page walks you through the second of four onboarding stages.",
+   "flags": [],
+   "loc": [
+    4,
+    23,
+    4,
+    88
+   ]
+  },
+  {
+   "i": 3,
+   "k": 1,
+   "role": "body",
+   "text": "Three simple steps to connect:",
+   "flags": [],
+   "loc": [
+    6,
+    6,
+    6,
+    36
+   ]
+  },
+  {
+   "i": 4,
+   "k": 1,
+   "role": "list_item",
+   "text": "Choose your bank",
+   "flags": [
+    "in_list"
+   ],
+   "loc": [
+    8,
+    9,
+    8,
+    25
+   ]
+  },
+  {
+   "i": 5,
+   "k": 1,
+   "role": "list_item",
+   "text": "Sign in with your bank",
+   "flags": [
+    "in_list"
+   ],
+   "loc": [
+    9,
+    9,
+    9,
+    31
+   ]
+  },
+  {
+   "i": 6,
+   "k": 1,
+   "role": "list_item",
+   "text": "Pick the accounts to sync",
+   "flags": [
+    "in_list"
+   ],
+   "loc": [
+    10,
+    9,
+    10,
+    34
+   ]
+  },
+  {
+   "i": 7,
+   "k": 2,
+   "role": "helper",
+   "text": "We only read transactions; we never move money.",
+   "flags": [
+    "small"
+   ],
+   "loc": [
+    13,
+    21,
+    13,
+    68
+   ]
+  },
+  {
+   "i": 8,
+   "k": 2,
+   "role": "helper",
+   "text": "Hold Shift to pick several accounts at once.",
+   "flags": [
+    "small"
+   ],
+   "loc": [
+    14,
+    21,
+    14,
+    65
+   ]
+  },
+  {
+   "i": 9,
+   "k": 3,
+   "role": "button",
+   "text": "Continue",
+   "flags": [],
+   "loc": [
+    17,
+    27,
+    17,
+    35
+   ]
+  },
+  {
+   "i": 10,
+   "k": 3,
+   "role": "link",
+   "text": "Back",
+   "flags": [],
+   "loc": [
+    18,
+    29,
+    18,
+    33
+   ]
+  },
+  {
+   "i": 11,
+   "k": 4,
+   "role": "caption",
+   "text": "Now simply click Continue to move on.",
+   "flags": [
+    "small",
+    "section_last"
+   ],
+   "loc": [
+    20,
+    22,
+    20,
+    59
+   ]
+  }
+ ]
+}

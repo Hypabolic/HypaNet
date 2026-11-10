@@ -1,0 +1,9 @@
+{"schema": "slop.screen/1", "id": "c91f9c6f6663a5e9", "framework": "html",
+ "source": {"repo": "slop-fixtures", "path": "examples.html", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "list", "line": 1},
+  {"k": 1, "kind": "body", "line": 5}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "link", "text": "Bowline A fixed loop that will not slip.", "flags": ["in_list"], "loc": [2, 32, 2, 86]},
+  {"i": 1, "k": 0, "role": "link", "text": "Clove hitch Quick to tie round a post.", "flags": ["in_list"], "loc": [3, 34, 3, 86]},
+  {"i": 2, "k": 1, "role": "body", "text": "Tie it under load only if you must.", "flags": [], "loc": [5, 4, 5, 48]}]}

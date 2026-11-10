@@ -1,0 +1,95 @@
+{
+ "schema": "slop.screen/1",
+ "id": "1157d50e1a98df1b",
+ "framework": "html",
+ "source": {
+  "repo": "slop-test-fixtures",
+  "path": "src/cookie_banner.html",
+  "commit": "0000000000000000000000000000000000000000",
+  "licence": "MIT"
+ },
+ "clusters": [
+  {
+   "k": 0,
+   "kind": "state",
+   "line": 5
+  }
+ ],
+ "nodes": [
+  {
+   "i": 0,
+   "k": 0,
+   "role": "body",
+   "text": "We use cookies to keep you signed in and to count visits.",
+   "flags": [
+    "in_footer"
+   ],
+   "loc": [
+    6,
+    7,
+    6,
+    64
+   ]
+  },
+  {
+   "i": 1,
+   "k": 0,
+   "role": "button",
+   "text": "Accept all cookies",
+   "flags": [
+    "in_footer"
+   ],
+   "loc": [
+    7,
+    7,
+    7,
+    25
+   ]
+  },
+  {
+   "i": 2,
+   "k": 0,
+   "role": "button",
+   "text": "Reject optional cookies",
+   "flags": [
+    "in_footer"
+   ],
+   "loc": [
+    8,
+    7,
+    8,
+    30
+   ]
+  },
+  {
+   "i": 3,
+   "k": 0,
+   "role": "link",
+   "text": "Cookie settings",
+   "flags": [
+    "in_footer"
+   ],
+   "loc": [
+    9,
+    7,
+    9,
+    22
+   ]
+  },
+  {
+   "i": 4,
+   "k": 0,
+   "role": "button",
+   "text": "Cookies",
+   "flags": [
+    "in_footer"
+   ],
+   "loc": [
+    10,
+    7,
+    10,
+    14
+   ]
+  }
+ ]
+}

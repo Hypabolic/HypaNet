@@ -1,0 +1,13 @@
+{"schema": "slop.screen/1", "id": "a5a73ceace5bbfdc", "framework": "tsx",
+ "source": {"repo": "slop-fixtures", "path": "RenameDialog.tsx", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "actions", "line": 10},
+  {"k": 1, "kind": "state", "line": 12}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "button", "text": "Rename hive", "flags": [], "loc": [10, 35, 10, 46]},
+  {"i": 1, "k": 1, "role": "dialog_title", "text": "Rename hive", "flags": ["in_dialog", "in_state"], "loc": [14, 24, 14, 35]},
+  {"i": 2, "k": 1, "role": "dialog_body", "text": "Inspection notes keep the old name in their history.", "flags": ["in_dialog", "in_state", "section_first"], "loc": [15, 30, 15, 82]},
+  {"i": 3, "k": 1, "role": "label", "text": "Hive name", "flags": ["in_dialog", "in_state", "in_control"], "loc": [18, 33, 18, 42]},
+  {"i": 4, "k": 1, "role": "placeholder", "text": "e.g. Orchard east", "flags": ["in_dialog", "in_state", "in_control"], "loc": [19, 63, 19, 80]},
+  {"i": 5, "k": 1, "role": "button", "text": "Cancel", "flags": ["in_dialog", "in_state"], "loc": [22, 35, 22, 41]},
+  {"i": 6, "k": 1, "role": "button", "text": "Save name", "flags": ["in_dialog", "in_state", "section_last"], "loc": [23, 19, 23, 28]}]}

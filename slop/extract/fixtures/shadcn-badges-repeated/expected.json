@@ -1,0 +1,18 @@
+{"schema": "slop.screen/1", "id": "1a4319ed22181d99", "framework": "tsx",
+ "source": {"repo": "slop-fixtures", "path": "Releases.tsx", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "header", "line": 7},
+  {"k": 1, "kind": "card", "line": 10},
+  {"k": 2, "kind": "card", "line": 17},
+  {"k": 3, "kind": "card", "line": 24}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "h2", "text": "This spring's additions", "flags": [], "loc": [7, 46, 7, 69]},
+  {"i": 1, "k": 1, "role": "badge", "text": "New", "flags": ["pill", "in_card", "section_first", "repeated"], "loc": [11, 20, 11, 23]},
+  {"i": 2, "k": 1, "role": "h3", "text": "Seed swap board", "flags": ["in_card", "repeated"], "loc": [12, 24, 12, 39]},
+  {"i": 3, "k": 1, "role": "subtitle", "text": "Post spare packets and claim a neighbour's.", "flags": ["in_card", "section_first", "section_last", "repeated"], "loc": [13, 30, 13, 73]},
+  {"i": 4, "k": 2, "role": "badge", "text": "New", "flags": ["pill", "in_card", "repeated"], "loc": [18, 20, 18, 23]},
+  {"i": 5, "k": 2, "role": "h3", "text": "Rain gauge sync", "flags": ["in_card", "repeated"], "loc": [19, 24, 19, 39]},
+  {"i": 6, "k": 2, "role": "subtitle", "text": "Pull readings from a paired gauge every hour.", "flags": ["in_card", "section_first", "section_last", "repeated"], "loc": [20, 30, 20, 75]},
+  {"i": 7, "k": 3, "role": "badge", "text": "New", "flags": ["pill", "in_card", "repeated"], "loc": [25, 20, 25, 23]},
+  {"i": 8, "k": 3, "role": "h3", "text": "Shared tool shed", "flags": ["in_card", "repeated"], "loc": [26, 24, 26, 40]},
+  {"i": 9, "k": 3, "role": "subtitle", "text": "See who borrowed the long loppers.", "flags": ["in_card", "section_first", "section_last", "repeated"], "loc": [27, 30, 27, 64]}]}

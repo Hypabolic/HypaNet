@@ -1,0 +1,13 @@
+{"schema": "slop.screen/1", "id": "c430703c7d756961", "framework": "html",
+ "source": {"repo": "slop-fixtures", "path": "about.html", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "header", "line": 10},
+  {"k": 1, "kind": "header", "line": 11},
+  {"k": 2, "kind": "header", "line": 12},
+  {"k": 3, "kind": "header", "line": 9}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "h1", "text": "About the society", "flags": [], "loc": [10, 9, 10, 26]},
+  {"i": 1, "k": 1, "role": "h2", "text": "Committee", "flags": ["section_first"], "loc": [11, 9, 11, 18]},
+  {"i": 2, "k": 2, "role": "h3", "text": "Officers", "flags": ["section_first"], "loc": [12, 9, 12, 17]},
+  {"i": 3, "k": 3, "role": "h4", "text": "Chair", "flags": ["section_first"], "loc": [13, 9, 13, 14]},
+  {"i": 4, "k": 3, "role": "subtitle", "text": "Elected each March at the annual meeting.", "flags": ["section_first", "section_last"], "loc": [14, 8, 14, 49]}]}

@@ -1,0 +1,19 @@
+{"schema": "slop.screen/1", "id": "9231adfe789f3152", "framework": "tsx",
+ "source": {"repo": "slop-fixtures", "path": "Features.tsx", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "header", "line": 12},
+  {"k": 1, "kind": "card", "line": 15},
+  {"k": 2, "kind": "card", "line": 15},
+  {"k": 3, "kind": "card", "line": 15}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "h2", "text": "Walk further with less", "flags": [], "loc": [12, 42, 12, 64]},
+  {"i": 1, "k": 1, "role": "eyebrow", "text": "ROUTES", "flags": ["caps", "tracked", "small", "icon", "in_list", "in_card", "section_first", "repeated"], "loc": [5, 31, 5, 37]},
+  {"i": 2, "k": 1, "role": "h3", "text": "Paths drawn by locals", "flags": ["in_list", "in_card", "repeated"], "loc": [5, 48, 5, 69]},
+  {"i": 3, "k": 1, "role": "badge", "text": "New", "flags": ["small", "pill", "in_list", "in_card", "section_first", "repeated"], "loc": [5, 140, 5, 143]},
+  {"i": 4, "k": 1, "role": "body", "text": "Every trail is walked by someone who lives nearby.", "flags": ["small", "in_list", "in_card", "section_last", "repeated"], "loc": [5, 79, 5, 129]},
+  {"i": 5, "k": 2, "role": "eyebrow", "text": "CAMPS", "flags": ["caps", "tracked", "small", "icon", "in_list", "in_card", "repeated"], "loc": [6, 28, 6, 33]},
+  {"i": 6, "k": 2, "role": "h3", "text": "Pitches you can book", "flags": ["in_list", "in_card", "repeated"], "loc": [6, 44, 6, 64]},
+  {"i": 7, "k": 2, "role": "subtitle", "text": "Reserve a pitch the night before, not a season ahead.", "flags": ["small", "in_list", "in_card", "section_first", "section_last", "repeated"], "loc": [6, 74, 6, 127]},
+  {"i": 8, "k": 3, "role": "eyebrow", "text": "KIT", "flags": ["caps", "tracked", "small", "icon", "in_list", "in_card", "repeated"], "loc": [7, 28, 7, 31]},
+  {"i": 9, "k": 3, "role": "h3", "text": "Lamps on loan", "flags": ["in_list", "in_card", "repeated"], "loc": [7, 42, 7, 55]},
+  {"i": 10, "k": 3, "role": "subtitle", "text": "Borrow a head torch at any hut and drop it at the next.", "flags": ["small", "in_list", "in_card", "section_first", "section_last", "repeated"], "loc": [7, 65, 7, 120]}]}

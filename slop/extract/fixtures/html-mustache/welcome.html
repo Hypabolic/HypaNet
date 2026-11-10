@@ -1,0 +1,8 @@
+<div class="welcome">
+  <h1>Welcome back, {{ user.first_name }}</h1>
+  {% if overdue %}
+  <p class="warning">You have {{ overdue_count }} books overdue.</p>
+  {% endif %}
+  <p>{{ "dashboard.tagline" | translate }}</p>
+  <button title="{{ hint }}">Renew all</button>
+</div>

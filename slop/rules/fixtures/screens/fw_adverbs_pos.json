@@ -1,0 +1,10 @@
+{"schema": "slop.screen/1", "id": "e27adebd35377142", "framework": "tsx",
+ "source": {"repo": "slop-rules-fixtures", "path": "src/fw_adverbs_pos.tsx", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "header", "line": 2},
+  {"k": 1, "kind": "body", "line": 5}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "h2", "text": "Shared folders", "flags": [], "loc": [3, 7, 3, 21]},
+  {"i": 1, "k": 0, "role": "subtitle", "text": "Simply drag files here to easily share them.", "flags": [], "loc": [4, 7, 4, 51]},
+  {"i": 2, "k": 1, "role": "body", "text": "Setup is very quick and quite painless.", "flags": [], "loc": [6, 7, 6, 46]},
+  {"i": 3, "k": 1, "role": "body", "text": "Move projects in order to keep the archive tidy.", "flags": [], "loc": [7, 7, 7, 55]}]}

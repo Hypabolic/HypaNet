@@ -1,0 +1,9 @@
+{"schema": "slop.screen/1", "id": "9668e24601d120ff", "framework": "tsx",
+ "source": {"repo": "slop-fixtures", "path": "QuitHint.tsx", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "body", "line": 3}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "body", "text": "Press ALT and F4 to quit, \ue000 name .", "flags": ["dynamic"], "loc": [4, 10, 4, 43]},
+  {"i": 1, "k": 0, "role": "body", "text": "Use the VAR key \ue001 Use the ALT key", "flags": ["stateful", "conditional"], "loc": [5, 11, 5, 69]},
+  {"i": 2, "k": 0, "role": "tooltip", "text": "VAR means variance here", "flags": [], "loc": [6, 20, 6, 43]},
+  {"i": 3, "k": 0, "role": "body", "text": "VAR", "flags": ["caps"], "loc": [6, 45, 6, 48]}]}

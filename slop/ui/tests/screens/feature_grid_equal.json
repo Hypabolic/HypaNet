@@ -1,0 +1,147 @@
+{
+ "schema": "slop.screen/1",
+ "id": "6fb9e6a74091c62e",
+ "framework": "html",
+ "source": {
+  "repo": "slop-test-fixtures",
+  "path": "src/feature_grid_equal.html",
+  "commit": "0000000000000000000000000000000000000000",
+  "licence": "MIT"
+ },
+ "clusters": [
+  {
+   "k": 0,
+   "kind": "header",
+   "line": 5
+  },
+  {
+   "k": 1,
+   "kind": "card",
+   "line": 8
+  },
+  {
+   "k": 2,
+   "kind": "card",
+   "line": 12
+  }
+ ],
+ "nodes": [
+  {
+   "i": 0,
+   "k": 0,
+   "role": "h2",
+   "text": "Built for speed",
+   "flags": [],
+   "loc": [
+    6,
+    7,
+    6,
+    22
+   ]
+  },
+  {
+   "i": 1,
+   "k": 0,
+   "role": "subtitle",
+   "text": "Speed",
+   "flags": [],
+   "loc": [
+    7,
+    7,
+    7,
+    12
+   ]
+  },
+  {
+   "i": 2,
+   "k": 1,
+   "role": "h3",
+   "text": "Fast search",
+   "flags": [
+    "in_card"
+   ],
+   "loc": [
+    9,
+    7,
+    9,
+    18
+   ]
+  },
+  {
+   "i": 3,
+   "k": 1,
+   "role": "body",
+   "text": "Search is fast.",
+   "flags": [
+    "in_card"
+   ],
+   "loc": [
+    10,
+    7,
+    10,
+    22
+   ]
+  },
+  {
+   "i": 4,
+   "k": 1,
+   "role": "caption",
+   "text": "Fast search",
+   "flags": [
+    "in_card"
+   ],
+   "loc": [
+    11,
+    7,
+    11,
+    18
+   ]
+  },
+  {
+   "i": 5,
+   "k": 2,
+   "role": "h3",
+   "text": "Offline mode",
+   "flags": [
+    "in_card"
+   ],
+   "loc": [
+    13,
+    7,
+    13,
+    19
+   ]
+  },
+  {
+   "i": 6,
+   "k": 2,
+   "role": "body",
+   "text": "Work offline and sync later.",
+   "flags": [
+    "in_card"
+   ],
+   "loc": [
+    14,
+    7,
+    14,
+    35
+   ]
+  },
+  {
+   "i": 7,
+   "k": 2,
+   "role": "badge",
+   "text": "Offline",
+   "flags": [
+    "in_card",
+    "pill"
+   ],
+   "loc": [
+    15,
+    7,
+    15,
+    14
+   ]
+  }
+ ]
+}

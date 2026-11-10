@@ -1,0 +1,7 @@
+{"schema": "slop.screen/1", "id": "b604866078364910", "framework": "tsx",
+ "source": {"repo": "slop-fixtures", "path": "CartButton.tsx", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "actions", "line": 5}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "button", "text": "Basket, \ue000 count items", "flags": ["icon", "dynamic", "sr_only"], "loc": [7, 33, 7, 54]},
+  {"i": 1, "k": 0, "role": "button", "text": "\ue000 count", "flags": ["small", "pill", "dynamic", "stateful"], "loc": [8, 106, 8, 111]}]}

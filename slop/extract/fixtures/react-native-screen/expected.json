@@ -1,0 +1,14 @@
+{"schema": "slop.screen/1", "id": "68aeacfe5888ecb6", "framework": "tsx",
+ "source": {"repo": "slop-fixtures", "path": "TideScreen.tsx", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "body", "line": 5},
+  {"k": 1, "kind": "control", "line": 10},
+  {"k": 2, "kind": "actions", "line": 12},
+  {"k": 3, "kind": "body", "line": 5}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "body", "text": "Tides", "flags": [], "loc": [6, 38, 6, 43]},
+  {"i": 1, "k": 0, "role": "body", "text": "High water at 14:32 today", "flags": [], "loc": [8, 9, 8, 77]},
+  {"i": 2, "k": 1, "role": "placeholder", "text": "Search a harbour", "flags": ["in_control"], "loc": [10, 31, 10, 47]},
+  {"i": 3, "k": 2, "role": "button", "text": "Set an alert", "flags": [], "loc": [12, 15, 12, 27]},
+  {"i": 4, "k": 3, "role": "label", "text": "Next low", "flags": ["caps", "tracked", "small"], "loc": [14, 84, 14, 92]},
+  {"i": 5, "k": 3, "role": "stat", "text": "\ue000 height", "flags": ["dynamic", "stateful"], "loc": [15, 39, 15, 45]}]}

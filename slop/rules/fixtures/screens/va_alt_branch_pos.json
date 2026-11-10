@@ -1,0 +1,11 @@
+{"schema": "slop.screen/1", "id": "547959642ed8d566", "framework": "tsx",
+ "source": {"repo": "slop-rules-fixtures", "path": "src/va_alt_branch_pos.tsx", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "header", "line": 2},
+  {"k": 1, "kind": "control", "line": 4},
+  {"k": 2, "kind": "actions", "line": 7}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "h2", "text": "Send feedback", "flags": ["in_form"], "loc": [3, 7, 3, 20]},
+  {"i": 1, "k": 1, "role": "label", "text": "What went wrong?", "flags": ["in_form", "in_control"], "loc": [5, 7, 5, 23]},
+  {"i": 2, "k": 1, "role": "helper", "text": "We read every message within a day.", "flags": ["small", "in_form", "in_control"], "loc": [6, 7, 6, 42]},
+  {"i": 3, "k": 2, "role": "button", "text": "Sending… \ue001 Submit", "flags": ["conditional", "in_form"], "loc": [8, 7, 8, 24]}]}

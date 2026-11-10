@@ -1,0 +1,15 @@
+{"schema": "slop.screen/1", "id": "6cd23c50f0c2dbe1", "framework": "tsx",
+ "source": {"repo": "slop-rules-fixtures", "path": "src/rc_sibling_arrow_rows_pos.tsx", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "header", "line": 2},
+  {"k": 1, "kind": "list", "line": 4},
+  {"k": 2, "kind": "body", "line": 11}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "h2", "text": "Recent statements", "flags": [], "loc": [3, 7, 3, 24]},
+  {"i": 1, "k": 1, "role": "list_item", "text": "March 2026 statement", "flags": ["in_list"], "loc": [5, 7, 5, 27]},
+  {"i": 2, "k": 1, "role": "link", "text": "Download PDF →", "flags": ["arrow_tail", "in_list"], "loc": [6, 7, 6, 21]},
+  {"i": 3, "k": 1, "role": "list_item", "text": "February 2026 statement", "flags": ["in_list"], "loc": [7, 7, 7, 30]},
+  {"i": 4, "k": 1, "role": "link", "text": "Download PDF →", "flags": ["arrow_tail", "in_list"], "loc": [8, 7, 8, 21]},
+  {"i": 5, "k": 1, "role": "list_item", "text": "January 2026 statement", "flags": ["in_list"], "loc": [9, 7, 9, 29]},
+  {"i": 6, "k": 1, "role": "link", "text": "Download PDF →", "flags": ["arrow_tail", "in_list"], "loc": [10, 7, 10, 21]},
+  {"i": 7, "k": 2, "role": "link", "text": "Contact the billing team", "flags": [], "loc": [12, 7, 12, 31]}]}

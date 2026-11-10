@@ -1,0 +1,12 @@
+{"schema": "slop.screen/1", "id": "8229c9e5065df090", "framework": "tsx",
+ "source": {"repo": "slop-rules-fixtures", "path": "src/fw_word_boundaries_neg.tsx", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "header", "line": 2},
+  {"k": 1, "kind": "actions", "line": 6}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "h2", "text": "Now showing", "flags": [], "loc": [3, 7, 3, 18]},
+  {"i": 1, "k": 0, "role": "body", "text": "Exports now include notes and tags.", "flags": [], "loc": [4, 7, 4, 42]},
+  {"i": 2, "k": 0, "role": "body", "text": "Members are pleased to host the snowdrop walk.", "flags": [], "loc": [5, 7, 5, 53]},
+  {"i": 3, "k": 1, "role": "button", "text": "Know your rights", "flags": [], "loc": [7, 7, 7, 23]},
+  {"i": 4, "k": 1, "role": "button", "text": "Nowcast", "flags": [], "loc": [8, 7, 8, 14]},
+  {"i": 5, "k": 1, "role": "nav", "text": "Your", "flags": ["in_nav"], "loc": [9, 7, 9, 11]}]}

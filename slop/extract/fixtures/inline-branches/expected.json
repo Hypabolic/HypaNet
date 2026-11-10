@@ -1,0 +1,8 @@
+{"schema": "slop.screen/1", "id": "1ddbc604690a7717", "framework": "tsx",
+ "source": {"repo": "slop-fixtures", "path": "CopyButton.tsx", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "actions", "line": 6},
+  {"k": 1, "kind": "body", "line": 19}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "button", "text": "Copied \ue001 Copy invite link", "flags": ["stateful", "conditional"], "loc": [10, 13, 15, 29]},
+  {"i": 1, "k": 1, "role": "body", "text": "One seat left \ue001 \ue000 count seats left on this coach", "flags": ["dynamic", "conditional"], "loc": [20, 30, 20, 99]}]}

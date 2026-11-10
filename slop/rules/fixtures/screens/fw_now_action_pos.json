@@ -1,0 +1,10 @@
+{"schema": "slop.screen/1", "id": "dce8e20145a2c020", "framework": "tsx",
+ "source": {"repo": "slop-rules-fixtures", "path": "src/fw_now_action_pos.tsx", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "header", "line": 2},
+  {"k": 1, "kind": "actions", "line": 5}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "h2", "text": "Autumn sale", "flags": [], "loc": [3, 7, 3, 18]},
+  {"i": 1, "k": 0, "role": "subtitle", "text": "Coats and boots at half price until Sunday.", "flags": [], "loc": [4, 7, 4, 50]},
+  {"i": 2, "k": 1, "role": "button", "text": "Shop now", "flags": [], "loc": [6, 7, 6, 15]},
+  {"i": 3, "k": 1, "role": "link", "text": "Book a fitting now", "flags": [], "loc": [7, 7, 7, 25]}]}

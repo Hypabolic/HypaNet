@@ -1,0 +1,323 @@
+{
+ "schema": "slop.screen/1",
+ "id": "17e018eb0ed7b609",
+ "framework": "html",
+ "source": {
+  "repo": "slop-test-fixtures",
+  "path": "src/pricing_cards.html",
+  "commit": "0000000000000000000000000000000000000000",
+  "licence": "MIT"
+ },
+ "clusters": [
+  {
+   "k": 0,
+   "kind": "header",
+   "line": 5
+  },
+  {
+   "k": 1,
+   "kind": "card",
+   "line": 9
+  },
+  {
+   "k": 2,
+   "kind": "card",
+   "line": 15
+  },
+  {
+   "k": 3,
+   "kind": "card",
+   "line": 21
+  }
+ ],
+ "nodes": [
+  {
+   "i": 0,
+   "k": 0,
+   "role": "eyebrow",
+   "text": "PRICING",
+   "flags": [
+    "caps",
+    "tracked"
+   ],
+   "loc": [
+    6,
+    7,
+    6,
+    14
+   ]
+  },
+  {
+   "i": 1,
+   "k": 0,
+   "role": "h2",
+   "text": "Simple pricing",
+   "flags": [],
+   "loc": [
+    7,
+    7,
+    7,
+    21
+   ]
+  },
+  {
+   "i": 2,
+   "k": 0,
+   "role": "subtitle",
+   "text": "Pricing that is simple.",
+   "flags": [],
+   "loc": [
+    8,
+    7,
+    8,
+    30
+   ]
+  },
+  {
+   "i": 3,
+   "k": 1,
+   "role": "h3",
+   "text": "Starter",
+   "flags": [
+    "in_card",
+    "repeated"
+   ],
+   "loc": [
+    10,
+    7,
+    10,
+    14
+   ]
+  },
+  {
+   "i": 4,
+   "k": 1,
+   "role": "stat",
+   "text": "$9",
+   "flags": [
+    "in_card",
+    "repeated"
+   ],
+   "loc": [
+    11,
+    7,
+    11,
+    9
+   ]
+  },
+  {
+   "i": 5,
+   "k": 1,
+   "role": "caption",
+   "text": "per month",
+   "flags": [
+    "in_card",
+    "repeated",
+    "small"
+   ],
+   "loc": [
+    12,
+    7,
+    12,
+    16
+   ]
+  },
+  {
+   "i": 6,
+   "k": 1,
+   "role": "list_item",
+   "text": "Up to 3 boards",
+   "flags": [
+    "in_card",
+    "in_list",
+    "repeated"
+   ],
+   "loc": [
+    13,
+    7,
+    13,
+    21
+   ]
+  },
+  {
+   "i": 7,
+   "k": 1,
+   "role": "button",
+   "text": "Choose Starter",
+   "flags": [
+    "in_card",
+    "repeated"
+   ],
+   "loc": [
+    14,
+    7,
+    14,
+    21
+   ]
+  },
+  {
+   "i": 8,
+   "k": 2,
+   "role": "h3",
+   "text": "Team",
+   "flags": [
+    "in_card",
+    "repeated"
+   ],
+   "loc": [
+    16,
+    7,
+    16,
+    11
+   ]
+  },
+  {
+   "i": 9,
+   "k": 2,
+   "role": "stat",
+   "text": "$29",
+   "flags": [
+    "in_card",
+    "repeated"
+   ],
+   "loc": [
+    17,
+    7,
+    17,
+    10
+   ]
+  },
+  {
+   "i": 10,
+   "k": 2,
+   "role": "caption",
+   "text": "per month",
+   "flags": [
+    "in_card",
+    "repeated",
+    "small"
+   ],
+   "loc": [
+    18,
+    7,
+    18,
+    16
+   ]
+  },
+  {
+   "i": 11,
+   "k": 2,
+   "role": "list_item",
+   "text": "Unlimited boards",
+   "flags": [
+    "in_card",
+    "in_list",
+    "repeated"
+   ],
+   "loc": [
+    19,
+    7,
+    19,
+    23
+   ]
+  },
+  {
+   "i": 12,
+   "k": 2,
+   "role": "button",
+   "text": "Choose Team",
+   "flags": [
+    "in_card",
+    "repeated"
+   ],
+   "loc": [
+    20,
+    7,
+    20,
+    18
+   ]
+  },
+  {
+   "i": 13,
+   "k": 3,
+   "role": "h3",
+   "text": "Enterprise",
+   "flags": [
+    "in_card",
+    "repeated"
+   ],
+   "loc": [
+    22,
+    7,
+    22,
+    17
+   ]
+  },
+  {
+   "i": 14,
+   "k": 3,
+   "role": "stat",
+   "text": "Custom",
+   "flags": [
+    "in_card",
+    "repeated"
+   ],
+   "loc": [
+    23,
+    7,
+    23,
+    13
+   ]
+  },
+  {
+   "i": 15,
+   "k": 3,
+   "role": "caption",
+   "text": "billed yearly",
+   "flags": [
+    "in_card",
+    "repeated",
+    "small"
+   ],
+   "loc": [
+    24,
+    7,
+    24,
+    20
+   ]
+  },
+  {
+   "i": 16,
+   "k": 3,
+   "role": "list_item",
+   "text": "SSO and audit logs",
+   "flags": [
+    "in_card",
+    "in_list",
+    "repeated"
+   ],
+   "loc": [
+    25,
+    7,
+    25,
+    25
+   ]
+  },
+  {
+   "i": 17,
+   "k": 3,
+   "role": "button",
+   "text": "Talk to sales",
+   "flags": [
+    "in_card",
+    "repeated"
+   ],
+   "loc": [
+    26,
+    7,
+    26,
+    20
+   ]
+  }
+ ]
+}

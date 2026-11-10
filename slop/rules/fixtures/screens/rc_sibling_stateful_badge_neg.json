@@ -1,0 +1,15 @@
+{"schema": "slop.screen/1", "id": "01f8c6071d85fde5", "framework": "tsx",
+ "source": {"repo": "slop-rules-fixtures", "path": "src/rc_sibling_stateful_badge_neg.tsx", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "header", "line": 2},
+  {"k": 1, "kind": "card", "line": 4},
+  {"k": 2, "kind": "card", "line": 7},
+  {"k": 3, "kind": "card", "line": 10}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "h2", "text": "Invoices", "flags": [], "loc": [3, 7, 3, 15]},
+  {"i": 1, "k": 1, "role": "h3", "text": "Invoice 1041", "flags": ["in_card", "repeated"], "loc": [5, 7, 5, 19]},
+  {"i": 2, "k": 1, "role": "badge", "text": "Paid \ue001 Overdue", "flags": ["small", "pill", "stateful", "conditional", "in_card", "repeated"], "loc": [6, 7, 6, 21]},
+  {"i": 3, "k": 2, "role": "h3", "text": "Invoice 1042", "flags": ["in_card", "repeated"], "loc": [8, 7, 8, 19]},
+  {"i": 4, "k": 2, "role": "badge", "text": "Paid \ue001 Overdue", "flags": ["small", "pill", "stateful", "conditional", "in_card", "repeated"], "loc": [9, 7, 9, 21]},
+  {"i": 5, "k": 3, "role": "h3", "text": "Invoice 1043", "flags": ["in_card", "repeated"], "loc": [11, 7, 11, 19]},
+  {"i": 6, "k": 3, "role": "badge", "text": "Paid \ue001 Overdue", "flags": ["small", "pill", "stateful", "conditional", "in_card", "repeated"], "loc": [12, 7, 12, 21]}]}

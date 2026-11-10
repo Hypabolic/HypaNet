@@ -1,0 +1,88 @@
+{
+ "schema": "slop.screen/1",
+ "id": "21995c8fb5e8af41",
+ "framework": "html",
+ "source": {
+  "repo": "slop-test-fixtures",
+  "path": "src/error_page.html",
+  "commit": "0000000000000000000000000000000000000000",
+  "licence": "MIT"
+ },
+ "clusters": [
+  {
+   "k": 0,
+   "kind": "state",
+   "line": 5
+  }
+ ],
+ "nodes": [
+  {
+   "i": 0,
+   "k": 0,
+   "role": "eyebrow",
+   "text": "404",
+   "flags": [
+    "small",
+    "mono"
+   ],
+   "loc": [
+    6,
+    7,
+    6,
+    10
+   ]
+  },
+  {
+   "i": 1,
+   "k": 0,
+   "role": "h1",
+   "text": "Page not found",
+   "flags": [],
+   "loc": [
+    7,
+    7,
+    7,
+    21
+   ]
+  },
+  {
+   "i": 2,
+   "k": 0,
+   "role": "body",
+   "text": "The page you were looking for was not found.",
+   "flags": [],
+   "loc": [
+    8,
+    7,
+    8,
+    51
+   ]
+  },
+  {
+   "i": 3,
+   "k": 0,
+   "role": "link",
+   "text": "Go home",
+   "flags": [],
+   "loc": [
+    9,
+    7,
+    9,
+    14
+   ]
+  },
+  {
+   "i": 4,
+   "k": 0,
+   "role": "link",
+   "text": "Contact support",
+   "flags": [],
+   "loc": [
+    10,
+    7,
+    10,
+    22
+   ]
+  }
+ ]
+}

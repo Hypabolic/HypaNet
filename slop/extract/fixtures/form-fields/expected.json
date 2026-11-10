@@ -1,0 +1,19 @@
+{"schema": "slop.screen/1", "id": "184bad01e0761cde", "framework": "tsx",
+ "source": {"repo": "slop-fixtures", "path": "SignupForm.tsx", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "header", "line": 4},
+  {"k": 1, "kind": "control", "line": 5},
+  {"k": 2, "kind": "control", "line": 10},
+  {"k": 3, "kind": "control", "line": 15},
+  {"k": 4, "kind": "control", "line": 18},
+  {"k": 5, "kind": "actions", "line": 19}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "h2", "text": "Create a club account", "flags": ["in_form"], "loc": [4, 45, 4, 66]},
+  {"i": 1, "k": 1, "role": "label", "text": "Club name", "flags": ["in_form", "in_control", "section_first"], "loc": [6, 31, 6, 40]},
+  {"i": 2, "k": 1, "role": "placeholder", "text": "Harbour Rowing Club", "flags": ["title_case", "in_form", "in_control"], "loc": [7, 39, 7, 58]},
+  {"i": 3, "k": 1, "role": "helper", "text": "Shown on fixture lists and receipts.", "flags": ["small", "in_form", "in_control"], "loc": [8, 54, 8, 90]},
+  {"i": 4, "k": 2, "role": "label", "text": "Secretary email", "flags": ["in_form", "in_control"], "loc": [11, 32, 11, 47]},
+  {"i": 5, "k": 2, "role": "error", "text": "Enter an email address like name@example.com", "flags": ["small", "conditional", "in_form", "in_control"], "loc": [13, 66, 13, 110]},
+  {"i": 6, "k": 3, "role": "label", "text": "Send me the monthly fixtures digest", "flags": ["in_form", "in_control"], "loc": [16, 35, 16, 70]},
+  {"i": 7, "k": 4, "role": "input_value", "text": "We train on Tuesdays.", "flags": ["in_form", "in_control"], "loc": [18, 31, 18, 52]},
+  {"i": 8, "k": 5, "role": "button", "text": "Create account", "flags": ["in_form", "section_last"], "loc": [19, 35, 19, 49]}]}

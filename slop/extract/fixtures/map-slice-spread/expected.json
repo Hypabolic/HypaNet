@@ -1,0 +1,17 @@
+{"schema": "slop.screen/1", "id": "ad0e9391c38af3ae", "framework": "tsx",
+ "source": {"repo": "slop-fixtures", "path": "Quotes.tsx", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "header", "line": 13},
+  {"k": 1, "kind": "card", "line": 17},
+  {"k": 2, "kind": "card", "line": 18},
+  {"k": 3, "kind": "card", "line": 18},
+  {"k": 4, "kind": "card", "line": 18}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "h2", "text": "Kitchens that switched", "flags": [], "loc": [13, 46, 13, 68]},
+  {"i": 1, "k": 1, "role": "badge", "text": "Featured", "flags": ["small", "pill", "in_list", "in_card", "section_first", "repeated"], "loc": [4, 3, 4, 116]},
+  {"i": 2, "k": 2, "role": "h3", "text": "Our bread order arrives before the ovens are hot", "flags": ["in_list", "in_card", "repeated"], "loc": [4, 13, 4, 61]},
+  {"i": 3, "k": 2, "role": "subtitle", "text": "Bakery on Mill Lane", "flags": ["title_case", "in_list", "in_card", "section_first", "section_last", "repeated"], "loc": [4, 78, 4, 97]},
+  {"i": 4, "k": 3, "role": "h3", "text": "Invoices reconcile themselves on a Friday", "flags": ["in_list", "in_card", "repeated"], "loc": [5, 13, 5, 54]},
+  {"i": 5, "k": 3, "role": "subtitle", "text": "Greengrocer, Harbour Row", "flags": ["title_case", "in_list", "in_card", "section_first", "section_last", "repeated"], "loc": [5, 71, 5, 95]},
+  {"i": 6, "k": 4, "role": "h3", "text": "I stopped chasing deliveries by phone", "flags": ["in_list", "in_card", "repeated"], "loc": [6, 13, 6, 50]},
+  {"i": 7, "k": 4, "role": "subtitle", "text": "Café by the lock", "flags": ["in_list", "in_card", "section_first", "section_last", "repeated"], "loc": [6, 67, 6, 83]}]}

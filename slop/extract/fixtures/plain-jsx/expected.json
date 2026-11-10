@@ -1,0 +1,11 @@
+{"schema": "slop.screen/1", "id": "89cd6eb04e4f32d4", "framework": "tsx",
+ "source": {"repo": "slop-fixtures", "path": "Newsletter.jsx", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "state", "line": 2},
+  {"k": 1, "kind": "control", "line": 5},
+  {"k": 2, "kind": "actions", "line": 6}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "body", "text": "Thanks, check your inbox.", "flags": ["conditional", "in_state"], "loc": [2, 50, 2, 75]},
+  {"i": 1, "k": 1, "role": "placeholder", "text": "you@example.com", "flags": ["in_form", "in_control"], "loc": [5, 40, 5, 55]},
+  {"i": 2, "k": 1, "role": "aria", "text": "Email address", "flags": ["in_form", "in_control"], "loc": [5, 69, 5, 82]},
+  {"i": 3, "k": 2, "role": "button", "text": "Subscribe", "flags": ["in_form"], "loc": [6, 29, 6, 38]}]}

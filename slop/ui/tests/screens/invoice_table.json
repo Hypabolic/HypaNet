@@ -1,0 +1,188 @@
+{
+ "schema": "slop.screen/1",
+ "id": "a316aac6f6091214",
+ "framework": "html",
+ "source": {
+  "repo": "slop-test-fixtures",
+  "path": "src/invoice_table.html",
+  "commit": "0000000000000000000000000000000000000000",
+  "licence": "MIT"
+ },
+ "clusters": [
+  {
+   "k": 0,
+   "kind": "header",
+   "line": 5
+  },
+  {
+   "k": 1,
+   "kind": "list",
+   "line": 8
+  }
+ ],
+ "nodes": [
+  {
+   "i": 0,
+   "k": 0,
+   "role": "h2",
+   "text": "Invoices",
+   "flags": [],
+   "loc": [
+    6,
+    7,
+    6,
+    15
+   ]
+  },
+  {
+   "i": 1,
+   "k": 0,
+   "role": "button",
+   "text": "Download all",
+   "flags": [],
+   "loc": [
+    7,
+    7,
+    7,
+    19
+   ]
+  },
+  {
+   "i": 2,
+   "k": 1,
+   "role": "cell",
+   "text": "Invoice",
+   "flags": [
+    "in_table"
+   ],
+   "loc": [
+    9,
+    7,
+    9,
+    14
+   ]
+  },
+  {
+   "i": 3,
+   "k": 1,
+   "role": "cell",
+   "text": "Date",
+   "flags": [
+    "in_table"
+   ],
+   "loc": [
+    10,
+    7,
+    10,
+    11
+   ]
+  },
+  {
+   "i": 4,
+   "k": 1,
+   "role": "cell",
+   "text": "Amount",
+   "flags": [
+    "in_table"
+   ],
+   "loc": [
+    11,
+    7,
+    11,
+    13
+   ]
+  },
+  {
+   "i": 5,
+   "k": 1,
+   "role": "cell",
+   "text": "INV-0042",
+   "flags": [
+    "in_table",
+    "mono"
+   ],
+   "loc": [
+    12,
+    7,
+    12,
+    15
+   ]
+  },
+  {
+   "i": 6,
+   "k": 1,
+   "role": "cell",
+   "text": "02/11/2026",
+   "flags": [
+    "in_table"
+   ],
+   "loc": [
+    13,
+    7,
+    13,
+    17
+   ]
+  },
+  {
+   "i": 7,
+   "k": 1,
+   "role": "cell",
+   "text": "£120.00",
+   "flags": [
+    "in_table"
+   ],
+   "loc": [
+    14,
+    7,
+    14,
+    14
+   ]
+  },
+  {
+   "i": 8,
+   "k": 1,
+   "role": "cell",
+   "text": "INV-0043",
+   "flags": [
+    "in_table",
+    "mono"
+   ],
+   "loc": [
+    15,
+    7,
+    15,
+    15
+   ]
+  },
+  {
+   "i": 9,
+   "k": 1,
+   "role": "cell",
+   "text": "09/11/2026",
+   "flags": [
+    "in_table"
+   ],
+   "loc": [
+    16,
+    7,
+    16,
+    17
+   ]
+  },
+  {
+   "i": 10,
+   "k": 1,
+   "role": "cell",
+   "text": "£98.50",
+   "flags": [
+    "in_table"
+   ],
+   "loc": [
+    17,
+    7,
+    17,
+    13
+   ]
+  }
+ ]
+}

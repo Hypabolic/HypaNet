@@ -1,0 +1,10 @@
+{"schema": "slop.screen/1", "id": "a3c121efda828086", "framework": "tsx",
+ "source": {"repo": "slop-fixtures", "path": "Notice.tsx", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "header", "line": 3},
+  {"k": 1, "kind": "body", "line": 7}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "eyebrow", "text": "Service update", "flags": ["caps", "tracked", "small"], "loc": [4, 36, 4, 50]},
+  {"i": 1, "k": 0, "role": "h2", "text": "Sunday buses run to the winter timetable", "flags": [], "loc": [5, 38, 5, 78]},
+  {"i": 2, "k": 0, "role": "subtitle", "text": "Valid until the clocks change in March.", "flags": ["small", "section_first"], "loc": [6, 33, 6, 72]},
+  {"i": 3, "k": 1, "role": "body", "text": "Extra late services return on Friday nights from the first of April.", "flags": ["section_last"], "loc": [7, 10, 7, 78]}]}

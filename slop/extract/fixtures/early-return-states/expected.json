@@ -1,0 +1,13 @@
+{"schema": "slop.screen/1", "id": "509ac803925e7a98", "framework": "tsx",
+ "source": {"repo": "slop-fixtures", "path": "OrdersPage.tsx", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "state", "line": 4},
+  {"k": 1, "kind": "state", "line": 8},
+  {"k": 2, "kind": "header", "line": 16},
+  {"k": 3, "kind": "list", "line": 19}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "caption", "text": "Fetching your orders…", "flags": ["small", "conditional", "in_state"], "loc": [4, 57, 4, 78]},
+  {"i": 1, "k": 1, "role": "h2", "text": "We could not reach the till", "flags": ["conditional", "in_state"], "loc": [9, 13, 9, 40]},
+  {"i": 2, "k": 1, "role": "error", "text": "Check your connection and try again.", "flags": ["conditional", "in_state", "section_first", "section_last"], "loc": [10, 12, 10, 48]},
+  {"i": 3, "k": 2, "role": "h1", "text": "Orders", "flags": [], "loc": [16, 11, 16, 17]},
+  {"i": 4, "k": 3, "role": "list_item", "text": "\ue000 reference", "flags": ["dynamic", "stateful", "in_list", "section_first", "section_last"], "loc": [19, 27, 19, 38]}]}

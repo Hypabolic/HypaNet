@@ -1,0 +1,8 @@
+{"schema": "slop.screen/1", "id": "79fe0b4c27b98dfb", "framework": "tsx",
+ "source": {"repo": "slop-fixtures", "path": "Broadcast.tsx", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "body", "line": 3}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "body", "text": "● On air until 6pm", "flags": ["dot"], "loc": [4, 35, 4, 53]},
+  {"i": 1, "k": 0, "role": "body", "text": "Tonight: the harbour regatta, live from the quay", "flags": ["dot"], "loc": [7, 15, 7, 63]},
+  {"i": 2, "k": 0, "role": "body", "text": "Weather · Tides · Shipping", "flags": ["title_case"], "loc": [9, 10, 9, 36]}]}

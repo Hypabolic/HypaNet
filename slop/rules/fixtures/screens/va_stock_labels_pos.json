@@ -1,0 +1,13 @@
+{"schema": "slop.screen/1", "id": "3b3a2a2e72372f58", "framework": "tsx",
+ "source": {"repo": "slop-rules-fixtures", "path": "src/va_stock_labels_pos.tsx", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "header", "line": 2},
+  {"k": 1, "kind": "actions", "line": 5},
+  {"k": 2, "kind": "body", "line": 8}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "h2", "text": "Recipe boxes delivered weekly", "flags": [], "loc": [3, 7, 3, 36]},
+  {"i": 1, "k": 0, "role": "subtitle", "text": "Pick four meals by Thursday for Monday delivery.", "flags": [], "loc": [4, 7, 4, 55]},
+  {"i": 2, "k": 1, "role": "button", "text": "Get started →", "flags": ["arrow_tail"], "loc": [6, 7, 6, 20]},
+  {"i": 3, "k": 1, "role": "link", "text": "Learn more", "flags": [], "loc": [7, 7, 7, 17]},
+  {"i": 4, "k": 2, "role": "h3", "text": "Our growers", "flags": [], "loc": [9, 7, 9, 18]},
+  {"i": 5, "k": 2, "role": "link", "text": "Read more…", "flags": [], "loc": [10, 7, 10, 17]}]}

@@ -1,0 +1,10 @@
+{"schema": "slop.screen/1", "id": "46a9074ab90d3e53", "framework": "tsx",
+ "source": {"repo": "slop-rules-fixtures", "path": "src/rc_decorative_dot_pos.tsx", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "header", "line": 2},
+  {"k": 1, "kind": "body", "line": 5}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "h1", "text": "Harbour Café", "flags": ["title_case"], "loc": [3, 7, 3, 19]},
+  {"i": 1, "k": 0, "role": "badge", "text": "Open today", "flags": ["small", "pill", "dot"], "loc": [4, 7, 4, 17]},
+  {"i": 2, "k": 1, "role": "body", "text": "● Taking bookings", "flags": ["dot"], "loc": [6, 7, 6, 24]},
+  {"i": 3, "k": 1, "role": "body", "text": "Breakfast until 11, lunch until 3.", "flags": [], "loc": [7, 7, 7, 41]}]}

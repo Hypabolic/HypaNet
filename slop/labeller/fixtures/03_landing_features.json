@@ -1,0 +1,429 @@
+{
+ "schema": "slop.screen/1",
+ "id": "0ac842a02f4a6cb8",
+ "framework": "tsx",
+ "source": {
+  "repo": "kitchenkit",
+  "path": "app/page.tsx",
+  "commit": "fixture",
+  "licence": "invented fixture"
+ },
+ "clusters": [
+  {
+   "k": 0,
+   "kind": "header",
+   "line": 15
+  },
+  {
+   "k": 1,
+   "kind": "header",
+   "line": 24
+  },
+  {
+   "k": 2,
+   "kind": "card",
+   "line": 29
+  },
+  {
+   "k": 3,
+   "kind": "card",
+   "line": 35
+  },
+  {
+   "k": 4,
+   "kind": "card",
+   "line": 41
+  },
+  {
+   "k": 5,
+   "kind": "header",
+   "line": 50
+  },
+  {
+   "k": 6,
+   "kind": "actions",
+   "line": 56
+  }
+ ],
+ "nodes": [
+  {
+   "i": 0,
+   "k": 0,
+   "role": "badge",
+   "text": "Now in beta",
+   "flags": [
+    "pill",
+    "dot",
+    "small"
+   ],
+   "loc": [
+    15,
+    11,
+    15,
+    22
+   ]
+  },
+  {
+   "i": 1,
+   "k": 0,
+   "role": "h1",
+   "text": "Plan a week of dinners in ten minutes",
+   "flags": [],
+   "loc": [
+    17,
+    13,
+    17,
+    50
+   ]
+  },
+  {
+   "i": 2,
+   "k": 0,
+   "role": "subtitle",
+   "text": "Kitchenkit turns what is in your fridge into a plan and a list.",
+   "flags": [],
+   "loc": [
+    18,
+    54,
+    18,
+    117
+   ]
+  },
+  {
+   "i": 3,
+   "k": 0,
+   "role": "link",
+   "text": "Start free trial",
+   "flags": [],
+   "loc": [
+    19,
+    46,
+    19,
+    62
+   ]
+  },
+  {
+   "i": 4,
+   "k": 0,
+   "role": "caption",
+   "text": "No card needed",
+   "flags": [
+    "small"
+   ],
+   "loc": [
+    20,
+    32,
+    20,
+    46
+   ]
+  },
+  {
+   "i": 5,
+   "k": 1,
+   "role": "eyebrow",
+   "text": "FEATURES",
+   "flags": [
+    "caps",
+    "tracked",
+    "small",
+    "section_first"
+   ],
+   "loc": [
+    24,
+    58,
+    24,
+    66
+   ]
+  },
+  {
+   "i": 6,
+   "k": 1,
+   "role": "h2",
+   "text": "Tools for small kitchens",
+   "flags": [],
+   "loc": [
+    25,
+    13,
+    25,
+    37
+   ]
+  },
+  {
+   "i": 7,
+   "k": 1,
+   "role": "body",
+   "text": "The three tools below cover planning, shopping and cooking.",
+   "flags": [],
+   "loc": [
+    26,
+    12,
+    26,
+    71
+   ]
+  },
+  {
+   "i": 8,
+   "k": 2,
+   "role": "badge",
+   "text": "● New",
+   "flags": [
+    "pill",
+    "dot",
+    "small",
+    "in_card",
+    "repeated"
+   ],
+   "loc": [
+    29,
+    52,
+    29,
+    57
+   ]
+  },
+  {
+   "i": 9,
+   "k": 2,
+   "role": "caption",
+   "text": "01 /",
+   "flags": [
+    "mono",
+    "in_card",
+    "repeated"
+   ],
+   "loc": [
+    30,
+    41,
+    30,
+    45
+   ]
+  },
+  {
+   "i": 10,
+   "k": 2,
+   "role": "h3",
+   "text": "Fridge scan",
+   "flags": [
+    "in_card",
+    "repeated"
+   ],
+   "loc": [
+    31,
+    17,
+    31,
+    28
+   ]
+  },
+  {
+   "i": 11,
+   "k": 2,
+   "role": "body",
+   "text": "Snap the shelves and get a list of what you have.",
+   "flags": [
+    "in_card",
+    "repeated"
+   ],
+   "loc": [
+    32,
+    16,
+    32,
+    65
+   ]
+  },
+  {
+   "i": 12,
+   "k": 3,
+   "role": "badge",
+   "text": "● New",
+   "flags": [
+    "pill",
+    "dot",
+    "small",
+    "in_card",
+    "repeated"
+   ],
+   "loc": [
+    35,
+    52,
+    35,
+    57
+   ]
+  },
+  {
+   "i": 13,
+   "k": 3,
+   "role": "caption",
+   "text": "02 /",
+   "flags": [
+    "mono",
+    "in_card",
+    "repeated"
+   ],
+   "loc": [
+    36,
+    41,
+    36,
+    45
+   ]
+  },
+  {
+   "i": 14,
+   "k": 3,
+   "role": "h3",
+   "text": "Week planner",
+   "flags": [
+    "in_card",
+    "repeated"
+   ],
+   "loc": [
+    37,
+    17,
+    37,
+    29
+   ]
+  },
+  {
+   "i": 15,
+   "k": 3,
+   "role": "body",
+   "text": "Seven dinners built from that list and your tastes.",
+   "flags": [
+    "in_card",
+    "repeated"
+   ],
+   "loc": [
+    38,
+    16,
+    38,
+    67
+   ]
+  },
+  {
+   "i": 16,
+   "k": 4,
+   "role": "badge",
+   "text": "● New",
+   "flags": [
+    "pill",
+    "dot",
+    "small",
+    "in_card",
+    "repeated"
+   ],
+   "loc": [
+    41,
+    52,
+    41,
+    57
+   ]
+  },
+  {
+   "i": 17,
+   "k": 4,
+   "role": "caption",
+   "text": "03 /",
+   "flags": [
+    "mono",
+    "in_card",
+    "repeated"
+   ],
+   "loc": [
+    42,
+    41,
+    42,
+    45
+   ]
+  },
+  {
+   "i": 18,
+   "k": 4,
+   "role": "h3",
+   "text": "Shop once",
+   "flags": [
+    "in_card",
+    "repeated"
+   ],
+   "loc": [
+    43,
+    17,
+    43,
+    26
+   ]
+  },
+  {
+   "i": 19,
+   "k": 4,
+   "role": "body",
+   "text": "One shopping list, grouped by aisle.",
+   "flags": [
+    "in_card",
+    "repeated",
+    "section_last"
+   ],
+   "loc": [
+    44,
+    16,
+    44,
+    52
+   ]
+  },
+  {
+   "i": 20,
+   "k": 5,
+   "role": "h2",
+   "text": "Ready to cook?",
+   "flags": [
+    "section_first"
+   ],
+   "loc": [
+    50,
+    13,
+    50,
+    27
+   ]
+  },
+  {
+   "i": 21,
+   "k": 5,
+   "role": "link",
+   "text": "Start free trial",
+   "flags": [],
+   "loc": [
+    51,
+    46,
+    51,
+    62
+   ]
+  },
+  {
+   "i": 22,
+   "k": 5,
+   "role": "body",
+   "text": "That is the whole of Kitchenkit: scan, plan, shop.",
+   "flags": [
+    "small",
+    "section_last"
+   ],
+   "loc": [
+    52,
+    32,
+    52,
+    82
+   ]
+  },
+  {
+   "i": 23,
+   "k": 6,
+   "role": "link",
+   "text": "Start free trial",
+   "flags": [
+    "in_footer"
+   ],
+   "loc": [
+    56,
+    30,
+    56,
+    46
+   ]
+  }
+ ]
+}

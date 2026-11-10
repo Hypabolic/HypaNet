@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Slop labeller</title>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<header id="top">
+  <div class="brand">
+    <strong>Slop labeller</strong>
+    <span id="sess" class="muted"></span>
+  </div>
+  <div id="where" class="where"></div>
+  <div class="progress">
+    <div id="prog-text" class="muted"></div>
+    <div class="bar"><div id="prog-bar"></div></div>
+  </div>
+  <div class="top-actions">
+    <button id="btn-ref" title="Guide reference (g)">Guide</button>
+    <button id="btn-list" title="Screens (l)">Screens</button>
+    <button id="btn-help" title="Keyboard (?)">?</button>
+    <button id="btn-theme" title="Theme (\)">◐</button>
+  </div>
+</header>
+<div id="banners"></div>
+<main id="work">
+  <section id="nodes-pane" aria-label="Nodes"><div id="nodes"></div></section>
+  <section id="right">
+    <div id="preview-pane" aria-label="What the user sees">
+      <div class="pane-h"><span>What the user sees</span><span id="kind" class="muted"></span></div>
+      <div id="preview"></div>
+    </div>
+    <div id="source-pane" aria-label="Source">
+      <div class="pane-h"><span id="src-path">Source</span><span id="src-note" class="muted"></span></div>
+      <div id="source"></div>
+    </div>
+    <aside id="drawer" hidden></aside>
+  </section>
+</main>
+<footer id="cmd">
+  <div id="prompt"></div>
+  <div id="status" class="muted"></div>
+</footer>
+<div id="toasts"></div>
+
+<div id="overlay" hidden>
+  <div class="ov-box" id="ov-help" hidden>
+    <div class="ov-h"><h2>Keyboard</h2><span class="muted">Esc to close</span></div>
+    <div class="keys">
+      <section>
+        <h3>Label the current node</h3>
+        <dl>
+          <dt><kbd>k</kbd></dt><dd>KEEP</dd>
+          <dt><kbd>e</kbd></dt><dd>ECHO, then pointer, then pattern</dd>
+          <dt><kbd>n</kbd></dt><dd>NARRATE, then pointer, then pattern</dd>
+          <dt><kbd>d</kbd></dt><dd>DECOR, then pattern</dd>
+          <dt><kbd>u</kbd></dt><dd>UNSURE</dd>
+          <dt><kbd>x</kbd></dt><dd>no literal words: aside UNRESOLVED, no class (§2)</dd>
+        </dl>
+        <h3>Pointer step</h3>
+        <dl>
+          <dt><kbd>Enter</kbd></dt><dd>accept the suggested target (outlined)</dd>
+          <dt><kbd>0</kbd>–<kbd>9</kbd> <kbd>Enter</kbd></dt><dd>target by node number, or click a node</dd>
+          <dt><kbd>-</kbd></dt><dd>no single target (information spread over several nodes)</dd>
+          <dt><kbd>Esc</kbd></dt><dd>cancel the label</dd>
+        </dl>
+        <h3>Pattern step</h3>
+        <dl>
+          <dt><kbd>Enter</kbd></dt><dd>accept the highlighted code</dd>
+          <dt>digits <kbd>Enter</kbd></dt><dd>R-code by number (<kbd>1</kbd><kbd>4</kbd> = R14)</dd>
+          <dt><kbd>↑</kbd> <kbd>↓</kbd></dt><dd>move the highlight</dd>
+          <dt><kbd>-</kbd></dt><dd>no pattern</dd>
+        </dl>
+      </section>
+      <section>
+        <h3>Modifiers on the current node</h3>
+        <dl>
+          <dt><kbd>c</kbd></dt><dd>conf: clear ↔ judgement</dd>
+          <dt><kbd>p</kbd></dt><dd>partial (KEEP only; §4 step 5)</dd>
+          <dt><kbd>t</kbd></dt><dd>ct: decided by the consequence test (§7)</dd>
+          <dt><kbd>w</kbd></dt><dd>why: change the pattern code, or name the K rule on a KEEP</dd>
+          <dt><kbd>v</kbd></dt><dd>equiv: the other copies in an ECHO stack (§5)</dd>
+          <dt><kbd>a</kbd></dt><dd>node asides (R7, R8b, R10, R11g, R12, R13, R15, X-FILE, UNRESOLVED)</dd>
+          <dt><kbd>r</kbd></dt><dd>role error: pick role_fix (extractor role = role_ok)</dd>
+        </dl>
+        <p class="muted small">On an unlabelled node, modifiers are staged (shown faint) and saved with the label.</p>
+        <h3>Screen</h3>
+        <dl>
+          <dt><kbd>s</kbd></dt><dd>screen asides (R19 and others) with their nodes</dd>
+          <dt><kbd>m</kbd></dt><dd>missed node: line, text, class</dd>
+        </dl>
+      </section>
+      <section>
+        <h3>Move</h3>
+        <dl>
+          <dt><kbd>j</kbd> <kbd>↓</kbd></dt><dd>next node</dd>
+          <dt><kbd>↑</kbd></dt><dd>previous node</dd>
+          <dt>digits <kbd>Enter</kbd></dt><dd>go to node number</dd>
+          <dt><kbd>N</kbd> <kbd>]</kbd></dt><dd>next screen</dd>
+          <dt><kbd>P</kbd> <kbd>[</kbd></dt><dd>previous screen</dd>
+          <dt><kbd>l</kbd></dt><dd>screen list</dd>
+        </dl>
+        <p class="muted small"><kbd>n</kbd> and <kbd>p</kbd> are NARRATE and partial, so screens move with
+          <kbd>Shift</kbd>. A screen gets its done record when every node has a label, and the tool then moves to
+          the next unfinished screen.</p>
+        <h3>Views</h3>
+        <dl>
+          <dt><kbd>g</kbd></dt><dd>guide reference: decision order, K rules, patterns</dd>
+          <dt><kbd>?</kbd></dt><dd>this help</dd>
+          <dt><kbd>\</kbd></dt><dd>light / dark</dd>
+          <dt><kbd>o</kbd></dt><dd>other labellers' labels (only with --compare)</dd>
+        </dl>
+      </section>
+    </div>
+  </div>
+  <div class="ov-box wide" id="ov-ref" hidden>
+    <div class="ov-h"><h2>Guide reference</h2><span class="muted">LABELLING.md, live · <kbd>1</kbd>–<kbd>7</kbd> sections · Esc</span></div>
+    <nav id="ref-tabs"></nav>
+    <div id="ref-body" class="md"></div>
+  </div>
+  <div class="ov-box wide" id="ov-list" hidden>
+    <div class="ov-h"><h2>Screens</h2><span class="muted">↑ ↓ Enter · Esc</span></div>
+    <div id="list-body"></div>
+  </div>
+  <div class="ov-box alarm" id="ov-guide" hidden>
+    <h2>LABELLING.md changed during this session</h2>
+    <p id="guide-msg"></p>
+    <p>Every record carries the guide's sha256 at the moment it is written. Records written before this point carry
+      the old hash; <code>freeze.py --check</code> refuses a set whose records do not all carry the frozen guide's hash,
+      so labels made under the old guide will need relabelling.</p>
+    <p><strong>Press Enter</strong> to acknowledge and continue labelling with the new guide.</p>
+  </div>
+</div>
+<script src="/static/app.js"></script>
+</body>
+</html>

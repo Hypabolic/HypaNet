@@ -1,0 +1,134 @@
+{
+ "schema": "slop.screen/1",
+ "id": "8ef493a143d985fd",
+ "framework": "html",
+ "source": {
+  "repo": "slop-test-fixtures",
+  "path": "src/unicode_mix.html",
+  "commit": "0000000000000000000000000000000000000000",
+  "licence": "MIT"
+ },
+ "clusters": [
+  {
+   "k": 0,
+   "kind": "header",
+   "line": 5
+  },
+  {
+   "k": 1,
+   "kind": "body",
+   "line": 9
+  }
+ ],
+ "nodes": [
+  {
+   "i": 0,
+   "k": 0,
+   "role": "eyebrow",
+   "text": "✨ NEU",
+   "flags": [
+    "caps",
+    "emoji_lead"
+   ],
+   "loc": [
+    6,
+    7,
+    6,
+    12
+   ]
+  },
+  {
+   "i": 1,
+   "k": 0,
+   "role": "h1",
+   "text": "Willkommen zurück, \ue000 firstName",
+   "flags": [
+    "dynamic"
+   ],
+   "loc": [
+    7,
+    7,
+    7,
+    39
+   ]
+  },
+  {
+   "i": 2,
+   "k": 0,
+   "role": "subtitle",
+   "text": "Ihre Straße, Ihr Café — alles an einem Ort…",
+   "flags": [],
+   "loc": [
+    8,
+    7,
+    8,
+    50
+   ]
+  },
+  {
+   "i": 3,
+   "k": 1,
+   "role": "body",
+   "text": "Résumé, naïve façade and coöperate — «quoted» and “curly” text.",
+   "flags": [],
+   "loc": [
+    10,
+    7,
+    10,
+    70
+   ]
+  },
+  {
+   "i": 4,
+   "k": 1,
+   "role": "body",
+   "text": "Привет мир · こんにちは 世界 · مرحبا",
+   "flags": [],
+   "loc": [
+    11,
+    7,
+    11,
+    36
+   ]
+  },
+  {
+   "i": 5,
+   "k": 1,
+   "role": "body",
+   "text": "İstanbul ΣΟΦΊΑ ǅemal ﬁne ﬀ ½ ² ㎏ ™",
+   "flags": [],
+   "loc": [
+    12,
+    7,
+    12,
+    41
+   ]
+  },
+  {
+   "i": 6,
+   "k": 1,
+   "role": "body",
+   "text": "👍🏽 🇬🇧 ❤️‍🔥 ☀️ ⭐ ★ ✓ ✔︎ ⌚ © ® • ◉ · ↗ » → – —",
+   "flags": [],
+   "loc": [
+    13,
+    7,
+    13,
+    51
+   ]
+  },
+  {
+   "i": 7,
+   "k": 1,
+   "role": "body",
+   "text": "zero​width soft­hyphen non‑breaking a‐b tab\there",
+   "flags": [],
+   "loc": [
+    14,
+    7,
+    14,
+    55
+   ]
+  }
+ ]
+}

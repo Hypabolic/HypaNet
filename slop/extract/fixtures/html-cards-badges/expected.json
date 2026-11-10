@@ -1,0 +1,18 @@
+{"schema": "slop.screen/1", "id": "98fa6d342849523c", "framework": "html",
+ "source": {"repo": "slop-fixtures", "path": "plans.html", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "header", "line": 2},
+  {"k": 1, "kind": "card", "line": 3},
+  {"k": 2, "kind": "card", "line": 8},
+  {"k": 3, "kind": "card", "line": 13}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "h2", "text": "Membership", "flags": [], "loc": [2, 7, 2, 17]},
+  {"i": 1, "k": 1, "role": "badge", "text": "Popular", "flags": ["in_card", "section_first", "repeated"], "loc": [4, 25, 4, 32]},
+  {"i": 2, "k": 1, "role": "h3", "text": "Weekday", "flags": ["in_card", "repeated"], "loc": [5, 9, 5, 16]},
+  {"i": 3, "k": 1, "role": "subtitle", "text": "£40 a month", "flags": ["in_card", "section_first", "section_last", "repeated"], "loc": [6, 8, 6, 19]},
+  {"i": 4, "k": 2, "role": "badge", "text": "Popular", "flags": ["in_card", "repeated"], "loc": [9, 25, 9, 32]},
+  {"i": 5, "k": 2, "role": "h3", "text": "Weekend", "flags": ["in_card", "repeated"], "loc": [10, 9, 10, 16]},
+  {"i": 6, "k": 2, "role": "subtitle", "text": "£25 a month", "flags": ["in_card", "section_first", "section_last", "repeated"], "loc": [11, 8, 11, 19]},
+  {"i": 7, "k": 3, "role": "badge", "text": "Popular", "flags": ["in_card", "repeated"], "loc": [14, 25, 14, 32]},
+  {"i": 8, "k": 3, "role": "h3", "text": "Unlimited", "flags": ["in_card", "repeated"], "loc": [15, 9, 15, 18]},
+  {"i": 9, "k": 3, "role": "subtitle", "text": "£60 a month", "flags": ["in_card", "section_first", "section_last", "repeated"], "loc": [16, 8, 16, 19]}]}

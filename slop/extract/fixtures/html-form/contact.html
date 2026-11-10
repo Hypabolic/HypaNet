@@ -1,0 +1,21 @@
+<form action="/send" method="post">
+  <fieldset>
+    <legend>Your details</legend>
+    <div class="field">
+      <label for="name">Full name</label>
+      <input id="name" name="name" placeholder="Ada Lovelace">
+    </div>
+    <div class="field">
+      <label for="topic">Topic</label>
+      <select id="topic">
+        <option>Wholesale order</option>
+        <option>Event catering</option>
+      </select>
+      <small class="hint">We reply within two working days.</small>
+    </div>
+  </fieldset>
+  <label for="msg">Message</label>
+  <textarea id="msg">Hello, I would like to ask about</textarea>
+  <input type="text" value="Prefilled reference 1182">
+  <input type="submit" value="Send message">
+</form>

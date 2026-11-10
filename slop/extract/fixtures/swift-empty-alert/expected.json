@@ -1,0 +1,18 @@
+{"schema": "slop.screen/1", "id": "af7901469217bdcb", "framework": "swift",
+ "source": {"repo": "slop-fixtures", "path": "InboxView.swift", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "state", "line": 10},
+  {"k": 1, "kind": "list", "line": 14},
+  {"k": 2, "kind": "state", "line": 8},
+  {"k": 3, "kind": "state", "line": 8}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "empty_title", "text": "No letters", "flags": ["conditional", "in_state"], "loc": [10, 41, 10, 51]},
+  {"i": 1, "k": 0, "role": "empty_body", "text": "Letters from your pen pals land here.", "flags": ["conditional", "in_state", "section_first", "section_last"], "loc": [11, 40, 11, 77]},
+  {"i": 2, "k": 1, "role": "list_item", "text": "\ue000 subject", "flags": ["dynamic", "stateful", "conditional", "in_list"], "loc": [14, 26, 14, 40]},
+  {"i": 3, "k": 2, "role": "dialog_title", "text": "Clear the inbox?", "flags": ["conditional", "in_dialog", "in_state"], "loc": [18, 17, 18, 33]},
+  {"i": 4, "k": 2, "role": "dialog_body", "text": "Archived letters are not affected.", "flags": ["conditional", "in_dialog", "in_state", "section_first"], "loc": [22, 19, 22, 53]},
+  {"i": 5, "k": 2, "role": "button", "text": "Clear", "flags": ["conditional", "in_dialog", "in_state"], "loc": [19, 21, 19, 26]},
+  {"i": 6, "k": 2, "role": "button", "text": "Cancel", "flags": ["conditional", "in_dialog", "in_state", "section_last"], "loc": [20, 21, 20, 27]},
+  {"i": 7, "k": 3, "role": "dialog_title", "text": "Sort letters", "flags": ["conditional", "in_dialog", "in_state"], "loc": [24, 30, 24, 42]},
+  {"i": 8, "k": 3, "role": "button", "text": "Newest first", "flags": ["conditional", "in_dialog", "in_state", "section_first"], "loc": [25, 21, 25, 33]},
+  {"i": 9, "k": 3, "role": "button", "text": "By sender", "flags": ["conditional", "in_dialog", "in_state", "section_last"], "loc": [26, 21, 26, 30]}]}

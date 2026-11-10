@@ -1,0 +1,23 @@
+{"schema": "slop.screen/1", "id": "a9920149efa636c7", "framework": "swift",
+ "source": {"repo": "slop-fixtures", "path": "SettingsView.swift", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "header", "line": 10},
+  {"k": 1, "kind": "header", "line": 11},
+  {"k": 2, "kind": "control", "line": 12},
+  {"k": 3, "kind": "header", "line": 22},
+  {"k": 4, "kind": "control", "line": 16},
+  {"k": 5, "kind": "control", "line": 20},
+  {"k": 6, "kind": "body", "line": 24},
+  {"k": 7, "kind": "actions", "line": 30}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "h1", "text": "Settings", "flags": ["in_header"], "loc": [27, 31, 27, 39]},
+  {"i": 1, "k": 1, "role": "h2", "text": "Sync", "flags": ["in_form", "section_first"], "loc": [11, 26, 11, 30]},
+  {"i": 2, "k": 2, "role": "label", "text": "Sync over mobile data", "flags": ["in_form", "in_control", "section_first", "section_last"], "loc": [12, 29, 12, 50]},
+  {"i": 3, "k": 2, "role": "tooltip", "text": "Large photo uploads still wait for Wi-Fi.", "flags": ["in_form", "in_control"], "loc": [13, 32, 13, 73]},
+  {"i": 4, "k": 3, "role": "h2", "text": "Display", "flags": ["in_form"], "loc": [22, 27, 22, 34]},
+  {"i": 5, "k": 4, "role": "label", "text": "Units", "flags": ["in_form", "in_control", "section_first"], "loc": [16, 29, 16, 34]},
+  {"i": 6, "k": 4, "role": "menu_item", "text": "Metric", "flags": ["in_form", "in_list", "in_control"], "loc": [17, 31, 17, 37]},
+  {"i": 7, "k": 4, "role": "menu_item", "text": "Imperial", "flags": ["in_form", "in_list", "in_control"], "loc": [18, 31, 18, 39]},
+  {"i": 8, "k": 5, "role": "placeholder", "text": "Trail nickname", "flags": ["in_form", "in_control"], "loc": [20, 32, 20, 46]},
+  {"i": 9, "k": 6, "role": "helper", "text": "Units apply to distances and elevation.", "flags": ["in_form", "section_last"], "loc": [24, 27, 24, 66]},
+  {"i": 10, "k": 7, "role": "button", "text": "Done", "flags": ["in_header", "section_last"], "loc": [30, 29, 30, 33]}]}

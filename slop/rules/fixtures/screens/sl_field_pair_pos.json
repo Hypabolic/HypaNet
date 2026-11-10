@@ -1,0 +1,10 @@
+{"schema": "slop.screen/1", "id": "7195eb268b69de53", "framework": "swift",
+ "source": {"repo": "slop-rules-fixtures", "path": "src/sl_field_pair_pos.swift", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "header", "line": 2},
+  {"k": 1, "kind": "control", "line": 4},
+  {"k": 2, "kind": "control", "line": 6}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "h2", "text": "Alerts", "flags": ["in_form"], "loc": [3, 7, 3, 13]},
+  {"i": 1, "k": 1, "role": "label", "text": "Notify me when someone replies", "flags": ["in_form", "in_control"], "loc": [5, 7, 5, 37]},
+  {"i": 2, "k": 2, "role": "label", "text": "Notify me when someone follows me", "flags": ["in_form", "in_control"], "loc": [7, 7, 7, 40]}]}

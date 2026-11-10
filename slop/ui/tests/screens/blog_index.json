@@ -1,0 +1,271 @@
+{
+ "schema": "slop.screen/1",
+ "id": "798612bba6c87da9",
+ "framework": "html",
+ "source": {
+  "repo": "slop-test-fixtures",
+  "path": "src/blog_index.html",
+  "commit": "0000000000000000000000000000000000000000",
+  "licence": "MIT"
+ },
+ "clusters": [
+  {
+   "k": 0,
+   "kind": "header",
+   "line": 5
+  },
+  {
+   "k": 1,
+   "kind": "card",
+   "line": 9
+  },
+  {
+   "k": 2,
+   "kind": "card",
+   "line": 14
+  },
+  {
+   "k": 3,
+   "kind": "card",
+   "line": 19
+  }
+ ],
+ "nodes": [
+  {
+   "i": 0,
+   "k": 0,
+   "role": "eyebrow",
+   "text": "Blog",
+   "flags": [
+    "small"
+   ],
+   "loc": [
+    6,
+    7,
+    6,
+    11
+   ]
+  },
+  {
+   "i": 1,
+   "k": 0,
+   "role": "h1",
+   "text": "Latest posts",
+   "flags": [],
+   "loc": [
+    7,
+    7,
+    7,
+    19
+   ]
+  },
+  {
+   "i": 2,
+   "k": 0,
+   "role": "subtitle",
+   "text": "The latest posts from our blog.",
+   "flags": [],
+   "loc": [
+    8,
+    7,
+    8,
+    38
+   ]
+  },
+  {
+   "i": 3,
+   "k": 1,
+   "role": "caption",
+   "text": "12 Oct 2026",
+   "flags": [
+    "in_card",
+    "small",
+    "repeated"
+   ],
+   "loc": [
+    10,
+    7,
+    10,
+    18
+   ]
+  },
+  {
+   "i": 4,
+   "k": 1,
+   "role": "h3",
+   "text": "How we cut build times in half",
+   "flags": [
+    "in_card",
+    "repeated"
+   ],
+   "loc": [
+    11,
+    7,
+    11,
+    37
+   ]
+  },
+  {
+   "i": 5,
+   "k": 1,
+   "role": "body",
+   "text": "A look at caching, remote builds and the tests we deleted.",
+   "flags": [
+    "in_card",
+    "repeated"
+   ],
+   "loc": [
+    12,
+    7,
+    12,
+    65
+   ]
+  },
+  {
+   "i": 6,
+   "k": 1,
+   "role": "link",
+   "text": "Read more",
+   "flags": [
+    "in_card",
+    "repeated"
+   ],
+   "loc": [
+    13,
+    7,
+    13,
+    16
+   ]
+  },
+  {
+   "i": 7,
+   "k": 2,
+   "role": "caption",
+   "text": "3 Oct 2026",
+   "flags": [
+    "in_card",
+    "small",
+    "repeated"
+   ],
+   "loc": [
+    15,
+    7,
+    15,
+    17
+   ]
+  },
+  {
+   "i": 8,
+   "k": 2,
+   "role": "h3",
+   "text": "Designing for keyboards first",
+   "flags": [
+    "in_card",
+    "repeated"
+   ],
+   "loc": [
+    16,
+    7,
+    16,
+    36
+   ]
+  },
+  {
+   "i": 9,
+   "k": 2,
+   "role": "body",
+   "text": "Why every action in the app now has a shortcut.",
+   "flags": [
+    "in_card",
+    "repeated"
+   ],
+   "loc": [
+    17,
+    7,
+    17,
+    54
+   ]
+  },
+  {
+   "i": 10,
+   "k": 2,
+   "role": "link",
+   "text": "Read more",
+   "flags": [
+    "in_card",
+    "repeated"
+   ],
+   "loc": [
+    18,
+    7,
+    18,
+    16
+   ]
+  },
+  {
+   "i": 11,
+   "k": 3,
+   "role": "caption",
+   "text": "21 Sep 2026",
+   "flags": [
+    "in_card",
+    "small",
+    "repeated"
+   ],
+   "loc": [
+    20,
+    7,
+    20,
+    18
+   ]
+  },
+  {
+   "i": 12,
+   "k": 3,
+   "role": "h3",
+   "text": "Release notes: September",
+   "flags": [
+    "in_card",
+    "repeated"
+   ],
+   "loc": [
+    21,
+    7,
+    21,
+    31
+   ]
+  },
+  {
+   "i": 13,
+   "k": 3,
+   "role": "body",
+   "text": "Release notes for September.",
+   "flags": [
+    "in_card",
+    "repeated"
+   ],
+   "loc": [
+    22,
+    7,
+    22,
+    35
+   ]
+  },
+  {
+   "i": 14,
+   "k": 3,
+   "role": "link",
+   "text": "Read more",
+   "flags": [
+    "in_card",
+    "repeated"
+   ],
+   "loc": [
+    23,
+    7,
+    23,
+    16
+   ]
+  }
+ ]
+}

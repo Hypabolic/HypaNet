@@ -1,0 +1,8 @@
+{"schema": "slop.screen/1", "id": "bd485ac812106860", "framework": "swift",
+ "source": {"repo": "slop-fixtures", "path": "RecipeHeader.swift", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "header", "line": 7}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "eyebrow", "text": "Weeknight supper", "flags": [], "loc": [8, 19, 8, 35]},
+  {"i": 1, "k": 0, "role": "h1", "text": "\ue000 title", "flags": ["dynamic", "stateful"], "loc": [10, 18, 10, 30]},
+  {"i": 2, "k": 0, "role": "subtitle", "text": "Ready in under half an hour", "flags": ["section_first", "section_last"], "loc": [12, 19, 12, 46]}]}

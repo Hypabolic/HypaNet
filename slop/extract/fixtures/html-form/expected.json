@@ -1,0 +1,22 @@
+{"schema": "slop.screen/1", "id": "4423a0065fc5fde5", "framework": "html",
+ "source": {"repo": "slop-fixtures", "path": "contact.html", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "body", "line": 3},
+  {"k": 1, "kind": "control", "line": 4},
+  {"k": 2, "kind": "control", "line": 8},
+  {"k": 3, "kind": "body", "line": 17},
+  {"k": 4, "kind": "control", "line": 18},
+  {"k": 5, "kind": "control", "line": 19},
+  {"k": 6, "kind": "actions", "line": 20}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "label", "text": "Your details", "flags": ["in_form"], "loc": [3, 13, 3, 25]},
+  {"i": 1, "k": 1, "role": "label", "text": "Full name", "flags": ["in_form", "in_control"], "loc": [5, 25, 5, 34]},
+  {"i": 2, "k": 1, "role": "placeholder", "text": "Ada Lovelace", "flags": ["title_case", "in_form", "in_control"], "loc": [6, 49, 6, 61]},
+  {"i": 3, "k": 2, "role": "label", "text": "Topic", "flags": ["in_form", "in_control"], "loc": [9, 26, 9, 31]},
+  {"i": 4, "k": 2, "role": "menu_item", "text": "Wholesale order", "flags": ["in_form", "in_list", "in_control"], "loc": [11, 17, 11, 32]},
+  {"i": 5, "k": 2, "role": "menu_item", "text": "Event catering", "flags": ["in_form", "in_list", "in_control"], "loc": [12, 17, 12, 31]},
+  {"i": 6, "k": 2, "role": "helper", "text": "We reply within two working days.", "flags": ["small", "in_form", "in_control"], "loc": [14, 27, 14, 60]},
+  {"i": 7, "k": 3, "role": "label", "text": "Message", "flags": ["in_form"], "loc": [17, 20, 17, 27]},
+  {"i": 8, "k": 4, "role": "input_value", "text": "Hello, I would like to ask about", "flags": ["in_form", "in_control"], "loc": [18, 22, 18, 54]},
+  {"i": 9, "k": 5, "role": "input_value", "text": "Prefilled reference 1182", "flags": ["in_form", "in_control"], "loc": [19, 29, 19, 53]},
+  {"i": 10, "k": 6, "role": "button", "text": "Send message", "flags": ["in_form"], "loc": [20, 31, 20, 43]}]}

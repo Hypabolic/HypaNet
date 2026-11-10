@@ -1,0 +1,10 @@
+{"schema": "slop.screen/1", "id": "375926627606fd2a", "framework": "tsx",
+ "source": {"repo": "slop-fixtures", "path": "ScheduleTabs.tsx", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "list", "line": 6},
+  {"k": 1, "kind": "body", "line": 5}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "tab", "text": "This week", "flags": [], "loc": [7, 35, 7, 44]},
+  {"i": 1, "k": 0, "role": "tab", "text": "This month", "flags": [], "loc": [8, 36, 8, 46]},
+  {"i": 2, "k": 1, "role": "body", "text": "Three sessions booked, one waiting for a coach.", "flags": [], "loc": [11, 12, 11, 59]},
+  {"i": 3, "k": 1, "role": "body", "text": "Twelve sessions across four venues.", "flags": [], "loc": [14, 12, 14, 47]}]}

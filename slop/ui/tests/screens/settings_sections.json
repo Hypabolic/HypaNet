@@ -1,0 +1,175 @@
+{
+ "schema": "slop.screen/1",
+ "id": "74bab7b9c69049d9",
+ "framework": "swiftui",
+ "source": {
+  "repo": "slop-test-fixtures",
+  "path": "src/settings_sections.swift",
+  "commit": "0000000000000000000000000000000000000000",
+  "licence": "MIT"
+ },
+ "clusters": [
+  {
+   "k": 0,
+   "kind": "header",
+   "line": 5
+  },
+  {
+   "k": 1,
+   "kind": "list",
+   "line": 7
+  },
+  {
+   "k": 2,
+   "kind": "list",
+   "line": 13
+  }
+ ],
+ "nodes": [
+  {
+   "i": 0,
+   "k": 0,
+   "role": "h1",
+   "text": "Settings",
+   "flags": [],
+   "loc": [
+    6,
+    7,
+    6,
+    15
+   ]
+  },
+  {
+   "i": 1,
+   "k": 1,
+   "role": "h2",
+   "text": "Privacy",
+   "flags": [
+    "section_first"
+   ],
+   "loc": [
+    8,
+    7,
+    8,
+    14
+   ]
+  },
+  {
+   "i": 2,
+   "k": 1,
+   "role": "label",
+   "text": "Share usage data",
+   "flags": [
+    "in_control"
+   ],
+   "loc": [
+    9,
+    7,
+    9,
+    23
+   ]
+  },
+  {
+   "i": 3,
+   "k": 1,
+   "role": "helper",
+   "text": "Helps us improve the app. No personal data is shared.",
+   "flags": [
+    "small"
+   ],
+   "loc": [
+    10,
+    7,
+    10,
+    60
+   ]
+  },
+  {
+   "i": 4,
+   "k": 1,
+   "role": "label",
+   "text": "Private profile",
+   "flags": [
+    "in_control"
+   ],
+   "loc": [
+    11,
+    7,
+    11,
+    22
+   ]
+  },
+  {
+   "i": 5,
+   "k": 1,
+   "role": "helper",
+   "text": "Only followers see your posts.",
+   "flags": [
+    "small"
+   ],
+   "loc": [
+    12,
+    7,
+    12,
+    37
+   ]
+  },
+  {
+   "i": 6,
+   "k": 2,
+   "role": "h2",
+   "text": "Storage",
+   "flags": [
+    "section_first"
+   ],
+   "loc": [
+    14,
+    7,
+    14,
+    14
+   ]
+  },
+  {
+   "i": 7,
+   "k": 2,
+   "role": "stat",
+   "text": "2.4 GB used",
+   "flags": [],
+   "loc": [
+    15,
+    7,
+    15,
+    18
+   ]
+  },
+  {
+   "i": 8,
+   "k": 2,
+   "role": "button",
+   "text": "Clear storage",
+   "flags": [],
+   "loc": [
+    16,
+    7,
+    16,
+    20
+   ]
+  },
+  {
+   "i": 9,
+   "k": 2,
+   "role": "caption",
+   "text": "Storage used",
+   "flags": [
+    "small",
+    "section_last"
+   ],
+   "loc": [
+    17,
+    7,
+    17,
+    19
+   ]
+  }
+ ]
+}

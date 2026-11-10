@@ -1,0 +1,13 @@
+{"schema": "slop.screen/1", "id": "165ecb65663954b8", "framework": "tsx",
+ "source": {"repo": "slop-fixtures", "path": "LandingHero.tsx", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "header", "line": 7},
+  {"k": 1, "kind": "card", "line": 13}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "eyebrow", "text": "For school allotments", "flags": [], "loc": [8, 18, 8, 39]},
+  {"i": 1, "k": 0, "role": "h1", "text": "Grow lunch with your class", "flags": [], "loc": [9, 16, 9, 42]},
+  {"i": 2, "k": 0, "role": "subtitle", "text": "Lesson plans that follow the seasons, from sowing to soup.", "flags": ["section_first"], "loc": [10, 19, 10, 77]},
+  {"i": 3, "k": 0, "role": "button", "text": "Download the term planner", "flags": [], "loc": [11, 14, 11, 39]},
+  {"i": 4, "k": 1, "role": "h3", "text": "Weekly jobs", "flags": ["in_card"], "loc": [14, 22, 14, 37]},
+  {"i": 5, "k": 1, "role": "subtitle", "text": "A short list for each week of term.", "flags": ["in_card", "section_first"], "loc": [15, 22, 15, 57]},
+  {"i": 6, "k": 1, "role": "badge", "text": "Free", "flags": ["in_card", "section_last"], "loc": [16, 16, 16, 20]}]}

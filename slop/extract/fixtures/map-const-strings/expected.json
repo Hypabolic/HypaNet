@@ -1,0 +1,10 @@
+{"schema": "slop.screen/1", "id": "7edeb7e63298eea0", "framework": "tsx",
+ "source": {"repo": "slop-fixtures", "path": "Perks.tsx", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "header", "line": 10},
+  {"k": 1, "kind": "list", "line": 11}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "h2", "text": "What membership covers", "flags": [], "loc": [10, 46, 10, 68]},
+  {"i": 1, "k": 1, "role": "list_item", "text": "✓Sharpening booked within two days", "flags": ["in_list", "section_first"], "loc": [2, 4, 2, 37]},
+  {"i": 2, "k": 1, "role": "list_item", "text": "✓Loan knives while yours are away", "flags": ["in_list"], "loc": [3, 4, 3, 36]},
+  {"i": 3, "k": 1, "role": "list_item", "text": "✓Free re-edge every spring", "flags": ["in_list", "section_last"], "loc": [4, 4, 4, 29]}]}

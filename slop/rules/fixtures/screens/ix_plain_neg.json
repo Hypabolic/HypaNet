@@ -1,0 +1,22 @@
+{"schema": "slop.screen/1", "id": "50548baf60baad80", "framework": "tsx",
+ "source": {"repo": "slop-rules-fixtures", "path": "src/ix_plain_neg.tsx", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "header", "line": 2},
+  {"k": 1, "kind": "body", "line": 4},
+  {"k": 2, "kind": "list", "line": 11},
+  {"k": 3, "kind": "body", "line": 15}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "h2", "text": "Support desk", "flags": [], "loc": [3, 7, 3, 19]},
+  {"i": 1, "k": 1, "role": "stat", "text": "1", "flags": [], "loc": [5, 7, 5, 8]},
+  {"i": 2, "k": 1, "role": "caption", "text": "open ticket", "flags": ["small"], "loc": [6, 7, 6, 18]},
+  {"i": 3, "k": 1, "role": "stat", "text": "2", "flags": [], "loc": [7, 7, 7, 8]},
+  {"i": 4, "k": 1, "role": "caption", "text": "agents online", "flags": ["small"], "loc": [8, 7, 8, 20]},
+  {"i": 5, "k": 1, "role": "stat", "text": "3", "flags": [], "loc": [9, 7, 9, 8]},
+  {"i": 6, "k": 1, "role": "caption", "text": "queues", "flags": ["small"], "loc": [10, 7, 10, 13]},
+  {"i": 7, "k": 2, "role": "link", "text": "1", "flags": ["in_nav", "in_list"], "loc": [12, 7, 12, 8]},
+  {"i": 8, "k": 2, "role": "link", "text": "2", "flags": ["in_nav", "in_list"], "loc": [13, 7, 13, 8]},
+  {"i": 9, "k": 2, "role": "link", "text": "3", "flags": ["in_nav", "in_list"], "loc": [14, 7, 14, 8]},
+  {"i": 10, "k": 3, "role": "caption", "text": "2", "flags": ["small"], "loc": [16, 7, 16, 8]},
+  {"i": 11, "k": 3, "role": "body", "text": "Seats left", "flags": [], "loc": [17, 7, 17, 17]},
+  {"i": 12, "k": 3, "role": "caption", "text": "3", "flags": ["small"], "loc": [18, 7, 18, 8]},
+  {"i": 13, "k": 3, "role": "body", "text": "Days to go", "flags": [], "loc": [19, 7, 19, 17]}]}

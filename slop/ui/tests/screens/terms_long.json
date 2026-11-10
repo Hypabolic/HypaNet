@@ -1,0 +1,97 @@
+{
+ "schema": "slop.screen/1",
+ "id": "46d66016a962dc95",
+ "framework": "html",
+ "source": {
+  "repo": "slop-test-fixtures",
+  "path": "src/terms_long.html",
+  "commit": "0000000000000000000000000000000000000000",
+  "licence": "MIT"
+ },
+ "clusters": [
+  {
+   "k": 0,
+   "kind": "header",
+   "line": 5
+  },
+  {
+   "k": 1,
+   "kind": "body",
+   "line": 7
+  },
+  {
+   "k": 2,
+   "kind": "actions",
+   "line": 10
+  }
+ ],
+ "nodes": [
+  {
+   "i": 0,
+   "k": 0,
+   "role": "h1",
+   "text": "Before you continue",
+   "flags": [],
+   "loc": [
+    6,
+    7,
+    6,
+    26
+   ]
+  },
+  {
+   "i": 1,
+   "k": 1,
+   "role": "body",
+   "text": "By continuing you agree that we may store the settings you choose on this device and on our servers, use them to tailor the reports you receive each week, and keep them for as long as your account stays open, after which they are deleted within thirty days.",
+   "flags": [],
+   "loc": [
+    8,
+    7,
+    8,
+    264
+   ]
+  },
+  {
+   "i": 2,
+   "k": 1,
+   "role": "body",
+   "text": "By continuing you agree",
+   "flags": [
+    "small"
+   ],
+   "loc": [
+    9,
+    7,
+    9,
+    30
+   ]
+  },
+  {
+   "i": 3,
+   "k": 2,
+   "role": "button",
+   "text": "Agree and continue",
+   "flags": [],
+   "loc": [
+    11,
+    7,
+    11,
+    25
+   ]
+  },
+  {
+   "i": 4,
+   "k": 2,
+   "role": "button",
+   "text": "Continue",
+   "flags": [],
+   "loc": [
+    12,
+    7,
+    12,
+    15
+   ]
+  }
+ ]
+}

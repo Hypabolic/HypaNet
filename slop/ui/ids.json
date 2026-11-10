@@ -1,0 +1,47 @@
+{
+  "format": "slop.ids/1",
+  "note": "Fixed ids for the slop tokeniser (SPEC.md section 6) and the closed role and flag lists (section 4). Read by ui/tokenizer.py and lint/tokenizer.js; never reorder.",
+  "roles": [
+    "h1", "h2", "h3", "h4", "h5", "h6", "eyebrow", "subtitle", "body", "list_item",
+    "caption", "label", "helper", "placeholder", "input_value", "button", "link", "nav", "tab", "breadcrumb",
+    "menu_item", "badge", "tooltip", "empty_title", "empty_body", "dialog_title", "dialog_body", "toast", "error", "stat",
+    "cell", "aria", "alt", "comment", "code", "other"
+  ],
+  "context_roles": ["aria", "alt", "code", "comment"],
+  "flags": [
+    "caps", "title_case", "tracked", "small", "mono", "pill", "dot", "icon", "emoji_lead", "arrow_tail",
+    "dynamic", "stateful", "conditional", "in_nav", "in_table", "in_form", "in_list", "in_dialog", "in_header", "in_footer",
+    "in_card", "in_state", "in_control", "section_first", "section_last", "repeated", "sr_only", "truncated"
+  ],
+  "cluster_kinds": ["header", "actions", "control", "state", "card", "list", "body"],
+  "classes": ["KEEP", "ECHO", "NARRATE", "DECOR"],
+  "special": {"PAD": 0, "BOS": 1, "EON": 2, "VAR": 3, "ALT": 4, "LZ": 5},
+  "markers": {"VAR": "\ue000", "ALT": "\ue001"},
+  "glyph_base": 64,
+  "glyph_classes": ["DOT", "MIDDOT", "ARROW", "DASH", "ELLIPSIS", "CHECK", "STAR", "SPARKLE", "EMOJI", "SYMBOL"],
+  "glyph_chars": {
+    "DOT": "●•◉",
+    "MIDDOT": "·",
+    "ARROW": "→↗»",
+    "DASH": "—–",
+    "ELLIPSIS": "…",
+    "CHECK": "✓",
+    "STAR": "★",
+    "SPARKLE": "✨"
+  },
+  "emoji_min_codepoint": 8960,
+  "punct_base": 96,
+  "punct_chars": "!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~",
+  "number_base": 192,
+  "number_max_small": 99,
+  "number_tokens": {"YEAR": 292, "NUM": 293, "DEC": 294},
+  "year_range": [1900, 2099],
+  "vocab_base": 512,
+  "vocab_max": 3584,
+  "hash_base": 4096,
+  "hash_buckets": 6144,
+  "vocab_size": 10240,
+  "max_node_tokens": 31,
+  "max_window_nodes": 64,
+  "max_window_positions": 1024
+}

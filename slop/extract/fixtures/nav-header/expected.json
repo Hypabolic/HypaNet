@@ -1,0 +1,12 @@
+{"schema": "slop.screen/1", "id": "3a71b7c9f959791f", "framework": "tsx",
+ "source": {"repo": "slop-fixtures", "path": "SiteHeader.tsx", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "actions", "line": 7},
+  {"k": 1, "kind": "list", "line": 8},
+  {"k": 2, "kind": "actions", "line": 13}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "link", "text": "Tidewell", "flags": ["in_header"], "loc": [7, 46, 7, 54]},
+  {"i": 1, "k": 1, "role": "nav", "text": "Charts", "flags": ["small", "in_nav", "in_header"], "loc": [9, 32, 9, 38]},
+  {"i": 2, "k": 1, "role": "nav", "text": "Moorings", "flags": ["small", "in_nav", "in_header"], "loc": [10, 34, 10, 42]},
+  {"i": 3, "k": 1, "role": "nav", "text": "Pricing", "flags": ["small", "in_nav", "in_header"], "loc": [11, 33, 11, 40]},
+  {"i": 4, "k": 2, "role": "button", "text": "Sign in", "flags": ["small", "in_header"], "loc": [13, 67, 13, 74]}]}

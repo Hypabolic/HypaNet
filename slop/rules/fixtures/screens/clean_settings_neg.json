@@ -1,0 +1,17 @@
+{"schema": "slop.screen/1", "id": "2afafbf82a8082ea", "framework": "swift",
+ "source": {"repo": "slop-rules-fixtures", "path": "src/clean_settings_neg.swift", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "header", "line": 2},
+  {"k": 1, "kind": "control", "line": 4},
+  {"k": 2, "kind": "control", "line": 7},
+  {"k": 3, "kind": "actions", "line": 12}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "h1", "text": "Settings", "flags": [], "loc": [3, 7, 3, 15]},
+  {"i": 1, "k": 1, "role": "label", "text": "Display name", "flags": ["in_form", "in_control"], "loc": [5, 7, 5, 19]},
+  {"i": 2, "k": 1, "role": "helper", "text": "Shown on receipts and the staff rota.", "flags": ["small", "in_form", "in_control"], "loc": [6, 7, 6, 44]},
+  {"i": 3, "k": 2, "role": "label", "text": "Time zone", "flags": ["in_form", "in_control"], "loc": [8, 7, 8, 16]},
+  {"i": 4, "k": 2, "role": "menu_item", "text": "London", "flags": ["in_form", "in_list", "in_control"], "loc": [9, 7, 9, 13]},
+  {"i": 5, "k": 2, "role": "menu_item", "text": "Lisbon", "flags": ["in_form", "in_list", "in_control"], "loc": [10, 7, 10, 13]},
+  {"i": 6, "k": 2, "role": "menu_item", "text": "New York", "flags": ["title_case", "in_form", "in_list", "in_control"], "loc": [11, 7, 11, 15]},
+  {"i": 7, "k": 3, "role": "button", "text": "Save changes", "flags": ["in_form"], "loc": [13, 7, 13, 19]},
+  {"i": 8, "k": 3, "role": "button", "text": "Cancel", "flags": ["in_form"], "loc": [14, 7, 14, 13]}]}

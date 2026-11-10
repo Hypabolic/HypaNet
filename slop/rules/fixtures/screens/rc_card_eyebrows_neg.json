@@ -1,0 +1,18 @@
+{"schema": "slop.screen/1", "id": "ba344e0c53ca9b86", "framework": "tsx",
+ "source": {"repo": "slop-rules-fixtures", "path": "src/rc_card_eyebrows_neg.tsx", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "header", "line": 2},
+  {"k": 1, "kind": "card", "line": 4},
+  {"k": 2, "kind": "card", "line": 8},
+  {"k": 3, "kind": "card", "line": 12}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "h2", "text": "Gear for the long weekend", "flags": [], "loc": [3, 7, 3, 32]},
+  {"i": 1, "k": 1, "role": "eyebrow", "text": "Camping", "flags": ["caps", "tracked", "small", "in_card", "repeated"], "loc": [5, 7, 5, 14]},
+  {"i": 2, "k": 1, "role": "h3", "text": "Ridgeline two-person tent", "flags": ["in_card", "repeated"], "loc": [6, 7, 6, 32]},
+  {"i": 3, "k": 1, "role": "body", "text": "1.9 kg packed, pitches in four minutes.", "flags": ["in_card", "repeated"], "loc": [7, 7, 7, 46]},
+  {"i": 4, "k": 2, "role": "eyebrow", "text": "Cooking", "flags": ["caps", "tracked", "small", "in_card", "repeated"], "loc": [9, 7, 9, 14]},
+  {"i": 5, "k": 2, "role": "h3", "text": "Folding titanium stove", "flags": ["in_card", "repeated"], "loc": [10, 7, 10, 29]},
+  {"i": 6, "k": 2, "role": "body", "text": "Boils a litre in three and a half minutes.", "flags": ["in_card", "repeated"], "loc": [11, 7, 11, 49]},
+  {"i": 7, "k": 3, "role": "eyebrow", "text": "Lighting", "flags": ["caps", "tracked", "small", "in_card", "repeated"], "loc": [13, 7, 13, 15]},
+  {"i": 8, "k": 3, "role": "h3", "text": "Rechargeable lantern", "flags": ["in_card", "repeated"], "loc": [14, 7, 14, 27]},
+  {"i": 9, "k": 3, "role": "body", "text": "Forty hours on the low setting.", "flags": ["in_card", "repeated"], "loc": [15, 7, 15, 38]}]}

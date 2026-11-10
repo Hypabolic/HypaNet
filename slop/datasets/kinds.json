@@ -1,0 +1,13 @@
+{
+ "HypaChef": "recipe library and guided cooking app for iPhone and iPad",
+ "Mosaic": "web app for AI research over a document library: ask, deep research, reports and sharing",
+ "PersonalHomepage": "personal website and blog (Next.js with a Payload CMS)",
+ "slop-fixtures": "first-person game (fixture note: AI-built pause menu, the motivating example)",
+ "HypaVPN": "Apple TV app for connecting to self-hosted WireGuard VPNs",
+ "lean-ctx": "local context layer for AI coding agents (CLI and dashboard)",
+ "detectorists": "mobile app for metal detectorists that maps the ground swept in a session",
+ "HyperCubeDemo": "4D hypercube renderer: a live web terminal demo, a .NET library and a CLI",
+ "HypaDev": "multiplayer code editor (a fork of Zed)",
+ "StreetSweeperPro": "top-down pixel-art arcade driving game for the web",
+ "Hypa-Private": "local context runtime for coding agents (command-output compression); its wiki pages"
+}

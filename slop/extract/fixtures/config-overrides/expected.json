@@ -1,0 +1,9 @@
+{"schema": "slop.screen/1", "id": "01ac865f37b18a99", "framework": "tsx",
+ "source": {"repo": "slop-fixtures", "path": "Masthead.tsx", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "header", "line": 3}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "eyebrow", "text": "Issue 41 · Winter", "flags": ["title_case", "in_header"], "loc": [4, 42, 4, 59]},
+  {"i": 1, "k": 0, "role": "h1", "text": "The Cliffside Quarterly", "flags": ["title_case", "in_header"], "loc": [5, 11, 5, 34]},
+  {"i": 2, "k": 0, "role": "subtitle", "text": "Notes from the canal towpath, kept by the people who walk it.", "flags": ["in_header", "section_first"], "loc": [6, 34, 6, 95]},
+  {"i": 3, "k": 0, "role": "caption", "text": "Edited by the parish newsletter team", "flags": ["in_header", "section_last"], "loc": [7, 15, 7, 51]}]}

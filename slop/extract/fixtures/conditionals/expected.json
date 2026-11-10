@@ -1,0 +1,13 @@
+{"schema": "slop.screen/1", "id": "3920b39c1a19bd84", "framework": "tsx",
+ "source": {"repo": "slop-fixtures", "path": "Subscription.tsx", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "header", "line": 3},
+  {"k": 1, "kind": "body", "line": 3},
+  {"k": 2, "kind": "actions", "line": 8}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "h2", "text": "Your membership \ue001 Join the co-op", "flags": ["stateful", "conditional"], "loc": [4, 12, 4, 57]},
+  {"i": 1, "k": 0, "role": "subtitle", "text": "Your trial ends on Friday.", "flags": ["small", "conditional", "section_first"], "loc": [5, 40, 5, 66]},
+  {"i": 2, "k": 1, "role": "body", "text": "You are on the \ue000 name plan.", "flags": ["dynamic", "conditional"], "loc": [6, 18, 6, 50]},
+  {"i": 3, "k": 1, "role": "body", "text": "Pick a plan to get started.", "flags": ["conditional"], "loc": [6, 60, 6, 87]},
+  {"i": 4, "k": 1, "role": "body", "text": "\ue000 nickname \ue001 Anonymous gardener", "flags": ["dynamic", "stateful", "conditional"], "loc": [7, 14, 7, 46]},
+  {"i": 5, "k": 2, "role": "button", "text": "Manage \ue001 Join", "flags": ["stateful", "conditional", "section_last"], "loc": [8, 16, 8, 42]}]}

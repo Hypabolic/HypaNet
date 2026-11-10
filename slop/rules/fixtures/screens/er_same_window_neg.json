@@ -1,0 +1,9 @@
+{"schema": "slop.screen/1", "id": "1e84bf43277b4085", "framework": "tsx",
+ "source": {"repo": "slop-rules-fixtures", "path": "src/er_same_window_neg.tsx", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "header", "line": 2},
+  {"k": 1, "kind": "body", "line": 5}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "h2", "text": "Gift cards", "flags": [], "loc": [3, 7, 3, 17]},
+  {"i": 1, "k": 0, "role": "subtitle", "text": "Spend them in any of the three shops.", "flags": [], "loc": [4, 7, 4, 44]},
+  {"i": 2, "k": 1, "role": "body", "text": "Spend them in any of the three shops.", "flags": [], "loc": [6, 7, 6, 44]}]}

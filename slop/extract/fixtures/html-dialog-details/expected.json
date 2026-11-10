@@ -1,0 +1,15 @@
+{"schema": "slop.screen/1", "id": "95ea72123db61181", "framework": "html",
+ "source": {"repo": "slop-fixtures", "path": "confirm.html", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "state", "line": 1},
+  {"k": 1, "kind": "state", "line": 9},
+  {"k": 2, "kind": "actions", "line": 11},
+  {"k": 3, "kind": "body", "line": 12}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "dialog_title", "text": "Cancel your stall booking?", "flags": ["in_dialog", "in_state"], "loc": [2, 7, 2, 33]},
+  {"i": 1, "k": 0, "role": "dialog_body", "text": "Your deposit of £15 is refunded within a week.", "flags": ["in_dialog", "in_state", "section_first"], "loc": [3, 6, 3, 52]},
+  {"i": 2, "k": 0, "role": "button", "text": "Keep booking", "flags": ["in_form", "in_dialog", "in_state"], "loc": [5, 26, 5, 38]},
+  {"i": 3, "k": 0, "role": "button", "text": "Cancel booking", "flags": ["in_form", "in_dialog", "in_state", "section_last"], "loc": [6, 28, 6, 42]},
+  {"i": 4, "k": 1, "role": "error", "text": "Card number is too short.", "flags": ["in_state"], "loc": [9, 19, 9, 44]},
+  {"i": 5, "k": 2, "role": "button", "text": "Why do you need my phone number?", "flags": [], "loc": [11, 12, 11, 44]},
+  {"i": 6, "k": 3, "role": "body", "text": "Market staff text you if your pitch moves.", "flags": [], "loc": [12, 6, 12, 48]}]}

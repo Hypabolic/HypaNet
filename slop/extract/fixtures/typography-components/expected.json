@@ -1,0 +1,13 @@
+{"schema": "slop.screen/1", "id": "561e5183232cd57c", "framework": "tsx",
+ "source": {"repo": "slop-fixtures", "path": "About.tsx", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "header", "line": 6},
+  {"k": 1, "kind": "header", "line": 11},
+  {"k": 2, "kind": "header", "line": 12}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "eyebrow", "text": "Our story", "flags": [], "loc": [7, 38, 7, 47]},
+  {"i": 1, "k": 0, "role": "h2", "text": "Two benches and a kiln", "flags": [], "loc": [8, 24, 8, 46]},
+  {"i": 2, "k": 0, "role": "subtitle", "text": "We started firing mugs in a garage in 2019.", "flags": ["section_first"], "loc": [9, 13, 9, 56]},
+  {"i": 3, "k": 0, "role": "caption", "text": "Photos by a member of the studio", "flags": [], "loc": [10, 37, 10, 69]},
+  {"i": 4, "k": 1, "role": "h5", "text": "Visiting", "flags": [], "loc": [11, 26, 11, 34]},
+  {"i": 5, "k": 2, "role": "h6", "text": "Opening hours", "flags": ["section_first", "section_last"], "loc": [12, 32, 12, 45]}]}

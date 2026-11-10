@@ -1,0 +1,78 @@
+{
+ "schema": "slop.screen/1",
+ "id": "599aa779e5fd3266",
+ "framework": "tsx",
+ "source": {
+  "repo": "slop-test-fixtures",
+  "path": "src/empty_projects.tsx",
+  "commit": "0000000000000000000000000000000000000000",
+  "licence": "MIT"
+ },
+ "clusters": [
+  {
+   "k": 0,
+   "kind": "state",
+   "line": 5
+  }
+ ],
+ "nodes": [
+  {
+   "i": 0,
+   "k": 0,
+   "role": "empty_title",
+   "text": "No projects yet",
+   "flags": [
+    "in_state"
+   ],
+   "loc": [
+    6,
+    7,
+    6,
+    22
+   ]
+  },
+  {
+   "i": 1,
+   "k": 0,
+   "role": "empty_body",
+   "text": "Create a project to get started.",
+   "flags": [
+    "in_state"
+   ],
+   "loc": [
+    7,
+    7,
+    7,
+    39
+   ]
+  },
+  {
+   "i": 2,
+   "k": 0,
+   "role": "button",
+   "text": "Create project",
+   "flags": [
+    "in_state"
+   ],
+   "loc": [
+    8,
+    7,
+    8,
+    21
+   ]
+  },
+  {
+   "i": 3,
+   "k": 0,
+   "role": "alt",
+   "text": "Illustration of an empty folder",
+   "flags": [],
+   "loc": [
+    9,
+    7,
+    9,
+    38
+   ]
+  }
+ ]
+}

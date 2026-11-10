@@ -1,0 +1,16 @@
+{"schema": "slop.screen/1", "id": "e00806808dd467b7", "framework": "tsx",
+ "source": {"repo": "slop-rules-fixtures", "path": "src/va_specific_neg.tsx", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "state", "line": 2},
+  {"k": 1, "kind": "actions", "line": 7}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "dialog_title", "text": "Leave without saving?", "flags": ["in_dialog"], "loc": [3, 7, 3, 28]},
+  {"i": 1, "k": 0, "role": "dialog_body", "text": "Changes to this draft will be lost.", "flags": ["in_dialog"], "loc": [4, 7, 4, 42]},
+  {"i": 2, "k": 0, "role": "button", "text": "Leave", "flags": ["in_dialog"], "loc": [5, 7, 5, 12]},
+  {"i": 3, "k": 0, "role": "button", "text": "Keep editing", "flags": ["in_dialog"], "loc": [6, 7, 6, 19]},
+  {"i": 4, "k": 1, "role": "link", "text": "Learn more about refunds", "flags": [], "loc": [8, 7, 8, 31]},
+  {"i": 5, "k": 1, "role": "button", "text": "OK", "flags": [], "loc": [9, 7, 9, 9]},
+  {"i": 6, "k": 1, "role": "button", "text": "Continue", "flags": [], "loc": [10, 7, 10, 15]},
+  {"i": 7, "k": 1, "role": "button", "text": "Show more", "flags": [], "loc": [11, 7, 11, 16]},
+  {"i": 8, "k": 1, "role": "button", "text": "More", "flags": [], "loc": [12, 7, 12, 11]},
+  {"i": 9, "k": 1, "role": "body", "text": "Click the map to drop a pin.", "flags": [], "loc": [13, 7, 13, 35]}]}

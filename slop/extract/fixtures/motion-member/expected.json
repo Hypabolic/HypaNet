@@ -1,0 +1,7 @@
+{"schema": "slop.screen/1", "id": "efd9f10b77160a44", "framework": "tsx",
+ "source": {"repo": "slop-fixtures", "path": "Testimonial.tsx", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "card", "line": 7}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "h3", "text": "“It saved our Saturday market”", "flags": ["in_card"], "loc": [8, 21, 8, 51]},
+  {"i": 1, "k": 0, "role": "subtitle", "text": "Stallholder, Riverside Market", "flags": ["title_case", "in_card", "section_first", "section_last"], "loc": [9, 53, 9, 82]}]}

@@ -1,0 +1,113 @@
+{
+ "schema": "slop.screen/1",
+ "id": "551a4d80b295cfa6",
+ "framework": "tsx",
+ "source": {
+  "repo": "slop-test-fixtures",
+  "path": "src/profile_card.tsx",
+  "commit": "0000000000000000000000000000000000000000",
+  "licence": "MIT"
+ },
+ "clusters": [
+  {
+   "k": 0,
+   "kind": "card",
+   "line": 5
+  }
+ ],
+ "nodes": [
+  {
+   "i": 0,
+   "k": 0,
+   "role": "h3",
+   "text": "Priya Shah",
+   "flags": [
+    "in_card"
+   ],
+   "loc": [
+    6,
+    7,
+    6,
+    17
+   ]
+  },
+  {
+   "i": 1,
+   "k": 0,
+   "role": "caption",
+   "text": "Staff engineer · London",
+   "flags": [
+    "in_card",
+    "small"
+   ],
+   "loc": [
+    7,
+    7,
+    7,
+    30
+   ]
+  },
+  {
+   "i": 2,
+   "k": 0,
+   "role": "badge",
+   "text": "Admin",
+   "flags": [
+    "in_card",
+    "pill",
+    "stateful"
+   ],
+   "loc": [
+    8,
+    7,
+    8,
+    12
+   ]
+  },
+  {
+   "i": 3,
+   "k": 0,
+   "role": "button",
+   "text": "Message",
+   "flags": [
+    "in_card"
+   ],
+   "loc": [
+    9,
+    7,
+    9,
+    14
+   ]
+  },
+  {
+   "i": 4,
+   "k": 0,
+   "role": "button",
+   "text": "Message Priya Shah",
+   "flags": [
+    "in_card"
+   ],
+   "loc": [
+    10,
+    7,
+    10,
+    25
+   ]
+  },
+  {
+   "i": 5,
+   "k": 0,
+   "role": "alt",
+   "text": "Priya Shah",
+   "flags": [
+    "in_card"
+   ],
+   "loc": [
+    11,
+    7,
+    11,
+    17
+   ]
+  }
+ ]
+}

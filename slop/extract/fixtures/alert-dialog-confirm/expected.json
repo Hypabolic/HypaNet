@@ -1,0 +1,11 @@
+{"schema": "slop.screen/1", "id": "54d24b9fb8e325f3", "framework": "tsx",
+ "source": {"repo": "slop-fixtures", "path": "DeleteRoute.tsx", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "state", "line": 8},
+  {"k": 1, "kind": "state", "line": 12}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "dialog_body", "text": "Delete this cycling route and its 14 waypoints?", "flags": ["conditional", "in_dialog", "in_state"], "loc": [8, 25, 8, 72]},
+  {"i": 1, "k": 1, "role": "dialog_title", "text": "Delete route?", "flags": ["in_dialog", "in_state"], "loc": [14, 29, 14, 42]},
+  {"i": 2, "k": 1, "role": "dialog_body", "text": "This also removes the route from two shared rides.", "flags": ["in_dialog", "in_state", "section_first"], "loc": [15, 35, 15, 85]},
+  {"i": 3, "k": 1, "role": "button", "text": "Keep route", "flags": ["in_dialog", "in_state"], "loc": [18, 30, 18, 40]},
+  {"i": 4, "k": 1, "role": "button", "text": "Delete route", "flags": ["in_dialog", "in_state", "section_last"], "loc": [19, 49, 19, 61]}]}

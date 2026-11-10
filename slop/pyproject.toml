@@ -1,0 +1,20 @@
+[project]
+name = "hypanet-slop"
+version = "0.1.0"
+description = "HypaNet Slop: a hand-written detector for redundant UI copy (tokeniser, numpy reference model, compiler, validation)"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "numpy>=2.0",
+    "pyyaml>=6.0",
+]
+
+[dependency-groups]
+dev = ["pytest>=8"]
+
+[tool.uv]
+package = false
+
+[tool.pytest.ini_options]
+testpaths = ["ui/tests", "lint/tests", "validate/tests", "scripts/tests", "rules/tests", "generator/tests"]
+pythonpath = ["."]
+addopts = "-q"

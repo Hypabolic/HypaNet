@@ -1,0 +1,9 @@
+datasets/**/*.jsonl*
+datasets/**/*.npz
+labels/
+commissions/*/deliverable/data/
+kit/sealed_salt
+node_modules/
+datasets/**/screens/
+datasets/**/sources/
+datasets/sealed_sha256.txt

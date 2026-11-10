@@ -1,0 +1,10 @@
+{"schema": "slop.screen/1", "id": "6ff89b3d3ebf4fa0", "framework": "tsx",
+ "source": {"repo": "slop-fixtures", "path": "Hero.tsx", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "header", "line": 7}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "eyebrow", "text": "Field notes for allotment growers", "flags": ["caps", "tracked", "small"], "loc": [8, 89, 8, 122]},
+  {"i": 1, "k": 0, "role": "h1", "text": "Plan every bed before the frost lifts", "flags": [], "loc": [9, 64, 9, 101]},
+  {"i": 2, "k": 0, "role": "subtitle", "text": "Sketch your plot, log what went in the ground, and get a nudge when the seedlings need potting on.", "flags": ["section_first"], "loc": [11, 11, 12, 37]},
+  {"i": 3, "k": 0, "role": "link", "text": "Start a plot plan", "flags": ["icon", "arrow_tail"], "loc": [16, 13, 16, 30]},
+  {"i": 4, "k": 0, "role": "link", "text": "Take the two-minute tour →", "flags": ["arrow_tail", "section_last"], "loc": [18, 30, 18, 56]}]}

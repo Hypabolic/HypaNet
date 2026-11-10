@@ -1,0 +1,9 @@
+{"schema": "slop.screen/1", "id": "9191b75e16bed117", "framework": "tsx",
+ "source": {"repo": "slop-fixtures", "path": "useSaveRecipe.tsx", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "state", "line": 7},
+  {"k": 1, "kind": "state", "line": 9}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "toast", "text": "Recipe saved to your box", "flags": ["conditional", "in_state"], "loc": [7, 22, 7, 46]},
+  {"i": 1, "k": 1, "role": "error", "text": "Could not save the recipe", "flags": ["conditional", "in_state"], "loc": [9, 20, 9, 45]},
+  {"i": 2, "k": 1, "role": "error", "text": "The kitchen tablet is offline.", "flags": ["conditional", "in_state"], "loc": [9, 64, 9, 94]}]}

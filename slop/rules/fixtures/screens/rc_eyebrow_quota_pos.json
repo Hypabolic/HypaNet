@@ -1,0 +1,20 @@
+{"schema": "slop.screen/1", "id": "3ad8d940ce0ae967", "framework": "html",
+ "source": {"repo": "slop-rules-fixtures", "path": "src/rc_eyebrow_quota_pos.html", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "header", "line": 2},
+  {"k": 1, "kind": "header", "line": 6},
+  {"k": 2, "kind": "header", "line": 10},
+  {"k": 3, "kind": "header", "line": 14}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "eyebrow", "text": "Built for small bakeries", "flags": ["caps", "tracked", "small", "in_header"], "loc": [3, 7, 3, 31]},
+  {"i": 1, "k": 0, "role": "h1", "text": "Bake to order, not to waste", "flags": ["in_header"], "loc": [4, 7, 4, 34]},
+  {"i": 2, "k": 0, "role": "subtitle", "text": "Customers reserve loaves the night before.", "flags": ["section_first"], "loc": [5, 7, 5, 49]},
+  {"i": 3, "k": 1, "role": "eyebrow", "text": "Ordering", "flags": ["caps", "tracked", "small"], "loc": [7, 7, 7, 15]},
+  {"i": 4, "k": 1, "role": "h2", "text": "Reservations open at six", "flags": [], "loc": [8, 7, 8, 31]},
+  {"i": 5, "k": 1, "role": "body", "text": "Set a cut-off and the shop closes orders for you.", "flags": ["section_first", "section_last"], "loc": [9, 7, 9, 56]},
+  {"i": 6, "k": 2, "role": "eyebrow", "text": "Stock", "flags": ["caps", "tracked", "small"], "loc": [11, 7, 11, 12]},
+  {"i": 7, "k": 2, "role": "h2", "text": "Know what is left by noon", "flags": [], "loc": [12, 7, 12, 32]},
+  {"i": 8, "k": 2, "role": "body", "text": "The counter screen shows each loaf as it sells.", "flags": ["section_first", "section_last"], "loc": [13, 7, 13, 54]},
+  {"i": 9, "k": 3, "role": "eyebrow", "text": "Payments", "flags": ["caps", "tracked", "small"], "loc": [15, 7, 15, 15]},
+  {"i": 10, "k": 3, "role": "h2", "text": "Card or cash at collection", "flags": [], "loc": [16, 7, 16, 33]},
+  {"i": 11, "k": 3, "role": "body", "text": "Takings reconcile with the till every evening.", "flags": ["section_first", "section_last"], "loc": [17, 7, 17, 53]}]}

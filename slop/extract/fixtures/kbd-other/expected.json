@@ -1,0 +1,9 @@
+{"schema": "slop.screen/1", "id": "23ffe23a0789a23b", "framework": "tsx",
+ "source": {"repo": "slop-fixtures", "path": "Shortcuts.tsx", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "body", "line": 5}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "body", "text": "Search the catalogue", "flags": [], "loc": [6, 13, 6, 33]},
+  {"i": 1, "k": 0, "role": "other", "text": "⌘ K", "flags": [], "loc": [7, 12, 7, 15]},
+  {"i": 2, "k": 0, "role": "body", "text": "New loan", "flags": [], "loc": [8, 13, 8, 21]},
+  {"i": 3, "k": 0, "role": "other", "text": "N", "flags": [], "loc": [9, 12, 9, 13]}]}

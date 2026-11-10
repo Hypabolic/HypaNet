@@ -1,0 +1,169 @@
+{
+ "schema": "slop.screen/1",
+ "id": "63fbca171b1f691e",
+ "framework": "swift",
+ "source": {
+  "repo": "invoicer-ios",
+  "path": "Invoicer/InvoiceListView.swift",
+  "commit": "fixture",
+  "licence": "invented fixture"
+ },
+ "clusters": [
+  {
+   "k": 0,
+   "kind": "header",
+   "line": 25
+  },
+  {
+   "k": 1,
+   "kind": "state",
+   "line": 13
+  },
+  {
+   "k": 2,
+   "kind": "state",
+   "line": 29
+  }
+ ],
+ "nodes": [
+  {
+   "i": 0,
+   "k": 0,
+   "role": "h1",
+   "text": "Invoices",
+   "flags": [
+    "in_nav"
+   ],
+   "loc": [
+    25,
+    31,
+    25,
+    39
+   ]
+  },
+  {
+   "i": 1,
+   "k": 0,
+   "role": "button",
+   "text": "Delete all",
+   "flags": [
+    "in_nav"
+   ],
+   "loc": [
+    27,
+    25,
+    27,
+    35
+   ]
+  },
+  {
+   "i": 2,
+   "k": 1,
+   "role": "empty_title",
+   "text": "No invoices",
+   "flags": [
+    "conditional",
+    "in_state"
+   ],
+   "loc": [
+    13,
+    31,
+    13,
+    42
+   ]
+  },
+  {
+   "i": 3,
+   "k": 1,
+   "role": "empty_body",
+   "text": "There are no invoices yet.",
+   "flags": [
+    "conditional",
+    "in_state"
+   ],
+   "loc": [
+    15,
+    31,
+    15,
+    57
+   ]
+  },
+  {
+   "i": 4,
+   "k": 1,
+   "role": "button",
+   "text": "Create invoice",
+   "flags": [
+    "conditional",
+    "in_state"
+   ],
+   "loc": [
+    17,
+    33,
+    17,
+    47
+   ]
+  },
+  {
+   "i": 5,
+   "k": 2,
+   "role": "dialog_title",
+   "text": "Delete all invoices?",
+   "flags": [
+    "in_dialog"
+   ],
+   "loc": [
+    29,
+    21,
+    29,
+    41
+   ]
+  },
+  {
+   "i": 6,
+   "k": 2,
+   "role": "button",
+   "text": "Delete all invoices",
+   "flags": [
+    "in_dialog"
+   ],
+   "loc": [
+    30,
+    25,
+    30,
+    44
+   ]
+  },
+  {
+   "i": 7,
+   "k": 2,
+   "role": "button",
+   "text": "Cancel",
+   "flags": [
+    "in_dialog"
+   ],
+   "loc": [
+    31,
+    25,
+    31,
+    31
+   ]
+  },
+  {
+   "i": 8,
+   "k": 2,
+   "role": "dialog_body",
+   "text": "This also deletes \ue000 export count saved exports.",
+   "flags": [
+    "dynamic",
+    "in_dialog"
+   ],
+   "loc": [
+    33,
+    23,
+    33,
+    70
+   ]
+  }
+ ]
+}

@@ -1,0 +1,16 @@
+{"schema": "slop.screen/1", "id": "001f9ae6cc0b49f4", "framework": "tsx",
+ "source": {"repo": "slop-fixtures", "path": "Features.tsx", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "header", "line": 3},
+  {"k": 1, "kind": "card", "line": 7},
+  {"k": 2, "kind": "card", "line": 11},
+  {"k": 3, "kind": "card", "line": 15}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "eyebrow", "text": "Features", "flags": ["caps", "tracked", "small"], "loc": [4, 74, 4, 82]},
+  {"i": 1, "k": 0, "role": "h2", "text": "Everything a repair café needs", "flags": [], "loc": [5, 42, 5, 72]},
+  {"i": 2, "k": 1, "role": "h3", "text": "Ticket queue", "flags": ["in_card", "section_first", "repeated"], "loc": [8, 41, 8, 53]},
+  {"i": 3, "k": 1, "role": "subtitle", "text": "Visitors take a number at the door and see their place on the screen.", "flags": ["in_card", "section_first", "section_last", "repeated"], "loc": [9, 41, 9, 110]},
+  {"i": 4, "k": 2, "role": "h3", "text": "Parts shelf", "flags": ["in_card", "repeated"], "loc": [12, 41, 12, 52]},
+  {"i": 5, "k": 2, "role": "subtitle", "text": "Volunteers log spare fuses, belts and buttons as they arrive.", "flags": ["in_card", "section_first", "section_last", "repeated"], "loc": [13, 41, 13, 102]},
+  {"i": 6, "k": 3, "role": "h3", "text": "Fix log", "flags": ["in_card", "repeated"], "loc": [16, 41, 16, 48]},
+  {"i": 7, "k": 3, "role": "subtitle", "text": "Every mended toaster is counted towards the yearly landfill tally.", "flags": ["in_card", "section_first", "section_last", "repeated"], "loc": [17, 41, 17, 107]}]}

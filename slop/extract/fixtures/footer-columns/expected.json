@@ -1,0 +1,16 @@
+{"schema": "slop.screen/1", "id": "97b92e65cc77e2a7", "framework": "tsx",
+ "source": {"repo": "slop-fixtures", "path": "SiteFooter.tsx", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "header", "line": 6},
+  {"k": 1, "kind": "list", "line": 7},
+  {"k": 2, "kind": "header", "line": 13},
+  {"k": 3, "kind": "list", "line": 14},
+  {"k": 4, "kind": "body", "line": 20}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "h4", "text": "Product", "flags": ["in_footer"], "loc": [6, 41, 6, 48]},
+  {"i": 1, "k": 1, "role": "link", "text": "Tide tables", "flags": ["in_list", "in_footer", "section_first"], "loc": [8, 40, 8, 51]},
+  {"i": 2, "k": 1, "role": "link", "text": "Swell alerts", "flags": ["in_list", "in_footer", "section_last"], "loc": [9, 35, 9, 47]},
+  {"i": 3, "k": 2, "role": "h4", "text": "Company", "flags": ["in_footer"], "loc": [13, 41, 13, 48]},
+  {"i": 4, "k": 3, "role": "link", "text": "About us", "flags": ["in_list", "in_footer", "section_first"], "loc": [15, 34, 15, 42]},
+  {"i": 5, "k": 3, "role": "link", "text": "Press kit", "flags": ["in_list", "in_footer", "section_last"], "loc": [16, 34, 16, 43]},
+  {"i": 6, "k": 4, "role": "caption", "text": "© 2026 Tidewell Ltd. Registered in Cornwall.", "flags": ["title_case", "small", "in_footer"], "loc": [20, 57, 20, 101]}]}

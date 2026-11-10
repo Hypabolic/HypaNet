@@ -1,0 +1,80 @@
+{
+ "schema": "slop.screen/1",
+ "id": "2c4d3d58022f64c3",
+ "framework": "tsx",
+ "source": {
+  "repo": "slop-test-fixtures",
+  "path": "src/delete_workspace.tsx",
+  "commit": "0000000000000000000000000000000000000000",
+  "licence": "MIT"
+ },
+ "clusters": [
+  {
+   "k": 0,
+   "kind": "state",
+   "line": 5
+  }
+ ],
+ "nodes": [
+  {
+   "i": 0,
+   "k": 0,
+   "role": "dialog_title",
+   "text": "Delete workspace?",
+   "flags": [
+    "in_dialog"
+   ],
+   "loc": [
+    6,
+    7,
+    6,
+    24
+   ]
+  },
+  {
+   "i": 1,
+   "k": 0,
+   "role": "dialog_body",
+   "text": "This permanently deletes 3 boards and 41 cards. You can’t undo this.",
+   "flags": [
+    "in_dialog"
+   ],
+   "loc": [
+    7,
+    7,
+    7,
+    75
+   ]
+  },
+  {
+   "i": 2,
+   "k": 0,
+   "role": "button",
+   "text": "Cancel",
+   "flags": [
+    "in_dialog"
+   ],
+   "loc": [
+    8,
+    7,
+    8,
+    13
+   ]
+  },
+  {
+   "i": 3,
+   "k": 0,
+   "role": "button",
+   "text": "Delete workspace",
+   "flags": [
+    "in_dialog"
+   ],
+   "loc": [
+    9,
+    7,
+    9,
+    23
+   ]
+  }
+ ]
+}

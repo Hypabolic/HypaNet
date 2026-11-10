@@ -1,0 +1,200 @@
+{
+ "schema": "slop.screen/1",
+ "id": "ac4d024d9b9ca259",
+ "framework": "tsx",
+ "source": {
+  "repo": "slop-test-fixtures",
+  "path": "src/long_nav_list.tsx",
+  "commit": "0000000000000000000000000000000000000000",
+  "licence": "MIT"
+ },
+ "clusters": [
+  {
+   "k": 0,
+   "kind": "list",
+   "line": 5
+  }
+ ],
+ "nodes": [
+  {
+   "i": 0,
+   "k": 0,
+   "role": "menu_item",
+   "text": "Dashboard",
+   "flags": [
+    "in_list"
+   ],
+   "loc": [
+    6,
+    7,
+    6,
+    16
+   ]
+  },
+  {
+   "i": 1,
+   "k": 0,
+   "role": "menu_item",
+   "text": "Inbox",
+   "flags": [
+    "in_list"
+   ],
+   "loc": [
+    7,
+    7,
+    7,
+    12
+   ]
+  },
+  {
+   "i": 2,
+   "k": 0,
+   "role": "menu_item",
+   "text": "Calendar",
+   "flags": [
+    "in_list"
+   ],
+   "loc": [
+    8,
+    7,
+    8,
+    15
+   ]
+  },
+  {
+   "i": 3,
+   "k": 0,
+   "role": "menu_item",
+   "text": "Files",
+   "flags": [
+    "in_list"
+   ],
+   "loc": [
+    9,
+    7,
+    9,
+    12
+   ]
+  },
+  {
+   "i": 4,
+   "k": 0,
+   "role": "menu_item",
+   "text": "Team",
+   "flags": [
+    "in_list"
+   ],
+   "loc": [
+    10,
+    7,
+    10,
+    11
+   ]
+  },
+  {
+   "i": 5,
+   "k": 0,
+   "role": "menu_item",
+   "text": "Reports",
+   "flags": [
+    "in_list"
+   ],
+   "loc": [
+    11,
+    7,
+    11,
+    14
+   ]
+  },
+  {
+   "i": 6,
+   "k": 0,
+   "role": "menu_item",
+   "text": "Billing",
+   "flags": [
+    "in_list"
+   ],
+   "loc": [
+    12,
+    7,
+    12,
+    14
+   ]
+  },
+  {
+   "i": 7,
+   "k": 0,
+   "role": "menu_item",
+   "text": "Integrations",
+   "flags": [
+    "in_list"
+   ],
+   "loc": [
+    13,
+    7,
+    13,
+    19
+   ]
+  },
+  {
+   "i": 8,
+   "k": 0,
+   "role": "menu_item",
+   "text": "Audit log",
+   "flags": [
+    "in_list"
+   ],
+   "loc": [
+    14,
+    7,
+    14,
+    16
+   ]
+  },
+  {
+   "i": 9,
+   "k": 0,
+   "role": "menu_item",
+   "text": "Team settings",
+   "flags": [
+    "in_list"
+   ],
+   "loc": [
+    15,
+    7,
+    15,
+    20
+   ]
+  },
+  {
+   "i": 10,
+   "k": 0,
+   "role": "menu_item",
+   "text": "Help",
+   "flags": [
+    "in_list"
+   ],
+   "loc": [
+    16,
+    7,
+    16,
+    11
+   ]
+  },
+  {
+   "i": 11,
+   "k": 0,
+   "role": "menu_item",
+   "text": "Inbox rules",
+   "flags": [
+    "in_list"
+   ],
+   "loc": [
+    17,
+    7,
+    17,
+    18
+   ]
+  }
+ ]
+}

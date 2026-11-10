@@ -1,0 +1,13 @@
+{"schema": "slop.screen/1", "id": "98fedde158b46e0a", "framework": "tsx",
+ "source": {"repo": "slop-fixtures", "path": "Intro.tsx", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "header", "line": 4},
+  {"k": 1, "kind": "header", "line": 10},
+  {"k": 2, "kind": "body", "line": 9}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "eyebrow", "text": "Version 4 is here", "flags": ["small"], "loc": [5, 60, 5, 77]},
+  {"i": 1, "k": 0, "role": "h2", "text": "A calmer way to run your book club", "flags": [], "loc": [6, 48, 6, 82]},
+  {"i": 2, "k": 0, "role": "subtitle", "text": "Rotate hosts, track who has finished, and keep the snack rota honest.", "flags": ["section_first"], "loc": [7, 12, 7, 81]},
+  {"i": 3, "k": 1, "role": "h3", "text": "Hosting", "flags": [], "loc": [10, 47, 10, 54]},
+  {"i": 4, "k": 2, "role": "body", "text": "Each month the app suggests whoever hosted least recently.", "flags": ["section_first"], "loc": [11, 12, 11, 70]},
+  {"i": 5, "k": 2, "role": "body", "text": "You can swap with a friend in two taps if a date clashes.", "flags": ["section_last"], "loc": [12, 12, 12, 69]}]}

@@ -1,0 +1,13 @@
+{"schema": "slop.screen/1", "id": "a2d77843451ac398", "framework": "tsx",
+ "source": {"repo": "slop-fixtures", "path": "ImpactStats.tsx", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "header", "line": 4},
+  {"k": 1, "kind": "list", "line": 5}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "h2", "text": "Last season on the river", "flags": [], "loc": [4, 42, 4, 66]},
+  {"i": 1, "k": 1, "role": "label", "text": "Litter bags filled", "flags": ["small", "in_list", "section_first", "repeated"], "loc": [7, 57, 7, 75]},
+  {"i": 2, "k": 1, "role": "stat", "text": "312", "flags": ["in_list", "repeated"], "loc": [8, 50, 8, 53]},
+  {"i": 3, "k": 1, "role": "label", "text": "Volunteer hours", "flags": ["small", "in_list", "repeated"], "loc": [11, 57, 11, 72]},
+  {"i": 4, "k": 1, "role": "stat", "text": "2.4k", "flags": ["in_list", "repeated"], "loc": [12, 50, 12, 54]},
+  {"i": 5, "k": 1, "role": "label", "text": "Water quality", "flags": ["small", "in_list", "repeated"], "loc": [15, 57, 15, 70]},
+  {"i": 6, "k": 1, "role": "stat", "text": "87%", "flags": ["in_list", "section_last", "repeated"], "loc": [16, 50, 16, 53]}]}

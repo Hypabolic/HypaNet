@@ -1,0 +1,10 @@
+{"schema": "slop.screen/1", "id": "3d652cbb32025daa", "framework": "tsx",
+ "source": {"repo": "slop-fixtures", "path": "RowActions.tsx", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "body", "line": 7},
+  {"k": 1, "kind": "list", "line": 10}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "aria", "text": "Open actions", "flags": [], "loc": [7, 40, 7, 52]},
+  {"i": 1, "k": 1, "role": "label", "text": "Shipment", "flags": ["in_list"], "loc": [11, 28, 11, 36]},
+  {"i": 2, "k": 1, "role": "menu_item", "text": "Print label", "flags": ["in_list"], "loc": [12, 27, 12, 38]},
+  {"i": 3, "k": 1, "role": "menu_item", "text": "Mark as collected", "flags": ["in_list"], "loc": [13, 27, 13, 44]}]}

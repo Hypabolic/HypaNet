@@ -1,0 +1,7 @@
+{"schema": "slop.screen/1", "id": "4a3b5fa136940130", "framework": "tsx",
+ "source": {"repo": "slop-fixtures", "path": "StatusPill.tsx", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "header", "line": 3}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "h1", "text": "Ferry timetable", "flags": ["in_header"], "loc": [4, 45, 4, 60]},
+  {"i": 1, "k": 0, "role": "badge", "text": "Live", "flags": ["small", "pill", "dot", "in_header", "section_first", "section_last"], "loc": [7, 9, 7, 13]}]}

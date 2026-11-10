@@ -1,0 +1,13 @@
+{"schema": "slop.screen/1", "id": "72c10c24bc880490", "framework": "html",
+ "source": {"repo": "slop-rules-fixtures", "path": "src/ix_lone_step_neg.html", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "header", "line": 2},
+  {"k": 1, "kind": "control", "line": 5},
+  {"k": 2, "kind": "control", "line": 7},
+  {"k": 3, "kind": "actions", "line": 9}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "caption", "text": "Step 2 of 4", "flags": ["small"], "loc": [3, 7, 3, 18]},
+  {"i": 1, "k": 0, "role": "h1", "text": "Delivery address", "flags": [], "loc": [4, 7, 4, 23]},
+  {"i": 2, "k": 1, "role": "label", "text": "Address line 1", "flags": ["in_form", "in_control"], "loc": [6, 7, 6, 21]},
+  {"i": 3, "k": 2, "role": "label", "text": "Town or city", "flags": ["in_form", "in_control"], "loc": [8, 7, 8, 19]},
+  {"i": 4, "k": 3, "role": "button", "text": "Continue", "flags": ["in_form"], "loc": [10, 7, 10, 15]}]}

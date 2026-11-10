@@ -1,0 +1,76 @@
+{
+ "schema": "slop.screen/1",
+ "id": "cbcdfeebed502089",
+ "framework": "python",
+ "source": {
+  "repo": "slop-test-fixtures",
+  "path": "src/comments_track_c.py",
+  "commit": "0000000000000000000000000000000000000000",
+  "licence": "MIT"
+ },
+ "clusters": [
+  {
+   "k": 0,
+   "kind": "body",
+   "line": 5
+  }
+ ],
+ "nodes": [
+  {
+   "i": 0,
+   "k": 0,
+   "role": "comment",
+   "text": "Load the config file",
+   "flags": [],
+   "loc": [
+    6,
+    7,
+    6,
+    27
+   ]
+  },
+  {
+   "i": 1,
+   "k": 0,
+   "role": "code",
+   "text": "config = load_config(path)",
+   "flags": [
+    "mono"
+   ],
+   "loc": [
+    7,
+    7,
+    7,
+    33
+   ]
+  },
+  {
+   "i": 2,
+   "k": 0,
+   "role": "comment",
+   "text": "Retry because the API rate-limits bursts",
+   "flags": [],
+   "loc": [
+    8,
+    7,
+    8,
+    47
+   ]
+  },
+  {
+   "i": 3,
+   "k": 0,
+   "role": "code",
+   "text": "retry(fetch_page, attempts=3)",
+   "flags": [
+    "mono"
+   ],
+   "loc": [
+    9,
+    7,
+    9,
+    36
+   ]
+  }
+ ]
+}

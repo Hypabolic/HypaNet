@@ -1,0 +1,13 @@
+{"schema": "slop.screen/1", "id": "8fbda235dee3478c", "framework": "tsx",
+ "source": {"repo": "slop-fixtures", "path": "StepTwo.tsx", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "header", "line": 3},
+  {"k": 1, "kind": "control", "line": 6},
+  {"k": 2, "kind": "actions", "line": 11}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "eyebrow", "text": "Step 2 of 4", "flags": ["small"], "loc": [4, 52, 4, 63]},
+  {"i": 1, "k": 0, "role": "h1", "text": "Tell us about your kitchen", "flags": [], "loc": [5, 46, 5, 72]},
+  {"i": 2, "k": 1, "role": "label", "text": "Covers per night", "flags": ["in_control", "section_first"], "loc": [7, 33, 7, 49]},
+  {"i": 3, "k": 1, "role": "helper", "text": "We use this to size your prep lists.", "flags": ["small", "in_control"], "loc": [9, 54, 9, 90]},
+  {"i": 4, "k": 2, "role": "button", "text": "Back", "flags": [], "loc": [12, 17, 12, 21]},
+  {"i": 5, "k": 2, "role": "button", "text": "Continue", "flags": ["section_last"], "loc": [13, 17, 13, 25]}]}

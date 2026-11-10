@@ -1,0 +1,18 @@
+porter_voc.txt and porter_output.txt
+
+Source: Martin Porter, "The Porter Stemming Algorithm", https://tartarus.org/martin/PorterStemmer/
+  porter_voc.txt    = https://tartarus.org/martin/PorterStemmer/voc.txt     (the "sample vocabulary")
+  porter_output.txt = https://tartarus.org/martin/PorterStemmer/output.txt  (the "corresponding output")
+Downloaded 2026-11-10, unchanged except for the file names.
+  sha256 porter_voc.txt    59c1112775c40d8285096a1e064afe083be3e49aa5a33aa025e9858b36881072
+  sha256 porter_output.txt f47f840165b852c525a3d2161cc72c1f56100967c0a6bad9359d44421c57dc2a
+23,531 words, one per line; line n of the output is the stem of line n of the vocabulary.
+
+Licence: the page states that "all these encodings of the algorithm can be used free of charge for any purpose",
+and its FAQ adds that the licensing terms "are never more restrictive than the BSD License". The two test files
+are distributed from the same page under the same terms.
+
+The output was produced by Porter's ANSI C reference stemmer, which the page calls definitive. It differs from the
+1980 paper in three points marked -DEPARTURE- in the C source (bli -> ble in step 2, an extra logi -> log rule in
+step 2, and words of length 1 or 2 left alone). ui/porter.py and lint/porter.js follow the C version, so every word
+of these lists must match (ui/tests/test_porter.py).

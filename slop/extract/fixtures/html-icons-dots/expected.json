@@ -1,0 +1,12 @@
+{"schema": "slop.screen/1", "id": "0b0193dce4ced89e", "framework": "html",
+ "source": {"repo": "slop-fixtures", "path": "status.html", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "list", "line": 1},
+  {"k": 1, "kind": "body", "line": 6},
+  {"k": 2, "kind": "actions", "line": 7}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "list_item", "text": "Card payments", "flags": ["dot", "in_list"], "loc": [2, 46, 2, 59]},
+  {"i": 1, "k": 0, "role": "list_item", "text": "Click and collect", "flags": ["dot", "in_list"], "loc": [3, 39, 3, 56]},
+  {"i": 2, "k": 0, "role": "list_item", "text": "Gift vouchers", "flags": ["icon", "in_list"], "loc": [4, 35, 4, 48]},
+  {"i": 3, "k": 1, "role": "body", "text": "Updated every five minutes", "flags": ["icon"], "loc": [6, 49, 6, 75]},
+  {"i": 4, "k": 2, "role": "link", "text": "Incident history", "flags": ["icon"], "loc": [7, 20, 7, 36]}]}

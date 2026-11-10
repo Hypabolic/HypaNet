@@ -1,0 +1,12 @@
+{"schema": "slop.screen/1", "id": "47868640b0078d46", "framework": "swift",
+ "source": {"repo": "slop-fixtures", "path": "PauseOverlay.swift", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "header", "line": 8},
+  {"k": 1, "kind": "actions", "line": 19}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "eyebrow", "text": "Expedition halted", "flags": ["caps", "tracked", "small"], "loc": [9, 23, 9, 40]},
+  {"i": 1, "k": 0, "role": "h1", "text": "PAUSED", "flags": ["caps"], "loc": [13, 23, 13, 29]},
+  {"i": 2, "k": 0, "role": "subtitle", "text": "Resume returns control to the rover.", "flags": ["small", "section_first"], "loc": [15, 23, 15, 59]},
+  {"i": 3, "k": 1, "role": "button", "text": "RESUME", "flags": ["caps"], "loc": [20, 25, 20, 31]},
+  {"i": 4, "k": 1, "role": "button", "text": "OPTIONS", "flags": ["caps"], "loc": [21, 25, 21, 32]},
+  {"i": 5, "k": 1, "role": "button", "text": "ABANDON RUN", "flags": ["caps", "section_last"], "loc": [22, 25, 22, 36]}]}

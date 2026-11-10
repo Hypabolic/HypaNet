@@ -1,0 +1,337 @@
+{
+ "schema": "slop.screen/1",
+ "id": "8759dc9b4cc6ad22",
+ "framework": "tsx",
+ "source": {
+  "repo": "opsboard",
+  "path": "src/pages/Status.tsx",
+  "commit": "fixture",
+  "licence": "invented fixture"
+ },
+ "clusters": [
+  {
+   "k": 0,
+   "kind": "body",
+   "line": 8
+  },
+  {
+   "k": 1,
+   "kind": "header",
+   "line": 13
+  },
+  {
+   "k": 2,
+   "kind": "list",
+   "line": 21
+  },
+  {
+   "k": 3,
+   "kind": "list",
+   "line": 27
+  },
+  {
+   "k": 4,
+   "kind": "body",
+   "line": 39
+  }
+ ],
+ "nodes": [
+  {
+   "i": 0,
+   "k": 0,
+   "role": "nav",
+   "text": "Overview",
+   "flags": [
+    "in_nav"
+   ],
+   "loc": [
+    8,
+    21,
+    8,
+    29
+   ]
+  },
+  {
+   "i": 1,
+   "k": 0,
+   "role": "nav",
+   "text": "Status",
+   "flags": [
+    "in_nav"
+   ],
+   "loc": [
+    9,
+    47,
+    9,
+    53
+   ]
+  },
+  {
+   "i": 2,
+   "k": 0,
+   "role": "nav",
+   "text": "Billing",
+   "flags": [
+    "in_nav"
+   ],
+   "loc": [
+    10,
+    28,
+    10,
+    35
+   ]
+  },
+  {
+   "i": 3,
+   "k": 1,
+   "role": "h1",
+   "text": "Status",
+   "flags": [
+    "in_header"
+   ],
+   "loc": [
+    13,
+    13,
+    13,
+    19
+   ]
+  },
+  {
+   "i": 4,
+   "k": 1,
+   "role": "subtitle",
+   "text": "Checks run every minute from three regions.",
+   "flags": [
+    "in_header"
+   ],
+   "loc": [
+    14,
+    46,
+    14,
+    89
+   ]
+  },
+  {
+   "i": 5,
+   "k": 1,
+   "role": "badge",
+   "text": "● Live",
+   "flags": [
+    "pill",
+    "dot",
+    "small",
+    "in_header"
+   ],
+   "loc": [
+    15,
+    48,
+    15,
+    54
+   ]
+  },
+  {
+   "i": 6,
+   "k": 1,
+   "role": "tooltip",
+   "text": "Refresh now",
+   "flags": [
+    "in_header"
+   ],
+   "loc": [
+    16,
+    42,
+    16,
+    53
+   ]
+  },
+  {
+   "i": 7,
+   "k": 1,
+   "role": "aria",
+   "text": "Refresh service status",
+   "flags": [
+    "in_header"
+   ],
+   "loc": [
+    16,
+    67,
+    16,
+    89
+   ]
+  },
+  {
+   "i": 8,
+   "k": 2,
+   "role": "list_item",
+   "text": "Healthy",
+   "flags": [
+    "dot",
+    "in_list"
+   ],
+   "loc": [
+    21,
+    50,
+    21,
+    57
+   ]
+  },
+  {
+   "i": 9,
+   "k": 2,
+   "role": "list_item",
+   "text": "Degraded",
+   "flags": [
+    "dot",
+    "in_list"
+   ],
+   "loc": [
+    22,
+    50,
+    22,
+    58
+   ]
+  },
+  {
+   "i": 10,
+   "k": 2,
+   "role": "list_item",
+   "text": "Down",
+   "flags": [
+    "dot",
+    "in_list"
+   ],
+   "loc": [
+    23,
+    48,
+    23,
+    52
+   ]
+  },
+  {
+   "i": 11,
+   "k": 3,
+   "role": "cell",
+   "text": "Service",
+   "flags": [
+    "in_table"
+   ],
+   "loc": [
+    27,
+    19,
+    27,
+    26
+   ]
+  },
+  {
+   "i": 12,
+   "k": 3,
+   "role": "cell",
+   "text": "State",
+   "flags": [
+    "in_table"
+   ],
+   "loc": [
+    27,
+    35,
+    27,
+    40
+   ]
+  },
+  {
+   "i": 13,
+   "k": 3,
+   "role": "cell",
+   "text": "Uptime (30 days)",
+   "flags": [
+    "in_table"
+   ],
+   "loc": [
+    27,
+    49,
+    27,
+    65
+   ]
+  },
+  {
+   "i": 14,
+   "k": 3,
+   "role": "cell",
+   "text": "\ue000 name",
+   "flags": [
+    "dynamic",
+    "in_table"
+   ],
+   "loc": [
+    32,
+    19,
+    32,
+    27
+   ]
+  },
+  {
+   "i": 15,
+   "k": 3,
+   "role": "cell",
+   "text": "\ue000 state label",
+   "flags": [
+    "dynamic",
+    "stateful",
+    "dot",
+    "in_table"
+   ],
+   "loc": [
+    33,
+    57,
+    33,
+    71
+   ]
+  },
+  {
+   "i": 16,
+   "k": 3,
+   "role": "cell",
+   "text": "\ue000 uptime %",
+   "flags": [
+    "dynamic",
+    "in_table"
+   ],
+   "loc": [
+    34,
+    19,
+    34,
+    30
+   ]
+  },
+  {
+   "i": 17,
+   "k": 4,
+   "role": "caption",
+   "text": "Last updated \ue000 updated at. All times are UTC.",
+   "flags": [
+    "small",
+    "dynamic"
+   ],
+   "loc": [
+    39,
+    30,
+    39,
+    74
+   ]
+  },
+  {
+   "i": 18,
+   "k": 4,
+   "role": "caption",
+   "text": "The table above lists every service with its state and uptime.",
+   "flags": [
+    "small"
+   ],
+   "loc": [
+    40,
+    30,
+    40,
+    92
+   ]
+  }
+ ]
+}

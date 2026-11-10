@@ -1,0 +1,75 @@
+{
+ "schema": "slop.screen/1",
+ "id": "9308642a1e3b8a09",
+ "framework": "tsx",
+ "source": {
+  "repo": "slop-test-fixtures",
+  "path": "src/release_banner.tsx",
+  "commit": "0000000000000000000000000000000000000000",
+  "licence": "MIT"
+ },
+ "clusters": [
+  {
+   "k": 0,
+   "kind": "header",
+   "line": 5
+  }
+ ],
+ "nodes": [
+  {
+   "i": 0,
+   "k": 0,
+   "role": "badge",
+   "text": "New",
+   "flags": [
+    "pill",
+    "small"
+   ],
+   "loc": [
+    6,
+    7,
+    6,
+    10
+   ]
+  },
+  {
+   "i": 1,
+   "k": 0,
+   "role": "body",
+   "text": "Dark mode is here. Turn it on in Settings → Appearance.",
+   "flags": [],
+   "loc": [
+    7,
+    7,
+    7,
+    62
+   ]
+  },
+  {
+   "i": 2,
+   "k": 0,
+   "role": "link",
+   "text": "Learn more",
+   "flags": [],
+   "loc": [
+    8,
+    7,
+    8,
+    17
+   ]
+  },
+  {
+   "i": 3,
+   "k": 0,
+   "role": "button",
+   "text": "Dismiss",
+   "flags": [],
+   "loc": [
+    9,
+    7,
+    9,
+    14
+   ]
+  }
+ ]
+}

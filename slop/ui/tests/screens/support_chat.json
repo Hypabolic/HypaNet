@@ -1,0 +1,138 @@
+{
+ "schema": "slop.screen/1",
+ "id": "0a0e4a5f9469d1b0",
+ "framework": "tsx",
+ "source": {
+  "repo": "slop-test-fixtures",
+  "path": "src/support_chat.tsx",
+  "commit": "0000000000000000000000000000000000000000",
+  "licence": "MIT"
+ },
+ "clusters": [
+  {
+   "k": 0,
+   "kind": "header",
+   "line": 5
+  },
+  {
+   "k": 1,
+   "kind": "body",
+   "line": 9
+  }
+ ],
+ "nodes": [
+  {
+   "i": 0,
+   "k": 0,
+   "role": "h2",
+   "text": "Support",
+   "flags": [],
+   "loc": [
+    6,
+    7,
+    6,
+    14
+   ]
+  },
+  {
+   "i": 1,
+   "k": 0,
+   "role": "badge",
+   "text": "● Online",
+   "flags": [
+    "dot",
+    "pill"
+   ],
+   "loc": [
+    7,
+    7,
+    7,
+    15
+   ]
+  },
+  {
+   "i": 2,
+   "k": 0,
+   "role": "caption",
+   "text": "We usually reply in 5 min",
+   "flags": [
+    "small"
+   ],
+   "loc": [
+    8,
+    7,
+    8,
+    32
+   ]
+  },
+  {
+   "i": 3,
+   "k": 1,
+   "role": "body",
+   "text": "Hi! How can we help today?",
+   "flags": [],
+   "loc": [
+    10,
+    7,
+    10,
+    33
+   ]
+  },
+  {
+   "i": 4,
+   "k": 1,
+   "role": "input_value",
+   "text": "My invoice shows the wrong VAT number",
+   "flags": [
+    "dynamic"
+   ],
+   "loc": [
+    11,
+    7,
+    11,
+    44
+   ]
+  },
+  {
+   "i": 5,
+   "k": 1,
+   "role": "placeholder",
+   "text": "Type a message…",
+   "flags": [
+    "in_control"
+   ],
+   "loc": [
+    12,
+    7,
+    12,
+    22
+   ]
+  },
+  {
+   "i": 6,
+   "k": 1,
+   "role": "button",
+   "text": "Send",
+   "flags": [],
+   "loc": [
+    13,
+    7,
+    13,
+    11
+   ]
+  },
+  {
+   "i": 7,
+   "k": 1,
+   "role": "tooltip",
+   "text": "Send message",
+   "flags": [],
+   "loc": [
+    14,
+    7,
+    14,
+    19
+   ]
+  }
+ ]
+}

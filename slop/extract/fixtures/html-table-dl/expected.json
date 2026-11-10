@@ -1,0 +1,18 @@
+{"schema": "slop.screen/1", "id": "ef4880358ce1a0cb", "framework": "html",
+ "source": {"repo": "slop-fixtures", "path": "specs.html", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "list", "line": 2},
+  {"k": 1, "kind": "list", "line": 8},
+  {"k": 2, "kind": "body", "line": 12}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "caption", "text": "Kiln firing schedule", "flags": ["in_table"], "loc": [3, 14, 3, 34]},
+  {"i": 1, "k": 0, "role": "label", "text": "Stage", "flags": ["in_table"], "loc": [4, 13, 4, 18]},
+  {"i": 2, "k": 0, "role": "label", "text": "Temperature", "flags": ["in_table"], "loc": [4, 27, 4, 38]},
+  {"i": 3, "k": 0, "role": "cell", "text": "Bisque", "flags": ["in_table"], "loc": [5, 13, 5, 19]},
+  {"i": 4, "k": 0, "role": "cell", "text": "1000 °C", "flags": ["in_table"], "loc": [5, 28, 5, 40]},
+  {"i": 5, "k": 0, "role": "cell", "text": "Glaze", "flags": ["in_table"], "loc": [6, 13, 6, 18]},
+  {"i": 6, "k": 0, "role": "cell", "text": "1240 °C", "flags": ["in_table"], "loc": [6, 27, 6, 39]},
+  {"i": 7, "k": 1, "role": "label", "text": "Capacity", "flags": ["in_list"], "loc": [9, 9, 9, 17]},
+  {"i": 8, "k": 1, "role": "body", "text": "Forty mugs per load", "flags": ["in_list"], "loc": [10, 9, 10, 28]},
+  {"i": 9, "k": 2, "role": "alt", "text": "Kiln door open with shelves of bisque ware", "flags": [], "loc": [13, 30, 13, 72]},
+  {"i": 10, "k": 2, "role": "caption", "text": "The new kiln, installed in March", "flags": [], "loc": [14, 17, 14, 49]}]}

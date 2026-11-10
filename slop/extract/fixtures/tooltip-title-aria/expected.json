@@ -1,0 +1,14 @@
+{"schema": "slop.screen/1", "id": "d0d4b24d09690f43", "framework": "tsx",
+ "source": {"repo": "slop-fixtures", "path": "Toolbar.tsx", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "body", "line": 7},
+  {"k": 1, "kind": "body", "line": 6},
+  {"k": 2, "kind": "actions", "line": 15}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "aria", "text": "Bold", "flags": [], "loc": [9, 31, 9, 35]},
+  {"i": 1, "k": 0, "role": "tooltip", "text": "Bold (Ctrl+B)", "flags": ["title_case"], "loc": [11, 25, 11, 38]},
+  {"i": 2, "k": 1, "role": "tooltip", "text": "Italic text", "flags": [], "loc": [13, 22, 13, 33]},
+  {"i": 3, "k": 1, "role": "aria", "text": "Italic", "flags": [], "loc": [13, 47, 13, 53]},
+  {"i": 4, "k": 1, "role": "alt", "text": "Post office stamp with a puffin", "flags": [], "loc": [14, 34, 14, 65]},
+  {"i": 5, "k": 1, "role": "tooltip", "text": "Opens the style guide in a new tab", "flags": [], "loc": [15, 37, 15, 71]},
+  {"i": 6, "k": 2, "role": "link", "text": "Style guide", "flags": [], "loc": [15, 73, 15, 84]}]}

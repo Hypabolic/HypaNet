@@ -1,0 +1,111 @@
+{
+ "schema": "slop.screen/1",
+ "id": "efee191d1142fec4",
+ "framework": "tsx",
+ "source": {
+  "repo": "slop-test-fixtures",
+  "path": "src/close_dialog_aria.tsx",
+  "commit": "0000000000000000000000000000000000000000",
+  "licence": "MIT"
+ },
+ "clusters": [
+  {
+   "k": 0,
+   "kind": "state",
+   "line": 5
+  }
+ ],
+ "nodes": [
+  {
+   "i": 0,
+   "k": 0,
+   "role": "aria",
+   "text": "Close dialog",
+   "flags": [
+    "in_dialog"
+   ],
+   "loc": [
+    6,
+    7,
+    6,
+    19
+   ]
+  },
+  {
+   "i": 1,
+   "k": 0,
+   "role": "dialog_title",
+   "text": "Share this file",
+   "flags": [
+    "in_dialog"
+   ],
+   "loc": [
+    7,
+    7,
+    7,
+    22
+   ]
+  },
+  {
+   "i": 2,
+   "k": 0,
+   "role": "dialog_body",
+   "text": "Anyone with the link can view.",
+   "flags": [
+    "in_dialog"
+   ],
+   "loc": [
+    8,
+    7,
+    8,
+    37
+   ]
+  },
+  {
+   "i": 3,
+   "k": 0,
+   "role": "button",
+   "text": "Copy link",
+   "flags": [
+    "in_dialog"
+   ],
+   "loc": [
+    9,
+    7,
+    9,
+    16
+   ]
+  },
+  {
+   "i": 4,
+   "k": 0,
+   "role": "button",
+   "text": "Close",
+   "flags": [
+    "in_dialog"
+   ],
+   "loc": [
+    10,
+    7,
+    10,
+    12
+   ]
+  },
+  {
+   "i": 5,
+   "k": 0,
+   "role": "body",
+   "text": "Close dialog",
+   "flags": [
+    "in_dialog",
+    "sr_only"
+   ],
+   "loc": [
+    11,
+    7,
+    11,
+    19
+   ]
+  }
+ ]
+}

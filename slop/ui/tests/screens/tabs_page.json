@@ -1,0 +1,161 @@
+{
+ "schema": "slop.screen/1",
+ "id": "681933f305a507aa",
+ "framework": "tsx",
+ "source": {
+  "repo": "slop-test-fixtures",
+  "path": "src/tabs_page.tsx",
+  "commit": "0000000000000000000000000000000000000000",
+  "licence": "MIT"
+ },
+ "clusters": [
+  {
+   "k": 0,
+   "kind": "list",
+   "line": 5
+  },
+  {
+   "k": 1,
+   "kind": "header",
+   "line": 9
+  },
+  {
+   "k": 2,
+   "kind": "list",
+   "line": 13
+  }
+ ],
+ "nodes": [
+  {
+   "i": 0,
+   "k": 0,
+   "role": "tab",
+   "text": "Overview",
+   "flags": [
+    "in_nav"
+   ],
+   "loc": [
+    6,
+    7,
+    6,
+    15
+   ]
+  },
+  {
+   "i": 1,
+   "k": 0,
+   "role": "tab",
+   "text": "Activity",
+   "flags": [
+    "in_nav"
+   ],
+   "loc": [
+    7,
+    7,
+    7,
+    15
+   ]
+  },
+  {
+   "i": 2,
+   "k": 0,
+   "role": "tab",
+   "text": "Members",
+   "flags": [
+    "in_nav"
+   ],
+   "loc": [
+    8,
+    7,
+    8,
+    14
+   ]
+  },
+  {
+   "i": 3,
+   "k": 1,
+   "role": "h2",
+   "text": "Members",
+   "flags": [],
+   "loc": [
+    10,
+    7,
+    10,
+    14
+   ]
+  },
+  {
+   "i": 4,
+   "k": 1,
+   "role": "caption",
+   "text": "Members of this team",
+   "flags": [
+    "small"
+   ],
+   "loc": [
+    11,
+    7,
+    11,
+    27
+   ]
+  },
+  {
+   "i": 5,
+   "k": 1,
+   "role": "button",
+   "text": "Invite members",
+   "flags": [],
+   "loc": [
+    12,
+    7,
+    12,
+    21
+   ]
+  },
+  {
+   "i": 6,
+   "k": 2,
+   "role": "list_item",
+   "text": "Ada Okafor — Owner",
+   "flags": [
+    "in_list"
+   ],
+   "loc": [
+    14,
+    7,
+    14,
+    25
+   ]
+  },
+  {
+   "i": 7,
+   "k": 2,
+   "role": "list_item",
+   "text": "Tom Brandt — Editor",
+   "flags": [
+    "in_list"
+   ],
+   "loc": [
+    15,
+    7,
+    15,
+    26
+   ]
+  },
+  {
+   "i": 8,
+   "k": 2,
+   "role": "list_item",
+   "text": "Mina Sato — Viewer",
+   "flags": [
+    "in_list"
+   ],
+   "loc": [
+    16,
+    7,
+    16,
+    25
+   ]
+  }
+ ]
+}

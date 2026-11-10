@@ -1,0 +1,20 @@
+{"schema": "slop.screen/1", "id": "47c54e81674ff1a0", "framework": "swift",
+ "source": {"repo": "slop-fixtures", "path": "FeatureList.swift", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "header", "line": 6},
+  {"k": 1, "kind": "header", "line": 9},
+  {"k": 2, "kind": "header", "line": 10},
+  {"k": 3, "kind": "header", "line": 11},
+  {"k": 4, "kind": "body", "line": 16},
+  {"k": 5, "kind": "header", "line": 25}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "h2", "text": "Why rangers use it", "flags": [], "loc": [6, 19, 6, 37]},
+  {"i": 1, "k": 1, "role": "h3", "text": "Offline maps", "flags": ["section_first", "repeated"], "loc": [9, 32, 9, 44]},
+  {"i": 2, "k": 1, "role": "subtitle", "text": "Download a park before you lose signal.", "flags": ["section_first", "section_last", "repeated"], "loc": [9, 58, 9, 97]},
+  {"i": 3, "k": 2, "role": "h3", "text": "Wildlife log", "flags": ["repeated"], "loc": [10, 32, 10, 44]},
+  {"i": 4, "k": 2, "role": "subtitle", "text": "Pin sightings with a photo and a time.", "flags": ["section_first", "section_last", "repeated"], "loc": [10, 58, 10, 96]},
+  {"i": 5, "k": 3, "role": "h3", "text": "Shift handover", "flags": ["repeated"], "loc": [11, 32, 11, 46]},
+  {"i": 6, "k": 3, "role": "subtitle", "text": "Leave notes for the next ranger on duty.", "flags": ["section_first", "section_last", "repeated"], "loc": [11, 60, 11, 100]},
+  {"i": 7, "k": 4, "role": "body", "text": "Free for volunteer groups", "flags": ["small"], "loc": [16, 15, 16, 40]},
+  {"i": 8, "k": 5, "role": "h4", "text": "\ue000 title", "flags": ["dynamic", "stateful"], "loc": [26, 18, 26, 23]},
+  {"i": 9, "k": 5, "role": "subtitle", "text": "\ue000 subtitle", "flags": ["dynamic", "stateful", "section_first", "section_last"], "loc": [27, 18, 27, 26]}]}

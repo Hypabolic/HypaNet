@@ -1,0 +1,15 @@
+{"schema": "slop.screen/1", "id": "95acea059d73d972", "framework": "html",
+ "source": {"repo": "slop-fixtures", "path": "account.html", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "list", "line": 1},
+  {"k": 1, "kind": "list", "line": 7},
+  {"k": 2, "kind": "header", "line": 11},
+  {"k": 3, "kind": "list", "line": 13}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "aria", "text": "breadcrumb", "flags": ["in_nav"], "loc": [1, 18, 1, 28]},
+  {"i": 1, "k": 0, "role": "breadcrumb", "text": "Home", "flags": ["in_nav"], "loc": [3, 21, 3, 25]},
+  {"i": 2, "k": 0, "role": "breadcrumb", "text": "Account", "flags": ["in_nav"], "loc": [4, 9, 4, 16]},
+  {"i": 3, "k": 1, "role": "tab", "text": "Profile", "flags": [], "loc": [8, 43, 8, 50]},
+  {"i": 4, "k": 1, "role": "tab", "text": "Billing", "flags": [], "loc": [9, 22, 9, 29]},
+  {"i": 5, "k": 2, "role": "h3", "text": "Saved addresses", "flags": [], "loc": [11, 36, 11, 51]},
+  {"i": 6, "k": 3, "role": "menu_item", "text": "Add an address", "flags": ["in_list", "section_first", "section_last"], "loc": [13, 24, 13, 38]}]}

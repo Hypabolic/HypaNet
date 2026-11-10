@@ -1,0 +1,192 @@
+{
+ "schema": "slop.screen/1",
+ "id": "baa7e8539953519c",
+ "framework": "tsx",
+ "source": {
+  "repo": "slop-test-fixtures",
+  "path": "src/ops_dashboard.tsx",
+  "commit": "0000000000000000000000000000000000000000",
+  "licence": "MIT"
+ },
+ "clusters": [
+  {
+   "k": 0,
+   "kind": "header",
+   "line": 5
+  },
+  {
+   "k": 1,
+   "kind": "card",
+   "line": 9
+  },
+  {
+   "k": 2,
+   "kind": "card",
+   "line": 12
+  },
+  {
+   "k": 3,
+   "kind": "card",
+   "line": 15
+  }
+ ],
+ "nodes": [
+  {
+   "i": 0,
+   "k": 0,
+   "role": "h1",
+   "text": "Overview",
+   "flags": [],
+   "loc": [
+    6,
+    7,
+    6,
+    15
+   ]
+  },
+  {
+   "i": 1,
+   "k": 0,
+   "role": "badge",
+   "text": "● Live",
+   "flags": [
+    "dot",
+    "pill",
+    "small"
+   ],
+   "loc": [
+    7,
+    7,
+    7,
+    13
+   ]
+  },
+  {
+   "i": 2,
+   "k": 0,
+   "role": "subtitle",
+   "text": "Updated 2 minutes ago",
+   "flags": [
+    "dynamic",
+    "small"
+   ],
+   "loc": [
+    8,
+    7,
+    8,
+    28
+   ]
+  },
+  {
+   "i": 3,
+   "k": 1,
+   "role": "stat",
+   "text": "1,204",
+   "flags": [
+    "in_card",
+    "dynamic"
+   ],
+   "loc": [
+    10,
+    7,
+    10,
+    12
+   ]
+  },
+  {
+   "i": 4,
+   "k": 1,
+   "role": "caption",
+   "text": "Active users",
+   "flags": [
+    "in_card",
+    "small"
+   ],
+   "loc": [
+    11,
+    7,
+    11,
+    19
+   ]
+  },
+  {
+   "i": 5,
+   "k": 2,
+   "role": "stat",
+   "text": "98.7%",
+   "flags": [
+    "in_card",
+    "dynamic"
+   ],
+   "loc": [
+    13,
+    7,
+    13,
+    12
+   ]
+  },
+  {
+   "i": 6,
+   "k": 2,
+   "role": "caption",
+   "text": "Uptime this month",
+   "flags": [
+    "in_card",
+    "small"
+   ],
+   "loc": [
+    14,
+    7,
+    14,
+    24
+   ]
+  },
+  {
+   "i": 7,
+   "k": 3,
+   "role": "stat",
+   "text": "03",
+   "flags": [
+    "in_card"
+   ],
+   "loc": [
+    16,
+    7,
+    16,
+    9
+   ]
+  },
+  {
+   "i": 8,
+   "k": 3,
+   "role": "caption",
+   "text": "Open incidents",
+   "flags": [
+    "in_card",
+    "small"
+   ],
+   "loc": [
+    17,
+    7,
+    17,
+    21
+   ]
+  },
+  {
+   "i": 9,
+   "k": 3,
+   "role": "badge",
+   "text": "Incidents",
+   "flags": [
+    "in_card",
+    "pill"
+   ],
+   "loc": [
+    18,
+    7,
+    18,
+    16
+   ]
+  }
+ ]
+}

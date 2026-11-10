@@ -1,0 +1,105 @@
+{
+ "schema": "slop.screen/1",
+ "id": "fa4daffd8f72c87d",
+ "framework": "tsx",
+ "source": {
+  "repo": "slop-test-fixtures",
+  "path": "src/identifiers.tsx",
+  "commit": "0000000000000000000000000000000000000000",
+  "licence": "MIT"
+ },
+ "clusters": [
+  {
+   "k": 0,
+   "kind": "body",
+   "line": 5
+  }
+ ],
+ "nodes": [
+  {
+   "i": 0,
+   "k": 0,
+   "role": "body",
+   "text": "\ue000 userDisplayName",
+   "flags": [
+    "dynamic"
+   ],
+   "loc": [
+    6,
+    7,
+    6,
+    26
+   ]
+  },
+  {
+   "i": 1,
+   "k": 0,
+   "role": "body",
+   "text": "\ue000 HTTPServerError \ue001 \ue000 navigationTitle",
+   "flags": [
+    "dynamic",
+    "conditional"
+   ],
+   "loc": [
+    7,
+    7,
+    7,
+    50
+   ]
+  },
+  {
+   "i": 2,
+   "k": 0,
+   "role": "body",
+   "text": "create_engine snake_case_name __private__",
+   "flags": [],
+   "loc": [
+    8,
+    7,
+    8,
+    48
+   ]
+  },
+  {
+   "i": 3,
+   "k": 0,
+   "role": "body",
+   "text": "iPhone macOS PDFs XMLHttpRequest utf8Encode v2Api",
+   "flags": [],
+   "loc": [
+    9,
+    7,
+    9,
+    56
+   ]
+  },
+  {
+   "i": 4,
+   "k": 0,
+   "role": "body",
+   "text": "VARIANT ALTITUDE Var alt VAR ALT",
+   "flags": [],
+   "loc": [
+    10,
+    7,
+    10,
+    39
+   ]
+  },
+  {
+   "i": 5,
+   "k": 0,
+   "role": "label",
+   "text": "\ue000 itemCount items",
+   "flags": [
+    "dynamic"
+   ],
+   "loc": [
+    11,
+    7,
+    11,
+    26
+   ]
+  }
+ ]
+}

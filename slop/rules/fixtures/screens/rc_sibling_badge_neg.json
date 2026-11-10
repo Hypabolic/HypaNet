@@ -1,0 +1,18 @@
+{"schema": "slop.screen/1", "id": "c4a35046f4572f28", "framework": "tsx",
+ "source": {"repo": "slop-rules-fixtures", "path": "src/rc_sibling_badge_neg.tsx", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "header", "line": 2},
+  {"k": 1, "kind": "card", "line": 4},
+  {"k": 2, "kind": "card", "line": 7},
+  {"k": 3, "kind": "card", "line": 10},
+  {"k": 4, "kind": "card", "line": 13}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "h2", "text": "Tonight’s specials", "flags": [], "loc": [3, 7, 3, 25]},
+  {"i": 1, "k": 1, "role": "badge", "text": "Vegan", "flags": ["small", "pill", "in_card"], "loc": [5, 7, 5, 12]},
+  {"i": 2, "k": 1, "role": "h3", "text": "Roast squash and lentils", "flags": ["in_card"], "loc": [6, 7, 6, 31]},
+  {"i": 3, "k": 2, "role": "badge", "text": "Gluten free", "flags": ["small", "pill", "in_card"], "loc": [8, 7, 8, 18]},
+  {"i": 4, "k": 2, "role": "h3", "text": "Grilled hake", "flags": ["in_card"], "loc": [9, 7, 9, 19]},
+  {"i": 5, "k": 3, "role": "badge", "text": "Spicy", "flags": ["small", "pill", "in_card"], "loc": [11, 7, 11, 12]},
+  {"i": 6, "k": 3, "role": "h3", "text": "Lamb shoulder with harissa", "flags": ["in_card"], "loc": [12, 7, 12, 33]},
+  {"i": 7, "k": 4, "role": "badge", "text": "Chef’s pick", "flags": ["small", "pill", "in_card"], "loc": [14, 7, 14, 18]},
+  {"i": 8, "k": 4, "role": "h3", "text": "Treacle tart", "flags": ["in_card"], "loc": [15, 7, 15, 19]}]}

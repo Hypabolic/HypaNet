@@ -1,0 +1,128 @@
+{
+ "schema": "slop.screen/1",
+ "id": "aa7a2c595e061d6c",
+ "framework": "tsx",
+ "source": {
+  "repo": "slop-test-fixtures",
+  "path": "src/arena_pause.tsx",
+  "commit": "0000000000000000000000000000000000000000",
+  "licence": "MIT"
+ },
+ "clusters": [
+  {
+   "k": 0,
+   "kind": "header",
+   "line": 5
+  },
+  {
+   "k": 1,
+   "kind": "actions",
+   "line": 9
+  }
+ ],
+ "nodes": [
+  {
+   "i": 0,
+   "k": 0,
+   "role": "eyebrow",
+   "text": "MATCH SUSPENDED",
+   "flags": [
+    "caps",
+    "tracked",
+    "small"
+   ],
+   "loc": [
+    6,
+    7,
+    6,
+    22
+   ]
+  },
+  {
+   "i": 1,
+   "k": 0,
+   "role": "h1",
+   "text": "PAUSED",
+   "flags": [
+    "caps"
+   ],
+   "loc": [
+    7,
+    7,
+    7,
+    13
+   ]
+  },
+  {
+   "i": 2,
+   "k": 0,
+   "role": "subtitle",
+   "text": "Press Continue to return to the arena.",
+   "flags": [
+    "small"
+   ],
+   "loc": [
+    8,
+    7,
+    8,
+    45
+   ]
+  },
+  {
+   "i": 3,
+   "k": 1,
+   "role": "button",
+   "text": "CONTINUE",
+   "flags": [
+    "caps"
+   ],
+   "loc": [
+    10,
+    7,
+    10,
+    15
+   ]
+  },
+  {
+   "i": 4,
+   "k": 1,
+   "role": "button",
+   "text": "OPTIONS",
+   "flags": [
+    "caps"
+   ],
+   "loc": [
+    11,
+    7,
+    11,
+    14
+   ]
+  },
+  {
+   "i": 5,
+   "k": 1,
+   "role": "button",
+   "text": "Quit to lobby",
+   "flags": [],
+   "loc": [
+    12,
+    7,
+    12,
+    20
+   ]
+  },
+  {
+   "i": 6,
+   "k": 1,
+   "role": "aria",
+   "text": "Close pause menu",
+   "flags": [],
+   "loc": [
+    13,
+    7,
+    13,
+    23
+   ]
+  }
+ ]
+}

@@ -1,0 +1,146 @@
+{
+ "schema": "slop.screen/1",
+ "id": "fa8cf02f11d770de",
+ "framework": "tsx",
+ "source": {
+  "repo": "slop-test-fixtures",
+  "path": "src/project_page.tsx",
+  "commit": "0000000000000000000000000000000000000000",
+  "licence": "MIT"
+ },
+ "clusters": [
+  {
+   "k": 0,
+   "kind": "list",
+   "line": 5
+  },
+  {
+   "k": 1,
+   "kind": "header",
+   "line": 9
+  },
+  {
+   "k": 2,
+   "kind": "body",
+   "line": 14
+  }
+ ],
+ "nodes": [
+  {
+   "i": 0,
+   "k": 0,
+   "role": "nav",
+   "text": "Home",
+   "flags": [
+    "in_nav"
+   ],
+   "loc": [
+    6,
+    7,
+    6,
+    11
+   ]
+  },
+  {
+   "i": 1,
+   "k": 0,
+   "role": "nav",
+   "text": "Projects",
+   "flags": [
+    "in_nav"
+   ],
+   "loc": [
+    7,
+    7,
+    7,
+    15
+   ]
+  },
+  {
+   "i": 2,
+   "k": 0,
+   "role": "nav",
+   "text": "Settings",
+   "flags": [
+    "in_nav"
+   ],
+   "loc": [
+    8,
+    7,
+    8,
+    15
+   ]
+  },
+  {
+   "i": 3,
+   "k": 1,
+   "role": "breadcrumb",
+   "text": "Projects",
+   "flags": [
+    "in_nav"
+   ],
+   "loc": [
+    10,
+    7,
+    10,
+    15
+   ]
+  },
+  {
+   "i": 4,
+   "k": 1,
+   "role": "breadcrumb",
+   "text": "Website redesign",
+   "flags": [
+    "in_nav"
+   ],
+   "loc": [
+    11,
+    7,
+    11,
+    23
+   ]
+  },
+  {
+   "i": 5,
+   "k": 1,
+   "role": "h1",
+   "text": "Website redesign",
+   "flags": [],
+   "loc": [
+    12,
+    7,
+    12,
+    23
+   ]
+  },
+  {
+   "i": 6,
+   "k": 1,
+   "role": "subtitle",
+   "text": "The redesign of the website.",
+   "flags": [
+    "small"
+   ],
+   "loc": [
+    13,
+    7,
+    13,
+    35
+   ]
+  },
+  {
+   "i": 7,
+   "k": 2,
+   "role": "body",
+   "text": "Kick-off is on 14 March 2027 with the design team.",
+   "flags": [],
+   "loc": [
+    15,
+    7,
+    15,
+    57
+   ]
+  }
+ ]
+}

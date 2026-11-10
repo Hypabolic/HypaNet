@@ -1,0 +1,9 @@
+{"schema": "slop.screen/1", "id": "7777cf143ee8d352", "framework": "html",
+ "source": {"repo": "slop-fixtures", "path": "notice.html", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "header", "line": 1}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "eyebrow", "text": "Notice to members", "flags": ["caps", "tracked", "small"], "loc": [2, 80, 2, 97]},
+  {"i": 1, "k": 0, "role": "h2", "text": "Pool closed for re-tiling", "flags": [], "loc": [3, 31, 3, 56]},
+  {"i": 2, "k": 0, "role": "subtitle", "text": "Swim sessions move to the leisure centre — same times & same lanes.", "flags": ["section_first"], "loc": [4, 6, 4, 83]},
+  {"i": 3, "k": 0, "role": "link", "text": "Directions to the leisure centre →", "flags": ["arrow_tail", "section_last"], "loc": [5, 21, 5, 60]}]}

@@ -1,0 +1,115 @@
+{
+ "schema": "slop.screen/1",
+ "id": "f7b15823762ddd80",
+ "framework": "tsx",
+ "source": {
+  "repo": "slop-test-fixtures",
+  "path": "src/search_control.tsx",
+  "commit": "0000000000000000000000000000000000000000",
+  "licence": "MIT"
+ },
+ "clusters": [
+  {
+   "k": 0,
+   "kind": "control",
+   "line": 5
+  },
+  {
+   "k": 1,
+   "kind": "state",
+   "line": 10
+  }
+ ],
+ "nodes": [
+  {
+   "i": 0,
+   "k": 0,
+   "role": "aria",
+   "text": "Search",
+   "flags": [],
+   "loc": [
+    6,
+    7,
+    6,
+    13
+   ]
+  },
+  {
+   "i": 1,
+   "k": 0,
+   "role": "placeholder",
+   "text": "Search projects…",
+   "flags": [
+    "in_control"
+   ],
+   "loc": [
+    7,
+    7,
+    7,
+    23
+   ]
+  },
+  {
+   "i": 2,
+   "k": 0,
+   "role": "label",
+   "text": "Search",
+   "flags": [
+    "in_control"
+   ],
+   "loc": [
+    8,
+    7,
+    8,
+    13
+   ]
+  },
+  {
+   "i": 3,
+   "k": 0,
+   "role": "helper",
+   "text": "Search by name, owner or tag.",
+   "flags": [
+    "in_control",
+    "small"
+   ],
+   "loc": [
+    9,
+    7,
+    9,
+    36
+   ]
+  },
+  {
+   "i": 4,
+   "k": 1,
+   "role": "empty_title",
+   "text": "No results",
+   "flags": [
+    "in_state"
+   ],
+   "loc": [
+    11,
+    7,
+    11,
+    17
+   ]
+  },
+  {
+   "i": 5,
+   "k": 1,
+   "role": "empty_body",
+   "text": "No results for \ue000 query. Try another search.",
+   "flags": [
+    "in_state",
+    "dynamic"
+   ],
+   "loc": [
+    12,
+    7,
+    12,
+    52
+   ]
+  }
+ ]
+}

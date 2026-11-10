@@ -1,0 +1,10 @@
+{"schema": "slop.screen/1", "id": "4c95e5ff563dabc3", "framework": "tsx",
+ "source": {"repo": "slop-fixtures", "path": "ProfileForm.tsx", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "control", "line": 12},
+  {"k": 1, "kind": "actions", "line": 22}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "label", "text": "Handle", "flags": ["in_form", "in_control"], "loc": [13, 26, 13, 32]},
+  {"i": 1, "k": 0, "role": "placeholder", "text": "climber_42", "flags": ["in_form", "in_control"], "loc": [15, 37, 15, 47]},
+  {"i": 2, "k": 0, "role": "helper", "text": "Other climbers see this on the route log.", "flags": ["in_form", "in_control"], "loc": [17, 32, 17, 73]},
+  {"i": 3, "k": 1, "role": "button", "text": "Update profile", "flags": ["in_form"], "loc": [22, 31, 22, 45]}]}

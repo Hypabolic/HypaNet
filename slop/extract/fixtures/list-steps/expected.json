@@ -1,0 +1,13 @@
+{"schema": "slop.screen/1", "id": "5eb335986bebb2c6", "framework": "tsx",
+ "source": {"repo": "slop-fixtures", "path": "HowToJoin.tsx", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "header", "line": 4},
+  {"k": 1, "kind": "list", "line": 5},
+  {"k": 2, "kind": "list", "line": 10}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "h2", "text": "Joining the choir", "flags": [], "loc": [4, 11, 4, 28]},
+  {"i": 1, "k": 1, "role": "list_item", "text": "Come to an open rehearsal on a Wednesday.", "flags": ["in_list", "section_first"], "loc": [6, 13, 6, 54]},
+  {"i": 2, "k": 1, "role": "list_item", "text": "Sing a verse of anything you like for the section leader.", "flags": ["in_list"], "loc": [7, 13, 7, 70]},
+  {"i": 3, "k": 1, "role": "list_item", "text": "Pick up your folder and a rehearsal timetable.", "flags": ["in_list"], "loc": [8, 13, 8, 59]},
+  {"i": 4, "k": 2, "role": "list_item", "text": "No reading music required", "flags": ["in_list"], "loc": [11, 13, 11, 38]},
+  {"i": 5, "k": 2, "role": "list_item", "text": "Tea and biscuits at the interval", "flags": ["in_list", "section_last"], "loc": [12, 13, 12, 45]}]}

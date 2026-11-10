@@ -1,0 +1,1446 @@
+{
+ "schema": "slop.screen/1",
+ "id": "cf6b463a71853954",
+ "framework": "tsx",
+ "source": {
+  "repo": "slop-test-fixtures",
+  "path": "src/office_cards_82.tsx",
+  "commit": "0000000000000000000000000000000000000000",
+  "licence": "MIT"
+ },
+ "clusters": [
+  {
+   "k": 0,
+   "kind": "header",
+   "line": 5
+  },
+  {
+   "k": 1,
+   "kind": "card",
+   "line": 8
+  },
+  {
+   "k": 2,
+   "kind": "card",
+   "line": 13
+  },
+  {
+   "k": 3,
+   "kind": "card",
+   "line": 18
+  },
+  {
+   "k": 4,
+   "kind": "card",
+   "line": 23
+  },
+  {
+   "k": 5,
+   "kind": "card",
+   "line": 28
+  },
+  {
+   "k": 6,
+   "kind": "card",
+   "line": 33
+  },
+  {
+   "k": 7,
+   "kind": "card",
+   "line": 38
+  },
+  {
+   "k": 8,
+   "kind": "card",
+   "line": 43
+  },
+  {
+   "k": 9,
+   "kind": "card",
+   "line": 48
+  },
+  {
+   "k": 10,
+   "kind": "card",
+   "line": 53
+  },
+  {
+   "k": 11,
+   "kind": "card",
+   "line": 58
+  },
+  {
+   "k": 12,
+   "kind": "card",
+   "line": 63
+  },
+  {
+   "k": 13,
+   "kind": "card",
+   "line": 68
+  },
+  {
+   "k": 14,
+   "kind": "card",
+   "line": 73
+  },
+  {
+   "k": 15,
+   "kind": "card",
+   "line": 78
+  },
+  {
+   "k": 16,
+   "kind": "card",
+   "line": 83
+  },
+  {
+   "k": 17,
+   "kind": "card",
+   "line": 88
+  },
+  {
+   "k": 18,
+   "kind": "card",
+   "line": 93
+  },
+  {
+   "k": 19,
+   "kind": "card",
+   "line": 98
+  },
+  {
+   "k": 20,
+   "kind": "card",
+   "line": 103
+  }
+ ],
+ "nodes": [
+  {
+   "i": 0,
+   "k": 0,
+   "role": "h1",
+   "text": "Office locations",
+   "flags": [],
+   "loc": [
+    6,
+    7,
+    6,
+    23
+   ]
+  },
+  {
+   "i": 1,
+   "k": 0,
+   "role": "subtitle",
+   "text": "Where our teams work.",
+   "flags": [],
+   "loc": [
+    7,
+    7,
+    7,
+    28
+   ]
+  },
+  {
+   "i": 2,
+   "k": 1,
+   "role": "h3",
+   "text": "Lisbon",
+   "flags": [
+    "in_card",
+    "repeated"
+   ],
+   "loc": [
+    9,
+    7,
+    9,
+    13
+   ]
+  },
+  {
+   "i": 3,
+   "k": 1,
+   "role": "caption",
+   "text": "10 people",
+   "flags": [
+    "in_card",
+    "repeated",
+    "small"
+   ],
+   "loc": [
+    10,
+    7,
+    10,
+    16
+   ]
+  },
+  {
+   "i": 4,
+   "k": 1,
+   "role": "body",
+   "text": "Our Lisbon office",
+   "flags": [
+    "in_card",
+    "repeated"
+   ],
+   "loc": [
+    11,
+    7,
+    11,
+    24
+   ]
+  },
+  {
+   "i": 5,
+   "k": 1,
+   "role": "link",
+   "text": "Visit Lisbon",
+   "flags": [
+    "in_card",
+    "repeated"
+   ],
+   "loc": [
+    12,
+    7,
+    12,
+    19
+   ]
+  },
+  {
+   "i": 6,
+   "k": 2,
+   "role": "h3",
+   "text": "Oslo",
+   "flags": [
+    "in_card",
+    "repeated"
+   ],
+   "loc": [
+    14,
+    7,
+    14,
+    11
+   ]
+  },
+  {
+   "i": 7,
+   "k": 2,
+   "role": "caption",
+   "text": "11 people",
+   "flags": [
+    "in_card",
+    "repeated",
+    "small"
+   ],
+   "loc": [
+    15,
+    7,
+    15,
+    16
+   ]
+  },
+  {
+   "i": 8,
+   "k": 2,
+   "role": "body",
+   "text": "Our Oslo office",
+   "flags": [
+    "in_card",
+    "repeated"
+   ],
+   "loc": [
+    16,
+    7,
+    16,
+    22
+   ]
+  },
+  {
+   "i": 9,
+   "k": 2,
+   "role": "link",
+   "text": "Visit Oslo",
+   "flags": [
+    "in_card",
+    "repeated"
+   ],
+   "loc": [
+    17,
+    7,
+    17,
+    17
+   ]
+  },
+  {
+   "i": 10,
+   "k": 3,
+   "role": "h3",
+   "text": "Kyoto",
+   "flags": [
+    "in_card",
+    "repeated"
+   ],
+   "loc": [
+    19,
+    7,
+    19,
+    12
+   ]
+  },
+  {
+   "i": 11,
+   "k": 3,
+   "role": "caption",
+   "text": "12 people",
+   "flags": [
+    "in_card",
+    "repeated",
+    "small"
+   ],
+   "loc": [
+    20,
+    7,
+    20,
+    16
+   ]
+  },
+  {
+   "i": 12,
+   "k": 3,
+   "role": "body",
+   "text": "Our Kyoto office",
+   "flags": [
+    "in_card",
+    "repeated"
+   ],
+   "loc": [
+    21,
+    7,
+    21,
+    23
+   ]
+  },
+  {
+   "i": 13,
+   "k": 3,
+   "role": "link",
+   "text": "Visit Kyoto",
+   "flags": [
+    "in_card",
+    "repeated"
+   ],
+   "loc": [
+    22,
+    7,
+    22,
+    18
+   ]
+  },
+  {
+   "i": 14,
+   "k": 4,
+   "role": "h3",
+   "text": "Lagos",
+   "flags": [
+    "in_card",
+    "repeated"
+   ],
+   "loc": [
+    24,
+    7,
+    24,
+    12
+   ]
+  },
+  {
+   "i": 15,
+   "k": 4,
+   "role": "caption",
+   "text": "13 people",
+   "flags": [
+    "in_card",
+    "repeated",
+    "small"
+   ],
+   "loc": [
+    25,
+    7,
+    25,
+    16
+   ]
+  },
+  {
+   "i": 16,
+   "k": 4,
+   "role": "body",
+   "text": "Our Lagos office",
+   "flags": [
+    "in_card",
+    "repeated"
+   ],
+   "loc": [
+    26,
+    7,
+    26,
+    23
+   ]
+  },
+  {
+   "i": 17,
+   "k": 4,
+   "role": "link",
+   "text": "Visit Lagos",
+   "flags": [
+    "in_card",
+    "repeated"
+   ],
+   "loc": [
+    27,
+    7,
+    27,
+    18
+   ]
+  },
+  {
+   "i": 18,
+   "k": 5,
+   "role": "h3",
+   "text": "Quito",
+   "flags": [
+    "in_card",
+    "repeated"
+   ],
+   "loc": [
+    29,
+    7,
+    29,
+    12
+   ]
+  },
+  {
+   "i": 19,
+   "k": 5,
+   "role": "caption",
+   "text": "14 people",
+   "flags": [
+    "in_card",
+    "repeated",
+    "small"
+   ],
+   "loc": [
+    30,
+    7,
+    30,
+    16
+   ]
+  },
+  {
+   "i": 20,
+   "k": 5,
+   "role": "body",
+   "text": "Our Quito office",
+   "flags": [
+    "in_card",
+    "repeated"
+   ],
+   "loc": [
+    31,
+    7,
+    31,
+    23
+   ]
+  },
+  {
+   "i": 21,
+   "k": 5,
+   "role": "link",
+   "text": "Visit Quito",
+   "flags": [
+    "in_card",
+    "repeated"
+   ],
+   "loc": [
+    32,
+    7,
+    32,
+    18
+   ]
+  },
+  {
+   "i": 22,
+   "k": 6,
+   "role": "h3",
+   "text": "Perth",
+   "flags": [
+    "in_card",
+    "repeated"
+   ],
+   "loc": [
+    34,
+    7,
+    34,
+    12
+   ]
+  },
+  {
+   "i": 23,
+   "k": 6,
+   "role": "caption",
+   "text": "15 people",
+   "flags": [
+    "in_card",
+    "repeated",
+    "small"
+   ],
+   "loc": [
+    35,
+    7,
+    35,
+    16
+   ]
+  },
+  {
+   "i": 24,
+   "k": 6,
+   "role": "body",
+   "text": "Our Perth office",
+   "flags": [
+    "in_card",
+    "repeated"
+   ],
+   "loc": [
+    36,
+    7,
+    36,
+    23
+   ]
+  },
+  {
+   "i": 25,
+   "k": 6,
+   "role": "link",
+   "text": "Visit Perth",
+   "flags": [
+    "in_card",
+    "repeated"
+   ],
+   "loc": [
+    37,
+    7,
+    37,
+    18
+   ]
+  },
+  {
+   "i": 26,
+   "k": 7,
+   "role": "h3",
+   "text": "Tallinn",
+   "flags": [
+    "in_card",
+    "repeated"
+   ],
+   "loc": [
+    39,
+    7,
+    39,
+    14
+   ]
+  },
+  {
+   "i": 27,
+   "k": 7,
+   "role": "caption",
+   "text": "16 people",
+   "flags": [
+    "in_card",
+    "repeated",
+    "small"
+   ],
+   "loc": [
+    40,
+    7,
+    40,
+    16
+   ]
+  },
+  {
+   "i": 28,
+   "k": 7,
+   "role": "body",
+   "text": "Our Tallinn office",
+   "flags": [
+    "in_card",
+    "repeated"
+   ],
+   "loc": [
+    41,
+    7,
+    41,
+    25
+   ]
+  },
+  {
+   "i": 29,
+   "k": 7,
+   "role": "link",
+   "text": "Visit Tallinn",
+   "flags": [
+    "in_card",
+    "repeated"
+   ],
+   "loc": [
+    42,
+    7,
+    42,
+    20
+   ]
+  },
+  {
+   "i": 30,
+   "k": 8,
+   "role": "h3",
+   "text": "Accra",
+   "flags": [
+    "in_card",
+    "repeated"
+   ],
+   "loc": [
+    44,
+    7,
+    44,
+    12
+   ]
+  },
+  {
+   "i": 31,
+   "k": 8,
+   "role": "caption",
+   "text": "17 people",
+   "flags": [
+    "in_card",
+    "repeated",
+    "small"
+   ],
+   "loc": [
+    45,
+    7,
+    45,
+    16
+   ]
+  },
+  {
+   "i": 32,
+   "k": 8,
+   "role": "body",
+   "text": "Our Accra office",
+   "flags": [
+    "in_card",
+    "repeated"
+   ],
+   "loc": [
+    46,
+    7,
+    46,
+    23
+   ]
+  },
+  {
+   "i": 33,
+   "k": 8,
+   "role": "link",
+   "text": "Visit Accra",
+   "flags": [
+    "in_card",
+    "repeated"
+   ],
+   "loc": [
+    47,
+    7,
+    47,
+    18
+   ]
+  },
+  {
+   "i": 34,
+   "k": 9,
+   "role": "h3",
+   "text": "Hanoi",
+   "flags": [
+    "in_card",
+    "repeated"
+   ],
+   "loc": [
+    49,
+    7,
+    49,
+    12
+   ]
+  },
+  {
+   "i": 35,
+   "k": 9,
+   "role": "caption",
+   "text": "18 people",
+   "flags": [
+    "in_card",
+    "repeated",
+    "small"
+   ],
+   "loc": [
+    50,
+    7,
+    50,
+    16
+   ]
+  },
+  {
+   "i": 36,
+   "k": 9,
+   "role": "body",
+   "text": "Our Hanoi office",
+   "flags": [
+    "in_card",
+    "repeated"
+   ],
+   "loc": [
+    51,
+    7,
+    51,
+    23
+   ]
+  },
+  {
+   "i": 37,
+   "k": 9,
+   "role": "link",
+   "text": "Visit Hanoi",
+   "flags": [
+    "in_card",
+    "repeated"
+   ],
+   "loc": [
+    52,
+    7,
+    52,
+    18
+   ]
+  },
+  {
+   "i": 38,
+   "k": 10,
+   "role": "h3",
+   "text": "Bergen",
+   "flags": [
+    "in_card",
+    "repeated"
+   ],
+   "loc": [
+    54,
+    7,
+    54,
+    13
+   ]
+  },
+  {
+   "i": 39,
+   "k": 10,
+   "role": "caption",
+   "text": "19 people",
+   "flags": [
+    "in_card",
+    "repeated",
+    "small"
+   ],
+   "loc": [
+    55,
+    7,
+    55,
+    16
+   ]
+  },
+  {
+   "i": 40,
+   "k": 10,
+   "role": "body",
+   "text": "Our Bergen office",
+   "flags": [
+    "in_card",
+    "repeated"
+   ],
+   "loc": [
+    56,
+    7,
+    56,
+    24
+   ]
+  },
+  {
+   "i": 41,
+   "k": 10,
+   "role": "link",
+   "text": "Visit Bergen",
+   "flags": [
+    "in_card",
+    "repeated"
+   ],
+   "loc": [
+    57,
+    7,
+    57,
+    19
+   ]
+  },
+  {
+   "i": 42,
+   "k": 11,
+   "role": "h3",
+   "text": "Porto",
+   "flags": [
+    "in_card",
+    "repeated"
+   ],
+   "loc": [
+    59,
+    7,
+    59,
+    12
+   ]
+  },
+  {
+   "i": 43,
+   "k": 11,
+   "role": "caption",
+   "text": "20 people",
+   "flags": [
+    "in_card",
+    "repeated",
+    "small"
+   ],
+   "loc": [
+    60,
+    7,
+    60,
+    16
+   ]
+  },
+  {
+   "i": 44,
+   "k": 11,
+   "role": "body",
+   "text": "Our Porto office",
+   "flags": [
+    "in_card",
+    "repeated"
+   ],
+   "loc": [
+    61,
+    7,
+    61,
+    23
+   ]
+  },
+  {
+   "i": 45,
+   "k": 11,
+   "role": "link",
+   "text": "Visit Porto",
+   "flags": [
+    "in_card",
+    "repeated"
+   ],
+   "loc": [
+    62,
+    7,
+    62,
+    18
+   ]
+  },
+  {
+   "i": 46,
+   "k": 12,
+   "role": "h3",
+   "text": "Cusco",
+   "flags": [
+    "in_card",
+    "repeated"
+   ],
+   "loc": [
+    64,
+    7,
+    64,
+    12
+   ]
+  },
+  {
+   "i": 47,
+   "k": 12,
+   "role": "caption",
+   "text": "21 people",
+   "flags": [
+    "in_card",
+    "repeated",
+    "small"
+   ],
+   "loc": [
+    65,
+    7,
+    65,
+    16
+   ]
+  },
+  {
+   "i": 48,
+   "k": 12,
+   "role": "body",
+   "text": "Our Cusco office",
+   "flags": [
+    "in_card",
+    "repeated"
+   ],
+   "loc": [
+    66,
+    7,
+    66,
+    23
+   ]
+  },
+  {
+   "i": 49,
+   "k": 12,
+   "role": "link",
+   "text": "Visit Cusco",
+   "flags": [
+    "in_card",
+    "repeated"
+   ],
+   "loc": [
+    67,
+    7,
+    67,
+    18
+   ]
+  },
+  {
+   "i": 50,
+   "k": 13,
+   "role": "h3",
+   "text": "Malmo",
+   "flags": [
+    "in_card",
+    "repeated"
+   ],
+   "loc": [
+    69,
+    7,
+    69,
+    12
+   ]
+  },
+  {
+   "i": 51,
+   "k": 13,
+   "role": "caption",
+   "text": "22 people",
+   "flags": [
+    "in_card",
+    "repeated",
+    "small"
+   ],
+   "loc": [
+    70,
+    7,
+    70,
+    16
+   ]
+  },
+  {
+   "i": 52,
+   "k": 13,
+   "role": "body",
+   "text": "Our Malmo office",
+   "flags": [
+    "in_card",
+    "repeated"
+   ],
+   "loc": [
+    71,
+    7,
+    71,
+    23
+   ]
+  },
+  {
+   "i": 53,
+   "k": 13,
+   "role": "link",
+   "text": "Visit Malmo",
+   "flags": [
+    "in_card",
+    "repeated"
+   ],
+   "loc": [
+    72,
+    7,
+    72,
+    18
+   ]
+  },
+  {
+   "i": 54,
+   "k": 14,
+   "role": "h3",
+   "text": "Nantes",
+   "flags": [
+    "in_card",
+    "repeated"
+   ],
+   "loc": [
+    74,
+    7,
+    74,
+    13
+   ]
+  },
+  {
+   "i": 55,
+   "k": 14,
+   "role": "caption",
+   "text": "23 people",
+   "flags": [
+    "in_card",
+    "repeated",
+    "small"
+   ],
+   "loc": [
+    75,
+    7,
+    75,
+    16
+   ]
+  },
+  {
+   "i": 56,
+   "k": 14,
+   "role": "body",
+   "text": "Our Nantes office",
+   "flags": [
+    "in_card",
+    "repeated"
+   ],
+   "loc": [
+    76,
+    7,
+    76,
+    24
+   ]
+  },
+  {
+   "i": 57,
+   "k": 14,
+   "role": "link",
+   "text": "Visit Nantes",
+   "flags": [
+    "in_card",
+    "repeated"
+   ],
+   "loc": [
+    77,
+    7,
+    77,
+    19
+   ]
+  },
+  {
+   "i": 58,
+   "k": 15,
+   "role": "h3",
+   "text": "Gdansk",
+   "flags": [
+    "in_card",
+    "repeated"
+   ],
+   "loc": [
+    79,
+    7,
+    79,
+    13
+   ]
+  },
+  {
+   "i": 59,
+   "k": 15,
+   "role": "caption",
+   "text": "24 people",
+   "flags": [
+    "in_card",
+    "repeated",
+    "small"
+   ],
+   "loc": [
+    80,
+    7,
+    80,
+    16
+   ]
+  },
+  {
+   "i": 60,
+   "k": 15,
+   "role": "body",
+   "text": "Our Gdansk office",
+   "flags": [
+    "in_card",
+    "repeated"
+   ],
+   "loc": [
+    81,
+    7,
+    81,
+    24
+   ]
+  },
+  {
+   "i": 61,
+   "k": 15,
+   "role": "link",
+   "text": "Visit Gdansk",
+   "flags": [
+    "in_card",
+    "repeated"
+   ],
+   "loc": [
+    82,
+    7,
+    82,
+    19
+   ]
+  },
+  {
+   "i": 62,
+   "k": 16,
+   "role": "h3",
+   "text": "Leeds",
+   "flags": [
+    "in_card",
+    "repeated"
+   ],
+   "loc": [
+    84,
+    7,
+    84,
+    12
+   ]
+  },
+  {
+   "i": 63,
+   "k": 16,
+   "role": "caption",
+   "text": "25 people",
+   "flags": [
+    "in_card",
+    "repeated",
+    "small"
+   ],
+   "loc": [
+    85,
+    7,
+    85,
+    16
+   ]
+  },
+  {
+   "i": 64,
+   "k": 16,
+   "role": "body",
+   "text": "Our Leeds office",
+   "flags": [
+    "in_card",
+    "repeated"
+   ],
+   "loc": [
+    86,
+    7,
+    86,
+    23
+   ]
+  },
+  {
+   "i": 65,
+   "k": 16,
+   "role": "link",
+   "text": "Visit Leeds",
+   "flags": [
+    "in_card",
+    "repeated"
+   ],
+   "loc": [
+    87,
+    7,
+    87,
+    18
+   ]
+  },
+  {
+   "i": 66,
+   "k": 17,
+   "role": "h3",
+   "text": "Durban",
+   "flags": [
+    "in_card",
+    "repeated"
+   ],
+   "loc": [
+    89,
+    7,
+    89,
+    13
+   ]
+  },
+  {
+   "i": 67,
+   "k": 17,
+   "role": "caption",
+   "text": "26 people",
+   "flags": [
+    "in_card",
+    "repeated",
+    "small"
+   ],
+   "loc": [
+    90,
+    7,
+    90,
+    16
+   ]
+  },
+  {
+   "i": 68,
+   "k": 17,
+   "role": "body",
+   "text": "Our Durban office",
+   "flags": [
+    "in_card",
+    "repeated"
+   ],
+   "loc": [
+    91,
+    7,
+    91,
+    24
+   ]
+  },
+  {
+   "i": 69,
+   "k": 17,
+   "role": "link",
+   "text": "Visit Durban",
+   "flags": [
+    "in_card",
+    "repeated"
+   ],
+   "loc": [
+    92,
+    7,
+    92,
+    19
+   ]
+  },
+  {
+   "i": 70,
+   "k": 18,
+   "role": "h3",
+   "text": "Busan",
+   "flags": [
+    "in_card",
+    "repeated"
+   ],
+   "loc": [
+    94,
+    7,
+    94,
+    12
+   ]
+  },
+  {
+   "i": 71,
+   "k": 18,
+   "role": "caption",
+   "text": "27 people",
+   "flags": [
+    "in_card",
+    "repeated",
+    "small"
+   ],
+   "loc": [
+    95,
+    7,
+    95,
+    16
+   ]
+  },
+  {
+   "i": 72,
+   "k": 18,
+   "role": "body",
+   "text": "Our Busan office",
+   "flags": [
+    "in_card",
+    "repeated"
+   ],
+   "loc": [
+    96,
+    7,
+    96,
+    23
+   ]
+  },
+  {
+   "i": 73,
+   "k": 18,
+   "role": "link",
+   "text": "Visit Busan",
+   "flags": [
+    "in_card",
+    "repeated"
+   ],
+   "loc": [
+    97,
+    7,
+    97,
+    18
+   ]
+  },
+  {
+   "i": 74,
+   "k": 19,
+   "role": "h3",
+   "text": "Turin",
+   "flags": [
+    "in_card",
+    "repeated"
+   ],
+   "loc": [
+    99,
+    7,
+    99,
+    12
+   ]
+  },
+  {
+   "i": 75,
+   "k": 19,
+   "role": "caption",
+   "text": "28 people",
+   "flags": [
+    "in_card",
+    "repeated",
+    "small"
+   ],
+   "loc": [
+    100,
+    7,
+    100,
+    16
+   ]
+  },
+  {
+   "i": 76,
+   "k": 19,
+   "role": "body",
+   "text": "Our Turin office",
+   "flags": [
+    "in_card",
+    "repeated"
+   ],
+   "loc": [
+    101,
+    7,
+    101,
+    23
+   ]
+  },
+  {
+   "i": 77,
+   "k": 19,
+   "role": "link",
+   "text": "Visit Turin",
+   "flags": [
+    "in_card",
+    "repeated"
+   ],
+   "loc": [
+    102,
+    7,
+    102,
+    18
+   ]
+  },
+  {
+   "i": 78,
+   "k": 20,
+   "role": "h3",
+   "text": "Ghent",
+   "flags": [
+    "in_card",
+    "repeated"
+   ],
+   "loc": [
+    104,
+    7,
+    104,
+    12
+   ]
+  },
+  {
+   "i": 79,
+   "k": 20,
+   "role": "caption",
+   "text": "29 people",
+   "flags": [
+    "in_card",
+    "repeated",
+    "small"
+   ],
+   "loc": [
+    105,
+    7,
+    105,
+    16
+   ]
+  },
+  {
+   "i": 80,
+   "k": 20,
+   "role": "body",
+   "text": "Our Ghent office",
+   "flags": [
+    "in_card",
+    "repeated"
+   ],
+   "loc": [
+    106,
+    7,
+    106,
+    23
+   ]
+  },
+  {
+   "i": 81,
+   "k": 20,
+   "role": "link",
+   "text": "Visit Ghent",
+   "flags": [
+    "in_card",
+    "repeated"
+   ],
+   "loc": [
+    107,
+    7,
+    107,
+    18
+   ]
+  }
+ ]
+}

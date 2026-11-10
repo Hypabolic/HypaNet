@@ -1,0 +1,22 @@
+{"schema": "slop.screen/1", "id": "53b654f333b33dd4", "framework": "tsx",
+ "source": {"repo": "slop-fixtures", "path": "Pricing.tsx", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "header", "line": 10},
+  {"k": 1, "kind": "card", "line": 16},
+  {"k": 2, "kind": "card", "line": 16},
+  {"k": 3, "kind": "card", "line": 16}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "eyebrow", "text": "Pricing", "flags": ["caps", "tracked", "small"], "loc": [11, 84, 11, 91]},
+  {"i": 1, "k": 0, "role": "h2", "text": "Pick the size of your patch", "flags": [], "loc": [12, 44, 12, 71]},
+  {"i": 2, "k": 1, "role": "h3", "text": "Seedling", "flags": ["in_list", "in_card", "section_first", "repeated"], "loc": [2, 12, 2, 20]},
+  {"i": 3, "k": 1, "role": "subtitle", "text": "One plot, one grower.", "flags": ["small", "in_list", "in_card", "section_first", "repeated"], "loc": [2, 41, 2, 62]},
+  {"i": 4, "k": 1, "role": "body", "text": "£0/month", "flags": ["in_list", "in_card", "repeated"], "loc": [2, 30, 2, 31]},
+  {"i": 5, "k": 1, "role": "button", "text": "Choose Seedling", "flags": ["title_case", "in_list", "in_card", "section_last", "repeated"], "loc": [2, 5, 2, 21]},
+  {"i": 6, "k": 2, "role": "h3", "text": "Orchard", "flags": ["in_list", "in_card", "repeated"], "loc": [3, 12, 3, 19]},
+  {"i": 7, "k": 2, "role": "subtitle", "text": "Up to five plots and shared notes.", "flags": ["small", "in_list", "in_card", "section_first", "repeated"], "loc": [3, 40, 3, 74]},
+  {"i": 8, "k": 2, "role": "body", "text": "£6/month", "flags": ["in_list", "in_card", "repeated"], "loc": [3, 29, 3, 30]},
+  {"i": 9, "k": 2, "role": "button", "text": "Choose Orchard", "flags": ["title_case", "in_list", "in_card", "section_last", "repeated"], "loc": [3, 5, 3, 20]},
+  {"i": 10, "k": 3, "role": "h3", "text": "Estate", "flags": ["in_list", "in_card", "repeated"], "loc": [4, 12, 4, 18]},
+  {"i": 11, "k": 3, "role": "subtitle", "text": "Unlimited plots for community gardens.", "flags": ["small", "in_list", "in_card", "section_first", "repeated"], "loc": [4, 40, 4, 78]},
+  {"i": 12, "k": 3, "role": "body", "text": "£14/month", "flags": ["in_list", "in_card", "repeated"], "loc": [4, 28, 4, 30]},
+  {"i": 13, "k": 3, "role": "button", "text": "Choose Estate", "flags": ["title_case", "in_list", "in_card", "section_last", "repeated"], "loc": [4, 5, 4, 19]}]}

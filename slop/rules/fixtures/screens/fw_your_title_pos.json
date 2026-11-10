@@ -1,0 +1,10 @@
+{"schema": "slop.screen/1", "id": "3208281902d2b1a3", "framework": "swift",
+ "source": {"repo": "slop-rules-fixtures", "path": "src/fw_your_title_pos.swift", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "list", "line": 2},
+  {"k": 1, "kind": "header", "line": 6}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "tab", "text": "Your Favourites", "flags": ["title_case", "in_nav"], "loc": [3, 7, 3, 22]},
+  {"i": 1, "k": 0, "role": "tab", "text": "My Library", "flags": ["title_case", "in_nav"], "loc": [4, 7, 4, 17]},
+  {"i": 2, "k": 0, "role": "tab", "text": "Downloads", "flags": ["in_nav"], "loc": [5, 7, 5, 16]},
+  {"i": 3, "k": 1, "role": "h1", "text": "Your reading list", "flags": [], "loc": [7, 7, 7, 24]}]}

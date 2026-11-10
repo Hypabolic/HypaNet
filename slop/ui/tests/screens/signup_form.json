@@ -1,0 +1,228 @@
+{
+ "schema": "slop.screen/1",
+ "id": "267b9a887aaa5fa1",
+ "framework": "tsx",
+ "source": {
+  "repo": "slop-test-fixtures",
+  "path": "src/signup_form.tsx",
+  "commit": "0000000000000000000000000000000000000000",
+  "licence": "MIT"
+ },
+ "clusters": [
+  {
+   "k": 0,
+   "kind": "header",
+   "line": 5
+  },
+  {
+   "k": 1,
+   "kind": "control",
+   "line": 8
+  },
+  {
+   "k": 2,
+   "kind": "control",
+   "line": 11
+  },
+  {
+   "k": 3,
+   "kind": "control",
+   "line": 15
+  },
+  {
+   "k": 4,
+   "kind": "actions",
+   "line": 19
+  }
+ ],
+ "nodes": [
+  {
+   "i": 0,
+   "k": 0,
+   "role": "h1",
+   "text": "Create your account",
+   "flags": [],
+   "loc": [
+    6,
+    7,
+    6,
+    26
+   ]
+  },
+  {
+   "i": 1,
+   "k": 0,
+   "role": "subtitle",
+   "text": "It takes about a minute.",
+   "flags": [
+    "small"
+   ],
+   "loc": [
+    7,
+    7,
+    7,
+    31
+   ]
+  },
+  {
+   "i": 2,
+   "k": 1,
+   "role": "label",
+   "text": "Full name",
+   "flags": [
+    "in_form",
+    "in_control"
+   ],
+   "loc": [
+    9,
+    7,
+    9,
+    16
+   ]
+  },
+  {
+   "i": 3,
+   "k": 1,
+   "role": "placeholder",
+   "text": "Enter your full name",
+   "flags": [
+    "in_form",
+    "in_control"
+   ],
+   "loc": [
+    10,
+    7,
+    10,
+    27
+   ]
+  },
+  {
+   "i": 4,
+   "k": 2,
+   "role": "label",
+   "text": "Email address",
+   "flags": [
+    "in_form",
+    "in_control"
+   ],
+   "loc": [
+    12,
+    7,
+    12,
+    20
+   ]
+  },
+  {
+   "i": 5,
+   "k": 2,
+   "role": "placeholder",
+   "text": "you@example.com",
+   "flags": [
+    "in_form",
+    "in_control"
+   ],
+   "loc": [
+    13,
+    7,
+    13,
+    22
+   ]
+  },
+  {
+   "i": 6,
+   "k": 2,
+   "role": "helper",
+   "text": "We never share your email address.",
+   "flags": [
+    "in_form",
+    "in_control",
+    "small"
+   ],
+   "loc": [
+    14,
+    7,
+    14,
+    41
+   ]
+  },
+  {
+   "i": 7,
+   "k": 3,
+   "role": "label",
+   "text": "Password",
+   "flags": [
+    "in_form",
+    "in_control"
+   ],
+   "loc": [
+    16,
+    7,
+    16,
+    15
+   ]
+  },
+  {
+   "i": 8,
+   "k": 3,
+   "role": "helper",
+   "text": "At least 12 characters.",
+   "flags": [
+    "in_form",
+    "in_control",
+    "small"
+   ],
+   "loc": [
+    17,
+    7,
+    17,
+    30
+   ]
+  },
+  {
+   "i": 9,
+   "k": 3,
+   "role": "tooltip",
+   "text": "Password",
+   "flags": [
+    "in_form",
+    "in_control"
+   ],
+   "loc": [
+    18,
+    7,
+    18,
+    15
+   ]
+  },
+  {
+   "i": 10,
+   "k": 4,
+   "role": "button",
+   "text": "Create account",
+   "flags": [
+    "in_form"
+   ],
+   "loc": [
+    20,
+    7,
+    20,
+    21
+   ]
+  },
+  {
+   "i": 11,
+   "k": 4,
+   "role": "link",
+   "text": "I already have an account",
+   "flags": [
+    "in_form"
+   ],
+   "loc": [
+    21,
+    7,
+    21,
+    32
+   ]
+  }
+ ]
+}

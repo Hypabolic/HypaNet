@@ -1,0 +1,7 @@
+{
+ "game-ui": "first-person game (fixture note: AI-built pause menu, the motivating example)",
+ "invoicer": "web invoicing app for small businesses (invented fixture)",
+ "invoicer-ios": "iOS invoicing app (invented fixture)",
+ "kitchenkit": "meal-planning app, marketing site (invented fixture)",
+ "opsboard": "internal service status dashboard (invented fixture)"
+}

@@ -1,0 +1,234 @@
+{
+ "schema": "slop.screen/1",
+ "id": "4c9ff414284012ff",
+ "framework": "html",
+ "source": {
+  "repo": "invoicer",
+  "path": "web/settings/profile.html",
+  "commit": "fixture",
+  "licence": "invented fixture"
+ },
+ "clusters": [
+  {
+   "k": 0,
+   "kind": "header",
+   "line": 3
+  },
+  {
+   "k": 1,
+   "kind": "control",
+   "line": 8
+  },
+  {
+   "k": 2,
+   "kind": "control",
+   "line": 11
+  },
+  {
+   "k": 3,
+   "kind": "control",
+   "line": 15
+  },
+  {
+   "k": 4,
+   "kind": "actions",
+   "line": 19
+  }
+ ],
+ "nodes": [
+  {
+   "i": 0,
+   "k": 0,
+   "role": "eyebrow",
+   "text": "Account",
+   "flags": [
+    "small",
+    "in_header",
+    "section_first"
+   ],
+   "loc": [
+    3,
+    24,
+    3,
+    31
+   ]
+  },
+  {
+   "i": 1,
+   "k": 0,
+   "role": "h2",
+   "text": "Profile",
+   "flags": [
+    "in_header"
+   ],
+   "loc": [
+    4,
+    9,
+    4,
+    16
+   ]
+  },
+  {
+   "i": 2,
+   "k": 0,
+   "role": "subtitle",
+   "text": "Update your profile details here.",
+   "flags": [
+    "small",
+    "in_header"
+   ],
+   "loc": [
+    5,
+    25,
+    5,
+    58
+   ]
+  },
+  {
+   "i": 3,
+   "k": 1,
+   "role": "label",
+   "text": "Display name",
+   "flags": [
+    "in_form",
+    "in_control"
+   ],
+   "loc": [
+    8,
+    23,
+    8,
+    35
+   ]
+  },
+  {
+   "i": 4,
+   "k": 1,
+   "role": "placeholder",
+   "text": "Display name",
+   "flags": [
+    "in_form",
+    "in_control"
+   ],
+   "loc": [
+    9,
+    35,
+    9,
+    47
+   ]
+  },
+  {
+   "i": 5,
+   "k": 2,
+   "role": "label",
+   "text": "Postcode",
+   "flags": [
+    "in_form",
+    "in_control"
+   ],
+   "loc": [
+    11,
+    27,
+    11,
+    35
+   ]
+  },
+  {
+   "i": 6,
+   "k": 2,
+   "role": "placeholder",
+   "text": "e.g. SW1A 1AA",
+   "flags": [
+    "in_form",
+    "in_control"
+   ],
+   "loc": [
+    12,
+    39,
+    12,
+    52
+   ]
+  },
+  {
+   "i": 7,
+   "k": 2,
+   "role": "helper",
+   "text": "Enter your postcode",
+   "flags": [
+    "small",
+    "in_form",
+    "in_control"
+   ],
+   "loc": [
+    13,
+    23,
+    13,
+    42
+   ]
+  },
+  {
+   "i": 8,
+   "k": 3,
+   "role": "label",
+   "text": "Billing email",
+   "flags": [
+    "in_form",
+    "in_control"
+   ],
+   "loc": [
+    15,
+    24,
+    15,
+    37
+   ]
+  },
+  {
+   "i": 9,
+   "k": 3,
+   "role": "helper",
+   "text": "Invoices and receipts go to this address.",
+   "flags": [
+    "small",
+    "in_form",
+    "in_control"
+   ],
+   "loc": [
+    17,
+    23,
+    17,
+    64
+   ]
+  },
+  {
+   "i": 10,
+   "k": 4,
+   "role": "button",
+   "text": "Save profile",
+   "flags": [
+    "in_form"
+   ],
+   "loc": [
+    19,
+    27,
+    19,
+    39
+   ]
+  },
+  {
+   "i": 11,
+   "k": 4,
+   "role": "other",
+   "text": "Saving can take a few seconds",
+   "flags": [
+    "sr_only",
+    "in_form",
+    "section_last"
+   ],
+   "loc": [
+    20,
+    27,
+    20,
+    56
+   ]
+  }
+ ]
+}

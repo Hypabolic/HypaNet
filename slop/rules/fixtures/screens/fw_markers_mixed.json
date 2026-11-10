@@ -1,0 +1,10 @@
+{"schema": "slop.screen/1", "id": "a76b99d03455c218", "framework": "tsx",
+ "source": {"repo": "slop-rules-fixtures", "path": "src/fw_markers_mixed.tsx", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "header", "line": 2},
+  {"k": 1, "kind": "actions", "line": 5}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "h2", "text": "\ue000 your name", "flags": ["dynamic"], "loc": [3, 7, 3, 18]},
+  {"i": 1, "k": 0, "role": "body", "text": "Hello \ue000 first name, please confirm the email address.", "flags": ["dynamic"], "loc": [4, 7, 4, 60]},
+  {"i": 2, "k": 1, "role": "button", "text": "\ue000 now playing", "flags": ["dynamic"], "loc": [6, 7, 6, 20]},
+  {"i": 3, "k": 1, "role": "button", "text": "Play next", "flags": [], "loc": [7, 7, 7, 16]}]}

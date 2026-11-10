@@ -1,0 +1,10 @@
+{"schema": "slop.screen/1", "id": "8f28870520736747", "framework": "tsx",
+ "source": {"repo": "slop-fixtures", "path": "Highlights.tsx", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "header", "line": 5},
+  {"k": 1, "kind": "body", "line": 15}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "h3", "text": "✨ Smart shelf search", "flags": ["emoji_lead"], "loc": [6, 11, 6, 31]},
+  {"i": 1, "k": 0, "role": "subtitle", "text": "Find any book by the colour of its spine.", "flags": ["icon", "section_first"], "loc": [9, 9, 9, 50]},
+  {"i": 2, "k": 0, "role": "link", "text": "Read the cataloguing guide", "flags": ["icon", "arrow_tail"], "loc": [12, 9, 12, 35]},
+  {"i": 3, "k": 1, "role": "body", "text": "🎉 Your branch reached 10,000 loans this year", "flags": ["emoji_lead", "section_last"], "loc": [15, 10, 15, 54]}]}

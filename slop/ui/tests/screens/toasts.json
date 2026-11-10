@@ -1,0 +1,87 @@
+{
+ "schema": "slop.screen/1",
+ "id": "92aea173cc8a6271",
+ "framework": "tsx",
+ "source": {
+  "repo": "slop-test-fixtures",
+  "path": "src/toasts.tsx",
+  "commit": "0000000000000000000000000000000000000000",
+  "licence": "MIT"
+ },
+ "clusters": [
+  {
+   "k": 0,
+   "kind": "state",
+   "line": 5
+  },
+  {
+   "k": 1,
+   "kind": "state",
+   "line": 8
+  }
+ ],
+ "nodes": [
+  {
+   "i": 0,
+   "k": 0,
+   "role": "toast",
+   "text": "Changes saved",
+   "flags": [
+    "in_state",
+    "conditional"
+   ],
+   "loc": [
+    6,
+    7,
+    6,
+    20
+   ]
+  },
+  {
+   "i": 1,
+   "k": 0,
+   "role": "toast",
+   "text": "Your changes have been saved.",
+   "flags": [
+    "in_state"
+   ],
+   "loc": [
+    7,
+    7,
+    7,
+    36
+   ]
+  },
+  {
+   "i": 2,
+   "k": 1,
+   "role": "error",
+   "text": "Couldn't save changes",
+   "flags": [
+    "in_state",
+    "conditional"
+   ],
+   "loc": [
+    9,
+    7,
+    9,
+    28
+   ]
+  },
+  {
+   "i": 3,
+   "k": 1,
+   "role": "button",
+   "text": "Try again",
+   "flags": [
+    "in_state"
+   ],
+   "loc": [
+    10,
+    7,
+    10,
+    16
+   ]
+  }
+ ]
+}

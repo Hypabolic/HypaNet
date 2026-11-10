@@ -1,0 +1,27 @@
+{
+  "name": "hypanet-slop",
+  "version": "0.1.0",
+  "private": true,
+  "description": "HypaNet slop experiment: UI-copy extractor (slop.screen/1) and, later, the linter.",
+  "type": "module",
+  "license": "MIT",
+  "engines": {
+    "node": ">=22.18.0"
+  },
+  "scripts": {
+    "test": "node extract/test/run.ts",
+    "test:rules": "node --test rules/test/rules.test.js",
+    "typecheck": "tsc -p extract/tsconfig.json",
+    "extract": "node extract/cli.js"
+  },
+  "dependencies": {
+    "@babel/parser": "7.29.11",
+    "@repomix/tree-sitter-wasms": "0.1.17",
+    "parse5": "8.0.1",
+    "web-tree-sitter": "0.26.13"
+  },
+  "devDependencies": {
+    "@types/node": "22.19.21",
+    "typescript": "5.9.3"
+  }
+}

@@ -1,0 +1,196 @@
+{
+ "schema": "slop.screen/1",
+ "id": "353f3e6e856c6936",
+ "framework": "html",
+ "source": {
+  "repo": "slop-test-fixtures",
+  "path": "src/hero_features.html",
+  "commit": "0000000000000000000000000000000000000000",
+  "licence": "MIT"
+ },
+ "clusters": [
+  {
+   "k": 0,
+   "kind": "header",
+   "line": 5
+  },
+  {
+   "k": 1,
+   "kind": "card",
+   "line": 11
+  },
+  {
+   "k": 2,
+   "kind": "card",
+   "line": 14
+  },
+  {
+   "k": 3,
+   "kind": "card",
+   "line": 17
+  }
+ ],
+ "nodes": [
+  {
+   "i": 0,
+   "k": 0,
+   "role": "eyebrow",
+   "text": "Features",
+   "flags": [
+    "caps",
+    "tracked",
+    "small"
+   ],
+   "loc": [
+    6,
+    7,
+    6,
+    15
+   ]
+  },
+  {
+   "i": 1,
+   "k": 0,
+   "role": "h2",
+   "text": "Features that grow with your team",
+   "flags": [],
+   "loc": [
+    7,
+    7,
+    7,
+    40
+   ]
+  },
+  {
+   "i": 2,
+   "k": 0,
+   "role": "subtitle",
+   "text": "Everything you need to plan, track and ship work, in one place.",
+   "flags": [],
+   "loc": [
+    8,
+    7,
+    8,
+    70
+   ]
+  },
+  {
+   "i": 3,
+   "k": 0,
+   "role": "button",
+   "text": "Get started",
+   "flags": [],
+   "loc": [
+    9,
+    7,
+    9,
+    18
+   ]
+  },
+  {
+   "i": 4,
+   "k": 0,
+   "role": "link",
+   "text": "See pricing →",
+   "flags": [
+    "arrow_tail"
+   ],
+   "loc": [
+    10,
+    7,
+    10,
+    20
+   ]
+  },
+  {
+   "i": 5,
+   "k": 1,
+   "role": "h3",
+   "text": "Shared boards",
+   "flags": [
+    "in_card"
+   ],
+   "loc": [
+    12,
+    7,
+    12,
+    20
+   ]
+  },
+  {
+   "i": 6,
+   "k": 1,
+   "role": "body",
+   "text": "Plan work together on boards everyone can edit.",
+   "flags": [
+    "in_card"
+   ],
+   "loc": [
+    13,
+    7,
+    13,
+    54
+   ]
+  },
+  {
+   "i": 7,
+   "k": 2,
+   "role": "h3",
+   "text": "Timelines",
+   "flags": [
+    "in_card"
+   ],
+   "loc": [
+    15,
+    7,
+    15,
+    16
+   ]
+  },
+  {
+   "i": 8,
+   "k": 2,
+   "role": "body",
+   "text": "See every deadline on one timeline.",
+   "flags": [
+    "in_card"
+   ],
+   "loc": [
+    16,
+    7,
+    16,
+    42
+   ]
+  },
+  {
+   "i": 9,
+   "k": 3,
+   "role": "h3",
+   "text": "Reports",
+   "flags": [
+    "in_card"
+   ],
+   "loc": [
+    18,
+    7,
+    18,
+    14
+   ]
+  },
+  {
+   "i": 10,
+   "k": 3,
+   "role": "body",
+   "text": "Weekly reports land in your inbox on Monday.",
+   "flags": [
+    "in_card"
+   ],
+   "loc": [
+    19,
+    7,
+    19,
+    51
+   ]
+  }
+ ]
+}

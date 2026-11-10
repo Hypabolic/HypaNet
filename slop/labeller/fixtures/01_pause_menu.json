@@ -1,0 +1,141 @@
+{
+ "schema": "slop.screen/1",
+ "id": "b72e049b8b8a3bcd",
+ "framework": "tsx",
+ "source": {
+  "repo": "game-ui",
+  "path": "src/PauseMenu.tsx",
+  "commit": "fixture",
+  "licence": "invented fixture"
+ },
+ "clusters": [
+  {
+   "k": 0,
+   "kind": "header",
+   "line": 12
+  },
+  {
+   "k": 1,
+   "kind": "actions",
+   "line": 17
+  }
+ ],
+ "nodes": [
+  {
+   "i": 0,
+   "k": 0,
+   "role": "eyebrow",
+   "text": "OPERATION ON HOLD",
+   "flags": [
+    "caps",
+    "tracked",
+    "small",
+    "in_header",
+    "section_first"
+   ],
+   "loc": [
+    12,
+    81,
+    12,
+    98
+   ]
+  },
+  {
+   "i": 1,
+   "k": 0,
+   "role": "h1",
+   "text": "PAUSED",
+   "flags": [
+    "caps",
+    "in_header"
+   ],
+   "loc": [
+    13,
+    54,
+    13,
+    60
+   ]
+  },
+  {
+   "i": 2,
+   "k": 0,
+   "role": "subtitle",
+   "text": "Resume recaptures the mouse.",
+   "flags": [
+    "small",
+    "in_header"
+   ],
+   "loc": [
+    14,
+    54,
+    14,
+    82
+   ]
+  },
+  {
+   "i": 3,
+   "k": 1,
+   "role": "button",
+   "text": "RESUME",
+   "flags": [
+    "caps",
+    "in_nav"
+   ],
+   "loc": [
+    17,
+    36,
+    17,
+    42
+   ]
+  },
+  {
+   "i": 4,
+   "k": 1,
+   "role": "button",
+   "text": "SETTINGS",
+   "flags": [
+    "caps",
+    "in_nav"
+   ],
+   "loc": [
+    18,
+    52,
+    18,
+    60
+   ]
+  },
+  {
+   "i": 5,
+   "k": 1,
+   "role": "button",
+   "text": "CONTROLS",
+   "flags": [
+    "caps",
+    "in_nav"
+   ],
+   "loc": [
+    19,
+    52,
+    19,
+    60
+   ]
+  },
+  {
+   "i": 6,
+   "k": 1,
+   "role": "button",
+   "text": "RESTART MISSION",
+   "flags": [
+    "caps",
+    "in_nav",
+    "section_last"
+   ],
+   "loc": [
+    20,
+    37,
+    20,
+    52
+   ]
+  }
+ ]
+}
