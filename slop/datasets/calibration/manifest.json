@@ -4,7 +4,7 @@
  "seed": 20261116,
  "namespace": "calibration",
  "rank": "sha256(f\"{namespace}:{seed}:{repo}/{path}\") as hex, ascending",
- "builder_sha256": "aa6d57c111002bd9705022dc2ba902088d893f8de5f0909aa8d4ff5462081bc8",
+ "builder_sha256": "b606f353d40a2fade1dffa7815119976025137cb29aba3e737d145de8a31fcce",
  "extractor_sha256": "3d3dad1b8fcf66555fce9c9158093ee05d96d48893a821226573cc6dc19fc9d7",
  "balance_rule": "no repo gives more than 40% of the set's nodes and no directory gives more than 6 screens (taken in rank order), as for reference_real; up to 40 screens drawn by hash rank (SPEC.md §5), and a shortfall is reported, not filled by relaxing either cap",
  "caps": {

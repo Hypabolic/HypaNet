@@ -10,6 +10,11 @@ Record kinds in a label file (`slop/labels/<set>.<labeller>.jsonl`), told apart 
 - missed:       {"screen", "missed": [{"line", "text", "class"}], "labeller", "guide_sha256", "time"}
 - done:         {"screen", "done": true, "nodes": N, "labeller", "guide_sha256", "time"}  (labeller tool)
 
+The adjudicated answer key (`<set>.final.jsonl`, labeller "final", written by slop/modellabel/adjudicate.py) adds
+four fields to node records: `source` (agreed, adjudicated, contested or unresolved), `candidates` (the two model
+labels), `binary` (the binary consensus, REDUNDANT, KEEP or null) and, after a second pass, `adjudication`. A
+contested node has class null and conf "contested".
+
 The file is append-only; the latest record per key wins. Keys: (screen, "node", loc) for node records and
 (screen, kind) for the three screen-level kinds.
 """
@@ -34,6 +39,9 @@ SCREEN_SCHEMA = "slop.screen/1"
 CLASSES = ["KEEP", "ECHO", "NARRATE", "DECOR", "UNSURE"]
 REDUNDANT = {"ECHO", "NARRATE", "DECOR"}
 CONF = ["clear", "judgement"]
+FINAL_LABELLER = "final"
+FINAL_SOURCES = ["agreed", "adjudicated", "contested", "unresolved"]
+FINAL_FIELDS = {"source", "candidates", "adjudication", "binary"}
 
 # LABELLING.md §9 (scored pattern codes, by class)
 PATTERNS = {
@@ -293,8 +301,10 @@ def validate_record(rec, labeller=None):
     if kind is None:
         return ["unknown record kind (no loc, aside_screen, missed or done)"], warns
     _common(rec, errs, labeller)
+    final = FINAL_LABELLER in (labeller, rec.get("labeller"))
+    contested = final and rec.get("conf") == "contested"
     if kind == "node":
-        allowed = set(NODE_FIELDS) | {"role_fix"}
+        allowed = set(NODE_FIELDS) | {"role_fix"} | (FINAL_FIELDS if final else set())
         extra = set(rec) - allowed
         if extra:
             errs.append(f"unknown fields {sorted(extra)}")
@@ -316,8 +326,23 @@ def validate_record(rec, labeller=None):
                 errs.append(f"unknown aside codes {bad}")
             if len(set(aside)) != len(aside):
                 errs.append("aside codes repeat")
+        if final:
+            if rec.get("source") not in FINAL_SOURCES:
+                errs.append(f"final record needs source in {FINAL_SOURCES}")
+            cands = rec.get("candidates")
+            if not isinstance(cands, list) or len(cands) != 2 or not all(isinstance(x, dict) for x in cands):
+                errs.append("final record needs candidates: the two labellers' labels")
+            if rec.get("binary") not in ("REDUNDANT", "KEEP", None):
+                errs.append("binary must be REDUNDANT, KEEP or null")
+            elif cls is not None and rec.get("binary") is not None and rec["binary"] != (
+                    "REDUNDANT" if cls in REDUNDANT else cls):
+                errs.append(f"binary {rec['binary']} does not match class {cls}")
+            if (rec.get("source") == "contested") != contested:
+                errs.append("conf contested goes with source contested")
+            if contested and (cls is not None or tgt_set(rec) or rec.get("pattern") is not None):
+                errs.append("a contested record has class, target and pattern null (the candidates hold the labels)")
         if cls is None:
-            if "UNRESOLVED" not in aside:
+            if "UNRESOLVED" not in aside and not contested:
                 errs.append("class is null without aside UNRESOLVED")
         elif cls not in CLASSES:
             errs.append(f"unknown class {cls!r}")
@@ -361,7 +386,7 @@ def validate_record(rec, labeller=None):
                 errs.append(f"{b} must be true or false")
         if rec["partial"] is True and cls != "KEEP":
             errs.append("partial: true is only valid on KEEP (LABELLING.md §4 step 5)")
-        if rec["conf"] not in CONF:
+        if rec["conf"] not in CONF and not contested:
             errs.append(f"conf must be one of {CONF}")
         if rec["role_ok"] is False:
             if rec.get("role_fix") not in ROLES:
@@ -417,8 +442,13 @@ def validate_record(rec, labeller=None):
     return errs, warns
 
 
+def tgt_set(rec) -> bool:
+    return rec.get("target") is not None
+
+
 def node_complete(rec) -> bool:
-    return rec is not None and (rec.get("class") is not None or "UNRESOLVED" in (rec.get("aside") or []))
+    return rec is not None and (rec.get("class") is not None or "UNRESOLVED" in (rec.get("aside") or [])
+                                or rec.get("conf") == "contested")
 
 
 @dataclass

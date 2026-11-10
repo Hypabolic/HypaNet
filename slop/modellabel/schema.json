@@ -1,0 +1,261 @@
+{
+ "description": "One screen's labels from a model labeller (slop/modellabel/prompt.py). Node references are the screen's node indices i.",
+ "type": "object",
+ "additionalProperties": false,
+ "properties": {
+  "screen": {
+   "type": "string"
+  },
+  "nodes": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+     "i": {
+      "type": "integer"
+     },
+     "class": {
+      "anyOf": [
+       {
+        "type": "string",
+        "enum": [
+         "KEEP",
+         "ECHO",
+         "NARRATE",
+         "DECOR",
+         "UNSURE"
+        ]
+       },
+       {
+        "type": "null"
+       }
+      ]
+     },
+     "target": {
+      "anyOf": [
+       {
+        "type": "integer"
+       },
+       {
+        "type": "null"
+       }
+      ]
+     },
+     "pattern": {
+      "anyOf": [
+       {
+        "type": "string",
+        "enum": [
+         "R1",
+         "R2",
+         "R3",
+         "R4",
+         "R5",
+         "R6",
+         "R8",
+         "R9",
+         "R11",
+         "R14",
+         "R16",
+         "R17",
+         "R18",
+         "K1",
+         "K2",
+         "K3",
+         "K4",
+         "K5",
+         "K6",
+         "K7",
+         "K8",
+         "K9",
+         "K10",
+         "K11",
+         "K12",
+         "K13",
+         "K14"
+        ]
+       },
+       {
+        "type": "null"
+       }
+      ]
+     },
+     "conf": {
+      "type": "string",
+      "enum": [
+       "clear",
+       "judgement"
+      ]
+     },
+     "partial": {
+      "type": "boolean"
+     },
+     "ct": {
+      "type": "boolean"
+     },
+     "equiv": {
+      "type": "array",
+      "items": {
+       "type": "integer"
+      }
+     },
+     "aside": {
+      "type": "array",
+      "items": {
+       "type": "string",
+       "enum": [
+        "R7",
+        "R8b",
+        "R10",
+        "R11g",
+        "R12",
+        "R13",
+        "R15",
+        "X-FILE",
+        "UNRESOLVED"
+       ]
+      }
+     },
+     "role_ok": {
+      "type": "boolean"
+     },
+     "role_fix": {
+      "anyOf": [
+       {
+        "type": "string",
+        "enum": [
+         "h1",
+         "h2",
+         "h3",
+         "h4",
+         "h5",
+         "h6",
+         "eyebrow",
+         "subtitle",
+         "body",
+         "list_item",
+         "caption",
+         "label",
+         "helper",
+         "placeholder",
+         "input_value",
+         "button",
+         "link",
+         "nav",
+         "tab",
+         "breadcrumb",
+         "menu_item",
+         "badge",
+         "tooltip",
+         "empty_title",
+         "empty_body",
+         "dialog_title",
+         "dialog_body",
+         "toast",
+         "error",
+         "stat",
+         "cell",
+         "aria",
+         "alt",
+         "comment",
+         "code",
+         "other"
+        ]
+       },
+       {
+        "type": "null"
+       }
+      ]
+     },
+     "why": {
+      "type": "string"
+     }
+    },
+    "required": [
+     "i",
+     "class",
+     "target",
+     "pattern",
+     "conf",
+     "partial",
+     "ct",
+     "equiv",
+     "aside",
+     "role_ok",
+     "role_fix",
+     "why"
+    ]
+   }
+  },
+  "missed": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+     "line": {
+      "type": "integer"
+     },
+     "text": {
+      "type": "string"
+     },
+     "class": {
+      "type": "string",
+      "enum": [
+       "KEEP",
+       "ECHO",
+       "NARRATE",
+       "DECOR",
+       "UNSURE"
+      ]
+     }
+    },
+    "required": [
+     "line",
+     "text",
+     "class"
+    ]
+   }
+  },
+  "aside_screen": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+     "code": {
+      "type": "string",
+      "enum": [
+       "R19",
+       "R10",
+       "R12",
+       "R11g",
+       "R7",
+       "R8b",
+       "R13",
+       "R15",
+       "X-FILE"
+      ]
+     },
+     "nodes": {
+      "type": "array",
+      "items": {
+       "type": "integer"
+      }
+     }
+    },
+    "required": [
+     "code",
+     "nodes"
+    ]
+   }
+  }
+ },
+ "required": [
+  "screen",
+  "nodes",
+  "missed",
+  "aside_screen"
+ ]
+}

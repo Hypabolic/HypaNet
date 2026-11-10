@@ -114,6 +114,7 @@ def test_classify_rules(tmp_path):
         "plan/prototype/page.tsx": "y\n",
         "plan/prototype/extra.tsx": "z\n",
         "src/page.test.tsx": "t\n",
+        "components/blog-figures/f1-figure.tsx": "f\n",
         "AppTests/ViewTests.swift": "t\n",
         "Sources/ThingTests.swift": "t\n",
         "src/shared.tsx": shared,
@@ -132,6 +133,7 @@ def test_classify_rules(tmp_path):
         "DesignRefs/other.html": None,
         "Sources/ThingTests.swift": "test_spec_story",
         "app.worktrees/x/page.tsx": "worktrees",
+        "components/blog-figures/f1-figure.tsx": "blog_figures",
         "design_handoff_v2/hero.html": None,
         "lib/app.min.js": "not_source",
         "local/scratch.tsx": "untracked",
@@ -162,12 +164,15 @@ def test_sealed_refuses_until_frozen(tmp_path, monkeypatch):
 
 
 def test_sealed_command_checks_gate_first(monkeypatch):
-    """`sealed` must refuse before it touches any sealed repo."""
+    """`sealed` (now scripts/build_sealed.py) must refuse before it touches any sealed repo."""
+    from scripts import build_sealed
+
     def boom(*a, **k):
         raise AssertionError("a sealed repo was opened before the gate")
 
-    monkeypatch.setattr(bs, "frozen_extractor", lambda: (_ for _ in ()).throw(SystemExit("refusing: test")))
-    monkeypatch.setattr(bs, "gather", boom)
-    monkeypatch.setattr(bs, "walk_ui_files", boom)
+    monkeypatch.setattr(build_sealed, "gate", lambda root: (_ for _ in ()).throw(SystemExit("refusing: test")))
+    monkeypatch.setattr(build_sealed.bs, "gather", boom)
+    monkeypatch.setattr(build_sealed.bs, "walk_ui_files", boom)
+    monkeypatch.setattr(build_sealed, "sealed_repos", boom)
     with pytest.raises(SystemExit, match="refusing"):
         bs.main(["sealed"])

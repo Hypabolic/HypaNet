@@ -160,7 +160,8 @@ def _outranks(a, b):
 
 def summary(res):
     nodes = [r for k, r in res["latest"].items() if k[1] == "node"]
-    cls = Counter(r.get("class") or "(unresolved)" for r in nodes)
+    cls = Counter(r.get("class") or ("(contested)" if r.get("conf") == "contested" else "(unresolved)")
+                  for r in nodes)
     pat = Counter((r.get("class"), r.get("pattern")) for r in nodes if r.get("class") in lk.REDUNDANT)
     krule = Counter(r.get("pattern") for r in nodes if r.get("class") == "KEEP" and r.get("pattern"))
     asides = Counter(a for r in nodes for a in r.get("aside") or [])
@@ -214,7 +215,7 @@ def print_report(res, s):
     w(f"  guide hash {', '.join(h[:12] if h else str(h) for h in res['guide_hashes']) or '(none)'}"
       + (f" · current guide {res['current_guide'][:12]}" if res["current_guide"] else "") + "\n\n")
     w(f"  nodes {s['nodes']} · REDUNDANT {s['redundant']}\n")
-    for c in lk.CLASSES + ["(unresolved)"]:
+    for c in lk.CLASSES + ["(unresolved)", "(contested)"]:
         if c in s["classes"]:
             w(f"    {c:<12} {s['classes'][c]:>6}\n")
     w(f"  UNSURE share {s['unsure_share']:.1%}" + ("  (above the 5% freeze threshold, SPEC.md §5)"

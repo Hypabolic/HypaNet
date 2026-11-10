@@ -3,9 +3,11 @@
     tok.py FILE                 screen JSON: normalisation, stems, ids and flags per node, and the windows
     tok.py --text "TEXT"        one node's text
     tok.py --words FILE         word list (one or more words per line): word -> folded -> stem -> id
-    tok.py --vocab VOCAB        checks a vocab.txt: duplicates, entries that are not clean stems, entries that change
-                                when stemmed again, and (with the lexicon beside it, or --lexicon DIR) every stem that
-                                more than one lexicon word maps to
+    tok.py --vocab VOCAB        checks a vocab.txt: duplicates, entries that are not clean stems (problems); entries
+                                that change when stemmed again (notes: Porter is not idempotent, so a real stem such
+                                as 'paus' can; the entry is live if some word stems to it, which --words shows); and
+                                (with the lexicon beside it, or --lexicon DIR) every stem that more than one lexicon
+                                word maps to
 
 ``--vocab-file VOCAB`` makes the first three modes look ids up in that vocabulary (otherwise every stem shows its
 hash bucket). ``--root DIR`` refuses file arguments that resolve outside DIR (the author kit passes its directory).
@@ -101,6 +103,7 @@ def check_vocab(path: Path, lexicon_dir: Path | None) -> list[str]:
     out = [f"{path}: {len(lines)} lines (max {tk.VOCAB_MAX})"]
     seen: dict[str, int] = {}
     problems = 0
+    restem: list[tuple[int, str]] = []
     for n, s in enumerate(lines, start=1):
         if s in seen:
             out.append(f"  duplicate: line {n} {s!r} repeats line {seen[s]}")
@@ -118,14 +121,13 @@ def check_vocab(path: Path, lexicon_dir: Path | None) -> list[str]:
                        f"{[t.word if t.kind == 'word' else t.surface for t in toks.tokens]}")
             problems += 1
         if porter.stem(s) != s:
-            out.append(f"  changes when stemmed again: line {n} {s!r} -> {porter.stem(s)!r} (text never produces it)")
-            problems += 1
+            restem.append((n, s))
     if len(lines) > tk.VOCAB_MAX:
         out.append(f"  too many lines: {len(lines)} > {tk.VOCAB_MAX}")
         problems += 1
     lex = lexicon_dir if lexicon_dir is not None else path.parent / "lexicon"
+    by_stem: dict[str, set[str]] = defaultdict(set)
     if lex.is_dir():
-        by_stem: dict[str, set[str]] = defaultdict(set)
         for f in sorted(lex.glob("*.txt")):
             for line in f.read_text(encoding="utf-8").splitlines():
                 for word in line.split():
@@ -138,6 +140,13 @@ def check_vocab(path: Path, lexicon_dir: Path | None) -> list[str]:
             out.append(f"  merge: {' '.join(sorted(merges[s]))} -> {s!r}{'' if s in seen else '  (stem not in vocab.txt)'}")
     else:
         out.append(f"no lexicon directory at {lex}")
+    if restem:
+        out.append(f"notes: {len(restem)} entr{'y' if len(restem) == 1 else 'ies'} change when stemmed again (Porter is "
+                   "not idempotent: fine when some word stems to the entry; check with --words)")
+        for n, s in restem:
+            words = sorted(by_stem.get(s, ()))
+            why = f"lexicon words stem to it: {' '.join(words)}" if words else "no lexicon word stems to it"
+            out.append(f"  changes when stemmed again: line {n} {s!r} -> {porter.stem(s)!r} ({why})")
     out.append(f"{problems} problem(s)")
     return out
 

@@ -1,0 +1,53 @@
+#!/usr/bin/env python3
+"""Stub `claude -p --output-format json` for the modellabel tests (see stubcore.py). Never calls a model."""
+
+import json
+import os
+import sys
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import stubcore as sc  # noqa: E402
+
+argv = sys.argv[1:]
+if argv == ["--version"]:
+    print("2.1.322 (Claude Code) [stub]")
+    sys.exit(0)
+if "--help" in argv or "-p" not in argv:
+    print("stub claude: only -p is supported", file=sys.stderr)
+    sys.exit(2)
+body = sc.read_stdin()
+sc.log_call("claude", argv, body)
+system = sc.arg_value(argv, "--system-prompt") or ""
+action = sc.next_action("claude")
+sc.maybe_sleep()
+if action == "hang":
+    import time
+    time.sleep(600)
+if action == "garbled":
+    sys.stdout.write('{"type": "result", "subtype": "succ')
+    sys.exit(1)
+cost = float(os.environ.get("STUB_COST", "0.10"))
+usage = {"input_tokens": 12, "cache_creation_input_tokens": len(body) // 3, "cache_read_input_tokens": len(system) // 3,
+         "output_tokens": 900, "output_tokens_details": {"thinking_tokens": 600}}
+res = {"type": "result", "subtype": "success", "is_error": False, "duration_ms": 1200, "num_turns": 1,
+       "stop_reason": "end_turn", "session_id": "00000000-0000-4000-8000-000000000000", "total_cost_usd": cost,
+       "usage": usage, "modelUsage": {"claude-opus-5-5": {"costUSD": cost}}, "permission_denials": [],
+       "terminal_reason": "completed", "safety_stops": 0}
+if action == "error":
+    res.update(subtype="error_during_execution", is_error=True, result="API Error: 529 overloaded", total_cost_usd=0.0)
+elif action == "refuse":
+    res.update(stop_reason="refusal", result="", stop_details={"category": "cyber"})
+elif action == "budget":
+    res.update(subtype="error_max_budget_usd", is_error=True, result="")
+elif action == "maxtokens":
+    res.update(stop_reason="max_tokens", result='{"screen": "x", "nodes": [')
+elif action == "weird":
+    res.update(safety_stops=[], stop_details="none", result=sc.answer("claude", system + "\n\n" + body, "label"))
+else:
+    res["result"] = sc.answer("claude", system + "\n\n" + body, action)
+if action == "nocost":
+    res.pop("total_cost_usd")
+if action == "badutf8":
+    sys.stdout.flush()
+    sys.stdout.buffer.write(b"\xff\xfe junk line\n")
+print(json.dumps(res))

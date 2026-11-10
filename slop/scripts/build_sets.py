@@ -1,7 +1,7 @@
 """Build the real-copy sets (SPEC.md §9): reference_real and the calibration pool now, sealed_real after the freeze.
 
     uv run python scripts/build_sets.py build [--work DIR] [--reference-n 50] [--calibration-n 40]
-    uv run python scripts/build_sets.py sealed [--work DIR] [--n 250] [--sibling SCREEN_JSON]
+    uv run python scripts/build_sets.py sealed [--work DIR] [--n 250] [--sibling SCREEN_JSON]   # build_sealed.py
 
 Run from `slop/`. `build` writes, for each of `reference_real` and `calibration`:
 
@@ -27,22 +27,24 @@ Rules, in order; each file is counted under the first rule that drops it:
    a file there has the same bytes.
 6. `test_spec_story`: `*.test.*`, `*.spec.*`, `*.stories.*`, `*.story.*`, `__tests__/`, `__mocks__/`, and Swift
    tests (`*Tests.swift`, `*Test.swift`, any directory named `Tests` or ending in `Tests`).
-7. `untracked`: not tracked by git at the recorded commit (generated or local files), so the manifest pins every
+7. `blog_figures`: `components/blog-figures/**`, figures for a blog post about earlier HypaNet runs (they describe
+   earlier runs and would prime the author, and are not app UI).
+8. `untracked`: not tracked by git at the recorded commit (generated or local files), so the manifest pins every
    file it lists. A tracked file with local changes is kept and marked `modified`, with its sha256.
-8. `byte_identical_sealed`: the file's sha256 equals that of a file in a sealed repo (reference and calibration
+9. `byte_identical_sealed`: the file's sha256 equals that of a file in a sealed repo (reference and calibration
    only). The sealed repos are read as bytes and hashed, nothing else; the hashes (no paths) go to the gitignored
    list.
-9. `extract_failed`: the extractor could not parse the file.
-10. `under_two_nodes`: fewer than two nodes that are not context only (`aria`, `alt`, `code`, `sr_only`;
+10. `extract_failed`: the extractor could not parse the file.
+11. `under_two_nodes`: fewer than two nodes that are not context only (`aria`, `alt`, `code`, `sr_only`;
     `LABELLING.md` §2).
-11. `dedupe_exact`, `dedupe_jaccard`: in hash-rank order, a screen whose normalised node-text sequence has the same
+12. `dedupe_exact`, `dedupe_jaccard`: in hash-rank order, a screen whose normalised node-text sequence has the same
     sha256 as, or whose node-text set has Jaccard similarity of at least 0.8 with, a screen already kept in this set
     or in an earlier set (`reference_real` before `calibration` and `sealed_real`).
-12. `dir_cap` (`reference_real` and `calibration`): in rank order, a screen whose directory (its file's parent
+13. `dir_cap` (`reference_real` and `calibration`): in rank order, a screen whose directory (its file's parent
     directory in the repo) already gives 6 selected screens.
-13. `repo_cap`: dropped to hold the set's repo balance rule (no repo gives more than 40% of the nodes of
+14. `repo_cap`: dropped to hold the set's repo balance rule (no repo gives more than 40% of the nodes of
     `reference_real`'s repo screens or of `calibration`, or 25% of those of `sealed_real`).
-14. `below_cut`: ranked after the set was full.
+15. `below_cut`: ranked after the set was full.
 
 Selection rank: screens are ordered by sha256(f"{namespace}:{seed}:{repo}/{path}") as hex, seed 20261116, namespace
 `reference`, `calibration` or `sealed`. Normalised node text: NFKC, case-folded, the runs of letters and digits and
@@ -84,9 +86,12 @@ MAX_BYTES = 2_000_000
 TEST_NAME = re.compile(r"\.(test|spec|stories|story)\.[a-z]+$|Tests?\.swift$")
 CONTEXT_ROLES = {"aria", "alt", "code"}
 
-RULES = ["not_source", "vendored", "worktrees", "design_refs", "plan_prototype", "test_spec_story", "untracked",
-         "byte_identical_sealed", "extract_failed", "under_two_nodes", "dedupe_exact", "dedupe_jaccard", "dir_cap",
-         "repo_cap", "below_cut"]
+# blog figures describe earlier HypaNet runs: they would prime the author and are not app UI
+BLOG_FIGURES = re.compile(r"(^|/)components/blog-figures/")
+
+RULES = ["not_source", "vendored", "worktrees", "design_refs", "plan_prototype", "test_spec_story", "blog_figures",
+         "untracked", "byte_identical_sealed", "extract_failed", "under_two_nodes", "dedupe_exact", "dedupe_jaccard",
+         "dir_cap", "repo_cap", "below_cut"]
 
 
 @dataclass
@@ -274,7 +279,7 @@ def git_state(root: Path) -> tuple[str | None, set[str], set[str]]:
 
 
 def classify(repo: Repo, sealed_hashes: set[str] | None) -> tuple[list[FileEntry], str | None]:
-    """Apply rules 1-8 to every UI file of a repo. Returns the entries (rule None = eligible) and the commit."""
+    """Apply rules 1-9 to every UI file of a repo. Returns the entries (rule None = eligible) and the commit."""
     root = repo.root.resolve()
     top = root / repo.subdir if repo.subdir else root
     raw = walk_ui_files(top, root)
@@ -315,6 +320,8 @@ def classify(repo: Repo, sealed_hashes: set[str] | None) -> tuple[list[FileEntry
         elif TEST_NAME.search(name) or any(x in ("__tests__", "__mocks__") or x == "Tests" or x.endswith("Tests")
                                              for x in dirs):
             e.rule = "test_spec_story"
+        elif BLOG_FIGURES.search(p):
+            e.rule = "blog_figures"
         elif commit is not None and p not in tracked:
             e.rule = "untracked"
         else:
@@ -389,7 +396,7 @@ class Candidate:
 
 def gather(repos: list[Repo], work: Path, sealed_hashes: set[str] | None, drops: dict, per_repo: dict,
            namespace: str) -> list[Candidate]:
-    """Rules 1-10 for every repo; returns the eligible screens ranked by hash."""
+    """Rules 1-11 for every repo; returns the eligible screens ranked by hash."""
     cands = []
     for repo in repos:
         entries, commit = classify(repo, sealed_hashes)
@@ -651,44 +658,19 @@ def frozen_extractor() -> str:
 
 
 def cmd_sealed(args) -> None:
-    """sealed_real (SPEC.md §9). Opens the sealed repos, so it refuses until the extractor is frozen."""
-    frozen_extractor()
-    ref_dir = DATASETS / "reference_real" / "screens"
-    ref_manifest = json.loads((DATASETS / "reference_real" / "manifest.json").read_text())
-    ref = []
-    for row in ref_manifest["screens"]:
-        screen = json.loads((ref_dir / f"{row['id']}.json").read_bytes())
-        c = Candidate(row["repo"], row["path"], row["commit"], row["git"], Path(), row["source_sha256"], screen, b"")
-        c.texts_hash, c.texts = text_hash(screen), text_set(screen)
-        ref.append(c)
-    repos = [Repo(n, r, "private", "", "") for n, r in SEALED_REPOS]
-    for r in repos:
-        if r.name == "MemoryOS":
-            r.licence = "Apache-2.0"
-    work_ctx = tempfile.TemporaryDirectory(prefix="slop-sealed-") if not args.work else None
-    work = Path(args.work or work_ctx.name).resolve()
+    """sealed_real (SPEC.md §9): scripts/build_sealed.py, which refuses before it opens a sealed repo unless the
+    freeze is in place, and writes a committable manifest of ids and hashes only."""
     try:
-        drops, per_repo = {}, {}
-        cands = gather(repos, work, None, drops, per_repo, "sealed")
-        cands = dedupe(cands, ref, drops, per_repo)
-        sel = select(cands, args.n, SEALED_RULE, drops, per_repo)
-        extra = {"note": "deduplicated against reference_real; Atomic-Private counts as one repo"}
-        if args.sibling:
-            p = Path(args.sibling)
-            b = p.read_bytes()
-            screen = json.loads(b)
-            c = Candidate(screen["source"]["repo"], screen["source"]["path"], screen["source"].get("commit"),
-                          "fixture", p, sha256_file(p), screen, b)
-            c.rank = rank_hash("sealed", c.repo, c.path)
-            per_repo[c.repo] = {"commit": c.commit, "licence": screen["source"].get("licence"), "files": 1,
-                                "drops": {}, "eligible": 1}
-            sel = sorted(sel + [c], key=lambda x: x.rank)
-            extra["sibling_fixture"] = screen["id"]
-        m = write_set("sealed_real", "sealed", sel, drops, per_repo, SEALED_RULE, extra)
-    finally:
-        if work_ctx:
-            work_ctx.cleanup()
-    print(f"sealed_real: {m['screens_total']} screens, {m['nodes_total']} nodes")
+        import build_sealed  # noqa: PLC0415  (run as a script: scripts/ is on sys.path)
+    except ImportError:
+        from scripts import build_sealed  # noqa: PLC0415
+
+    argv = ["--n", str(args.n)]
+    if args.sibling:
+        argv += ["--sibling", args.sibling]
+    if args.work:
+        argv += ["--work", args.work]
+    raise SystemExit(build_sealed.main(argv))
 
 
 def main(argv=None) -> None:
@@ -698,7 +680,7 @@ def main(argv=None) -> None:
     b.add_argument("--work", help="staging directory for the extractor's output (default: a temporary one)")
     b.add_argument("--reference-n", type=int, default=50, help="repo screens in reference_real (default 50)")
     b.add_argument("--calibration-n", type=int, default=40, help="screens in the calibration set (default 40)")
-    s = sub.add_parser("sealed", help="sealed_real; refuses until the extractor hash is frozen in registry.yaml")
+    s = sub.add_parser("sealed", help="sealed_real (scripts/build_sealed.py); refuses until the freeze is in place")
     s.add_argument("--work")
     s.add_argument("--n", type=int, default=250)
     s.add_argument("--sibling", help="screen JSON of the sealed sibling fixture (SPEC.md §9)")

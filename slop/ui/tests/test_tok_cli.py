@@ -54,3 +54,14 @@ def test_scripts_run_standalone(tmp_path):
     assert r.returncode == 0, r.stderr
     r = subprocess.run([sys.executable, "lint/compile.py", str(tmp_path / "art"), "-o", str(tmp_path / "n.bin")], cwd=SLOP, capture_output=True, text=True)
     assert r.returncode == 0 and (tmp_path / "n.bin").read_bytes()[:8] == b"SLOPNET1", r.stderr
+
+
+def test_vocab_restem_is_a_note_not_a_problem(tmp_path, capsys):
+    # Porter is not idempotent: 'paus' (the stem of pause) stems again to 'pau', yet text produces it
+    (tmp_path / "vocab.txt").write_text("paus\n")
+    (tmp_path / "lexicon").mkdir()
+    (tmp_path / "lexicon" / "ui.txt").write_text("pause paused pausing\n")
+    assert tok.main(["--vocab", str(tmp_path / "vocab.txt")]) == 0
+    out = capsys.readouterr().out
+    assert "changes when stemmed again: line 1 'paus' -> 'pau' (lexicon words stem to it: pause paused pausing)" in out
+    assert "never produces" not in out and out.rstrip().endswith("0 problem(s)")

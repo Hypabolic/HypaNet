@@ -12,11 +12,13 @@ Motivating example (a game pause menu built by an AI): eyebrow "OPERATION ON HOL
 first three, and widened the target to "repetition within the UI: headings, labels, dot highlights".
 
 Decisions (Matthew, 2026-11-10): go ahead; author Fable 5.2, not 5.1; scope includes repetition across the UI as
-well as explanatory copy; public anti-slop guidance informs the definition (`LABELLING.md`); Matthew adjudicates
-and hand-labels; Matthew approves the final prompt, the cap and the effort level before any launch, smoke launch
-included; no money is spent before that. Review of this spec: `research/review-log.md`.
+well as explanatory copy; public anti-slop guidance informs the definition (`LABELLING.md`); Matthew approves the
+final prompt, the cap and the effort level before any launch, smoke launch included; no money is spent before that. Review of this spec: `research/review-log.md`.
 Further decisions (Matthew, 2026-11-10, after review): full labelling plan (§5, §9); the heading of a self-evident
 overlay stays `KEEP` (PAUSED); track C is deferred to a later run; the run uses `--effort xhigh`, not `max`.
+Decision (user, 2026-11-10): no human labelling; two model labellers from different families write the answer key,
+with adjudication (§5a). (Until then Matthew was to hand-label every set and adjudicate, and a second person was to
+label the calibration pool and 40 sealed screens.)
 
 ## 1. Scope
 
@@ -40,8 +42,8 @@ overlay stays `KEEP` (PAUSED); track C is deferred to a later run; the run uses 
 | Transformer interpreter, Python reference and JS runtime with parity tests (§7) | harness | yes |
 | Plain-code rule layer (§8); dev generator with exact labels (§9); `KIT.md`; Codex briefs | harness, in a fresh session that has not read the unredacted corpus note (§9) | yes |
 | OOD generator (§9); rules-engine baseline (§11) | Codex, each in its own isolated session | yes |
-| `LABELLING.md`; labels on the calibration, reference and sealed real sets | Matthew (guide drafted by the harness) | yes |
-| Second labels on the calibration pool and 40 sealed screens (§5) | a second person | yes |
+| `LABELLING.md` | harness (drafted), Matthew (approves) | yes |
+| Labels on the calibration, reference and sealed real sets (the answer key, §5a) | Claude Opus 5.5 and Codex (GPT-6.1 Sol), each blind to the other, with model adjudication (`slop/modellabel/`) | yes |
 | **Vocabulary, lexicon, every weight and bias, choice of pointer head** | **Fable 5.2** | written in the run |
 | CLI and ESLint packaging of the final network (§14) | harness | after the run |
 
@@ -55,18 +57,22 @@ SPEC.md, LABELLING.md    this spec; the label definition (both shipped in the pa
 .gitignore               written before any set is built (below)
 research/                source notes, never in the packet; corpus-scout.md is redacted (§9)
 pyproject.toml, uv.lock  Python 3.12: numpy, torch (baselines and parity only), pyyaml
-package.json, lock       Node 22: @babel/parser, parse5, web-tree-sitter + tree-sitter-swift, tree-sitter-python (pinned)
+package.json, lock       Node ≥ 22, whichever `node` is on PATH at hand-over (the hand-over record stores its path
+                         and version; `kit_build.py verify` compares them): @babel/parser, parse5, web-tree-sitter +
+                         tree-sitter-swift, tree-sitter-python (pinned)
 extract/ ui/ lint/       extractor (TypeScript) and golden fixtures; tokenizer.py, porter.py, model.py (numpy
                          reference); runtime.js, tokenizer.js, porter.js, compile.py, CLI, eslint-plugin/, parity tests
 rules/ generator/        plain-code rule layer; dev generator (never in the packet)
-labeller/                local labelling tool
+labeller/                local labelling tool (record schema, check.py; the browser tool is for review)
+modellabel/              two-model labelling harness: prompts, runners, adjudication, agreement, cost estimate
 labels/                  label records per set (gitignored; sha256 committed at freeze)
 commissions/             ood_generator/, rules_baseline/ (Codex: BRIEF, hashes, logs, deliverable)
 datasets/ registry.yaml  manifests, split id lists and sha256 (data gitignored); freeze record
-kit/                     KIT.md, prompt.md, prompt_continue.md, PROMPT_APPROVED.sha256, settings.json, lib/, tools/,
-                         make_settings.py, kit_build.py, leakage.py (all new)
-scripts/                 all new: prepare_author_dir.sh, launch.sh, audit.py, cost.py, freeze.py, build_sets.py,
-                         build_sealed.py, public_to_screen.py, score.py, sealed_eval.py
+kit/                     KIT.md, prompt.md, prompt_continue.md, PROMPT_RENDERED_PREVIEW.md, PROMPT_APPROVED.sha256,
+                         settings.json, settings.smoke.json, lib/, tools/, make_settings.py, kit_build.py, leakage.py,
+                         leakage_waivers.json (all new)
+scripts/                 all new: prepare_author_dir.sh, launch.sh, launch_checks.py, audit.py, cost.py, freeze.py,
+                         build_sets.py, build_sealed.py, public_to_screen.py, score.py, sealed_eval.py
 runs/smoke/ runs/r1/     smoke-launch archive; run archive
 ```
 
@@ -77,12 +83,15 @@ commits are pushed straight away, so nothing in `slop/` may quote a private repo
 
 Author directory: `../HypaNet-slop-author/`; smoke directory: `../HypaNet-slop-smoke/`. Clouds r1 is complete; its
 launcher refuses while either exists (`clouds/scripts/launch.sh:95`), and that is left as is. Clouds files are not
-edited. `slop/kit/make_settings.py` (from `clouds/kit/make_settings.py`) writes `kit/settings.json`:
+edited. `slop/kit/make_settings.py` (from `clouds/kit/make_settings.py`) writes `kit/settings.json`
+(`kit/settings.smoke.json` for the smoke directory):
 `defaultMode: dontAsk`; Read/Glob/Grep/Edit/Write denied on the repo, on every other `HypaNet*` sibling (the smoke
 directory included), on every entry of `~/.claude` except the session's own project directory (so
 `~/.claude/projects/-Users-matthew-Development-hypabolic-HypaNet/**` is denied), on `/tmp/claude-501`, on the private
-note directory (§9) and on every repo that supplies `sealed_real`, `public_clean` or `comments_real`;
-`autoMemoryEnabled: false`; `switchModelsOnFlag: false`. The launcher runs `make_settings.py --check` and refuses on
+note directory (§9), on `~/.codex` and `~/.claude.json`, on every repo that supplies `sealed_real`, `public_clean`
+or `comments_real`, and on the
+reference and calibration repos (their copy reaches the author only through `examples/reference/`);
+`autoMemoryEnabled: false`; `switchModelsOnFlag: false`; `showThinkingSummaries: true`. The launcher runs `make_settings.py --check` and refuses on
 any gap. `./tok`, `./lint`, `./score` and `./inspect` resolve their file arguments and refuse anything outside the
 author directory.
 
@@ -147,11 +156,11 @@ exact repeats).
 
 Defined in `LABELLING.md`: four classes `KEEP`, `ECHO` (restates another node; pointer required), `NARRATE`
 (explains the visible UI; pointer when it explains one node), `DECOR` (carries no information). REDUNDANT = any of
-the last three. One record per labelled node in `labels/<set>.jsonl`:
+the last three. One record per labelled node in `labels/<set>.<labeller>.jsonl`:
 
 ```json
 {"screen": "b3f1…", "loc": [12, 9, 12, 26], "class": "ECHO", "target": [13, 9, 13, 15], "equiv": [], "pattern": "R1",
- "aside": [], "partial": false, "ct": false, "conf": "clear", "role_ok": true, "labeller": "mg",
+ "aside": [], "partial": false, "ct": false, "conf": "clear", "role_ok": true, "labeller": "opus55",
  "guide_sha256": "…", "time": "2026-11-12T10:41:00Z"}
 ```
 
@@ -162,34 +171,108 @@ sees. Screen-level asides are one record per screen: `{"screen": …, "aside_scr
 […]}]}`. Missing nodes are recorded per screen as `{"screen": …, "missed": [{"line": …, "text": …, "class": …}]}`:
 missed nodes are reported as extractor recall, and missed REDUNDANT nodes count as false negatives in an
 **end-to-end recall** line beside node recall. A missed record may carry a `pattern`. Other records written by the
-labelling tool (`slop/labeller/`):
+labelling tools (`slop/labeller/`, `slop/modellabel/`):
 
 - **Done record.** `{"screen", "done": true, "nodes": N, …}` is written once every node on a screen is labelled.
 - **K rules.** A `KEEP` record may name the K rule that decided it in `pattern` (`K1`–`K14`).
 - **Screen-level fields.** Screen asides list their nodes by `loc`. Every screen-level record carries `labeller`, `guide_sha256` and `time`.
 - **Nodes with no literal words.** These get `class: null` with `aside: ["UNRESOLVED"]`. Scorers skip them and count them.
-- **Product kind.** Each repo's product kind (`LABELLING.md` §2a) is recorded in `datasets/kinds.json`.
+- **Product kind.** Each repo's product kind (`LABELLING.md` §2a) is recorded in `datasets/kinds.json`; for
+  `sealed_real`, one neutral line per repo in `datasets/sealed_real/screens/kinds.json` (gitignored), written before
+  it is labelled.
 - **Screen order.** The set builder writes each set's screen order (by hash rank) for the tool's `--order` flag.
 
 **Agreement.** Measured on a calibration pool that belongs to no scored set: all of `reference_real` plus up to 40
 screens drawn by hash (seed 20261116, namespace `calibration`) from repos in no split: HypaVPN, lean-ctx,
 detectorists, HyperCubeDemo, HypaDev, StreetSweeperPro and the Hypa-Private wiki pages (aitutaki-game is Unreal C++,
-which the extractor does not read). A second labeller, a person, labels the pool blind to Matthew's labels. If binary
-κ is below 0.6, the guide is revised once using only the pool, both labellers relabel the pool, and both rounds are
-reported. If `UNSURE` exceeds 5% of the pool's nodes, the guide is not frozen. Then `LABELLING.md` is frozen: every
-label record's `guide_sha256` must equal the frozen guide's hash, and `slop/scripts/freeze.py --check` refuses
-otherwise, so any set labelled before a revision is relabelled. After the freeze the second labeller labels 40
-`sealed_real` screens (namespace `agreement`) blind with the frozen guide. That measures agreement on the headline set
-and is never used to revise the guide.
+which the extractor does not read). The two model labellers (§5a) label the pool, each blind to the other. If
+binary κ between them in round 1 (before the second pass; the "before" column of `modellabel/run.py report`) is below
+0.6, the guide is revised once using only the pool, both labellers relabel the pool,
+and both rounds are reported. If `UNSURE` exceeds 5% of the pool's nodes for either labeller, the guide is not
+frozen. Then `LABELLING.md` is frozen: every label record's `guide_sha256` must equal the frozen guide's hash, and
+`slop/scripts/freeze.py --check` refuses otherwise, so any set labelled before a revision is relabelled. After the
+freeze both labellers label all of `sealed_real` blind with the frozen guide. Their agreement there measures agreement
+on the headline set and is never used to revise the guide.
 
-Reported for the pool and for the 40 sealed screens: Cohen's κ, Gwet's AC1, and positive and negative agreement, each
-with a 95% interval that resamples screens; for REDUNDANT against KEEP and for the four classes; with `UNSURE` as its
-own category and again with `UNSURE` nodes dropped; on all nodes and on nodes whose role is not
-`button`/`link`/`nav`/`tab`/`menu_item`; pointer agreement on nodes both call `ECHO`; `clear` and `judgement` subsets
-by Matthew's `conf`. The second labeller's REDUNDANT F1 and false-alarm rate against Matthew on the 40 sealed screens
-are the human ceiling, in the same table as the systems (§10). (Shaib et al. 2025 measured binary "slop" κ of −0.15
+Reported for the pool and for `sealed_real`, before and after adjudication (`modellabel/run.py report`): Cohen's κ,
+Gwet's AC1, and positive and negative agreement, each with a 95% interval that resamples screens; for REDUNDANT
+against KEEP and for the four classes; with `UNSURE` as its own category and again with `UNSURE` nodes dropped; on
+all nodes and on nodes whose role is not `button`/`link`/`nav`/`tab`/`menu_item`; per role and per repo; pointer
+agreement on nodes both call `ECHO`; `clear` and `judgement` subsets by each labeller's `conf`; the contested rate. The pause-menu fixture, whose answer
+the guide's §8 works through, is labelled but left out of every agreement statistic.
+Each labeller's REDUNDANT F1 and false-alarm rate against the other on `sealed_real` are the inter-labeller ceiling
+(model agreement, not a human ceiling), in the same table as the systems (§10). (Shaib et al. 2025 measured binary "slop" κ of −0.15
 to 0.29 among three copy-editors; the narrow classes here are meant to do better, and this check says whether they
 do.)
+
+## 5a. Answer key
+
+**Decision (user, 2026-11-10):** nobody labels by hand. Two model labellers from different families write the answer
+key: Claude Opus 5.5 (`claude-opus-5-5` through `claude -p`, effort high; labeller id `opus55`) and Codex (GPT-6.1 Sol
+through `codex exec`, reasoning effort high; `codex61`). Each labels every node of `reference_real`, the calibration
+screens and `sealed_real` blind to the other (`slop/modellabel/`: a fresh process with no tools per screen, prompted
+with `LABELLING.md` and that screen only: its product kind, its nodes with their window, and its source file). The
+prompt adds nothing to the guide but two gap rules: a target must be in its node's window, and copy repeated only in
+another window is labelled as if that window did not exist, with aside `X-FILE`, as `LABELLING.md` §2a says for
+another file; a node with no literal words gets class null. The product kind is one neutral line per repo (a
+fixture's note is cut from it), and `label` refuses a screen without one. `sealed_real` is labelled with the model,
+effort, CLI version, prompt version and guide that labelled the pool, and `label` refuses otherwise.
+
+**Disputes.** A node on which the two disagree on the binary class, the four-class label or the pointer target goes
+to a second pass. Both models see the guide, the screen, the agreed labels and the two disputed labels, anonymised as
+A and B in an order fixed per node by sha256 (seed 20261116, namespace `adjudicate`, key `<screen>:<i>`) and shown
+without either labeller's `conf`; each returns a final label with a one-line reason. If the two final labels agree,
+that is the key's label; if not, the node is contested and both candidates are kept. A node both labellers call
+`UNSURE` is contested. Agreed labels merge as: `conf` judgement if either says so; `ct` if either sets it (a node
+either labeller decided by the consequence test leaves the headline, and `ct` disagreement is reported); where the
+pattern codes differ, one labeller's code chosen by hash per node. Screen asides and missed copy enter the key only
+when both labellers raised them; one-sided items are counted in the agreement report. The key is
+`labels/<set>.final.jsonl`.
+
+**Binary consensus.** Every final node record also carries `binary`: `REDUNDANT` or `KEEP` when both final labels
+share it, else null. A node contested only on its class or its target (`ECHO` against `DECOR`, or two `ECHO`
+targets) keeps its binary label and is scored in the binary headline (§10); the four-class and pointer metrics leave
+every contested node out.
+
+**A complete key.** A key is complete when every screen of its set has a valid round-1 label from both models and
+every disputed node a second pass from both (a refused second pass leaves its nodes contested). A refused or invalid
+screen is run again, once more with `--retry-refused` after a refusal. A screen still without a valid label from both
+is not keyed from one model: it is dropped from every scored set and listed with its repo, node count and each
+labeller's status in the agreement report and the write-up, because refusals correlate with content.
+`modellabel/run.py build` exits 1 while a key is incomplete, and `scripts/freeze.py` refuses to record one.
+
+**Scoring against it.** Contested nodes without a binary consensus are left out of the headline (like `UNSURE` and
+`ct: true` nodes) and counted. The sensitivity analysis re-scores every system under four fixed resolutions of those
+nodes, the same for every system: all `REDUNDANT`, all `KEEP`, Opus's candidate and Codex's candidate. A candidate is
+that labeller's second-pass label, else its round-1 label, and an `UNSURE` candidate leaves the node out
+(`modellabel/adjudicate.py` `resolve_binary`). The paired differences of §10 are reported under each resolution.
+Every system is also scored against each labeller's labels separately (`<set>.opus55.jsonl`, `<set>.codex61.jsonl`),
+beside the adjudicated key. **Family statistic (pre-registered):** Δ(Fable − rules engine) in REDUNDANT F1 on
+`sealed_real` scored against `opus55`, minus the same Δ scored against `codex61`, with a 95% interval from the §10
+bootstrap. An interval that excludes 0 is reported as a family effect of the key. (The Haiku 5.5 baseline is a Claude
+model too.)
+
+**Checks on the key.** κ cannot see an error both labellers share: the guide (drafted by Opus 5.5), the prompt, the
+rendering of nodes, or the source file both read. Four checks are reported with the agreement, and none feeds the
+key:
+
+1. **Planted labels.** Both labellers label the §12.4 generated screens; each one's recall per pattern against the
+   plants is reported.
+2. **Test-retest.** Each model labels about 10% of the pool again, chosen by hash (`label --variant retest`), for
+   intra-labeller agreement.
+3. **Source ablation.** Codex labels the calibration screens without their source files (`label --variant nosource`;
+   Codex costs nothing per call), to measure how far reading the source moves the labels.
+4. **Concession.** On adjudicated nodes, how often each model moved to the other's label, split by whether its own
+   label was shown as A or B, and how often the key took each labeller's round-1 label. A gap of more than 20
+   percentage points between the models is flagged as asymmetric concession.
+
+**Caveat.** The key is model judgement, not human judgement: a score measures agreement with two frontier models
+applying the guide. Fable 5.2 is a Claude model, as is Opus 5.5, and Codex wrote the OOD generator and the rules
+engine (§15), so the per-labeller scores are reported to show how far either labeller's reading moves a result.
+Labelling sends each labelled set's screens and source files, `sealed_real` included, to Anthropic's API and to
+OpenAI through Codex. Before sealed copy is sent, Matthew confirms that the Claude account and the ChatGPT plan both
+have training on user content turned off (§16). The Opus spend has its own cap, approved before any call (estimate
+and scenarios in `modellabel/README.md`); Codex runs on the user's ChatGPT plan.
 
 ## 6. Tokeniser (`ui/tokenizer.py`, mirrored by `lint/tokenizer.js`)
 
@@ -282,7 +365,7 @@ rules read identifier words from the node's `vw` (§4). The lists and exact cond
 | `val` | harness generator | 2,000 screens | 20261112 (`val`) | trained baselines' early stopping (not T-400m); reported |
 | `test_gen` | harness generator | 2,000 screens | 20261113 | sealed |
 | `ood_codex` | Codex generator | 2,000 screens | 20261114 | sealed |
-| `reference_real` | HypaChef, Mosaic, PersonalHomepage, plus the pause-menu fixture | about 50 screens | 20261116 (`reference`) | disclosed to Fable and Codex |
+| `reference_real` | HypaChef, Mosaic, PersonalHomepage, plus the pause-menu fixture | 21 repo screens plus the fixture (up to 50; the caps leave a shortfall of 29) | 20261116 (`reference`) | disclosed to Fable and Codex |
 | `sealed_real` (headline) | Atomic-Private, MemoryOS, SandyScouts, hypabolic-homepage, fpp-quilting-generator, HypaAlarm, CoastalQuilts, odysseus, plus the sealed sibling fixture | about 250 screens | 20261116 (`sealed`) | sealed |
 | `public_clean` | AOSP `strings.xml` dialogs and settings (Apache-2.0), Firefox Fluent dialogs (MPL-2.0) | about 300 screens | 20261116 (`public`) | sealed; unlabelled |
 | `comments_real` | odysseus Python, JSX section comments in sealed repos | about 200 pairs | 20261116 (`comments`) | sealed |
@@ -290,7 +373,7 @@ rules read identifier words from the node's `vw` (§4). The lists and exact cond
 Selection hashes are sha256(namespace, seed, path). Seeds 20261112–20261116 are new (a grep of `src/`, `scripts/`,
 `experiments/`, `clouds/` and the README found none of them). At freeze, `test_gen`, `ood_codex`, `sealed_real`,
 `public_clean` and `comments_real` go in the README's Sealed data table; 20261112 (dev, val), 20261115 (bootstrap)
-and 20261116's `reference`, `calibration` and `agreement` namespaces go in the paragraph of used seeds below it.
+and 20261116's `reference`, `calibration` and `adjudicate` namespaces go in the paragraph of used seeds below it.
 Reserved and never used here: 20261104 and 20261106–20261111, 20261201, 20261202.
 
 - **Firewall for sealed copy.** `research/corpus-scout.md` §3 quotes about 60 clusters from the repos that become
@@ -298,7 +381,8 @@ Reserved and never used here: 20261104 and 20261106–20261111, 20261201, 202612
   that section moves out of the repo to `~/Development/hypabolic/slop-private/corpus-scout.full.md` (denied in the
   kit settings) and is replaced by a redacted version (repo, path, line, pattern code; no copy, no calls). The
   generator, rule layer, `KIT.md` and Codex briefs are written in a fresh harness session that has never read the
-  unredacted note. The labellers do not read it before labelling `sealed_real`; each sealed label file records that.
+  unredacted note. The model labellers never see it: each call's prompt holds only the guide and one screen, and
+  the raw files under `labels/raw/` record every prompt.
   `LABELLING.md` was drafted by a session that did read it, so it is covered by the leakage check below and by
   Matthew's review.
 - **Dev generator** (`slop/generator/`). Emits source files (TSX, HTML, SwiftUI) plus label records, then runs the
@@ -321,12 +405,15 @@ Reserved and never used here: 20261104 and 20261106–20261111, 20261201, 202612
   harness generator, `dev`, `val`, the reference labels or Fable's output.
 - **Disclosure to Fable.** 400 `dev` screens ranked by sha256(seed, screen id), taken in order until each scored
   pattern has 10 positive nodes and each K rule 10 negatives, then filled to 400. All of `reference_real` with
-  Matthew's labels.
+  the adjudicated labels (§5a; a contested node shows both candidates and is marked contested). A `dev` screen whose
+  node texts equal those of a held-out generated screen (`val`, `test_gen`, `ood_codex`; sha256 of the normalised
+  node-text sequence) is never disclosed (24 of the 20,000 match `val` today).
 - **Real sets.** Repos are split whole; Atomic-Private (three apps, one house style) counts as one repo for the cap
   and the bootstrap. Excluded before selection (`slop/scripts/build_sets.py`): vendored primitives
   (`components/ui/**`, `vendor/**`, any file byte-identical to a shadcn registry file), `*.worktrees`,
   `DesignRefs/**` where a `design_handoff_*` copy exists, `plan/prototype/**` where it mirrors `src/`, test, spec and
-  story files, files git does not track, and any `reference_real` or calibration file byte-identical to a file in a
+  story files, PersonalHomepage's `components/blog-figures/**` (figures for a blog post about earlier HypaNet runs:
+  they would prime the author and are not app UI), files git does not track, and any `reference_real` or calibration file byte-identical to a file in a
   sealed repo (a sha256 check found 54 PersonalHomepage UI files byte-identical to files in sealed repos; the sealed
   files are hashed as bytes only, into a gitignored list). Screens are then deduplicated across all real sets by sha256 of the normalised node-text
   sequence: a screen whose hash, or whose node set at Jaccard ≥ 0.8, matches a `reference_real` screen is dropped from
@@ -336,17 +423,17 @@ Reserved and never used here: 20261104 and 20261106–20261111, 20261201, 202612
   nodes of `reference_real`'s repo screens. The calibration screens take the same cap: no repo gives more than 40%
   of their nodes, and a shortfall from 40 screens is reported, never filled by relaxing the cap. In `reference_real`
   and the calibration screens no directory gives more than 6 screens, taken in hash-rank order, so that one folder of
-  similar components (PersonalHomepage's blog figures, HypaVPN's `UI`) cannot fill the set. MemoryOS is third-party (Apache-2.0) and is credited. ACCACloner
+  similar components (such as HypaVPN's `UI`) cannot fill the set. MemoryOS is third-party (Apache-2.0) and is credited. ACCACloner
   and the 3DConnexions SDK are excluded. Private repo text is never committed or published; manifests hold repo,
   path, commit and hashes.
 - **Sealed sibling fixture.** Before launch Matthew obtains a second AI-built game or app overlay (eyebrow, heading,
-  subtitle, buttons; built by a coding agent of his choice), labels it and adds it to `sealed_real`'s manifest.
-  Nobody shows it to Fable.
+  subtitle, buttons; built by a coding agent of his choice) and adds it to `sealed_real`'s manifest; the model
+  labellers label it with the rest of the set. Nobody shows it to Fable.
 - **`public_clean`** is not labelled. AOSP and Firefox dialogs become screen JSON through
   `slop/scripts/public_to_screen.py` (resource-id suffix → role map frozen in `registry.yaml`; one dialog or
   preference screen = one screen), reported as a different input path from the linter's. Flags from every system are
-  pooled, deduplicated by node, shuffled and adjudicated by Matthew blind to which systems raised them; per-system
-  adjudicated false-alarm rates are computed afterwards.
+  pooled, deduplicated by node, shuffled and judged by the two model labellers (§5a) blind to which systems raised
+  them; per-system adjudicated false-alarm rates are computed afterwards.
 - **Sealing.** Every sealed file and every label file is hashed and the hashes committed before Fable's network
   exists. The sealed run is one-time: `slop/scripts/sealed_eval.py` (new) writes the repo-root marker
   `artifacts/reports/slop_sealed.started.json` with a random token before opening any sealed file and refuses if it
@@ -364,12 +451,14 @@ Reserved and never used here: 20261104 and 20261106–20261111, 20261201, 202612
 
 Every number names its split. **Primary (one number):** REDUNDANT-against-KEEP F1 on `sealed_real`, node level, at
 each system's shipped operating point (Fable: `minMargin` 0). **Co-primary:** the false-alarm rate (KEEP nodes
-flagged / KEEP nodes). Nodes with `ct: true` or `UNSURE` are left out of both and counted. For every system that gives
+flagged / KEEP nodes). Nodes with `ct: true`, `UNSURE`, or contested without a binary consensus (§5a) are left out
+of both and counted; a node contested only on its class or target is scored on its binary consensus. For every system that gives
 a score (Fable's margin, the trained logit, the rules engine's overlap) also: precision at the recall of the Codex
 rules engine and at the recall of the exact-stem floor, and the precision-recall curve. **Linter view:** the share of
 `sealed_real` files with no REDUNDANT label that get at least one finding, and false findings per 100 KEEP nodes per
 file. Also: precision and recall; end-to-end recall (§5); four-class macro-F1 and confusion matrix; recall per pattern
-code; the `ct` column (`ct: true` nodes scored on their own); the human ceiling (§5); **pointer accuracy** = among
+code; the `ct` column (`ct: true` nodes scored on their own); the inter-labeller ceiling (§5); the contested-node
+sensitivity scores under the four fixed resolutions, the per-labeller scores and the family statistic (§5a); **pointer accuracy** = among
 nodes labelled `ECHO` or `NARRATE` with a non-null target and predicted non-KEEP, the share whose predicted target is
 the labelled target or a node in its `equiv` list, also on the intersection of nodes every system flags; results on
 `clear` and `judgement` nodes; every metric per repo and with each repo left out in turn; `public_clean` flags per 100
@@ -408,13 +497,15 @@ are the result.
    checkpoints). Vocabulary: the 3,584 most frequent stems in its training screens. Learning rate, epochs, batch size
    and pointer-loss weight are fixed in `registry.yaml` before any training run.
 3. **Prompted LLMs** (cannot run in a linter; optional, run only if Matthew approves the cost and the sending of
-   sealed private copy to the API). Claude Haiku 5.5 and Claude Opus 5.5, once on each sealed set. Each gets
-   `LABELLING.md` plus the `reference_real` screens with labels as a cached few-shot prefix. Opus 5.5's result is
-   marked "same model as the guide's drafter". Unparseable or refused outputs are scored as KEEP and counted. Prompt
+   sealed private copy to the API). Claude Haiku 5.5, once on each sealed set. Opus 5.5 and Codex cannot be baselines
+   on the real sets, because they wrote the answer key (§5a); Opus 5.5 may still run on `test_gen` and `ood_codex`,
+   marked "same model as the guide's drafter and one of the labellers". Each gets `LABELLING.md` plus the
+   `reference_real` screens with labels as a cached few-shot prefix. Unparseable or refused outputs are scored as KEEP and counted. Prompt
    texts and their sha256 are in `registry.yaml`. Estimate (harness, not measured): about 4,750 sealed screens, a
    25,000-token cached prefix, 1,000 fresh input and 400 output tokens per screen; at list prices on 2026-11-10
    (platform.claude.com/docs/en/about-claude/pricing: Opus 5.5 US$4 input, US$0.20 cache hit, US$20 output; Haiku
-   5.5 US$0.10, US$0.01, US$0.50 per MTok) about US$80–90 for Opus 5.5 and about US$3 for Haiku 5.5. Also
+   5.5 US$0.10, US$0.01, US$0.50 per MTok) about US$80–90 for Opus 5.5 over all of them (about US$67–76 on the two
+   generated sets alone) and about US$3 for Haiku 5.5. Also
    Qwen3.5-0.8B locally in `envs/qwen` at no API cost, with the same prefix.
 4. **Floors:** always-KEEP; exact-stem match (flag the lower-precedence node of any pair in a cluster whose stem sets
    are equal or nested; point at the other); Vale with Microsoft, proselint, write-good and vale-signs-of-ai-writing
@@ -423,8 +514,9 @@ are the result.
 ## 12. Validation before launch
 
 1. **Extractor.** At least 60 golden fixtures over TSX, HTML, SwiftUI and Python comment pairs (pause menu included)
-   with expected nodes, roles, flags and clusters; all pass. On `reference_real`, Matthew's `role_ok` must be true for
-   at least 90% of nodes, or the extractor is fixed and the reference relabelled. The extractor is then frozen (hash in
+   with expected nodes, roles, flags and clusters; all pass. On `reference_real`, each model labeller's `role_ok` must
+   be true for at least 90% of nodes (both labellers; `modellabel/run.py report` checks it), or the extractor is
+   fixed and the reference relabelled. The extractor is then frozen (hash in
    `registry.yaml`) before any `sealed_real` or `comments_real` labelling begins; sealed `role_ok` and missed-node
    records are reported only and never used to change it.
 2. **Tokeniser.** Porter output matches Martin Porter's published word list and output; 10 golden identifier cases
@@ -440,9 +532,12 @@ are the result.
    `test_gen` screens whose normalised text hash, or whose node set at Jaccard ≥ 0.8, matches any `dev` or `val`
    screen are regenerated, and the count is reported. `ood_codex` screens containing any node string from
    `LABELLING.md`, `KIT.md` or the 400 disclosed screens are dropped; the build refuses if more than 2% are dropped.
-   Matthew labels 30 harness-generator screens (`val` namespace) and 30 Codex-generator screens (seed 20261114,
-   namespace `check`, not in `ood_codex`) blind to the planted labels; κ and REDUNDANT F1 of each generator's labels
-   against Matthew are reported, and a generator below κ 0.6 is revised before sealing.
+   Both model labellers label 30 harness-generator screens (`val` namespace) and 30 Codex-generator screens (seed
+   20261114, namespace `check`, not in `ood_codex`) without the planted labels (`slop/modellabel/`; a generator's
+   `screens.jsonl` needs an adapter to a set directory first). κ and REDUNDANT F1 of each generator's labels against
+   each labeller, and each labeller's recall per pattern against the plants (§5a, planted labels), are reported. The
+   other family decides the gate: a generator below κ 0.6 against it (Codex for the harness generator, Opus 5.5 for
+   the Codex generator) is revised before sealing.
 5. **Labels.** Agreement (§5) is measured and reported, and the guide frozen, before any sealed labelling.
 6. **Freeze.** `slop/scripts/freeze.py` (new, after `scripts/v04_freeze.py`) writes `slop/registry.yaml`: the spec,
    guide, extractor, tokeniser, model, runtime, rule layer, kit, env pins, set manifests, label hashes,
@@ -451,30 +546,47 @@ are the result.
    once with every baseline artefact (the Codex rules engine, all 15 trained checkpoints and their configs, the
    Vale/proselint configs). `sealed_eval.py` refuses unless every listed hash matches, scores every system in the
    single opening, and runs the LLM baselines inside the same attempt token, hashing their raw outputs before scoring.
-   Determinism: same input, same bytes.
+   Determinism: same input, same bytes. A component that does not exist yet (`sealed_real`, `test_gen`, the kit's
+   hand-over record, `score.py`, `sealed_eval.py`) is recorded as `null` and listed as pending; `freeze.py --revise
+   --reason …` records it later and refuses any change to a recorded component not named with `--allow-change`;
+   `--check --strict` fails while any is pending; `--dry-run` prints what `--write` would record.
+   `slop/scripts/build_sealed.py` selects `sealed_real` only once `--check` passes, and its committed manifest holds
+   ids and hashes only (repo name, sha256 of the path, no copy).
 7. **Launcher.** Claude Code at least 2.1.321 (the first version with `claude-fable-5-2`; this machine has 2.1.322 from
    2026-11-10). After Matthew approves the prompt and the US$200 cap, one smoke launch at `xhigh`:
    mode `smoke` runs in `../HypaNet-slop-smoke/` (prepared like the real directory and denied in the r1 settings),
-   logs to `runs/smoke/logs/` and passes `--max-budget-usd 10`. Its spend can pass US$10 by about one response, up
+   verifies against `runs/smoke/HANDOVER.json`, logs to `runs/smoke/logs/` and passes `--max-budget-usd` of 10 (or
+   the remaining cap, if less). Its spend can pass US$10 by about one response, up
    to about US$21 (`research/fable-5-2.md` §8). It measures tokens per turn and refusals, and tests
-   `showThinkingSummaries: true` in `kit/settings.json`, reporting how many thinking blocks have text. Afterwards the
+   `showThinkingSummaries: true` in `kit/settings.smoke.json`, reporting how many thinking blocks have text.
+   Afterwards the
    smoke directory and its `~/.claude/projects` entry are moved aside; `start` still requires a pristine r1 author
    directory and an empty project directory.
 
 ## 13. Author kit and run
 
 - Fresh directory `../HypaNet-slop-author/`, built by `slop/scripts/prepare_author_dir.sh` on the Clouds pattern
-  (read-only except `work/`; `HANDOVER.json` with every file's sha256, re-verified before and after each launch). It
+  (read-only except `work/`; `HANDOVER.json` with every file's sha256, re-verified before and after each launch; the
+  full record, with the harness, node and data hashes, is `runs/<run>/HANDOVER.json`). It
   holds `KIT.md` (§1, §4–§7 and the rules; it says the `ct` column is a stretch case and the headline does not depend
-  on it), `LABELLING.md`, `examples/dev/` (400 screens with labels), `examples/reference/` (screens, labels and source
-  snippets), and `kit/lib/` with read-only copies of `porter.py`, `tokenizer.py` and the numpy `model.py`. `examples/`
-  also holds each screen in a compact text form, one line per node (`i k role flags | text | CLASS→target PATTERN
-  conf`), and `examples/INDEX.txt` (screen id, kind, node count, patterns present). Tools:
+  on it), `PROMPT.md` (a copy of `kit/prompt.md`), `LABELLING.md` (the guide with its preamble and its
+  cross-references to this spec replaced, `kit/kit_build.py` `kit_guide()`; both hashes are recorded),
+  `examples/dev/` (400 screens with labels),
+  `examples/reference/` (screens, their whole source files, and labels only when the answer key
+  `labels/reference_real.final.jsonl` exists at build time), and `kit/lib/` with read-only copies of `porter.py`,
+  `tokenizer.py` (with the two tables it reads) and the numpy `model.py`. `examples/` also holds each screen in a compact text form, one line per node (`i k role flags | text | CLASS→target PATTERN
+  conf`), and `examples/INDEX.txt` (set, screen id, kind, framework, node count, window count, codes present). Each screen's files are
+  `examples/<set>/<id>.screen.json`, `<id>.labels.jsonl`, `<id>.txt` (the compact form, target as the target's `i`)
+  and, in `reference/` only, `<id>.source.<ext>`; label records drop the `labeller`, `guide_sha256` and `time`
+  fields, and a contested reference node keeps only its two `candidates` (class, target, pattern, conf, ct, partial,
+  equiv, aside). Tools:
   - `./tok FILE|--text "…"`: normalisation, stems, ids (vocabulary or hash bucket) and flags per node; `--words FILE`
-    prints word → stem → id for a word list; `--vocab work/vocab.txt` reports duplicates, entries that change when
-    stemmed again, and stems that more than one lexicon word maps to;
-  - `./lint FILE` (`.tsx`, `.html`, `.swift`, `.py` or screen JSON in the author directory): the real linter's output;
-  - `./score ART --set dev|reference`: a summary table (per class and per pattern), pointer accuracy and at most 40
+    prints word → stem → id for a word list; `--node K` limits FILE to one node; `--vocab work/vocab.txt` reports
+    duplicates and unclean entries, notes entries that change when stemmed again, and lists stems that more than one
+    lexicon word maps to;
+  - `./lint FILE` (`.tsx`, `.jsx`, `.html`, `.swift` or screen JSON in the author directory): the real linter's output
+    with the artefact in `work/` (or `--art DIR`), the rule layer's findings included;
+  - `./score ART --set dev|reference` (`reference` only when its labels are in the kit): a summary table (per class and per pattern), pointer accuracy and at most 40
     wrong nodes with their text, filtered by `--class`, `--pattern`, `--screen` and paged by `--offset`;
     `--files work/probes/*.json` scores screen JSON the author wrote (labels optional; per-node logits and pointer
     printed when there are none); `--against ART2` lists nodes whose class or pointer differs between two artefacts;
@@ -485,9 +597,10 @@ are the result.
   - `./python3`: numpy only, under `slop/kit/tools/py_guard.py` (a copy of `clouds/kit/tools/py_guard.py`, hashed in
     `HANDOVER.json`; no `lstsq`, `pinv`, `polyfit`, `.fit`).
   Each tool's output is capped at 20,000 characters and says when it truncates.
-- **Deliverables in `work/`:** `build.py` (rewrites the artefact exactly; may read only files under `work/` and import
-  `kit/lib/`, never `examples/`), `vocab.txt` (written by `build.py`, which may stem `work/lexicon/*.txt` surface
-  words), optional hand-written `lexicon/*.txt`, `artifact.npz`, `meta.json`, and `MODEL.md`: the residual
+- **Deliverables in `work/`:** `build.py` (rewrites the artefact exactly; may read only files under `work/` that the
+  author wrote by hand, never one a script produced from the examples, scores or network outputs, and import
+  `kit/lib/`, never `examples/`; computes no weight from a score or from the network's output on any screen),
+  `vocab.txt` (written by `build.py`, which may stem `work/lexicon/*.txt` surface words), optional hand-written `lexicon/*.txt`, `artifact.npz`, `meta.json`, and `MODEL.md`: the residual
   allocation, what every head and MLP group computes, the lexicon and its synonym groups, the revisions made after
   scoring and why, and known failures.
 - **Rules (in the prompt):** no training, fitting, optimisation or automated search of any kind (no gradient descent,
@@ -495,18 +608,25 @@ are the result.
   no code that reads the examples to compute any weight, vocabulary entry or synonym group; every vocabulary row and
   synonym group must be general UI vocabulary from the author's own knowledge, not a key for one disclosed screen; no
   WordNet or other lexical resource (none is in the kit); numpy only; don't modify or work around the tools; keep
-  `MODEL.md` current; write each file as soon as it is settled.
+  `MODEL.md` current; write each file as soon as it is settled. Fixed pseudo-random vectors from a seeded generator
+  are a construction, not a search; trying several seeds and keeping the best is a search.
 - **Launch** (`slop/scripts/launch.sh`, from `clouds/scripts/launch.sh`): `claude -p --model claude-fable-5-2
-  --effort xhigh`, `--settings kit/settings.json --setting-sources project`, `--permission-mode dontAsk
+  --effort xhigh`, `--settings kit/settings.json` (`kit/settings.smoke.json` for smoke) `--setting-sources project`,
+  `--permission-mode dontAsk
   --permission-prompts none`, `--strict-mcp-config`, `--tools Read,Glob,Grep,Write,Edit,Bash`, Agent, Workflow, web,
-  Artifact and Skill tools disallowed, `--disable-slash-commands`, `--max-budget-usd` = remaining cap,
+  Artifact and Skill tools disallowed, `--disable-slash-commands`, `--max-budget-usd` = remaining cap (rounded down to the cent),
   `--output-format stream-json --verbose`. No `--fallback-model`; `CLAUDE_CODE_DISABLE_REFUSAL_FALLBACK=1`,
   `CLAUDE_CODE_NO_MODEL_FALLBACK=1`, `CLAUDE_CODE_MAX_OUTPUT_TOKENS=128000`, `CLAUDE_CODE_DISABLE_AUTO_MEMORY=1`,
-  `CLAUDE_CODE_DISABLE_CLAUDE_MDS=1`; the parent-session environment scrub of the Clouds launcher, which unsets
+  `CLAUDE_CODE_DISABLE_CLAUDE_MDS=1`; the parent-session environment scrub of the Clouds launcher (plus every other
+  `CLAUDECODE` / `CLAUDE_*` variable except the auth and provider switches), which unsets
   `CLAUDE_CODE_EFFORT_LEVEL` (it outranks `--effort`, and Claude Code's own Fable 5.2 default is `medium`);
-  `runs/r1/logs/NAME.launch.json` written before claude starts; `start` refuses unless `kit/PROMPT_APPROVED.sha256`
-  holds the sha256 of `kit/prompt.md` (written by Matthew), and below Claude Code 2.1.321. `continue K` resumes after
-  API errors with a fixed technical prompt. A launch ends only at the cap or when the author's last message ends with
+  `runs/<run>/logs/NAME.launch.json` (run `smoke` or `r1`) written before claude starts; `smoke` and `start` refuse
+  unless `kit/PROMPT_APPROVED.sha256` holds the sha256 of `kit/prompt.md` (written by Matthew); every mode refuses
+  below Claude Code 2.1.321, and unless `kit/leakage.py --require-sealed` passes on the author directory (as
+  `prepare_author_dir.sh` requires for a real hand-over); `start` refuses without a smoke transcript in
+  `runs/smoke/logs/`. `continue K` (K = 1..30, in order) resumes the r1 session after an API or limit error, or a
+  reply that ended the session without `MODEL COMPLETE`, with a fixed technical prompt; a launch with no init event
+  is moved aside and charged nothing. A launch ends only at the cap or when the author's last message ends with
   `MODEL COMPLETE`; long thinking is never a reason to stop. The prompt carries no budget wording (Anthropic's Fable
   5.2 prompting guide reports that a large stated budget raised spend) and asks for files and decisions, not for
   reasoning in the reply.
@@ -520,7 +640,7 @@ are the result.
   completion regex `^\s*MODEL COMPLETE\s*$`, refusals counted by `stop_details.category`, allowed commands, fitting
   patterns, slop paths in `MARKERS`; `slop/scripts/cost.py`: `CAP_USD = 200.0`, `PRICES = {"claude-fable-5-2": (8.0,
   40.0, 10.0, 16.0, 0.20)}` ([PZ] in `research/fable-5-2.md` §2), launch names `smoke*`, `r1`, `r1.c<K>` charged
-  against the one cap); rebuild the artefact from `build.py` in a fresh guard and compare hashes; run the JS–numpy
+  against the one cap, over `runs/smoke/logs/` and `runs/r1/logs/`, any other transcript there charged too); rebuild the artefact from `build.py` in a fresh guard and compare hashes; run the JS–numpy
   parity test on Fable's artefact over `val` and the disclosed sets and report any mismatch (sealed sets are scored
   with the numpy reference); write `INTEGRITY.md`, with the share of thinking blocks that have text; commit the
   archive (transcripts and `examples/reference/` redacted to ids and hashes unless Matthew clears those repos, §16 Q5)
@@ -549,6 +669,12 @@ location.
 ## 15. Risks and what would make this fail
 
 - **Labels.** If κ stays low after one revision, every score has a low ceiling; `NARRATE` is the likely weak spot.
+- **Model key.** The answer key is model judgement (§5a). Opus 5.5 shares a family with Fable 5.2, and Codex shares a
+  model with the OOD generator and the rules engine; scores against each labeller separately show whether either
+  shared prior moves a result.
+- **Shared blind spots.** Two model labellers can agree on the same wrong reading (the guide, the prompt and the
+  source are common to both), so agreement is not accuracy; the checks on the key (§5a) bound this, and the family
+  statistic says whether the Claude-family labeller moves Fable's result.
 - **World knowledge.** Whether a stated consequence is expected depends on the kind of product (`LABELLING.md` §7).
   A lexicon cannot carry that, so consequence-test labels are a stretch column.
 - **Concentration.** `sealed_real` leans on two repos with one house style (shadcn and Tailwind); about 250 screens
@@ -565,16 +691,20 @@ location.
 ## 16. Open questions for Matthew
 
 1. ~~Is PAUSED redundant?~~ Decided 2026-11-10: `KEEP` (K11).
-2. Who is the second labeller? It must be a person. If a model is used instead, it is not Opus 5.5 or a Fable model,
-   its κ is reported as "model agreement", that model is not also a baseline, and the sealed screens it reads go to
-   its API (cost and privacy as in §11.3).
+2. ~~Who is the second labeller?~~ Decided 2026-11-10: no human labelling; Opus 5.5 and Codex label, with
+   adjudication (§5a). Still to approve: the labelling spend cap, and sending sealed private copy to both APIs.
 3. ~~Effort~~ Decided 2026-11-10: `xhigh`. The US$200 cap is still to be approved with the final prompt.
 4. ~~Track C~~ Decided 2026-11-10: deferred to a later run.
 5. May labelled strings from Atomic-Private (private) and MemoryOS (third-party) be quoted in the write-up, or only
    aggregates? May HypaChef, Mosaic and PersonalHomepage copy (`reference_real`) appear in the committed transcripts
    and kit archive?
-6. Run the optional LLM baselines (about US$80–90 for Opus 5.5, about US$3 for Haiku 5.5, §11.3), sending sealed
-   private copy to the API?
+6. Run the optional LLM baselines (Haiku 5.5 on the sealed sets, about US$3; Opus 5.5 on the generated sets only,
+   about US$67–76; §11.3), sending sealed private copy to the API?
 7. Accept that the motivating subtitle ("Resume recaptures the mouse.") is scored in the `ct` stretch column, not
    the headline?
-8. Supply the sealed sibling fixture (§9) before launch.
+8. Supply the sealed sibling fixture (§9) before launch, with its real source file: `build_sealed.py --sibling` copies
+   the screen JSON as its source today, and `modellabel/run.py label` refuses a screen whose source is screen JSON.
+9. Is Fable told that two models (Opus 5.5 and Codex) wrote the answer key? Saying so is honest, but naming Opus
+   invites labelling the way Opus would; `KIT.md` currently says only that contested nodes exist.
+10. Confirm that training on user content is off for the Claude account and the ChatGPT plan before sealed copy is
+    sent to either (§5a).

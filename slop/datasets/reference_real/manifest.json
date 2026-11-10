@@ -4,7 +4,7 @@
  "seed": 20261116,
  "namespace": "reference",
  "rank": "sha256(f\"{namespace}:{seed}:{repo}/{path}\") as hex, ascending",
- "builder_sha256": "aa6d57c111002bd9705022dc2ba902088d893f8de5f0909aa8d4ff5462081bc8",
+ "builder_sha256": "b606f353d40a2fade1dffa7815119976025137cb29aba3e737d145de8a31fcce",
  "extractor_sha256": "3d3dad1b8fcf66555fce9c9158093ee05d96d48893a821226573cc6dc19fc9d7",
  "balance_rule": "no repo gives more than 40% of the nodes of the set's repo screens (a 25% cap, as for sealed_real, cannot hold with three repos), and no directory gives more than 6 screens (taken in rank order); up to 50 repo screens, and a shortfall is reported, not filled by relaxing either cap; the pause-menu fixture is added on top",
  "caps": {
@@ -15,43 +15,43 @@
  "largest_dirs": [
   {
    "repo": "PersonalHomepage",
-   "dir": "components/blog-figures",
-   "screens": 6,
-   "nodes": 73,
-   "screen_share": 0.1667,
-   "node_share": 0.1466
-  },
-  {
-   "repo": "Mosaic",
-   "dir": "frontend/src/components",
-   "screens": 6,
-   "nodes": 70,
-   "screen_share": 0.1667,
-   "node_share": 0.1406
-  },
-  {
-   "repo": "PersonalHomepage",
    "dir": "components",
    "screens": 6,
    "nodes": 54,
-   "screen_share": 0.1667,
-   "node_share": 0.1084
+   "screen_share": 0.2727,
+   "node_share": 0.2411
   },
   {
    "repo": "Mosaic",
    "dir": "frontend/src/features/research/components",
    "screens": 4,
    "nodes": 57,
-   "screen_share": 0.1111,
-   "node_share": 0.1145
+   "screen_share": 0.1818,
+   "node_share": 0.2545
+  },
+  {
+   "repo": "Mosaic",
+   "dir": "frontend/src/components",
+   "screens": 4,
+   "nodes": 19,
+   "screen_share": 0.1818,
+   "node_share": 0.0848
   },
   {
    "repo": "HypaChef",
-   "dir": "Packages/HypaChefKit/Sources/Features/Cooking",
-   "screens": 3,
-   "nodes": 51,
-   "screen_share": 0.0833,
-   "node_share": 0.1024
+   "dir": "Packages/HypaChefKit/Sources/DesignSystem/Components",
+   "screens": 2,
+   "nodes": 6,
+   "screen_share": 0.0909,
+   "node_share": 0.0268
+  },
+  {
+   "repo": "HypaChef",
+   "dir": "Packages/HypaChefKit/Sources/Features/Review",
+   "screens": 1,
+   "nodes": 32,
+   "screen_share": 0.0455,
+   "node_share": 0.1429
   }
  ],
  "sealed_files_hashed": 1095,
@@ -62,53 +62,51 @@
   "note": "the pause-menu fixture; its expected.json is the screen"
  },
  "target": 50,
- "shortfall": 15,
+ "shortfall": 29,
  "kinds": {
   "HypaChef": "README.md",
   "Mosaic": "CONTEXT-MAP.md (no README)",
   "PersonalHomepage": "package.json dependencies (no README)",
   "slop-fixtures": "labeller/fixtures/kinds.json"
  },
- "screens_total": 36,
- "nodes_total": 498,
- "labelable_total": 474,
+ "screens_total": 22,
+ "nodes_total": 224,
+ "labelable_total": 212,
  "roles": {
-  "label": 75,
-  "button": 74,
-  "body": 59,
-  "caption": 58,
-  "nav": 26,
-  "aria": 24,
-  "subtitle": 22,
-  "h1": 19,
-  "h2": 18,
-  "cell": 15,
-  "list_item": 15,
-  "h3": 14,
-  "menu_item": 11,
-  "dialog_body": 9,
-  "dialog_title": 9,
-  "badge": 7,
-  "error": 6,
-  "link": 6,
-  "empty_title": 5,
-  "helper": 5,
-  "empty_body": 4,
-  "eyebrow": 4,
+  "button": 42,
+  "body": 32,
+  "caption": 31,
+  "nav": 23,
+  "aria": 12,
+  "subtitle": 12,
+  "label": 11,
+  "h1": 10,
+  "h3": 7,
+  "list_item": 5,
+  "dialog_body": 4,
+  "dialog_title": 4,
+  "h2": 4,
+  "link": 4,
   "tab": 4,
-  "h4": 3,
-  "placeholder": 3,
-  "input_value": 2,
-  "tooltip": 1
+  "badge": 3,
+  "empty_title": 3,
+  "error": 3,
+  "eyebrow": 3,
+  "empty_body": 2,
+  "menu_item": 2,
+  "h4": 1,
+  "input_value": 1,
+  "placeholder": 1
  },
  "drops": {
   "not_source": 2,
   "vendored": 56,
   "test_spec_story": 116,
+  "blog_figures": 38,
   "byte_identical_sealed": 4,
-  "under_two_nodes": 322,
-  "dir_cap": 37,
-  "repo_cap": 42
+  "under_two_nodes": 321,
+  "dir_cap": 6,
+  "repo_cap": 50
  },
  "repos": {
   "HypaChef": {
@@ -118,12 +116,12 @@
    "drops": {
     "test_spec_story": 102,
     "under_two_nodes": 293,
-    "repo_cap": 37
+    "repo_cap": 41
    },
    "eligible": 47,
    "byte_identical_sealed_any_rule": 0,
-   "screens": 10,
-   "nodes": 191
+   "screens": 6,
+   "nodes": 79
   },
   "Mosaic": {
    "commit": "99381e7a0039b3a2f574a1bca0e2900d3cac592b",
@@ -134,12 +132,12 @@
     "byte_identical_sealed": 2,
     "under_two_nodes": 7,
     "dir_cap": 2,
-    "repo_cap": 5
+    "repo_cap": 9
    },
    "eligible": 19,
    "byte_identical_sealed_any_rule": 2,
-   "screens": 12,
-   "nodes": 165
+   "screens": 8,
+   "nodes": 76
   },
   "PersonalHomepage": {
    "commit": "49a893863f1e33435071a84ad48f42aaa10eb839",
@@ -148,14 +146,15 @@
    "drops": {
     "not_source": 2,
     "vendored": 56,
+    "blog_figures": 38,
     "byte_identical_sealed": 2,
-    "under_two_nodes": 22,
-    "dir_cap": 35
+    "under_two_nodes": 21,
+    "dir_cap": 4
    },
-   "eligible": 48,
+   "eligible": 11,
    "byte_identical_sealed_any_rule": 55,
-   "screens": 13,
-   "nodes": 135
+   "screens": 7,
+   "nodes": 62
   },
   "slop-fixtures": {
    "commit": null,
@@ -183,19 +182,6 @@
   },
   {
    "order": 2,
-   "id": "d2681a72f8e3e443",
-   "repo": "PersonalHomepage",
-   "path": "components/blog-figures/f28-every-version.tsx",
-   "commit": "49a893863f1e33435071a84ad48f42aaa10eb839",
-   "git": "clean",
-   "screen_sha256": "9a9a71e04ee7a49148788bdef1a4330e16f7981b35be9c3d787cd44e4c4d5ce2",
-   "source_sha256": "d395b28afbf72dece7873cb78d124673cde29e8b7d15925d17059c13e70ba4b4",
-   "rank_sha256": "0691b2e4144bc663ef38af99b20915c81054bebed80afa3571ff9793ef30938b",
-   "nodes": 10,
-   "labelable": 10
-  },
-  {
-   "order": 3,
    "id": "9d693509558ed2f8",
    "repo": "PersonalHomepage",
    "path": "components/blog-post-view.tsx",
@@ -208,7 +194,7 @@
    "labelable": 11
   },
   {
-   "order": 4,
+   "order": 3,
    "id": "0834ed696c5613ad",
    "repo": "Mosaic",
    "path": "frontend/src/components/app-shell.tsx",
@@ -221,20 +207,7 @@
    "labelable": 2
   },
   {
-   "order": 5,
-   "id": "b0617def98b941ee",
-   "repo": "PersonalHomepage",
-   "path": "components/blog-figures/f26-always-stuck-prompt.tsx",
-   "commit": "49a893863f1e33435071a84ad48f42aaa10eb839",
-   "git": "clean",
-   "screen_sha256": "7b09fd9c310ff96917b1ba31ae78fb18df0dbfb69b503d67859ca56e4e157b43",
-   "source_sha256": "5885184def07aa0f59eb2f0f2feda8f5c0b6b77e0932f06b1b55060cfe92b1e4",
-   "rank_sha256": "09059df11e1dd7353879178a6f0df187b5a4efccc2bd15e107b09cc9ea3df1e8",
-   "nodes": 9,
-   "labelable": 9
-  },
-  {
-   "order": 6,
+   "order": 4,
    "id": "48eff9e28be7cba1",
    "repo": "HypaChef",
    "path": "Packages/HypaChefKit/Sources/Features/Root/RootView.swift",
@@ -247,20 +220,7 @@
    "labelable": 24
   },
   {
-   "order": 7,
-   "id": "5d0d3b9d88be5894",
-   "repo": "PersonalHomepage",
-   "path": "components/blog-figures/f23-spotting-a-repeat.tsx",
-   "commit": "49a893863f1e33435071a84ad48f42aaa10eb839",
-   "git": "clean",
-   "screen_sha256": "a2d9ab5590b11372901741046cd583a2f5edd3a7618c0595ca350a31448531ad",
-   "source_sha256": "c7d7e1ddfe280cfd86e1e4e118a6c625b8b6f1df5d96f97ee88ca8420a35fa5f",
-   "rank_sha256": "0c4812ef6c4041dc91dee58259b9d907952159ac4b5f4ea065696d0c7ccb8004",
-   "nodes": 18,
-   "labelable": 18
-  },
-  {
-   "order": 8,
+   "order": 5,
    "id": "fcb9b0dcb9c64ff7",
    "repo": "HypaChef",
    "path": "Packages/HypaChefKit/Sources/DesignSystem/Components/ServingsStepper.swift",
@@ -273,7 +233,7 @@
    "labelable": 2
   },
   {
-   "order": 9,
+   "order": 6,
    "id": "27618e630ff33705",
    "repo": "HypaChef",
    "path": "Packages/HypaChefKit/Sources/Features/Search/FilterBar.swift",
@@ -286,7 +246,7 @@
    "labelable": 10
   },
   {
-   "order": 10,
+   "order": 7,
    "id": "8c4acbcb40c97e47",
    "repo": "HypaChef",
    "path": "Packages/HypaChefKit/Sources/DesignSystem/Components/Chips.swift",
@@ -299,7 +259,7 @@
    "labelable": 3
   },
   {
-   "order": 11,
+   "order": 8,
    "id": "db71dcd28b825508",
    "repo": "Mosaic",
    "path": "frontend/src/components/app-nav.tsx",
@@ -312,33 +272,7 @@
    "labelable": 4
   },
   {
-   "order": 12,
-   "id": "4d2baadfd75a576d",
-   "repo": "PersonalHomepage",
-   "path": "components/blog-figures/f5-counting-softmax.tsx",
-   "commit": "49a893863f1e33435071a84ad48f42aaa10eb839",
-   "git": "clean",
-   "screen_sha256": "0257a3d2b8595a7e7d5c03053d84c2f71f3dd25f9ceb8ffedcff8182795efa15",
-   "source_sha256": "8ba403574bddaa69857e04a4e8f768a265f60c6acdadebc62cf8c5304d3258ee",
-   "rank_sha256": "13ae1873e47868caea52f768426940b87bd35253ce5257bbf521faf85a8bab62",
-   "nodes": 8,
-   "labelable": 8
-  },
-  {
-   "order": 13,
-   "id": "1de4f10efdddb449",
-   "repo": "PersonalHomepage",
-   "path": "components/blog-figures/parts.tsx",
-   "commit": "49a893863f1e33435071a84ad48f42aaa10eb839",
-   "git": "clean",
-   "screen_sha256": "1dac7668e5f46bef999e8c97f7d5c7bbabd3343082293d67be715e2ac19d9bf3",
-   "source_sha256": "1f365474ef5eb50cc24d9c57ee5f001f8f0255e6762ff59453cd8d831098568e",
-   "rank_sha256": "174d39ffd1534577291bd0f885c8a2e802d9970a9b2951ab726824b694ede254",
-   "nodes": 8,
-   "labelable": 8
-  },
-  {
-   "order": 14,
+   "order": 9,
    "id": "2194e4444913ebb4",
    "repo": "HypaChef",
    "path": "Packages/HypaChefKit/Sources/Features/Review/ExtractionView.swift",
@@ -351,7 +285,7 @@
    "labelable": 31
   },
   {
-   "order": 15,
+   "order": 10,
    "id": "3ec9574bb8a29b8a",
    "repo": "Mosaic",
    "path": "frontend/src/features/research/components/report-document-view.tsx",
@@ -364,20 +298,7 @@
    "labelable": 19
   },
   {
-   "order": 16,
-   "id": "6bafb7387376a4d3",
-   "repo": "HypaChef",
-   "path": "Packages/HypaChefKit/Sources/Features/RecipeEditor/RecipeEditorView.swift",
-   "commit": "8c3e0d1fa6a1e25bc0033395e366db57017a2daf",
-   "git": "clean",
-   "screen_sha256": "ecbfec354e74ea5c8f770c416d7d486d79773bde968c42bbb3c5ad01a526a177",
-   "source_sha256": "6e86a5bf0a108b41dd2e03bd3a8d2d94b717aeee015efc473c8e5f21f4493c45",
-   "rank_sha256": "1df8d4a5c4baeecc88e411da301d8a8bd8fb6b22f7fdaaad37e8e9292d01422b",
-   "nodes": 24,
-   "labelable": 23
-  },
-  {
-   "order": 17,
+   "order": 11,
    "id": "4607918021591549",
    "repo": "PersonalHomepage",
    "path": "components/blog-mermaid.tsx",
@@ -390,20 +311,7 @@
    "labelable": 2
   },
   {
-   "order": 18,
-   "id": "a67586d00f14ade4",
-   "repo": "PersonalHomepage",
-   "path": "components/blog-figures/f0-teaser.tsx",
-   "commit": "49a893863f1e33435071a84ad48f42aaa10eb839",
-   "git": "clean",
-   "screen_sha256": "d95efa6514d8e36f7787e914a64d898ef823f26e56f4f0310eaed7120b022127",
-   "source_sha256": "01d944bcdbe18f6637fce82fafbf3d9fa6aed7be0628ce69c519219704c776f9",
-   "rank_sha256": "1fb595409e8c8ff0fba1b8092a8a11b3b81f5990479d34b74f0268c9ad1f60b0",
-   "nodes": 20,
-   "labelable": 20
-  },
-  {
-   "order": 19,
+   "order": 12,
    "id": "a609372db43490a4",
    "repo": "Mosaic",
    "path": "frontend/src/features/research/components/research-thread-widget.tsx",
@@ -416,20 +324,7 @@
    "labelable": 4
   },
   {
-   "order": 20,
-   "id": "7de0c6bb716205a4",
-   "repo": "HypaChef",
-   "path": "Packages/HypaChefKit/Sources/Features/Cooking/CookingView.swift",
-   "commit": "8c3e0d1fa6a1e25bc0033395e366db57017a2daf",
-   "git": "clean",
-   "screen_sha256": "ede972113f23d20e197ae38dfc3f5fc4d19ecde0c5b260148980f4101ff9d5e6",
-   "source_sha256": "30236d0dcde3ad75507d95220711309b15b595b06aafc8620c249070c1af3914",
-   "rank_sha256": "25e320038ea5ca1faaca4fe7a6e2a825ba0393824435f6cf5af45edcec66c25e",
-   "nodes": 19,
-   "labelable": 16
-  },
-  {
-   "order": 21,
+   "order": 13,
    "id": "248cc4ea0afe4d7f",
    "repo": "Mosaic",
    "path": "frontend/src/components/view-loading.tsx",
@@ -442,7 +337,7 @@
    "labelable": 2
   },
   {
-   "order": 22,
+   "order": 14,
    "id": "9156368c3cf6bc5d",
    "repo": "Mosaic",
    "path": "frontend/src/features/research/components/research-progress.tsx",
@@ -455,33 +350,7 @@
    "labelable": 15
   },
   {
-   "order": 23,
-   "id": "19b5ee459dd62b5f",
-   "repo": "HypaChef",
-   "path": "Packages/HypaChefKit/Sources/Features/Settings/SettingsView.swift",
-   "commit": "8c3e0d1fa6a1e25bc0033395e366db57017a2daf",
-   "git": "clean",
-   "screen_sha256": "0d697d573360e07de1dd052419361677a8b6fdb020da40e5ccdf9d04b690828d",
-   "source_sha256": "70524aa62880e0e447f3b698d4ef963c9ebbebc01d16b477e7ae737938775df9",
-   "rank_sha256": "2d977680b6833d36844703336e4b17dbbe13aa0cf6d35cb740b0f12527e60bb8",
-   "nodes": 42,
-   "labelable": 40
-  },
-  {
-   "order": 24,
-   "id": "09a59ebb6cad61ac",
-   "repo": "HypaChef",
-   "path": "Packages/HypaChefKit/Sources/Features/Cooking/CookTimelineView.swift",
-   "commit": "8c3e0d1fa6a1e25bc0033395e366db57017a2daf",
-   "git": "clean",
-   "screen_sha256": "57e79b8c55a42bc4ede9699aeffad04102478b45837a2da406db3020d7b5f8f8",
-   "source_sha256": "cabc95f62780e7e495992490547c3447858b547e47cded2507400e19416d06a8",
-   "rank_sha256": "2ebd65770ea40cc8bcea71fd786bb2518c4a7bf06982d88cddff700bfa4499c5",
-   "nodes": 27,
-   "labelable": 23
-  },
-  {
-   "order": 25,
+   "order": 15,
    "id": "72746990ab303cf7",
    "repo": "PersonalHomepage",
    "path": "components/education.tsx",
@@ -494,7 +363,7 @@
    "labelable": 18
   },
   {
-   "order": 26,
+   "order": 16,
    "id": "9e1ed66a71ffd8d1",
    "repo": "Mosaic",
    "path": "frontend/src/features/research/components/research-confirmation-panel.tsx",
@@ -507,7 +376,7 @@
    "labelable": 18
   },
   {
-   "order": 27,
+   "order": 17,
    "id": "8bebe73de442954e",
    "repo": "PersonalHomepage",
    "path": "app/blog/page.tsx",
@@ -520,7 +389,7 @@
    "labelable": 7
   },
   {
-   "order": 28,
+   "order": 18,
    "id": "b26acde00012d1d8",
    "repo": "PersonalHomepage",
    "path": "components/header.tsx",
@@ -533,7 +402,7 @@
    "labelable": 11
   },
   {
-   "order": 29,
+   "order": 19,
    "id": "ddef6d8fb6ebc407",
    "repo": "Mosaic",
    "path": "frontend/src/components/app-sidebar.tsx",
@@ -546,59 +415,7 @@
    "labelable": 11
   },
   {
-   "order": 30,
-   "id": "f237f2ba3b1251c5",
-   "repo": "Mosaic",
-   "path": "frontend/src/components/report/report-blocks.tsx",
-   "commit": "99381e7a0039b3a2f574a1bca0e2900d3cac592b",
-   "git": "clean",
-   "screen_sha256": "94580feac9705e3c2a1e30760cd8413ae53d0094af6ef6acccf8fc44df9fb419",
-   "source_sha256": "2501f040aa49346f400cff61eda0a9288c5192926c782352c4923b83d11e2390",
-   "rank_sha256": "4f2c43fb3b36f8cc0493827bf87f1b7fb426bcd78e1a6ceb25c9f60534e207f9",
-   "nodes": 36,
-   "labelable": 35
-  },
-  {
-   "order": 31,
-   "id": "502449eb21dc77c1",
-   "repo": "Mosaic",
-   "path": "frontend/src/components/view-ask.tsx",
-   "commit": "99381e7a0039b3a2f574a1bca0e2900d3cac592b",
-   "git": "clean",
-   "screen_sha256": "e80b875a85f68af737d0fe99bbad87d23592c1d404f6c0f1c6c859348917e077",
-   "source_sha256": "4ae8b0bd814528b6747a24fff51d4adb915873e3e857dfb4d7af359c00efa411",
-   "rank_sha256": "683c75e6a255fc02ea0923212a98c21be456afd454eda1c5c3e15b650568da08",
-   "nodes": 26,
-   "labelable": 25
-  },
-  {
-   "order": 32,
-   "id": "5bbca05233b508d2",
-   "repo": "Mosaic",
-   "path": "frontend/src/components/view-library.tsx",
-   "commit": "99381e7a0039b3a2f574a1bca0e2900d3cac592b",
-   "git": "clean",
-   "screen_sha256": "10df2121a6ed0db21882d3bdeec9f1a62d314411ef3836d9224e8db94c4a6214",
-   "source_sha256": "7969a892eb5527ac4c1e04c3dcb7c6f6636e8daef209f9e6ec106ce144361d6a",
-   "rank_sha256": "6c93ecb00e58c6e42134e50aae38f933d6b2ee84eef8fb22e6d298ee56e9d9e4",
-   "nodes": 25,
-   "labelable": 25
-  },
-  {
-   "order": 33,
-   "id": "2d15aadf9d265c82",
-   "repo": "Mosaic",
-   "path": "frontend/src/components/report/report-toc.tsx",
-   "commit": "99381e7a0039b3a2f574a1bca0e2900d3cac592b",
-   "git": "clean",
-   "screen_sha256": "c1df704cfe5d750e8bcebd98b03acdf8069040b8c17d2ea190b8995430414d80",
-   "source_sha256": "2ca4422aa6cc5146b12930c84330dfe680c360986bc3d689f2211cd400824d2f",
-   "rank_sha256": "7ac9f5f3d094f6bdbf1682c513ea085cb711c63f9cc8c1edb5d73cbfa6913c3e",
-   "nodes": 2,
-   "labelable": 2
-  },
-  {
-   "order": 34,
+   "order": 20,
    "id": "f8cf860ae2dfadfd",
    "repo": "PersonalHomepage",
    "path": "components/footer.tsx",
@@ -611,7 +428,7 @@
    "labelable": 4
   },
   {
-   "order": 35,
+   "order": 21,
    "id": "98cf25bd36ebea0d",
    "repo": "PersonalHomepage",
    "path": "components/blog-content.tsx",
@@ -624,7 +441,7 @@
    "labelable": 4
   },
   {
-   "order": 36,
+   "order": 22,
    "id": "4649cb8941e87ac2",
    "repo": "slop-fixtures",
    "path": "PauseMenu.tsx",

@@ -7,3 +7,5 @@ node_modules/
 datasets/**/screens/
 datasets/**/sources/
 datasets/sealed_sha256.txt
+datasets/**/private_manifest.json
+kit/build/
