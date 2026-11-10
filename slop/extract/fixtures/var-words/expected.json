@@ -1,0 +1,10 @@
+{"schema": "slop.screen/1", "id": "ae37f225279c9811", "framework": "tsx",
+ "source": {"repo": "slop-fixtures", "path": "Voyage.tsx", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "header", "line": 4},
+  {"k": 1, "kind": "body", "line": 3}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "h2", "text": "\ue000 port of call", "flags": ["dynamic", "stateful"], "loc": [4, 12, 4, 27], "vw": [3]},
+  {"i": 1, "k": 1, "role": "body", "text": "Arriving in \ue000 eta hours hours with \ue000 length crew", "flags": ["dynamic", "section_first"], "loc": [5, 10, 5, 67], "vw": [2, 1]},
+  {"i": 2, "k": 1, "role": "body", "text": "\ue000 weather warning short", "flags": ["dynamic", "stateful"], "loc": [6, 11, 6, 42], "vw": [3]},
+  {"i": 3, "k": 1, "role": "body", "text": "Crew: \ue000 crew", "flags": ["dynamic", "section_last"], "loc": [7, 10, 7, 32], "vw": [1]}]}

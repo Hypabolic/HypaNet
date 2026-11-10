@@ -8,11 +8,11 @@ import { baseToken, isCardSurface } from './style.ts';
 
 export const TEXT_BLOCK_TAGS = new Set([
   'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'li', 'td', 'th', 'dt', 'dd', 'label', 'legend', 'figcaption', 'caption',
-  'button', 'a', 'summary', 'option', 'blockquote', 'q', 'pre', 'title', 'span', 'small', 'strong', 'em', 'b', 'i',
+  'button', 'a', 'summary', 'option', 'blockquote', 'q', 'pre', 'title', 'span', 'small', 'strong', 'em', 'b', 'i', 'text',
 ]);
 
 export const INLINE_TAGS = new Set([
-  'a', 'abbr', 'b', 'bdi', 'bdo', 'cite', 'code', 'data', 'dfn', 'em', 'i', 'kbd', 'mark', 'q', 's', 'samp', 'small',
+  'tspan', 'textPath', 'a', 'abbr', 'b', 'bdi', 'bdo', 'cite', 'code', 'data', 'dfn', 'em', 'i', 'kbd', 'mark', 'q', 's', 'samp', 'small',
   'span', 'strong', 'sub', 'sup', 'time', 'u', 'var', 'del', 'ins', 'wbr', 'br', 'font',
 ]);
 
@@ -140,9 +140,13 @@ const EMPTYISH = /^Empty|EmptyState/;
 const TOASTISH = /Toast|Snackbar|Notification/;
 const BUTTONISH = /(Button|Btn|IconButton|Action)$/;
 
+/** An icon-only button component: its label is read by assistive technology, not shown. */
+export const ICON_BUTTON = /Icon\w*(Button|Btn)$|^IconButton/;
+
 export function propRole(comp: string, prop: string): Role | null {
   const p = prop;
   if (p === 'aria-label' || p === 'ariaLabel' || p === 'accessibilityLabel') return 'aria';
+  if (ICON_BUTTON.test(comp) && /^(label|text|labelText)$/.test(p)) return 'aria';
   if (p === 'alt') return 'alt';
   if (p === 'placeholder' || p === 'searchPlaceholder') return 'placeholder';
   if (/^Tooltip/.test(comp) && /^(content|label|title|text)$/.test(p)) return 'tooltip';
@@ -186,7 +190,7 @@ export function propRole(comp: string, prop: string): Role | null {
   }
   if (/^(caption|footnote|note|footer)$/.test(p)) return 'caption';
   if (/^(badge|tag|chip|pill|badgeText|badgeLabel)$/.test(p)) return 'badge';
-  if (/^(cta|ctaLabel|ctaText|buttonText|buttonLabel|actionLabel|actionText|confirmText|confirmLabel|cancelText|cancelLabel|submitText|submitLabel|primaryAction|secondaryAction)$/.test(p)) return 'button';
+  if (/^(cta|ctaLabel|ctaText|ctaTitle|buttonText|buttonLabel|buttonTitle|actionLabel|actionText|actionTitle|confirmText|confirmLabel|cancelText|cancelLabel|cancelTitle|submitText|submitLabel|submitTitle|primaryAction|secondaryAction|primaryActionTitle|secondaryActionTitle|primaryActionLabel|secondaryActionLabel)$/.test(p)) return 'button';
   if (/^(linkText|linkLabel)$/.test(p)) return 'link';
   if (/^(value|stat|metric|figure)$/.test(p) && /(Stat|Metric|Kpi|KPI)/.test(comp)) return 'stat';
   return null;

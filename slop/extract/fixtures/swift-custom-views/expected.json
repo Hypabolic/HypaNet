@@ -16,5 +16,5 @@
   {"i": 5, "k": 3, "role": "h3", "text": "Shift handover", "flags": ["repeated"], "loc": [11, 32, 11, 46]},
   {"i": 6, "k": 3, "role": "subtitle", "text": "Leave notes for the next ranger on duty.", "flags": ["section_first", "section_last", "repeated"], "loc": [11, 60, 11, 100]},
   {"i": 7, "k": 4, "role": "body", "text": "Free for volunteer groups", "flags": ["small"], "loc": [16, 15, 16, 40]},
-  {"i": 8, "k": 5, "role": "h4", "text": "\ue000 title", "flags": ["dynamic", "stateful"], "loc": [26, 18, 26, 23]},
-  {"i": 9, "k": 5, "role": "subtitle", "text": "\ue000 subtitle", "flags": ["dynamic", "stateful", "section_first", "section_last"], "loc": [27, 18, 27, 26]}]}
+  {"i": 8, "k": 5, "role": "h4", "text": "\ue000 title", "flags": ["dynamic", "stateful"], "loc": [26, 18, 26, 23], "vw": [1]},
+  {"i": 9, "k": 5, "role": "subtitle", "text": "\ue000 subtitle", "flags": ["dynamic", "stateful", "section_first", "section_last"], "loc": [27, 18, 27, 26], "vw": [1]}]}

@@ -1,0 +1,10 @@
+{"schema": "slop.screen/1", "id": "bb14c78be919bf40", "framework": "tsx",
+ "source": {"repo": "slop-rules-fixtures", "path": "src/va_hidden_gesture_pos.tsx", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "header", "line": 2},
+  {"k": 1, "kind": "body", "line": 4}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "h2", "text": "Layers", "flags": [], "loc": [3, 7, 3, 13]},
+  {"i": 1, "k": 1, "role": "helper", "text": "Double-click here to rename a layer.", "flags": [], "loc": [5, 7, 5, 43]},
+  {"i": 2, "k": 1, "role": "tooltip", "text": "Long-press here to reorder", "flags": [], "loc": [6, 7, 6, 33]},
+  {"i": 3, "k": 1, "role": "body", "text": "To read the full report, click here.", "flags": [], "loc": [7, 7, 7, 43]}]}

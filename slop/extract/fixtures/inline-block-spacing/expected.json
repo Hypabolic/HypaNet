@@ -1,0 +1,10 @@
+{"schema": "slop.screen/1", "id": "52076958585eb295", "framework": "tsx",
+ "source": {"repo": "slop-fixtures", "path": "Crossing.tsx", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "body", "line": 4},
+  {"k": 1, "kind": "actions", "line": 5},
+  {"k": 2, "kind": "body", "line": 9}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "body", "text": "Over the bridge sleeps the ferryman", "flags": [], "loc": [4, 10, 4, 69]},
+  {"i": 1, "k": 1, "role": "link", "text": "Next crossing \ue000 title", "flags": ["dynamic"], "loc": [6, 41, 7, 26], "vw": [1]},
+  {"i": 2, "k": 2, "role": "body", "text": "Lowtide at noon", "flags": [], "loc": [9, 10, 9, 42]}]}

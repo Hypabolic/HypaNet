@@ -1,0 +1,12 @@
+{"schema": "slop.screen/1", "id": "674af20094c8c4ac", "framework": "swift",
+ "source": {"repo": "slop-fixtures", "path": "Logbook.swift", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "list", "line": 8},
+  {"k": 1, "kind": "list", "line": 9},
+  {"k": 2, "kind": "body", "line": 16}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "h1", "text": "Logbook", "flags": ["in_nav", "in_header"], "loc": [14, 31, 14, 38]},
+  {"i": 1, "k": 1, "role": "h2", "text": "Voyages", "flags": ["in_nav", "section_first"], "loc": [9, 26, 9, 33]},
+  {"i": 2, "k": 1, "role": "nav", "text": "Passages", "flags": ["icon", "in_nav", "section_first"], "loc": [10, 28, 10, 36]},
+  {"i": 3, "k": 1, "role": "nav", "text": "Anchorages", "flags": ["icon", "in_nav", "section_last"], "loc": [11, 28, 11, 38]},
+  {"i": 4, "k": 2, "role": "body", "text": "Choose a page from the log.", "flags": [], "loc": [16, 19, 16, 46]}]}

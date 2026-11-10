@@ -6,7 +6,7 @@
 import { parse } from '@babel/parser';
 import type { El, Kid, LV, Slot, Sty, Txt } from './ir.ts';
 import {
-  ALT_JOIN, ALT_SEP, MAX_EXPAND, el, hasSubs, identWords, jsxWhitespace, keyLastSegment, looksLikeCopy, markCopy, trimSpan, txt, varText,
+  ALT_JOIN, ALT_SEP, MAX_EXPAND, el, emptyCond, hasSubs, markEmptyKids, identWords, jsxWhitespace, keyLastSegment, looksLikeCopy, markCopy, trimSpan, txt, varText,
 } from './ir.ts';
 import { decorateComponent, decorateIntrinsic, propRole } from './roles.ts';
 import type { Role } from './schema.ts';
@@ -256,10 +256,14 @@ function staticTruth(e0: N, env: Env): boolean | null {
     if (e.operator === '&&') return a === false || b === false ? false : a === true && b === true ? true : null;
     return a === true || b === true ? true : a === false && b === false ? false : null;
   }
-  if (e.type === 'BinaryExpression' && /^[!=]==?$/.test(e.operator)) {
-    const a = primitive(resolve(e.left, env));
-    const b = primitive(resolve(e.right, env));
+  if (e.type === 'BinaryExpression' && /^([!=]==?|[<>]=?)$/.test(e.operator)) {
+    const a = primitive(lengthOf(e.left, env) ?? resolve(e.left, env));
+    const b = primitive(lengthOf(e.right, env) ?? resolve(e.right, env));
     if (a === UNKNOWN || b === UNKNOWN) return null;
+    if (/^[<>]/.test(e.operator)) {
+      if (typeof a !== 'number' || typeof b !== 'number') return null;
+      return e.operator === '<' ? a < b : e.operator === '>' ? a > b : e.operator === '<=' ? a <= b : a >= b;
+    }
     const loose = e.operator === '==' || e.operator === '!=';
     const eq = loose ? a == b : a === b; // eslint-disable-line eqeqeq
     return e.operator.startsWith('!') ? !eq : eq;
@@ -279,6 +283,16 @@ function staticTruth(e0: N, env: Env): boolean | null {
 }
 
 const UNKNOWN = Symbol('unknown');
+/** `xs.length` of a substituted literal array, as a number value (for static conditions only). */
+function lengthOf(e0: N, env: Env): { v: Slot } | null {
+  const e = unwrap(e0);
+  if (!e || !env.subst || (e.type !== 'MemberExpression' && e.type !== 'OptionalMemberExpression') || e.computed || e.property.name !== 'length') return null;
+  const r = resolve(e.object, env);
+  if (!r?.v || r.v.k !== 'arr') return null;
+  const n = r.v.elems.length;
+  return { v: { k: 'num', value: n, raw: String(n), s: e.start, e: e.start } };
+}
+
 function primitive(r: { v: Slot } | null): string | number | boolean | null | undefined | typeof UNKNOWN {
   if (!r) return UNKNOWN;
   const v = r.v;
@@ -394,6 +408,7 @@ function identOf(e: N): string | null {
       return identOf(c);
     }
     case 'AwaitExpression': return identOf(e.argument);
+    case 'NewExpression': return e.arguments[0] ? identOf(e.arguments[0]) : identOf(e.callee);
     case 'ThisExpression': return null;
     default: return null;
   }
@@ -474,6 +489,16 @@ function textOf(e0: N, env: Env): TextVal | null {
         if (inner?.spans && !inner.dyn && !inner.alt) {
           const f = (x: string): string => (callee.property.name === 'toUpperCase' ? x.toUpperCase() : callee.property.name === 'toLowerCase' ? x.toLowerCase() : x.trim());
           return { ...inner, text: f(inner.text), lit: f(inner.lit) };
+        }
+      }
+      if ((callee.type === 'MemberExpression' || callee.type === 'OptionalMemberExpression') && !callee.computed && callee.property.name === 'join') {
+        // a literal array of strings joined for display ("Distinction · Graduated top of class")
+        const elems = arrayOf(callee.object, env);
+        const sep = e.arguments[0] ? unwrap(e.arguments[0]) : null;
+        const sepText = !sep ? ',' : sep.type === 'StringLiteral' ? sep.value : null;
+        if (elems && sepText !== null && elems.every((x) => x.k === 'str')) {
+          const strs = elems as Extract<LV, { k: 'str' }>[];
+          return { ...lit(strs.map((x) => x.value).join(sepText)), spans: strs.map((x) => [x.s, x.e] as [number, number]), near: strs.flatMap((x) => (x.p ? [x.p] : [])) };
         }
       }
       if (name && I18N_CALLEES.has(name)) {
@@ -757,6 +782,9 @@ class JsxBuilder {
       const v = a.value;
       if (an === 'type' && v?.type === 'StringLiteral') inputType = v.value.toLowerCase();
     }
+    // an icon-only button component (an icon prop, no children): its label is the accessible name, not shown
+    const iconOnly = !intrinsic && /(Button|Btn)$/.test(name) && !node.children.some((c: N) => c.type !== 'JSXText' || c.value.trim() !== '')
+      && open.attributes.some((a: N) => a.type === 'JSXAttribute' && /^(icon|leftIcon|rightIcon|startIcon|endIcon|iconName|systemImage)$/.test(attrName(a)));
     for (const a of open.attributes) {
       if (a.type === 'JSXSpreadAttribute' && !intrinsic) {
         // {...item} in an expanded copy: each literal text prop of the element, as if written out
@@ -804,7 +832,7 @@ class JsxBuilder {
         else if ((an === 'value' || an === 'defaultValue') && name === 'input') role = /^(submit|button|reset)$/.test(inputType) ? 'button' : (/^(hidden|checkbox|radio|range|color|date|number)$/.test(inputType) ? null : 'input_value');
         else if ((an === 'value' || an === 'defaultValue') && name === 'textarea') role = 'input_value';
       } else {
-        role = propRole(name, an);
+        role = iconOnly && /^(label|text)$/.test(an) ? 'aria' : propRole(name, an);
         if (!role && expr && expr.type !== 'JSXEmptyExpression' && an !== 'key' && !/^(className|style|ref|as|asChild)$/.test(an) && containsJsx(expr)) {
           const slot = el('#prop', expr.start, expr.end);
           slot.kids = this.exprKids(expr);
@@ -827,7 +855,17 @@ class JsxBuilder {
     }
     if (intrinsic) decorateIntrinsic(e);
     else decorateComponent(e, this.env.imports.get(root));
-    if (intrinsic && (SKIP_TAGS.has(name) || name === 'svg')) {
+    if (intrinsic && name === 'svg') {
+      // an icon, unless it draws text (a chart's axis labels and values)
+      const kids = this.children(node.children);
+      if (kids.some(drawsText)) {
+        e.icon = false;
+        e.arrowIcon = false;
+        e.kids = attrKids.concat(kids);
+      } else e.kids = attrKids;
+      return e;
+    }
+    if (intrinsic && SKIP_TAGS.has(name)) {
       e.kids = attrKids;
       return e;
     }
@@ -889,8 +927,11 @@ class JsxBuilder {
           const t = txtFrom(tv, e.start, e.end, src);
           return t ? [t] : [];
         }
-        const a = this.exprKids(e.consequent);
-        const b = this.exprKids(e.alternate);
+        let a = this.exprKids(e.consequent);
+        let b = this.exprKids(e.alternate);
+        const em = emptyTest(e.test, src);
+        if (em === 'pos') a = markEmpty(a, e.consequent);
+        else if (em === 'neg') b = markEmpty(b, e.alternate);
         const fa = flatInline(a);
         const fb = flatInline(b);
         if (fa && fb && (fa.text.trim() || fb.text.trim())) {
@@ -907,7 +948,14 @@ class JsxBuilder {
         const st = staticTruth(e.left, this.env);
         if (st !== null && e.operator === '&&') return st ? this.exprKids(e.right) : [];
         if (st !== null && e.operator === '||') return this.exprKids(st ? e.left : e.right);
-        if (e.operator === '&&') return this.exprKids(e.right).map(markCond);
+        if (e.operator === '&&') {
+          const kids = this.exprKids(e.right).map(markCond);
+          const em = emptyTest(e.left, this.env.src);
+          if (em === 'pos') return markEmpty(kids, e.right);
+          const g = nextAndGroup++;
+          for (const k of kids) if (k.t === 'txt') k.andGroup = g;
+          return kids;
+        }
         const tv = textOf(e, this.env);
         if (tv) {
           const t = txtFrom(tv, e.start, e.end, src);
@@ -1038,6 +1086,13 @@ class JsxBuilder {
   }
 }
 
+/** Does the subtree hold an SVG <text> element with text in it? */
+function drawsText(k: Kid): boolean {
+  if (k.t === 'txt') return false;
+  if (k.intrinsic && k.name === 'text') return k.kids.some((x) => (x.t === 'txt' ? !x.attr && x.text.trim() !== '' : true));
+  return k.kids.some(drawsText);
+}
+
 /** Text of kids made only of text and text-less or inline elements (no blocks, no roles), else null. */
 function flatInline(kids: Kid[]): { text: string; lit: string; s: number; e: number; dyn: boolean } | null {
   let text = '';
@@ -1064,6 +1119,18 @@ function flatInline(kids: Kid[]): { text: string; lit: string; s: number; e: num
   if (!kids.every(walk)) return null;
   if (s === Infinity) return { text: '', lit: '', s: 0, e: 0, dyn };
   return { text, lit, s, e, dyn };
+}
+
+
+let nextAndGroup = 1;
+
+/** Does a condition test that a collection is empty (see ir.ts emptyCond)? */
+function emptyTest(test: N, src: string): 'pos' | 'neg' | null {
+  return emptyCond(src.slice(test.start, test.end));
+}
+
+function markEmpty(kids: Kid[], at: N): Kid[] {
+  return markEmptyKids(kids, at.start, at.end);
 }
 
 function markCond(k: Kid): Kid {
@@ -1118,32 +1185,40 @@ export function jsxToIR(src: string, path: string): El {
   const b = new JsxBuilder(env);
   const root = el('#root', 0, src.length, { box: 'root' });
   const roots: Kid[] = [];
-  const addRoot = (k: Kid, state: boolean): void => {
+  // A component whose own name says what it draws (StatusBadge, TagPill, SectionEyebrow): the markup it returns
+  // takes that role at the class stage, so a nearer tag still wins.
+  const DEF_ROLE: [RegExp, Role][] = [[/(Badge|Chip|Tag|Pill)$/, 'badge'], [/(Eyebrow|Kicker|Overline)$/, 'eyebrow']];
+  const addRoot = (k: Kid, state: boolean, fname: string | null): void => {
     if (k.t === 'txt') return; // bare text returned from a function is not markup
     if (state) {
       k.cond = true;
       if (!k.box) k.box = 'state';
     }
+    const dr = fname ? DEF_ROLE.find(([re]) => re.test(fname)) : undefined;
+    if (dr && !k.classHint) k.classHint = dr[1];
     roots.push(k);
   };
-  const walk = (n: N, inIf: boolean): void => {
+  const walk = (n: N, inIf: boolean, fname: string | null, emptyIf: boolean): void => {
     if (!n || typeof n !== 'object') return;
     if (isJsx(n)) {
       const r = b.element(n);
-      for (const k of Array.isArray(r) ? r : [r]) addRoot(k, false);
+      for (const k of Array.isArray(r) ? r : [r]) addRoot(k, false, fname);
       return;
     }
     if (/Function/.test(n.type) && n.body) {
+      const name = n.id?.name ?? fname;
       if (n.body.type !== 'BlockStatement') {
-        if (containsJsx(n.body)) for (const k of b.exprKids(n.body)) addRoot(k, false);
-        else walk(n.body, false);
+        if (containsJsx(n.body)) for (const k of b.exprKids(n.body)) addRoot(k, false, name);
+        else walk(n.body, false, name, false);
         return;
       }
-      walk(n.body, false);
+      walk(n.body, false, name, false);
       return;
     }
     if (n.type === 'ReturnStatement' && n.argument && containsJsx(n.argument)) {
-      for (const k of b.exprKids(n.argument)) addRoot(k, inIf);
+      // an early return when a collection is empty is a hand-built empty state
+      const kids = b.exprKids(n.argument);
+      for (const k of emptyIf ? markEmpty(kids, n.argument) : kids) addRoot(k, inIf, fname);
       return;
     }
     if (n.type === 'CallExpression') {
@@ -1177,14 +1252,17 @@ export function jsxToIR(src: string, path: string): El {
       }
     }
     const nextIf = inIf || n.type === 'IfStatement' || n.type === 'SwitchCase' || n.type === 'CatchClause';
+    const em = n.type === 'IfStatement' ? emptyTest(n.test, src) : null;
     for (const k of Object.keys(n)) {
       if (SKIP_KEYS.has(k)) continue;
       const v = n[k];
-      if (Array.isArray(v)) v.forEach((x) => walk(x, nextIf && k !== 'test'));
-      else if (v && typeof v.type === 'string') walk(v, nextIf && k !== 'test');
+      const name = n.type === 'VariableDeclarator' && k === 'init' && n.id?.type === 'Identifier' ? n.id.name : fname;
+      const empty = n.type === 'IfStatement' ? (k === 'consequent' && em === 'pos') || (k === 'alternate' && em === 'neg') : emptyIf && n.type !== 'IfStatement';
+      if (Array.isArray(v)) v.forEach((x) => walk(x, nextIf && k !== 'test', name, empty));
+      else if (v && typeof v.type === 'string') walk(v, nextIf && k !== 'test', name, empty);
     }
   };
-  walk(ast.program, false);
+  walk(ast.program, false, null, false);
   root.kids = roots;
   return root;
 }

@@ -8,7 +8,7 @@
  "nodes": [
   {"i": 0, "k": 0, "role": "empty_title", "text": "No letters", "flags": ["conditional", "in_state"], "loc": [10, 41, 10, 51]},
   {"i": 1, "k": 0, "role": "empty_body", "text": "Letters from your pen pals land here.", "flags": ["conditional", "in_state", "section_first", "section_last"], "loc": [11, 40, 11, 77]},
-  {"i": 2, "k": 1, "role": "list_item", "text": "\ue000 subject", "flags": ["dynamic", "stateful", "conditional", "in_list"], "loc": [14, 26, 14, 40]},
+  {"i": 2, "k": 1, "role": "list_item", "text": "\ue000 subject", "flags": ["dynamic", "stateful", "conditional", "in_list"], "loc": [14, 26, 14, 40], "vw": [1]},
   {"i": 3, "k": 2, "role": "dialog_title", "text": "Clear the inbox?", "flags": ["conditional", "in_dialog", "in_state"], "loc": [18, 17, 18, 33]},
   {"i": 4, "k": 2, "role": "dialog_body", "text": "Archived letters are not affected.", "flags": ["conditional", "in_dialog", "in_state", "section_first"], "loc": [22, 19, 22, 53]},
   {"i": 5, "k": 2, "role": "button", "text": "Clear", "flags": ["conditional", "in_dialog", "in_state"], "loc": [19, 21, 19, 26]},

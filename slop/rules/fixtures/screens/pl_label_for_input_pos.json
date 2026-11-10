@@ -1,0 +1,17 @@
+{"schema": "slop.screen/1", "id": "7bfd6ae12de34c6c", "framework": "tsx",
+ "source": {"repo": "slop-rules-fixtures", "path": "src/pl_label_for_input_pos.tsx", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "header", "line": 2},
+  {"k": 1, "kind": "body", "line": 4},
+  {"k": 2, "kind": "control", "line": 6},
+  {"k": 3, "kind": "body", "line": 8},
+  {"k": 4, "kind": "control", "line": 11},
+  {"k": 5, "kind": "control", "line": 13}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "h2", "text": "Delivery address", "flags": [], "loc": [3, 7, 3, 23]},
+  {"i": 1, "k": 1, "role": "label", "text": "Email", "flags": ["in_form"], "loc": [5, 7, 5, 12]},
+  {"i": 2, "k": 2, "role": "placeholder", "text": "name@example.com", "flags": ["in_form", "in_control"], "loc": [7, 7, 7, 23]},
+  {"i": 3, "k": 3, "role": "label", "text": "Postcode", "flags": ["in_form"], "loc": [9, 7, 9, 15]},
+  {"i": 4, "k": 3, "role": "helper", "text": "For example, SW1A 1AA", "flags": ["in_form"], "loc": [10, 7, 10, 28]},
+  {"i": 5, "k": 4, "role": "placeholder", "text": "SW1A 1AA", "flags": ["in_form", "in_control"], "loc": [12, 7, 12, 15]},
+  {"i": 6, "k": 5, "role": "placeholder", "text": "Search addresses", "flags": ["in_form", "in_control"], "loc": [14, 7, 14, 23]}]}

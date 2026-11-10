@@ -8,7 +8,7 @@
   {"k": 4, "kind": "body", "line": 17}],
  "nodes": [
   {"i": 0, "k": 0, "role": "h3", "text": "Today's brew", "flags": ["in_card"], "loc": [8, 23, 8, 35]},
-  {"i": 1, "k": 0, "role": "label", "text": "Cups: \ue000 cups", "flags": ["dynamic", "in_card", "in_control", "section_first"], "loc": [9, 26, 9, 38]},
+  {"i": 1, "k": 0, "role": "label", "text": "Cups: \ue000 cups", "flags": ["dynamic", "in_card", "in_control", "section_first"], "loc": [9, 26, 9, 38], "vw": [1]},
   {"i": 2, "k": 0, "role": "label", "text": "Grind", "flags": ["in_card"], "loc": [10, 33, 10, 38]},
   {"i": 3, "k": 0, "role": "body", "text": "Medium-fine", "flags": ["in_card", "section_last"], "loc": [10, 49, 10, 60]},
   {"i": 4, "k": 1, "role": "button", "text": "Brew method", "flags": [], "loc": [12, 19, 12, 30]},

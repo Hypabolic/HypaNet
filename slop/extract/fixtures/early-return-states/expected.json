@@ -10,4 +10,4 @@
   {"i": 1, "k": 1, "role": "h2", "text": "We could not reach the till", "flags": ["conditional", "in_state"], "loc": [9, 13, 9, 40]},
   {"i": 2, "k": 1, "role": "error", "text": "Check your connection and try again.", "flags": ["conditional", "in_state", "section_first", "section_last"], "loc": [10, 12, 10, 48]},
   {"i": 3, "k": 2, "role": "h1", "text": "Orders", "flags": [], "loc": [16, 11, 16, 17]},
-  {"i": 4, "k": 3, "role": "list_item", "text": "\ue000 reference", "flags": ["dynamic", "stateful", "in_list", "section_first", "section_last"], "loc": [19, 27, 19, 38]}]}
+  {"i": 4, "k": 3, "role": "list_item", "text": "\ue000 reference", "flags": ["dynamic", "stateful", "in_list", "section_first", "section_last"], "loc": [19, 27, 19, 38], "vw": [1]}]}

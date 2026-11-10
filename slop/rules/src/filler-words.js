@@ -3,7 +3,7 @@
 import { finding } from './finding.js';
 import { ACTION_ROLES, FILLER, TITLE_LEAD_MAX_WORDS, TITLE_ROLES } from './lists.js';
 import { isScored } from './screen.js';
-import { branches, clip, literalWords } from './text.js';
+import { clip, literalWords, nodeBranches } from './text.js';
 
 export const id = 'slop/filler-words';
 export const code = 'R15';
@@ -20,8 +20,8 @@ export function check(screen) {
   screen.nodes.forEach((n, x) => {
     if (!isScored(n)) return;
     const found = [];
-    for (const b of branches(n.text)) {
-      const words = literalWords(b);
+    for (const b of nodeBranches(n)) {
+      const words = literalWords(b.text, b.vw);
       for (const e of FILLER) {
         if (found.includes(e.phrase)) continue;
         if (e.scope === 'action' && !ACTION_ROLES.has(n.role)) continue;
@@ -29,7 +29,9 @@ export function check(screen) {
           if (TITLE_ROLES.has(n.role) && words.length <= TITLE_LEAD_MAX_WORDS && words.length >= 2 && words[0] === e.phrase) found.push(e.phrase);
           continue;
         }
-        if (contains(words, e.phrase)) found.push(e.phrase);
+        // "now" as the first word names something ("Now playing", a time picker's "Now", a /now page); after another
+        // word it is the filler of "Book now".
+        if (e.phrase === 'now' ? words.indexOf('now') > 0 : contains(words, e.phrase)) found.push(e.phrase);
       }
     }
     if (found.length) {

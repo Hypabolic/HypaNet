@@ -1,0 +1,11 @@
+{"schema": "slop.screen/1", "id": "8001e6c20e71f8ce", "framework": "tsx",
+ "source": {"repo": "slop-fixtures", "path": "Upload.tsx", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "body", "line": 3}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "body", "text": "Drop a tide table here.", "flags": ["small"], "loc": [4, 30, 4, 53]},
+  {"i": 1, "k": 0, "role": "error", "text": "The table could not be read. Check the file and try again.", "flags": ["small", "conditional"], "loc": [5, 54, 5, 112]},
+  {"i": 2, "k": 0, "role": "error", "text": "\ue000 upload error", "flags": ["small", "mono", "dynamic", "stateful", "conditional"], "loc": [6, 57, 6, 68], "vw": [2]},
+  {"i": 3, "k": 0, "role": "error", "text": "Files over 4 MB are refused.", "flags": ["small"], "loc": [7, 47, 7, 75]},
+  {"i": 4, "k": 0, "role": "caption", "text": "\ue000 warning note", "flags": ["small", "dynamic", "stateful"], "loc": [8, 46, 8, 57], "vw": [2]},
+  {"i": 5, "k": 0, "role": "body", "text": "● Live", "flags": ["small", "dot"], "loc": [9, 43, 9, 49]}]}

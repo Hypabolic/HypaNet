@@ -2,10 +2,12 @@
 // (per section for state dots), listing the nodes that carry the device:
 //   eyebrow-quota   eyebrows above more than ceil(sections / 3) section headings (taste: local-skills.md:121,
 //                   design-taste-frontend-v2-experimental SKILL.md:254-256, a landing-page quota; "Hero counts as 1");
-//   decorative-dot  any `dot` node that is not `stateful` (local-skills.md:145, v2-experimental SKILL.md:705);
-//   state-dots      more than one `stateful` dot in one section (same line: "limited to one per page section");
+//   decorative-dot  any `dot` node that is neither `stateful` nor `dynamic` (local-skills.md:145, v2-experimental
+//                   SKILL.md:705);
+//   state-dots      more than one `stateful` dot in one section (same line: "limited to one per page section"), not
+//                   counting one dot per sibling card or row, each bound to its own item (LABELLING.md K2);
 //   arrow-links     an arrow suffix on every link, two links or more (local-skills.md:46, copy.md:126-127;
-//                   anti-slop-guides.md:124, Hallmark gate 63);
+//                   anti-slop-guides.md:124, Hallmark gate 63); ↗ and » are not arrow suffixes (text.js);
 //   sibling-device  the same badge, pill or eyebrow text, an arrow suffix or an index number on most (more than half)
 //                   of three or more sibling cards or rows (LABELLING.md §9, R19).
 
@@ -41,19 +43,33 @@ function eyebrowQuota(screen) {
 
 function decorativeDots(screen) {
   const xs = [];
-  screen.nodes.forEach((n, x) => { if (isScored(n) && hasFlag(n, 'dot') && !hasFlag(n, 'stateful')) xs.push(x); });
+  screen.nodes.forEach((n, x) => { if (isScored(n) && hasFlag(n, 'dot') && !hasFlag(n, 'stateful') && !hasFlag(n, 'dynamic')) xs.push(x); });
   if (!xs.length) return [];
   const t = screen.nodes[xs[0]].text;
   return [{ condition: 'decorative-dot', xs,
     msg: `${xs.length === 1 ? 'a dot' : `${xs.length} dots`} on fixed copy ("${clip(t, 32)}"${xs.length > 1 ? ', …' : ''}); a dot should show live state` }];
 }
 
+// K2 wins over the per-section limit: in a group of sibling cards or rows where two or more items carry a stateful dot
+// and none carries more than one, each dot shows its own item's state, so those dots are not counted.
+function oneDotPerItem(screen, isStateDot) {
+  const out = new Set();
+  for (const group of siblingGroups(screen)) {
+    if (group.source === 'fields') continue;
+    const dots = group.items.map((item) => item.filter(isStateDot));
+    if (dots.filter((d) => d.length).length >= 2 && dots.every((d) => d.length <= 1)) for (const d of dots) for (const x of d) out.add(x);
+  }
+  return out;
+}
+
 function stateDots(screen) {
   const nodes = screen.nodes;
   const sec = sectionOf(nodes);
+  const isStateDot = (x) => isScored(nodes[x]) && hasFlag(nodes[x], 'dot') && hasFlag(nodes[x], 'stateful');
+  const perItem = oneDotPerItem(screen, isStateDot);
   const per = new Map();
   nodes.forEach((n, x) => {
-    if (!isScored(n) || !hasFlag(n, 'dot') || !hasFlag(n, 'stateful')) return;
+    if (!isStateDot(x) || perItem.has(x)) return;
     if (!per.has(sec[x])) per.set(sec[x], []);
     per.get(sec[x]).push(x);
   });
@@ -73,6 +89,10 @@ function arrowLinks(screen) {
   return [{ condition: 'arrow-links', xs: links, msg: `all ${links.length} links end in an arrow; the arrow tells the reader nothing` }];
 }
 
+// A rounded-full button, link or field is a control's shape, not a pill device (the extractor sets `pill` from
+// `rounded-full`); a `badge` counts whatever its shape.
+const CONTROLS = new Set(['button', 'link', 'nav', 'tab', 'menu_item', 'label', 'placeholder', 'input_value']);
+
 // Device signatures of one sibling item (a card or a list row).
 function signatures(screen, item, indexed) {
   const sigs = new Map();
@@ -83,7 +103,7 @@ function signatures(screen, item, indexed) {
     if ((n.role === 'link' || n.role === 'button') && hasArrowTail(n)) add('arrow', x);
     if (hasFlag(n, 'stateful') || hasFlag(n, 'dynamic')) continue; // bound text differs by item (K2)
     if (n.role === 'eyebrow') add(`eyebrow:${normalised(n.text)}`, x);
-    else if (n.role === 'badge' || hasFlag(n, 'pill')) add(`badge:${normalised(n.text)}`, x);
+    else if (n.role === 'badge' || (hasFlag(n, 'pill') && !CONTROLS.has(n.role))) add(`badge:${normalised(n.text)}`, x);
   }
   return sigs;
 }

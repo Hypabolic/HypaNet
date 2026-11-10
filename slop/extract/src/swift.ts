@@ -7,8 +7,8 @@ import { dirname, join } from 'node:path';
 import { Language, Parser } from 'web-tree-sitter';
 import type { Node as TSNode } from 'web-tree-sitter';
 import type { El, Kid, LV, Slot, Txt } from './ir.ts';
-import { ALT_JOIN, ALT_SEP, MAX_EXPAND, el, hasSubs, isFigure, keyLastSegment, looksLikeCopy, markCopy, txt, varText } from './ir.ts';
-import { decorateComponent, propRole } from './roles.ts';
+import { ALT_JOIN, ALT_SEP, MAX_EXPAND, el, emptyCond, hasSubs, isFigure, keyLastSegment, looksLikeCopy, markCall, markCopy, markEmptyKids, txt, varText } from './ir.ts';
+import { ICON_BUTTON, decorateComponent, propRole } from './roles.ts';
 import type { Role } from './schema.ts';
 
 let parserPromise: Promise<Parser> | null = null;
@@ -59,6 +59,8 @@ function parseSuffix(suffix: TSNode | null): { args: Arg[]; closures: { label: s
         const lab = a.childForFieldName('name');
         const val = a.childForFieldName('value');
         if (val) args.push({ label: lab ? lab.text : null, value: val });
+        // a closure passed by label (`actions: { … }`, `message: { … }`) is content like a trailing closure
+        if (val && val.type === 'lambda_literal') closures.push({ label: lab ? lab.text : null, node: val });
       }
     } else if (c.type === 'simple_identifier') pendingLabel = c.text;
     else if (c.type === 'lambda_literal') {
@@ -133,6 +135,66 @@ interface TV {
 // parameter (or $0) to the element.
 
 let SUBST: Map<string, Slot> | null = null;
+
+// Local view-builder functions (`private func point(_ icon: String, _ text: String) -> some View`) are read at each
+// call in view position, with their parameters bound to the call's arguments: a literal through SUBST (so the node
+// sits at the literal in the call), anything else through EXPRS (read in the caller's scope).
+interface Bound {
+  node: TSNode;
+  subst: Map<string, Slot> | null;
+  exprs: Map<string, Bound>;
+}
+interface LocalFunc {
+  params: { ext: string | null; name: string; fn: boolean; def: TSNode | null }[];
+  body: TSNode;
+}
+let EXPRS: Map<string, Bound> = new Map();
+let FUNCS: Map<string, LocalFunc | null> = new Map();
+let INLINED: Set<string> = new Set();
+const INLINING: string[] = [];
+
+function withEnv<T>(b: Bound, f: () => T): T {
+  const [s0, e0] = [SUBST, EXPRS];
+  SUBST = b.subst;
+  EXPRS = b.exprs;
+  try {
+    return f();
+  } finally {
+    SUBST = s0;
+    EXPRS = e0;
+  }
+}
+
+/** The argument a parameter name is bound to, when the name is a bound parameter of an inlined function. */
+function boundArg(n: TSNode | null): Bound | null {
+  return n && n.type === 'simple_identifier' ? EXPRS.get(n.text) ?? null : null;
+}
+
+/** Every `func NAME(…) -> some View` in the file; a name declared twice is ambiguous and never inlined. */
+function collectFuncs(root: TSNode): Map<string, LocalFunc | null> {
+  const out = new Map<string, LocalFunc | null>();
+  const walk = (n: TSNode): void => {
+    if (n.type === 'function_declaration' && isViewType(n)) {
+      const nm = n.childForFieldName('name')?.text ?? '';
+      const params: LocalFunc['params'] = [];
+      for (let i = 0; i < n.namedChildCount; i++) {
+        const c = n.namedChild(i);
+        if (!c) continue;
+        if (c.type === 'parameter') {
+          const ext = c.childForFieldName('external_name')?.text ?? null;
+          const id = c.childForFieldName('name');
+          params.push({ ext, name: id?.text ?? '', fn: /->/.test(c.text), def: null });
+        } else if (n.fieldNameForNamedChild(i) === 'default_value' && params.length) params[params.length - 1].def = c;
+      }
+      const body = named(n).find((c) => c.type === 'function_body');
+      const st = body ? named(body).find((c) => c.type === 'statements') : undefined;
+      if (nm && st) out.set(nm, out.has(nm) ? null : { params, body: st });
+    }
+    for (const c of named(n)) walk(c);
+  };
+  walk(root);
+  return out;
+}
 let ARRAYS: Map<string, TSNode[]> = new Map(); // let NAME = [ … ] declarations, and every other declaration of NAME
 
 function swLit(n: TSNode, depth: number): LV | null {
@@ -303,7 +365,20 @@ function stringParts(n: TSNode): TV {
       text += v;
       lit += v;
     } else if (c.type === 'interpolated_expression' || c.type === 'raw_str_interpolation') {
+      // `\(date, format: …)` parses as two interpolations; the labelled one is an argument of the first
+      if (c.childForFieldName('name')) continue;
       const v = c.childForFieldName('value') ?? named(c)[0] ?? null;
+      const bv = boundArg(v);
+      if (bv) {
+        const tv = withEnv(bv, () => textOf(bv.node));
+        if (tv) {
+          text += tv.dyn ? ` ${tv.text.trim()} ` : tv.text;
+          lit += tv.dyn ? ' ' : tv.lit;
+          dyn = dyn || tv.dyn;
+          if (tv.spans) subbed.push(tv);
+          continue;
+        }
+      }
       const r = swResolve(v);
       const sub = r ? slotTV(r.v) : null;
       if (sub) {
@@ -333,6 +408,8 @@ function textOf(n0: TSNode | null): TV | null {
     case 'line_string_literal': case 'multi_line_string_literal': case 'raw_string_literal': return stringParts(n);
     case 'integer_literal': case 'real_literal': return { text: n.text, lit: n.text, dyn: false, alt: false, bound: false };
     case 'simple_identifier': case 'navigation_expression': {
+      const b = boundArg(n);
+      if (b) return withEnv(b, () => textOf(b.node));
       const r = swResolve(n);
       const sub = r ? slotTV(r.v) : null;
       if (sub) return sub;
@@ -342,7 +419,7 @@ function textOf(n0: TSNode | null): TV | null {
       const c = asCall(n);
       if (c && LOCALISE.test(c.name)) {
         const a = c.args.find((x) => x.label === null || x.label === 'localized');
-        if (a && a.value.type === 'line_string_literal') {
+        if (a && /^(line|multi_line)_string_literal$/.test(a.value.type)) {
           const sp = stringParts(a.value);
           if (!sp.dyn && !looksLikeCopy(sp.text) && c.name === 'NSLocalizedString') {
             return { text: ` ${varText(keyLastSegment(sp.text))} `, lit: ' ', dyn: true, alt: false, bound: true };
@@ -377,12 +454,18 @@ function textOf(n0: TSNode | null): TV | null {
       return { text: a.text + b.text, lit: a.lit + b.lit, dyn: a.dyn || b.dyn, alt: a.alt || b.alt, bound: false, ...(spans.length ? { spans, near } : {}) };
     }
     case 'prefix_expression': return null;
-    default: return null;
+    case 'tuple_expression': {
+      // a parenthesised expression: ("a" + (x ? "b" : "c"))
+      const ch = named(n).filter((c) => !/comment/.test(c.type));
+      return ch.length === 1 ? textOf(ch[0]) : null;
+    }
+    default: return n.text === 'nil' ? { text: '', lit: '', dyn: false, alt: false, bound: false } : null;
   }
 }
 
 function joinAlt(parts: TV[]): TV {
   const f = parts.filter((p) => p.text.trim() !== '');
+  if (f.length === 0) return { text: '', lit: '', dyn: false, alt: false, bound: false };
   if (f.length === 1) return { ...f[0], alt: true, bound: true };
   const spans = f.flatMap((p) => p.spans ?? []);
   const near = f.flatMap((p) => p.near ?? []);
@@ -401,6 +484,8 @@ function litSpan(n: TSNode): [number, number] {
 }
 
 function mkTxt(n: TSNode, src: string, extra: Partial<Txt> = {}): Txt | null {
+  const b = boundArg(n);
+  if (b) return withEnv(b, () => mkTxt(b.node, src, extra));
   const tv = textOf(n);
   if (!tv || tv.text.trim() === '') return null;
   let [s, e] = litSpan(n);
@@ -410,6 +495,9 @@ function mkTxt(n: TSNode, src: string, extra: Partial<Txt> = {}): Txt | null {
 }
 
 // ---------------------------------------------------------------------------------------------------------------
+
+/** A SwiftUI text style as a modifier's only argument, or a house style named after one (`.captionBold`). */
+const TEXT_STYLE = /^(\.|Font\.)(largeTitle|title3|title2|title|headline|subheadline|body|callout|footnote|caption2|caption)([A-Z]\w*)?$|^\.system\(\.(largeTitle|title3|title2|title|headline|subheadline|body|callout|footnote|caption2|caption)\b/;
 
 const CONTAINERS = new Set([
   'NavigationStack', 'NavigationView', 'NavigationSplitView', 'ScrollView', 'VStack', 'HStack', 'ZStack', 'LazyVStack',
@@ -475,9 +563,16 @@ class SwiftBuilder {
     switch (s.type) {
       case 'if_statement': {
         const out: Kid[] = [];
+        // `if xs.isEmpty { … }` (or the else of `if !xs.isEmpty`) is a hand-built empty state
+        const blocks = named(s).filter((c) => c.type === 'statements');
+        const condText = named(s).filter((c) => c.endIndex <= (blocks[0]?.startIndex ?? s.endIndex) && !/comment/.test(c.type)).map((c) => c.text).join(' ');
+        const em = emptyCond(condText);
         for (const c of named(s)) {
-          if (c.type === 'statements') out.push(...this.stmts(c));
-          else if (c.type === 'if_statement') out.push(...this.stmt(c));
+          if (c.type === 'statements') {
+            const kids = this.stmts(c);
+            const empty = (em === 'pos' && c.equals(blocks[0])) || (em === 'neg' && blocks.length > 1 && c.equals(blocks[1]));
+            out.push(...(empty ? markEmptyKids(kids, c.startIndex, c.endIndex) : kids));
+          } else if (c.type === 'if_statement') out.push(...this.stmt(c));
         }
         return out.map(cond);
       }
@@ -505,7 +600,11 @@ class SwiftBuilder {
     const { base, mods } = peel(n);
     let core: El | null = null;
     let extra: Kid[] = [];
-    if (base.type === 'call_expression' && named(base)[0]?.type === 'additive_expression') {
+    const bound = boundArg(base);
+    if (bound && bound.node.type === 'lambda_literal') {
+      // a view-builder closure passed to an inlined function, used as `content`
+      extra = withEnv(bound, () => this.closureKids({ node: bound.node }));
+    } else if (base.type === 'call_expression' && named(base)[0]?.type === 'additive_expression') {
       core = this.textConcat(base);
     } else if (base.type === 'additive_expression') {
       core = this.textConcat(base);
@@ -749,11 +848,28 @@ class SwiftBuilder {
         });
         return this.wrap('ForEach', n, kids);
       }
+      case 'Tab': {
+        // iOS 18 Tab("Recipes", systemImage: …) { content }
+        const kids: Kid[] = [];
+        if (t0) kids.push(this.wrap('#tabItem', n, [...iconEl(), t0], { hint: 'tab', box: 'nav', textBlock: true }));
+        kids.push(...this.closureKids(this.closure(c, null) ?? this.closure(c, 'content')));
+        return this.wrap('Tab', n, kids);
+      }
       case 'Image': {
         const sys = c.args.find((a) => a.label === 'systemName');
         return this.wrap('Image', n, [], { icon: !!sys, arrowIcon: !!sys && /arrow|chevron\.right/.test(sys.value.text) });
       }
       default: break;
+    }
+    if (name === 'NavigationSplitView') {
+      // the sidebar column lists destinations: navigation
+      const kids: Kid[] = [];
+      c.closures.forEach((cl, j) => {
+        const k = this.closureKids(cl);
+        if (j === 0 && (cl.label === null || cl.label === 'sidebar')) kids.push(this.wrap('#sidebar', cl.node, k, { box: 'nav' }));
+        else kids.push(...k);
+      });
+      return this.wrap(name, n, kids);
     }
     if (CONTAINERS.has(name)) {
       const data = name === 'List' ? c.args.find((a) => a.label === null)?.value : undefined;
@@ -763,22 +879,62 @@ class SwiftBuilder {
       const kids = allClosures();
       let box: El['box'];
       if (name === 'Form') box = 'form';
-      else if (name === 'List') box = 'list';
+      // a List with a selection is a source list (a sidebar's destinations): navigation
+      else if (name === 'List') box = c.args.some((a) => a.label === 'selection') ? 'nav' : 'list';
       else if (name === 'Table') box = 'table';
-      const e = this.wrap(name, n, name === 'List' && c.args.length && c.closures.length ? kids.map((k) => (k.t === 'el' ? { ...k, tmpl: true } : k)) : kids, { box });
+      const e = this.wrap(name, n, name === 'List' && c.args.some((a) => a.label !== 'selection') && c.closures.length ? kids.map((k) => (k.t === 'el' ? { ...k, tmpl: true } : k)) : kids, { box });
       return e;
     }
     if (SHAPES.has(name)) return this.wrap(name, n, []);
-    if (!/^[A-Z]/.test(name) || NOT_VIEWS.test(name)) return null;
-    // a custom view: labelled text arguments by name, closures as content
+    if (/^[a-z_]/.test(name)) {
+      const f = FUNCS.get(name);
+      if (f && !INLINING.includes(name) && INLINING.length < 4) return this.inline(name, f, c);
+      const b = EXPRS.get(name);
+      if (b && b.node.type === 'lambda_literal' && !c.args.length) return this.wrap('#content', n, withEnv(b, () => this.closureKids({ node: b.node })));
+      return null;
+    }
+    if (NOT_VIEWS.test(name)) return null;
+    // a custom view: its first unlabelled argument when that is copy, labelled text arguments by name, closures as
+    // content
     const e = this.wrap(name, n, []);
     decorateComponent(e, undefined);
     const kids: Kid[] = [];
+    const hasAction = c.args.some((a) => /^(action|onTap|onSelect|perform|onPress)$/.test(a.label ?? ''))
+      || (c.closures.some((cl) => cl.label === null) && !c.closures.some((cl) => this.closureKids(cl).some(kidsHaveText)));
+    const iconArg = c.args.some((a) => /^(systemImage|systemName|icon|image|symbol)$/.test(a.label ?? ''));
+    const pos = c.args.find((a) => a.label === null);
+    const pt = pos && copyArg(pos.value) ? this.argTxt(c, null) : null;
+    if (pt) {
+      const r: Role | null = ICON_BUTTON.test(name) ? 'aria'
+        : /(Button|Btn)$/.test(name) ? 'button'
+          : /(Badge|Chip|Tag|Pill)$/.test(name) ? (hasAction ? 'button' : 'badge')
+            : /(Title|Heading|Header|HeaderLabel)$/.test(name) ? 'h3'
+              : /Link$/.test(name) ? 'link'
+                : /Caption$/.test(name) ? 'caption'
+                  : /Label$/.test(name) ? 'label' : null;
+      if (r === 'aria') kids.push({ ...pt, attr: 'aria' });
+      else if (r) kids.push(this.labelSlot(r, [pt], pos?.value ?? n));
+      else kids.push(pt);
+    }
+    // an icon-only button: an icon argument and a `label:` string but no visible title
+    const iconOnly = !pt && iconArg && /(Button|Btn)$/.test(name);
     for (const a of c.args) {
       if (!a.label) continue;
-      const r = propRole(name, a.label);
+      const r = iconOnly && /^(label|labelText)$/.test(a.label) ? 'aria' : propRole(name, a.label);
       if (!r) continue;
-      const t = this.argTxt(c, a.label, { attr: r });
+      // `content:` and `copy:` usually pass a model or a view in SwiftUI: text only when the argument is copy
+      if (/^(content|copy)$/.test(a.label) && !copyArg(a.value)) {
+        if (a.value.type === 'lambda_literal' || a.value.type === 'call_expression') {
+          const v = this.view(a.value);
+          if (v.length) kids.push(this.labelSlot(r, v, a.value));
+        }
+        continue;
+      }
+      // an initialiser of a helper type (Copy(failure, …)) is a value passed in, not text or a view on screen
+      const callee = a.value.type === 'call_expression' ? named(a.value)[0] : null;
+      const helper = callee?.type === 'simple_identifier' && /^[A-Z]/.test(callee.text) && !LOCALISE.test(callee.text) && callee.text !== 'Text' && callee.text !== 'AttributedString';
+      if (helper && !looksLikeView(callee.text)) continue;
+      const t = helper ? null : this.argTxt(c, a.label, { attr: r });
       if (t) kids.push(t);
       else {
         const v = this.view(a.value);
@@ -790,6 +946,45 @@ class SwiftBuilder {
     return e;
   }
 
+  /** A local view function read at its call, its parameters bound to the call's arguments. */
+  inline(name: string, f: LocalFunc, c: Call): El {
+    const subst = new Map(SUBST ?? []);
+    const exprs = new Map(EXPRS);
+    const positional = c.args.filter((a) => a.label === null).map((a) => a.value);
+    const trailing = c.closures.filter((cl) => cl.label === null && !c.args.some((a) => a.value.equals(cl.node))).map((cl) => cl.node);
+    for (const p of f.params) {
+      let arg: TSNode | null | undefined = null;
+      if (p.ext === '_') arg = positional.shift();
+      else {
+        const lab = p.ext ?? p.name;
+        arg = c.args.find((a) => a.label === lab)?.value ?? c.closures.find((cl) => cl.label === lab)?.node;
+      }
+      if (!arg && p.fn) arg = trailing.shift();
+      if (!arg) arg = p.def;
+      subst.delete(p.name);
+      exprs.delete(p.name);
+      if (!arg) {
+        subst.set(p.name, undefined);
+        continue;
+      }
+      const lv = swLit(arg, 1);
+      const r = lv ? null : swResolve(arg);
+      if (lv && (lv.k === 'str' || lv.k === 'num' || lv.k === 'bool' || lv.k === 'nil')) subst.set(p.name, lv);
+      else if (r && r.v !== null) subst.set(p.name, r.v);
+      else exprs.set(p.name, { node: arg, subst: SUBST, exprs: EXPRS });
+    }
+    INLINING.push(name);
+    INLINED.add(name);
+    let kids: Kid[];
+    try {
+      kids = withEnv({ node: c.node, subst, exprs }, () => this.stmts(f.body));
+    } finally {
+      INLINING.pop();
+    }
+    for (const k of kids) markCall(k, [c.node.startIndex, c.node.endIndex]);
+    return this.wrap(`#${name}`, c.node, kids);
+  }
+
   applyMods(core: El, mods: Mod[]): Kid[] {
     const before: Kid[] = [];
     const after: Kid[] = [];
@@ -798,9 +993,12 @@ class SwiftBuilder {
       const a0 = m.args[0]?.value;
       const a0t = a0?.text ?? '';
       if (a0 && a0.type === 'prefix_expression' && /^\.[A-Za-z_]\w*$/.test(a0t)) core.cls.push(`${m.name}${a0t}`);
-      switch (m.name) {
+      // A text style is a font whatever the modifier is called (.font(.title), .appFont(.title), .hcFont(.caption)),
+      // also as the stem of a house style (.bodyEmphasis, .captionBold).
+      const styleArg = m.name !== 'font' && m.args.length === 1 && !m.args[0].label && TEXT_STYLE.test(a0t);
+      switch (styleArg ? 'font' : m.name) {
         case 'font': {
-          const f = a0t.match(/\.(largeTitle|title3|title2|title|headline|subheadline|body|callout|footnote|caption2|caption)\b/);
+          const f = a0t.match(/\.(largeTitle|title3|title2|title|headline|subheadline|body|callout|footnote|caption2|caption)(?![a-z0-9])/);
           const size = a0t.match(/size:\s*(\d+(\.\d+)?)/);
           if (f) {
             const v = f[1];
@@ -828,6 +1026,7 @@ class SwiftBuilder {
         case 'textCase': sty.caps = /uppercase/.test(a0t); break;
         case 'tracking': case 'kerning': sty.tracked = parseFloat(a0t) > 0; break;
         case 'foregroundStyle': case 'foregroundColor': case 'fill': case 'tint': {
+          if (a0 && a0.type !== 'ternary_expression' && /^(\.|Color\.)(red)\b|\b(destructive|danger|error)\b/.test(a0t)) sty.errorColour = true;
           if (/^(\.|Color\.)(secondary|tertiary|quaternary|gray|grey)\b/.test(a0t)) sty.muted = true;
           else if (a0 && !/^(\.|Color\.|Color\(|LinearGradient|\.linearGradient)/.test(a0t)) core.bound = true;
           if (a0 && a0.type === 'ternary_expression') core.bound = true;
@@ -858,6 +1057,8 @@ class SwiftBuilder {
           }
           break;
         }
+        case 'labelsHidden': hideLabels(core); break;
+        case 'listStyle': if (/sidebar/.test(a0t)) core.box = 'nav'; break;
         case 'accessibilityAddTraits': if (/isHeader/.test(a0t) && /^(Text|Label)$/.test(core.name)) core.hint = core.hint ?? 'h2'; break;
         case 'navigationTitle': case 'navigationBarTitle': case 'navigationSubtitle': {
           if (!a0) break;
@@ -941,6 +1142,54 @@ class SwiftBuilder {
   }
 }
 
+/** An argument that is copy: a string literal (not an SF Symbol name), String(localized:), Text(…), or a literal. */
+function copyArg(n0: TSNode): boolean {
+  const b = boundArg(n0);
+  if (b) return withEnv(b, () => copyArg(b.node));
+  const n = n0;
+  if (/string_literal$/.test(n.type)) return !/^[a-z0-9]+(\.[a-z0-9]+)+$/.test(stringParts(n).text);
+  if (n.type === 'call_expression') {
+    const c = asCall(n);
+    return !!c && (LOCALISE.test(c.name) || c.name === 'Text');
+  }
+  const r = swResolve(n);
+  return !!r && !!r.v && r.v.k === 'str';
+}
+
+const VIEWISH = /^(Text|Label|Image|Button|Link|Toggle|Picker|Menu|Section|GroupBox|ProgressView|Spacer|Divider)$|(View|Button|Label|Text|Badge|Chip|Pill|Tag|Title|Heading|Header|Footer|Row|Card|Banner|Cell|Tile|Image|Icon|Stack|Section|Grid|Group|List)$/;
+
+/** Is a type called in argument position a view (rendered) rather than a value type passed in? */
+function looksLikeView(name: string): boolean {
+  return VIEWISH.test(name) || CONTAINERS.has(name) || SHAPES.has(name);
+}
+
+/** A small leaf view: at most three texts, no control, link, dialog, menu or list. */
+function smallLeaf(kids: Kid[]): boolean {
+  let texts = 0;
+  let ok = true;
+  const walk = (k: Kid): void => {
+    if (k.t === 'txt') {
+      if (!k.attr) texts++;
+      return;
+    }
+    if (k.box || k.control || k.tmpl || /^(Button|Link|NavigationLink|ShareButton|Menu|Toggle|Picker)$/.test(k.name)) ok = false;
+    k.kids.forEach(walk);
+  };
+  kids.forEach(walk);
+  return ok && texts >= 1 && texts <= 3;
+}
+
+/** `.labelsHidden()`: the labels of the controls inside are not shown; they are their accessible names. */
+function hideLabels(e: El): void {
+  for (const k of e.kids) {
+    if (k.t !== 'el') continue;
+    if (k.name === '#slot' && k.hint === 'label') {
+      k.hint = 'aria';
+      k.kids = k.kids.map((x) => (x.t === 'txt' ? { ...x, attr: 'aria' as Role } : x));
+    } else hideLabels(k);
+  }
+}
+
 function kidsHaveText(k: Kid): boolean {
   if (k.t === 'txt') return k.text.trim() !== '';
   return k.kids.some(kidsHaveText);
@@ -954,7 +1203,7 @@ function cond(k: Kid): Kid {
 function isViewType(n: TSNode): boolean {
   for (const c of named(n)) {
     if (c.type === 'type_annotation' || c.type === 'opaque_type' || c.type === 'user_type') {
-      if (/\bView\b|^Text$|AnyView/.test(c.text) && !/ViewModel|ViewController/.test(c.text)) return true;
+      if (/\bView\b|^Text$|AnyView|\bToolbarContent\b/.test(c.text) && !/ViewModel|ViewController/.test(c.text)) return true;
     }
   }
   return false;
@@ -966,15 +1215,25 @@ export async function swiftToIR(src: string): Promise<El> {
   if (!tree) throw new Error('tree-sitter returned no tree');
   const b = new SwiftBuilder(src);
   ARRAYS = collectArrays(tree.rootNode);
+  FUNCS = collectFuncs(tree.rootNode);
+  INLINED = new Set();
+  EXPRS = new Map();
   SUBST = null;
   const root = el('#root', 0, src.length, { box: 'root' });
   const roots: Kid[] = [];
-  const walk = (n: TSNode, inPreview: boolean): void => {
+  const fnRoots: [string, El][] = [];
+  // A view whose own name says what it draws (TagPill, StatusBadge): its body takes that role.
+  const DEF_ROLE: [RegExp, Role][] = [[/(Badge|Chip|Tag|Pill)$/, 'badge'], [/(Eyebrow|Kicker|Overline)$/, 'eyebrow']];
+  const walk = (n: TSNode, inPreview: boolean, typeName: string | null): void => {
     if (n.type === 'macro_invocation' && /^#?Preview/.test(n.text.replace(/^#/, ''))) return;
     if (n.type === 'class_declaration') {
       const inh = named(n).filter((c) => c.type === 'inheritance_specifier').map((c) => c.text).join(' ');
       if (/PreviewProvider/.test(inh)) return;
+      const tn = n.childForFieldName('name')?.text ?? null;
+      for (const c of named(n)) walk(c, inPreview, tn);
+      return;
     }
+    const hint = typeName ? DEF_ROLE.find(([re]) => re.test(typeName))?.[1] : undefined;
     if (n.type === 'property_declaration' && !inPreview) {
       const nameNode = named(n).find((c) => c.type === 'pattern');
       const nm = nameNode?.text ?? '';
@@ -983,7 +1242,10 @@ export async function swiftToIR(src: string): Promise<El> {
         const st = named(comp).find((c) => c.type === 'statements');
         if (st) {
           const kids = b.stmts(st);
-          if (kids.length) roots.push(b.wrap('#body', n, kids));
+          // toolbar content (`some ToolbarContent`) sits in the bar, like .toolbar { }
+          const tb = /\bToolbarContent\b/.test(named(n).find((c) => c.type === 'type_annotation')?.text ?? '');
+          const leaf = !!hint && nm === 'body' && smallLeaf(kids);
+          if (kids.length) roots.push(b.wrap(tb ? '#toolbar' : '#body', n, kids, tb ? { box: 'header' } : leaf ? { hint } : {}));
         }
         return;
       }
@@ -993,14 +1255,20 @@ export async function swiftToIR(src: string): Promise<El> {
       const st = body ? named(body).find((c) => c.type === 'statements') : undefined;
       if (st) {
         const kids = b.stmts(st);
-        if (kids.length) roots.push(b.wrap('#body', n, kids));
+        if (kids.length) {
+          const r = b.wrap('#body', n, kids);
+          roots.push(r);
+          fnRoots.push([n.childForFieldName('name')?.text ?? '', r]);
+        }
       }
       return;
     }
-    for (const c of named(n)) walk(c, inPreview);
+    for (const c of named(n)) walk(c, inPreview, typeName);
   };
-  walk(tree.rootNode, false);
+  walk(tree.rootNode, false, null);
   tree.delete();
-  root.kids = roots;
+  // a local view function read at its calls is not also read on its own
+  const drop = new Set(fnRoots.filter(([nm]) => INLINED.has(nm)).map(([, r]) => r));
+  root.kids = roots.filter((r) => !(r.t === 'el' && drop.has(r)));
   return root;
 }

@@ -179,7 +179,7 @@ class SwiftRenderer:
 
     def k_iconbtn(self, e, ind):
         self.w.ln(ind, "Button(action: {}) {")
-        self.w.ln(ind + 1, f'Image(systemName: "{self.rng.pick(["trash", "square.and.arrow.up", "ellipsis.circle", "pencil"])}")')
+        self.w.ln(ind + 1, f'Image(systemName: "{e["sf"] or "ellipsis.circle"}")')
         self.w.ln(ind, "}")
         self.w.ln(ind + 1, '.help("', self.q(e["tip"]), '")')
         if e["aria"] is not None:
@@ -426,7 +426,25 @@ class SwiftRenderer:
             self.el(action, ind + 1)
         self.w.ln(ind, "}")
 
+    def k_chart(self, e, ind):
+        """A chart view fed by a property: it draws no text of its own."""
+        name = ident(e["series"] or "series", upper_first=False) + "Series"
+        if name not in self.const_names:
+            self.const_names.add(name)
+            self.props.ln(1, f"private let {name}: [Double] = [{', '.join(str(self.rng.randrange(1, 60)) for _ in range(7))}]")
+        self.w.ln(ind, f"{self.rng.pick(['SparklineView', 'BarsView', 'TrendChart'])}(values: {name})")
+        self.w.ln(ind + 1, f".frame(height: {self.rng.pick([100, 120, 160])})")
+
     def k_alert(self, e, ind):
+        if e["tone"] == "error":
+            self.w.ln(ind, "GroupBox {")
+            if e["title"] is not None:
+                self.w.ln(ind + 1, 'Label("', self.q(e["title"]), '", systemImage: "exclamationmark.triangle")')
+                self.w.ln(ind + 2, ".foregroundStyle(.red)")
+            self.w.ln(ind + 1, 'Text("', self.q(e["s"]), '")')
+            self.w.ln(ind + 2, ".foregroundStyle(.red)")
+            self.w.ln(ind, "}")
+            return
         self.w.ln(ind, "GroupBox {")
         if e["title"] is not None:
             self.w.ln(ind + 1, 'Label("', self.q(e["title"]), '", systemImage: "info.circle")')

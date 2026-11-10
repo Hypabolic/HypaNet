@@ -6,10 +6,10 @@
   {"k": 2, "kind": "actions", "line": 10},
   {"k": 3, "kind": "body", "line": 6}],
  "nodes": [
-  {"i": 0, "k": 0, "role": "h2", "text": "Morning, \ue000 first name", "flags": ["dynamic"], "loc": [7, 11, 7, 35]},
-  {"i": 1, "k": 1, "role": "body", "text": "You have \ue000 length parcels waiting at the depot", "flags": ["dynamic", "section_first"], "loc": [8, 12, 8, 65]},
-  {"i": 2, "k": 1, "role": "body", "text": "\ue000 settings title", "flags": ["dynamic", "stateful"], "loc": [9, 11, 9, 37]},
+  {"i": 0, "k": 0, "role": "h2", "text": "Morning, \ue000 first name", "flags": ["dynamic"], "loc": [7, 11, 7, 35], "vw": [2]},
+  {"i": 1, "k": 1, "role": "body", "text": "You have \ue000 length parcels waiting at the depot", "flags": ["dynamic", "section_first"], "loc": [8, 12, 8, 65], "vw": [1]},
+  {"i": 2, "k": 1, "role": "body", "text": "\ue000 settings title", "flags": ["dynamic", "stateful"], "loc": [9, 11, 9, 37], "vw": [2]},
   {"i": 3, "k": 2, "role": "button", "text": "Save changes", "flags": [], "loc": [10, 16, 10, 33]},
-  {"i": 4, "k": 3, "role": "body", "text": "Last collected \ue000 created at", "flags": ["dynamic"], "loc": [11, 13, 11, 56]},
-  {"i": 5, "k": 3, "role": "body", "text": "\ue000 display name", "flags": ["dynamic", "stateful"], "loc": [12, 14, 12, 39]},
-  {"i": 6, "k": 3, "role": "body", "text": "\ue000 length of \ue000 capacity slots used", "flags": ["dynamic", "section_last"], "loc": [13, 14, 13, 58]}]}
+  {"i": 4, "k": 3, "role": "body", "text": "Last collected \ue000 created at", "flags": ["dynamic"], "loc": [11, 13, 11, 56], "vw": [2]},
+  {"i": 5, "k": 3, "role": "body", "text": "\ue000 display name", "flags": ["dynamic", "stateful"], "loc": [12, 14, 12, 39], "vw": [2]},
+  {"i": 6, "k": 3, "role": "body", "text": "\ue000 length of \ue000 capacity slots used", "flags": ["dynamic", "section_last"], "loc": [13, 14, 13, 58], "vw": [1, 1]}]}

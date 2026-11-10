@@ -1,0 +1,10 @@
+{"schema": "slop.screen/1", "id": "dab4d15609566685", "framework": "swift",
+ "source": {"repo": "slop-fixtures", "path": "HarbourList.swift", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "state", "line": 10},
+  {"k": 1, "kind": "body", "line": 8}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "empty_title", "text": "No boats moored", "flags": ["conditional", "in_state"], "loc": [10, 23, 10, 38]},
+  {"i": 1, "k": 0, "role": "empty_body", "text": "Moorings you book appear here with their tide times.", "flags": ["conditional", "in_state", "section_first", "section_last"], "loc": [12, 23, 12, 75]},
+  {"i": 2, "k": 1, "role": "body", "text": "\ue000 m", "flags": ["dynamic", "stateful", "conditional", "in_list"], "loc": [16, 26, 16, 27], "vw": [1]},
+  {"i": 3, "k": 1, "role": "body", "text": "\ue000 filter", "flags": ["dynamic", "stateful", "conditional"], "loc": [20, 22, 20, 28], "vw": [1]}]}

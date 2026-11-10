@@ -217,7 +217,7 @@ class HtmlRenderer:
             self.w.raw('"')
         self.w.raw(' title="')
         self.w.put(tip, attr_text(tip.text))
-        self.w.raw(f'"><svg class="icon" aria-hidden="true"><use href="#i-{e["icon"] or "more"}"></use></svg></button>\n')
+        self.w.raw(f'"><svg class="icon" aria-hidden="true"><use href="#i-{e["html_icon"] or "more"}"></use></svg></button>\n')
 
     def k_badge(self, e, ind):
         self.w.ln(ind, f"<span{self.cls('badge')}>", self.put(e["s"]), "</span>")
@@ -364,11 +364,32 @@ class HtmlRenderer:
         self.w.ln(ind, "</div>")
 
     def k_alert(self, e, ind):
+        if e["tone"] == "error":
+            if self.idiom == "tailwind":
+                self.w.ln(ind, '<div class="rounded border border-red-300 bg-red-50 p-4" role="alert">')
+                if e["title"] is not None:
+                    self.w.ln(ind + 1, '<p class="font-medium text-red-800">', self.put(e["title"]), "</p>")
+                self.w.ln(ind + 1, '<p class="text-sm text-red-700">', self.put(e["s"]), "</p>")
+            else:
+                self.w.ln(ind, '<div class="alert alert--error" role="alert">')
+                if e["title"] is not None:
+                    self.w.ln(ind + 1, '<p class="alert__title">', self.put(e["title"]), "</p>")
+                self.w.ln(ind + 1, "<p>", self.put(e["s"]), "</p>")
+            self.w.ln(ind, "</div>")
+            return
         self.w.ln(ind, '<div class="callout" role="status">')
         if e["title"] is not None:
             self.w.ln(ind + 1, "<strong>", self.put(e["title"]), "</strong>")
         self.w.ln(ind + 1, "<p>", self.put(e["s"]), "</p>")
         self.w.ln(ind, "</div>")
+
+    def k_chart(self, e, ind):
+        """A chart with no text of its own (the data is drawn by script)."""
+        self.ids += 1
+        if self.rng.chance(0.5):
+            self.w.ln(ind, f'<canvas id="chart-{self.ids}" height="{self.rng.pick([120, 160, 200])}" aria-hidden="true"></canvas>')
+        else:
+            self.w.ln(ind, f'<div class="chart" data-series="{slug(e["series"] or "series")}" style="height: 160px"></div>')
 
     def k_nav(self, e, ind):
         self.w.ln(ind, "<nav>")

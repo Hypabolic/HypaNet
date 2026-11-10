@@ -1,0 +1,20 @@
+{"schema": "slop.screen/1", "id": "f431be7a76b9011c", "framework": "tsx",
+ "source": {"repo": "slop-fixtures", "path": "Allotment.tsx", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "header", "line": 4},
+  {"k": 1, "kind": "card", "line": 8},
+  {"k": 2, "kind": "header", "line": 17},
+  {"k": 3, "kind": "body", "line": 22},
+  {"k": 4, "kind": "actions", "line": 23}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "h2", "text": "Greenhouse", "flags": [], "loc": [5, 44, 5, 54]},
+  {"i": 1, "k": 0, "role": "subtitle", "text": "A gardener's ledger", "flags": ["caps", "tracked", "small", "section_first"], "loc": [6, 60, 6, 79]},
+  {"i": 2, "k": 1, "role": "h3", "text": "Plot record", "flags": ["caps", "tracked", "small", "in_card"], "loc": [9, 62, 9, 73]},
+  {"i": 3, "k": 1, "role": "label", "text": "Bed", "flags": ["in_list", "in_card", "section_first"], "loc": [11, 15, 11, 18]},
+  {"i": 4, "k": 1, "role": "body", "text": "\ue000 bed", "flags": ["dynamic", "stateful", "in_list", "in_card"], "loc": [12, 16, 12, 24], "vw": [1]},
+  {"i": 5, "k": 1, "role": "label", "text": "Crop", "flags": ["in_list", "in_card"], "loc": [13, 15, 13, 19]},
+  {"i": 6, "k": 1, "role": "body", "text": "\ue000 crop", "flags": ["dynamic", "stateful", "in_list", "in_card", "section_last"], "loc": [14, 16, 14, 25], "vw": [1]},
+  {"i": 7, "k": 2, "role": "eyebrow", "text": "Season", "flags": ["caps", "tracked", "small"], "loc": [18, 62, 18, 68]},
+  {"i": 8, "k": 2, "role": "h3", "text": "Spring sowing", "flags": [], "loc": [19, 33, 19, 46]},
+  {"i": 9, "k": 3, "role": "label", "text": "Watering", "flags": ["caps", "tracked", "small", "section_first"], "loc": [22, 60, 22, 68]},
+  {"i": 10, "k": 4, "role": "button", "text": "Log a can", "flags": ["section_last"], "loc": [23, 31, 23, 40]}]}

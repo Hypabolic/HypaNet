@@ -1,0 +1,23 @@
+{"schema": "slop.screen/1", "id": "6575aa4dffcdf5e5", "framework": "tsx",
+ "source": {"repo": "slop-rules-fixtures", "path": "src/sl_numbered_series_neg.tsx", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "header", "line": 2},
+  {"k": 1, "kind": "control", "line": 4},
+  {"k": 2, "kind": "control", "line": 6},
+  {"k": 3, "kind": "control", "line": 8},
+  {"k": 4, "kind": "header", "line": 10},
+  {"k": 5, "kind": "card", "line": 12},
+  {"k": 6, "kind": "card", "line": 15},
+  {"k": 7, "kind": "card", "line": 18}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "h2", "text": "Billing address", "flags": [], "loc": [3, 7, 3, 22]},
+  {"i": 1, "k": 1, "role": "label", "text": "Address line 1", "flags": ["in_form", "in_control"], "loc": [5, 7, 5, 21]},
+  {"i": 2, "k": 2, "role": "label", "text": "Address line 2", "flags": ["in_form", "in_control"], "loc": [7, 7, 7, 21]},
+  {"i": 3, "k": 3, "role": "label", "text": "Address line 3", "flags": ["in_form", "in_control"], "loc": [9, 7, 9, 21]},
+  {"i": 4, "k": 4, "role": "h2", "text": "Plans", "flags": [], "loc": [11, 7, 11, 12]},
+  {"i": 5, "k": 5, "role": "h3", "text": "Solo", "flags": ["in_card", "repeated"], "loc": [13, 7, 13, 11]},
+  {"i": 6, "k": 5, "role": "body", "text": "Up to 5 users", "flags": ["in_card", "repeated"], "loc": [14, 7, 14, 20]},
+  {"i": 7, "k": 6, "role": "h3", "text": "Team", "flags": ["in_card", "repeated"], "loc": [16, 7, 16, 11]},
+  {"i": 8, "k": 6, "role": "body", "text": "Up to 20 users", "flags": ["in_card", "repeated"], "loc": [17, 7, 17, 21]},
+  {"i": 9, "k": 7, "role": "h3", "text": "Studio", "flags": ["in_card", "repeated"], "loc": [19, 7, 19, 13]},
+  {"i": 10, "k": 7, "role": "body", "text": "Up to 100 users", "flags": ["in_card", "repeated"], "loc": [20, 7, 20, 22]}]}

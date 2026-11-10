@@ -1,0 +1,22 @@
+{"schema": "slop.screen/1", "id": "fb811fa6d0c0ccdd", "framework": "tsx",
+ "source": {"repo": "slop-rules-fixtures", "path": "src/ix_scale_and_days_neg.tsx", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "header", "line": 2},
+  {"k": 1, "kind": "body", "line": 4},
+  {"k": 2, "kind": "header", "line": 10},
+  {"k": 3, "kind": "body", "line": 12}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "h2", "text": "How likely are you to recommend us?", "flags": [], "loc": [3, 7, 3, 42]},
+  {"i": 1, "k": 1, "role": "caption", "text": "1", "flags": [], "loc": [5, 7, 5, 8]},
+  {"i": 2, "k": 1, "role": "caption", "text": "2", "flags": [], "loc": [6, 7, 6, 8]},
+  {"i": 3, "k": 1, "role": "caption", "text": "3", "flags": [], "loc": [7, 7, 7, 8]},
+  {"i": 4, "k": 1, "role": "caption", "text": "4", "flags": [], "loc": [8, 7, 8, 8]},
+  {"i": 5, "k": 1, "role": "caption", "text": "5", "flags": [], "loc": [9, 7, 9, 8]},
+  {"i": 6, "k": 2, "role": "h2", "text": "March", "flags": [], "loc": [11, 7, 11, 12]},
+  {"i": 7, "k": 3, "role": "other", "text": "1", "flags": [], "loc": [13, 7, 13, 8]},
+  {"i": 8, "k": 3, "role": "other", "text": "2", "flags": [], "loc": [14, 7, 14, 8]},
+  {"i": 9, "k": 3, "role": "other", "text": "3", "flags": [], "loc": [15, 7, 15, 8]},
+  {"i": 10, "k": 3, "role": "other", "text": "4", "flags": [], "loc": [16, 7, 16, 8]},
+  {"i": 11, "k": 3, "role": "other", "text": "5", "flags": [], "loc": [17, 7, 17, 8]},
+  {"i": 12, "k": 3, "role": "other", "text": "6", "flags": [], "loc": [18, 7, 18, 8]},
+  {"i": 13, "k": 3, "role": "other", "text": "7", "flags": [], "loc": [19, 7, 19, 8]}]}

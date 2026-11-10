@@ -1,14 +1,21 @@
-"""Screen composers for the dev generator: one per screen kind. Each builds an abstract tree (``core.E``) and
+"""Screen composers for the dev generator (v2): one per screen kind. Each builds an abstract tree (``core.E``) and
 decides every slot's label as it goes, planting the scored patterns of LABELLING.md §9 with their exact class,
 pattern and target, and the K rules of §6 as hard negatives (KEEP records naming the rule in ``pattern``).
 
-Planting is local and by construction: a restating subtitle is written as a restatement of the heading it sits
-under and points at it; copy that is not planted is drawn from tables of facts that each add information. A clean
-screen (``Ctx.clean``) plants nothing redundant but keeps its hard negatives.
+Every screen is about one topic: one product (``Ctx``: its domain, two nouns with synonyms, its people, its group).
+Copy that is not planted adds a fact about that topic, so a KEEP subtitle talks about what its heading names. Both
+sides of each decision come with and without shared stems: a restatement may use a synonym or a pronoun, and an
+informative line may repeat the heading's noun. Copy is built from slots (``lexicon.py``), so that no frequent
+string decides the class.
+
+A clean screen (``Ctx.clean``) plants nothing redundant but keeps its hard negatives.
 """
 
 from __future__ import annotations
 
+import re
+
+from . import lexicon as L
 from . import tables as T
 from .core import E, Page, S, cap, ctx, dyn, lower_first, stack
 
@@ -27,18 +34,43 @@ FRAMEWORK_WEIGHTS = {
 CLEAN_SHARE = 0.15
 
 
+class Noun:
+    """A countable noun of the topic with synonyms that share no stem with it."""
+
+    __slots__ = ("sg", "pl", "alts")
+
+    def __init__(self, sg, pl, alts):
+        self.sg, self.pl, self.alts = sg, pl, alts
+
+    @property
+    def Sg(self):
+        return cap(self.sg)
+
+    @property
+    def Pl(self):
+        return cap(self.pl)
+
+
 class Ctx:
     def __init__(self, rng, fw: str, clean: bool):
         self.rng = rng
         self.fw = fw
         self.clean = clean
         self.dom = rng.pick(T.DOMAINS)
-        self.product = rng.pick(self.dom["names"])
+        ex = L.DOM_EXTRA[self.dom["key"]]
+        self.x = Noun(*self.dom["obj"], ex["x"])
+        self.y = Noun(*self.dom["obj2"], ex["y"])
+        self.who = ex["who"]
+        self.group = ex["group"]
+        self.role = ex["role"]
+        self.product = L.product_name(rng, self.dom)
+        self.place = rng.pick(L.PLACES)
         self.r19: list = []
         self.props: list = []
         self.notice = None  # the first global notice (K6), for later repeats (R14)
         self.notice_alts: list = []
-        self.cta_button = None  # the first call to action, for later repeats (R14)
+        self.cta = None  # the first call to action, for later repeats (R14)
+        self.nav_items: set = set()
         self.used: set = set()
 
     def want(self, p: float) -> bool:
@@ -47,6 +79,9 @@ class Ctx:
 
     def chance(self, p: float) -> bool:
         return self.rng.random() < p
+
+    def pick(self, xs):
+        return self.rng.pick(xs)
 
     def fresh(self, xs):
         """Pick an item not used yet on this screen (copy never repeats by accident)."""
@@ -71,13 +106,43 @@ class Ctx:
             self.props.append(name)
         return name
 
-    @property
-    def obj(self):
-        return self.dom["obj"][0]
+    def noun(self) -> Noun:
+        return self.x if self.chance(0.6) else self.y
 
-    @property
-    def objs(self):
-        return self.dom["obj"][1]
+    def alt(self, noun: Noun):
+        return self.rng.pick(noun.alts)
+
+    def f(self, t: str, **kw) -> str:
+        """Fill a template with this topic's words and fresh numbers."""
+        rng = self.rng
+        n = rng.pick([2, 3, 4, 5, 6, 8, 10, 12, 14, 20, 30])
+        vals = {
+            "p": self.product, "x": self.x.pl, "x1": self.x.sg, "X": self.x.Pl, "X1": self.x.Sg,
+            "y": self.y.pl, "y1": self.y.sg, "Y": self.y.Pl, "Y1": self.y.Sg,
+            "who": self.who[1], "who1": self.who[0], "Who": cap(self.who[1]), "group": self.group,
+            "Group": cap(self.group), "groups": plural(self.group), "Groups": cap(plural(self.group)), "role": self.role, "place": self.place, "n": n,
+            "N": f"{rng.randrange(120, 9800):,}", "d": rng.randrange(1, 9), "price": L.money(rng, 3, 40),
+            "plan": rng.pick(L.PLANS[1:6]), "clock": L.clock(rng), "day": rng.pick(L.DAYS), "date": L.date(rng),
+            "person": L.person(rng), "zone": rng.pick(L.ZONES),
+        }
+        vals.update(kw)
+        for k in ("group", "x1", "y1", "who1", "role", "o"):
+            if k in vals and isinstance(vals[k], str):
+                vals["a_" + k] = article(vals[k])
+                vals["A_" + k] = cap(article(vals[k]))
+        return t.format(**vals)
+
+
+def plural(w: str) -> str:
+    if w.endswith("y") and w[-2:-1] not in "aeiou":
+        return w[:-1] + "ies"
+    if w.endswith(("s", "sh", "ch", "x")):
+        return w + "es"
+    return w + "s"
+
+
+def article(w: str) -> str:
+    return ("an " if w[:1].lower() in "aeiou" else "a ") + w
 
 
 def _key(x):
@@ -85,163 +150,316 @@ def _key(x):
 
 
 def words(s: str) -> set:
-    return {w.strip(".,:;!?’'—-").lower() for w in s.split()} - {""}
+    return {w.strip(".,:;!?’'—-()").lower() for w in s.split()} - {""}
 
 
 def shares_stem(a: str, b: str) -> bool:
-    """A crude stem test for genre words (K1): any word of ``a`` whose first five letters start a word of ``b``."""
+    """A crude stem test (first five letters) for choosing between templates."""
     wb = words(b)
     for w in words(a):
         k = w[:5] if len(w) > 4 else w
-        if any(x.startswith(k) for x in wb):
+        if len(k) > 2 and any(x.startswith(k) for x in wb):
             return True
     return False
 
 
+def jitter(rng, value: str) -> str:
+    """The same shape of figure with different digits ("46 kg" -> "31 kg", "£4,826" -> "£2,113")."""
+
+    def one(m):
+        s = m.group(0)
+        digits = s.replace(",", "")
+        if "." in digits:
+            a, b = digits.split(".")
+            v = rng.randrange(1, max(2, 10 ** len(a)))
+            return (f"{v:,}" if "," in s else str(v)) + f".{rng.randrange(0, 10 ** len(b)):0{len(b)}d}"
+        lo = 10 ** (len(digits) - 1) if len(digits) > 1 else 1
+        v = rng.randrange(lo, 10 ** len(digits))
+        return f"{v:,}" if "," in s else str(v)
+
+    return re.sub(r"\d[\d,]*(?:\.\d+)?", one, value)
+
+
 # ---------------------------------------------------------------------------------------------------------------
-# shared pieces
+# copy builders shared by the composers
 
 
-def eyebrow_for(c: Ctx, head_text: str, head_slot, concept=None, genre=None, allow_k1=True, p_r1=0.3, p_r2=0.15,
-                genres=("Overview", "Products", "Services", "Get started")):
-    """An eyebrow over a heading, or None. ``concept`` gives paraphrase eyebrows; ``genre`` is a section-genre word
-    the heading contains; ``genres`` are the section-genre words that suit this kind of section (R2 when the heading
-    does not contain them)."""
-    if (concept or genre) and c.want(p_r1):
-        text = genre if genre else c.rng.pick(concept)
-        return S(text, "eyebrow").echo(head_slot, "R1", conf="clear" if genre else "judgement")
-    if c.want(p_r2):
-        cand = [w for w in genres if not shares_stem(w, head_text)]
-        if cand and c.chance(0.6):
-            return S(c.rng.pick(cand), "eyebrow").decor("R2")
-        return S(c.rng.pick(T.NEXT_LABELS), "eyebrow").decor("R2")
-    if allow_k1 and c.chance(0.35):
-        kind = c.rng.pick(["cat", "product", "date"])
-        if kind == "cat":
-            text = c.fresh(c.dom["cats"])
-        elif kind == "product":
-            text = c.product
-        else:
-            text = c.rng.pick(["Issue 14", "Spring 2026", "June 2026", "Issue 3 · May 2026", "Release 4.2", "Autumn edition"])
-        if shares_stem(text, head_text):
-            return None
-        return S(text, "eyebrow").keep("K1")
-    return None
+def about(c: Ctx, noun: Noun, stem=None) -> str:
+    """A KEEP line about a listed noun: scope, timing, retention, limits. ``stem`` names the noun or not."""
+    if stem is None:
+        stem = c.chance(0.5)
+    ctx_ = {"role": c.role, "group": c.group, "who": c.who[1]}
+    if stem:
+        return L.fill_fact(c.rng, c.pick(L.LIST_FACTS), noun.pl, noun.sg, ctx_)
+    return L.fill_fact(c.rng, c.pick(L.LIST_FACTS_ALT), noun.pl, noun.sg, ctx_)
+
+
+def restate(c: Ctx, noun: Noun, stem=None) -> str:
+    """A line that only says the screen holds ``noun`` (R3/R4 candidate)."""
+    if stem is None:
+        stem = c.chance(0.5)
+    return L.echo_list(c.rng, noun.pl, None if stem else c.alt(noun)[1])
+
+
+PRODUCT_FACTS = ["Every {x1} keeps a full history of who changed what, and when.", "{X} sync to every phone in your {group} within a minute.",
+                 "Reminders go out {n} days before each {y1} is due.", "The free plan covers up to {n} {x}.",
+                 "Works on iPhone, Android and the web, with one login.", "{X} you delete stay in the bin for {n} days.",
+                 "Each {y1} can carry photos, notes and a location.", "{Who} in {place} keep about {N} {x} with us.",
+                 "Exports open in any spreadsheet and keep your own column names.", "Only you and your {role}s can edit {x}."]
+
+
+def product_fact(c: Ctx) -> str:
+    """A KEEP sentence about the product: one of its own facts, or a fact about one of its nouns."""
+    if c.chance(0.4):
+        return c.fresh(c.dom["facts"])
+    return c.f(c.fresh(PRODUCT_FACTS))
+
+
+def narrate_control(c: Ctx, label: str) -> str:
+    """R6: what pressing a visible control does, in words its label already gives."""
+    r = c.rng.random()
+    v = c.pick(L.TAP_VERBS)
+    if r < 0.6:
+        return f"{v} {label} {c.pick(L.NARRATE_PURPOSE)}."
+    if r < 0.8:
+        return f"Use the {label} button {c.pick(['below', 'underneath', 'at the bottom'])} {c.pick(L.NARRATE_PURPOSE)}."
+    return f"{c.pick(L.NARRATE_FORM_OPEN)} {v.lower()} {label}."
+
+
+def scroll_line(c: Ctx, noun: Noun | None = None) -> str:
+    if noun is None:
+        return c.pick(L.SCROLL_GENERIC)
+    return c.pick(L.SCROLL_LINES).format(x=noun.pl, x1=noun.sg, a_x1=article(noun.sg))
+
+
+def count_line(c: Ctx, n: int, noun: Noun | None = None) -> str:
+    noun = noun or c.x
+    t = c.pick(L.COUNT_LINES)
+    w = L.NUMBER_WORDS.get(n, str(n))
+    return t.format(n=w if c.chance(0.6) else str(n), N=cap(w), x1=noun.sg, p=c.product)
+
+
+def layout_line(c: Ctx, noun: Noun) -> str:
+    return c.pick(L.LAYOUT_LINES).format(x=noun.pl, x1=noun.sg)
+
+
+def closing_spread(c: Ctx) -> str:
+    a = c.pick(L.CLOSE_SPREAD_A)
+    b = c.pick(L.CLOSE_SPREAD_B)
+    return (a + b).format(p=c.product, x=c.x.pl)
+
+
+def closing_head(c: Ctx, htext: str) -> str:
+    h = lower_first(htext.rstrip("."))
+    return c.pick(L.CLOSE_HEAD).format(h=h, H=cap(h), p=c.product)
+
+
+def static_status(c: Ctx) -> str:
+    return c.pick(L.STATUS_GLYPH) + c.pick(L.STATUS_WORDS + ["Now open", "Live now", "Available today", "Open now"])
+
+
+def pill(c: Ctx) -> str:
+    return c.pick(L.PILL_GLYPH) + c.pick(L.PILL_WORDS)
+
+
+def nothing_line(c: Ctx) -> str:
+    return (f"{c.pick(['Nothing', 'Nothing at all', 'Not a thing'])} {c.pick(['to show', 'here', 'to see', 'in here'])}"
+            f" {c.pick(['yet', 'so far', 'for now', 'just now', 'at the moment'])}.")
 
 
 def notice(c: Ctx):
-    n = c.rng.pick(T.NOTICES)
-    s = S(n[0], "caption").keep("K6")
-    c.notice, c.notice_alts = s, n[1]
+    group = c.pick(L.NOTICE_KINDS)[0]
+    kw = {"n": c.pick([7, 14, 21, 30, 60]), "d": c.rng.randrange(1, 9), "N": f"{c.rng.randrange(120, 9800):,}",
+          "price": L.money(c.rng, 3, 40)}
+    t0 = c.pick(group)
+    first = c.f(t0, **kw)
+    s = S(first, "caption").keep("K6")
+    c.notice, c.notice_alts = s, [c.f(x, **kw) for x in group if x != t0] + [first]
     return E("note", s=s)
+
+
+def repeat_notice(c: Ctx):
+    """A later copy of the global notice (R14), or None."""
+    if c.notice is None:
+        return None
+    return E("note", s=S(c.pick(c.notice_alts), "caption").echo(c.notice, "R14", conf="clear"))
 
 
 def cta_buttons(c: Ctx, first=True):
     ctas = c.dom["cta"]
-    b = S(ctas[0] if first else c.rng.pick(ctas[1:]), "button")
+    b = S(ctas[0] if first else c.pick(ctas[1:]), "button")
     kids = [E("button", s=b)]
     if first:
-        c.cta_button = b
+        c.cta = b
         c.used.add(b.text)
     if c.chance(0.6):
         if c.chance(0.15):
-            kids.append(E("link", s=S(c.rng.pick(T.VACUOUS), "link").keep(aside=["R7"]), arrow=c.chance(0.4)))
+            kids.append(E("link", s=S(c.pick(T.VACUOUS), "link").keep(aside=["R7"]), arrow=c.chance(0.4)))
         else:
             kids.append(E("link", s=S(c.fresh([x for x in ctas if x != b.text]), "link"), arrow=c.chance(0.4)))
     return E("actions", *kids), b
 
 
-def fact(c: Ctx) -> str:
-    return c.fresh(c.dom["facts"])
+def item_names(c: Ctx) -> list:
+    """Names of individual things of this topic (the first table column)."""
+    return list(c.dom["table"][1][0])
 
 
-H2_TEMPLATES = ["What {product} does", "Made for {objs}", "Everything a {obj} needs", "Why keepers of {objs} switch",
-                "Less admin, more {objs}", "Built around your {objs}", "The tools behind every {obj}",
-                "What you get with {product}", "A closer look at {product}"]
+# ---------------------------------------------------------------------------------------------------------------
+# eyebrows
 
 
-def fill(t: str, c: Ctx, **kw) -> str:
-    vals = {"product": c.product, "obj": c.obj, "objs": c.objs, "Obj": cap(c.obj), "Objs": cap(c.objs),
-            "obj2": c.dom["obj2"][0], "obj2s": c.dom["obj2"][1]}
-    vals.update(kw)
-    return t.format(**vals)
+def genre_group(word: str):
+    for g in L.GENRE_GROUPS:
+        if word in g:
+            return g
+    return None
 
 
-def count_line(c: Ctx, n: int, obj=None) -> str:
-    t = c.rng.pick([x for x in T.LAYOUT_COUNT if ("{obj}" not in x) or obj])
-    return t.format(n=T.NUMBER_WORDS.get(n, str(n)), N=cap(T.NUMBER_WORDS.get(n, str(n))), obj=obj or c.obj)
+def eyebrow(c: Ctx, h, htext: str, concept=None, genre=None, p_r1=0.3, p_r2=0.12, genres=("Overview", "Products"),
+            allow_k1=True, syn=None, cats_ok=True):
+    """An eyebrow over a heading, or None. ``concept`` gives paraphrase eyebrows (R1); ``genre`` is a section-genre
+    word the heading contains (R1); ``syn`` lists restatements of a page title (R1); ``genres`` are genre words
+    that suit the section (R2 when the heading does not contain them)."""
+    if concept is not None and c.want(p_r1):
+        return S(c.pick(concept["eb"]), "eyebrow").echo(h, "R1", conf="judgement")
+    if genre is not None and c.want(p_r1):
+        return S(genre, "eyebrow").echo(h, "R1", conf="clear")
+    if syn and c.want(p_r1):
+        return S(c.pick(syn), "eyebrow").echo(h, "R1", conf="judgement")
+    if c.want(p_r2):
+        cand = [w for w in genres if not shares_stem(w, htext) and not (genre_group(w) and genre_group(w) == genre_group(htext))]
+        if cand and c.chance(0.6):
+            return S(c.pick(cand), "eyebrow").decor("R2")
+        return S(c.pick(L.NEXT_HEAD), "eyebrow").decor("R2")
+    if allow_k1 and c.chance(0.3):
+        r = c.rng.random()
+        if r < 0.45 and cats_ok:
+            text = c.fresh(c.dom["cats"])
+        elif r < 0.7:
+            text = c.product
+        else:
+            text = c.pick([f"Issue {c.rng.randrange(2, 60)}", f"{c.pick(['Spring', 'Summer', 'Autumn', 'Winter'])} 2026",
+                           f"{c.pick(L.MONTHS)} 2026", f"Release 4.{c.rng.randrange(1, 12)}",
+                           f"Issue {c.rng.randrange(2, 30)} · {c.pick(L.MONTHS)} 2026"])
+        if text.lower() == htext.lower():
+            return None
+        return S(text, "eyebrow").keep("K1")
+    return None
 
 
 # ---------------------------------------------------------------------------------------------------------------
 # marketing
 
+HERO_HEADS = ["Keep every {x1} on track", "{X}, sorted", "Run your {y} from one screen", "The calm way to manage {x}",
+              "Your {x}, without the paperwork", "Spend less time on {y}", "Where {who} keep their {x}",
+              "Every {x1} and every {y1}, in one app", "{p} for {groups}", "Less admin for {who}"]
+CAT_HEADS = ["{cat}, without the guesswork", "New in {cat} this month", "{cat}: the {p} guide", "{cat} at {p}",
+             "{cat}, done properly"]
+H2_HEADS = ["What {p} does", "Made for {x}", "Everything {a_x1} needs", "Why {who} switch", "Less admin, more {x}",
+            "Built around your {x}", "The tools behind every {x1}", "What you get with {p}", "A closer look at {p}",
+            "Inside {p}"]
+
 
 def m_hero(c: Ctx):
-    concept = c.rng.pick(T.HEAD_CONCEPTS) if c.chance(0.55) else None
-    if concept:
-        htext = concept[0]
+    r = c.rng.random()
+    concept = cat = None
+    if r < 0.45:
+        concept = c.pick(L.CONCEPTS)
+        htext = c.f(c.pick(concept["head"]))
+    elif r < 0.6:
+        cat = c.fresh(c.dom["cats"])
+        htext = c.f(c.pick(CAT_HEADS), cat=cat)
     else:
-        htext = fill(c.rng.pick(["Keep every {obj} on track", "{Objs}, sorted", "Run your {obj2s} from one screen",
-                                 "The calm way to manage {objs}", "Your {objs}, without the paperwork",
-                                 "Spend less time on {obj2s}"]), c)
+        htext = c.f(c.pick(HERO_HEADS))
     h1 = S(htext, "h1")
-    kids = []
-    top = []
-    if c.want(0.07):
-        top.append(E("meta", items=[S(x, "caption").decor("R2") for x in c.rng.pick(T.META_DECOR)]))
-    if c.want(0.12):
-        top.append(E("badge", s=S(c.rng.pick(["● Now in beta", "Live", "● Available now", "✨ New", "Open"]), "badge").decor("R11")))
-    elif c.chance(0.06):
-        top.append(E("badge", s=S("Early access", "badge").keep(conf="judgement")))
-    eb = eyebrow_for(c, htext, h1, concept=concept[1] if concept else None, p_r1=0.35)
-    if eb is None and c.chance(0.1):
-        eb = S("New: " + lower_first(c.rng.pick(c.dom["features"])[0]), "eyebrow").keep()
+    kids, top = [], []
+    if c.want(0.06):
+        top.append(E("meta", items=[S(x, "caption").decor("R2") for x in L.meta_strip(c.rng)]))
+    if c.want(0.1):
+        top.append(E("badge", s=S(static_status(c), "badge").decor("R11")))
+    elif c.chance(0.05):
+        top.append(E("badge", s=S(c.pick(["Early access", "Now on Android", "New in 4." + str(c.rng.randrange(1, 9))]),
+                                  "badge").keep(conf="judgement")))
+    if cat is not None:
+        eb = S(cat, "eyebrow").keep("K1")  # a category that the heading also names (K1)
+    else:
+        eb = eyebrow(c, h1, htext, concept=concept, p_r1=0.35, genres=("Overview", "Get started", "Products"))
+    if eb is None and c.chance(0.08):
+        eb = S("New: " + lower_first(c.pick(c.dom["features"])[0]), "eyebrow").keep()
     if eb:
         kids.append(E("eyebrow", s=eb))
     kids.append(E("h", s=h1, level=1))
-    r = c.rng.random()
+    sub = None
     if concept and c.want(0.3):
-        kids.append(E("sub", s=S(c.rng.pick(concept[2]), "subtitle").echo(h1, "R3", conf="judgement")))
-    elif c.want(0.06):
-        kids.append(E("sub", s=S(c.rng.pick(["Scroll to explore.", "Scroll down to see more."]), "subtitle").narrate("R6", None, ct=True)))
+        sub = S(c.f(c.pick(concept["echo"])), "subtitle").echo(h1, "R3", conf="judgement")
+    elif c.want(0.05):
+        sub = S(scroll_line(c), "subtitle").narrate("R6", None, ct=True)
     elif concept and c.chance(0.07):
-        kids.append(E("sub", s=S(c.rng.pick(concept[2]) + " " + fact(c), "subtitle").keep(partial=True, conf="judgement")))
-    elif r < 0.85:
-        kids.append(E("sub", s=S(fact(c), "subtitle")))
-    head = E("head", *kids)
+        sub = S(c.f(c.pick(concept["echo"])) + " " + c.f(c.pick(concept["keep"])), "subtitle").keep(partial=True, conf="judgement")
+    elif concept and c.chance(0.75):
+        sub = S(c.f(c.pick(concept["keep"])), "subtitle")
+    elif c.chance(0.8):
+        if cat is None and concept is None and c.chance(0.5):
+            noun = c.x if c.x.pl in htext.lower() or c.x.sg in htext.lower() else c.y
+            t = c.pick(["{P} sync to every phone in your {group} within a minute.", "Every {s} keeps a full history of who changed what.",
+                        "The free plan covers up to {n} {pl}.", "{P} you delete stay in the bin for {n} days.",
+                        "{P} can carry photos, notes and a location.", "Share {pl} with your {group} by link; no account needed."])
+            sub = S(c.f(t, P=noun.Pl, pl=noun.pl, s=noun.sg), "subtitle")
+        else:
+            sub = S(product_fact(c), "subtitle")
+    if sub is not None:
+        kids.append(E("sub", s=sub))
     acts, _ = cta_buttons(c)
-    body = top + [head, acts]
+    body = top + [E("head", *kids), acts]
     if c.chance(0.4):
         body.append(notice(c))
     return E("section", *body, tone="hero")
 
 
+CARD_ECHO_STEM = ["{t}, made simple.", "{t} for everyone.", "All about {tl}.", "{t}, right when you need it.",
+                  "{t}, built in.", "Easy {tl}."]
+CARD_ECHO_ALT = ["Exactly what it sounds like.", "Does what it says.", "Just as you would expect.", "Simple, and it works.",
+                 "No surprises here.", "It is all in the name."]
+BULLETS = ["Unlimited {x}", "{fmt} export", "Shared with your {group}", "Works offline for {n} days", "Reminders by {via}",
+           "{n} years of history", "Photos on every {x1}", "Notes on every {x1}", "Works on iPhone and Android",
+           "A printable summary each {period}", "Read-only links for {who}", "Up to {n} {who} per {group}",
+           "History kept for {n} months", "{n} {x} a {period} on the free plan", "Comments on every {x1}"]
+FMT = ["CSV and PDF", "CSV", "PDF", "Excel and CSV", "PDF and print"]
+VIA = ["email or text", "email", "push or email", "text message"]
+
+
 def card_grid(c: Ctx, n: int, name="features"):
     feats = c.fresh_n(c.dom["features"], n)
     echo_at = c.rng.randrange(len(feats)) if c.want(0.3) else None
-    device = c.rng.wpick([(None, 55), ("pill", 15), ("sibling", 10), ("index", 12), ("emoji", 8)])
+    device = c.rng.wpick([(None, 46), ("pill", 14), ("sibling", 12), ("index", 12), ("emoji", 6), ("bullets", 16)])
     if device == "pill" and c.clean:
         device = None
-    pill = c.rng.pick(T.REPEATED_PILLS)
-    sib = c.fresh_n(T.SIBLING_PILLS, len(feats))
-    style = c.rng.pick(T.INDEX_STYLES)
+    pill_text = pill(c)
+    sib = c.fresh_n(L.SIBLING_PILLS, len(feats))
+    style = c.pick(T.INDEX_STYLES)
     emojis = c.rng.shuffled(["✨", "⚡", "🌱", "🔒", "📦", "🧭", "🔔", "📈"])
     cards, devs = [], []
     for i, (title, body) in enumerate(feats):
         kids = []
+        t = S(title, "h3")
         if i == echo_at:
-            ce = c.fresh(T.CARD_ECHO)
-            t = S(ce[0], "h3")
-            b = S(c.rng.pick(ce[1]), "body").echo(t, "R5", conf="clear")
+            if c.chance(0.3):
+                ce = c.pick(T.CARD_ECHO)
+                t = S(ce[0], "h3")
+                b = S(c.pick(ce[1]), "body").echo(t, "R5", conf="clear")
+            elif c.chance(0.5):
+                b = S(c.pick(CARD_ECHO_STEM).format(t=title, tl=lower_first(title)), "body").echo(t, "R5", conf="clear")
+            else:
+                b = S(c.pick(CARD_ECHO_ALT), "body").echo(t, "R5", conf="judgement")
         else:
-            t = S(title, "h3")
             b = S(body, "body")
         if device == "index":
             d = S(style.format(n=i + 1, nn=f"{i + 1:02d}"), "eyebrow").keep("K3", aside=["R12"])
             kids.append(E("eyebrow", s=d))
             devs.append(d)
         elif device == "pill":
-            d = S(pill, "badge").decor("R11")
+            d = S(pill_text, "badge").decor("R11")
             kids.append(E("badge", s=d))
             devs.append(d)
         elif device == "sibling" and i < len(sib):
@@ -251,246 +469,352 @@ def card_grid(c: Ctx, n: int, name="features"):
             t.add_aside("R11g")
         kids.append(E("h", s=t, level=3))
         kids.append(E("p", s=b))
+        if device == "bullets":
+            items = []
+            if c.want(0.25):
+                if c.chance(0.5):
+                    items.append(S(c.pick(["{t}, built in", "Full {tl}", "{t} included", "{t} as standard"]).format(
+                        t=title, tl=lower_first(title)), "list_item").echo(t, "R4", conf="clear"))
+                else:
+                    items.append(S(c.pick(["Exactly as the name says", "Just what you would expect", "All of the above, and more"]),
+                                   "list_item").echo(t, "R4", conf="judgement"))
+            for bt in c.rng.some(BULLETS, c.rng.pick([2, 3])):
+                items.append(S(c.f(bt, fmt=c.pick(FMT), via=c.pick(VIA), period=c.pick(["week", "month"])), "list_item"))
+            if c.want(0.12):
+                items.append(S(c.pick(["And everything else you need", "All in one place", "Everything, in one app",
+                                       "Plus much more besides"]), "list_item").echo(None, "R17", conf="judgement"))
+            kids.append(E("ul", items=items))
         cards.append(E("card", *kids))
     if device == "sibling" and len(sib) < len(feats):
-        # sibling pills must cover every card for the grid to stay uniform
         for cd in cards:
             cd.kids = [k for k in cd.kids if k.kind != "badge"]
+    if device == "bullets":
+        # restated bullets need distinct texts: drop duplicates across cards
+        seen = set()
+        for cd in cards:
+            for k in cd.kids:
+                if k.kind == "ul":
+                    k.p["items"] = [s for s in k["items"] if not (s.text in seen or seen.add(s.text))] or k["items"][:1]
     if len(devs) >= 3:
         c.r19.append(devs)
-    return E("grid", *cards, mappable=True, name=name), len(cards)
+    return E("grid", *cards, mappable=device != "bullets", name=name), len(cards)
+
+
+def section_heading(c: Ctx, genres_ok: tuple, concept_ok=True, default_heads=H2_HEADS, cats_ok=False):
+    """A marketing h2 and its eyebrow: a concept, a genre word inside a heading, a bare genre word (eyebrow of the
+    same kind: ECHO; of another kind: DECOR), a category heading (K1 eyebrow sharing a stem) or a plain heading."""
+    r = c.rng.random()
+    concept = genre = None
+    if concept_ok and r < 0.3:
+        concept = c.fresh(L.CONCEPTS)
+        htext = c.f(c.pick(concept["head"]))
+    elif r < 0.48:
+        genre = c.pick([g for g in genres_ok if g in L.GENRE_HEADING] or ["Features"])
+        htext = c.f(c.pick(L.GENRE_HEADING[genre]))
+    elif r < 0.6:
+        # the heading is itself a section-genre word (LABELLING.md K1, 2026-11-10)
+        grp = genre_group(c.pick(genres_ok)) or L.GENRE_GROUPS[0]
+        htext = c.pick(grp)
+        h2 = S(htext, "h2")
+        if htext in c.nav_items:
+            h2.keep("K11")
+        eb = None
+        if c.want(0.4):
+            same = [w for w in grp if w != htext and not shares_stem(w, htext)] or [w for w in grp if w != htext]
+            eb = S(c.pick(same), "eyebrow").echo(h2, "R1", conf="clear")
+        elif c.want(0.2):
+            other = [w for g in L.GENRE_GROUPS if g is not grp for w in g]
+            eb = S(c.pick(other), "eyebrow").decor("R2")
+        elif c.chance(0.25):
+            eb = S(c.product, "eyebrow").keep("K1")
+        return h2, eb, None
+    elif r < 0.7 and cats_ok and c.dom["cats"]:
+        cat = c.fresh(c.dom["cats"])
+        htext = c.f(c.pick(CAT_HEADS), cat=cat)
+        h2 = S(htext, "h2")
+        return h2, S(cat, "eyebrow").keep("K1") if c.chance(0.7) else None, None
+    else:
+        htext = c.f(c.pick(default_heads))
+    h2 = S(htext, "h2")
+    if htext in c.nav_items:
+        h2.keep("K11")
+    eb = eyebrow(c, h2, htext, concept=concept, genre=genre, p_r1=0.4, genres=genres_ok, cats_ok=cats_ok)
+    return h2, eb, concept
 
 
 def m_features(c: Ctx):
-    concept = genre = None
-    r = c.rng.random()
-    if r < 0.35:
-        concept = c.fresh(T.HEAD_CONCEPTS)
-        htext = concept[0]
-    elif r < 0.55:
-        g = c.rng.pick([x for x in T.GENRE_IN_HEADING if x[0] in ("Features", "Capabilities", "Overview", "Why us", "Services", "Products")])
-        genre, htext = g[0], c.rng.pick(g[1])
-    else:
-        htext = fill(c.rng.pick(H2_TEMPLATES), c)
-    h2 = S(htext, "h2")
-    kids = []
-    eb = eyebrow_for(c, htext, h2, concept=concept[1] if concept else None, genre=genre, p_r1=0.4,
-                     genres=("Features", "Capabilities", "Why us", "Overview"))
-    if eb:
-        kids.append(E("eyebrow", s=eb))
+    h2, eb, concept = section_heading(c, ("Features", "Capabilities", "Why us", "Overview"), cats_ok=True)
+    kids = [E("eyebrow", s=eb)] if eb else []
     kids.append(E("h", s=h2, level=2))
     n = c.rng.wpick([(2, 1), (3, 5), (4, 3), (5, 1), (6, 2)])
-    sub_kind = c.rng.random()
     grid, n = card_grid(c, n)
-    if c.want(0.12):
+    if c.want(0.1):
         kids.append(E("sub", s=S(count_line(c, n), "subtitle").narrate("R16", None)))
     elif concept and c.want(0.3):
-        kids.append(E("sub", s=S(c.rng.pick(concept[2]), "subtitle").echo(h2, "R3", conf="judgement")))
-    elif sub_kind < 0.55:
-        kids.append(E("sub", s=S(fact(c), "subtitle")))
+        kids.append(E("sub", s=S(c.f(c.pick(concept["echo"])), "subtitle").echo(h2, "R3", conf="judgement")))
+    elif concept and c.chance(0.6):
+        kids.append(E("sub", s=S(c.f(c.pick(concept["keep"])), "subtitle")))
+    elif c.chance(0.5):
+        kids.append(E("sub", s=S(product_fact(c), "subtitle")))
     out = [E("head", *kids), grid]
-    if c.want(0.3):
-        if c.chance(0.5):
-            line = S(c.rng.pick(T.CLOSING_SPREAD).format(product=c.product), "body").echo(None, "R17", conf="judgement")
+    if c.want(0.25):
+        if concept is None or c.chance(0.5):
+            line = S(closing_spread(c), "body").echo(None, "R17", conf="judgement")
         else:
-            line = S(c.rng.pick(T.CLOSING_HEAD).format(h=lower_first(htext)), "body").echo(h2, "R17")
+            line = S(closing_head(c, h2.text), "body").echo(h2, "R17")
         out.append(E("p", s=line))
     elif c.chance(0.15):
-        out.append(E("p", s=S(fact(c), "body")))
+        out.append(E("p", s=S(product_fact(c), "body")))
     return E("section", *out)
 
 
+def m_spotlight(c: Ctx):
+    """A section on one feature, shown as a single card. The card title may repeat the section heading (R9); an h4
+    inside may repeat the card title (R9); either may instead share its words and add a fact (KEEP)."""
+    title, body = c.fresh(c.dom["features"])
+    h2 = S(title, "h2")
+    head = [E("h", s=h2, level=2)]
+    if c.chance(0.4):
+        head.append(E("sub", s=S(product_fact(c), "subtitle")))
+    ck = []
+    r = c.rng.random()
+    if c.want(0.4):
+        h3 = S(title if c.chance(0.7) else c.pick([f"About {lower_first(title)}", f"{title}, explained", f"Introducing {lower_first(title)}"]),
+               "h3").echo(h2, "R9", conf="clear")
+        if h3.text != title:
+            h3.conf = "judgement"
+    elif r < 0.5:
+        h3 = S(c.f(c.pick([f"{title} on the {{plan}} plan", f"{title} in {{place}}", f"{title}: new in 4.{{d}}",
+                           f"{title} for {{group}}s"])), "h3")
+    else:
+        h3 = S(c.f(c.pick(["How {who} use it", "In practice", "Why {who} asked for it", "Since {date}"])), "h3")
+    ck.append(E("h", s=h3, level=3))
+    ck.append(E("p", s=S(body, "body")))
+    if c.chance(0.45):
+        if c.want(0.3):
+            h4 = S(h3.text if c.chance(0.6) else f"More on {lower_first(h3.text)}", "h4").echo(h3, "R9", conf="clear")
+            if h4.text != h3.text:
+                h4.conf = "judgement"
+        else:
+            h4 = S(c.f(c.pick(["{n} {who} use it weekly", "Included from {date}", f"{h3.text.split(':')[0]} limits", "Who can see it"])), "h4")
+        ck.append(E("h", s=h4, level=4))
+        ck.append(E("ul", items=[S(c.f(b, fmt=c.pick(FMT), via=c.pick(VIA), period=c.pick(["week", "month"])), "list_item")
+                                 for b in dict.fromkeys(c.rng.some(BULLETS, c.pick([2, 3])))]))
+    if c.chance(0.4):
+        ck.append(E("link", s=S(c.pick([f"See {lower_first(title)}", "Read the guide", f"Try it on a {c.x.sg}"]), "link"), arrow=c.chance(0.5)))
+    return E("section", E("head", *head), E("card", *ck, shadcn=False))
+
+
 STEP_POOL = [
-    ("Create your account", "It takes a minute with an email address and a password."),
-    ("Add your first {obj}", "Most people start with the one they check most often."),
-    ("Invite the people you work with", "They get an email link that stays valid for seven days."),
-    ("Check your {obj2s} anywhere", "The app runs on iPhone, Android and the web."),
-    ("Import what you already have", "Spreadsheets with a header row come in with their columns matched."),
-    ("Set your reminders", "Choose the day and time; reminders follow your time zone."),
+    ("Create your account", ["It takes a minute with an email address.", "Sign up with an email address or a Google account."]),
+    ("Add your first {x1}", ["Most people start with the one they check most often.", "Give it a name; everything else can wait."]),
+    ("Invite your {group}", ["They get a link that works for {n} days.", "Each person gets their own login."]),
+    ("Bring in your {y}", ["Spreadsheets with a header row come in with their columns matched.", "Paste from a spreadsheet or upload a CSV."]),
+    ("Set your reminders", ["Pick the day and time; reminders follow your time zone.", "Choose email, text or both."]),
+    ("Add {a_y1}", ["From your phone, even with no signal.", "It takes about {n} taps."]),
+    ("Share your {x}", ["Each person sees only what you choose.", "Read-only links need no account."]),
+    ("Print a summary", ["One A4 page per {x1}, ready for the noticeboard.", "Or save it as a PDF."]),
 ]
 
 
 def m_steps(c: Ctx):
     r = c.rng.random()
-    genre = None
-    if r < 0.3:
-        genre, htext = "How it works", c.rng.pick(dict(T.GENRE_IN_HEADING)["How it works"])
+    if r < 0.25:
+        genre = "How it works"
+        htext = c.f(c.pick(L.GENRE_HEADING[genre]))
+        h2 = S(htext, "h2")
+        eb = S(genre, "eyebrow").echo(h2, "R1") if c.want(0.5) else None
+    elif r < 0.4:
+        h2, eb, _ = section_heading(c, ("How it works", "Get started"), concept_ok=False)
+        htext = h2.text
     else:
-        htext = fill(c.rng.pick(["From sign-up to your first {obj}", "Getting going takes an afternoon",
-                                 "Set up {product} in an afternoon", "Your first week with {product}"]), c)
-    h2 = S(htext, "h2")
-    kids = []
-    eb = eyebrow_for(c, htext, h2, genre=genre, allow_k1=False, p_r1=0.5, p_r2=0.25, genres=("How it works", "Get started"))
-    if eb:
-        kids.append(E("eyebrow", s=eb))
+        htext = c.f(c.pick(["From sign-up to your first {x1}", "Getting going takes an afternoon", "Set up {p} in an afternoon",
+                            "Your first week with {p}", "Three steps to tidier {x}", "From spreadsheet to {p}"]))
+        h2 = S(htext, "h2")
+        eb = eyebrow(c, h2, htext, allow_k1=False, p_r1=0, p_r2=0.25, genres=("How it works", "Get started"))
+    kids = [E("eyebrow", s=eb)] if eb else []
     kids.append(E("h", s=h2, level=2))
-    n = c.rng.pick([3, 3, 4])
+    n = c.pick([3, 3, 4, 5])
     picks = c.rng.some(STEP_POOL, n)
     if c.want(0.2):
         kids.append(E("sub", s=S(count_line(c, n), "subtitle").narrate("R16", None)))
     elif c.chance(0.4):
-        kids.append(E("sub", s=S(fact(c), "subtitle")))
-    style = c.rng.pick(T.STEP_STYLES)
+        kids.append(E("sub", s=S(c.f(c.pick(["Most {groups} are set up within a day.", "You can stop after step 2 and come back later.",
+                                               "Nothing is shared until you invite someone.", "Each step can be skipped."])), "subtitle")))
+    style = c.pick(T.STEP_STYLES)
     numbered = c.chance(0.85)
     items = []
-    for i, (t, b) in enumerate(picks):
-        num = None
-        if numbered:
-            num = S(style.format(n=i + 1, total=n), "caption").keep("K3")
-        items.append((num, S(fill(t, c), "h3"), S(fill(b, c), "body") if c.chance(0.8) else None))
+    for i, (t, bodies) in enumerate(picks):
+        num = S(style.format(n=i + 1, total=n), "caption").keep("K3") if numbered else None
+        items.append((num, S(c.f(t), "h3"), S(c.f(c.pick(bodies)), "body") if c.chance(0.8) else None))
     out = [E("head", *kids), E("steps", items=items)]
     if c.want(0.25):
-        out.append(E("p", s=S(c.rng.pick(["That’s all it takes to get started.", "And that’s it: you’re set up.",
-                                         "Three simple steps, and you’re ready."]) if n == 3 else
-                                "That’s all it takes to get started.", "body").echo(None, "R17", conf="judgement")))
+        out.append(E("p", s=S(c.pick(L.CLOSE_STEPS).format(N=cap(L.NUMBER_WORDS[n]), x1=c.x.sg), "body")
+                     .echo(None, "R17", conf="judgement")))
     return E("section", *out)
 
 
-TIERS = [("Free", "£0"), ("Starter", "£6"), ("Plus", "£12"), ("Pro", "£19"), ("Team", "£29"), ("Studio", "£49")]
-TIER_BLURBS = ["For one person trying it out.", "For a small team that meets weekly.", "For busy teams with several sites.",
-               "For organisations that need an audit trail.", "For clubs and community groups."]
-TIER_POINTS = ["Up to 4 {objs}", "Unlimited {objs}", "CSV and PDF export", "Priority email support", "5 team members",
-               "Unlimited team members", "Two-step sign-in for everyone", "Daily backups kept for 90 days"]
+TIER_BLURBS = ["For one {who1} trying it out.", "For {who} with up to {n} {x}.", "For {groups} that share {x}.",
+               "For busy {groups} with several sites.", "For {a_group} of up to {n} people.", "For {who} who log {y} every day.",
+               "For larger {groups} that need an audit trail of every {x1}."]
+TIER_POINTS = ["Up to {n} {x}", "Unlimited {x}", "{fmt} export", "{support} support", "{n} members",
+               "Unlimited members", "Two-step sign-in {scope}", "Backups kept for {n} days", "{n} GB of photos",
+               "Unlimited {y}", "A shared calendar of {y}", "{n} {role}s", "Reports by {period}", "API access",
+               "Custom fields on {x}", "{n} sites"]
+PERIODS = ["per month", "/month", "a month, billed yearly", "per user per month", "per {who1} per month", "a year", "/mo"]
 
 
 def m_pricing(c: Ctx):
     r = c.rng.random()
-    concept = genre = None
-    if r < 0.3:
-        concept = T.HEAD_CONCEPTS[5]
-        htext = concept[0]
-    elif r < 0.55:
-        genre, htext = "Pricing", c.rng.pick(dict(T.GENRE_IN_HEADING)["Pricing"])
+    concept = None
+    if r < 0.25:
+        concept = L.CONCEPTS[4]
+        htext = c.f(c.pick(concept["head"]))
+        h2 = S(htext, "h2")
+        eb = eyebrow(c, h2, htext, concept=concept, p_r1=0.45, allow_k1=False)
     else:
-        htext = fill(c.rng.pick(["Plans for every size of {obj} list", "Pay for what you use", "One price per month, no extras"]), c)
-    h2 = S(htext, "h2")
-    kids = []
-    eb = eyebrow_for(c, htext, h2, concept=concept[1] if concept else None, genre=genre, allow_k1=False, p_r1=0.45, p_r2=0.3,
-                     genres=("Pricing",))
-    if eb:
-        kids.append(E("eyebrow", s=eb))
+        h2, eb, concept = section_heading(c, ("Pricing",), concept_ok=False,
+                                          default_heads=["Plans for every size of {group}", "Pay for what you use",
+                                                         "One price per month, no extras", "What it costs"])
+    kids = [E("eyebrow", s=eb)] if eb else []
     kids.append(E("h", s=h2, level=2))
-    n = c.rng.pick([2, 3, 3, 4])
-    if c.want(0.2):
-        kids.append(E("sub", s=S(c.rng.pick(["Below are our {n} plans.", "Choose from {n} plans below.",
-                                             "Here are our {n} plans, side by side."]).format(n=T.NUMBER_WORDS[n]),
-                                 "subtitle").narrate("R16", None)))
+    n = c.pick([2, 3, 3, 4])
+    if c.want(0.18):
+        kids.append(E("sub", s=S(count_line(c, n), "subtitle").narrate("R16", None)))
     elif concept and c.want(0.3):
-        kids.append(E("sub", s=S(c.rng.pick(concept[2]), "subtitle").echo(h2, "R3", conf="judgement")))
+        kids.append(E("sub", s=S(c.f(c.pick(concept["echo"])), "subtitle").echo(h2, "R3", conf="judgement")))
     elif c.chance(0.5):
-        kids.append(E("sub", s=S(c.rng.pick(["Prices include VAT.", "Every plan includes unlimited storage.",
-                                             "Switch plans whenever you like; we pro-rate the difference."]), "subtitle")))
-    start = c.rng.randrange(0, len(TIERS) - n + 1)
-    tiers = TIERS[start:start + n]
-    period = c.rng.pick(["per month", "/month", "a month, billed yearly", "per user per month"])
+        kids.append(E("sub", s=S(c.f(c.pick(L.CONCEPTS[4]["keep"])), "subtitle")))
+    names = c.rng.some(L.PLANS, n)
+    period = c.f(c.pick(PERIODS))
     popular = c.rng.randrange(n) if c.chance(0.5) else None
-    cards = []
+    pop_text = c.f(c.pick(L.POPULAR))
     blurbs = c.rng.some(TIER_BLURBS, n)
-    for i, (name, price) in enumerate(tiers):
+    price_now = c.rng.randrange(3, 12)
+    cards = []
+    for i, name in enumerate(names):
         k = []
         if i == popular:
-            k.append(E("badge", s=S("Most popular", "badge").keep("K2")))
-        k.append(E("h", s=S(name, "h3"), level=3))
-        k.append(E("sub", s=S(blurbs[i % len(blurbs)], "subtitle"), card=True))
+            k.append(E("badge", s=S(pop_text, "badge").keep("K2")))
+        tier_h = S(name, "h3")
+        k.append(E("h", s=tier_h, level=3))
+        k.append(E("sub", s=S(c.f(blurbs[i % len(blurbs)]), "subtitle"), card=True))
+        price_now += c.rng.randrange(4, 15) if i else 0
+        price = "£0" if (i == 0 and name == "Free") else f"£{price_now}"
         k.append(E("price", amount=S(price, "stat"), period=S(period, "caption").keep("K13")))
-        pts = c.rng.some(TIER_POINTS, 2)
-        k.append(E("ul", items=[S(fill(p, c), "list_item") for p in pts], mark="check"))
+        pts = [c.f(p, fmt=c.pick(FMT), support=c.pick(["Priority email", "Phone", "Email", "Same-day", "Weekend"]),
+                   scope=c.pick(["for everyone", "for admins", "on every account"]), period=c.pick(["week", "month", "season"]))
+               for p in c.rng.some(TIER_POINTS, c.pick([2, 3]))]
+        items = [S(p, "list_item") for p in dict.fromkeys(pts)]
+        if c.want(0.1):
+            items.insert(0, S(c.pick([f"The {name} plan", f"{name} features", f"Everything {name} offers"]), "list_item").echo(tier_h, "R4"))
+        k.append(E("ul", items=items, mark="check"))
         k.append(E("button", s=S(f"Choose {name}", "button"), primary=i == popular))
         cards.append(E("card", *k))
     out = [E("head", *kids), E("grid", *cards)]
     if c.notice is not None and c.want(0.5):
-        out.append(E("note", s=S(c.rng.pick(c.notice_alts), "caption").echo(c.notice, "R14")))
+        out.append(repeat_notice(c))
     elif c.notice is None and c.chance(0.4):
         out.append(notice(c))
     return E("section", *out)
 
 
+FAQ_POOL_MORE = [
+    ("How many {x} can I add?", "As many as you like on paid plans; the free plan stops at {n}."),
+    ("Can {who} outside my {group} see my {x}?", "Only if you send them a read-only link; links expire after {n} days."),
+    ("Is there a discount for {groups}?", "Yes: {n}% off for {groups} with more than {m} members."),
+    ("Can I print {a_x1}?", "Yes; each {x1} prints on one A4 page with its last {n} {y}."),
+    ("How do reminders work?", "A reminder goes out {n} days before each {y1}, by email or push, never both."),
+    ("What if I lose signal?", "Keep going; {y} are saved on the phone and sync within a minute of reconnecting."),
+    ("Who can edit {a_x1}?", "Owners and {role}s; everyone else sees it read-only."),
+    ("Can I move from a spreadsheet?", "Yes; paste or upload a CSV and we match up to {m} columns."),
+    ("Is my card stored?", "No; payments go through Stripe and we only keep the last four digits."),
+]
 FAQ_POOL = [
-    ("Can I cancel?", "Yes. Cancel from the billing page and you keep access until the end of the month."),
-    ("Is there a free trial?", "The free plan has no time limit; paid plans start with 14 days free."),
+    ("Can I cancel?", "Yes. Cancel from the billing page and keep access until the end of the month."),
+    ("Can I import my {x}?", "Yes, from CSV or from {n} other apps; we keep your column names."),
+    ("Is there a free plan?", "Yes, for up to {n} {x}, with no time limit."),
     ("Where is my data stored?", "In data centres in London and Dublin."),
-    ("Can I export everything?", "Yes, as CSV or PDF, at any time, including after you cancel."),
-    ("Do you offer discounts for charities?", "Registered charities get 50% off any paid plan."),
+    ("Does it work offline?", "Yes; changes you make offline sync when you reconnect."),
+    ("Can my {group} share one account?", "Each person gets their own login; the {plan} plan has no seat limit."),
+    ("Do you offer discounts for charities?", "Registered charities get {n}% off any paid plan."),
     ("Does it work on Android?", "Yes, on Android 11 and later, and in any modern browser."),
-    ("Can several people share an account?", "Each person gets their own login; the Team plan has no seat limit."),
+    ("Can I export everything?", "Yes, as CSV or PDF, at any time, including after you cancel."),
+    ("What happens to deleted {x}?", "They stay in the bin for {n} days, then they are gone for good."),
 ]
 
 
 def m_faq(c: Ctx):
-    r = c.rng.random()
-    concept = genre = None
-    if r < 0.4:
-        concept = T.HEAD_CONCEPTS[13]
-        htext = concept[0]
-    elif r < 0.6:
-        genre, htext = "FAQ", c.rng.pick(dict(T.GENRE_IN_HEADING)["FAQ"])
-    else:
-        htext = c.rng.pick(["Before you sign up", "Things people ask us", "The small print, in plain English"])
-    h2 = S(htext, "h2")
-    kids = []
-    eb = eyebrow_for(c, htext, h2, concept=concept[1] if concept else None, genre=genre, allow_k1=False, p_r1=0.45, p_r2=0.3,
-                     genres=("FAQ",))
-    if eb:
-        kids.append(E("eyebrow", s=eb))
+    h2, eb, concept = section_heading(c, ("FAQ",), concept_ok=False,
+                                      default_heads=["Before you sign up", "Things people ask us", "The small print, in plain English",
+                                                     "What {who} ask us"])
+    kids = [E("eyebrow", s=eb)] if eb else []
     kids.append(E("h", s=h2, level=2))
-    if concept and c.want(0.3):
-        kids.append(E("sub", s=S(c.rng.pick(concept[2]), "subtitle").echo(h2, "R3", conf="judgement")))
-    items = [(S(q, "button"), S(a, "body")) for q, a in c.rng.some(FAQ_POOL, c.rng.pick([3, 4, 5]))]
+    if c.chance(0.3):
+        kids.append(E("sub", s=S(c.f(c.pick(["Can’t find an answer? Email us; we reply within {n} hours.",
+                                               "Answers are checked every quarter.", "More in the help centre, updated weekly."])), "subtitle")))
+    items = [(S(c.f(q), "button"), S(c.f(a, m=c.pick([12, 20, 25, 40, 50])), "body"))
+             for q, a in c.rng.some(FAQ_POOL + FAQ_POOL_MORE, c.pick([3, 4, 5]))]
     out = [E("head", *kids), E("faq", items=items)]
     if c.want(0.2):
-        out.append(E("p", s=S(c.rng.pick(T.CLOSING_FAQ), "body").echo(None, "R17", conf="judgement")))
+        out.append(E("p", s=S(c.f(c.pick(L.CLOSE_FAQ)), "body").echo(None, "R17", conf="judgement")))
     return E("section", *out)
 
 
-QUOTES = ["We moved every {obj} over in an afternoon and haven’t looked back.",
-          "The reminders alone save me an hour a week.", "Our volunteers picked it up without any training.",
-          "It replaced three spreadsheets and a whiteboard.", "Support answered on a Sunday, which I did not expect."]
-PEOPLE = ["Priya Shah, operations lead", "Tom Evans, owner", "Mei Lin, club secretary", "Rhys Jones, volunteer coordinator",
-          "Ana Costa, studio manager", "Kofi Mensah, head of finance"]
+QUOTES = ["We moved every {x1} over in an afternoon and haven’t looked back.", "The reminders alone save me an hour a week.",
+          "Our {group} picked it up without any training.", "It replaced three spreadsheets and a whiteboard.",
+          "Support answered on a Sunday, which I did not expect.", "I check our {x} from my phone now instead of the office computer.",
+          "{n} of us share it and nobody double-books any more.", "I finally know what is happening with every {x1}."]
 
 
 def m_quotes(c: Ctx):
-    concept = genre = None
-    if c.chance(0.4):
-        concept = T.HEAD_CONCEPTS[6]
-        htext = concept[0]
-    elif c.chance(0.4):
-        genre, htext = "Testimonials", c.rng.pick(dict(T.GENRE_IN_HEADING)["Testimonials"])
+    r = c.rng.random()
+    concept = None
+    if r < 0.35:
+        concept = L.CONCEPTS[5]
+        htext = c.f(c.pick(concept["head"]))
+        h2 = S(htext, "h2")
+        eb = eyebrow(c, h2, htext, concept=concept, p_r1=0.45, allow_k1=False)
     else:
-        htext = fill(c.rng.pick(["What {product} users tell us", "In their words", "From people who use it daily"]), c)
-    h2 = S(htext, "h2")
-    kids = []
-    eb = eyebrow_for(c, htext, h2, concept=concept[1] if concept else None, genre=genre, allow_k1=False, p_r1=0.45, p_r2=0.3,
-                     genres=("Testimonials",))
-    if eb:
-        kids.append(E("eyebrow", s=eb))
+        h2, eb, concept = section_heading(c, ("Testimonials",), concept_ok=False,
+                                          default_heads=["What {p} users tell us", "In their words", "From people who use it daily"])
+    kids = [E("eyebrow", s=eb)] if eb else []
     kids.append(E("h", s=h2, level=2))
     if concept and c.want(0.35):
-        kids.append(E("sub", s=S(c.rng.pick(concept[2]), "subtitle").echo(h2, "R3", conf="judgement")))
-    n = c.rng.pick([2, 3])
-    qs = [E("quote", s=S(fill(q, c), "body"), who=S(p, "caption")) for q, p in zip(c.rng.some(QUOTES, n), c.rng.some(PEOPLE, n))]
+        kids.append(E("sub", s=S(c.f(c.pick(concept["echo"])), "subtitle").echo(h2, "R3", conf="judgement")))
+    elif concept and c.chance(0.5):
+        kids.append(E("sub", s=S(c.f(c.pick(concept["keep"])), "subtitle")))
+    n = c.pick([2, 3])
+    qs = []
+    for q in c.rng.some(QUOTES, n):
+        who = f"{L.person(c.rng)}, {c.pick([c.who[0], c.role, c.group + ' secretary', 'owner', 'volunteer'])}"
+        qs.append(E("quote", s=S(c.f(q), "body"), who=S(who, "caption")))
     out = [E("head", *kids), E("grid", *qs)]
     if c.want(0.2):
-        out.append(E("p", s=S(c.rng.pick(T.CLOSING_HEAD).format(h=lower_first(htext)), "body").echo(h2, "R17")))
+        if concept is not None:
+            out.append(E("p", s=S(closing_head(c, h2.text), "body").echo(h2, "R17")))
+        else:
+            out.append(E("p", s=S(closing_spread(c), "body").echo(None, "R17", conf="judgement")))
     return E("section", *out)
 
 
 def m_cta(c: Ctx):
-    htext = fill(c.rng.pick(["Ready when you are", "See it for yourself", "Your {objs} will thank you",
-                             "Give it a week", "Try it on your next {obj}"]), c)
+    htext = c.f(c.pick(["Ready when you are", "See it for yourself", "Your {x} will thank you", "Give it a week",
+                        "Try it on your next {x1}", "Bring your {group} along"]))
     h2 = S(htext, "h2")
     kids = [E("h", s=h2, level=2)]
     if c.chance(0.6):
-        kids.append(E("sub", s=S(fact(c), "subtitle")))
+        kids.append(E("sub", s=S(product_fact(c), "subtitle")))
     out = [E("head", *kids)]
-    if c.cta_button is not None and c.want(0.45):
-        b = S(c.cta_button.text, "button").echo(c.cta_button, "R14")
-        out.append(E("actions", E("button", s=b)))
+    if c.cta is not None and c.want(0.45):
+        tag = "link" if c.chance(0.4) else "button"
+        b = S(c.cta.text, tag).echo(c.cta, "R14")
+        out.append(E("actions", E(tag, s=b)))
     else:
         rest = [x for x in c.dom["cta"] + T.GENERIC_CTA if x not in c.used]
         out.append(E("actions", E("button", s=S(c.fresh(rest), "button"))))
     if c.notice is not None and c.want(0.45):
-        out.append(E("note", s=S(c.rng.pick(c.notice_alts), "caption").echo(c.notice, "R14")))
+        out.append(repeat_notice(c))
     elif c.notice is None and c.chance(0.35):
         out.append(notice(c))
     return E("section", *out, tone="cta")
@@ -498,108 +822,123 @@ def m_cta(c: Ctx):
 
 def m_footer(c: Ctx, nav_items):
     cols = []
-    for head, links in c.rng.some(T.FOOTER_COLS, c.rng.pick([2, 3, 4])):
+    for head, links in c.rng.some(T.FOOTER_COLS, c.pick([2, 3, 4])):
         ss = []
-        for x in links[: c.rng.pick([2, 3, 4])]:
+        for x in links[: c.pick([2, 3, 4])]:
             s = S(x, "link")
             if x in nav_items:
                 s.keep("K5")
             ss.append(s)
         cols.append((S(head, "h4"), ss))
-    legal = S(c.rng.pick(T.LEGAL).format(product=c.product), "caption")
+    if c.cta is not None and cols:
+        if c.want(0.35):
+            cols[0][1].append(S(c.cta.text, "link").echo(c.cta, "R14"))
+        elif c.chance(0.2):
+            cols[0][1].append(S(c.pick(c.dom["cta"][1:]), "link"))
+    legal = S(c.f(c.pick(T.LEGAL), product=c.product), "caption")
     out = [E("footer", cols=cols, legal=legal)]
     if c.fw != "swift" and c.want(0.1):
-        out.append(E("status", s=S(c.rng.pick(["All systems normal", "All systems operational", "Online"]), "body").decor("R11")))
+        out.append(E("status", s=S(static_status(c), "body").decor("R11")))
     if c.want(0.06):
-        out.append(E("meta", items=[S(x, "caption").decor("R2") for x in c.rng.pick(T.META_DECOR)]))
+        out.append(E("meta", items=[S(x, "caption").decor("R2") for x in L.meta_strip(c.rng)]))
     return out
+
+
+NAV_EXTRA = ["How it works", "Products", "Services", "Our team", "Contact", "FAQ", "Overview", "Reviews", "Plans",
+             "Get started", "What it does", "Why us", "Testimonials", "Our story"]
 
 
 def marketing(c: Ctx) -> Page:
     rng = c.rng
     swift = c.fw == "swift"
-    pool = ["features", "steps", "pricing", "faq", "quotes", "cta"]
+    pool = ["features", "steps", "pricing", "faq", "quotes", "cta", "spotlight"]
     if swift:
-        pool = ["features", "steps", "cta"]
+        pool = ["features", "steps", "cta", "spotlight"]
     n = rng.wpick([(1, 40), (2, 28), (3, 22), (4, 10)])
     body = []
     nav_items = []
     if n == 1:
-        kinds = [rng.pick(["hero"] * 3 + pool)]
+        kinds = [c.pick(["hero"] * 3 + pool)]
     else:
         kinds = ["hero"] + rng.some([p for p in pool if p != "cta"], n - 1)
         if n >= 3 and rng.chance(0.5):
             kinds[-1] = "cta"
     if n >= 2 and not swift and rng.chance(0.4):
-        nav_items = rng.some(T.NAV_ITEMS, rng.pick([3, 4, 5]))
+        nav_items = rng.some(T.NAV_ITEMS + NAV_EXTRA, c.pick([3, 4, 5]))
         body.append(E("nav", items=[S(c.product, "link")] + [S(x, "nav") for x in nav_items]))
         c.used.update(nav_items)
+        c.nav_items = set(nav_items)
     for k in kinds:
         body.append({"hero": m_hero, "features": m_features, "steps": m_steps, "pricing": m_pricing, "faq": m_faq,
-                     "quotes": m_quotes, "cta": m_cta}[k](c))
+                     "quotes": m_quotes, "cta": m_cta, "spotlight": m_spotlight}[k](c))
     if n >= 2 and not swift and rng.chance(0.35):
         body.extend(m_footer(c, nav_items))
-    # one eyebrow device on most sections (screen aside R19)
     ebs = [e["s"] for top in body for e in top.walk() if e.kind == "eyebrow"]
     if len(ebs) >= 3 and len(ebs) >= len(kinds) - 1:
         c.r19.append(ebs)
-    name = {1: kinds[0].capitalize() + "Section"}.get(n, "LandingPage")
+    name = {1: kinds[0].capitalize() + "Section"}.get(n, c.pick(["LandingPage", "HomePage", "Home", "Index"]))
     if kinds[0] == "hero" and n == 1:
-        name = "Hero"
+        name = c.pick(["Hero", "HeroBanner", "Intro"])
     return Page(name, "marketing", body, product=c.product)
 
 
 # ---------------------------------------------------------------------------------------------------------------
-# app pages
+# tables, stats, charts and alerts (shared by app pages and dashboards)
+
+EXTRA_COLS = {
+    "Added": lambda c: L.date(c.rng),
+    "Owner": lambda c: L.person(c.rng),
+    "Updated": lambda c: c.pick(["2 hours ago", "Yesterday", "3 days ago", "Just now", "Last week", f"{c.rng.randrange(2, 50)} min ago"]),
+    "Ref": lambda c: f"#{c.rng.randrange(100, 9999)}",
+    "Location": lambda c: c.pick(L.PLACES),
+    "Notes": lambda c: c.pick(["Check again next week", "Needs a photo", "Waiting on a reply", "None", "Moved from the old list",
+                               "Ask " + c.pick(L.FIRST)]),
+}
 
 
-def page_header(c: Ctx, htext: str, synonyms, noun: str, level=1, allow_r16=True):
-    """Eyebrow, heading and subtitle for an app page."""
-    h = S(htext, "h1" if level == 1 else f"h{level}")
-    kids = []
-    eb = None
-    if c.want(0.22) and synonyms:
-        eb = S(c.rng.pick(synonyms), "eyebrow").echo(h, "R1", conf="judgement")
-    elif c.chance(0.15):
-        eb = S(c.rng.pick([c.product, c.fresh(c.dom["cats"])]), "eyebrow").keep("K1")
-        if shares_stem(eb.text, htext):
-            eb = None
-    if eb:
-        kids.append(E("eyebrow", s=eb))
-    kids.append(E("h", s=h, level=level))
-    sub = None
-    r = c.rng.random()
-    if c.want(0.28):
-        sub = S(c.rng.pick(T.SUB_ECHO).format(n=noun), "subtitle").echo(h, "R3")
-    elif allow_r16 and c.want(0.1):
-        sub = S(c.rng.pick(T.LAYOUT_PLAIN).format(obj=c.obj, objs=c.objs), "subtitle").narrate("R16", None)
-    elif c.chance(0.06):
-        sub = S(c.rng.pick(T.SUB_PARTIAL).format(n=noun), "subtitle").keep(partial=True)
-    elif r < 0.6:
-        sub = S(fact(c), "subtitle")
-    if sub is not None:
-        kids.append(E("sub", s=sub))
-    # a third copy of the same name: a stack (equiv)
-    if eb is not None and eb.cls == "ECHO" and sub is not None and sub.cls == "ECHO":
-        stack(h, [eb, sub], ["R1", "R3"], conf="judgement")
-    return E("head", *kids), h, sub
+def fresh_value(c: Ctx, v: str) -> str:
+    """The same kind of value with other figures: amounts, counts, dates and times."""
+    if re.fullmatch(r"[£$€]?[\d,]+(\.\d+)?( kg| km| m| g| ml| L|%| min| h)?", v):
+        return jitter(c.rng, v)
+    if re.fullmatch(r"\d{1,2}:\d{2}", v):
+        return L.clock(c.rng)
+    m = re.fullmatch(r"(\d{1,2}) ([A-Z][a-z]+)", v)
+    if m and m.group(2) in L.MONTHS:
+        return f"{c.rng.randrange(1, 29)} {m.group(2)}"
+    return v
 
 
-def data_table(c: Ctx, n_rows=None):
+def data_table(c: Ctx, n_rows=None, n_cols=None):
     cols, pools = c.dom["table"]
-    n_rows = min(n_rows or c.rng.pick([2, 3, 4, 5]), len(pools[0]))
-    headers = [S(x, "label") for x in cols]
+    idx = list(range(len(cols)))
+    k = n_cols or c.rng.wpick([(2, 2), (3, 4), (4, 5), (5, 3), (6, 2), (7, 1)])
+    keep = [0] + sorted(c.rng.some(idx[1:], min(k - 1, len(idx) - 1)))
+    extras = c.rng.some(list(EXTRA_COLS), max(0, k - len(keep)))
+    headers_t = [cols[j] for j in keep] + extras
+    n_rows = min(n_rows or c.pick([2, 3, 4, 5, 6]), len(pools[0]))
+    headers = [S(x, "label") for x in headers_t]
     rows = []
-    seen = [set() for _ in cols]
-    status_col = len(cols) - 1 if cols[-1] == "Status" and c.chance(0.7) else None
+    seen = [set() for _ in headers_t]
+    status_j = headers_t.index("Status") if "Status" in headers_t and c.chance(0.7) else None
     keys = c.rng.some(pools[0], n_rows)
     for r in range(n_rows):
         row = []
-        for j, pool in enumerate(pools):
-            v = keys[r] if j == 0 else c.rng.pick(pool)
-            if j == status_col:
-                s = S(v, "badge").keep("K2")
-                row.append(E("badge", s=s, bound=c.prop("status") if c.fw == "tsx" else "isActive"))
+        for j, h in enumerate(headers_t):
+            if j < len(keep):
+                v = keys[r] if j == 0 else c.pick(pools[keep[j]])
+                if j and c.chance(0.6):
+                    v = fresh_value(c, v)
+            else:
+                v = EXTRA_COLS[h](c)
+            if j == status_j:
+                if c.fw == "html":
+                    s = S(v, "cell")
+                    if v in seen[j]:
+                        s.keep("K5")
+                    seen[j].add(v)
+                    row.append(s)
+                else:
+                    row.append(E("badge", s=S(v, "badge").keep("K2"), bound=c.prop("status") if c.fw == "tsx" else "isActive"))
                 continue
             s = S(v, "cell")
             if v in seen[j]:
@@ -607,111 +946,284 @@ def data_table(c: Ctx, n_rows=None):
             seen[j].add(v)
             row.append(s)
         rows.append(row)
-    if status_col is not None and c.fw == "html":
-        for row in rows:
-            row[status_col] = row[status_col]["s"]
-            row[status_col].role = "cell"
-            if row[status_col].pattern == "K2":
-                row[status_col].pattern = None
     return E("table", headers=headers, rows=rows)
+
+
+def stat_caption(c: Ctx, lab, value: str):
+    """A caption under a figure: a restatement of its label (R5) or a delta that adds a fact."""
+    timed = bool(words(lab.text) & {"this", "today", "now", "week", "month", "year", "season", "day"})
+    if c.want(0.1):
+        if c.chance(0.5):
+            t = c.pick(["{L} right now", "{L}, as of today", "{L} at a glance", "{L} in total", "{L}, all told",
+                        "Your {l} figure", "{L} so far"] if not timed else ["{L}, at a glance", "{L}, all told", "{L} in total"])
+            return S(t.format(L=lab.text, l=lower_first(lab.text)), "caption").echo(lab, "R5", conf="judgement")
+        t = (f"{c.pick(['The', 'That', 'This'])} {c.pick(['figure', 'number', 'count', 'total'])}"
+             f"{c.pick([' above', ', at a glance', ', in total', ' shown here', ' for you'])}.")
+        return S(t, "caption").echo(lab, "R5", conf="judgement")
+    if c.chance(0.4):
+        if c.chance(0.4) and not timed:
+            return S(f"{lab.text} last {c.pick(['week', 'month', 'season', 'year'])}: {jitter(c.rng, value)}", "caption")
+        if c.chance(0.4) and timed:
+            return S(f"{c.pick(['Target', 'Last time', 'Average', 'Best so far'])}: {jitter(c.rng, value)}", "caption")
+        return S(c.pick([f"+{c.rng.randrange(2, 40)}% on last {c.pick(['week', 'month', 'year'])}",
+                         f"−{c.rng.randrange(1, 20)}% on last {c.pick(['week', 'month', 'season'])}",
+                         f"Up {c.rng.randrange(2, 30)} since {c.pick(L.DAYS)}", f"{c.pick(['Same as', 'Level with', 'Unchanged from'])} last {c.pick(['week', 'month', 'year'])}",
+                         f"Down {c.rng.randrange(1, 12)} since {c.pick(L.MONTHS)}", f"{c.rng.randrange(2, 9)} more than {c.pick(L.MONTHS)}"]), "caption")
+    return None
+
+
+def stats_row(c: Ctx, n: int):
+    out, labels, values = [], [], []
+    for label, value in c.rng.some(c.dom["stats"], n):
+        v = jitter(c.rng, value)
+        lab = S(label, "label")
+        val = S(v, "stat")
+        out.append(E("stat", value=val, label=lab, note=stat_caption(c, lab, v)))
+        labels.append(lab)
+        values.append(val)
+    return E("stats", *out), labels, values
+
+
+SERIES = ["This year", "Last year", "Target", "Average", "Planned", "Actual", "Forecast"]
+
+
+def chart_panel(c: Ctx, h1=None):
+    """A panel with a heading, a chart (no text) and a legend whose entries name the series (K2)."""
+    noun = c.noun()
+    t = c.pick([f"{noun.Pl} by week", f"{noun.Pl} over time", f"{noun.Pl} this {c.pick(['month', 'season', 'year'])}",
+                f"{noun.Pl} by {c.pick(['month', 'day', 'site', 'person'])}", f"Usage over {c.pick(['time', 'the year', 'the season'])}",
+                f"{noun.Sg} trend"])
+    title = S(t, "h2")
+    kids = [E("h", s=title, level=2)]
+    if c.chance(0.35):
+        kids.append(E("sub", s=S(c.pick([f"Totals per {c.pick(['week', 'month'])}, excluding drafts.",
+                                         f"Compared with the same weeks in {c.pick([2024, 2025])}.",
+                                         f"{noun.Pl} still in draft are not counted.", f"Dotted bars are forecast {noun.pl}.",
+                                         f"Figures for {c.group} members only.", f"{noun.Pl} are counted on the day they close."]), "subtitle")))
+    kids.append(E("chart", series=noun.pl))
+    if c.chance(0.7):
+        legend = c.rng.some(SERIES, c.pick([2, 3])) if c.chance(0.5) else c.rng.some(item_names(c), c.pick([2, 3]))
+        kids.append(E("legend", items=[S(x, "list_item").keep("K2") for x in legend]))
+    return E("section", *kids)
+
+
+ALERT_TITLES = ["Couldn’t sync your {x}", "{X} didn’t load", "Couldn’t save this {x1}", "Upload failed",
+                "Couldn’t reach the server", "Payment failed", "{Y} are out of date"]
+ALERT_ECHO_STEM = {"Couldn’t sync your {x}": "Your {x} couldn’t be synced.", "{X} didn’t load": "We couldn’t load your {x}.",
+                   "Couldn’t save this {x1}": "This {x1} could not be saved.", "Upload failed": "Your upload failed.",
+                   "Couldn’t reach the server": "The server could not be reached.", "Payment failed": "Your payment failed.",
+                   "{Y} are out of date": "Your {y} are not up to date."}
+ALERT_ECHO_ALT = ["Something went wrong.", "That didn’t work.", "An error occurred.", "Sorry, there was a problem.",
+                  "It didn’t go through."]
+ALERT_KEEP = ["The server didn’t answer; changes stay on this device and are retried every {n} minutes.",
+              "{person} is editing this {x1}; try again after {clock}.", "Check your connection, then pull down to retry.",
+              "Your card was declined; update it on the billing page before {date}.",
+              "Files over {n} MB are not accepted; try a smaller photo.",
+              "Your {x} will sync again once you are back online; nothing is lost."]
+
+
+def error_alert(c: Ctx):
+    t = c.pick(ALERT_TITLES)
+    title = S(c.f(t), "error")
+    if c.want(0.4):
+        if c.chance(0.5):
+            body = S(c.f(ALERT_ECHO_STEM[t]), "error").echo(title, "R4", conf="clear")
+        else:
+            body = S(c.pick(ALERT_ECHO_ALT), "error").echo(title, "R4", conf="judgement")
+    else:
+        body = S(c.f(c.pick(ALERT_KEEP)), "error").keep("K8")
+    return E("alert", title=title, s=body, tone="error")
+
+
+# ---------------------------------------------------------------------------------------------------------------
+# app pages
+
+
+def list_heading(c: Ctx, noun: Noun):
+    """A list page title: the noun, or a subset of it."""
+    if c.chance(0.6):
+        return noun.Pl
+    return c.pick([f"Overdue {noun.pl}", f"{noun.Pl} this week", f"Recent {noun.pl}", f"Shared {noun.pl}",
+                   f"Archived {noun.pl}", f"{noun.Pl} in {c.place}", f"Upcoming {noun.pl}", f"Your {noun.pl}"])
+
+
+def page_sub(c: Ctx, h, noun: Noun, allow_r16=True):
+    """The subtitle under a list page's heading: a restatement (R3), layout narration (R16), a partial, or a fact
+    about the noun (with or without its stem)."""
+    if c.want(0.28):
+        return S(restate(c, noun), "subtitle").echo(h, "R3", conf="clear")
+    if allow_r16 and c.want(0.1):
+        return S(layout_line(c, noun), "subtitle").narrate("R16", None)
+    if c.chance(0.06):
+        return S(restate(c, noun) + " " + about(c, noun), "subtitle").keep(partial=True)
+    if c.chance(0.6):
+        return S(about(c, noun, stem=c.chance(0.65)), "subtitle")
+    return None
+
+
+def title_syns(c: Ctx, noun: Noun) -> list:
+    a = c.alt(noun)[1]
+    return [cap(a), f"Your {noun.pl}", f"All {noun.pl}", f"Every {c.alt(noun)[0]}", f"All your {a}"]
 
 
 def app(c: Ctx) -> Page:
     rng = c.rng
-    concept = None
-    if rng.chance(0.3):
-        concept = rng.pick(T.PAGE_CONCEPTS)
-        htext, syn, noun = concept
-    else:
-        htext, syn, noun = cap(c.objs), [f"Your {c.objs}", f"All {c.objs}"], c.objs
+    swift = c.fw == "swift"
+    noun = c.noun()
+    htext = list_heading(c, noun)
     body = []
-    if c.fw != "swift" and rng.chance(0.35):
-        crumbs = [S(rng.pick(["Home", c.product, "Workspace"]), "breadcrumb")]
-        last = S(htext, "breadcrumb")
-        crumbs.append(last)
-        body.append(E("crumbs", items=crumbs, aria=ctx("Breadcrumb", "aria") if rng.chance(0.5) else None))
-        crumb_last = last
-    else:
-        crumb_last = None
-    head, h1, sub = page_header(c, htext, syn, noun)
+    crumb_last = None
+    if not swift and c.chance(0.3):
+        crumbs = [S(c.pick(["Home", c.product, "Workspace", c.group.capitalize()]), "breadcrumb")]
+        crumb_last = S(htext, "breadcrumb")
+        crumbs.append(crumb_last)
+        body.append(E("crumbs", items=crumbs, aria=ctx("Breadcrumb", "aria") if c.chance(0.5) else None))
+    h1 = S(htext, "h1")
     if crumb_last is not None:
         h1.keep("K11")
     nav_title = None
-    if c.fw == "swift" and rng.chance(0.6):
-        # the title moves to the navigation bar; the in-page heading becomes an h2 that repeats it (R9) or names
-        # a subset of the page
+    top_h = None
+    if swift and c.chance(0.6):
         nav_title = S(htext, "h1")
-        h1.role = "h2"
-        for e in head.walk():
-            if e.kind == "h":
-                e.p["level"] = 2
-        if c.want(0.5):
-            h1.echo(nav_title, "R9")
-            restack(nav_title, [x for x in _head_slots(head) if x.cls == "ECHO"])
+        if c.want(0.45):
+            # the in-page title repeats the navigation title (R9)
+            h1 = S(htext if (c.chance(0.6) or htext != noun.Pl) else title_syns(c, noun)[0], "h1").echo(nav_title, "R9", conf="clear")
+            if h1.text != htext:
+                h1.conf = "judgement"
         else:
-            h1.text = rng.pick([f"Recent {noun}", f"Shared {noun}", f"{cap(noun)} this week"])
-            _retarget(head, h1, nav_title)
+            h1 = S(c.pick([f"Recent {noun.pl}", f"Shared {noun.pl}", f"{noun.Pl} this week", item_names(c)[0]]), "h2")
+    elif not swift and c.chance(0.25):
+        # an app bar with its own title over the page title
+        if c.want(0.5):
+            top_h = S(htext, "h1")
+            h1 = S(htext if (c.chance(0.6) or htext != noun.Pl) else title_syns(c, noun)[0], "h1").echo(top_h, "R9", conf="clear")
+            if h1.text != htext:
+                h1.conf = "judgement"
+            if crumb_last is not None:
+                top_h.keep("K11")
+        elif htext != noun.Pl and c.chance(0.6):
+            top_h = S(noun.Pl, "h1")  # the whole list over a subset of it: both KEEP
+        else:
+            top_h = S(c.product, "h1")
+        body.append(E("section", E("h", s=top_h, level=1)))
+    kids = []
+    plain = htext == noun.Pl
+    if h1.cls == "KEEP":
+        eb = None
+        if plain and c.want(0.25):
+            eb = S(c.pick(title_syns(c, noun)), "eyebrow").echo(h1, "R1", conf="judgement")
+        elif c.chance(0.15):
+            eb = S(c.pick([c.product, c.fresh(c.dom["cats"]), f"{c.group.capitalize()} {c.pick(['records', 'admin'])}"]),
+                   "eyebrow").keep("K1")
+            if eb.text.lower() == htext.lower():
+                eb = None
+        if eb:
+            kids.append(E("eyebrow", s=eb))
+    kids.append(E("h", s=h1, level=1 if h1.role == "h1" else 2))
+    if h1.cls == "ECHO":
+        sub_target = h1.target
+    elif nav_title is not None:
+        sub_target = nav_title
+    else:
+        sub_target = h1
+    sub = page_sub(c, sub_target, noun)
+    if sub is not None:
+        kids.append(E("sub", s=sub))
+    head = E("head", *kids)
     body.append(head)
+    # a third copy of the same name: a stack (equiv)
+    flagged = [x for x in [k["s"] for k in kids] if x.cls == "ECHO"]
+    if len(flagged) >= 2:
+        top = flagged[0].target
+        restack(top, flagged)
+    # actions
     acts = []
-    btn = S(f"New {c.obj}", "button")
-    if htext.lower() == c.objs:
+    btn = S(c.pick([f"New {noun.sg}", f"Add {noun.sg}", f"Add a {noun.sg}", f"Log a {noun.sg}"]), "button")
+    if shares_stem(btn.text, htext):
         btn.keep("K9")
     tip = None
-    if c.fw != "swift" and c.want(0.1):
-        tip = S(btn.text, "tooltip").echo(btn, "R5")
-    elif c.fw == "swift" and c.want(0.1):
-        tip = S(btn.text, "tooltip").echo(btn, "R5")
+    if c.want(0.1):
+        if c.chance(0.5):
+            tip = S(btn.text, "tooltip").echo(btn, "R5", conf="clear")
+        else:
+            tip = S(c.pick([f"Add a {c.alt(noun)[0]}", f"Create another {c.alt(noun)[0]}"]), "tooltip").echo(btn, "R5", conf="judgement")
+    elif c.chance(0.12):
+        tip = S(c.pick([f"{btn.text} (N)", f"{btn.text} to {c.place}", f"{btn.text} from a template"]), "tooltip").keep(conf="judgement")
     acts.append(E("button", s=btn, tip=tip))
-    if rng.chance(0.5):
-        tip, aria = rng.pick(T.ICON_ACTIONS)
-        acts.append(E("iconbtn", tip=S(tip, "tooltip").keep("K12"), aria=ctx(aria, "aria") if rng.chance(0.7) else None))
+    if c.chance(0.5):
+        ia = c.pick(L.ICON_ACTIONS)
+        tip_t = c.f(ia[0])
+        acts.append(E("iconbtn", tip=S(tip_t, "tooltip").keep("K12"), aria=ctx(ia[1], "aria") if c.chance(0.7) else None,
+                      icon=ia[2], html_icon=ia[3], sf=ia[4]))
     if c.want(0.08):
-        acts.insert(0, E("badge", s=S(rng.pick(["● Live", "Live", "Active", "● Online"]), "badge").decor("R11")))
+        acts.insert(0, E("badge", s=S(static_status(c), "badge").decor("R11")))
     body.append(E("actions", *acts))
-    has_tabs = rng.chance(0.4)
+    if c.chance(0.12):
+        body.append(error_alert(c))
+    has_tabs = c.chance(0.35)
     if has_tabs:
-        tabs = rng.some(T.TABS_BY_PAGE, rng.pick([3, 4]))
+        tabs = rng.some(["All", "Active", "Archived", "Shared", "Mine", "Overdue", "Drafts", "This week", "Starred"], c.pick([2, 3, 4]))
         tab_slots = [S(t, "tab") for t in tabs]
-        if concept and rng.chance(0.6) and htext not in tabs:
-            ts = S(htext, "tab").keep("K11")
-            tab_slots.insert(rng.randrange(len(tab_slots) + 1), ts)
+        if htext not in tabs and htext != noun.Pl and c.chance(0.5):
+            tab_slots.insert(rng.randrange(len(tab_slots) + 1), S(htext, "tab").keep("K11"))
         body.append(E("tabs", items=tab_slots))
-    if nav_title is None and c.want(0.12):
-        r9 = S(rng.pick([htext, f"All {noun}", f"Your {noun}"]), "h2").echo(h1, "R9")
-        inner = [E("h", s=r9, level=2)]
-    else:
-        inner = [E("h", s=S(rng.pick(["Recent", "This week", "Needs attention", "Shared with you", "Archived"]), "h2"), level=2)] \
-            if rng.chance(0.5) else []
+    inner = []
+    if nav_title is None and h1.role == "h1" and h1.cls == "KEEP" and c.want(0.1):
+        r9 = S(c.pick([h1.text, f"All {noun.pl}", cap(c.alt(noun)[1])] if plain else [h1.text]), "h2").echo(h1, "R9", conf="clear")
+        if r9.text != h1.text:
+            r9.conf = "judgement"
+        inner.append(E("h", s=r9, level=2))
+    elif c.chance(0.45):
+        inner.append(E("h", s=S(c.pick([f"Needs attention", f"{noun.Pl} this week" if htext != f"{noun.Pl} this week" else "Shared with you",
+                                        "Shared with you", "Archived", f"Added in {c.pick(L.MONTHS)}"]), "h2"), level=2))
     table = data_table(c)
-    if rng.chance(0.35):
-        et, eb = rng.pick(c.dom["empty"])
-        es = S(et, "empty_title")
-        ebody = S(eb, "empty_body").keep("K8")
+    if c.chance(0.35):
+        et, eb_ = empty_copy(c, noun)
+        if c.want(0.2) and h1.role == "h1" and h1.cls == "KEEP":
+            es = S(h1.text, "empty_title").echo(h1, "R9", conf="clear")
+            ebody = S(c.f(c.pick(["You haven’t added any {a} yet. " + "Add one from the button above, or import a CSV.",
+                                  "Nothing yet: {a} you add appear here, newest first."]), a=noun.pl), "empty_body").keep("K8")
+        else:
+            es = S(et, "empty_title")
+            ebody = S(eb_, "empty_body").keep("K8")
         cond = E("cond", a=[E("empty", title=es, body=ebody, action=None)], b=[table],
                  expr=f"{c.prop('count')} === 0", swift="count == 0")
         inner.append(cond if c.fw != "html" else table)
     else:
         inner.append(table)
-    if c.fw == "tsx" and rng.chance(0.3):
-        inner.append(E("dyn", s=S("Signed in as VAR email.", "caption"), pre="Signed in as ", expr="user.email", post=".", look="note"))
+    if c.fw == "tsx" and c.chance(0.25):
+        pre, post = c.pick([("Signed in as ", "."), ("Viewing as ", ""), ("Shared by ", ".")])
+        inner.append(E("dyn", s=S(f"{pre}VAR email{post}", "caption"), pre=pre, expr="user.email", post=post, look="note"))
         c.prop("user")
-    elif c.fw != "html" and rng.chance(0.2):
-        inner.append(E("dyn", s=dyn("VAR updated at", "caption"), expr="updatedAt" if c.fw == "tsx" else "updatedAt", look="note"))
-    if rng.chance(0.15):
-        inner.append(E("note", s=S(rng.pick(["Hold Shift to select a range of rows.", "Press / to jump to search.",
-                                            "Drag rows to change the order; the new order is saved for everyone."]),
+    elif c.fw != "html" and c.chance(0.15):
+        inner.append(E("dyn", s=dyn("VAR updated at", "caption"), expr="updatedAt", look="note"))
+    if c.chance(0.12):
+        inner.append(E("note", s=S(c.f(c.pick(["Hold Shift to select a range of rows.", "Press / to jump to search.",
+                                               "Drag rows to change the order; the new order is saved for everyone.",
+                                               "Swipe left on {a_x1} to archive it.", "Long-press a row to select several."])),
                                    "caption").keep("K4", ct=True)))
     elif c.want(0.08):
-        lines = ["Scroll down to see more.", "Tap an item to see its details.", "Hover over a row to see more options."]
-        if has_tabs:
-            lines.append("Use the tabs above to switch views.")
-        inner.append(E("note", s=S(rng.pick(lines), "caption").narrate("R6", None, ct=True, conf="judgement")))
+        inner.append(E("note", s=S(scroll_line(c, noun) if c.chance(0.8) else "Use the tabs above to switch views." if has_tabs
+                                   else scroll_line(c, noun), "caption").narrate("R6", None, ct=True, conf="judgement")))
+    if c.chance(0.25):
+        inner.append(detail_card(c))
+    if h1.role == "h1" and h1.cls == "KEEP" and c.chance(0.25):
+        if c.want(0.4):
+            ct = S(c.pick([cap(c.alt(noun)[1]), f"Your {c.alt(noun)[1]}", f"All {c.alt(noun)[1]}"] if plain else [h1.text]),
+                   "h3").echo(h1, "R9", conf="judgement" if plain else "clear")
+        else:
+            ct = S(c.pick([f"{noun.Pl} added this week", f"{noun.Sg} of the month", f"Oldest {noun.sg}", f"{noun.Pl} with notes",
+                           f"Busiest {noun.sg}"]), "h3")
+        inner.append(E("card", E("h", s=ct, level=3), E("p", s=S(c.f(c.pick(["{person} added {n} {y} on {day}.",
+                                                                            "{n} {y} since {date}.", "Last checked {day} at {clock}.",
+                                                                            "Shared with {n} {who}."])), "body")), shadcn=False))
     body.append(E("section", *inner))
-    return Page(f"{cap(htext)}Page", "app", body, product=c.product, props=c.props, nav_title=nav_title)
+    name = c.pick([f"{ident_words(htext)}Page", f"{ident_words(htext)}List", f"{ident_words(htext)}Screen", f"{ident_words(noun.pl)}Index"])
+    return Page(name, "app", body, product=c.product, props=c.props, nav_title=nav_title)
 
 
-def _head_slots(head):
-    return [e["s"] for e in head.walk() if e["s"] is not None]
+def ident_words(s: str) -> str:
+    return "".join(w[:1].upper() + w[1:] for w in re.split(r"[^A-Za-z0-9]+", s) if w)
 
 
 def restack(top, copies):
@@ -721,52 +1233,145 @@ def restack(top, copies):
         x.equiv = [o for o in copies if o is not x] if len(copies) > 1 else []
 
 
-def _retarget(head, old, new):
-    """After moving a page title into the navigation bar, echoes that pointed at the old heading point at the
-    navigation title (the heading itself is now the R9 copy)."""
-    for e in head.walk():
-        s = e["s"]
-        if s is not None and s is not old and s.target is old:
-            s.target = new
-            if s.equiv:
-                s.equiv = [x for x in s.equiv if x is not old]
-
-
 # ---------------------------------------------------------------------------------------------------------------
 # settings and forms
+
+# Field labels -> restatements sharing no stem with the label (placeholder R8, helper R5)
+FIELD_ALT = {
+    "Hive name": ["What you call this colony"], "Apiary postcode": ["Where the bees live"],
+    "Queen marking colour": ["The dot on her thorax"], "Plot number": ["Which allotment is yours"],
+    "Site name": ["Where your allotment is"], "Last frost date": ["When the cold ends"],
+    "Bike make and model": ["Brand and type of cycle"], "Drop-off date": ["When you bring it in"],
+    "What needs doing": ["The work required"], "Client name": ["Who you are billing"], "Payment terms": ["How long they have to pay"],
+    "VAT number": ["Your tax registration"], "Sail number": ["The digits on your mainsail"], "Class": ["Type of dinghy"],
+    "Emergency contact": ["Who we call if something happens"], "Recipe name": ["What the dish is called"],
+    "Servings": ["How many it feeds"], "Source link": ["Where you found it"], "Show title": ["What your podcast is called"],
+    "Episode number": ["Which instalment this is"], "Author email": ["Where listeners can write"],
+    "Experience": ["How long you have been throwing"], "Dietary needs": ["Foods you avoid"], "Locker number": ["Which cupboard is yours"],
+    "Climbing name": ["What the wall knows you as"], "Shoe size": ["What fits your feet"], "Belay certificate": ["Proof you can hold a rope"],
+    "Album title": ["What to call this collection"], "Date range": ["From when to when"], "People": ["Who is pictured"],
+    "Vehicle registration": ["Your number plate"], "Vehicle length": ["How long your car is"], "Lead passenger": ["Who is travelling"],
+    "Delivery address": ["Where we bring it"], "Safe place": ["Where to leave it"], "Allergies": ["Foods that make you ill"],
+    "Visit date": ["When you are coming"], "Number of visitors": ["How many of you"], "Access needs": ["Anything that helps you get around"],
+    "ECF code": ["Your federation rating ID"], "Preferred time control": ["How fast you like to play"], "Board name": ["What opponents see you as"],
+    "Monthly income": ["What you earn each month"], "Payday": ["When the money arrives"], "Savings goal": ["What you are putting by for"],
+    "Batch code": ["The brew’s reference"], "Original gravity": ["Starting density"], "Fermenter": ["Which vessel it is in"],
+    "Group size": ["How many are coming"], "Swimming ability": ["How well you swim"], "Pick-up point": ["Where we collect you"],
+    "Language": ["What you want to learn"], "Current level": ["How far you have got"], "Learning goal": ["What you are aiming for"],
+    "Registration": ["Number plate"], "Next MOT": ["When the test is due"], "Driver phone": ["Mobile for whoever drives it"],
+    "Sample ID": ["Its reference"], "Storage location": ["Where it is kept"], "Hazard class": ["How dangerous it is"],
+    "Survey square": ["Which grid square you cover"], "Observers": ["Who is counting"], "Weather": ["Conditions on the day"],
+    "Pupil name": ["Who is learning"], "Instrument": ["What they play"], "Current grade": ["Their latest exam level"],
+    "Meter serial": ["The number on your meter"], "Tariff": ["What you pay per unit"], "Home size": ["How many bedrooms"],
+    "Library card number": ["The digits on your card"], "PIN": ["Your four digits"], "Home branch": ["Where you usually borrow"],
+    "Brew method": ["How you make your coffee"], "Bag size": ["How much coffee per delivery"], "Delivery day": ["When it arrives"],
+    "Shift name": ["What to call this slot"], "Volunteers needed": ["How many helpers"], "Meeting point": ["Where everyone gathers"],
+    "Pet’s name": ["What your animal is called"], "Species and breed": ["What kind of animal"], "Microchip number": ["The code under the skin"],
+    "Full name": ["First and last"], "Display name": ["What others see you as"], "Bio": ["A line about yourself"],
+    "Website": ["Your site’s URL"], "Email": ["Where we can reach you"], "Phone number": ["Mobile or landline"],
+    "Password": ["Something only you know"], "Username": ["Your handle"], "Billing email": ["Where invoices go"],
+    "Company name": ["Your business"], "Postcode": ["Your area code"], "Workspace name": ["What your team is called"],
+    "Workspace URL": ["Your team’s web address"], "Default language": ["What members see first"], "Name": ["What to call it"],
+}
+# Labels that are not noun phrases (generic K4 templates do not fit them)
+NOT_NP = {"What needs doing", "Experience", "Dietary needs", "Allergies", "Access needs", "Weather", "Servings", "Payday",
+          "People", "Observers", "Language", "Class", "Volunteers needed", "Number of visitors", "Group size", "Swimming ability",
+          "Species and breed", "Bio", "Tariff", "Instrument"}
+HELPER_ECHO = ["Enter your {l}.", "Your {l}.", "The {l} for this account.", "Add your {l} here.", "Type in your {l}.",
+               "Please provide your {l}.", "The {l} goes here.", "Fill in the {l}."]
+PLACEHOLDER_ECHO = ["{L}", "Enter {l}", "Enter your {l}", "Your {l}", "Type your {l}", "{L} here", "Add {l}", "{L}…"]
+HELPER_KEEP_STEM = ["The {l} appears on {where}.", "Your {l} is never shown publicly.", "The {l} can be changed once a month.",
+                    "Leave the {l} blank to use the {group}’s default.", "We check the {l} before saving; it must be unique.",
+                    "Only {role}s can see the {l}.", "The {l} is printed on {where}."]
+WHERE = ["every invoice", "receipts", "shared links", "the summary sheet", "reminder emails", "the members list"]
 
 
 def field_from(c: Ctx, label, example, helper, swift):
     lab = S(label, "label")
     ll = lower_first(label)
+    alts = FIELD_ALT.get(label)
     ph = None
-    if c.want(0.3):
-        ph = S(c.rng.pick(T.PLACEHOLDER_ECHO).format(l=ll, L=label), "placeholder").echo(lab, "R8")
-    elif swift or c.chance(0.6):
+    r = c.rng.random()
+    if c.want(0.28):
+        if alts and c.chance(0.45):
+            ph = S(c.pick(alts), "placeholder").echo(lab, "R8", conf="judgement")
+        else:
+            ph = S(c.pick(PLACEHOLDER_ECHO).format(l=ll, L=label), "placeholder").echo(lab, "R8")
+    elif r < 0.18 and example.startswith("e.g. "):
+        # the label again, with an example: a partial (LABELLING.md §4 step 5)
+        ph = S(f"{label}, {example}", "placeholder").keep(partial=True)
+    elif r < 0.26 and label not in NOT_NP:
+        ph = S(c.f(c.pick(["{L}, up to {n} characters", "{L} as it appears on your {doc}", "Full {l}, no abbreviations"]),
+                   L=label, l=ll, n=c.pick([20, 30, 40, 60, 80]), doc=c.pick(["letter", "card", "account", "booking"])),
+               "placeholder").keep(conf="judgement")
+    elif swift or r < 0.75:
         ph = S(example, "placeholder")
     hl = None
     if c.want(0.16):
-        hl = S(c.rng.pick(T.HELPER_ECHO).format(l=ll), "helper").echo(lab, "R5")
+        if alts and c.chance(0.45):
+            hl = S(c.pick(alts) + ".", "helper").echo(lab, "R5", conf="judgement")
+        else:
+            hl = S(c.pick(HELPER_ECHO).format(l=ll), "helper").echo(lab, "R5")
     elif c.chance(0.6):
-        hl = S(helper, "helper").keep("K4")
+        if label not in NOT_NP and c.chance(0.4):
+            hl = S(c.f(c.pick(HELPER_KEEP_STEM), l=ll, where=c.pick(WHERE)), "helper").keep("K4")
+        else:
+            hl = S(helper, "helper").keep("K4")
     return E("field", label=lab, ph=ph, helper=hl, type="password" if label == "Password" else "text"), lab
 
 
-INTEGRATIONS = [("Google Calendar", "Bookings appear in your calendar within a minute."),
-                ("Slack", "Posts a message in the channel you choose."),
-                ("Xero", "Paid invoices are marked as paid in Xero overnight."),
-                ("Zapier", "Needs a Zapier account on any paid plan."),
-                ("Mailchimp", "New members join the list you pick; existing ones are left alone.")]
-SETTINGS_PLAN = {
-    "Settings": {"sections": None, "toggles": None, "toggle_names": None},
-    "Notifications": {"sections": [], "toggles": T.TOGGLES, "toggle_names": ["Email", "On your phone", "Digest"]},
-    "Billing": {"sections": ["Billing"], "toggles": None, "toggle_names": ["Invoices", "Receipts"]},
-    "Team": {"sections": ["Workspace"], "toggles": None, "toggle_names": ["Members", "Permissions"]},
-    "Security": {"sections": ["Account"], "toggles": [x for x in T.TOGGLES if x[0] in ("Two-step sign-in", "Public profile",
-                                                                                         "Share usage data")],
-                 "toggle_names": ["Sign-in", "Privacy"]},
-    "Integrations": {"sections": [], "toggles": INTEGRATIONS, "toggle_names": ["Connected apps", "Calendars and chat"]},
-    "Profile": {"sections": ["Profile", "Account"], "toggles": None, "toggle_names": ["Privacy", "Preferences"]},
+INTEGRATIONS = [("Google Calendar", "{Y} appear in your calendar within a minute.", "Your schedule, in Google’s app."),
+                ("Slack", "Posts a message in the channel you choose.", "Chat updates."),
+                ("Xero", "Paid invoices are marked as paid in Xero overnight.", "Accounting sync."),
+                ("Zapier", "Needs a Zapier account on any paid plan.", "Automations."),
+                ("Mailchimp", "New members join the list you pick; existing ones are left alone.", "Newsletter sign-ups."),
+                ("Outlook", "Two-way sync; edits in either place win by time.", "Your Microsoft diary.")]
+# Toggles grouped by the heading they sit under: (label, helper, restatement sharing no stem)
+TOGGLE_GROUPS = {
+    "Email": [("Email notifications", "A digest at {clock}, never more than once a day.", "Messages in your inbox."),
+              ("Weekly summary", "Sent on {day} mornings, covering the previous seven days.", "A recap every seven days."),
+              ("Marketing emails", "About one a month. Unsubscribing does not affect receipts.", "News and offers.")],
+    "On your phone": [("Push notifications", "Sent only between 8am and 9pm unless marked urgent.", "Alerts that pop up."),
+                      ("Mention alerts", "Only for mentions in {x} you follow.", "When someone tags you."),
+                      ("Sounds", "Follows your phone’s silent switch.", "Audible chimes.")],
+    "Privacy": [("Public profile", "Anyone with the link can see your name and bio, but not your email.", "Others can view you."),
+                ("Share usage data", "Anonymous counts only; no file names or contents.", "Help us improve."),
+                ("Show me in search", "{Who} in other {groups} can find you by name.", "Be findable.")],
+    "Sign-in": [("Two-step sign-in", "Asks for a code from your phone on a new device.", "Extra protection at login."),
+                ("Sign-in alerts", "We email you when a new device signs in.", "Hear about logins."),
+                ("Remember this device", "For {n} days; clearing cookies forgets it.", "Stay logged in.")],
+    "Reminders": [("{Y1} reminders", "Sent {n} days before each {y1} is due.", "Nudges before the date."),
+                  ("Auto-archive", "{X} untouched for {n} days move to the archive; nothing is deleted.", "Tidy up old entries."),
+                  ("Daily digest", "One email at {clock} listing today’s {y}.", "A morning roundup.")],
+    "Connected apps": INTEGRATIONS,
+}
+TOGGLE_ALT_MORE = {
+    "Email notifications": ["Messages to your inbox.", "Updates by mail."], "Weekly summary": ["A once-a-week recap.", "Your seven-day roundup."],
+    "Marketing emails": ["Offers and announcements.", "Promotional mail."], "Push notifications": ["Pop-up alerts.", "Banners on your lock screen."],
+    "Mention alerts": ["Hear when you are tagged.", "When people name you."], "Sounds": ["Chimes and beeps.", "Audio cues."],
+    "Public profile": ["Let others view you.", "Visible to anyone."], "Share usage data": ["Send anonymous statistics.", "Help improve things."],
+    "Show me in search": ["Let people find you.", "Appear in lookups."], "Two-step sign-in": ["A second check at login.", "Extra login protection."],
+    "Sign-in alerts": ["Warnings about logins.", "Know when someone logs in."], "Remember this device": ["Stay logged in here.", "Skip login next time."],
+    "Auto-archive": ["Tidy away old entries.", "Move old things aside."], "Daily digest": ["A morning roundup.", "Your day in one mail."],
+}
+SELECTS = [
+    ("Time zone", ["London (GMT+1)", "Lisbon (GMT+1)", "Paris (GMT+2)", "New York (GMT−4)"], "Due dates and reminders use this zone."),
+    ("Language", ["English (UK)", "Cymraeg", "Français", "Deutsch", "Español"], "Some help articles are only in English."),
+    ("Date format", ["DD/MM/YYYY", "YYYY-MM-DD", "MM/DD/YYYY"], "Applies to exports as well as the screen."),
+    ("Currency", ["GBP (£)", "EUR (€)", "USD ($)"], "Existing invoices keep their original currency."),
+    ("Week starts on", ["Monday", "Sunday", "Saturday"], "Changes the calendar and weekly reports."),
+    ("Session length", ["1 day", "7 days", "30 days"], "After this long without use you are signed out."),
+]
+SETTINGS_PAGES = {
+    # page title: (field sections, toggle groups, selects, synonyms for R1 eyebrows and R3 echoes sharing no stem)
+    "Profile": (["Profile"], ["Privacy"], [], ["About you", "Who you are"]),
+    "Account": (["Account"], ["Sign-in"], ["Language"], ["Your login", "Sign-in details"]),
+    "Notifications": ([], ["Email", "On your phone", "Reminders"], [], ["Alerts", "What we tell you about"]),
+    "Billing": (["Billing"], [], ["Currency"], ["Payments", "Plan and invoices"]),
+    "Workspace": (["Workspace"], [], ["Time zone", "Week starts on"], ["Your team", "Team setup"]),
+    "Security": (["Account"], ["Sign-in"], ["Session length"], ["Sign-in and safety", "Protection"]),
+    "Integrations": ([], ["Connected apps"], [], ["Connected apps", "Other tools"]),
+    "Preferences": ([], ["Reminders"], ["Time zone", "Date format", "Language", "Week starts on"], ["Options", "How it behaves"]),
 }
 
 
@@ -774,316 +1379,612 @@ def settings(c: Ctx) -> Page:
     rng = c.rng
     swift = c.fw == "swift"
     body = []
-    multi = not swift and rng.chance(0.15)
+    multi = not swift and c.chance(0.15)
     if multi:
-        k = rng.pick([2, 3])
-        total = rng.pick([3, 4, 5])
-        body.append(E("note", s=S(rng.pick(["Step {k} of {t}", "Part {k} of {t}"]).format(k=k, t=total), "caption").keep("K3")))
-    concept = rng.pick(T.PAGE_CONCEPTS[:7])
-    htext, syn, noun = concept
+        k = c.pick([2, 3])
+        total = c.pick([3, 4, 5])
+        body.append(E("note", s=S(c.pick(["Step {k} of {t}", "Part {k} of {t}"]).format(k=k, t=total), "caption").keep("K3")))
+    domain_page = c.chance(0.25)
+    if domain_page:
+        k = c.rng.randrange(4)
+        alt = c.alt(c.x)[0]
+        htext = [f"{c.x.Sg} settings", f"{c.x.Sg} details", f"Edit {c.x.sg}", f"{c.product} preferences"][k]
+        syns = [[f"This {alt}", f"About this {alt}"], [f"About this {alt}", f"This {alt}"],
+                [f"Change this {alt}", f"Update the {alt}"], ["Options", "How it behaves"]][k]
+        plan = ([], ["Reminders"] if c.chance(0.5) else [], [], syns)
+    else:
+        htext = c.pick(list(SETTINGS_PAGES))
+        plan = SETTINGS_PAGES[htext]
+    sec_names, tog_names, sel_names, syns = plan
+    h1 = S(htext, "h1")
     nav_title = None
-    head, h1, sub = page_header(c, htext, syn, noun, allow_r16=False)
     if swift:
         nav_title = h1
-        h1.role = "h1"
-        head = None
-        if c.want(0.35):
+        if c.want(0.3):
             r9 = S(htext, "h2").echo(nav_title, "R9")
             body.append(E("section", E("h", s=r9, level=2)))
     else:
-        body.append(head)
-    tab_slot = None
-    if not swift and rng.chance(0.35):
-        tabs = [S(t, "tab") for t in rng.some(["General", "Notifications", "Billing", "Security", "Team", "Integrations"], 3)]
-        if htext not in [t.text for t in tabs]:
-            tab_slot = S(htext, "tab").keep("K11")
-            tabs.insert(rng.randrange(len(tabs) + 1), tab_slot)
-        else:
-            for t in tabs:
-                if t.text == htext:
-                    t.keep("K11")
-        body.insert(0 if rng.chance(0.5) else len(body), E("tabs", items=tabs))
-    # the sections a page of this name holds
+        kids = []
+        eb = None
+        if c.want(0.2):
+            eb = S(c.pick(syns), "eyebrow").echo(h1, "R1", conf="judgement")
+        elif c.chance(0.15):
+            eb = S(c.pick([c.product, c.pick(["Settings", "Account settings", "Your account"])]), "eyebrow").keep("K1", conf="judgement")
+            if shares_stem(eb.text, htext) or eb.text == htext:
+                eb = S(c.product, "eyebrow").keep("K1")
+        if eb:
+            kids.append(E("eyebrow", s=eb))
+        kids.append(E("h", s=h1, level=1))
+        if c.want(0.25):
+            if c.chance(0.5):
+                sub = S(c.pick(["Manage your {n}.", "Manage your {n} here.", "View and change your {n}.", "Your {n}, all in one place.",
+                                "Everything about your {n}.", "Update your {n}."]).format(n=lower_first(htext)), "subtitle").echo(h1, "R3")
+            else:
+                syn = c.pick(syns)
+                pool = [f"{cap(syn)}, in one place.", f"{cap(syn)}, all together.", f"Everything about {lower_first(syn)}.",
+                        f"Review {lower_first(syn)}."]
+                if htext in ("Preferences",) or htext.endswith("settings"):
+                    pool += ["Change how things work for you.", "Adjust things to suit you.", "Make it work your way."]
+                sub = S(c.pick(pool), "subtitle").echo(h1, "R3", conf="judgement")
+            kids.append(E("sub", s=sub))
+            if eb is not None and eb.cls == "ECHO":
+                stack(h1, [eb, sub], ["R1", "R3"], conf="judgement")
+        elif c.chance(0.5):
+            kids.append(E("sub", s=S(c.f(c.pick(["Changes apply straight away on every device.", "Only you can see these {n}.",
+                                                   "{Role}s can change these for the whole {group}.", "Changes here take effect from your next sign-in.",
+                                                   "These {n} apply to every {x1} in your {group}."]), n=lower_first(htext),
+                                         Role=cap(c.role)), "subtitle")))
+        body.append(E("head", *kids))
+    tab_names = set()
+    if not swift and not domain_page and c.chance(0.35):
+        others = [p for p in SETTINGS_PAGES if p != htext]
+        tabs = [S(t, "tab") for t in rng.some(others, 3)]
+        tabs.insert(rng.randrange(len(tabs) + 1), S(htext, "tab").keep("K11"))
+        tab_names = {t.text for t in tabs}
+        body.insert(0 if c.chance(0.5) else len(body), E("tabs", items=tabs))
     by_name = dict(T.SETTINGS_SECTIONS)
-    plan = SETTINGS_PLAN[htext]
-    if plan["sections"] is None:
-        pool = [x for x in T.SETTINGS_SECTIONS if x[0] != htext]
-        sections = rng.some(pool, rng.pick([1, 2, 2, 3]))
-    else:
-        sections = [(n, by_name[n]) for n in plan["sections"] if n != htext or rng.chance(0)]
-        sections = sections[: rng.pick([1, len(sections)])]
-    tab_names = {t.text for t in body[0]["items"]} if body and body[0].kind == "tabs" else set()
-    for e in body:
-        if e.kind == "tabs":
-            tab_names = {t.text for t in e["items"]}
     first_err = None
     form_kids = []
+    sections = [(n, by_name[n]) for n in sec_names]
+    if domain_page:
+        sections = [(c.pick([f"{c.x.Sg} details", "Basics", c.x.Sg]), c.dom["fields"])]
     for name, fields in sections:
+        r9 = False
+        if name == htext:
+            if not swift and c.want(0.5):
+                r9 = True
+            else:
+                name = c.pick(["General", "Details", "Basics", f"{name} details", "Your details"])
         h2 = S(name, "h2")
         if name in tab_names:
             h2.keep("K11")
         sk = [E("h", s=h2, level=2)]
-        if c.want(0.12):
-            sk.append(E("sub", s=S(rng.pick(T.SUB_ECHO).format(n=lower_first(name) + " details"), "subtitle").echo(h2, "R3")))
-        elif rng.chance(0.3):
-            sk.append(E("sub", s=S(rng.pick(["Only you and workspace owners can see these.", "Changes apply straight away.",
-                                             "Used on invoices and receipts.", "Shown to everyone in your workspace."]),
+        nounish = name in ("Profile", "Account", "Billing", "Workspace", c.x.Sg) or name.endswith(" details")
+        if r9:
+            h2.echo(h1, "R9")
+        elif nounish and c.want(0.12):
+            base_n = lower_first(name).replace(" details", "")
+            sk.append(E("sub", s=S(c.pick(["Manage your {n} details.", "Your {n} information.", "Edit your {n} details here.",
+                                           "Details of your {n}.", "Change your {n} details."]).format(n=base_n), "subtitle").echo(h2, "R3")))
+        elif c.chance(0.3):
+            keep = {"Billing": ["Used on invoices and receipts.", "Billing details are checked against your card each month."],
+                    "Profile": ["Shown to everyone in your {group}.", "Your profile is visible to {who} you share {x} with."],
+                    "Account": ["Only you can see these.", "Account changes need your password."],
+                    "Workspace": ["Shown in invitations and the browser tab.", "Workspace changes apply to all {n} members."]}
+            sk.append(E("sub", s=S(c.f(c.pick(keep.get(name, ["Only you and {role}s can see these.", "Changes apply straight away.",
+                                                               "Shown to everyone in your {group}.", "Checked before saving."]))),
                                    "subtitle")))
-        for label, example, helper in rng.some(fields, rng.pick([1, 2, 2, 3])):
-            f, lab = field_from(c, label, example, helper, swift)
-            if not swift and first_err is None and rng.chance(0.12):
-                err = S(rng.pick(["Enter " + lower_first(label), lower_first(label).capitalize() + " is required"]), "error")
-                f.p["error"] = err
-                f.p["err_cond"] = "errors." + "".join(w.capitalize() if i else w.lower() for i, w in enumerate(label.split()))
+        for label, example, helper in rng.some(fields, c.pick([1, 2, 2, 3])):
+            fe, lab = field_from(c, label, example, helper, swift)
+            if not swift and first_err is None and c.chance(0.12):
+                err = S(c.pick(["Enter " + lower_first(label), lower_first(label).capitalize() + " is required",
+                                f"Check the {lower_first(label)} and try again"]), "error")
+                fe.p["error"] = err
+                fe.p["err_cond"] = "errors." + "".join(w.capitalize() if i else w.lower() for i, w in enumerate(re.split(r"[^A-Za-z]+", label)) if w)
                 c.prop("errors")
                 first_err = err
-            sk.append(f)
-        sk_section = E("section", *sk) if not swift else E("section", *sk)
-        form_kids.append(sk_section)
-    # toggles and selects
-    if plan["toggles"] is not None or rng.chance(0.45):
-        names = plan["toggle_names"] or ["Notifications", "Preferences", "Privacy"]
-        name = rng.pick([x for x in names if x != htext])
+            sk.append(fe)
+        form_kids.append(E("section", *sk))
+    for gname in tog_names:
+        name = gname.format(Y=c.y.Pl)
         h2 = S(name, "h2")
         if name in tab_names:
             h2.keep("K11")
         sk = [E("h", s=h2, level=2)]
         k9 = False
-        for label, helper in rng.some(plan["toggles"] or T.TOGGLES, rng.pick([1, 2, 3])):
+        for label, helper, alt in rng.some(TOGGLE_GROUPS[gname], c.pick([1, 2, 3])):
+            alt = c.pick([alt, *TOGGLE_ALT_MORE.get(label, [])])
+            label = c.f(label)
             lab = S(label, "label")
             hl = None
             if c.want(0.18):
-                hl = S(rng.pick(T.TOGGLE_ECHO).format(l=lower_first(label), L=label), "helper").echo(lab, "R5", conf="judgement")
-            elif rng.chance(0.65):
-                hl = S(helper, "helper").keep("K4")
+                if c.chance(0.5):
+                    hl = S(c.pick(["Receive {l}.", "Get {l}.", "{L} for your account.", "Turn on {l}.", "Switch {l} on or off."])
+                           .format(l=lower_first(label), L=label), "helper").echo(lab, "R5", conf="judgement")
+                else:
+                    hl = S(alt, "helper").echo(lab, "R5", conf="judgement")
+            elif c.chance(0.65):
+                hl = S(c.f(helper), "helper").keep("K4")
             sk.append(E("toggle", label=lab, helper=hl))
             if shares_stem(name, label):
                 k9 = True
-        if k9:
+        if k9 and h2.cls == "KEEP":
             h2.keep("K9")
-        if rng.chance(0.5):
-            label, opts, helper = rng.pick(T.SELECTS)
-            sk.append(E("select", label=S(label, "label"), options=[S(o, "menu_item") for o in opts],
-                        helper=S(helper, "helper").keep("K4") if rng.chance(0.6) else None))
         form_kids.append(E("section", *sk))
-    if first_err is not None and c.fw != "swift" and rng.chance(0.6):
-        summ = E("errsummary", title=S("There is a problem", "h2"), items=[S(first_err.text, "link")])
+    if sel_names:
+        h2 = S(c.pick(["Regional", "Display", "Defaults", "Formats"]) if len(sel_names) > 1 else c.pick(["Options", "More"]), "h2")
+        sk = [E("h", s=h2, level=2)]
+        sel = {s[0]: s for s in SELECTS}
+        for nm in rng.some(sel_names, min(len(sel_names), c.pick([1, 2]))):
+            label, opts, helper = sel[nm]
+            sk.append(E("select", label=S(label, "label"), options=[S(o, "menu_item") for o in opts],
+                        helper=S(helper, "helper").keep("K4") if c.chance(0.6) else None))
+        form_kids.append(E("section", *sk))
+    if not form_kids:
+        fe, _ = field_from(c, *c.pick(c.dom["fields"]), swift)
+        form_kids.append(E("section", fe))
+    if first_err is not None and c.fw != "swift" and c.chance(0.6):
+        summ = E("errsummary", title=S(c.pick(["There is a problem", "Check these fields", "Some details are missing"]), "h2"),
+                 items=[S(first_err.text, "link")])
         first_err.keep("K12")
         form_kids.insert(0, summ)
-    save = S(rng.pick(["Save changes", "Save", "Update profile", "Save settings"]), "button")
-    acts = [E("button", s=S("Cancel", "button"), primary=False), E("button", s=save)] if rng.chance(0.5) else [E("button", s=save)]
+    save = S(c.pick(["Save changes", "Save", "Save " + lower_first(htext) if htext != "Profile" else "Update profile", "Apply",
+                     "Save settings" if not domain_page else f"Save {c.x.sg}"]), "button")
+    acts = [E("button", s=S("Cancel", "button"), primary=False), E("button", s=save)] if c.chance(0.5) else [E("button", s=save)]
     if c.want(0.12):
-        form_kids.append(E("note", s=S(rng.pick(T.NARRATE_FORM).format(b=save.text), "caption").narrate("R6", save, ct=True)))
-    elif rng.chance(0.15):
-        form_kids.append(E("note", s=S(rng.pick(["Changes to your email take effect after you confirm the link we send.",
-                                                "Saving signs you out on other devices."]), "caption").keep("K4", ct=True)))
+        form_kids.append(E("note", s=S(narrate_control(c, save.text), "caption").narrate("R6", save, ct=True)))
+    elif c.chance(0.15):
+        form_kids.append(E("note", s=S(c.pick(["Changes to your email take effect after you confirm the link we send.",
+                                              "Saving signs you out on other devices.", "Changes apply to new entries only."]),
+                                       "caption").keep("K4", ct=True)))
     form_kids.append(E("actions", *acts))
     if swift:
         body.extend(form_kids)
     else:
         body.append(E("form", *form_kids))
-    return Page(f"{htext}Settings", "settings", body, product=c.product, props=c.props, nav_title=nav_title)
+    base = ident_words(htext.replace("Settings", "Prefs"))
+    name = c.pick([f"{base}Form", f"{base}Page", f"{base}Screen", f"Edit{base}"])
+    return Page(name, "settings", body, product=c.product, props=c.props, nav_title=nav_title)
 
 
 # ---------------------------------------------------------------------------------------------------------------
 # dialogs
 
+ACKS = [("Export started", "Your export has started.", "Your download has begun.", "We will email the file when it is ready, usually within {n} minutes."),
+        ("Invite sent", "Your invite has been sent.", "They have been asked to join.", "The link in the invite works for {n} days."),
+        ("Payment received", "We have received your payment.", "Thanks, it went through.", "A receipt is on its way to your inbox."),
+        ("{Y1} booked", "Your {y1} is booked.", "All confirmed.", "You can change it until {clock} the day before."),
+        ("{X1} saved", "This {x1} has been saved.", "It is stored safely.", "Saved {x} are kept for {n} days in the archive."),
+        ("{X} imported", "Your {x} have been imported.", "They are all in.", "{n} rows were skipped because they had no date.")]
 
-ACKS = [("Export started", "Your export has started.", "We will email the file when it is ready, usually within ten minutes."),
-        ("Invite sent", "Your invite has been sent.", "The link in the invite works for seven days."),
-        ("Payment received", "We have received your payment.", "A receipt is on its way to your inbox."),
-        ("Booking confirmed", "Your booking is confirmed.", "You can change it until 6pm the day before."),
-        ("Saved for later", "This has been saved for later.", "Saved items are kept for 90 days.")]
+
+def dialog_echo(c: Ctx, verb: str, noun_text: str, alt_noun: str | None) -> tuple[str, str]:
+    """A body that only asks the title's question again (R4): with the title's words, or with synonyms."""
+    base, _, syns = L.VERBS[verb]
+    if alt_noun is not None and c.chance(0.45):
+        t = c.pick(["Are you sure you want to {v} this {o}?", "Do you really want to {v} it?", "Sure you want to {v} this {o}?",
+                    "Please confirm you want to {v} it."])
+        return t.format(v=c.pick(syns), o=alt_noun), "judgement"
+    t = c.pick(["Are you sure you want to {v} this {o}?", "Do you really want to {v} this {o}?", "You are about to {v} this {o}.",
+                "Please confirm that you want to {v} this {o}.", "This will {v} the {o}."])
+    return t.format(v=base, o=noun_text), "clear"
+
+
+def dialog_keep(c: Ctx, verb: str, noun_text: str) -> str:
+    """A consequence (K7), naming the action (shared stem) or not."""
+    _, ger, _ = L.VERBS[verb]
+    other = c.y.pl if noun_text != c.y.sg else c.x.pl
+    if c.chance(0.5):
+        t = c.pick(["{G} this {o} also removes its {n} {other}.", "{G} {a_o} cannot be undone after {n} days in the bin.",
+                    "{G} it notifies the {n} people it is shared with.", "{G} this {o} frees one of the {n} places on your plan.",
+                    "{G} it now keeps the {n} {other} linked to it, but they lose their link."])
+        return c.f(t, G=ger, o=noun_text, other=other)
+    return c.f(c.pick(T.GENERIC_CONSEQUENCES + ["Its {n} {other} move to the archive.", "Anyone it is shared with loses access at once.",
+                                               "The {n} {other} linked to it stay, but show it as removed."]), other=other)
 
 
 def dialog(c: Ctx) -> Page:
     rng = c.rng
     swift = c.fw == "swift"
-    r = rng.random()
-    if r < 0.65:
+    r = c.rng.random()
+    page_h1 = None
+    if r < 0.55:
         # a confirmation
-        if rng.chance(0.5):
-            btxt, noun, cons = c.dom["danger"]
+        if c.chance(0.4):
+            btxt, noun_text, cons = c.dom["danger"]
             verb = btxt.split(" ")[0]
+            alt_noun = None
+            if noun_text in (c.x.sg, c.y.sg):
+                alt_noun = c.alt(c.x if noun_text == c.x.sg else c.y)[0]
         else:
-            verb, _ = rng.pick(T.DIALOG_VERBS)
-            noun = c.obj
-            cons = rng.pick(T.GENERIC_CONSEQUENCES)
-            btxt = f"{verb} {noun}"
-        title = S(f"{verb} {noun}?" if rng.chance(0.7) else f"{verb} this {noun}?", "dialog_title")
-        confirm = S(btxt if rng.chance(0.7) else verb, "button").keep("K11")
+            verb = c.pick(["Delete", "Remove", "Archive", "Delete", "Cancel" if c.dom["key"] in ("bikes", "ferry", "vet", "kayak", "tutor", "music", "pottery", "climb") else "Archive"])
+            noun = c.noun()
+            noun_text, alt_noun = noun.sg, c.alt(noun)[0]
+            cons = None
+            btxt = f"{verb} {noun_text}"
+        named = noun_text == c.x.sg and c.chance(0.3)
+        item = c.pick(item_names(c)) if named else None
+        if named:
+            title = S(f"{verb} {item}?", "dialog_title")
+        else:
+            title = S(f"{verb} {noun_text}?" if c.chance(0.7) else f"{verb} this {noun_text}?", "dialog_title")
+        confirm = S(btxt if c.chance(0.7) else verb, "button").keep("K11")
         bodies = []
-        planted = False
         if c.want(0.35):
-            bodies.append(S(rng.pick(T.DIALOG_ECHO).format(v=verb.lower(), obj=noun), "dialog_body").echo(title, "R4"))
-            planted = True
-        if not (swift and bodies) and (not planted or rng.chance(0.5)):
+            t, conf = dialog_echo(c, verb, noun_text, alt_noun)
+            bodies.append(S(t, "dialog_body").echo(title, "R4", conf=conf))
+        if not (swift and bodies) and (not bodies or c.chance(0.5)):
             if c.want(0.2) and not swift:
-                bodies.append(S(rng.pick(T.DIALOG_NARRATE).format(b=confirm.text), "dialog_body").narrate("R6", confirm, ct=True))
-            elif not bodies or rng.chance(0.6):
-                bodies.append(S(cons, "dialog_body").keep("K7"))
+                bodies.append(S(narrate_control(c, confirm.text), "dialog_body").narrate("R6", confirm, ct=True))
+            elif not bodies or c.chance(0.6):
+                bodies.append(S(cons if cons and c.chance(0.5) else dialog_keep(c, verb, noun_text), "dialog_body").keep("K7"))
         if swift and len(bodies) > 1:
             bodies = bodies[:1]
-        cancel = S(rng.pick(["Cancel", "Keep it", "Go back"]), "button")
+        cancel = S(c.pick(["Cancel", "Keep it", "Go back", "Not now"] if verb != "Cancel" else ["Keep it", "Go back", "Not now"]), "button")
         kids = [E("actions", E("button", s=cancel, primary=False), E("button", s=confirm, destructive=True))]
         d = E("dialog", *kids, title=title, body=bodies, confirm=True)
-    elif r < 0.85 and not swift:
-        # a form dialog
-        noun = c.obj
-        title = S(f"Rename {noun}" if rng.chance(0.5) else f"New {noun}", "dialog_title")
-        label, example, helper = rng.pick(c.dom["fields"])
-        f, lab = field_from(c, label, example, helper, False)
+    elif r < 0.72 and not swift:
+        # a form dialog: renaming takes a name; creating takes the domain's fields
+        noun = c.x if c.chance(0.6) else c.y
+        rename = c.chance(0.45)
+        if rename:
+            title = S(f"Rename {noun.sg}" if c.chance(0.6) else f"Rename this {noun.sg}", "dialog_title")
+            label = c.pick(["Name", f"{noun.Sg} name", "New name"])
+            example = f"e.g. {c.pick(item_names(c))}"
+            helper = c.f(c.pick(["The new name shows everywhere this {a} appears, including shared links.",
+                                 "Up to {n} characters; names must be unique in your {group}.",
+                                 "Links people have saved keep working."]), a=noun.sg)
+            fields = [(label, example, helper)]
+        else:
+            title = S(c.pick([f"New {noun.sg}", f"Add a {noun.sg}", f"Add {noun.sg}"]), "dialog_title")
+            fields = rng.some(c.dom["fields"], c.pick([1, 2]))
+        fkids = []
+        for fld in fields:
+            fe, _ = field_from(c, *fld, False)
+            fkids.append(fe)
         bodies = []
         if c.want(0.15):
-            bodies.append(S(rng.pick(["Give this {o} a new name.", "Enter a new name for the {o}.", "Name your {o}."]).format(o=noun),
-                            "dialog_body").echo(title, "R4", conf="judgement"))
-        elif rng.chance(0.5):
-            bodies.append(S(rng.pick(c.dom["facts"]), "dialog_body"))
-        save = S(rng.pick(["Save", "Create", f"Create {noun}", "Save name"]), "button")
-        if save.text == title.text:
+            if rename:
+                t = c.pick(["Give this {o} a new name.", "Enter a new name for the {o}.", "Choose a new name."]) if c.chance(0.5) \
+                    else c.pick(["Choose what to call it.", "Pick something different to call it.", "Call it something else."])
+            else:
+                t = c.pick(["Add a new {o}.", "Create {a_o} here.", "Fill in the details of your new {o}."]) if c.chance(0.5) \
+                    else c.pick([f"Set up another {c.alt(noun)[0]}.", "Start another one."])
+            bodies.append(S(t.format(o=noun.sg, a_o=article(noun.sg)), "dialog_body").echo(title, "R4", conf="judgement"))
+        elif c.chance(0.5):
+            bodies.append(S(about(c, noun), "dialog_body"))
+        save = S(c.pick(["Save", "Create", f"Create {noun.sg}", "Save name", "Add"]) if not rename else c.pick(["Save", "Rename", "Save name"]),
+                 "button")
+        if shares_stem(save.text, title.text):
             save.keep("K11")
-        kids = [f, E("actions", E("button", s=S("Cancel", "button"), primary=False), E("button", s=save))]
+        kids = fkids + [E("actions", E("button", s=S("Cancel", "button"), primary=False), E("button", s=save))]
+        d = E("dialog", *kids, title=title, body=bodies)
+    elif r < 0.85:
+        # an action page and its dialog (R9 when the dialog repeats the page title)
+        act = c.pick(["Export", "Import", "Share", "Print", "Download"])
+        noun = c.noun()
+        ptext = f"{act} {noun.pl}"
+        page_h1 = S(ptext, "h1")
+        if c.want(0.4):
+            if c.chance(0.6):
+                title = S(ptext, "dialog_title").echo(page_h1, "R9", conf="clear")
+            else:
+                syn = {"Export": "Download", "Import": "Bring in", "Share": "Send", "Print": "Print out", "Download": "Save"}[act]
+                title = S(f"{syn} your {c.alt(noun)[1]}", "dialog_title").echo(page_h1, "R9", conf="judgement")
+        else:
+            title = S(c.pick([f"{act} {c.rng.randrange(2, 40)} {noun.pl}?", f"{act} as CSV", f"{act} {noun.pl} from {c.pick(L.MONTHS)}",
+                              f"{act} to your {c.group}"]), "dialog_title")
+        body_t = c.f(c.pick(["Files over {n} MB are split into parts.", "The file includes notes and photos; it may take {n} minutes.",
+                             "Only {x} you can edit are included.", "Columns follow the order on screen."]))
+        bodies = [S(body_t, "dialog_body").keep("K7" if c.chance(0.3) else None)]
+        ok = S(c.pick([act, f"{act} now", "Start", "Continue"]), "button")
+        if shares_stem(ok.text, title.text):
+            ok.keep("K11")
+        kids = [E("actions", E("button", s=S("Cancel", "button"), primary=False), E("button", s=ok))]
         d = E("dialog", *kids, title=title, body=bodies)
     else:
         # an acknowledgement
-        t, echo_body, keep_body = rng.pick(ACKS)
-        title = S(t, "dialog_title")
+        t, echo_stem, echo_alt, keep_body = c.pick(ACKS)
+        title = S(c.f(t), "dialog_title")
         bodies = []
         if c.want(0.3):
-            bodies.append(S(echo_body, "dialog_body").echo(title, "R4", conf="judgement"))
+            if c.chance(0.5):
+                bodies.append(S(c.f(echo_stem), "dialog_body").echo(title, "R4", conf="judgement"))
+            else:
+                bodies.append(S(c.f(echo_alt), "dialog_body").echo(title, "R4", conf="judgement"))
         else:
-            bodies.append(S(keep_body, "dialog_body"))
-        ok = S(rng.pick(["OK", "Done", "Close"]), "button")
+            bodies.append(S(c.f(keep_body), "dialog_body"))
+        ok = S(c.pick(["OK", "Done", "Close", "Got it"]), "button")
         kids = [E("actions", E("button", s=ok))]
         d = E("dialog", *kids, title=title, body=bodies, sheetlike=False)
     body = []
-    if rng.chance(0.4):
-        body.append(E("section", E("h", s=S(cap(c.objs), "h1"), level=1),
-                      E("p", s=S(fact(c), "body"))))
+    if page_h1 is not None:
+        act_facts = {"Export": ["Exports include notes and photos.", "Export files are kept for {n} days.", "Exports open in any spreadsheet."],
+                     "Import": ["Imports accept CSV files up to {n} MB.", "Rows without a date are skipped and listed.", "Imports can be undone for {n} hours."],
+                     "Share": ["Shared links are read-only.", "Links expire after {n} days.", "People you share with need no account."],
+                     "Print": ["Each page fits one A4 sheet.", "Prints include the last {n} {y}.", "Photos print in black and white."],
+                     "Download": ["Downloads are zipped when over {n} MB.", "Downloads include notes and photos.", "Files are named by date."]}
+        body.append(E("section", E("h", s=page_h1, level=1), E("p", s=S(c.f(c.pick(act_facts[act])), "body"))))
+    elif c.chance(0.4):
+        body.append(E("section", E("h", s=S(c.noun().Pl, "h1"), level=1), E("p", s=S(product_fact(c), "body"))))
     body.append(d)
     if swift and not body[:-1]:
-        body.insert(0, E("section", E("p", s=S(fact(c), "body"))))
+        body.insert(0, E("section", E("p", s=S(product_fact(c), "body"))))
     if c.fw == "tsx":
         c.prop("open")
-    return Page(f"{cap(c.obj)}Dialog", "dialog", body, product=c.product, props=c.props)
+    name = c.pick([f"Confirm{ident_words(title.text)}", f"{ident_words(title.text)}Modal", f"{ident_words(title.text)}Sheet",
+                   f"{c.x.Sg}Actions"])
+    return Page(name[:40], "dialog", body, product=c.product, props=c.props)
 
 
 # ---------------------------------------------------------------------------------------------------------------
 # empty states
 
+EMPTY_TITLES = ["No {a} yet", "No {a} this {period}", "You have no {a}", "No {a} to show", "Nothing here yet", "No {a} found"]
+EMPTY_KEEP = ["{A} you add from any device appear here, newest first.", "Add one from the menu, or import a CSV.",
+              "{A} shared with you by your {group} also show here.", "Try clearing the filters; {n} {a} are hidden by them.",
+              "Your {role} adds {a} each {day}; check back then.", "Import last year’s {a} from a spreadsheet to get going."]
+EMPTY_ECHO_STEM = ["There are no {a} yet.", "You don’t have any {a}.", "No {a} have been added.", "Your list of {a} is empty.",
+                   "It looks like there are no {a} here.", "You haven’t got any {a} at the moment."]
+
+
+def empty_copy(c: Ctx, noun: Noun):
+    """An empty-state title and a K8 body (cause or next action) for ``noun``."""
+    for et, eb in c.dom["empty"]:
+        if noun.pl.lower() in et.lower() and c.chance(0.4):
+            return et, eb
+    t = c.f(c.pick(EMPTY_TITLES), a=noun.pl, period=c.pick(["week", "month", "season"]))
+    return t, c.f(c.pick(EMPTY_KEEP), a=noun.pl, A=noun.Pl)
+
 
 def empty(c: Ctx) -> Page:
-    rng = c.rng
-    et, eb = rng.pick(c.dom["empty"])
-    title = S(et, "empty_title")
-    action = None
-    if rng.chance(0.65):
-        a = S(rng.pick([f"New {c.obj}", f"Add {c.obj}", f"Create {c.obj}", f"Add your first {c.obj}"]), "button")
-        a.keep("K11")
-        action = E("button", s=a)
-    if c.want(0.4):
-        body = S(rng.pick(T.EMPTY_ECHO).format(objs=c.objs if not et.lower().startswith("no ") else et[3:].replace(" yet", "").lower()),
-                 "empty_body").echo(title, "R4")
-    elif action is not None and c.want(0.2):
-        body = S(rng.pick(T.EMPTY_NARRATE).format(obj=c.obj, b=action["s"].text), "empty_body").narrate("R6", action["s"], ct=True)
-    else:
-        body = S(eb, "empty_body").keep("K8")
+    noun = c.noun()
+    et, eb = empty_copy(c, noun)
     page = []
-    if rng.chance(0.4):
-        h = S(cap(c.objs), "h1")
+    h = None
+    if c.chance(0.45):
+        h = S(noun.Pl, "h1")
         hk = [E("h", s=h, level=1)]
         if c.want(0.15):
-            hk.append(E("sub", s=S(rng.pick(T.SUB_ECHO).format(n=c.objs), "subtitle").echo(h, "R3")))
+            hk.append(E("sub", s=S(restate(c, noun), "subtitle").echo(h, "R3")))
+        elif c.chance(0.3):
+            hk.append(E("sub", s=S(about(c, noun), "subtitle")))
         page.append(E("head", *hk))
+    action = None
+    if c.chance(0.65):
+        a = S(c.pick([f"New {noun.sg}", f"Add {noun.sg}", f"Create {noun.sg}", f"Add your first {noun.sg}", f"Log a {noun.sg}"]), "button")
+        a.keep("K11")
+        action = E("button", s=a)
+    if h is not None and c.want(0.2):
+        title = S(h.text, "empty_title").echo(h, "R9", conf="clear")
+        body = S(eb, "empty_body").keep("K8")
+    else:
+        title = S(et, "empty_title")
+        if c.want(0.4):
+            if c.chance(0.5):
+                body = S(c.pick(EMPTY_ECHO_STEM).format(a=noun.pl), "empty_body").echo(title, "R4")
+            else:
+                body = S(nothing_line(c), "empty_body").echo(title, "R4", conf="judgement")
+        elif action is not None and c.want(0.2):
+            body = S(c.pick([narrate_control(c, action["s"].text), f"Use the button below to create your first {noun.sg}.",
+                             "Click the button below to add one."]), "empty_body").narrate("R6", action["s"], ct=True)
+        else:
+            body = S(eb, "empty_body").keep("K8")
     page.append(E("empty", title=title, body=body, action=action))
-    if rng.chance(0.25):
-        page.append(E("note", s=S(rng.pick(["Need a hand? Our help centre has a five-minute guide.",
-                                           "Items you delete stay in the bin for 30 days."]), "caption")))
-    return Page(f"Empty{cap(c.objs)}", "empty", page, product=c.product)
+    if c.chance(0.25):
+        page.append(E("note", s=S(c.f(c.pick(["Need a hand? Our help centre has a {n}-minute guide.",
+                                              "{X} you delete stay in the bin for {n} days.", "Questions? Ask your {role}."])), "caption")))
+    return Page(c.pick([f"No{ident_words(noun.pl)}", f"{ident_words(noun.pl)}Placeholder", f"{ident_words(noun.pl)}Blank",
+                        f"Zero{ident_words(noun.pl)}"]), "empty", page, product=c.product)
 
 
 # ---------------------------------------------------------------------------------------------------------------
 # dashboards
 
+DASH_HEADS = {
+    "Overview": ["At a glance", "Summary"], "Dashboard": ["Home", "Your dashboard"], "This week": ["Weekly view", "Week so far"],
+    "Today": ["Right now", "Today’s view"], "{p} at a glance": ["Overview", "Summary"], "{Group} overview": ["Summary", "At a glance"],
+    "Your {group}": ["Members’ view", "Home"], "{X} overview": ["Summary", "At a glance"], "Home": ["Your dashboard", "Start"],
+    "At a glance": ["Overview", "Summary"], "Summary": ["Overview", "At a glance"],
+}
+
+
+GROUP_LABELS = ["Details", "Summary", "Info", "Key facts", "More", "Overview", "At a glance", "Specifics", "The basics"]
+FIELD_LABELS = [("Due", lambda c: L.date(c.rng)), ("Owner", lambda c: L.person(c.rng)), ("Location", lambda c: c.pick(L.PLACES)),
+                ("Last {y1}", lambda c: c.pick(["Yesterday", "3 days ago", L.date(c.rng)])), ("Next {y1}", lambda c: f"{c.pick(L.DAYS)} {L.clock(c.rng)}"),
+                ("Added", lambda c: L.date(c.rng, year=True)), ("Shared with", lambda c: f"{c.rng.randrange(2, 30)} people"),
+                ("Reference", lambda c: f"#{c.rng.randrange(100, 9999)}")]
+
+
+def detail_card(c: Ctx):
+    """A card of field-style labels (K1) and their values, sometimes under a group label that only names what
+    comes next (R2)."""
+    kids = []
+    if c.want(0.3):
+        kids.append(E("eyebrow", s=S(c.pick(GROUP_LABELS), "label").decor("R2")))
+    pairs = []
+    for lab_t, fn in c.rng.some(FIELD_LABELS, c.pick([2, 3])):
+        pairs.append(E("stat", label=S(c.f(lab_t), "label").keep("K1"), value=S(fn(c), "body"), note=None))
+    kids.append(E("stats", *pairs))
+    # a kicker that opens a card of three or more nodes reads as the card's title (h3), so a group label sits in a
+    # plain block instead
+    return E("div", *kids) if len(kids) > 1 else E("card", *kids, shadcn=False)
+
+
+def figure_card(c: Ctx):
+    """A card whose heading names a figure and whose label restates it (R5), or narrows it (KEEP)."""
+    noun = c.noun()
+    h3 = S(noun.Pl, "h3")
+    v = str(c.rng.randrange(2, 400))
+    if c.want(0.35):
+        if c.chance(0.6):
+            lab = S(noun.Pl, "label").echo(h3, "R5", conf="clear")
+        else:
+            lab = S(c.pick([f"Total {noun.pl}", f"All {noun.pl}", f"Number of {noun.pl}", cap(c.alt(noun)[1])]), "label").echo(h3, "R5", conf="judgement")
+    else:
+        lab = S(c.pick([f"{noun.Pl} this {c.pick(['week', 'month', 'season'])}", f"Active {noun.pl}", f"{noun.Pl} in {c.place}",
+                        f"Overdue {noun.pl}", f"{noun.Pl} shared with you"]), "label")
+    return E("card", E("h", s=h3, level=3), E("stats", E("stat", label=lab, value=S(v, "stat"), note=None)), shadcn=False)
+
+
+def next_card(c: Ctx):
+    """A field-style kicker over a value (K1, judgement when styled as a kicker)."""
+    t = c.f(c.pick(L.FIELD_KICKERS))
+    names = item_names(c)
+    if t.startswith("Your plan"):
+        val = f"{c.pick(L.PLANS[1:6])}, {L.money(c.rng, 4, 40)} a month"
+    elif t in ("Owner", "Assigned to"):
+        val = L.person(c.rng)
+    elif t == "Location":
+        val = c.pick(L.PLACES)
+    elif t.startswith("Your " + c.group) or t == f"Your {c.group}":
+        val = f"{c.place} {c.group}"
+    else:
+        val = f"{c.pick(names)}, {c.pick(L.DAYS)} {L.clock(c.rng)}"
+    kick = S(t, "eyebrow").keep("K1", conf="judgement")
+    h = S(val, "h3")
+    kids = [E("eyebrow", s=kick), E("h", s=h, level=3)]
+    if c.chance(0.6):
+        if t.startswith("Your plan") or t == "Renews":
+            line = c.pick(["Renews on {date}.", "Billed to the card ending {n}4.", "Switch plans at any time; we pro-rate the difference."])
+        elif t in ("Owner", "Assigned to"):
+            line = c.pick(["Since {date}.", "Ask them before changing it.", "Hand over from the menu."])
+        else:
+            line = c.pick(["{person} is leading.", "Reminder sent {n} days before.", "Changes allowed until {clock} the day before.",
+                           "{n} people are going.", "Meet at {place}."])
+        kids.append(E("p", s=S(c.f(line), "body")))
+    return E("card", *kids)
+
 
 def dashboard(c: Ctx) -> Page:
     rng = c.rng
-    htext = rng.pick(["Overview", "Dashboard", "This week", "Today", f"{c.product} at a glance"])
-    syn = {"Overview": ["At a glance", "Summary"], "Dashboard": ["Your dashboard", "Home"], "This week": ["Weekly view", "Week so far"],
-           "Today": ["Today’s view", "Right now"]}.get(htext, ["At a glance"])
+    key = c.pick(list(DASH_HEADS))
+    htext = c.f(key)
+    syn = DASH_HEADS[key]
     h1 = S(htext, "h1")
     kids = []
     if c.want(0.2):
-        kids.append(E("eyebrow", s=S(rng.pick(syn), "eyebrow").echo(h1, "R1", conf="judgement")))
-    elif rng.chance(0.25):
-        kids.append(E("eyebrow", s=S(rng.pick(["Week 23 · June 2026", "Tuesday 9 June", "Q2 2026", "May 2026"]), "eyebrow").keep("K1")))
+        same_kind = genre_group(htext)
+        if same_kind and c.chance(0.5):
+            kids.append(E("eyebrow", s=S(c.pick([w for w in same_kind if w != htext]), "eyebrow").echo(h1, "R1", conf="clear")))
+        else:
+            kids.append(E("eyebrow", s=S(c.pick(syn), "eyebrow").echo(h1, "R1", conf="judgement")))
+    elif c.chance(0.25):
+        kids.append(E("eyebrow", s=S(c.pick([f"Week {rng.randrange(1, 52)} · {c.pick(L.MONTHS)} 2026", f"{c.pick(L.DAYS)} {L.date(rng)}",
+                                             f"Q{rng.randrange(1, 5)} 2026", f"{c.pick(L.MONTHS)} 2026"]), "eyebrow").keep("K1")))
     elif c.want(0.06):
-        kids.append(E("eyebrow", s=S(rng.pick(["Local time 09:41", "UTC 14:02", "51.45° N · 2.59° W"]), "eyebrow").decor("R2")))
+        kids.append(E("eyebrow", s=S(c.pick(L.meta_strip(rng)), "eyebrow").decor("R2")))
     kids.append(E("h", s=h1, level=1))
-    stats_n = rng.pick([2, 3, 4])
+    stats_n = c.pick([2, 3, 4])
     first_fact = None
     if c.want(0.12):
-        kids.append(E("sub", s=S(rng.pick(["Here are your {n} key numbers.", "The {n} cards below cover the basics.",
-                                           "Your {n} main figures are shown below."]).format(n=T.NUMBER_WORDS[stats_n]),
-                                 "subtitle").narrate("R16", None)))
-    elif htext in ("Overview", "Dashboard") and c.want(0.2):
-        kids.append(E("sub", s=S(rng.pick(["An overview of everything.", "Your dashboard, at a glance.",
-                                           "An at-a-glance summary of everything."]), "subtitle").echo(h1, "R3", conf="judgement")))
-    elif rng.chance(0.5):
-        first_fact = S(rng.pick(["Figures update every 15 minutes.", "Numbers exclude test data.", "Times are shown in UK time."]),
-                       "subtitle")
+        kids.append(E("sub", s=S(c.pick(["Here are your {n} key numbers.", "The {n} cards below cover the basics.",
+                                         "Your {n} main figures are shown below.", "{N} figures, below."])
+                                 .format(n=L.NUMBER_WORDS[stats_n], N=cap(L.NUMBER_WORDS[stats_n])), "subtitle").narrate("R16", None)))
+    elif c.want(0.2):
+        if shares_stem("overview dashboard glance", htext) and c.chance(0.5):
+            t = c.pick(["An overview of everything.", "Your dashboard, at a glance.", "An at-a-glance summary.", "Everything, at a glance."])
+            kids.append(E("sub", s=S(t, "subtitle").echo(h1, "R3", conf="judgement")))
+        else:
+            t = (f"{c.pick(['A summary of', 'A look at', 'Everything about', 'How things stand with'])} "
+                 f"{c.pick(['your ' + c.x.pl, 'your ' + c.group, 'everything', 'it all'])}{c.pick(['.', ', at a glance.', ' in one place.'])}")
+            kids.append(E("sub", s=S(t, "subtitle").echo(h1, "R3", conf="judgement")))
+    elif c.chance(0.5):
+        first_fact = S(c.f(c.pick(["Figures update every {n} minutes.", "Numbers exclude test data.", "Times are shown in {zone}.",
+                                   "Totals include {y} still in draft.", "Counts reset on the 1st of each month."])), "subtitle")
         kids.append(E("sub", s=first_fact))
     body = [E("head", *kids)]
-    if rng.chance(0.5):
-        body.append(E("tabs", items=[S(t, "tab") for t in T.TIME_RANGES]))
-    stats = []
-    for label, value in rng.some(c.dom["stats"], stats_n):
-        lab = S(label, "label")
-        note = None
-        if c.want(0.08):
-            note = S(rng.pick(["Total {l}", "{L} so far", "Your {l}"]).format(l=lower_first(label), L=label), "caption").echo(lab, "R5", conf="judgement")
-        elif rng.chance(0.35):
-            note = S(rng.pick(["+12% on last week", "−3% on last month", "Up 4 since Monday", "Same as last week"]), "caption")
-        stats.append(E("stat", value=S(value, "stat"), label=lab, note=note))
-    body.append(E("stats", *stats))
+    if c.chance(0.5):
+        body.append(E("tabs", items=[S(t, "tab") for t in c.pick(L.RANGE_SETS)]))
+    stats, labels, values = stats_row(c, stats_n)
+    body.append(E("stats", *stats.kids))
+    if c.chance(0.3):
+        body.append(next_card(c))
+    if c.chance(0.3):
+        body.append(E("grid", figure_card(c), *([figure_card(c)] if c.chance(0.4) else [])))
+    # the same figure repeated in a later card (R14), or a different figure with the same value (KEEP)
+    if c.want(0.16):
+        j = rng.randrange(len(labels))
+        lab2 = S(labels[j].text, "label").echo(labels[j], "R14", conf="clear")
+        val2 = S(values[j].text, "stat").echo(values[j], "R14")
+        body.append(E("section", E("h", s=S(c.pick(["Summary", "This period", "Key figure", "Highlights"]), "h2"), level=2),
+                      E("stats", E("stat", value=val2, label=lab2, note=None))))
+    elif c.chance(0.06):
+        j = rng.randrange(len(labels))
+        others = [s for s, _ in c.dom["stats"] if s not in [x.text for x in labels]]
+        if others:
+            body.append(E("section", E("h", s=S("Also this week", "h2"), level=2),
+                          E("stats", E("stat", value=S(values[j].text, "stat"), label=S(c.pick(others), "label"), note=None))))
     # a panel
-    panel = []
-    ptitle = None
-    if c.want(0.1):
-        ptitle = S(htext, "h2").echo(h1, "R9")
+    if c.chance(0.5):
+        panel = chart_panel(c)
+        if c.want(0.12):
+            panel.kids.append(E("badge", s=S(static_status(c), "badge").decor("R11")))
+        body.append(panel)
     else:
-        ptitle = S(rng.pick(["Usage over time", "Recent activity", "By category", f"Latest {c.objs}", "Needs attention"]), "h2")
-    panel.append(E("h", s=ptitle, level=2))
-    legend = ptitle.text in ("Usage over time", "By category", htext) and rng.chance(0.6)
-    if legend:
-        panel.append(E("legend", items=[S(x, "list_item").keep("K2") for x in rng.pick(T.LEGENDS)]))
-    if not legend or rng.chance(0.4):
-        panel.append(data_table(c, n_rows=rng.pick([3, 4, 5])))
-    if c.fw != "html" and rng.chance(0.35):
-        panel.append(E("status", s=S(rng.pick(["Connected", "Syncing", "Up to date"]), "body").keep("K2"),
-                       bound=c.prop("online") if c.fw == "tsx" else "isOnline"))
-    elif c.want(0.12):
-        panel.append(E("badge", s=S(rng.pick(["● Live", "Live", "● Real-time"]), "badge").decor("R11")))
+        panel = []
+        if c.want(0.1):
+            ptitle = S(htext, "h2").echo(h1, "R9")
+        else:
+            ptitle = S(c.pick([f"Recent {c.y.pl}", f"Latest {c.x.pl}", "Needs attention", f"{c.y.Pl} due soon", f"Busiest {c.x.pl}"]), "h2")
+        panel.append(E("h", s=ptitle, level=2))
+        panel.append(data_table(c, n_rows=c.pick([3, 4, 5])))
+        body.append(E("section", *panel))
+    tail = []
+    if c.fw != "html" and c.chance(0.35):
+        tail.append(E("status", s=S(c.pick(L.STATUS_WORDS), "body").keep("K2"), bound=c.prop("online") if c.fw == "tsx" else "isOnline"))
+    elif c.want(0.1):
+        tail.append(E("badge", s=S(static_status(c), "badge").decor("R11")))
     if first_fact is not None and c.want(0.25):
-        alt = {"Figures update every 15 minutes.": "Updated every 15 minutes.", "Numbers exclude test data.":
-               "Test data is not included.", "Times are shown in UK time.": "All times are UK time."}[first_fact.text]
-        panel.append(E("note", s=S(rng.pick([first_fact.text, alt]), "caption").echo(first_fact, "R14")))
-    elif c.fw == "tsx" and rng.chance(0.3):
-        panel.append(E("dyn", s=S("Last updated VAR updated at.", "caption"), pre="Last updated ", expr="updatedAt", post=".", look="note"))
-    body.append(E("section", *panel))
-    return Page("Dashboard" if htext == "Dashboard" else f"{c.product}Dashboard", "dashboard", body, product=c.product,
-                props=c.props)
+        tail.append(E("note", s=S(first_fact.text, "caption").echo(first_fact, "R14")))
+    elif c.fw == "tsx" and c.chance(0.3):
+        pre, post = c.pick([("Last updated ", "."), ("Updated ", ""), ("Synced ", " ago"), ("As of ", ""), ("Data from ", ".")])
+        tail.append(E("dyn", s=S(f"{pre}VAR updated at{post}", "caption"), pre=pre, expr="updatedAt", post=post, look="note"))
+    if tail:
+        body.append(E("section", *tail))
+    name = c.pick(["Overview", "HomeScreen", "Summary", f"{ident_words(c.product)}Home", "StatsPage", f"{ident_words(c.group)}Overview"])
+    return Page(name, "dashboard", body, product=c.product, props=c.props)
 
 
 # ---------------------------------------------------------------------------------------------------------------
 # game menus and HUDs
 
+GAME_SETTINGS = {
+    "Video": [("Field of view", "Wider views show more but can cause motion sickness on large screens.", "How much you can see."),
+              ("Motion blur", "Turning it off can help if you feel sick while turning quickly.", "Smearing when moving fast."),
+              ("Brightness", "Set it so the symbol on the left is only just visible.", "How light the picture is."),
+              ("Frame rate limit", "Lower limits save battery on handhelds.", "Cap on frames per second.")],
+    "Audio": [("Master volume", "Voice chat has its own slider.", "Overall loudness."),
+              ("Music", "Menus keep their music even at zero.", "Soundtrack level."),
+              ("Voice chat", "Push-to-talk is on by default; change the key under Controls.", "Talking to your squad.")],
+    "Controls": [("Mouse sensitivity", "Applies to aiming only; menus use your system setting.", "How fast the cursor turns."),
+                 ("Invert Y axis", "Applies to mouse and controller.", "Flip up and down."),
+                 ("Vibration", "Controllers only; does nothing on keyboard.", "Rumble feedback.")],
+    "Gameplay": [("Difficulty", "Can be changed at any time; achievements need Normal or higher.", "How hard it is."),
+                 ("Auto-save", "Saves every {n} minutes and at each checkpoint.", "Keeps progress automatically."),
+                 ("Hints", "Shows a hint after {n} minutes stuck on a puzzle.", "Little nudges.")],
+    "Accessibility": [("Subtitles", "Includes speaker names and important sound effects.", "Words on screen for speech."),
+                      ("Colour-blind mode", "Changes enemy outlines and objective markers only.", "Palette for colour vision."),
+                      ("Hold to press", "Turns rapid button presses into a single hold.", "Fewer repeated presses.")],
+}
+OVERLAY_EB = {"PAUSED": ["{M} ON HOLD", "{M} SUSPENDED", "TIME STOPPED", "SIMULATION FROZEN", "ON HOLD", "FROZEN IN PLACE", "BREAK"],
+              "GAME OVER": ["RUN ENDED", "THE END", "DEFEATED", "ALL LIVES LOST", "{M} FAILED", "OUT OF LIVES"],
+              "VICTORY": ["YOU WON", "{M} ACCOMPLISHED", "STAGE CLEARED", "SUCCESS", "{M} COMPLETE", "WELL DONE"],
+              "LOADING": ["PLEASE WAIT", "STAND BY", "ONE MOMENT", "HOLD TIGHT", "NEARLY THERE"]}
+OVERLAY_KEEP = {"PAUSED": ["Autosaved at the last checkpoint, {n} minutes ago.", "Progress since the last checkpoint is not saved.",
+                           "Online matches keep running while you are paused.", "Your squad has been told you are away."],
+                "GAME OVER": ["You reached wave {n}, two short of your best.", "Coins collected this run are kept.",
+                              "Restarting resets this level’s timer but keeps your upgrades.", "{n} lives restore at {clock}."],
+                "VICTORY": ["Three stars unlocks the bonus route on the map.", "Your time of {d}:{n:02d} is a new personal best.",
+                            "Rewards not claimed now are lost when you quit.", "{n} crew levelled up."],
+                "LOADING": ["Estimated wait {n}0 seconds, {d} players in your region.", "Cross-play is on: you may meet console players.",
+                            "Leaving the queue three times in an hour adds a {n}-minute wait."]}
+
 
 def game(c: Ctx) -> Page:
-    rng = c.rng
-    g = rng.pick(T.GAMES)
+    g = c.pick(T.GAMES)
     c.product = g["title"]
-    r = rng.random()
+    r = c.rng.random()
     if r < 0.45:
         return game_overlay(c, g)
     if r < 0.6:
@@ -1094,143 +1995,164 @@ def game(c: Ctx) -> Page:
 
 
 def _keep_sub_ct(text: str) -> bool:
-    return any(w in text.lower() for w in ("resum", "restart", "leaving", "claimed", "quit", "paused", "queue"))
+    return any(w in text.lower() for w in ("resum", "restart", "leaving", "claimed", "quit", "paused", "queue", "squad"))
 
 
 def game_overlay(c: Ctx, g) -> Page:
-    rng = c.rng
-    st = rng.pick(T.GAME_STATES)
-    caps = rng.chance(0.6)
-    up = (lambda s: s.upper()) if caps else (lambda s: s)
-    head_text = rng.pick(st["head"])
-    if caps:
-        head_text = head_text.upper()
+    st = c.pick(T.GAME_STATES)
+    key = st["head"][0].upper()
+    caps = c.chance(0.6)
+    up = (lambda s: s.upper()) if caps else (lambda s: s[:1] + s[1:].lower() if s.isupper() else s)
+    head_text = c.pick(st["head"])
+    head_text = head_text.upper() if caps else (head_text.capitalize() if head_text.isupper() else head_text)
     h1 = S(head_text, "h1")
     kids = []
+    mission = g["mission"]
     if c.want(0.4):
-        kids.append(E("eyebrow", s=S(up(rng.pick(st["eyebrow_echo"])), "eyebrow").echo(h1, "R1", conf="judgement")))
-    elif rng.chance(0.3):
-        kids.append(E("eyebrow", s=S(up(rng.pick([g["title"], "Chapter 3 · The docks", f"{cap(g['mission'])} 4", "Act II"])),
+        ebt = c.pick(OVERLAY_EB[key] + st["eyebrow_echo"]).format(M=mission.upper())
+        kids.append(E("eyebrow", s=S(up(ebt), "eyebrow").echo(h1, "R1", conf="judgement")))
+    elif c.chance(0.3):
+        kids.append(E("eyebrow", s=S(up(c.pick([g["title"], f"Chapter {c.rng.randrange(2, 9)} · {c.pick(['The docks', 'Low tide', 'Night run', 'The orchard'])}",
+                                                f"{cap(mission)} {c.rng.randrange(2, 30)}", f"Act {c.pick(['I', 'II', 'III', 'IV'])}"])),
                                      "eyebrow").keep("K1")))
     elif c.want(0.08):
-        kids.append(E("eyebrow", s=S(rng.pick(T.HUD_DECOR_META), "eyebrow").decor("R2")))
+        kids.append(E("eyebrow", s=S(L.hud_meta(c.rng), "eyebrow").decor("R2")))
     kids.append(E("h", s=h1, level=1))
-    action = S(up(rng.pick(st["action"])), "button").keep("K11")
-    menu = [S(up(x), "button") for x in rng.some(T.GAME_MENU, rng.pick([1, 2, 3]))]
+    action = S(up(c.pick(st["action"])), "button").keep("K11")
+    menu = [S(up(x), "button") for x in c.rng.some(T.GAME_MENU, c.pick([1, 2, 3]))]
     buttons = [action] + menu
     sub = None
     if c.want(0.35):
-        line = rng.pick(st["narrate"])
+        if c.chance(0.5):
+            line = c.pick(st["narrate"])
+        else:
+            line = narrate_control(c, action.text.capitalize() if action.text.isupper() else action.text)
         sub = S(line, "subtitle").narrate("R6", action, ct=True, conf="judgement")
     elif c.want(0.2):
-        sub = S(rng.pick(st["sub_echo"]), "subtitle").echo(h1, "R3", conf="judgement")
+        sub = S(c.pick(st["sub_echo"]), "subtitle").echo(h1, "R3", conf="judgement")
     elif c.want(0.08):
-        sub = S(rng.pick(["Choose one of the {n} options below.", "Pick from the {n} options below."]).format(
-            n=T.NUMBER_WORDS[len(buttons)]), "subtitle").narrate("R16", None)
-    elif rng.chance(0.5):
-        t = rng.pick(st["keep_sub"])
+        sub = S(c.pick(["Choose one of the {n} options below.", "Pick from the {n} options below.", "{N} choices, below."]).format(
+            n=L.NUMBER_WORDS[len(buttons)], N=cap(L.NUMBER_WORDS[len(buttons)])), "subtitle").narrate("R16", None)
+    elif c.chance(0.55):
+        t = c.f(c.pick(OVERLAY_KEEP[key]))
         ct = _keep_sub_ct(t)
         sub = S(t, "subtitle").keep("K4" if ct else None, ct=ct, conf="judgement" if ct else "clear")
     if sub is not None:
         kids.append(E("sub", s=sub))
     body = [E("head", *kids), E("actions", *[E("button", s=b, primary=i == 0) for i, b in enumerate(buttons)])]
-    if rng.chance(0.2):
-        body.append(E("note", s=S(rng.pick(T.GAME_HINTS), "caption").keep("K4", ct=True)))
-    return Page(rng.pick(["PauseMenu", "OverlayScreen", "EndScreen", "StateOverlay"]), "game", body, product=g["title"])
+    if c.chance(0.2):
+        body.append(E("note", s=S(c.pick(T.GAME_HINTS), "caption").keep("K4", ct=True)))
+    return Page(c.pick(["PauseMenu", "OverlayScreen", "EndScreen", "StateOverlay", "RunOverPanel", "QueuePanel"]), "game", body,
+                product=g["title"])
 
 
 def game_main(c: Ctx, g) -> Page:
-    rng = c.rng
-    h1 = S(g["title"].upper() if rng.chance(0.5) else g["title"], "h1")
+    h1 = S(g["title"].upper() if c.chance(0.5) else g["title"], "h1")
     kids = []
-    if rng.chance(0.4):
-        kids.append(E("eyebrow", s=S(rng.pick(["Season 2", "Early access", "Director’s cut", "Chapter one"]), "eyebrow").keep("K1")))
+    if c.chance(0.4):
+        kids.append(E("eyebrow", s=S(c.pick([f"Season {c.rng.randrange(2, 7)}", "Early access", "Director’s cut", "Chapter one",
+                                             f"Update {c.rng.randrange(1, 4)}.{c.rng.randrange(0, 9)}"]), "eyebrow").keep("K1")))
     kids.append(E("h", s=h1, level=1))
-    if rng.chance(0.4):
-        kids.append(E("sub", s=S(rng.pick(["Your last save: Harbour, 2 hours ago.", "Cross-play is on.",
-                                           "Server maintenance on Thursday from 06:00 to 08:00 UK time."]), "subtitle")))
-    items = rng.some(T.GAME_MAIN, rng.pick([3, 4, 5])) + rng.some(g["items"], rng.pick([0, 1, 2]))
+    if c.chance(0.4):
+        kids.append(E("sub", s=S(c.f(c.pick(["Your last save: {place}, {n} hours ago.", "Cross-play is on.",
+                                             "Server maintenance on {day} from 06:00 to 08:00 UK time.", "{n} friends online."])), "subtitle")))
+    items = c.rng.some(T.GAME_MAIN, c.pick([3, 4, 5])) + c.rng.some(g["items"], c.pick([0, 1, 2]))
     buttons = [S(x, "button") for x in items]
     body = [E("head", *kids), E("actions", *[E("button", s=b, primary=i == 0) for i, b in enumerate(buttons)])]
     if c.want(0.15):
-        body.append(E("note", s=S(rng.pick(["Use the menu to navigate.", "Select an option to begin.", "Click any option to continue."]),
-                                  "caption").narrate("R6", None, ct=True, conf="judgement")))
-    if rng.chance(0.5):
-        body.append(E("note", s=S(rng.pick(["v1.0.4", "Build 2026.06.11", "v0.9.2 early access"]), "caption").keep()))
+        body.append(E("note", s=S(c.pick(["Use the menu to navigate.", "Select an option to begin.", "Click any option to continue.",
+                                          narrate_control(c, buttons[0].text)]), "caption").narrate("R6", None, ct=True, conf="judgement")))
+    if c.chance(0.5):
+        body.append(E("note", s=S(c.pick([f"v1.{c.rng.randrange(0, 9)}.{c.rng.randrange(0, 20)}", f"Build 2026.{c.rng.randrange(1, 12):02d}.{c.rng.randrange(1, 28):02d}",
+                                          f"v0.{c.rng.randrange(5, 9)}.{c.rng.randrange(0, 9)} early access"]), "caption").keep()))
     if c.want(0.12):
-        body.append(E("meta", items=[S(rng.pick(T.HUD_DECOR_META), "caption").decor("R2")]))
-    return Page("MainMenu", "game", body, product=g["title"])
+        body.append(E("meta", items=[S(L.hud_meta(c.rng), "caption").decor("R2")]))
+    return Page(c.pick(["MainMenu", "TitleScreen", "StartMenu"]), "game", body, product=g["title"])
 
 
 def game_settings(c: Ctx, g) -> Page:
-    rng = c.rng
     swift = c.fw == "swift"
-    htext = rng.pick(["SETTINGS", "Settings", "OPTIONS", "Options"])
+    htext = c.pick(["SETTINGS", "Settings", "OPTIONS", "Options"])
     h1 = S(htext, "h1")
     body = []
     nav_title = None
-    if swift and rng.chance(0.5):
+    if swift and c.chance(0.5):
         nav_title = S(htext.capitalize(), "h1")
         if c.want(0.4):
             body.append(E("section", E("h", s=S(htext.capitalize(), "h2").echo(nav_title, "R9"), level=2)))
     else:
         kids = []
         if c.want(0.2):
-            kids.append(E("eyebrow", s=S(rng.pick(["CONFIGURATION", "PREFERENCES", "SYSTEM"]) if htext.isupper() else
-                                         rng.pick(["Configuration", "Preferences"]), "eyebrow").echo(h1, "R1", conf="judgement")))
+            kids.append(E("eyebrow", s=S(c.pick(["CONFIGURATION", "PREFERENCES", "SYSTEM", "SETUP"]) if htext.isupper() else
+                                         c.pick(["Configuration", "Preferences", "Setup"]), "eyebrow").echo(h1, "R1", conf="judgement")))
+        elif c.chance(0.2):
+            kids.append(E("eyebrow", s=S(g["title"].upper() if htext.isupper() else g["title"], "eyebrow").keep("K1")))
         kids.append(E("h", s=h1, level=1))
         if c.want(0.15):
-            kids.append(E("sub", s=S(rng.pick(["Change the game settings.", "Adjust your options here.", "Configure the game."]),
-                                     "subtitle").echo(h1, "R3")))
+            kids.append(E("sub", s=S(c.pick(["Change the game settings.", "Adjust your options here.", "Configure the game.",
+                                             "Tweak how it plays."]), "subtitle").echo(h1, "R3", conf="judgement")))
         body.append(E("head", *kids))
-    tabs = rng.some(T.GAME_TABS, rng.pick([3, 4, 5]))
+    tabs = c.rng.some(list(GAME_SETTINGS), c.pick([3, 4, 5]))
     body.append(E("tabs", items=[S(t, "tab") for t in tabs]))
-    sec = rng.pick(tabs)
+    sec = c.pick(tabs)
     h2 = S(sec, "h2").keep("K11")  # the open tab's name over its panel
     rows = [E("h", s=h2, level=2)]
-    for label, helper in rng.some(T.GAME_SETTINGS, rng.pick([2, 3, 4])):
+    for label, helper, alt in c.rng.some(GAME_SETTINGS[sec], c.pick([2, 3])):
         lab = S(label, "label")
         if c.want(0.15):
-            hl = S(rng.pick(["Adjust the {l}.", "Change your {l}.", "Set the {l}."]).format(l=lower_first(label)), "helper").echo(lab, "R5")
-        elif rng.chance(0.7):
-            hl = S(helper, "helper").keep("K4")
+            if c.chance(0.5):
+                hl = S(c.pick(["Adjust the {l}.", "Change your {l}.", "Set the {l}.", "Turn {l} up or down."]).format(l=lower_first(label)),
+                       "helper").echo(lab, "R5")
+            else:
+                hl = S(alt, "helper").echo(lab, "R5", conf="judgement")
+        elif c.chance(0.7):
+            hl = S(c.f(helper), "helper").keep("K4")
         else:
             hl = None
         rows.append(E("toggle", label=lab, helper=hl))
-    if rng.chance(0.3):
-        rows.append(E("note", s=S(rng.pick(T.GAME_HINTS), "caption").keep("K4", ct=True)))
+    if c.chance(0.3):
+        rows.append(E("note", s=S(c.pick(T.GAME_HINTS), "caption").keep("K4", ct=True)))
     body.append(E("section", *rows))
-    done = S(rng.pick(["APPLY", "Apply", "BACK", "Back", "Save and exit"]), "button")
-    acts = [E("button", s=done)]
+    done = S(c.pick(["APPLY", "Apply", "BACK", "Back", "Save and exit", "Confirm"]), "button")
     if c.want(0.1):
-        body.append(E("note", s=S(f"Press {done.text.capitalize()} to keep your changes.", "caption").narrate("R6", done, ct=True)))
-    body.append(E("actions", *acts))
-    return Page("SettingsMenu", "game", body, product=g["title"], nav_title=nav_title)
+        body.append(E("note", s=S(c.pick([f"Press {done.text.capitalize()} to keep your changes.", narrate_control(c, done.text.capitalize())]),
+                                  "caption").narrate("R6", done, ct=True)))
+    body.append(E("actions", E("button", s=done)))
+    return Page(c.pick(["OptionsMenu", "GameOptions", "OptionsScreen"]), "game", body, product=g["title"], nav_title=nav_title)
 
 
 def game_hud(c: Ctx, g) -> Page:
-    rng = c.rng
     body = []
     stats = []
-    for label, values in rng.some(T.HUD_LABELS, rng.pick([2, 3, 4])):
-        stats.append(E("stat", value=S(rng.pick(values), "stat"), label=S(label.upper() if rng.chance(0.5) else label, "label")))
+    for label, values in c.rng.some(T.HUD_LABELS, c.pick([2, 3, 4])):
+        v = c.pick(values)
+        if "/" in v:
+            b = c.rng.randrange(2, 9) if v.split("/")[1].strip().isdigit() and int(v.split("/")[1]) < 10 else c.rng.randrange(30, 200)
+            v = f"{c.rng.randrange(0, b + 1)} / {b}"
+        else:
+            v = jitter(c.rng, v)
+        stats.append(E("stat", value=S(v, "stat"), label=S(label.upper() if c.chance(0.5) else label, "label")))
     body.append(E("stats", *stats))
-    obj = S(rng.pick(T.HUD_OBJECTIVES), "body")
-    ok = [E("eyebrow", s=S(rng.pick(["Objective", "OBJECTIVE", "Current task"]), "eyebrow").keep())] if rng.chance(0.6) else []
-    body.append(E("section", *ok, E("p", s=obj)))
-    if rng.chance(0.5):
-        wave = rng.pick(["Wave {a} of {b}", "Lap {a} / {b}", "Round {a} of {b}", "Stage {a}/{b}"])
-        body.append(E("note", s=S(wave.format(a=rng.pick([2, 3, 4]), b=rng.pick([5, 8, 10])), "caption").keep("K3")))
-    if c.fw != "html" and rng.chance(0.4):
-        body.append(E("status", s=S(rng.pick(["Shield low", "Signal", "Squad connected"]), "body").keep("K2"),
+    obj = S(c.f(c.pick(T.HUD_OBJECTIVES + ["Hold the bridge for {n} minutes", "Find {n} supply crates", "Reach {place} before dawn"])), "body")
+    if c.chance(0.6):
+        kick = c.pick(["Objective", "OBJECTIVE", "Current task", "Next", "Target", "Due"])
+        # a field-style kicker that names the value after it (K1); judgement when styled as a kicker
+        body.append(E("section", E("eyebrow", s=S(kick, "eyebrow").keep("K1", conf="judgement")), E("p", s=obj)))
+    else:
+        body.append(E("section", E("p", s=obj)))
+    if c.chance(0.5):
+        wave = c.pick(["Wave {a} of {b}", "Lap {a} / {b}", "Round {a} of {b}", "Stage {a}/{b}"])
+        body.append(E("note", s=S(wave.format(a=c.pick([2, 3, 4]), b=c.pick([5, 8, 10])), "caption").keep("K3")))
+    if c.fw != "html" and c.chance(0.4):
+        body.append(E("status", s=S(c.pick(["Shield low", "Signal", "Squad connected", "Online", "Live"]), "body").keep("K2"),
                       bound=c.prop("health") if c.fw == "tsx" else "lowShield"))
     if c.want(0.25):
-        body.append(E("meta", items=[S(rng.pick(T.HUD_DECOR_META), "caption").decor("R2")]))
+        body.append(E("meta", items=[S(L.hud_meta(c.rng), "caption").decor("R2")]))
     if c.want(0.15):
-        body.append(E("badge", s=S(rng.pick(["● REC", "● LIVE", "◆ ONLINE"]), "badge").decor("R11")))
-    if rng.chance(0.3):
-        body.append(E("note", s=S(rng.pick(T.GAME_HINTS), "caption").keep("K4", ct=True)))
-    return Page("Hud", "game", body, product=g["title"], props=c.props)
+        body.append(E("badge", s=S(c.pick(["● REC", "● LIVE", "◆ ONLINE", "● ONLINE", "LIVE"]), "badge").decor("R11")))
+    if c.chance(0.3):
+        body.append(E("note", s=S(c.pick(T.GAME_HINTS), "caption").keep("K4", ct=True)))
+    return Page(c.pick(["Hud", "HeadsUp", "Overlay", "StatusBar"]), "game", body, product=g["title"], props=c.props)
 
 
 COMPOSERS = {"marketing": marketing, "app": app, "settings": settings, "dialog": dialog, "empty": empty,
@@ -1241,8 +2163,8 @@ def k14(c: Ctx, role="body"):
     """Two branches of one conditional that read alike (K14), or None where the framework has no conditional."""
     if c.fw == "html":
         return None
-    a, b = c.rng.pick(T.K14_GAME if c.product in [g["title"] for g in T.GAMES] else T.K14_PAIRS)
-    flag = c.prop(c.rng.pick(["saved", "online", "paid", "verified", "selected"])) if c.fw == "tsx" else "isDone"
+    a, b = c.pick(T.K14_GAME if c.product in [g["title"] for g in T.GAMES] else T.K14_PAIRS)
+    flag = c.prop(c.pick(["saved", "online", "paid", "verified", "selected"])) if c.fw == "tsx" else "isDone"
     kind = "note" if role == "caption" else "p"
     return E("cond", a=[E(kind, s=S(a, role))], b=[E(kind, s=S(b, role).keep("K14"))], expr=flag, swift=flag)
 
@@ -1263,7 +2185,7 @@ def compose(rng, kind: str, fw: str, clean: bool) -> tuple[Page, Ctx]:
     c = Ctx(rng, fw, clean)
     page = COMPOSERS[kind](c)
     if kind in ("app", "dashboard", "settings", "game") and fw != "html" and rng.random() < 0.18:
-        cond = k14(c, rng.pick(["body", "caption"]))
+        cond = k14(c, c.pick(["body", "caption"]))
         if cond is not None:
             page.body.append(E("section", cond) if fw == "swift" else cond)
     page.r19 = c.r19

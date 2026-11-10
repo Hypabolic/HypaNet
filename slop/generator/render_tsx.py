@@ -301,7 +301,7 @@ class TsxRenderer:
 
     def k_iconbtn(self, e, ind):
         icon = self.icon(e["icon"] or "MoreHorizontal")
-        tip, aria = e["tip"], e["aria"]
+        tip, aria = e["tip"], e["aria"]  # the icon matches the action the tooltip names
         self.w.raw("  " * ind + "<button")
         if aria is not None:
             self.w.raw(' aria-label="')
@@ -675,7 +675,24 @@ class TsxRenderer:
             self.el(action, ind + 1)
         self.w.ln(ind, "</div>")
 
+    def k_chart(self, e, ind):
+        """A chart component fed by a prop: it renders no text of its own."""
+        series = ident(e["series"] or "series", upper_first=False)
+        comp = self.rng.pick(["BarChart", "LineChart", "AreaChart", "Sparkline"])
+        self.imp("@/components/charts", comp)
+        self.w.ln(ind, f"<{comp} data={{{series}}} height={{{self.rng.pick([120, 160, 200, 240])}}} />")
+        if series not in self.const_names:
+            self.const_names.add(series)
+            self.consts.ln(0, f"const {series} = [{', '.join(str(self.rng.randrange(1, 60)) for _ in range(7))}];")
+
     def k_alert(self, e, ind):
+        if e["tone"] == "error":
+            self.w.ln(ind, '<div role="alert" className="rounded-md border border-red-300 bg-red-50 p-4 text-sm">')
+            if e["title"] is not None:
+                self.w.ln(ind + 1, '<p className="font-medium text-red-800">', self.put(e["title"]), "</p>")
+            self.w.ln(ind + 1, '<p className="text-red-700">', self.put(e["s"]), "</p>")
+            self.w.ln(ind, "</div>")
+            return
         if self.idiom == "shadcn":
             for n in ("Alert", "AlertTitle", "AlertDescription"):
                 self.imp("@/components/ui/alert", n)

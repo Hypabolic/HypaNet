@@ -1,0 +1,15 @@
+{"schema": "slop.screen/1", "id": "eec1c183ce246e11", "framework": "tsx",
+ "source": {"repo": "slop-fixtures", "path": "TideChart.tsx", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "body", "line": 6},
+  {"k": 1, "kind": "card", "line": 12},
+  {"k": 2, "kind": "body", "line": 5}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "label", "text": "Height (m)", "flags": [], "loc": [7, 51, 7, 61]},
+  {"i": 1, "k": 0, "role": "label", "text": "06:00", "flags": ["in_list"], "loc": [1, 17, 1, 22]},
+  {"i": 2, "k": 0, "role": "label", "text": "12:00", "flags": ["in_list"], "loc": [1, 26, 1, 31]},
+  {"i": 3, "k": 0, "role": "label", "text": "18:00", "flags": ["in_list"], "loc": [1, 35, 1, 40]},
+  {"i": 4, "k": 1, "role": "label", "text": "\ue000 port", "flags": ["dynamic", "stateful", "in_list", "in_card", "repeated"], "loc": [13, 42, 13, 48], "vw": [1]},
+  {"i": 5, "k": 1, "role": "cell", "text": "\ue000 v", "flags": ["dynamic", "stateful", "in_list", "in_card", "repeated"], "loc": [15, 62, 15, 74], "vw": [1]},
+  {"i": 6, "k": 2, "role": "cell", "text": "4.2", "flags": [], "loc": [19, 53, 19, 56]},
+  {"i": 7, "k": 2, "role": "caption", "text": "Predicted heights at three harbours.", "flags": [], "loc": [21, 19, 21, 55]}]}

@@ -1,0 +1,11 @@
+{"schema": "slop.screen/1", "id": "2b5075283bc1ebd1", "framework": "html",
+ "source": {"repo": "slop-fixtures", "path": "notice.html", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "header", "line": 1},
+  {"k": 1, "kind": "body", "line": 1}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "h2", "text": "Harbour dues & fees", "flags": [], "loc": [2, 7, 2, 30]},
+  {"i": 1, "k": 0, "role": "subtitle", "text": "Visitors' berths cost £24 a night × the length band.", "flags": ["section_first"], "loc": [3, 6, 3, 75]},
+  {"i": 2, "k": 0, "role": "tooltip", "text": "Tide → ebb", "flags": [], "loc": [4, 13, 4, 29]},
+  {"i": 3, "k": 1, "role": "body", "text": "Gates close 2 hours before low water…", "flags": ["section_last"], "loc": [4, 31, 4, 82]},
+  {"i": 4, "k": 1, "role": "aria", "text": "Close ×", "flags": [], "loc": [5, 23, 5, 36]}]}

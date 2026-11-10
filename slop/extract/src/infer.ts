@@ -3,7 +3,8 @@
 
 import type { Box, El, Kid, Sty, Txt } from './ir.ts';
 import {
-  collapse, hasArrowTail, hasDotLead, isCaps, isDotOnly, isEmojiLead, isFigure, isSeparatorOnly, isTitleCase, wordCount,
+  ALT_JOIN, ALT_SEP, collapse, hasArrowTail, hasDotLead, isCaps, isDotOnly, isEmojiLead, isFigure, isSeparatorOnly, isTitleCase,
+  varWords, wordCount,
 } from './ir.ts';
 import { LISTISH, MONO_TAGS, STATEISH, strongRole } from './roles.ts';
 import type { ClusterKind, Flag, Framework, Role } from './schema.ts';
@@ -23,6 +24,7 @@ export interface OutNode {
   role: Role;
   text: string;
   flags: Flag[];
+  vw?: number[]; // identifier words after each VAR marker (only when the text has one)
   s: number;
   e: number;
 }
@@ -104,6 +106,14 @@ export function infer(root: El, ctx: InferCtx): { nodes: OutNode[]; clusters: Ou
   };
   const isTextBlock = (e: El): boolean => !!e.textBlock || (strongOf(e) !== null && !e.box);
 
+  // A short coloured inline element: in a flex or grid row it is an item of its own (a status word), not part of
+  // the row's text.
+  const statusWord = (k: El): boolean => {
+    if (!sty(k).hue || sty(k).muted) return false;
+    const t = k.kids.map((x) => (x.t === 'txt' ? x.text : '')).join(' ');
+    return k.kids.every((x) => x.t === 'txt' || !hasText(x)) && wordCount(t) >= 1 && wordCount(t) <= 3;
+  };
+
   // Text-only dot glyph elements are dots, never nodes.
   const dotGlyphEl = (e: El): boolean =>
     e.kids.length > 0 && e.kids.every((k) => k.t === 'txt' && !k.attr) && isDotOnly(e.kids.map((k) => (k as Txt).text).join(''));
@@ -143,8 +153,10 @@ export function infer(root: El, ctx: InferCtx): { nodes: OutNode[]; clusters: Ou
   // fallbacks for when that span is taken (see the de-duplication below).
   const place = (pieces: Txt[], s: number, e: number): { s: number; e: number; alts: [number, number][] } => {
     const copy = pieces.find((t) => t.copy)?.copy;
+    const call = pieces.find((t) => t.call)?.call;
     const cands: [number, number][] = [
       ...pieces.flatMap((t) => t.subs ?? []), ...pieces.flatMap((t) => t.near ?? []), ...(copy ? [copy] : []), [s, e],
+      ...(call ? [call] : []),
     ];
     return { s: cands[0][0], e: cands[0][1], alts: cands.slice(1) };
   };
@@ -188,7 +200,7 @@ export function infer(root: El, ctx: InferCtx): { nodes: OutNode[]; clusters: Ou
         run.push({ mark: 'dot', bound: k.bound, inl });
         return;
       }
-      if (mixed && k.inline && !blocksMerge(k) && !k.box) {
+      if (mixed && k.inline && !blocksMerge(k) && !k.box && !(sty(e).flexBox && statusWord(k))) {
         for (const kk of k.kids) push(kk, inl.concat(k));
         return;
       }
@@ -228,12 +240,25 @@ export function infer(root: El, ctx: InferCtx): { nodes: OutNode[]; clusters: Ou
     const tpieces = pieces.filter((p) => p.txt);
     let text0 = '';
     let lit0 = '';
+    let altJoined = false;
     for (let i = 0; i < tpieces.length; i++) {
       const t = tpieces[i].txt as Txt;
       if (i > 0) {
         const prev = tpieces[i - 1];
-        const sameEl = prev.inl.length === tpieces[i].inl.length && prev.inl.every((x, j) => x === tpieces[i].inl[j]);
-        if (!sameEl && prev.inl.length > 0 && tpieces[i].inl.length > 0 && /[\p{L}\p{N}.:!?)\uE000\uE001]$/u.test(text0) && /^[\p{L}\p{N}(\uE000\uE001]/u.test(t.text)) {
+        const pt = prev.txt as Txt;
+        if (pt.andGroup !== undefined && t.andGroup !== undefined && pt.andGroup !== t.andGroup && pt.text.trim() && t.text.trim()) {
+          // fragments shown under different && conditions are alternatives, not one line of text
+          text0 = `${text0.trimEnd()}${ALT_JOIN}${t.text.trimStart()}`;
+          lit0 = `${lit0.trimEnd()}${ALT_SEP}${t.lit.trimStart()}`;
+          altJoined = true;
+          continue;
+        }
+        const cur = tpieces[i].inl;
+        const sameEl = prev.inl.length === cur.length && prev.inl.every((x, j) => x === cur[j]);
+        // an inline tag displayed as a block starts its own line: the words on either side stay apart
+        const crossed = [...prev.inl.filter((x) => !cur.includes(x)), ...cur.filter((x) => !prev.inl.includes(x))];
+        const blockEdge = crossed.some((x) => sty(x).blockDisplay);
+        if ((blockEdge || (!sameEl && prev.inl.length > 0 && cur.length > 0)) && /[\p{L}\p{N}.:!?)\uE000\uE001\uE002]$/u.test(text0) && /^[\p{L}\p{N}(\uE000\uE001]/u.test(t.text)) {
           text0 += ' ';
           lit0 += ' ';
         }
@@ -260,7 +285,7 @@ export function infer(root: El, ctx: InferCtx): { nodes: OutNode[]; clusters: Ou
     const textPieces = textIdx.map((i) => pieces[i].txt as Txt);
     const n = mkNode({
       text, lit, ...place(tp, textPieces[0].s, textPieces[textPieces.length - 1].e), chain: ch.concat(inl),
-      dyn: tp.some((t) => !!t.dyn), alt: tp.some((t) => !!t.alt), cond: textPieces.every((t) => !!t.cond),
+      dyn: tp.some((t) => !!t.dyn), alt: altJoined || tp.some((t) => !!t.alt), cond: textPieces.every((t) => !!t.cond),
       bound: textPieces.length === 1 && !!textPieces[0].bound,
     });
     for (let i = 0; i < pieces.length; i++) {
@@ -294,6 +319,19 @@ export function infer(root: El, ctx: InferCtx): { nodes: OutNode[]; clusters: Ou
     return out;
   };
 
+  const svgTextRole = (n: RNode): Role => {
+    const toks = n.local.flatMap((e) => e.cls).map((t) => t.toLowerCase());
+    if (toks.some((t) => /(^|[-_])(num|nums|number|numeric|value|values|data|datum|figure|count|pct|percent)$/.test(t))) return 'cell';
+    if (toks.some((t) => /(^|[-_])(axis|tick|ticks|legend|label|labels|title|caption|key)$/.test(t))) return 'label';
+    if (/\d/.test(n.lit) && isFigure(n.lit)) return 'cell';
+    // a bare value inside a nested template (a grid of cells) is data; at one level it labels a row or column
+    if (n.bound && n.chain.filter((e) => e.tmpl).length >= 2) return 'cell';
+    return 'label';
+  };
+  // text that is one bound value named as an error (deepResearchError, model.errorMessage)
+  const errorBinding = (n: RNode): boolean =>
+    n.bound && /^\uE000 (?:[a-z0-9]+ )*errors?(?: (?:message|messages|text|detail|details|description|msg))?\uE002$/.test(n.text.trim());
+  const hueCands: RNode[] = [];
   for (const n of nodes) {
     n.local = n.attr ? [n.chain[n.chain.length - 1]] : localChain(n);
     if (n.attr) {
@@ -324,14 +362,20 @@ export function infer(root: El, ctx: InferCtx): { nodes: OutNode[]; clusters: Ou
         break;
       }
     }
+    // SVG <text> in a chart: axis and legend words are labels, data values are cells (never body)
+    if (!classRole && n.chain.some((e) => e.intrinsic && e.name === 'text')) classRole = svgTextRole(n);
     if (!classRole) {
       if (lsty.large && (isFigure(n.lit) || (n.dyn && n.lit.trim() === ''))) classRole = 'stat';
       else if (lsty.rounded && wordCount(n.text) <= 4) classRole = 'badge';
       else if (lsty.caps && lsty.tracked) pos = 'kicker';
-      else if (lsty.errorColour) classRole = 'error';
+      else if (lsty.errorColour && !hasDotLead(n.text) && !n.dot) classRole = 'error';
+      else if (errorBinding(n) && !n.chain.some((e) => e.box === 'dialog')) classRole = 'error';
       else if (lsty.xsmall) pos = 'small';
       else if (lsty.muted) pos = 'muted';
     }
+    // a short coloured word may be a status badge in a row (decided below, once rows are known); a red one too
+    if ((!classRole || (classRole === 'error' && lsty.errorColour)) && (!n.strong || n.strong === 'list_item' || n.strong === 'cell')
+      && lsty.hue && !lsty.muted && wordCount(n.text) <= 3 && n.local[0]?.inline && n.local[0]?.intrinsic) hueCands.push(n);
     if (n.strong) {
       // list items and cells are weak containers: a nearer pill or kicker wins
       const weak = n.strong === 'list_item' || n.strong === 'cell' || (n.strong === 'body' && n.chain[strongAt]?.name === 'dd');
@@ -365,6 +409,47 @@ export function infer(root: El, ctx: InferCtx): { nodes: OutNode[]; clusters: Ou
     }
   }
 
+  // Short status words in a coloured inline element inside a row, after the row's own text, are badges
+  // ("Ready" in green beside a file name).
+  for (const n of hueCands) {
+    let row: El | null = null;
+    for (let j = n.chain.length - 1; j >= 0; j--) {
+      const e = n.chain[j];
+      if ((e.intrinsic && /^(li|tr)$/.test(e.name)) || e.tmpl) {
+        row = e;
+        break;
+      }
+    }
+    if (!row) continue;
+    const r = row;
+    const earlier = nodes.some((m) => m.idx < n.idx && m.chain.includes(r) && !m.attr && !(m.strong && CONTEXT_ROLES.has(m.strong)));
+    if (earlier) {
+      n.strong = 'badge';
+      n.pos = null;
+    }
+  }
+  // which nodes sit under each element (before de-duplication; for the kicker rule below)
+  const pre = new Map<number, number[]>();
+  for (const n of nodes) for (const e of n.chain) {
+    let a = pre.get(e.id);
+    if (!a) pre.set(e.id, (a = []));
+    a.push(n.idx);
+  }
+  const PANEL: ReadonlySet<Box> = new Set<Box>(['card', 'dialog', 'state', 'alert']);
+  /**
+   * First node of its card or panel, with at least three more after it: the panel's own heading. (A kicker over a
+   * single value is a field label, as in a HUD's "Objective" over the task.)
+   */
+  const leadsPanel = (n: RNode): boolean => {
+    for (let j = n.chain.length - 1; j >= 0; j--) {
+      const e = n.chain[j];
+      if (!e.box || !PANEL.has(e.box)) continue;
+      const u = (pre.get(e.id) ?? []).filter((x) => !nodes[x].attr);
+      return u.length >= 4 && u[0] === n.idx;
+    }
+    return false;
+  };
+
   // ---- stage 4: position ------------------------------------------------------------------------------------
   const cascade = (n: RNode): Sty => mergeSty(n.chain);
   let casc = nodes.map(cascade);
@@ -389,7 +474,11 @@ export function infer(root: El, ctx: InferCtx): { nodes: OutNode[]; clusters: Ou
     let r: Role;
     switch (n.pos) {
       case 'kicker':
-        r = before ? 'eyebrow' : 'label';
+        // above a heading: eyebrow; a lone line under a heading: its tagline; opening a panel: the panel's heading
+        if (before) r = 'eyebrow';
+        else if (after && !next) r = 'subtitle';
+        else if (leadsPanel(n)) r = 'h3';
+        else r = 'label';
         break;
       case 'small':
         r = before && words <= 8 ? 'eyebrow' : after ? 'subtitle' : 'caption';
@@ -421,10 +510,15 @@ export function infer(root: El, ctx: InferCtx): { nodes: OutNode[]; clusters: Ou
       const nb = nearestBox(n, NAVISH);
       if (nb) {
         const b = nb.box;
-        if (b === 'nav' && (r === 'link' || r === 'button' || r === 'list_item')) r = 'nav';
+        if (b === 'nav' && (r === 'link' || r === 'button' || r === 'list_item' || (ctx.fw === 'swift' && /^(body|label|subtitle|caption)$/.test(r)))) r = 'nav';
         else if (b === 'tablist' && /^(link|button|list_item|body)$/.test(r)) r = 'tab';
         else if (b === 'menu' && /^(link|button|list_item|body)$/.test(r)) r = 'menu_item';
         else if (b === 'breadcrumb' && /^(link|button|list_item|body|nav)$/.test(r)) r = 'breadcrumb';
+      }
+      // links listed in a page header (a menu built from ul > li > a) are navigation
+      if (!nb && r === 'link') {
+        const hi = n.chain.findIndex((e) => e.box === 'header');
+        if (hi >= 0 && n.chain.some((e, j) => j > hi && e.box === 'list')) r = 'nav';
       }
       const sb = nearestBox(n, STATEISH);
       if (sb) {
@@ -444,6 +538,42 @@ export function infer(root: El, ctx: InferCtx): { nodes: OutNode[]; clusters: Ou
     if (ctx.fw === 'swift' && r === 'body' && !n.attr && !n.chain.some((e) => e.name === '#value') && nearestBox(n, new Set<Box>(['list']))) r = 'list_item';
     if (TRACK_C_ROLES.has(r)) r = 'other';
     n.role = r;
+  }
+  // A hand-built empty state with no heading: its first short line is the title, the rest its body.
+  {
+    const seen = new Set<number>();
+    for (const n of nodes) {
+      const eb = nearestBox(n, STATEISH);
+      if (!eb || eb.box !== 'empty' || seen.has(eb.id)) continue;
+      seen.add(eb.id);
+      const ms = nodes.filter((m) => !m.attr && m.chain.includes(eb) && !CONTEXT_ROLES.has(m.role) && nearestBox(m, STATEISH) === eb);
+      const text = ms.filter((m) => /^(body|empty_body|caption|label|subtitle|helper)$/.test(m.role));
+      if (ms.some((m) => isHeading(m.role)) || text.length < 2 || text[0] !== ms[0] || wordCount(text[0].text) > 8) continue;
+      text[0].role = 'empty_title';
+      for (const m of text.slice(1)) if (m.role !== 'helper' && m.role !== 'label') m.role = 'empty_body';
+    }
+  }
+  // A second line of text inside a button (a description under its label) is a caption; the first stays the button.
+  {
+    const firstIn = new Set<string>();
+    for (const n of nodes) {
+      if (n.attr || n.role !== 'button' || casc[n.idx].srOnly || mergeSty([...n.local].reverse()).rounded) continue;
+      let b: El | null = null;
+      for (let j = n.chain.length - 1; j >= 0; j--) {
+        if (strongOf(n.chain[j]) === 'button') {
+          b = n.chain[j];
+          break;
+        }
+      }
+      if (!b) continue;
+      // texts in different branches of a condition inside the button are alternatives, not two lines
+      const bi = n.chain.indexOf(b);
+      const branch = n.chain.slice(bi + 1).find((e) => e.cond);
+      const key = `${b.id}:${branch ? branch.id : ''}`;
+      if (branch && [...firstIn].some((k) => k.startsWith(`${b.id}:`) && k !== key && k !== `${b.id}:`)) continue;
+      if ([...firstIn].some((k) => k.startsWith(`${b.id}:`))) n.role = 'caption';
+      else firstIn.add(key);
+    }
   }
 
   // ---- one node per source span ----------------------------------------------------------------------------------
@@ -705,15 +835,19 @@ export function infer(root: El, ctx: InferCtx): { nodes: OutNode[]; clusters: Ou
     }
   }
 
-  const out: OutNode[] = nodes.map((n) => ({
-    i: n.idx,
-    k: kOf[n.idx],
-    role: n.role,
-    text: n.text,
-    flags: FLAGS.filter((f) => n.flags.has(f)),
-    s: n.s,
-    e: n.e,
-  }));
+  const out: OutNode[] = nodes.map((n) => {
+    const { text, vw } = varWords(n.text);
+    return {
+      i: n.idx,
+      k: kOf[n.idx],
+      role: n.role,
+      text,
+      flags: FLAGS.filter((f) => n.flags.has(f)),
+      ...(vw.length ? { vw } : {}),
+      s: n.s,
+      e: n.e,
+    };
+  });
   return { nodes: out, clusters: outClusters };
 }
 

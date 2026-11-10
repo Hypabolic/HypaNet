@@ -1,0 +1,18 @@
+{"schema": "slop.screen/1", "id": "506019c019ce84b1", "framework": "tsx",
+ "source": {"repo": "slop-rules-fixtures", "path": "src/rc_pill_button_cards_neg.tsx", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "header", "line": 2},
+  {"k": 1, "kind": "card", "line": 4},
+  {"k": 2, "kind": "card", "line": 8},
+  {"k": 3, "kind": "card", "line": 12}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "h2", "text": "Kitchen kit", "flags": [], "loc": [3, 7, 3, 18]},
+  {"i": 1, "k": 1, "role": "h3", "text": "Teapot", "flags": ["in_card", "repeated"], "loc": [5, 7, 5, 13]},
+  {"i": 2, "k": 1, "role": "body", "text": "Cast iron, 1.2 litres", "flags": ["in_card", "repeated"], "loc": [6, 7, 6, 28]},
+  {"i": 3, "k": 1, "role": "button", "text": "Add to basket", "flags": ["pill", "in_card", "repeated"], "loc": [7, 7, 7, 20]},
+  {"i": 4, "k": 2, "role": "h3", "text": "Kettle", "flags": ["in_card", "repeated"], "loc": [9, 7, 9, 13]},
+  {"i": 5, "k": 2, "role": "body", "text": "Copper, whistling", "flags": ["in_card", "repeated"], "loc": [10, 7, 10, 24]},
+  {"i": 6, "k": 2, "role": "button", "text": "Add to basket", "flags": ["pill", "in_card", "repeated"], "loc": [11, 7, 11, 20]},
+  {"i": 7, "k": 3, "role": "h3", "text": "Toaster", "flags": ["in_card", "repeated"], "loc": [13, 7, 13, 14]},
+  {"i": 8, "k": 3, "role": "body", "text": "Four slots, long", "flags": ["in_card", "repeated"], "loc": [14, 7, 14, 23]},
+  {"i": 9, "k": 3, "role": "button", "text": "Add to basket", "flags": ["pill", "in_card", "repeated"], "loc": [15, 7, 15, 20]}]}

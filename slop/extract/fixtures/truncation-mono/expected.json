@@ -3,9 +3,9 @@
  "clusters": [
   {"k": 0, "kind": "body", "line": 3}],
  "nodes": [
-  {"i": 0, "k": 0, "role": "tooltip", "text": "\ue000 key name", "flags": ["dynamic", "stateful"], "loc": [4, 50, 4, 57]},
-  {"i": 1, "k": 0, "role": "body", "text": "\ue000 key name", "flags": ["dynamic", "stateful", "truncated"], "loc": [4, 60, 4, 67]},
-  {"i": 2, "k": 0, "role": "caption", "text": "\ue000 prefix ••••", "flags": ["small", "mono", "dynamic"], "loc": [5, 34, 5, 45]},
+  {"i": 0, "k": 0, "role": "tooltip", "text": "\ue000 key name", "flags": ["dynamic", "stateful"], "loc": [4, 50, 4, 57], "vw": [2]},
+  {"i": 1, "k": 0, "role": "body", "text": "\ue000 key name", "flags": ["dynamic", "stateful", "truncated"], "loc": [4, 60, 4, 67], "vw": [2]},
+  {"i": 2, "k": 0, "role": "caption", "text": "\ue000 prefix ••••", "flags": ["small", "mono", "dynamic"], "loc": [5, 34, 5, 45], "vw": [1]},
   {"i": 3, "k": 0, "role": "body", "text": "Created 3 Nov", "flags": ["title_case", "small", "mono"], "loc": [6, 43, 6, 56]},
   {"i": 4, "k": 0, "role": "body", "text": "Used by the nightly export to push stock levels to the warehouse partner.", "flags": ["truncated"], "loc": [7, 35, 7, 108]},
   {"i": 5, "k": 0, "role": "body", "text": "Press Esc to close", "flags": [], "loc": [8, 10, 8, 39]}]}

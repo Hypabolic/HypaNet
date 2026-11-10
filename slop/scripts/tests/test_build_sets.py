@@ -62,6 +62,31 @@ def test_select_caps_and_counts():
     assert len(bs.select(cands, 30, {"measure": None, "share": 1.0}, drops, per)) == 20 and not drops
 
 
+def test_select_dir_cap_in_rank_order():
+    cands = sorted([_cand("A", f"figs/f{i}.tsx", ["x", "y"]) for i in range(10)]
+                   + [_cand("A", f"pages/p{i}.tsx", ["x", "y"]) for i in range(10)], key=lambda c: c.rank)
+    drops, per = {}, {"A": {"drops": {}}}
+    sel = bs.select(cands, 12, {"measure": None, "share": 1.0, "dir_cap": 6}, drops, per)
+    assert len(sel) == 12
+    assert sum(c.directory == "figs" for c in sel) == 6 and sum(c.directory == "pages" for c in sel) == 6
+    figs = [c for c in cands if c.directory == "figs"]
+    assert {c.path for c in sel if c.directory == "figs"} == {c.path for c in figs[:6]}
+    assert drops.get("dir_cap", 0) + drops.get("below_cut", 0) + len(sel) == 20
+    assert bs.RULES.index("dir_cap") < bs.RULES.index("repo_cap")
+
+
+def test_calibration_has_the_reference_node_cap():
+    assert (bs.CALIBRATION_RULE["measure"], bs.CALIBRATION_RULE["share"]) == ("nodes", 0.4)
+    assert bs.REFERENCE_RULE["dir_cap"] == 6 and not bs.CALIBRATION_RULE["dir_cap"]
+    big = [_cand("W", f"w{i}", ["x"] * 150) for i in range(4)]
+    small = [_cand(r, f"{r}{i}", ["x"] * 10) for r in "BCD" for i in range(3)]
+    cands = sorted(big + small, key=lambda c: c.rank)
+    drops, per = {}, {r: {"drops": {}} for r in "WBCD"}
+    sel = bs.select(cands, 40, bs.CALIBRATION_RULE, drops, per)
+    w = sum(c.nodes for c in sel if c.repo == "W")
+    assert w <= 0.4 * sum(c.nodes for c in sel) and drops["repo_cap"] == 4 and len(sel) == 9
+
+
 def _git_repo(tmp_path: Path, files: dict[str, str]) -> Path:
     root = tmp_path / "repo"
     for rel, text in files.items():

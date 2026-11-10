@@ -1,0 +1,8 @@
+{"schema": "slop.screen/1", "id": "79ed57715d863019", "framework": "tsx",
+ "source": {"repo": "slop-rules-fixtures", "path": "src/fw_vw_long_ident_neg.tsx", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "header", "line": 2},
+  {"k": 1, "kind": "body", "line": 4}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "h2", "text": "Upload failed", "flags": [], "loc": [3, 7, 3, 20]},
+  {"i": 1, "k": 1, "role": "body", "text": "\ue000 upload failed try again please", "flags": ["dynamic"], "loc": [5, 7, 5, 39], "vw": [5]}]}

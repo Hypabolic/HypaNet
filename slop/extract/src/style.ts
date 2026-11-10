@@ -18,6 +18,8 @@ export interface CssRule {
   dotSize?: boolean;
   truncated?: boolean;
   srOnly?: boolean;
+  blockDisplay?: boolean;
+  flexBox?: boolean;
 }
 export type CssMap = Map<string, CssRule>;
 
@@ -72,8 +74,13 @@ export function tokenSty(tok0: string, css: CssMap): Sty {
   } else if (/^text-/.test(tok) && !ALIGN_TOK.test(tok)) {
     // a colour token
     out.muted = /^text-(muted-foreground|muted|secondary|subtle)$/.test(tok);
-    out.errorColour = /^text-(destructive|danger|error)$/.test(tok);
+    out.errorColour = /^text-(destructive|danger|error)$|^text-(red|rose)-\d{3}(\/\d+)?$/.test(tok);
+    out.hue = /^text-(red|orange|amber|yellow|lime|green|emerald|teal|cyan|sky|blue|indigo|violet|purple|fuchsia|pink|rose|success|warning|destructive|danger|error|info)(-\d{2,3})?(\/\d+)?$/.test(tok);
   }
+  if (/^(block|flex|grid|table|flow-root|list-item)$/.test(tok)) out.blockDisplay = true;
+  if (/^(inline|inline-block|inline-flex|inline-grid|contents|hidden)$/.test(tok)) out.blockDisplay = false;
+  if (/^(flex|grid|inline-flex|inline-grid)$/.test(tok)) out.flexBox = true;
+  else if (/^(block|inline|inline-block|table|flow-root|list-item|contents|hidden)$/.test(tok)) out.flexBox = false;
   if (tok === 'uppercase') out.caps = true;
   if (tok === 'normal-case' || tok === 'lowercase') out.caps = false;
   if (tok === 'capitalize') out.titleCase = true;
@@ -134,6 +141,8 @@ const SEMANTIC: [RegExp, Role | 'kicker'][] = [
   [/^(badge|pill|chip|tag)$/, 'badge'],
   [/^(hint|helper|help-text|helptext)$/, 'helper'],
   [/^(tooltip)$/, 'tooltip'],
+  // the title of a panel or card drawn with a plain element (hn-panel__title, card-header, widget-heading)
+  [/^(title|heading|headline|header)$/, 'h3'],
 ];
 
 /** The last word of a class name ("hero__eyebrow" → eyebrow, "status-pill" → pill). */
@@ -263,6 +272,10 @@ function addRule(into: CssMap, name: string, decls: string): void {
     else if (prop === 'text-overflow') rule.truncated = val === 'ellipsis';
     else if (prop === '-webkit-line-clamp') rule.truncated = true;
     else if (prop === 'clip' && /rect\(0/.test(val)) rule.srOnly = true;
+    else if (prop === 'display') {
+      rule.blockDisplay = /^(block|flex|grid|table|flow-root|list-item)$/.test(val);
+      rule.flexBox = /^(inline-)?(flex|grid)$/.test(val);
+    }
   }
   if (width !== null && height !== null && width <= 12 && height <= 12 && width > 0) rule.dotSize = true;
   into.set(name, rule);

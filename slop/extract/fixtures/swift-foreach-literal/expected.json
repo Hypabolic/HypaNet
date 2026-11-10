@@ -23,4 +23,4 @@
   {"i": 13, "k": 3, "role": "list_item", "text": "Water just off the boil, not boiling", "flags": ["icon", "in_list", "section_first"], "loc": [18, 28, 18, 64]},
   {"i": 14, "k": 3, "role": "list_item", "text": "Rinse the paper filter first", "flags": ["icon", "in_list", "section_last"], "loc": [19, 28, 19, 56]},
   {"i": 15, "k": 4, "role": "h2", "text": "Grind", "flags": ["in_list"], "loc": [44, 22, 44, 27]},
-  {"i": 16, "k": 4, "role": "subtitle", "text": "\ue000 grind", "flags": ["dynamic", "stateful", "in_list", "section_first", "section_last"], "loc": [46, 26, 46, 31]}]}
+  {"i": 16, "k": 4, "role": "subtitle", "text": "\ue000 grind", "flags": ["dynamic", "stateful", "in_list", "section_first", "section_last"], "loc": [46, 26, 46, 31], "vw": [1]}]}

@@ -1,0 +1,9 @@
+{"schema": "slop.screen/1", "id": "38d45fb445e97092", "framework": "swift",
+ "source": {"repo": "slop-fixtures", "path": "MapControls.swift", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "body", "line": 5},
+  {"k": 1, "kind": "actions", "line": 8}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "aria", "text": "Centre on my boat", "flags": [], "loc": [6, 62, 6, 79]},
+  {"i": 1, "k": 0, "role": "aria", "text": "Drop anchor here", "flags": [], "loc": [7, 55, 7, 71]},
+  {"i": 2, "k": 1, "role": "button", "text": "Weigh anchor", "flags": [], "loc": [8, 25, 8, 37]}]}

@@ -3,7 +3,7 @@
 // more common on top-rated sites (research.md:162, 38% against 21%).
 
 import { finding } from './finding.js';
-import { isScored } from './screen.js';
+import { hasFlag, isScored } from './screen.js';
 import { clip, literalWords, parseIndex } from './text.js';
 
 export const id = 'slop/index-numbering';
@@ -15,10 +15,12 @@ const SKIP_ROLES = new Set(['nav', 'tab', 'breadcrumb', 'menu_item', 'link', 'bu
 // A run of bare numbers ("1", "2", "3") needs three, the marked devices two.
 const MIN_RUN = (family) => (family === 'plain' ? 3 : 2);
 
-// Runs of index devices: same family and role, consecutive values (1, 2, 3 …) in reading order, other nodes between
-// them allowed. K3 is applied as far as text can show it: a lone "Step 2 of 4" (the other steps are not on screen)
-// never forms a run, and a run of labelled numbers that another node refers to ("as in step 2") is skipped. Whether
-// numbered items are steps to be done in order is not decidable here; the rule flags them and the label decides.
+// Runs of index devices: same family and role, consecutive values (1, 2, 3 …) and the same total ("1 / 3", "2 / 3")
+// in reading order, other nodes between them allowed. K3 is applied as far as text can show it: a lone "Step 2 of 4"
+// (the other steps are not on screen) never forms a run, nor do conditional devices with a total (a wizard showing
+// one step heading at a time), and a run of labelled numbers that another node refers to ("as in step 2") is skipped.
+// Whether numbered items are steps to be done in order is not decidable here; the rule flags them and the label
+// decides.
 export function indexRuns(screen) {
   const nodes = screen.nodes;
   const byKey = new Map();
@@ -26,6 +28,13 @@ export function indexRuns(screen) {
     if (!isScored(n) || SKIP_ROLES.has(n.role)) return;
     const d = parseIndex(n.text);
     if (!d) return;
+    if (d.total && hasFlag(n, 'conditional')) return; // "Step 2 of 4" chosen by a condition: one state at a time (K3)
+    // A bare number followed directly by another number device (or by nothing) is a value in a scale or a grid, not an
+    // item's index.
+    if (d.family === 'plain') {
+      const y = nodes.findIndex((m, z) => z > x && isScored(m));
+      if (y < 0 || parseIndex(nodes[y].text)) return;
+    }
     const key = `${d.family}|${n.role}`;
     if (!byKey.has(key)) byKey.set(key, []);
     byKey.get(key).push({ x, ...d });
@@ -38,7 +47,7 @@ export function indexRuns(screen) {
       cur = [];
     };
     for (const d of devices) {
-      if (cur.length && d.value !== cur[cur.length - 1].value + 1) flush();
+      if (cur.length && (d.value !== cur[cur.length - 1].value + 1 || (d.total ?? null) !== (cur[cur.length - 1].total ?? null))) flush();
       cur.push(d);
     }
     if (cur.length) flush();
@@ -53,7 +62,7 @@ function referenced(screen, run) {
   const refs = new Set(run.map((d) => `${word} ${d.value}`));
   return screen.nodes.some((n, x) => {
     if (inRun.has(x) || !isScored(n)) return false;
-    const w = literalWords(n.text).map((s) => s.replace(/^0+(?=\d)/, ''));
+    const w = literalWords(n.text, n.vw).map((s) => s.replace(/^0+(?=\d)/, ''));
     for (let a = 0; a + 1 < w.length; a++) if (refs.has(`${w[a]} ${w[a + 1]}`)) return true;
     return false;
   });

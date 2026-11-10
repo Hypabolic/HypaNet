@@ -40,15 +40,15 @@ PATTERN_ROLES = {
     "R1": {"eyebrow"},
     "R2": {"eyebrow", "caption", "body", "label", "other", "badge"},
     "R3": {"subtitle"},
-    "R4": {"body", "empty_body", "dialog_body", "list_item", "caption"},
-    "R5": {"helper", "tooltip", "subtitle", "body", "caption"},
+    "R4": {"body", "empty_body", "dialog_body", "list_item", "caption", "error"},
+    "R5": {"helper", "tooltip", "subtitle", "body", "caption", "label"},
     "R6": {"subtitle", "body", "caption", "helper", "empty_body", "dialog_body"},
     "R8": {"placeholder"},
     "R9": {"h1", "h2", "h3", "h4", "dialog_title", "empty_title"},
     "R11": {"badge", "body", "caption", "label", "other", "eyebrow"},
-    "R14": {"caption", "body", "button", "link", "subtitle", "helper"},
+    "R14": {"caption", "body", "button", "link", "subtitle", "helper", "stat", "label", "list_item", "h3"},
     "R16": {"subtitle", "body", "caption", "helper"},
-    "R17": {"body", "subtitle", "caption"},
+    "R17": {"body", "subtitle", "caption", "list_item"},
 }
 
 

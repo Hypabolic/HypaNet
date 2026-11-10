@@ -107,7 +107,9 @@ Screen JSON (`slop.screen/1`), one per file, written by the extractor at labelli
   {"i": 3, "k": 1, "role": "button", "text": "RESUME", "flags": ["caps"], "loc": [16, 11, 16, 17]}]}
 ```
 
-`loc` is `[line, col, endLine, endCol]`, 1-based. Label records key on `loc`, not on `i`.
+`loc` is `[line, col, endLine, endCol]`, 1-based. Label records key on `loc`, not on `i`. A node whose text holds
+a VAR marker also carries `vw`, one integer per marker in order: how many identifier words follow that marker
+(`"text": "Due in  eta hours hours", "vw": [2]`); the tokeniser ignores it.
 
 **Roles** (closed list, 36; ids fixed in `ui/tokenizer.py`): `h1 h2 h3 h4 h5 h6 eyebrow subtitle body list_item
 caption label helper placeholder input_value button link nav tab breadcrumb menu_item badge tooltip empty_title
@@ -258,14 +260,17 @@ Written by the harness, shipped as separate ESLint rules, scored separately agai
 `slop/repeated-chrome` (scored against the screen-level R19 labels; conditions: eyebrows above more than
 ceil(sections / 3) section headings, a section heading being one outside cards, lists, tables, navigation, dialogs,
 states and repeated siblings, a quota marked taste (tasteskill v2-experimental, landing pages); any decorative dot,
-that is a `dot` flag without `stateful`; more than one real-state dot per section (v2-experimental SKILL.md:705); an
-arrow glyph on every link, when there are two or more; the same badge, pill or eyebrow text, arrow suffix or index
-number on more than half of three or more sibling cards or rows, as `LABELLING.md` R19 describes),
+that is a `dot` flag without `stateful` or `dynamic`; more than one real-state dot per section (v2-experimental
+SKILL.md:705), where K2 wins: one stateful dot on each of several sibling cards or rows, each bound to its own item,
+is not counted; an arrow suffix on every link, when there are two or more, an arrow being → ➔ ➜ ⟶ ⇢ ⇾ or `->` (or
+› as a separate final token), not ↗, which marks an external link, nor »; the same badge, pill or eyebrow text, arrow
+suffix or index number on more than half of three or more sibling cards or rows, as `LABELLING.md` R19 describes),
 `slop/vacuous-action` (R7 list), `slop/filler-words` (R15 list), `slop/placeholder-as-label` (R8b),
 `slop/shared-lead-in` (R10), `slop/index-numbering` (R12) and `slop/exact-repeat` (the same normalised string of two
-or more words in two windows of one file, outside navigation, menus, tables, form fields, nodes flagged `repeated`
-and pairs with a `conditional` copy; the lower-ranked copy by `LABELLING.md` §5 is flagged). The lists and exact
-conditions are in `rules/README.md`.
+or more words in two windows of one file, outside navigation, menus, tables, form fields, footer links (K5), nodes
+flagged `repeated`, `conditional` copies, and pairs that K11 or separately mounted states (§2a) exempt; the
+lower-ranked copy by `LABELLING.md` §5 is flagged). The rules read identifier words from the node's `vw` (§4). The
+lists and exact conditions are in `rules/README.md`.
 
 ## 9. Data, splits and sealing
 
@@ -300,7 +305,12 @@ Reserved and never used here: 20261104 and 20261106–20261111, 20261201, 202612
   kinds: marketing sections, app pages, settings and forms, dialogs, empty states, dashboards, game menus and HUDs.
   It plants every scored pattern of `LABELLING.md` §9 with an exact class, pattern and target, and every K rule as
   hard negatives, with clean screens mixed in; comment pairs, R18 and K10 belong to track C and are not built for r1.
-  Its templates and synonym tables never enter the packet and pass the leakage check.
+  Each screen is built around one product, so kept copy adds a fact about what its heading or label names. Restating
+  copy and informative copy each come both with and without words shared with the node they sit under, every role the
+  guide lets be redundant carries both classes, and copy is assembled from slots (nouns, synonyms, figures, names), so
+  that no role, stem overlap or frequent string decides the class. A screen's kind and whether it is clean are
+  written only to a harness sidecar (`<set>.meta.jsonl`), never to the screen or source files, and source paths name
+  no kind. Its templates and synonym tables never enter the packet and pass the leakage check.
 - **OOD generator (Codex).** Briefed with `LABELLING.md` and §4 only. It emits TSX, HTML and SwiftUI source files with
   span-keyed labels; the harness runs the real extractor on them (0 unmatched spans, §12.4). It never sees the
   harness generator, `dev`, `val`, the reference labels or Fable's output.
@@ -318,7 +328,10 @@ Reserved and never used here: 20261104 and 20261106–20261111, 20261201, 202612
   `sealed_real`, and within a set only the first by hash rank is kept. The manifest records how many screens each rule
   dropped. Screens with at least two nodes that are not context only (`LABELLING.md` §2) are ranked by hash; no repo
   gives more than 25% of the nodes of `sealed_real` or of the pairs of `comments_real`, or more than 40% of the
-  nodes of `reference_real`'s repo screens. MemoryOS is third-party (Apache-2.0) and is credited. ACCACloner
+  nodes of `reference_real`'s repo screens. The calibration screens take the same cap: no repo gives more than 40%
+  of their nodes, and a shortfall from 40 screens is reported, never filled by relaxing the cap. In `reference_real`
+  no directory gives more than 6 screens, taken in hash-rank order, so that one folder of similar components
+  (PersonalHomepage's blog figures) cannot fill the set. MemoryOS is third-party (Apache-2.0) and is credited. ACCACloner
   and the 3DConnexions SDK are excluded. Private repo text is never committed or published; manifests hold repo,
   path, commit and hashes.
 - **Sealed sibling fixture.** Before launch Matthew obtains a second AI-built game or app overlay (eyebrow, heading,
@@ -414,7 +427,9 @@ are the result.
    of `dev` and `val`.
 3. **Interpreter.** A harness-written test network (kept out of the kit) implements the exact-stem floor inside the
    transformer, with a pointer head. Its predictions and pointers must equal the floor's on at least 99% of `val`
-   nodes, and the JS runtime must match the numpy model: identical argmax and pointer on every `val` node, logits
+   nodes whose floor pair lies within the test network's construction reach (7 nodes); agreement on all `val` nodes
+   is reported beside it (96.8% at the first build, every miss a repeated table or list value further apart). The
+   check tests the interpreter, not the reach of a hand-built network. The JS runtime must match the numpy model: identical argmax and pointer on every `val` node, logits
    within 1e-6 × max(1, |logit|).
 4. **Generators.** Every planted node is found by span (0 unmatched); counts per class and pattern are reported.
    `test_gen` screens whose normalised text hash, or whose node set at Jaccard ≥ 0.8, matches any `dev` or `val`

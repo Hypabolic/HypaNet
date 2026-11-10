@@ -99,7 +99,10 @@ the other flagged copies in each record's `equiv`.
   K1 does not cover **section-genre words**, which name the kind of section rather than its subject: Features,
   Pricing, FAQ, About, About us, Overview, How it works, Testimonials, Contact, Get started, Products, Services, Our
   team, Why us, Capabilities, and their close variants (this list is frozen with the guide). A section-genre eyebrow
-  is `ECHO` → the heading when the heading contains the same word or its stem, and `DECOR` otherwise.
+  is `ECHO` → the heading when the heading contains the same word or its stem, or is itself a section-genre word of
+  the same kind (eyebrow "Summary" over h1 "Overview"), and `DECOR` otherwise. K1 also covers a field-style label
+  that names the kind of value after it, as a `dt` does ("Objective" over "Reach the signal tower" in a HUD, "Due"
+  over a date); mark it `conf: judgement` when it is styled as a kicker.
 - **K2** A dot, pill or badge whose text or colour is bound to data (`stateful`), that differs between sibling items,
   or that is part of a legend ("Healthy / Degraded / Down"). Constant words beside a bound dot are `KEEP`: the node
   carries live state.
@@ -183,6 +186,11 @@ Short cases (invented):
 | "● Online" whose text and dot colour are fixed in the markup | DECOR (R11; static status claim) |
 | "● Online" whose dot colour is bound to the connection state | KEEP (K2) |
 | "Early access" pill on the one product in early access | KEEP (static claim, sole statement of a fact; step 6) |
+| "Most popular" or "Our pick" pill on one of three plan cards | KEEP, `conf: judgement` (K2: differs between siblings; the recommendation is the fact); ECHO if it restates that card's own subtitle |
+| eyebrow "Word of mouth" (a Testimonials variant) over h2 "Trusted across the country" | eyebrow DECOR (R2; K1 genre word, heading neither shares its stem nor is a genre word) |
+| toggle "Mention alerts" / caption "Switch mention alerts on or off." | caption NARRATE → toggle (R6; what a visible control does; `ct: true`) |
+| h1 "Integrations" / h2 "Connected apps" heading the page's only section | h2 ECHO → h1 (R9, `conf: judgement`); KEEP when the page has other sections |
+| h3 "Reading history" / caption "Reading history for every branch" | caption KEEP, `partial: true` (restates the heading but adds the scope; step 5) |
 | h3 "✨ Smart search" | KEEP, `aside: ["R11g"]` |
 | "01 /", "02 /", "03 /" above three feature cards in a row | each KEEP, `aside: ["R12"]` (K3) |
 | "Step 2 of 4" above a form | KEEP (K3) |

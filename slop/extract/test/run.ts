@@ -45,6 +45,17 @@ function validate(name: string, s: Screen): void {
     const [l1, c1, l2, c2] = n.loc;
     if (!(l1 >= 1 && c1 >= 1 && (l2 > l1 || (l2 === l1 && c2 >= c1)))) fail(`${name}: node ${idx} bad loc ${n.loc}`);
     if (n.text !== n.text.trim() || /\s{2}/.test(n.text) || n.text === '') fail(`${name}: node ${idx} text not normalised`);
+    if (/\uE002/.test(n.text)) fail(`${name}: node ${idx} text holds the internal VAR_END mark`);
+    // vw: one count per VAR marker, present only when there is one, never more words than follow the marker
+    const vars = n.text.split('\uE000').slice(1);
+    if (!vars.length && n.vw !== undefined) fail(`${name}: node ${idx} has vw but no VAR marker`);
+    if (vars.length) {
+      if (!n.vw || n.vw.length !== vars.length) fail(`${name}: node ${idx} vw ${JSON.stringify(n.vw)} for ${vars.length} VAR marker(s)`);
+      else n.vw.forEach((w, j) => {
+        const after = vars[j].split(/\s+/).filter(Boolean).length;
+        if (!Number.isInteger(w) || w < 0 || w > after) fail(`${name}: node ${idx} vw[${j}] = ${w} with ${after} word(s) after the marker`);
+      });
+    }
   });
   s.clusters.forEach((c, k) => {
     if (c.k !== k) fail(`${name}: cluster ${k} has k=${c.k}`);

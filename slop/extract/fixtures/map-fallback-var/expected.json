@@ -8,10 +8,10 @@
   {"k": 4, "kind": "list", "line": 41},
   {"k": 5, "kind": "body", "line": 51}],
  "nodes": [
-  {"i": 0, "k": 0, "role": "list_item", "text": "\ue000 name \ue000 count unread", "flags": ["dynamic", "in_list"], "loc": [16, 18, 17, 75]},
+  {"i": 0, "k": 0, "role": "list_item", "text": "\ue000 name \ue000 count unread", "flags": ["dynamic", "in_list"], "loc": [16, 18, 17, 75], "vw": [1, 1]},
   {"i": 1, "k": 1, "role": "h2", "text": "Mailboxes", "flags": [], "loc": [29, 11, 29, 20]},
-  {"i": 2, "k": 2, "role": "list_item", "text": "\ue000 l", "flags": ["dynamic", "stateful", "in_list", "section_first"], "loc": [33, 24, 33, 25]},
-  {"i": 3, "k": 3, "role": "list_item", "text": "\ue000 x", "flags": ["dynamic", "stateful", "in_list"], "loc": [38, 24, 38, 25]},
-  {"i": 4, "k": 4, "role": "list_item", "text": "\ue000 p", "flags": ["dynamic", "stateful", "in_list"], "loc": [43, 24, 43, 25]},
-  {"i": 5, "k": 4, "role": "list_item", "text": "\ue000 r", "flags": ["dynamic", "stateful", "in_list"], "loc": [46, 24, 46, 25]},
-  {"i": 6, "k": 5, "role": "body", "text": "\ue000 short", "flags": ["dynamic", "stateful", "in_list", "section_last"], "loc": [51, 26, 51, 34]}]}
+  {"i": 2, "k": 2, "role": "list_item", "text": "\ue000 l", "flags": ["dynamic", "stateful", "in_list", "section_first"], "loc": [33, 24, 33, 25], "vw": [1]},
+  {"i": 3, "k": 3, "role": "list_item", "text": "\ue000 x", "flags": ["dynamic", "stateful", "in_list"], "loc": [38, 24, 38, 25], "vw": [1]},
+  {"i": 4, "k": 4, "role": "list_item", "text": "\ue000 p", "flags": ["dynamic", "stateful", "in_list"], "loc": [43, 24, 43, 25], "vw": [1]},
+  {"i": 5, "k": 4, "role": "list_item", "text": "\ue000 r", "flags": ["dynamic", "stateful", "in_list"], "loc": [46, 24, 46, 25], "vw": [1]},
+  {"i": 6, "k": 5, "role": "body", "text": "\ue000 short", "flags": ["dynamic", "stateful", "in_list", "section_last"], "loc": [51, 26, 51, 34], "vw": [1]}]}

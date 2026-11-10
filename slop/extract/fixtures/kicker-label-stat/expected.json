@@ -7,4 +7,4 @@
   {"i": 0, "k": 0, "role": "label", "text": "Minutes logged", "flags": ["caps", "tracked", "small"], "loc": [5, 78, 5, 92]},
   {"i": 1, "k": 0, "role": "stat", "text": "1,204", "flags": [], "loc": [6, 45, 6, 50]},
   {"i": 2, "k": 1, "role": "label", "text": "Streak", "flags": ["caps", "tracked"], "loc": [9, 51, 9, 57]},
-  {"i": 3, "k": 1, "role": "stat", "text": "\ue000 minutes", "flags": ["dynamic", "stateful"], "loc": [10, 46, 10, 53]}]}
+  {"i": 3, "k": 1, "role": "stat", "text": "\ue000 minutes", "flags": ["dynamic", "stateful"], "loc": [10, 46, 10, 53], "vw": [1]}]}

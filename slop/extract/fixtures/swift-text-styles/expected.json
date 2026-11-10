@@ -1,0 +1,13 @@
+{"schema": "slop.screen/1", "id": "bda5f6368bc9e539", "framework": "swift",
+ "source": {"repo": "slop-fixtures", "path": "Almanac.swift", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "header", "line": 8},
+  {"k": 1, "kind": "header", "line": 10},
+  {"k": 2, "kind": "body", "line": 7}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "h1", "text": "\ue000 title", "flags": ["dynamic", "stateful"], "loc": [8, 18, 8, 29], "vw": [1]},
+  {"i": 1, "k": 1, "role": "h4", "text": "High water", "flags": ["section_first"], "loc": [10, 19, 10, 29]},
+  {"i": 2, "k": 2, "role": "body", "text": "\ue000 summary", "flags": ["dynamic", "stateful"], "loc": [12, 18, 12, 31], "vw": [1]},
+  {"i": 3, "k": 2, "role": "caption", "text": "Times are local, adjusted for summer time.", "flags": ["small"], "loc": [14, 19, 14, 61]},
+  {"i": 4, "k": 2, "role": "body", "text": "Moon phase", "flags": [], "loc": [16, 19, 16, 29]},
+  {"i": 5, "k": 2, "role": "body", "text": "Allowed since \ue000 date", "flags": ["dynamic", "section_last"], "loc": [18, 19, 18, 78], "vw": [1]}]}

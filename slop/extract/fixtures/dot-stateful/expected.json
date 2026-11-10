@@ -4,4 +4,4 @@
   {"k": 0, "kind": "body", "line": 5}],
  "nodes": [
   {"i": 0, "k": 0, "role": "body", "text": "Connected \ue001 Offline", "flags": ["small", "dot", "stateful", "conditional"], "loc": [7, 34, 7, 66]},
-  {"i": 1, "k": 0, "role": "caption", "text": "\ue000 label", "flags": ["small", "dynamic", "stateful"], "loc": [8, 56, 8, 61]}]}
+  {"i": 1, "k": 0, "role": "caption", "text": "\ue000 label", "flags": ["small", "dynamic", "stateful"], "loc": [8, 56, 8, 61], "vw": [1]}]}

@@ -1,0 +1,11 @@
+{"schema": "slop.screen/1", "id": "9b5d1e9c9ad234f2", "framework": "tsx",
+ "source": {"repo": "slop-fixtures", "path": "Imports.tsx", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "actions", "line": 6},
+  {"k": 1, "kind": "body", "line": 7},
+  {"k": 2, "kind": "actions", "line": 3}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "button", "text": "Attach a chart", "flags": ["small"], "loc": [6, 46, 6, 60]},
+  {"i": 1, "k": 1, "role": "caption", "text": "GPX, KML or a photo", "flags": ["small"], "loc": [7, 53, 7, 72]},
+  {"i": 2, "k": 2, "role": "button", "text": "Saving the route \ue001 Save the route", "flags": ["stateful", "conditional"], "loc": [11, 23, 11, 69]},
+  {"i": 3, "k": 2, "role": "button", "text": "Plain button", "flags": [], "loc": [13, 29, 13, 41]}]}

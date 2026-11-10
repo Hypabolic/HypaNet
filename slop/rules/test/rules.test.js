@@ -13,7 +13,7 @@ import { fileURLToPath } from 'node:url';
 import { encodeScreen } from '../../lint/tokenizer.js';
 import { RULE_IDS, RULES, runRules } from '../index.js';
 import { buildAll } from '../fixtures/make_fixtures.mjs';
-import { hasArrowTail, literalWords, normalised, parseIndex, tokens } from '../src/text.js';
+import { hasArrowTail, literalWords, nodeBranches, normalised, parseIndex, tokens } from '../src/text.js';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const RULES_DIR = path.join(HERE, '..');
@@ -79,7 +79,7 @@ test('every rule has positive and near-miss negative fixtures, and every repeate
 });
 
 test('the exact-repeat fixtures that need two windows have them', () => {
-  for (const name of ['er_cta_pos', 'er_rank_pos', 'er_exempt_neg']) assert.ok(encodeScreen(loadFixture(name)).windows.length >= 2, name);
+  for (const name of ['er_cta_pos', 'er_rank_pos', 'er_exempt_neg', 'er_footer_links_neg', 'er_k11_cross_window_neg', 'er_two_dialogs_neg', 'er_conditional_keep_pos']) assert.ok(encodeScreen(loadFixture(name)).windows.length >= 2, name);
   assert.equal(encodeScreen(loadFixture('er_same_window_neg')).windows.length, 1);
 });
 
@@ -113,8 +113,12 @@ test('parseIndex reads the index devices and nothing else', () => {
     assert.ok(d, text);
     assert.deepEqual([d.family, d.value, d.whole], [family, value, whole], text);
   }
-  for (const text of ['2026', '1.9 kg', 'Level 3', 'Chapter 2', 'Step 1 is the hardest', '100', '£40', '24/7 support', 'v2', '3 seats left', '1,000'])
+  for (const text of ['2026', '1.9 kg', 'Level 3', 'Chapter 2', 'Step 1 is the hardest', '100', '£40', '24/7 support', 'v2', '3 seats left', '1,000',
+    '08:00', '01.03', '05 / 03', '3/2'])
     assert.equal(parseIndex(text), null, text);
+  assert.equal(parseIndex('01 / 04').total, 4);
+  assert.equal(parseIndex('Step 2 of 4').total, 4);
+  assert.equal(parseIndex('02 /').total, null);
 });
 
 test('words after a VAR marker are identifier words, not copy', () => {
@@ -122,6 +126,19 @@ test('words after a VAR marker are identifier words, not copy', () => {
   assert.deepEqual(literalWords(' your name'), []);
   assert.deepEqual(literalWords('VAR means variance'), ['var', 'means', 'variance']); // the letters are ordinary words
   assert.equal(tokens('a  b').filter((t) => t.k === 'alt').length, 1);
+});
+
+test('the extractor\'s vw gives the exact identifier words; without it (or when it does not fit) the cap applies', () => {
+  assert.deepEqual(literalWords(' name please check your inbox', [1]), ['please', 'check', 'your', 'inbox']);
+  assert.deepEqual(literalWords(' name please check your inbox'), ['inbox']); // fallback: four words
+  assert.deepEqual(literalWords(' upload failed try again please', [5]), []);
+  assert.deepEqual(literalWords(' line 2 is due', [2]), ['is', 'due']); // identifier words include numbers
+  assert.deepEqual(literalWords(' line 2 is due'), ['2', 'is', 'due']); // the fallback stops at a number
+  assert.deepEqual(literalWords('Paid  amount now', [1, 2]), ['paid']); // one count per marker, or the fallback
+  assert.deepEqual(literalWords(' a  b c d', [0, 1]), ['a', 'c', 'd']);
+  assert.deepEqual(nodeBranches({ text: 'Join  team name  Pay  amount now', vw: [2, 1] }),
+    [{ text: 'Join  team name', vw: [2] }, { text: 'Pay  amount now', vw: [1] }]);
+  assert.deepEqual(nodeBranches({ text: 'Retry  Wait' }), [{ text: 'Retry', vw: undefined }, { text: 'Wait', vw: undefined }]);
 });
 
 test('normalised strings fold case, glyphs, punctuation and apostrophes but keep markers', () => {
@@ -137,6 +154,10 @@ test('arrow tails come from the flag or a trailing glyph', () => {
   assert.ok(hasArrowTail({ text: 'Docs ->', flags: [] }));
   assert.ok(hasArrowTail({ text: 'Docs', flags: ['arrow_tail'] }));
   assert.ok(!hasArrowTail({ text: '→ Docs', flags: [] }));
+  assert.ok(hasArrowTail({ text: 'Next ›', flags: [] }));
+  assert.ok(hasArrowTail({ text: 'Docs ⟶', flags: [] }));
+  // ↗ marks an external link, » and a glued › are not arrows: the text overrides the extractor's flag.
+  for (const text of ['Docs ↗', 'More »', 'Next›', 'Below ↘']) assert.ok(!hasArrowTail({ text, flags: ['arrow_tail'] }), text);
 });
 
 // -- CLI -----------------------------------------------------------------------------------------------------------

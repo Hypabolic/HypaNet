@@ -5,8 +5,8 @@
   {"k": 1, "kind": "body", "line": 1},
   {"k": 2, "kind": "actions", "line": 7}],
  "nodes": [
-  {"i": 0, "k": 0, "role": "h1", "text": "Welcome back, \ue000 first name", "flags": ["dynamic"], "loc": [2, 7, 2, 42]},
-  {"i": 1, "k": 1, "role": "body", "text": "You have \ue000 overdue count books overdue.", "flags": ["dynamic", "section_first"], "loc": [4, 22, 4, 65]},
-  {"i": 2, "k": 1, "role": "body", "text": "\ue000 tagline", "flags": ["dynamic", "stateful"], "loc": [6, 6, 6, 43]},
-  {"i": 3, "k": 1, "role": "tooltip", "text": "\ue000 hint", "flags": ["dynamic", "stateful"], "loc": [7, 18, 7, 28]},
+  {"i": 0, "k": 0, "role": "h1", "text": "Welcome back, \ue000 first name", "flags": ["dynamic"], "loc": [2, 7, 2, 42], "vw": [2]},
+  {"i": 1, "k": 1, "role": "body", "text": "You have \ue000 overdue count books overdue.", "flags": ["dynamic", "section_first"], "loc": [4, 22, 4, 65], "vw": [2]},
+  {"i": 2, "k": 1, "role": "body", "text": "\ue000 tagline", "flags": ["dynamic", "stateful"], "loc": [6, 6, 6, 43], "vw": [1]},
+  {"i": 3, "k": 1, "role": "tooltip", "text": "\ue000 hint", "flags": ["dynamic", "stateful"], "loc": [7, 18, 7, 28], "vw": [1]},
   {"i": 4, "k": 2, "role": "button", "text": "Renew all", "flags": ["section_last"], "loc": [7, 30, 7, 39]}]}

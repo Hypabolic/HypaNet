@@ -17,9 +17,9 @@ const SKIP_ROLES = new Set(['cell', 'stat', 'input_value', 'breadcrumb']);
 const MIN_WORDS = (items) => (items >= 3 ? 2 : 3);
 
 // Leading copy words of a node, up to the first marker or identifier word.
-function leadWords(text) {
+function leadWords(node) {
   const out = [];
-  for (const t of tokens(text)) {
+  for (const t of tokens(node.text, node.vw)) {
     if (t.k === 'var' || t.k === 'alt' || t.ident) break;
     if (t.k === 'word' || t.k === 'number') out.push(t.w);
   }
@@ -38,11 +38,12 @@ export function check(screen) {
       seen.add(key);
       const texts = set.nodes.map((x) => nodes[x].text.trim());
       if (texts.every((t) => t.endsWith('?'))) continue; // questions open alike by grammar ("How do I …")
-      const words = set.nodes.map((x) => leadWords(nodes[x].text));
+      const words = set.nodes.map((x) => leadWords(nodes[x]));
       let n = 0;
       while (words.every((w) => n < w.length && w[n] === words[0][n])) n++;
       if (n < MIN_WORDS(set.nodes.length)) continue;
       if (!words.every((w) => w.length > n)) continue; // the shared words are the whole of some item: a repeat, not a lead-in
+      if (words.every((w) => /^\d/.test(w[n]))) continue; // "Address line 1", "Up to 5 users": a numbered series or a qualifier on a figure (K13)
       const lead = words[0].slice(0, n).join(' ');
       out.push(finding(id, code, screen, set.nodes,
         `${set.nodes.length} sibling ${set.role} nodes all open with "${lead}" ("${clip(texts[0], 40)}", …); say it once in the group label`));

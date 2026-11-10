@@ -1,10 +1,10 @@
-{"schema": "slop.screen/1", "id": "7c67c19f996c2198", "framework": "tsx",
+{"schema": "slop.screen/1", "id": "6ed266e1fe98cbb0", "framework": "tsx",
  "source": {"repo": "slop-rules-fixtures", "path": "src/rc_state_dots_pos.tsx", "commit": null, "licence": "MIT"},
  "clusters": [
   {"k": 0, "kind": "header", "line": 2},
-  {"k": 1, "kind": "list", "line": 4}],
+  {"k": 1, "kind": "body", "line": 5}],
  "nodes": [
-  {"i": 0, "k": 0, "role": "h2", "text": "Service status", "flags": [], "loc": [3, 7, 3, 21]},
-  {"i": 1, "k": 1, "role": "list_item", "text": "Bookings \ue000 state", "flags": ["dot", "stateful", "in_list"], "loc": [5, 7, 5, 23]},
-  {"i": 2, "k": 1, "role": "list_item", "text": "Payments \ue000 state", "flags": ["dot", "stateful", "in_list"], "loc": [6, 7, 6, 23]},
-  {"i": 3, "k": 1, "role": "list_item", "text": "Email receipts \ue000 state", "flags": ["dot", "stateful", "in_list"], "loc": [7, 7, 7, 29]}]}
+  {"i": 0, "k": 0, "role": "h2", "text": "Sync", "flags": [], "loc": [3, 7, 3, 11]},
+  {"i": 1, "k": 0, "role": "badge", "text": "\ue000 connection state", "flags": ["small", "dot", "dynamic", "stateful"], "loc": [4, 7, 4, 25], "vw": [2]},
+  {"i": 2, "k": 1, "role": "body", "text": "● \ue000 queue state", "flags": ["dot", "dynamic", "stateful"], "loc": [6, 7, 6, 22], "vw": [2]},
+  {"i": 3, "k": 1, "role": "body", "text": "Changes upload when the van is back in range.", "flags": [], "loc": [7, 7, 7, 52]}]}

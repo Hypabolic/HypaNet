@@ -39,11 +39,38 @@ text props of components (`title`, `description`, `eyebrow`, `label`, `cta` and 
 `.navigationTitle` is placed first, a `Section` header before its rows and its footer after, and `.help`, `.badge`,
 `.accessibilityLabel`, `.alert`, `.sheet` and `.toolbar` content after the view they modify.
 
+Words keep the spacing a browser gives them. Text either side of an inline tag displayed as a block (`block`,
+`flex`, `grid` or the repo CSS's `display`) is kept apart by a space, and so is text in two different inline elements;
+text and an inline child with no whitespace between them stay joined, as rendered (`Low<strong>tide</strong>` is
+"Lowtide", and JSX drops whitespace that holds a line break, as React does). A short coloured word (one to three
+words, a chromatic Tailwind text colour) inside a `flex` or `grid` row is an item of its own, not part of the row's
+text. HTML character references are decoded everywhere, named (`&times;`, `&apos;`, `&pound;`), decimal and
+hexadecimal, exactly as a browser decodes them (parse5 reads the text). SVG `<text>` and `<tspan>` are read (a
+`<tspan>` merges into its `<text>`); an `<svg>` is an icon only when it draws no text.
+
+SwiftUI specifics. A closure passed by label (`actions: { … }`, `message: { … }`) is read like a trailing closure, so
+`.alert(_:isPresented:actions:message:)` gives its buttons and message. Properties of type `some ToolbarContent`
+(`@ToolbarContentBuilder`) are read like `.toolbar { }` content. A custom view's first unlabelled argument is read when
+it is copy (a string literal that is not an SF Symbol name, `String(localized:)`, `Text(…)`), so `PrimaryButton("Pay
+now")` and `TagPill("Gift wrapped")` are nodes; a labelled argument that is an initialiser of a type that is not a view
+(`copy: ReceiptCopy(…)`, by name: not `*View`, `*Button`, `*Label`, `*Text` and the like) is a value passed in and gives
+no node, and `content:` and `copy:` arguments give text only when they are copy. A local view function (`func
+point(_ icon: String, _ text: String) -> some View`, declared once in the file) is read at each call in view position,
+its parameters bound to the call's arguments (a closure argument can be called as `content()`); its own body is then
+not read again on its own. iOS 18 `Tab("…", systemImage:)` gives a tab, and `.labelsHidden()` turns the labels of the
+controls it covers into `aria` nodes.
+
 Interpolations become the VAR marker, the private-use character U+E000, followed by the words of the last
 identifier segment (`{user.firstName}` gives `VAR first name`; `t("account.settingsTitle")` gives `VAR settings
 title`, while `t("Save changes")` stays as copy). The string branches of a conditional are joined with the ALT marker,
 U+E001 (`Online ALT Offline`). The letters "VAR" and "ALT" in copy (a key cap, say) are ordinary words; only the two
-code points are markers, and the screen JSON writes them as the escapes `\ue000` and `\ue001`. A text-less dot
+code points are markers, and the screen JSON writes them as the escapes `\ue000` and `\ue001`. A node whose text
+holds a VAR marker carries `vw`, one integer per marker in order: how many identifier words follow it (`Due in VAR eta
+hours hours` has `"vw": [2]`); the rules layer reads it, the tokeniser ignores it. Fragments shown under different
+`&&` conditions in one run of text are alternatives and are joined with ALT too (`{s === "a" && " · sending…"}{s ===
+"b" && " · saved"}` gives `· sending… ALT · saved` after the text they follow). `\(date, format: …)` in a Swift
+string is one interpolation; `xs.join(", ")` over a literal string array is the joined copy (at the first string's
+`loc`); `new Date(x.createdAt)` is named by its argument. A text-less dot
 element, or an element holding only a dot glyph, is never a node: it sets `dot` on the next node in the same
 container. Separators with no letters or digits (`·`, `/`) are dropped.
 
@@ -73,25 +100,54 @@ Each node's role comes from the first of these four stages that gives one.
 2. **Component name.** `*Title` (dialog, empty-state, page and section titles have their own roles), `*Description`,
    `Badge|Chip|Tag|Pill`, `EmptyState` with `title`/`description`, `*Button`, `*Link`, `Tabs`, `Breadcrumb` and
    `DropdownMenu` parts, `FormLabel`/`FormDescription`/`FormMessage`, `Typography variant`, `as="h2"`, and the
-   SwiftUI views (`Button`, `Link`, `Toggle`, `Picker`, `Section`, `GroupBox`, `ContentUnavailableView`, `Menu`).
-   The nearer of a tag and a component wins, so a `CardTitle` inside a card link is still a heading.
+   SwiftUI views (`Button`, `Link`, `Toggle`, `Picker`, `Section`, `GroupBox`, `ContentUnavailableView`, `Menu`,
+   `Tab`). The nearer of a tag and a component wins, so a `CardTitle` inside a card link is still a heading. A SwiftUI
+   custom view's first unlabelled copy argument takes its role from the view's name: `*Button` a button,
+   `Badge|Chip|Tag|Pill` a badge (a button when the view also takes an action closure or `action:`), `*Title`,
+   `*Heading`, `*Header` an `h3`, `*Link` a link, `*Caption` a caption, `*Label` a label, otherwise no role. An
+   icon-only button is `aria`: its `label` (or `text`) when the component's name is `*Icon*Button` (`IconButton`,
+   `GlassIconButton`), or when a `*Button` component takes an icon (`icon`, `systemImage`, …) and a `label` but no
+   visible title (JSX: no children; Swift: no unlabelled copy argument). Action-title props (`actionTitle`,
+   `secondaryActionTitle`, `buttonTitle`, …) are buttons. A component defined in the file whose own name ends in
+   `Badge|Chip|Tag|Pill` (or `Eyebrow|Kicker|Overline`) gives its markup that role: in JSX at the class stage, in
+   SwiftUI when its `body` is a small leaf view (one to three texts, no control or container). A SwiftUI `List` with a
+   `selection:` and the sidebar column of a `NavigationSplitView` are navigation, and their rows are `nav`.
 3. **Class tokens**, used only when no ancestor gave a role at stage 1 or 2: first `slop.config.json`, then semantic
    class names (`hero__eyebrow`, `status-pill`), then Tailwind and the repo's own CSS: a large figure is a `stat`;
-   `rounded-full` on short text is a `badge`; `uppercase` with positive `tracking-*` is a kicker; `text-destructive`
-   is an `error`; `text-xs` is small; `text-muted-foreground` is muted. The repo's CSS is read from simple class
+   `rounded-full` on short text is a `badge`; `uppercase` with positive `tracking-*` is a kicker; `text-destructive`,
+   `text-red-*` and `text-rose-*` are an `error` (not on a dot-led status line), and so is text that is one bound value
+   named as an error (`{uploadError}`, `model.errorMessage`) outside a dialog; `text-xs` is small;
+   `text-muted-foreground` is muted. A short coloured word (one to three words, a chromatic text colour) in an inline
+   element inside a row (`li`, `tr` or a template copy), after other text of that row, is a `badge`. Class names whose
+   last word is `title`, `heading`, `headline` or `header` (`hn-panel__title`, `card-header`) make an `h3`. SVG
+   `<text>` is never body: a data value is a `cell` (a class ending in `num`, `value`, `data`, `count`, `pct` and the
+   like, a figure, or a bare value inside two nested templates) and everything else a `label` (axes, legends, row and
+   column heads). The repo's CSS is read from simple class
    selectors (`.name { … }`) in every `.css`, `.scss` and `.less` file and in `<style>` blocks, for
-   `text-transform`, `letter-spacing`, `font-size`, `font-family`, `border-radius`, `width` and `height`. SwiftUI
-   fonts count here too (`.largeTitle` and `.title` give `h1`, `.title2` `h2`, `.title3` `h3`, `.headline` `h4`;
-   `.caption` is small). A pill or kicker inside a list item or table cell overrides that weak tag role.
+   `text-transform`, `letter-spacing`, `font-size`, `font-family`, `border-radius`, `width`, `height` and `display`.
+   SwiftUI fonts count here too (`.largeTitle` and `.title` give `h1`, `.title2` `h2`, `.title3` `h3`, `.headline`
+   `h4`; `.caption` is small), whatever the modifier is called: any modifier whose only argument is a text style
+   (`.font(.title)`, `.appFont(.title)`, `.hcFont(.caption)`) or a house style named after one (`.captionBold`,
+   `.bodyEmphasis`) is read as a font. `.foregroundStyle(.red)` or a colour named `destructive`, `danger` or `error`
+   (not a ternary) is error-coloured. A pill or kicker inside a list item or table cell overrides that weak tag role.
 4. **Position**, for whatever is left. Neighbours are the nodes before and after in reading order that share the same
    group (the nearest ancestor holding more than one piece of text). A kicker directly before a heading is an
-   `eyebrow`, otherwise a `label`; small or muted text of up to eight words directly before a heading is an
-   `eyebrow`; text directly after a heading is a `subtitle` when it is small, muted, or the only line before the next
-   control or heading; small text elsewhere is a `caption`; everything else is `body`.
+   `eyebrow`; the only line after a heading in its group is its tagline (`subtitle`); the first node of a card,
+   dialog, state or alert with at least three nodes after it is that panel's heading (`h3`); otherwise a kicker is a
+   `label` (a group label, or a field label such as a HUD's "Objective"); small or muted text of up to eight words
+   directly before a heading is an `eyebrow`; text directly after a heading is a `subtitle` when it is small, muted,
+   or the only line before the next control or heading; small text elsewhere is a `caption`; everything else is
+   `body`.
 
 After that, headings and body text inside a dialog become `dialog_title` and `dialog_body`, inside an empty state
-`empty_title` and `empty_body`, inside a toast `toast`; secondary text inside a form field becomes `helper`. The
-extractor never emits `comment` or `code` (track C is deferred).
+`empty_title` and `empty_body`, inside a toast `toast`; secondary text inside a form field becomes `helper`. Links
+in a list inside a page header (`header > ul > li > a`) are `nav`. A second line of text inside a button (a
+description under its label) is a `caption`; the first stays `button`, and texts in different branches of a condition
+inside the button are alternatives, not lines. A hand-built empty state is the branch shown when a collection is
+empty (`xs.length === 0 ? … : …`, `!xs.length && …`, `if (!xs.length) return …`, Swift `if xs.isEmpty { … }`, or the
+other branch of `xs.length > 0` and `!xs.isEmpty`) when it holds one to four lines of text, at least one of them
+literal copy, and no list or other container; with no heading of its own, its first line of up to eight words becomes
+`empty_title` and the rest `empty_body`. The extractor never emits `comment` or `code` (track C is deferred).
 
 ## Flags and clusters
 
@@ -122,7 +178,9 @@ literal in the array that it shows (the first one, if it shows several). Because
 share one: a second node showing the same literal (an `alt` or `aria-label` that repeats a title) takes the span of
 the literal's property (`title: "…"`) instead; the first node in a copy with no literal of its own (a constant
 label, or the VAR text of the index) takes the span of the whole array element; and copy text left without a free
-span keeps its span in the callback in the first copy and is dropped from later ones. Visible nodes choose before
+span keeps its span in the callback in the first copy and is dropped from later ones. Text read from an inlined local
+SwiftUI function sits at the argument it shows (the literal in the call), or else at its own span in the function,
+and a later call that would repeat that span takes the span of the whole call. Visible nodes choose before
 context-only ones. The screen `id` is the first 16 hex digits of
 sha256(`slop.screen/1`, repo, path, sha256 of the source). The serialiser writes one cluster and one node per line
 with fixed key order and flags in the order of `SPEC.md` §4, so the same input always gives the same bytes. Windows
@@ -143,8 +201,9 @@ frozen before labelling.
 ## Tests and fixtures
 
 `npm test` (in `slop/`) runs every fixture in `extract/fixtures/`, checks the output byte for byte against
-`expected.json`, runs each one twice to check determinism, validates the schema, and fails unless there are at least
-60 fixtures, every role bar `comment` and `code` and every flag and cluster kind appears somewhere, and the Swift
+`expected.json`, runs each one twice to check determinism, validates the schema (including `vw`: present exactly when
+the text holds a VAR marker, one count per marker, never more than the words after it), and fails unless there are
+at least 60 fixtures, every role bar `comment` and `code` and every flag and cluster kind appears somewhere, and the Swift
 grammar's wasm matches its pinned sha256. `npm run typecheck` runs `tsc`.
 
 To add a fixture:

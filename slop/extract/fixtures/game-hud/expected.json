@@ -4,8 +4,8 @@
   {"k": 0, "kind": "body", "line": 4},
   {"k": 1, "kind": "body", "line": 3}],
  "nodes": [
-  {"i": 0, "k": 0, "role": "body", "text": "Wave \ue000 wave", "flags": ["caps", "tracked", "small", "mono", "dynamic"], "loc": [5, 14, 5, 24]},
-  {"i": 1, "k": 0, "role": "body", "text": "HP \ue000 health", "flags": ["caps", "tracked", "small", "mono", "dynamic", "stateful"], "loc": [6, 70, 6, 80]},
+  {"i": 0, "k": 0, "role": "body", "text": "Wave \ue000 wave", "flags": ["caps", "tracked", "small", "mono", "dynamic"], "loc": [5, 14, 5, 24], "vw": [1]},
+  {"i": 1, "k": 0, "role": "body", "text": "HP \ue000 health", "flags": ["caps", "tracked", "small", "mono", "dynamic", "stateful"], "loc": [6, 70, 6, 80], "vw": [1]},
   {"i": 2, "k": 1, "role": "label", "text": "Objective", "flags": ["caps", "tracked", "small", "mono"], "loc": [9, 80, 9, 89]},
-  {"i": 3, "k": 1, "role": "body", "text": "\ue000 objective", "flags": ["mono", "dynamic", "stateful"], "loc": [10, 15, 10, 24]},
-  {"i": 4, "k": 1, "role": "stat", "text": "\ue000 ammo", "flags": ["mono", "dynamic", "stateful"], "loc": [12, 60, 12, 64]}]}
+  {"i": 3, "k": 1, "role": "body", "text": "\ue000 objective", "flags": ["mono", "dynamic", "stateful"], "loc": [10, 15, 10, 24], "vw": [1]},
+  {"i": 4, "k": 1, "role": "stat", "text": "\ue000 ammo", "flags": ["mono", "dynamic", "stateful"], "loc": [12, 60, 12, 64], "vw": [1]}]}

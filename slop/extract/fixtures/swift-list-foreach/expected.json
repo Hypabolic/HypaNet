@@ -5,7 +5,7 @@
   {"k": 1, "kind": "list", "line": 9}],
  "nodes": [
   {"i": 0, "k": 0, "role": "h1", "text": "Saved routes", "flags": ["in_header"], "loc": [23, 27, 23, 39]},
-  {"i": 1, "k": 1, "role": "link", "text": "\ue000 name", "flags": ["dynamic", "stateful", "in_list", "section_first", "repeated"], "loc": [11, 30, 11, 40]},
-  {"i": 2, "k": 1, "role": "link", "text": "\ue000 distance km · \ue000 climb m climb", "flags": ["small", "dynamic", "in_list", "repeated"], "loc": [13, 33, 13, 76]},
-  {"i": 3, "k": 1, "role": "badge", "text": "\ue000 unread", "flags": ["dynamic", "stateful", "in_list", "repeated"], "loc": [17, 24, 17, 36]},
+  {"i": 1, "k": 1, "role": "link", "text": "\ue000 name", "flags": ["dynamic", "stateful", "in_list", "section_first", "repeated"], "loc": [11, 30, 11, 40], "vw": [1]},
+  {"i": 2, "k": 1, "role": "link", "text": "\ue000 distance km · \ue000 climb m climb", "flags": ["small", "dynamic", "in_list", "repeated"], "loc": [13, 33, 13, 76], "vw": [1, 1]},
+  {"i": 3, "k": 1, "role": "badge", "text": "\ue000 unread", "flags": ["dynamic", "stateful", "in_list", "repeated"], "loc": [17, 24, 17, 36], "vw": [1]},
   {"i": 4, "k": 1, "role": "button", "text": "Archive", "flags": ["conditional", "in_list", "section_last", "repeated"], "loc": [19, 29, 19, 36]}]}

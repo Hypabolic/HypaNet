@@ -50,7 +50,10 @@ export function clusterRuns(screen) {
 
 // Groups of sibling items. Each group is {source, items: [[list index of scored nodes]]} with two or more items:
 //   - `cards`: a run of consecutive `card` clusters, one item per card;
-//   - `fields`: a run of consecutive `control` clusters, one item per field;
+//   - `fields`: a run of consecutive `control` clusters, one item per field; and a run of form labels in reading order
+//     (scored `label` nodes flagged `in_form` or `in_control`), each item a label with the helper, tooltip, error,
+//     placeholder and input-value nodes after it (a <label for> sits in a body cluster, its input in a control cluster
+//     of its own), the run ending at any other scored node;
 //   - `rows`: one `list` cluster split into rows (below).
 export function siblingGroups(screen) {
   const nodes = screen.nodes;
@@ -71,6 +74,17 @@ export function siblingGroups(screen) {
   };
   consecutive('card', 'cards');
   consecutive('control', 'fields');
+  // Runs of form labels (above).
+  const TRAIL = new Set(['helper', 'tooltip', 'error', 'placeholder', 'input_value']);
+  let cur = [];
+  const flushLabels = () => { if (cur.length >= 2) groups.push({ source: 'fields', items: cur }); cur = []; };
+  nodes.forEach((n, x) => {
+    if (!isScored(n)) return;
+    if (n.role === 'label' && (hasFlag(n, 'in_form') || hasFlag(n, 'in_control'))) cur.push([x]);
+    else if (TRAIL.has(n.role) && cur.length) cur[cur.length - 1].push(x);
+    else flushLabels();
+  });
+  flushLabels();
   for (const r of runs) {
     if (r.kind !== 'list') continue;
     // Rows start at each node with the role of the first node whose role occurs twice or more; nodes before that (a
@@ -89,14 +103,18 @@ export function siblingGroups(screen) {
   return groups;
 }
 
-// For each role present in every item of a group, the first node of that role in each item.
+// Aligned sets: for each role present in every item of a group, the first node of that role in each item, then the
+// second (when every item has a second), and so on.
 export function alignedSets(screen, group) {
   const roles = [];
   for (const x of group.items[0]) if (!roles.includes(screen.nodes[x].role)) roles.push(screen.nodes[x].role);
   const sets = [];
   for (const role of roles) {
-    const set = group.items.map((item) => item.find((x) => screen.nodes[x].role === role));
-    if (set.every((x) => x !== undefined)) sets.push({ role, nodes: set });
+    for (let nth = 0; ; nth++) {
+      const set = group.items.map((item) => item.filter((x) => screen.nodes[x].role === role)[nth]);
+      if (!set.every((x) => x !== undefined)) break;
+      sets.push({ role, nodes: set });
+    }
   }
   return sets;
 }

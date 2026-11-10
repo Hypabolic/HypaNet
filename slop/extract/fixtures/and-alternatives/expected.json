@@ -1,0 +1,6 @@
+{"schema": "slop.screen/1", "id": "d7759895f556b5de", "framework": "tsx",
+ "source": {"repo": "slop-fixtures", "path": "Sync.tsx", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "body", "line": 3}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "caption", "text": "\ue000 file · sending… \ue001 · checking… \ue001 · saved · \ue000 count waypoints \ue001 · \ue000 error \ue001 failed", "flags": ["small", "dynamic", "conditional"], "loc": [4, 38, 8, 64], "vw": [1, 1, 1]}]}

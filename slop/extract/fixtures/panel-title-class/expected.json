@@ -1,0 +1,15 @@
+{"schema": "slop.screen/1", "id": "58e08476c226b1ff", "framework": "tsx",
+ "source": {"repo": "slop-fixtures", "path": "Panels.tsx", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "actions", "line": 12},
+  {"k": 1, "kind": "list", "line": 14},
+  {"k": 2, "kind": "header", "line": 23},
+  {"k": 3, "kind": "header", "line": 27}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "link", "text": "Quay", "flags": ["in_header"], "loc": [12, 50, 12, 54]},
+  {"i": 1, "k": 1, "role": "nav", "text": "Charts", "flags": ["conditional", "in_list", "in_header"], "loc": [4, 13, 4, 19]},
+  {"i": 2, "k": 1, "role": "nav", "text": "Tides", "flags": ["conditional", "in_list", "in_header"], "loc": [5, 13, 5, 18]},
+  {"i": 3, "k": 2, "role": "h3", "text": "Swell forecast", "flags": [], "loc": [24, 39, 24, 53]},
+  {"i": 4, "k": 2, "role": "subtitle", "text": "Long-period swell from the west through Thursday.", "flags": ["section_first", "section_last"], "loc": [25, 12, 25, 61]},
+  {"i": 5, "k": 3, "role": "h3", "text": "Wind", "flags": [], "loc": [28, 40, 28, 44]},
+  {"i": 6, "k": 3, "role": "subtitle", "text": "Force four, backing south-west.", "flags": ["section_first", "section_last"], "loc": [29, 12, 29, 43]}]}

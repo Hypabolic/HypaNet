@@ -17,4 +17,4 @@
   {"i": 9, "k": 1, "role": "aria", "text": "Go to Renew", "flags": ["title_case", "in_list", "in_footer", "in_card", "repeated"], "loc": [13, 9, 13, 23]},
   {"i": 10, "k": 1, "role": "link", "text": "Lockers", "flags": ["in_list", "in_footer", "in_card", "section_last", "repeated"], "loc": [14, 17, 14, 24]},
   {"i": 11, "k": 1, "role": "aria", "text": "Go to Lockers", "flags": ["title_case", "in_list", "in_footer", "in_card", "repeated"], "loc": [14, 9, 14, 25]},
-  {"i": 12, "k": 2, "role": "caption", "text": "\ue000 terms \ue000 privacy", "flags": ["small", "dynamic", "in_footer"], "loc": [19, 24, 19, 42]}]}
+  {"i": 12, "k": 2, "role": "caption", "text": "\ue000 terms \ue000 privacy", "flags": ["small", "dynamic", "in_footer"], "loc": [19, 24, 19, 42], "vw": [1, 1]}]}

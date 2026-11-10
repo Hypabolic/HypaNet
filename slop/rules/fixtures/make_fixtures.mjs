@@ -6,8 +6,10 @@
 //
 // Hand-written stand-ins for extractor output: roles, flags and clusters are chosen by hand and each node sits on its
 // own line, so `loc` is [line, 7, line, 7 + length]. All copy is invented. U+E000 and U+E001 are the extractor's VAR
-// and ALT markers (SPEC.md §4). Each fixture names the rules it is a positive or a near-miss negative for; a fixture
-// expects exactly the findings listed, from every rule.
+// and ALT markers (SPEC.md §4); a node with a VAR marker carries the extractor's `vw` (identifier words after each
+// marker), except in `fw_markers_mixed`, which keeps the rules' fallback for screens without it. Each fixture names the
+// rules it is a positive or a near-miss negative for; a fixture expects exactly the findings listed, from every rule.
+// The fixtures marked "review" come from the adversarial review of the rule layer (2026-11-10).
 
 import { createHash } from 'node:crypto';
 import { mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
@@ -28,14 +30,21 @@ const SL = 'slop/shared-lead-in';
 const IX = 'slop/index-numbering';
 const ER = 'slop/exact-repeat';
 
-// node: [k, role, text, flags]; finding: [rule, code, [i…], {condition, target}]
-const n = (k, role, text, flags = []) => [k, role, text, flags];
+// node: [k, role, text, flags, vw?]; finding: [rule, code, [i…], {condition, target}]
+const n = (k, role, text, flags = [], vw = undefined) => [k, role, text, flags, vw];
+// The same nodes written cluster by cluster: [[kind, [[role, text, flags?, vw?], …]], …] gives {kinds, nodes}.
+const clustered = (list) => ({
+  kinds: list.map(([kind]) => kind),
+  nodes: list.flatMap(([, ns], k) => ns.map(([role, text, flags = [], vw]) => n(k, role, text, flags, vw))),
+});
 const f = (rule, code, nodes, extra = {}) => ({ rule, code, nodes, ...extra });
 const pos = (rule) => ({ rule, kind: 'positive' });
 const neg = (rule) => ({ rule, kind: 'negative' });
 
 // Distinct list rows for the long screens that need two windows.
 const TREES = ['Alder', 'Birch', 'Cedar', 'Damson', 'Elder', 'Fir', 'Gean', 'Hazel', 'Ivy', 'Juniper', 'Larch', 'Maple'];
+// One-node body clusters of distinct notes, to push a screen past one window.
+const notes = (count, from = 0) => Array.from({ length: count }, (_, j) => ['body', [['body', `Notes on harbour item ${String.fromCharCode(97 + ((from + j) % 26))}${from + j}`]]]);
 const rows = (k, from, count) => Array.from({ length: count }, (_, j) => n(k, 'list_item', `${TREES[(from + j) % TREES.length]} lane, plot ${from + j + 1}`, ['in_list']));
 
 const FIXTURES = [
@@ -103,24 +112,43 @@ const FIXTURES = [
   { name: 'rc_stateful_dot_neg', fw: 'tsx', about: [neg(RC)], kinds: ['header', 'actions'], nodes: [
     n(0, 'h2', 'Printer'),
     n(0, 'body', `Ready ${A} Out of paper`, ['dot', 'stateful', 'conditional']),
-    n(0, 'caption', `${V} last job`, ['small', 'dynamic', 'stateful']),
+    n(0, 'caption', `${V} last job`, ['small', 'dynamic', 'stateful'], [2]),
     n(1, 'button', 'Print test page'),
   ], expect: [] },
 
-  { name: 'rc_state_dots_pos', fw: 'tsx', about: [pos(RC)], kinds: ['header', 'list'], nodes: [
+  // One live dot per sibling row, each bound to its own row: K2, not a finding.
+  { name: 'rc_state_dots_rows_neg', fw: 'tsx', about: [neg(RC)], kinds: ['header', 'list'], nodes: [
     n(0, 'h2', 'Service status'),
-    n(1, 'list_item', `Bookings ${V} state`, ['dot', 'stateful', 'in_list']),
-    n(1, 'list_item', `Payments ${V} state`, ['dot', 'stateful', 'in_list']),
-    n(1, 'list_item', `Email receipts ${V} state`, ['dot', 'stateful', 'in_list']),
-  ], expect: [f(RC, 'R19', [1, 2, 3], { condition: 'state-dots' })] },
+    n(1, 'list_item', `Bookings ${V} state`, ['dot', 'stateful', 'in_list'], [1]),
+    n(1, 'list_item', `Payments ${V} state`, ['dot', 'stateful', 'in_list'], [1]),
+    n(1, 'list_item', `Email receipts ${V} state`, ['dot', 'stateful', 'in_list'], [1]),
+  ], expect: [] },
+
+  { name: 'rc_state_dots_pos', fw: 'tsx', about: [pos(RC)], kinds: ['header', 'body'], nodes: [
+    n(0, 'h2', 'Sync'),
+    n(0, 'badge', `${V} connection state`, ['small', 'dot', 'stateful', 'dynamic'], [2]),
+    n(1, 'body', `● ${V} queue state`, ['dot', 'stateful', 'dynamic'], [2]),
+    n(1, 'body', 'Changes upload when the van is back in range.'),
+  ], expect: [f(RC, 'R19', [1, 2], { condition: 'state-dots' })] },
+
+  // Two live dots on every row are not one per item: all of them count.
+  { name: 'rc_state_dots_two_per_row_pos', fw: 'tsx', about: [pos(RC)], kinds: ['header', 'list'], nodes: [
+    n(0, 'h2', 'Ovens'),
+    n(1, 'list_item', 'Deck oven', ['in_list']),
+    n(1, 'caption', `${V} heat state`, ['small', 'dot', 'stateful', 'dynamic', 'in_list'], [2]),
+    n(1, 'caption', `${V} door state`, ['small', 'dot', 'stateful', 'dynamic', 'in_list'], [2]),
+    n(1, 'list_item', 'Proving cabinet', ['in_list']),
+    n(1, 'caption', `${V} heat state`, ['small', 'dot', 'stateful', 'dynamic', 'in_list'], [2]),
+    n(1, 'caption', `${V} door state`, ['small', 'dot', 'stateful', 'dynamic', 'in_list'], [2]),
+  ], expect: [f(RC, 'R19', [2, 3, 5, 6], { condition: 'state-dots' })] },
 
   { name: 'rc_state_dots_neg', fw: 'tsx', about: [neg(RC)], kinds: ['header', 'header', 'header'], nodes: [
     n(0, 'h2', 'Bookings'),
-    n(0, 'body', `${V} bookings state`, ['dot', 'stateful']),
+    n(0, 'body', `${V} bookings state`, ['dot', 'stateful'], [2]),
     n(1, 'h2', 'Payments'),
-    n(1, 'body', `${V} payments state`, ['dot', 'stateful']),
+    n(1, 'body', `${V} payments state`, ['dot', 'stateful'], [2]),
     n(2, 'h2', 'Email receipts'),
-    n(2, 'body', `${V} email state`, ['dot', 'stateful']),
+    n(2, 'body', `${V} email state`, ['dot', 'stateful'], [2]),
   ], expect: [] },
 
   { name: 'rc_arrow_links_pos', fw: 'html', about: [pos(RC)], kinds: ['header', 'body', 'actions'], nodes: [
@@ -128,8 +156,17 @@ const FIXTURES = [
     n(1, 'body', 'Most questions are answered in the guides below.'),
     n(2, 'link', 'Moving-in checklist →', ['arrow_tail']),
     n(2, 'link', 'Paying the rent', ['icon', 'arrow_tail']),
-    n(2, 'link', 'Reporting a repair ↗', ['arrow_tail']),
+    n(2, 'link', 'Reporting a repair ›', ['arrow_tail']),
   ], expect: [f(RC, 'R19', [2, 3, 4], { condition: 'arrow-links' })] },
+
+  // ↗ marks an external link (it informs), » and a › glued to the word are not arrow suffixes, even when flagged.
+  { name: 'rc_arrow_external_neg', fw: 'html', about: [neg(RC)], kinds: ['header', 'actions'], nodes: [
+    n(0, 'h2', 'Further reading'),
+    n(1, 'link', 'Council recycling rules ↗', ['arrow_tail']),
+    n(1, 'link', 'Bin collection calendar ↗', ['arrow_tail']),
+    n(1, 'link', 'All guides »', ['arrow_tail']),
+    n(1, 'link', 'Older posts›', ['arrow_tail']),
+  ], expect: [] },
 
   { name: 'rc_arrow_links_neg', fw: 'html', about: [neg(RC)], kinds: ['header', 'actions', 'header'], nodes: [
     n(0, 'h2', 'Opening times'),
@@ -487,6 +524,159 @@ const FIXTURES = [
     n(3, 'body', 'Breakfast is served from seven until ten.'),
   ], expect: [f(ER, 'R14', [1], { target: 72 })] },
 
+  { name: 'er_footer_links_neg', fw: 'tsx', about: [neg(ER)], ...clustered([
+    ['header', [['h1', 'Allotment waiting list'], ['link', 'Read the tenancy rules']]],
+    ...notes(70),
+    ['body', [['link', 'Read the tenancy rules', ['in_footer']], ['link', 'Contact the site warden', ['in_footer']]]],
+  ]), expect: [] },
+
+  // -- identifier words: the extractor's `vw` ---------------------------------------------------------------------
+  // "very", "please" and "now" follow a one-word identifier; the four-word fallback would swallow them (review a03).
+  { name: 'fw_vw_var_masks_pos', fw: 'tsx', about: [pos(FW)], ...clustered([
+    ['header', [['h2', 'Uploads']]],
+    ['body', [['body', `${V} count files uploaded very quickly`, ['dynamic'], [1]],
+              ['body', `${V} name please check your inbox`, ['dynamic'], [1]]]],
+    ['actions', [['button', `Pay ${V} amount now`, ['dynamic'], [1]]]],
+  ]), expect: [f(FW, 'R15', [1]), f(FW, 'R15', [2]), f(FW, 'R15', [3])] },
+
+  // Each branch of a conditional reads its own slice of `vw`: "now" in the second branch is copy.
+  { name: 'fw_vw_branches_pos', fw: 'tsx', about: [pos(FW)], ...clustered([
+    ['header', [['h2', 'Checkout']]],
+    ['actions', [['button', `Join ${V} team name ${A} Pay ${V} amount now`, ['dynamic', 'conditional'], [2, 1]]]],
+  ]), expect: [f(FW, 'R15', [1])] },
+
+  // A five-word identifier ends in "please": the identifier's words, not copy (the fallback would flag it).
+  { name: 'fw_vw_long_ident_neg', fw: 'tsx', about: [neg(FW)], ...clustered([
+    ['header', [['h2', 'Upload failed']]],
+    ['body', [['body', `${V} upload failed try again please`, ['dynamic'], [5]]]],
+  ]), expect: [] },
+
+  // -- from the adversarial review (screens a01–a15, a03 above) ---------------------------------------------------
+  // a01: a rounded-full "Add to basket" button on every card is a control, not a pill device.
+  { name: 'rc_pill_button_cards_neg', fw: 'tsx', about: [neg(RC)], ...clustered([
+    ['header', [['h2', 'Kitchen kit']]],
+    ...[['Teapot', 'Cast iron, 1.2 litres'], ['Kettle', 'Copper, whistling'], ['Toaster', 'Four slots, long']].map(([t, b]) =>
+      ['card', [['h3', t, ['in_card', 'repeated']], ['body', b, ['in_card', 'repeated']], ['button', 'Add to basket', ['pill', 'in_card', 'repeated']]]]),
+  ]), expect: [] },
+
+  // a02: a <label for> sits in a body cluster and its input's placeholder in a control cluster of its own.
+  { name: 'pl_label_for_input_pos', fw: 'tsx', about: [pos(PL), neg(PL)], ...clustered([
+    ['header', [['h2', 'Delivery address']]],
+    ['body', [['label', 'Email', ['in_form']]]],
+    ['control', [['placeholder', 'name@example.com', ['in_form', 'in_control']]]],
+    ['body', [['label', 'Postcode', ['in_form']], ['helper', 'For example, SW1A 1AA', ['in_form']]]],
+    ['control', [['placeholder', 'SW1A 1AA', ['in_form', 'in_control']]]],
+    ['control', [['placeholder', 'Search addresses', ['in_form', 'in_control']]]],
+  ]), expect: [f(PL, 'R8b', [6])] },
+
+  // a04: a wizard shows one "Step N of 3" heading at a time (K3).
+  { name: 'ix_wizard_conditional_neg', fw: 'tsx', about: [neg(IX)], ...clustered([
+    ['header', [['h2', 'Step 1 of 3', ['conditional']], ['subtitle', 'Tell us about the shop', ['conditional']]]],
+    ['header', [['h2', 'Step 2 of 3', ['conditional']], ['subtitle', 'Connect a payment account', ['conditional']]]],
+    ['header', [['h2', 'Step 3 of 3', ['conditional']], ['subtitle', 'Choose a shipping zone', ['conditional']]]],
+    ['actions', [['button', 'Continue']]],
+  ]), expect: [] },
+
+  // a05: times, dates and recipe fractions are values, not index devices.
+  { name: 'ix_times_dates_fractions_neg', fw: 'tsx', about: [neg(IX), neg(RC)], ...clustered([
+    ['header', [['h2', 'Saturday programme']]],
+    ['list', [['caption', '08:00', ['in_list']], ['list_item', 'Doors open', ['in_list']],
+              ['caption', '09:00', ['in_list']], ['list_item', 'Opening talk', ['in_list']],
+              ['caption', '10:30', ['in_list']], ['list_item', 'Workshops', ['in_list']]]],
+    ['header', [['h2', 'Past events']]],
+    ['body', [['caption', '01.03'], ['body', 'Spring fair'], ['caption', '02.03'], ['body', 'Seed swap']]],
+    ['header', [['h2', 'Pancakes']]],
+    ['body', [['other', '1/2'], ['body', 'cup of milk'], ['other', '2/3'], ['body', 'cup of flour']]],
+  ]), expect: [] },
+
+  // a06: the page's "Delete playlist" button and a dialog titled "Delete playlist?" in another window (K11).
+  { name: 'er_k11_cross_window_neg', fw: 'tsx', about: [neg(ER)], ...clustered([
+    ['header', [['h1', 'Road trip mix']]],
+    ['actions', [['button', 'Delete playlist']]],
+    ...notes(70),
+    ['state', [['dialog_title', 'Delete playlist?', ['in_dialog', 'in_state']],
+               ['dialog_body', 'Its 40 tracks stay in your library.', ['in_dialog', 'in_state']],
+               ['button', 'Cancel', ['in_dialog', 'in_state']]]],
+  ]), expect: [] },
+
+  // a07: the same body in two different dialogs, never visible together (LABELLING.md §2a).
+  { name: 'er_two_dialogs_neg', fw: 'tsx', about: [neg(ER)], ...clustered([
+    ['header', [['h1', 'Exports']]],
+    ['state', [['dialog_title', 'Delete this export?', ['in_dialog', 'in_state']],
+               ['dialog_body', 'This cannot be undone.', ['in_dialog', 'in_state']]]],
+    ...notes(70),
+    ['state', [['dialog_title', 'Close your account?', ['in_dialog', 'in_state']],
+               ['dialog_body', 'This cannot be undone.', ['in_dialog', 'in_state']]]],
+  ]), expect: [] },
+
+  // a08: a conditional h1 is no target; the two always-visible h2s in different windows still repeat (R9).
+  { name: 'er_conditional_keep_pos', fw: 'tsx', about: [pos(ER)], ...clustered([
+    ['header', [['h1', 'Plans for growing teams', ['conditional']]]],
+    ...notes(70, 0),
+    ['header', [['h2', 'Plans for growing teams']]],
+    ...notes(70, 100),
+    ['header', [['h2', 'Plans for growing teams']]],
+  ]), expect: [f(ER, 'R9', [142], { target: 71 })] },
+
+  // a09: "Address line N" is a numbered series and "Up to N users" a qualifier on a figure (K13), not lead-ins.
+  { name: 'sl_numbered_series_neg', fw: 'tsx', about: [neg(SL)], ...clustered([
+    ['header', [['h2', 'Billing address']]],
+    ['control', [['label', 'Address line 1', ['in_form', 'in_control']]]],
+    ['control', [['label', 'Address line 2', ['in_form', 'in_control']]]],
+    ['control', [['label', 'Address line 3', ['in_form', 'in_control']]]],
+    ['header', [['h2', 'Plans']]],
+    ...[['Solo', 'Up to 5 users'], ['Team', 'Up to 20 users'], ['Studio', 'Up to 100 users']].map(([t, b]) =>
+      ['card', [['h3', t, ['in_card', 'repeated']], ['body', b, ['in_card', 'repeated']]]]),
+  ]), expect: [] },
+
+  // a10: "Now" first names something (a /now page, a "Now playing" tab, a time picker); only "Book now" is filler.
+  { name: 'fw_now_as_content_pos', fw: 'tsx', about: [pos(FW), neg(FW)], ...clustered([
+    ['header', [['nav', 'Now', ['in_nav']], ['nav', 'Writing', ['in_nav']]]],
+    ['actions', [['tab', 'Now playing'], ['tab', 'Queue']]],
+    ['control', [['label', 'Start time', ['in_control']], ['button', 'Now', ['in_control']]]],
+    ['actions', [['button', 'Book now']]],
+  ]), expect: [f(FW, 'R15', [6])] },
+
+  // a11: "double-click here" and "long-press here" name a hidden gesture (K4); "click here" points at a link.
+  { name: 'va_hidden_gesture_pos', fw: 'tsx', about: [pos(VA), neg(VA)], ...clustered([
+    ['header', [['h2', 'Layers']]],
+    ['body', [['helper', 'Double-click here to rename a layer.'],
+              ['tooltip', 'Long-press here to reorder'],
+              ['body', 'To read the full report, click here.']]],
+  ]), expect: [f(VA, 'R7', [3])] },
+
+  // a12: a dot before interpolated live text shows live state (K2); the fixed "All systems normal" dot does not.
+  { name: 'rc_dot_live_text_pos', fw: 'tsx', about: [pos(RC), neg(RC)], ...clustered([
+    ['header', [['h2', 'Team']]],
+    ['body', [['body', `● ${V} count online`, ['dot', 'dynamic'], [1]],
+              ['body', `${V} name is editing`, ['dot', 'dynamic'], [1]],
+              ['body', '● All systems normal', ['dot']]]],
+  ]), expect: [f(RC, 'R19', [3], { condition: 'decorative-dot' })] },
+
+  // a13: <label for> fields come out as a run of labels in one body cluster; they share "Emergency contact".
+  { name: 'sl_label_for_run_pos', fw: 'tsx', about: [pos(SL)], ...clustered([
+    ['header', [['h2', 'Next of kin']]],
+    ['body', [['label', 'Emergency contact name', ['in_form']],
+              ['label', 'Emergency contact phone', ['in_form']],
+              ['label', 'Emergency contact email', ['in_form']]]],
+  ]), expect: [f(SL, 'R10', [1, 2, 3])] },
+
+  // a14: a 1–5 rating scale and calendar days are bare numbers next to bare numbers: values, not numbering.
+  { name: 'ix_scale_and_days_neg', fw: 'tsx', about: [neg(IX)], ...clustered([
+    ['header', [['h2', 'How likely are you to recommend us?']]],
+    ['body', [1, 2, 3, 4, 5].map((d) => ['caption', String(d)])],
+    ['header', [['h2', 'March']]],
+    ['body', [1, 2, 3, 4, 5, 6, 7].map((d) => ['other', String(d)])],
+  ]), expect: [] },
+
+  // a15: the lead-in sits in the second body of each card.
+  { name: 'sl_second_body_pos', fw: 'tsx', about: [pos(SL)], ...clustered([
+    ['header', [['h2', 'Plans']]],
+    ...[['Solo', '£9 a month', 'Perfect for freelancers on the move'], ['Team', '£29 a month', 'Perfect for small studios'],
+      ['Agency', '£99 a month', 'Perfect for agencies with many clients']].map(([t, p, b]) =>
+      ['card', [['h3', t, ['in_card', 'repeated']], ['body', p, ['in_card', 'repeated']], ['body', b, ['in_card', 'repeated']]]]),
+  ]), expect: [f(SL, 'R10', [3, 6, 9])] },
+
   // -- a clean screen: no rule fires ------------------------------------------------------------------------------
   { name: 'clean_settings_neg', fw: 'swift', about: [neg(RC), neg(VA), neg(FW), neg(PL), neg(SL), neg(IX), neg(ER)],
     kinds: ['header', 'control', 'control', 'actions'], nodes: [
@@ -513,16 +703,20 @@ const arr = (xs) => `[${xs.map(j).join(', ')}]`;
 function serialise(s) {
   const src = obj([['repo', j(s.source.repo)], ['path', j(s.source.path)], ['commit', j(s.source.commit)], ['licence', j(s.source.licence)]]);
   const cl = s.clusters.map((c) => obj([['k', j(c.k)], ['kind', j(c.kind)], ['line', j(c.line)]]));
-  const nd = s.nodes.map((x) => obj([['i', j(x.i)], ['k', j(x.k)], ['role', j(x.role)], ['text', j(x.text)], ['flags', arr(x.flags)], ['loc', arr(x.loc)]]));
+  const nd = s.nodes.map((x) => obj([['i', j(x.i)], ['k', j(x.k)], ['role', j(x.role)], ['text', j(x.text)], ['flags', arr(x.flags)], ['loc', arr(x.loc)],
+    ...(x.vw ? [['vw', arr(x.vw)]] : [])]));
   const list = (xs) => (xs.length ? `[\n  ${xs.join(',\n  ')}]` : '[]');
   return `{"schema": ${j(s.schema)}, "id": ${j(s.id)}, "framework": ${j(s.framework)},\n "source": ${src},\n "clusters": ${list(cl)},\n "nodes": ${list(nd)}}\n`;
 }
 
 function build(fx) {
-  const nodes = fx.nodes.map(([k, role, text, flags], i) => {
+  const nodes = fx.nodes.map(([k, role, text, flags, vw], i) => {
     for (const fl of flags) if (!FLAGS.includes(fl)) throw new Error(`${fx.name}: unknown flag ${fl}`);
+    if (vw && vw.length !== text.split(V).length - 1) throw new Error(`${fx.name}: node ${i} has ${vw.length} vw counts for its VAR markers`);
     const line = 3 + i + k; // a blank line before each cluster
-    return { i, k, role, text, flags: FLAGS.filter((fl) => flags.includes(fl)), loc: [line, 7, line, 7 + Array.from(text).length] };
+    const node = { i, k, role, text, flags: FLAGS.filter((fl) => flags.includes(fl)), loc: [line, 7, line, 7 + Array.from(text).length] };
+    if (vw) node.vw = vw;
+    return node;
   });
   const clusters = fx.kinds.map((kind, k) => {
     const first = nodes.find((x) => x.k === k);
@@ -530,7 +724,7 @@ function build(fx) {
     return { k, kind, line: first.loc[0] - 1 };
   });
   const p = `src/${fx.name}.${EXT[fx.fw]}`;
-  const id = createHash('sha256').update(`slop.screen/1\0slop-rules-fixtures\0${p}\0${JSON.stringify(fx.nodes)}`).digest('hex').slice(0, 16);
+  const id = createHash('sha256').update(`slop.screen/1\0slop-rules-fixtures\0${p}\0${JSON.stringify(fx.nodes.map((x) => (x[4] ? x : x.slice(0, 4))))}`).digest('hex').slice(0, 16);
   const screen = { schema: 'slop.screen/1', id, framework: fx.fw, source: { repo: 'slop-rules-fixtures', path: p, commit: null, licence: 'MIT' }, clusters, nodes };
   const findings = fx.expect.map((e) => {
     const out = { rule: e.rule, code: e.code };

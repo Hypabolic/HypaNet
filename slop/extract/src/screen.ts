@@ -19,6 +19,7 @@ export interface ScreenNode {
   text: string;
   flags: Flag[];
   loc: [number, number, number, number];
+  vw?: number[]; // one count per VAR marker in text: the identifier words that follow it
 }
 
 export interface Screen {
@@ -80,7 +81,9 @@ export function buildScreen(
     nodes: nodes.map((n) => {
       const [l1, c1] = lm.pos(n.s);
       const [l2, c2] = lm.pos(n.e);
-      return { i: n.i, k: n.k, role: n.role, text: n.text, flags: n.flags, loc: [l1, c1, l2, c2] };
+      const node: ScreenNode = { i: n.i, k: n.k, role: n.role, text: n.text, flags: n.flags, loc: [l1, c1, l2, c2] };
+      if (n.vw) node.vw = n.vw;
+      return node;
     }),
   };
 }
@@ -97,6 +100,7 @@ export function serialise(s: Screen): string {
   const cl = s.clusters.map((c) => obj([['k', j(c.k)], ['kind', j(c.kind)], ['line', j(c.line)]]));
   const nd = s.nodes.map((n) => obj([
     ['i', j(n.i)], ['k', j(n.k)], ['role', j(n.role)], ['text', j(n.text)], ['flags', arr(n.flags)], ['loc', arr(n.loc)],
+    ...(n.vw ? [['vw', arr(n.vw)] as [string, string]] : []),
   ]));
   const list = (xs: string[]): string => (xs.length ? `[\n  ${xs.join(',\n  ')}]` : '[]');
   return `{"schema": ${j(s.schema)}, "id": ${j(s.id)}, "framework": ${j(s.framework)},\n "source": ${src},\n "clusters": ${list(cl)},\n "nodes": ${list(nd)}}\n`;

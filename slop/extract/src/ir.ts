@@ -23,6 +23,9 @@ export interface Sty {
   truncated?: boolean;
   srOnly?: boolean;
   errorColour?: boolean;
+  hue?: boolean; // a chromatic text colour (status colours: green, amber, red, sky ...), not a grey or the foreground
+  blockDisplay?: boolean; // display: block, flex or grid on an inline tag (it starts its own line)
+  flexBox?: boolean; // display: flex or grid (inline or not): each child is laid out as its own item
   titleCase?: boolean;
   heading?: number; // SwiftUI title fonts: a class-stage heading level
 }
@@ -69,6 +72,8 @@ export interface Txt {
   subs?: [number, number][]; // spans of the array-literal strings substituted into the text (jsx.ts), in text order
   near?: [number, number][]; // the spans of those strings' properties (name: "…")
   copy?: [number, number]; // span of the array element whose expanded copy holds this text
+  call?: [number, number]; // span of the call of an inlined local view function (swift.ts): a last-resort loc
+  andGroup?: number; // shown under its own `&&` condition (jsx.ts): adjacent texts of different groups are alternatives
 }
 
 export type Kid = El | Txt;
@@ -91,6 +96,13 @@ export type Slot = LV | null | undefined;
 /** Does any text in the subtree show a substituted array literal? */
 export function hasSubs(k: Kid): boolean {
   return k.t === 'txt' ? !!k.subs : k.kids.some(hasSubs);
+}
+
+/** Give every text from an inlined function call the call's span, as a fallback location. */
+export function markCall(k: Kid, at: [number, number]): void {
+  if (k.t === 'txt') {
+    if (!k.call) k.call = at;
+  } else for (const c of k.kids) markCall(c, at);
 }
 
 /** Give every text in an expanded copy its element's span, unless a nested copy already gave it one. */
@@ -138,13 +150,18 @@ export function identWords(id: string): string {
  */
 export const VAR_MARK = '\uE000';
 export const ALT_MARK = '\uE001';
+/**
+ * Internal only, never written to a screen: closes the identifier words after a VAR marker, so that infer.ts can
+ * count them for the node's `vw` field after any amount of concatenation, then strips it.
+ */
+export const VAR_END = '\uE002';
 /** Branch separator in text: the ALT marker between spaces. */
 export const ALT_JOIN = ` ${ALT_MARK} `;
 
 /** The text of an interpolation: the VAR marker plus the words of the last identifier segment. */
 export function varText(ident: string | null): string {
   const w = ident ? identWords(ident) : '';
-  return w ? `${VAR_MARK} ${w}` : VAR_MARK;
+  return w ? `${VAR_MARK} ${w}${VAR_END}` : `${VAR_MARK}${VAR_END}`;
 }
 
 /** Last segment of a translation key ("home.hero.title" → "title"). */
@@ -268,6 +285,20 @@ export function hasArrowTail(text: string): boolean {
   return /(→|↗|↘|»|›|->|⟶|➜|➔|⇢|⇾)\s*$/u.test(text);
 }
 
+/**
+ * Strip the internal VAR_END marks from a node's text and count, for each VAR marker in order, the identifier words
+ * that follow it (the node's `vw` field).
+ */
+export function varWords(text: string): { text: string; vw: number[] } {
+  const vw: number[] = [];
+  const re = /\uE000([^\uE000\uE002]*)\uE002/gu;
+  let m: RegExpExecArray | null;
+  while ((m = re.exec(text))) vw.push(m[1].split(/\s+/).filter(Boolean).length);
+  const n = (text.match(/\uE000/gu) ?? []).length;
+  while (vw.length < n) vw.push(0);
+  return { text: collapse(text.replace(/\uE002/gu, '')), vw };
+}
+
 /** Words, counting each VAR or ALT marker as one. */
 export function wordCount(text: string): number {
   return text.split(/\s+/).filter((w) => /[\p{L}\p{N}\uE000\uE001]/u.test(w)).length;
@@ -279,4 +310,50 @@ export function isFigure(lit: string): boolean {
   if (!/\d/.test(t)) return false;
   if (wordCount(t) > 2) return false;
   return /^[~≈<>+\-−£$€¥#]?\s?\d[\d,.\s]*(%|[kKmMbB]\+?|\+|x|×|\/\s?\d+|\s?(ms|s|h|d|GB|MB|TB))?$/u.test(t);
+}
+
+// ---------------------------------------------------------------------------------------------------------------
+// Hand-built empty states
+
+/**
+ * Does a condition (its source text) test that a collection is empty? 'pos' when true means empty (`xs.length === 0`,
+ * `!xs.length`, `xs.isEmpty`), 'neg' when true means not empty (`xs.length > 0`, `!xs.isEmpty`), null otherwise.
+ */
+export function emptyCond(src: string): 'pos' | 'neg' | null {
+  const t = src.replace(/\s+/g, '');
+  if (/[|&]{2}|,/.test(t)) return null;
+  if (/^!\(?[\w$.?]+\.(length|size)\)?$|\.(length|size|count)(===?|<=?)0$|\.(length|size|count)<1$|^0===?[\w$.?]+\.(length|size|count)$|^[\w$.?]*\.isEmpty(\(\))?$|^isEmpty\(|^(?![\w$]*(Not|Non)[A-Z])[\w$]*Empty$/.test(t)) return 'pos';
+  if (/\.(length|size|count)(>0|!==?0|>=1)$|^!![\w$.?]+\.(length|size)$|^!(is|has)?[\w$.?]*Empty$|^![\w$.?]+\.isEmpty(\(\))?$/.test(t)) return 'neg';
+  return null;
+}
+
+/**
+ * The branch shown when a collection is empty: a hand-built empty state when it holds one to four lines of text, at
+ * least one of them literal copy, and no list, template or other container. Its element (or a wrapper round several) becomes an empty-state container.
+ */
+export function markEmptyKids(kids: Kid[], s: number, e: number): Kid[] {
+  let texts = 0;
+  let literal = false;
+  let blocked = false;
+  const walk = (k: Kid): void => {
+    if (k.t === 'txt') {
+      if (!k.attr && k.text.trim()) {
+        texts++;
+        if (/\p{L}/u.test(k.lit)) literal = true;
+      }
+      return;
+    }
+    if (k.tmpl || (k.box && k.box !== 'card' && k.box !== 'section')) blocked = true;
+    k.kids.forEach(walk);
+  };
+  kids.forEach(walk);
+  // an empty state says so in words of its own: a branch showing only bound values is not one
+  if (blocked || !literal || texts < 1 || texts > 4) return kids;
+  if (kids.length === 1 && kids[0].t === 'el') {
+    kids[0].box = 'empty';
+    return kids;
+  }
+  const w = el('#empty', s, e, { box: 'empty', cond: true });
+  w.kids = kids;
+  return [w];
 }

@@ -1,0 +1,17 @@
+{"schema": "slop.screen/1", "id": "e1642f4696216edb", "framework": "tsx",
+ "source": {"repo": "slop-fixtures", "path": "Pantry.tsx", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "header", "line": 4},
+  {"k": 1, "kind": "state", "line": 9},
+  {"k": 2, "kind": "list", "line": 16},
+  {"k": 3, "kind": "state", "line": 27},
+  {"k": 4, "kind": "body", "line": 33}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "h2", "text": "Pantry shelf", "flags": [], "loc": [5, 45, 5, 57]},
+  {"i": 1, "k": 0, "role": "subtitle", "text": "Counting jars…", "flags": ["small", "conditional", "section_first", "section_last"], "loc": [7, 47, 7, 61]},
+  {"i": 2, "k": 1, "role": "empty_title", "text": "No jars on the shelf", "flags": ["small", "conditional", "in_state"], "loc": [10, 46, 10, 66]},
+  {"i": 3, "k": 1, "role": "empty_body", "text": "Label a jar to start tracking what is left in it.", "flags": ["small", "conditional", "in_state", "section_first", "section_last"], "loc": [11, 49, 11, 98]},
+  {"i": 4, "k": 2, "role": "list_item", "text": "\ue000 label", "flags": ["dynamic", "stateful", "conditional", "in_list"], "loc": [16, 29, 16, 36], "vw": [1]},
+  {"i": 5, "k": 3, "role": "empty_title", "text": "Spice rack is bare", "flags": ["conditional", "in_state"], "loc": [28, 12, 28, 30]},
+  {"i": 6, "k": 3, "role": "empty_body", "text": "Add a spice and it shows up here with its best-before date.", "flags": ["conditional", "in_state", "section_first", "section_last"], "loc": [29, 12, 29, 71]},
+  {"i": 7, "k": 4, "role": "body", "text": "\ue000 length spices", "flags": ["dynamic"], "loc": [33, 14, 33, 35], "vw": [1]}]}

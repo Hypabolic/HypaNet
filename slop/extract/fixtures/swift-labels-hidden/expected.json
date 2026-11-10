@@ -1,0 +1,12 @@
+{"schema": "slop.screen/1", "id": "50bbe931158d887a", "framework": "swift",
+ "source": {"repo": "slop-fixtures", "path": "Units.swift", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "header", "line": 9},
+  {"k": 1, "kind": "control", "line": 10},
+  {"k": 2, "kind": "control", "line": 16}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "h2", "text": "Units", "flags": ["in_form"], "loc": [9, 22, 9, 27]},
+  {"i": 1, "k": 1, "role": "aria", "text": "Distance unit", "flags": ["in_form", "in_control"], "loc": [10, 25, 10, 38]},
+  {"i": 2, "k": 1, "role": "menu_item", "text": "Nautical miles", "flags": ["in_form", "in_list", "in_control", "section_first"], "loc": [11, 27, 11, 41]},
+  {"i": 3, "k": 1, "role": "menu_item", "text": "Kilometres", "flags": ["in_form", "in_list", "in_control"], "loc": [12, 27, 12, 37]},
+  {"i": 4, "k": 2, "role": "label", "text": "Loud fog horn", "flags": ["in_form", "in_control", "section_last"], "loc": [16, 25, 16, 38]}]}

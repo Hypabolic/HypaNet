@@ -1,0 +1,11 @@
+{"schema": "slop.screen/1", "id": "597cdb223d380b84", "framework": "swift",
+ "source": {"repo": "slop-fixtures", "path": "Moorings.swift", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "list", "line": 8},
+  {"k": 1, "kind": "state", "line": 7}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "list_item", "text": "\ue000 name", "flags": ["dynamic", "stateful", "in_list"], "loc": [8, 18, 8, 28], "vw": [1]},
+  {"i": 1, "k": 1, "role": "dialog_title", "text": "Berth unavailable", "flags": ["conditional", "in_dialog", "in_state"], "loc": [11, 14, 11, 31]},
+  {"i": 2, "k": 1, "role": "dialog_body", "text": "Another boat has this berth for the night.", "flags": ["conditional", "in_dialog", "in_state", "section_first"], "loc": [17, 30, 17, 72]},
+  {"i": 3, "k": 1, "role": "button", "text": "Pick another", "flags": ["conditional", "in_dialog", "in_state"], "loc": [14, 25, 14, 37]},
+  {"i": 4, "k": 1, "role": "button", "text": "Cancel", "flags": ["conditional", "in_dialog", "in_state", "section_last"], "loc": [15, 25, 15, 31]}]}

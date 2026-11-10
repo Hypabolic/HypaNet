@@ -1,0 +1,10 @@
+{"schema": "slop.screen/1", "id": "a427e93cc2eafb8f", "framework": "tsx",
+ "source": {"repo": "slop-rules-fixtures", "path": "src/rc_dot_live_text_pos.tsx", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "header", "line": 2},
+  {"k": 1, "kind": "body", "line": 4}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "h2", "text": "Team", "flags": [], "loc": [3, 7, 3, 11]},
+  {"i": 1, "k": 1, "role": "body", "text": "● \ue000 count online", "flags": ["dot", "dynamic"], "loc": [5, 7, 5, 23], "vw": [1]},
+  {"i": 2, "k": 1, "role": "body", "text": "\ue000 name is editing", "flags": ["dot", "dynamic"], "loc": [6, 7, 6, 24], "vw": [1]},
+  {"i": 3, "k": 1, "role": "body", "text": "● All systems normal", "flags": ["dot"], "loc": [7, 7, 7, 27]}]}

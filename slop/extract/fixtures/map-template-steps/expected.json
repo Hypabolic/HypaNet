@@ -8,15 +8,15 @@
  "nodes": [
   {"i": 0, "k": 0, "role": "h2", "text": "From box to bike", "flags": [], "loc": [10, 42, 10, 58]},
   {"i": 1, "k": 1, "role": "alt", "text": "Send us the frame", "flags": ["in_list", "in_card", "repeated"], "loc": [2, 5, 2, 31]},
-  {"i": 2, "k": 1, "role": "list_item", "text": "Stage \ue000 index", "flags": ["small", "dynamic", "in_list", "in_card", "section_first", "repeated"], "loc": [2, 3, 2, 104]},
+  {"i": 2, "k": 1, "role": "list_item", "text": "Stage \ue000 index", "flags": ["small", "dynamic", "in_list", "in_card", "section_first", "repeated"], "loc": [2, 3, 2, 104], "vw": [1]},
   {"i": 3, "k": 1, "role": "h3", "text": "Send us the frame", "flags": ["in_list", "in_card", "repeated"], "loc": [2, 13, 2, 30]},
   {"i": 4, "k": 1, "role": "list_item", "text": "5 min · pack it in the box we post", "flags": ["small", "in_list", "in_card", "section_first", "repeated"], "loc": [2, 42, 2, 43]},
   {"i": 5, "k": 1, "role": "link", "text": "Read the details", "flags": ["small", "in_list", "in_card", "section_last", "repeated"], "loc": [20, 63, 20, 79]},
   {"i": 6, "k": 2, "role": "alt", "text": "We true the wheels", "flags": ["in_list", "in_card", "repeated"], "loc": [3, 5, 3, 32]},
-  {"i": 7, "k": 2, "role": "list_item", "text": "Stage \ue000 index", "flags": ["small", "dynamic", "in_list", "in_card", "repeated"], "loc": [3, 3, 3, 104]},
+  {"i": 7, "k": 2, "role": "list_item", "text": "Stage \ue000 index", "flags": ["small", "dynamic", "in_list", "in_card", "repeated"], "loc": [3, 3, 3, 104], "vw": [1]},
   {"i": 8, "k": 2, "role": "h3", "text": "We true the wheels", "flags": ["in_list", "in_card", "repeated"], "loc": [3, 13, 3, 31]},
   {"i": 9, "k": 2, "role": "list_item", "text": "40 min · spokes tensioned by hand", "flags": ["small", "in_list", "in_card", "section_first", "section_last", "repeated"], "loc": [3, 43, 3, 45]},
   {"i": 10, "k": 3, "role": "alt", "text": "Ride it home", "flags": ["in_list", "in_card", "repeated"], "loc": [4, 5, 4, 26]},
-  {"i": 11, "k": 3, "role": "list_item", "text": "Stage \ue000 index", "flags": ["small", "dynamic", "in_list", "in_card", "repeated"], "loc": [4, 3, 4, 107]},
+  {"i": 11, "k": 3, "role": "list_item", "text": "Stage \ue000 index", "flags": ["small", "dynamic", "in_list", "in_card", "repeated"], "loc": [4, 3, 4, 107], "vw": [1]},
   {"i": 12, "k": 3, "role": "h3", "text": "Ride it home", "flags": ["in_list", "in_card", "repeated"], "loc": [4, 13, 4, 25]},
   {"i": 13, "k": 3, "role": "list_item", "text": "No wait · collect from the shop or by courier", "flags": ["small", "in_list", "in_card", "section_first", "section_last", "repeated"], "loc": [4, 49, 4, 84]}]}

@@ -5,4 +5,4 @@
  "nodes": [
   {"i": 0, "k": 0, "role": "body", "text": "Connected \ue001 Not connected", "flags": ["dot", "stateful", "conditional"], "loc": [11, 18, 11, 65]},
   {"i": 1, "k": 0, "role": "badge", "text": "Beta", "flags": ["small", "pill"], "loc": [13, 19, 13, 23]},
-  {"i": 2, "k": 0, "role": "body", "text": "\ue000 serial", "flags": ["mono", "dynamic", "stateful", "truncated"], "loc": [17, 18, 17, 31]}]}
+  {"i": 2, "k": 0, "role": "body", "text": "\ue000 serial", "flags": ["mono", "dynamic", "stateful", "truncated"], "loc": [17, 18, 17, 31], "vw": [1]}]}

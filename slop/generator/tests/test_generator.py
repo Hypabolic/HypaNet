@@ -33,7 +33,7 @@ def test_same_seed_same_bytes(built):
     a, b, ma, mb = built
     names = sorted(p.name for p in a.iterdir())
     assert names == sorted(p.name for p in b.iterdir())
-    assert set(names) == {"screens.jsonl", "val.gen.jsonl", "sources.jsonl", "manifest.json", "SHA256SUMS"}
+    assert set(names) == {"screens.jsonl", "val.gen.jsonl", "sources.jsonl", "val.meta.jsonl", "manifest.json", "SHA256SUMS"}
     for n in names:
         assert (a / n).read_bytes() == (b / n).read_bytes(), n
 
@@ -82,6 +82,45 @@ def test_records_match_planted_slots(built):
         assert r["labeller"] == "gen" and r["time"] == gb.GEN_TIME
         if r["class"] in ("ECHO", "NARRATE", "DECOR"):
             assert PATTERN_CLASS[r["pattern"]] == r["class"]
+
+
+def test_nothing_shipped_names_the_kind_or_clean_status(built):
+    """Kind and clean status live only in the harness sidecar; paths name no kind (SPEC.md §9)."""
+    a = built[0]
+    meta = [json.loads(x) for x in (a / "val.meta.jsonl").read_text().splitlines()]
+    assert len(meta) == N and all({"kind", "clean"} <= set(m) for m in meta)
+    for name in ("screens.jsonl", "sources.jsonl"):
+        for line in (a / name).read_text().splitlines():
+            r = json.loads(line)
+            assert "kind" not in r and "clean" not in r
+            path = r["source"]["path"] if name == "screens.jsonl" else r["path"]
+            assert not (gb.path_words(path) & gb.KIND_WORDS), path
+
+
+def test_redundancy_is_not_decided_by_role_alone(built):
+    """Every role the guide lets be redundant carries both classes (generator v2, tell 1)."""
+    a = built[0]
+    screens = {json.loads(x)["id"]: json.loads(x) for x in (a / "screens.jsonl").read_text().splitlines()}
+    seen: dict = {}
+    for line in (a / "val.gen.jsonl").read_text().splitlines():
+        r = json.loads(line)
+        if "loc" not in r or r["class"] is None:
+            continue
+        role = next(n["role"] for n in screens[r["screen"]]["nodes"] if n["loc"] == r["loc"])
+        seen.setdefault(role, set()).add(r["class"] != "KEEP")
+    for role in ("eyebrow", "subtitle", "h1", "h2", "h3", "placeholder", "helper", "caption", "body", "label", "link",
+                 "button", "list_item", "badge", "dialog_body", "empty_body"):
+        assert seen.get(role) == {True, False}, role
+
+
+def test_equal_rank_repeat_flags_the_later_node():
+    """A planted exact repeat that the extractor reads first swaps places with its target (LABELLING.md §5)."""
+    nav = S("Hives", "h1")
+    page_h = S("Hives", "h1").echo(nav, "R9")
+    pairs = [({"i": 0, "role": "h1", "flags": []}, page_h), ({"i": 1, "role": "h1", "flags": []}, nav)]
+    gb.orient_duplicates(pairs)
+    assert page_h.cls == "KEEP" and page_h.target is None
+    assert nav.cls == "ECHO" and nav.target is page_h and nav.pattern == "R9"
 
 
 def test_join_fails_loudly_on_a_moved_span():

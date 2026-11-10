@@ -7,8 +7,10 @@
     uv run python -m generator.build dev --n 500 --out DIR   # a smaller build elsewhere (tests, smoke runs)
 
 Each set directory gets ``screens.jsonl`` (one slop.screen/1 per line, as the extractor wrote it),
-``<set>.gen.jsonl`` (label records, SPEC.md §5, labeller ``gen``), ``sources.jsonl`` (the generated files),
-``manifest.json`` (seeds, hashes, counts) and ``SHA256SUMS``. The data files are gitignored; the manifest and the
+``<set>.gen.jsonl`` (label records, SPEC.md §5, labeller ``gen``), ``sources.jsonl`` (the generated files: path,
+framework, idiom, source text), ``<set>.meta.jsonl`` (harness only: each screen's kind, whether it is clean, and its
+attempt number; never shipped to a model), ``manifest.json`` (seeds, hashes, counts) and ``SHA256SUMS``. Source
+paths are neutral: no screen kind appears in a path or a file name. The data files are gitignored; the manifest and the
 sums are not. The same set, seed and generator give the same bytes.
 
 The build stops with an error, writing nothing, if any planted span is not found as a node, if any node did not
@@ -22,6 +24,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import re
 import sys
 import time
 from collections import Counter
@@ -66,6 +69,23 @@ SWIFT_IDIOMS = {
     "empty": [("stack", 70), ("list", 30)],
 }
 EXT = {"tsx": "tsx", "html": "html", "swift": "swift"}
+SRC_DIRS = {"tsx": ["components", "src/components", "src/ui", "ui", "src/views", "web/src", "lib/ui", "src/pages"],
+            "html": ["templates", "partials", "site", "public", "views", "www"],
+            "swift": ["Sources", "Sources/Views", "Views", "UI", "Screens", "Features"]}
+KIND_WORDS = {"marketing", "app", "settings", "dialog", "empty", "dashboard", "game"}
+# file-name words that would name a kind, and neutral replacements
+NEUTRAL = {r"Settings(?![a-z])": "Prefs", r"settings(?![a-z])": "prefs", r"Dialog(?![a-z])": "Modal",
+           r"Dashboard(?![a-z])": "Overview", r"Game(?![a-z])": "Play", r"Empty(?![a-z])": "Blank",
+           r"Marketing(?![a-z])": "Promo", r"App(?![a-z])": "Main"}
+
+
+def path_words(path: str) -> set:
+    """Lower-case words of a path, split at separators and case changes (for the kind-name check)."""
+    out = set()
+    for part in re.split(r"[^A-Za-z0-9]+", path):
+        for w in re.findall(r"[A-Z]+(?![a-z])|[A-Z]?[a-z]+|[0-9]+", part):
+            out.add(w.lower())
+    return out
 
 
 def sha256_bytes(b: bytes) -> str:
@@ -123,10 +143,46 @@ def make_screen(seed: int, namespace: str, set_name: str, index: int, attempt: i
         name = ident(name) + ("" if name.endswith("View") else "View")
     else:
         name = slug(name)
-    path = f"{set_name}/{kind}/{index:05d}/{name}.{EXT[fw]}"
+    for w, alt in NEUTRAL.items():
+        name = re.sub(w, alt, name)
+    path = f"{set_name}/{index:05d}/{rng.pick(SRC_DIRS[fw])}/{name}.{EXT[fw]}"
+    if path_words(path) & KIND_WORDS:
+        raise GenError(f"source path names a screen kind: {path}")
     slots = page.slots() + list(getattr(r, "extra", []))
     return {"index": index, "attempt": attempt, "kind": kind, "framework": fw, "idiom": idiom, "clean": clean,
             "path": path, "src": src, "css": css, "slots": slots, "r19": page.r19}
+
+
+def orient_duplicates(pairs) -> None:
+    """An exact repeat at equal rank flags the later node in reading order (LABELLING.md §5). The composer cannot
+    always know reading order (a SwiftUI navigation title is read first; a mapped literal sits above the markup), so
+    when a planted exact repeat comes first, its label moves to its target and the two swap places."""
+    from .join import rank
+
+    node_of = {id(s): n for n, s in pairs}
+    slots = [s for _, s in pairs]
+    for n, s in pairs:
+        t = s.target
+        if s.cls != "ECHO" or t is None or id(t) not in node_of or s.text != t.text:
+            continue
+        tn = node_of[id(t)]
+        if rank(n["role"], n["flags"]) != rank(tn["role"], tn["flags"]) or n["i"] > tn["i"]:
+            continue
+        if t.cls != "KEEP":
+            continue
+        keep_fields = (t.pattern, t.conf, t.ct, t.partial, list(t.aside))
+        t.cls, t.pattern, t.target, t.conf, t.ct, t.partial = s.cls, s.pattern, s, s.conf, s.ct, s.partial
+        t.aside = list(s.aside)
+        t.equiv = [x for x in s.equiv]
+        s.cls, s.target, s.equiv = "KEEP", None, []
+        s.pattern, s.conf, s.ct, s.partial, s.aside = keep_fields
+        for o in slots:
+            if o is not t and o.target is t:
+                o.target = s
+        for o in slots:
+            if o.equiv:
+                o.equiv = [t if x is s else x for x in o.equiv]
+        t.equiv = [x for x in t.equiv if x is not t and x is not s]
 
 
 def window_problems(screen: dict, pairs) -> list:
@@ -233,6 +289,7 @@ def build(set_name: str, n: int | None = None, out: Path | None = None, dupes: D
             if fatal:
                 raise GenError(f"span join failed for {g['path']} (attempt {g['attempt']}): " +
                                "; ".join(f"{k}: {v}" for k, v in fatal[:10]))
+            orient_duplicates(j["pairs"])
             soft = check_labels(j["pairs"], screen) + window_problems(screen, j["pairs"])
             if dupes is not None and dupes.hit(screen):
                 soft.append(("duplicate_of_dev_or_val", g["path"]))
@@ -251,21 +308,22 @@ def build(set_name: str, n: int | None = None, out: Path | None = None, dupes: D
     # write
     out = Path(out) if out else SLOP / "datasets" / set_name
     out.mkdir(parents=True, exist_ok=True)
-    screens_lines, label_lines, source_lines = [], [], []
+    screens_lines, label_lines, source_lines, meta_lines = [], [], [], []
     counts = new_counts()
     for i in range(n):
         g, line, screen, pairs = done[i]
         screens_lines.append(line + "\n")
-        source_lines.append(json.dumps({"screen": screen["id"], "path": g["path"], "kind": g["kind"],
-                                        "framework": g["framework"], "idiom": g["idiom"], "clean": g["clean"],
-                                        "attempt": g["attempt"], "src": g["src"], "css": g["css"]},
+        source_lines.append(json.dumps({"screen": screen["id"], "path": g["path"], "framework": g["framework"],
+                                        "idiom": g["idiom"], "src": g["src"], "css": g["css"]},
                                        ensure_ascii=False) + "\n")
+        meta_lines.append(json.dumps({"screen": screen["id"], "index": g["index"], "kind": g["kind"], "clean": g["clean"],
+                                      "attempt": g["attempt"]}, ensure_ascii=False) + "\n")
         recs = label_records(g, screen, pairs, meta)
         for r in recs:
             label_lines.append(json.dumps(r, ensure_ascii=False, separators=(", ", ": ")) + "\n")
         tally(counts, g, screen, recs)
     files = {"screens.jsonl": "".join(screens_lines), f"{set_name}.gen.jsonl": "".join(label_lines),
-             "sources.jsonl": "".join(source_lines)}
+             "sources.jsonl": "".join(source_lines), f"{set_name}.meta.jsonl": "".join(meta_lines)}
     sums = {}
     for name, text in files.items():
         b = text.encode("utf-8")

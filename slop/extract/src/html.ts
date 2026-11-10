@@ -63,15 +63,15 @@ function textPieces(src: string, s: number, e: number): Kid[] {
   return out;
 }
 
-const ENT: Record<string, string> = { amp: '&', lt: '<', gt: '>', quot: '"', apos: "'", nbsp: ' ', mdash: '—', ndash: '–', hellip: '…', rarr: '→', larr: '←', middot: '·', bull: '•', copy: '©', reg: '®', trade: '™', rsquo: '’', lsquo: '‘', rdquo: '”', ldquo: '“' };
+/**
+ * Decode character references (named, decimal and hexadecimal) exactly as a browser does in text: parse5 reads the
+ * text as the content of a <title> element, which takes references but no tags.
+ */
 function decode(s: string): string {
-  return s.replace(/&(#x[0-9a-f]+|#\d+|[a-z]+);/gi, (m0, g: string) => {
-    if (g[0] === '#') {
-      const cp = g[1] === 'x' || g[1] === 'X' ? parseInt(g.slice(2), 16) : parseInt(g.slice(1), 10);
-      return Number.isFinite(cp) ? String.fromCodePoint(cp) : m0;
-    }
-    return ENT[g.toLowerCase()] ?? m0;
-  });
+  if (!s.includes('&')) return s;
+  const frag: N = parseFragment(`<title>${s.replace(/</g, '&lt;')}</title>`);
+  const t = frag.childNodes?.[0]?.childNodes?.[0];
+  return t?.nodeName === '#text' ? t.value : s;
 }
 
 export function htmlToIR(src: string, css: CssMap): { root: El; css: CssMap } {
@@ -149,7 +149,14 @@ export function htmlToIR(src: string, css: CssMap): { root: El; css: CssMap } {
     }
     decorateIntrinsic(e);
     if (tag === 'svg') {
-      e.kids = attrKids;
+      // an icon, unless it draws text (a chart's axis labels and values)
+      const kids: Kid[] = (n.childNodes ?? []).flatMap(convert);
+      const draws = (k: Kid): boolean => k.t === 'el' && ((k.name === 'text' && k.kids.some((x) => x.t !== 'txt' || x.text.trim() !== '')) || k.kids.some(draws));
+      if (kids.some(draws)) {
+        e.icon = false;
+        e.arrowIcon = false;
+        e.kids = attrKids.concat(kids);
+      } else e.kids = attrKids;
       return [e];
     }
     if (tag === 'br') return [txt(' ', e.s, e.s)];

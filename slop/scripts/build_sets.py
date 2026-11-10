@@ -38,8 +38,11 @@ Rules, in order; each file is counted under the first rule that drops it:
 11. `dedupe_exact`, `dedupe_jaccard`: in hash-rank order, a screen whose normalised node-text sequence has the same
     sha256 as, or whose node-text set has Jaccard similarity of at least 0.8 with, a screen already kept in this set
     or in an earlier set (`reference_real` before `calibration` and `sealed_real`).
-12. `repo_cap`: dropped to hold the set's repo balance rule.
-13. `below_cut`: ranked after the set was full.
+12. `dir_cap` (`reference_real` only): in rank order, a screen whose directory (its file's parent directory in the
+    repo) already gives 6 selected screens.
+13. `repo_cap`: dropped to hold the set's repo balance rule (no repo gives more than 40% of the nodes of
+    `reference_real`'s repo screens or of `calibration`, or 25% of those of `sealed_real`).
+14. `below_cut`: ranked after the set was full.
 
 Selection rank: screens are ordered by sha256(f"{namespace}:{seed}:{repo}/{path}") as hex, seed 20261116, namespace
 `reference`, `calibration` or `sealed`. Normalised node text: NFKC, case-folded, the runs of letters and digits and
@@ -82,8 +85,8 @@ TEST_NAME = re.compile(r"\.(test|spec|stories|story)\.[a-z]+$|Tests?\.swift$")
 CONTEXT_ROLES = {"aria", "alt", "code"}
 
 RULES = ["not_source", "vendored", "worktrees", "design_refs", "plan_prototype", "test_spec_story", "untracked",
-         "byte_identical_sealed", "extract_failed", "under_two_nodes", "dedupe_exact", "dedupe_jaccard", "repo_cap",
-         "below_cut"]
+         "byte_identical_sealed", "extract_failed", "under_two_nodes", "dedupe_exact", "dedupe_jaccard", "dir_cap",
+         "repo_cap", "below_cut"]
 
 
 @dataclass
@@ -134,12 +137,15 @@ SEALED_REPOS = [
     ("CoastalQuilts", DEV / "Personal/CoastalQuiltsWebsite"), ("odysseus", DEV / "Personal/odysseus"),
 ]
 
-REFERENCE_RULE = {"measure": "nodes", "share": 0.4,
+REFERENCE_RULE = {"measure": "nodes", "share": 0.4, "dir_cap": 6,
                   "text": "no repo gives more than 40% of the nodes of the 50 repo screens (a 25% cap, as for "
-                          "sealed_real, cannot hold with three repos); the pause-menu fixture is added on top"}
-CALIBRATION_RULE = {"measure": None, "share": 1.0,
-                    "text": "no repo cap: up to 40 screens drawn by hash rank (SPEC.md §5)"}
-SEALED_RULE = {"measure": "nodes", "share": 0.25,
+                          "sealed_real, cannot hold with three repos), and no directory gives more than 6 screens "
+                          "(taken in rank order); the pause-menu fixture is added on top"}
+CALIBRATION_RULE = {"measure": "nodes", "share": 0.4, "dir_cap": None,
+                    "text": "no repo gives more than 40% of the set's nodes, as for reference_real; up to 40 screens "
+                            "drawn by hash rank (SPEC.md §5), and a shortfall is reported, not filled by relaxing the "
+                            "cap"}
+SEALED_RULE = {"measure": "nodes", "share": 0.25, "dir_cap": None,
                "text": "no repo gives more than 25% of the nodes (SPEC.md §9)"}
 
 
@@ -375,6 +381,10 @@ class Candidate:
     def nodes(self) -> int:
         return len(self.screen["nodes"])
 
+    @property
+    def directory(self) -> str:
+        return self.path.rsplit("/", 1)[0] if "/" in self.path else ""
+
 
 def gather(repos: list[Repo], work: Path, sealed_hashes: set[str] | None, drops: dict, per_repo: dict,
            namespace: str) -> list[Candidate]:
@@ -466,26 +476,34 @@ def over_cap(sel: list[Candidate], measure: str | None, share: float) -> str | N
     return worst if w[worst] > share * total + 1e-9 else None
 
 
+def _count(drops: dict, per_repo: dict, rule: str, repo: str) -> None:
+    drops[rule] = drops.get(rule, 0) + 1
+    d = per_repo[repo]["drops"]
+    d[rule] = d.get(rule, 0) + 1
+
+
 def select(cands: list[Candidate], target: int, rule: dict, drops: dict, per_repo: dict) -> list[Candidate]:
-    """Fill to `target` in rank order; while a repo is over its share, drop its lowest-ranked screen and refill."""
+    """Fill to `target` in rank order, skipping a screen whose directory already gives `dir_cap` selected screens;
+    while a repo is over its share, drop its lowest-ranked screen and refill."""
     sel: list[Candidate] = []
+    dir_cap = rule.get("dir_cap")
     i = 0
     while True:
         while len(sel) < target and i < len(cands):
-            sel.append(cands[i])
+            c = cands[i]
             i += 1
+            if dir_cap and sum(1 for s in sel if (s.repo, s.directory) == (c.repo, c.directory)) >= dir_cap:
+                _count(drops, per_repo, "dir_cap", c.repo)
+                continue
+            sel.append(c)
         repo = over_cap(sel, rule["measure"], rule["share"])
         if repo is None:
             break
         victim = max((c for c in sel if c.repo == repo), key=lambda c: c.rank)
         sel.remove(victim)
-        drops["repo_cap"] = drops.get("repo_cap", 0) + 1
-        d = per_repo[repo]["drops"]
-        d["repo_cap"] = d.get("repo_cap", 0) + 1
+        _count(drops, per_repo, "repo_cap", repo)
     for c in cands[i:]:
-        drops["below_cut"] = drops.get("below_cut", 0) + 1
-        d = per_repo[c.repo]["drops"]
-        d["below_cut"] = d.get("below_cut", 0) + 1
+        _count(drops, per_repo, "below_cut", c.repo)
     return sorted(sel, key=lambda c: c.rank)
 
 
@@ -524,7 +542,10 @@ def write_set(name: str, namespace: str, sel: list[Candidate], drops: dict, per_
         "schema": "slop.set_manifest/1", "set": name, "seed": SEED, "namespace": namespace,
         "rank": 'sha256(f"{namespace}:{seed}:{repo}/{path}") as hex, ascending',
         "builder_sha256": sha256_file(Path(__file__)), "extractor_sha256": extractor_sha256(),
-        "balance_rule": rule["text"], **extra,
+        "balance_rule": rule["text"],
+        "caps": {"repo_share": rule["share"] if rule["measure"] else None, "repo_measure": rule["measure"],
+                 "dir_screens": rule.get("dir_cap")},
+        "largest_dirs": largest_dirs(rows), **extra,
         "screens_total": len(rows), "nodes_total": total_nodes,
         "labelable_total": sum(r["labelable"] for r in rows),
         "roles": dict(sorted(roles.items(), key=lambda kv: (-kv[1], kv[0]))),
@@ -533,6 +554,20 @@ def write_set(name: str, namespace: str, sel: list[Candidate], drops: dict, per_
     }
     (d / "manifest.json").write_text(json.dumps(manifest, indent=1, ensure_ascii=False) + "\n")
     return manifest
+
+
+def largest_dirs(rows: list[dict], n: int = 5) -> list[dict]:
+    """The directories giving the most screens, with their share of the set's screens and nodes."""
+    total_s, total_n = len(rows) or 1, sum(r["nodes"] for r in rows) or 1
+    by: dict[tuple[str, str], list[int]] = {}
+    for r in rows:
+        k = (r["repo"], r["path"].rsplit("/", 1)[0] if "/" in r["path"] else "")
+        v = by.setdefault(k, [0, 0])
+        v[0] += 1
+        v[1] += r["nodes"]
+    top = sorted(by.items(), key=lambda kv: (-kv[1][0], -kv[1][1], kv[0]))[:n]
+    return [{"repo": r, "dir": d, "screens": s, "nodes": nn, "screen_share": round(s / total_s, 4),
+             "node_share": round(nn / total_n, 4)} for (r, d), (s, nn) in top]
 
 
 def write_kinds(repos: list[Repo]) -> None:
@@ -572,6 +607,7 @@ def cmd_build(args) -> None:
             **sealed_note, "fixture": {"id": fixture.screen["id"],
                                        "origin": "slop/extract/fixtures/pause-menu/PauseMenu.tsx",
                                        "note": "the pause-menu fixture; its expected.json is the screen"},
+            "target": args.reference_n, "shortfall": max(0, args.reference_n - (len(ref) - 1)),
             "kinds": kind_sources(REFERENCE_REPOS + [FIXTURE_REPO])})
 
         drops_c, per_repo_c = {}, {}

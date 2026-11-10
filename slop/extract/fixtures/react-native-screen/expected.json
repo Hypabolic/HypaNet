@@ -11,4 +11,4 @@
   {"i": 2, "k": 1, "role": "placeholder", "text": "Search a harbour", "flags": ["in_control"], "loc": [10, 31, 10, 47]},
   {"i": 3, "k": 2, "role": "button", "text": "Set an alert", "flags": [], "loc": [12, 15, 12, 27]},
   {"i": 4, "k": 3, "role": "label", "text": "Next low", "flags": ["caps", "tracked", "small"], "loc": [14, 84, 14, 92]},
-  {"i": 5, "k": 3, "role": "stat", "text": "\ue000 height", "flags": ["dynamic", "stateful"], "loc": [15, 39, 15, 45]}]}
+  {"i": 5, "k": 3, "role": "stat", "text": "\ue000 height", "flags": ["dynamic", "stateful"], "loc": [15, 39, 15, 45], "vw": [1]}]}

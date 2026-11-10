@@ -1,0 +1,9 @@
+{"schema": "slop.screen/1", "id": "088c813f04400081", "framework": "swift",
+ "source": {"repo": "slop-fixtures", "path": "Sketch.swift", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "header", "line": 8},
+  {"k": 1, "kind": "actions", "line": 14}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "h1", "text": "Sketch", "flags": ["in_header"], "loc": [9, 35, 9, 41]},
+  {"i": 1, "k": 1, "role": "button", "text": "Discard", "flags": ["in_header"], "loc": [16, 21, 16, 28]},
+  {"i": 2, "k": 1, "role": "button", "text": "Keep sketch", "flags": ["in_header"], "loc": [19, 21, 19, 32]}]}

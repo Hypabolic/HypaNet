@@ -47,18 +47,24 @@ for one screen and `RULES` lists `{id, code, description}` in report order, for 
   (`LABELLING.md` §2), so no rule reports them. An `aria` label or an `sr_only` label never counts as a visible label.
 - **Branches.** Text joined by the ALT marker (U+E001) is split into its branches, and the word rules check each
   branch on its own.
-- **Identifier words.** The extractor writes no boundary after the words that follow a VAR marker (U+E000), so up to
-  four words after it, up to the next punctuation, are treated as identifier words and never matched as copy. The
-  letters "VAR" and "ALT" are ordinary words.
+- **Identifier words.** The words that follow a VAR marker (U+E000) are the identifier's, never matched as copy. The
+  extractor's `vw` field (`SPEC.md` §4: one count per marker, in order) says exactly how many words and numbers follow
+  each marker; each ALT branch reads the counts of its own markers. When a node has no `vw`, or its length differs
+  from the number of markers, up to four words after each marker, up to the next number or punctuation, are taken as
+  identifier words instead (a cap for screens from an older extractor). The letters "VAR" and "ALT" are ordinary
+  words.
 - **Normalised string.** NFKC, lower case, accents dropped, inner apostrophes removed, glyphs and punctuation dropped,
   markers kept, words and numbers joined by single spaces.
 - **Section heading.** An `h1`–`h6` not flagged `in_card`, `repeated`, `in_list`, `in_table`, `in_nav`, `in_dialog`
   or `in_state`. A node's section runs from the last section heading before it.
 - **Sibling groups.** A run of two or more consecutive `card` clusters (one item per card); a run of two or more
-  consecutive `control` clusters (one item per field); and the rows of one `list` cluster, a new row starting at each
-  node with the role of the first node whose role occurs at least twice (nodes before it, such as the list's own
-  title, belong to no row). Within a group, an aligned set is the first node of one role in every item, for each
-  role that every item has.
+  consecutive `control` clusters (one item per field); a run of two or more form labels in reading order (scored
+  `label` nodes flagged `in_form` or `in_control`, each item a label with the `helper`, `tooltip`, `error`,
+  `placeholder` and `input_value` nodes after it, the run ending at any other scored node: a `<label for>` lands in a
+  body cluster and its input in a control cluster of its own); and the rows of one `list` cluster, a new row starting
+  at each node with the role of the first node whose role occurs at least twice (nodes before it, such as the list's
+  own title, belong to no row). Within a group, the aligned sets of a role are the first node of that role in every
+  item, then the second when every item has a second, and so on, for each role that every item has.
 - **Precedence** (`LABELLING.md` §5, lower is kept): controls, a `label` flagged `in_control`, `h1`, `dialog_title`
   and `empty_title` 10; `h2`–`h6` 20–24; body roles and any other `label` 30; `subtitle`, `helper`, `caption` 40;
   `eyebrow`, `badge`, `tooltip`, `placeholder` 50.
@@ -72,13 +78,15 @@ One finding per condition met, listing the nodes that carry the device; state do
 | Condition | Fires when |
 |---|---|
 | `eyebrow-quota` | the eyebrows directly above a section heading (the next scored node is one) number more than ceil(section headings / 3). Taste: design-taste-frontend-v2-experimental SKILL.md:254-256, a landing-page quota, "Hero counts as 1". |
-| `decorative-dot` | any scored node has `dot` and not `stateful` (v2-experimental SKILL.md:705). |
-| `state-dots` | one section holds two or more nodes with both `dot` and `stateful` (same line: "limited to one per page section"). |
-| `arrow-links` | there are two or more `link` nodes and every one has an arrow suffix: the `arrow_tail` flag, or the text ending in → ↗ » › ➔ ➜ ⟶ ↘ or `->` (tasteskill copy.md:126-127; Hallmark gate 63). |
-| `sibling-device` | in a card or row group of three or more items, one device sits on more than half of them: the same normalised text in a `badge`, `pill` or `eyebrow` node that is neither `stateful` nor `dynamic`; an arrow suffix on a `link` or `button`; or a member of a `slop/index-numbering` run. Dropped when every node it lists is already in another R19 finding. From `LABELLING.md` R19 ("the same eyebrow, pill, dot, arrow suffix or index-number device on most sibling sections, cards or rows"). |
+| `decorative-dot` | any scored node has `dot` and neither `stateful` nor `dynamic` (v2-experimental SKILL.md:705; a dot before interpolated text shows live state, K2). |
+| `state-dots` | one section holds two or more nodes with both `dot` and `stateful`, not counting one dot per sibling item (same line: "limited to one per page section"). K2 wins over the limit: in a card or row group where two or more items carry a stateful dot and no item carries more than one, each dot shows its own item's state, and those dots are not counted. |
+| `arrow-links` | there are two or more `link` nodes and every one has an arrow suffix (tasteskill copy.md:126-127; Hallmark gate 63). An arrow suffix is the text ending in → ➔ ➜ ⟶ ⇢ ⇾ or `->`, or in › as a separate final token ("Next ›"); otherwise the `arrow_tail` flag (an arrow icon). A text ending in ↗ (an external-link marker, which informs), ↘, » or a › glued to the last word is not an arrow suffix, even when the extractor set `arrow_tail`. |
+| `sibling-device` | in a card or row group of three or more items, one device sits on more than half of them: the same normalised text in a `badge`, or in a `pill` node that is not a control (`button`, `link`, `nav`, `tab`, `menu_item`, `label`, `placeholder`, `input_value`: the extractor sets `pill` from `rounded-full`, the usual shape of a button), that is neither `stateful` nor `dynamic`; the same text in an `eyebrow` that is neither; an arrow suffix on a `link` or `button`; or a member of a `slop/index-numbering` run. Dropped when every node it lists is already in another R19 finding. From `LABELLING.md` R19 ("the same eyebrow, pill, dot, arrow suffix or index-number device on most sibling sections, cards or rows"). |
 
 Known false positive: a static legend ("● Healthy ● Degraded ● Down", K2) has `dot` without `stateful`, so
-`decorative-dot` fires on it; the screen JSON does not say which dots form a legend.
+`decorative-dot` fires on it; the screen JSON does not say which dots form a legend. Likewise the extractor sets
+`arrow_tail` for an `ExternalLink` or `ArrowUpRight` icon, which the rule cannot tell from a plain arrow icon, so
+icon-marked external links still count as arrow suffixes.
 
 ### `slop/vacuous-action` (aside R7)
 
@@ -90,6 +98,10 @@ A node is flagged, once, when any branch of it
 - in any scored role, contains a gesture phrase: "click here", "tap here", "click this link", "press here" (inline
   links are merged into their paragraph, so "To change it, click here." is one body node).
 
+A named gesture (double, triple, right, middle or long, then click, tap or press, spaced or hyphenated) is read as one
+word first: "Double-click here to rename a layer." tells the reader about a hidden input (`LABELLING.md` K4) and is
+not flagged.
+
 `VACUOUS_LABELS` (15): learn more, read more, find out more, discover more, explore now, explore more, click here,
 tap here, get started, submit, click, tap (buttons and links); here, more, this link (links only, since a "More"
 button is often an overflow menu). Left out on purpose: OK, Continue, Next, Done, Cancel, Close (platform
@@ -100,7 +112,8 @@ conventions whose meaning the dialog or flow supplies) and Show more, See more (
 One finding per node, naming every filler phrase found in its branches (`FILLER`, 14 entries):
 
 - in any scored role: please, simply, easily, quickly, effectively, very, quite, in order to, oops, whoops, uh oh;
-- in a `button`, `link`, `menu_item`, `nav` or `tab` only: now ("Book now"; in a sentence it is often a fact);
+- in a `button`, `link`, `menu_item`, `nav` or `tab` only, and not as the first word: now ("Book now"; in a sentence
+  it is often a fact, and first it names something: a "Now" page, a "Now playing" tab, a time picker's "Now");
 - only as the first word of an `h1`–`h6`, `nav`, `tab`, `menu_item`, `empty_title` or `dialog_title` of two to four
   words: your, my ("Your Favourites"). A field label "Your name" is not flagged: Microsoft recommends it over "Type
   your name".
@@ -109,8 +122,10 @@ Matching is on whole words, so "pleased", "snowdrop" and "Nowcast" do not match.
 
 ### `slop/placeholder-as-label` (aside R8b)
 
-A `placeholder` is flagged when its field has no visible label: in a `control` cluster, no scored `label` node in
-the cluster; outside one, the scored node just before it in the same cluster is not a `label`.
+A `placeholder` is flagged when its field has no visible label: its `control` cluster holds no scored `label` node,
+and the nearest scored node before it, skipping `helper`, `tooltip`, `error` and `caption` nodes, is not a `label` in
+the same cluster or in no control cluster (a `<label for>` lands in a body cluster and its input's placeholder in a
+control cluster of its own; a label that belongs to another field's control cluster does not count).
 
 ### `slop/shared-lead-in` (aside R10)
 
@@ -120,6 +135,8 @@ node's leading copy words up to the first marker or identifier word. One finding
 - the common leading words number at least two for three or more items, or at least three for a pair (a single shared
   word is parallel phrasing, "Add photo" / "Add video"), and
 - every item has at least one word after the shared ones (otherwise the items repeat rather than share a lead-in), and
+- the next word is not a number in every item ("Address line 1", "Up to 5 users": a numbered series, or a qualifier
+  on a figure, K13), and
 - not every item ends with "?" (questions open alike by grammar).
 
 ### `slop/index-numbering` (aside R12)
@@ -128,16 +145,20 @@ An index device is the whole text of a node, or its lead before a separator and 
 
 | Family | Examples |
 |---|---|
-| `padded` | "01", "02 /", "(003)", "#04", "01 / 04"; as a lead "01 / Connect", "02. Configure" |
+| `padded` | "01", "02 /", "(003)", "#04", "01 / 04" (a second number needs a slash, so "08:00" and "01.03" are not devices); as a lead "01 / Connect", "02. Configure" |
 | `fraction` | "3 / 6" (the whole node) |
 | `label:<word>` | step, phase, stage, section, question, no.: "Step 2", "PHASE 02", "Stage 1 of 3"; as a lead "Step 1: Create an account" |
-| `plain` | "1", "2.", "3)" (the whole node) |
+| `plain` | "1", "2.", "3)" (the whole node), unless the next scored node is itself a device or there is none (a rating scale, calendar days) |
 
 Nodes in `nav`, `tab`, `breadcrumb`, `menu_item`, `link`, `button`, `cell`, `stat`, `input_value` and
 `placeholder` are skipped (a pager's "1 2 3", figures, table values). A run is a sequence of devices of one family
-and role whose values go up by one in reading order, other nodes between them allowed; one finding lists each run of
-at least two devices (three for `plain`). K3 is applied as far as text shows it: a lone "Step 2 of 4" never forms a
-run, and a labelled run is dropped when another node names one of its numbers ("go back to step 1"). Whether the items
+and role whose values go up by one, with the same total, in reading order, other nodes between them allowed; one
+finding lists each run of at least two devices (three for `plain`). A total smaller than the value ("05 / 03",
+"3/2") is not a device, and a fraction or labelled device with a total ("1/2" then "2/3") does not run on into one
+with another total. K3 is applied as far as text shows it: a lone "Step 2 of 4" never forms a run, nor do
+`conditional` devices with a total (a wizard showing one "Step N of 3" heading at a time), and a labelled run is
+dropped when another node names one of its numbers ("go back to step 1"). Known false positive: day-first dates
+written "01/03", "02/03" read as padded devices with a total and can form a run. Whether the items
 are steps to be done in order cannot be read from the text, so the rule flags them and the label decides. "Level",
 "round", "lesson", "module", "chapter" and "part" are not label words: they usually name content.
 
@@ -145,12 +166,16 @@ are steps to be done in order cannot be read from the text, so the rule flags th
 
 The screen is split into windows exactly as the tokeniser does (`SPEC.md` §4). Nodes are grouped by normalised
 string, leaving out `nav`, `tab`, `breadcrumb`, `menu_item`, `cell`, `input_value`, `label` and `placeholder` nodes,
-nodes flagged `repeated` (the constant parts of one template on sibling cards or rows, such as a per-row "Not set" or
-"/month") and nodes with fewer than two copy words. In a group that spans two or more windows the highest-ranked copy
-is kept (the first at equal rank), and every copy in a window other than the kept copy's is flagged with the kept copy
-as `target`, unless either of the two is `conditional` (they may never be visible together, `LABELLING.md` §2a).
-Repeats within one window are left to the network. The code is R9 when both copies are titles (`h1`–`h6`,
-`dialog_title`, `empty_title`), R14 otherwise.
+footer links (`link` flagged `in_footer`, navigation by K5), nodes flagged `repeated` (the constant parts of one
+template on sibling cards or rows, such as a per-row "Not set" or "/month") and nodes with fewer than two copy words.
+In a group that spans two or more windows, `conditional` copies take no part, as flagged copies or as targets (they
+may never be visible with the others, `LABELLING.md` §2a). Two copies are exempt from each other when one is a title
+(`h1`–`h6`, `dialog_title`, `empty_title`) and the other a `button` or `link` (K11: "Delete playlist?" and "Delete
+playlist"), or when both are flagged `in_state` and sit in different clusters (two separately mounted states, such as
+two dialogs, §2a). A copy is flagged when a non-exempt copy that outranks it (lower rank, or equal rank and earlier)
+sits in another window, with the best such copy as `target`, unless a non-exempt copy that outranks it sits in its
+own window: that repeat is within one window and left to the network. The code is R9 when both copies are titles, R14
+otherwise.
 
 ## Lists and their sources
 
@@ -166,9 +191,11 @@ npm run test:rules          # in slop/: node --test rules/test/rules.test.js
 uv run pytest rules/tests   # the CLI called from Python
 ```
 
-`fixtures/make_fixtures.mjs` holds 47 invented screens as compact tables and writes `fixtures/screens/*.json` (in the
-extractor's serialised layout, with the VAR and ALT markers) and `fixtures/expected.json`, which lists, for each
-screen, the rules it is a positive or near-miss negative for and the exact findings expected from every rule. Run
+`fixtures/make_fixtures.mjs` holds 68 invented screens as compact tables and writes `fixtures/screens/*.json` (in the
+extractor's serialised layout, with the VAR and ALT markers and `vw`) and `fixtures/expected.json`, which lists, for
+each screen, the rules it is a positive or near-miss negative for and the exact findings expected from every rule.
+Fifteen of them are the screens of the adversarial review of 2026-11-10, one per bug it found; `fw_markers_mixed`
+has no `vw`, to keep the fallback covered. Run
 `node rules/fixtures/make_fixtures.mjs` after editing the tables and `--check` to see whether the files are stale; the
 tests fail on a stale file. The tests also run every rule over the extractor fixtures, the tokeniser test screens and
 the labeller fixtures, twice, and check that the output is the same. All copy in the fixtures is invented; never paste
