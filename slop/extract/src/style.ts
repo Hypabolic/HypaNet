@@ -13,6 +13,7 @@ export interface CssRule {
   tracked?: boolean;
   small?: boolean;
   xsmall?: boolean;
+  large?: boolean;
   mono?: boolean;
   rounded?: boolean;
   dotSize?: boolean;
@@ -266,10 +267,12 @@ function addRule(into: CssMap, name: string, decls: string): void {
         rule.small = true;
         rule.xsmall = val !== 'small';
       } else {
-        const px = lengthPx(val);
+        // clamp(min, preferred, max) is at least its minimum
+        const px = lengthPx(/^clamp\(/.test(val) ? val.slice(6).split(',')[0] : val);
         if (px !== null) {
           rule.small = px <= 14;
           rule.xsmall = px <= 12;
+          rule.large = px >= 24;
           rule.fontPx = px;
         }
       }

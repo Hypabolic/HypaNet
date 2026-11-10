@@ -5,7 +5,7 @@
  "namespace": "calibration",
  "rank": "sha256(f\"{namespace}:{seed}:{repo}/{path}\") as hex, ascending",
  "builder_sha256": "aa6d57c111002bd9705022dc2ba902088d893f8de5f0909aa8d4ff5462081bc8",
- "extractor_sha256": "6e4905b1e42994490f3adff9c893414b4f2ba7079dda16a48127391f4acb0b11",
+ "extractor_sha256": "3d3dad1b8fcf66555fce9c9158093ee05d96d48893a821226573cc6dc19fc9d7",
  "balance_rule": "no repo gives more than 40% of the set's nodes and no directory gives more than 6 screens (taken in rank order), as for reference_real; up to 40 screens drawn by hash rank (SPEC.md §5), and a shortfall is reported, not filled by relaxing either cap",
  "caps": {
   "repo_share": 0.4,
@@ -17,9 +17,9 @@
    "repo": "HypaVPN",
    "dir": "HypaVPN/UI",
    "screens": 6,
-   "nodes": 40,
+   "nodes": 46,
    "screen_share": 0.24,
-   "node_share": 0.0909
+   "node_share": 0.0991
   },
   {
    "repo": "detectorists",
@@ -27,7 +27,7 @@
    "screens": 3,
    "nodes": 16,
    "screen_share": 0.12,
-   "node_share": 0.0364
+   "node_share": 0.0345
   },
   {
    "repo": "lean-ctx",
@@ -35,7 +35,7 @@
    "screens": 2,
    "nodes": 20,
    "screen_share": 0.08,
-   "node_share": 0.0455
+   "node_share": 0.0431
   },
   {
    "repo": "lean-ctx",
@@ -43,15 +43,15 @@
    "screens": 2,
    "nodes": 6,
    "screen_share": 0.08,
-   "node_share": 0.0136
+   "node_share": 0.0129
   },
   {
    "repo": "Hypa-Private",
    "dir": "docs/wiki",
    "screens": 1,
-   "nodes": 156,
+   "nodes": 173,
    "screen_share": 0.04,
-   "node_share": 0.3545
+   "node_share": 0.3728
   }
  ],
  "sealed_files_hashed": 1095,
@@ -69,35 +69,35 @@
   "Hypa-Private": "README.md"
  },
  "screens_total": 25,
- "nodes_total": 440,
- "labelable_total": 429,
+ "nodes_total": 464,
+ "labelable_total": 453,
  "roles": {
-  "body": 107,
-  "label": 65,
+  "body": 83,
+  "label": 67,
+  "link": 48,
   "button": 29,
   "nav": 25,
   "caption": 24,
+  "stat": 22,
   "cell": 21,
-  "link": 20,
-  "h2": 17,
-  "subtitle": 16,
+  "h2": 19,
+  "subtitle": 17,
   "list_item": 14,
   "tooltip": 12,
   "aria": 11,
   "h1": 11,
-  "helper": 11,
   "badge": 10,
-  "h3": 6,
-  "placeholder": 6,
-  "stat": 6,
+  "helper": 9,
+  "placeholder": 7,
+  "h4": 6,
   "tab": 6,
   "toast": 6,
-  "h4": 5,
-  "error": 3,
+  "h3": 5,
+  "error": 4,
   "dialog_body": 2,
-  "empty_body": 2,
   "input_value": 2,
   "dialog_title": 1,
+  "empty_body": 1,
   "empty_title": 1,
   "eyebrow": 1
  },
@@ -122,7 +122,7 @@
    "eligible": 4,
    "byte_identical_sealed_any_rule": 0,
    "screens": 1,
-   "nodes": 156
+   "nodes": 173
   },
   "HypaDev": {
    "commit": "8a81523b2681de0f15fc8438dae089c880518769",
@@ -149,7 +149,7 @@
    "eligible": 9,
    "byte_identical_sealed_any_rule": 0,
    "screens": 6,
-   "nodes": 40
+   "nodes": 46
   },
   "HyperCubeDemo": {
    "commit": "fdf8187d8e2cc04d38f76fed53af66fd13ea6df2",
@@ -203,7 +203,7 @@
    "eligible": 8,
    "byte_identical_sealed_any_rule": 0,
    "screens": 8,
-   "nodes": 166
+   "nodes": 167
   }
  },
  "screens": [
@@ -227,11 +227,11 @@
    "path": "HypaVPN/UI/RootView.swift",
    "commit": "390e5d2cd44b9d78273abc5827e19636c58d683f",
    "git": "clean",
-   "screen_sha256": "5cf42fea47376f30f29872cd1577ae851783704d4c6218172ba21e129e0c07a9",
+   "screen_sha256": "a2f2d99a6b3232d7298a5221b973bddeafb6c19acc745a6eb31c10aa4828cf2e",
    "source_sha256": "b84179f03d2ee2111bfeaf300e9e03a905cbdd60b776fcdca14081c06ed866dc",
    "rank_sha256": "1371104fc65be632a4c2244d9f8b7773a2eaded824df8630c6ab3a894fa9d794",
-   "nodes": 3,
-   "labelable": 3
+   "nodes": 2,
+   "labelable": 2
   },
   {
    "order": 3,
@@ -279,11 +279,11 @@
    "path": "packages/chrome-lean-ctx/src/popup.html",
    "commit": "c4d26312b5beebd0b1e4067c8f3d8ebaae39bb5a",
    "git": "clean",
-   "screen_sha256": "3ef8eafe6a659433dfe88ab2d2e7a67be36f28ad26cda15fcd91661d578d3e68",
+   "screen_sha256": "788952742ff9fbc5a1069d63d6c83c9c1d22a4f401f708b9cc7c740c1060c13a",
    "source_sha256": "8bbd2addbf3c1eda3b725149e4623b7995bfbb8810533e0787897ea679c9888e",
    "rank_sha256": "3350af35ac03754eda399688f0a8ee1029282b2e861b22b3c346349d71540d72",
-   "nodes": 14,
-   "labelable": 14
+   "nodes": 15,
+   "labelable": 15
   },
   {
    "order": 7,
@@ -292,11 +292,11 @@
    "path": "docs/wiki/components.html",
    "commit": "56ac99cd849fbe10e0043aebf30779e6bc7e695e",
    "git": "clean",
-   "screen_sha256": "b039468dc9a8aaaa15e016bfa2443f21deb2960eded39aeeaed2dba86b74da05",
+   "screen_sha256": "19e199575694c6049ded461dccd8191b4b460d344369d8b9de59c5c66a6b15a9",
    "source_sha256": "e56b0f22fcca801cdf08b3ab41e3be49b4beaa015e2fd3a698196eba2ea77147",
    "rank_sha256": "4c7f790fca38a13fee539cf9db1546e690711b3daa6c533c2f4b0be2ba6a88c9",
-   "nodes": 156,
-   "labelable": 155
+   "nodes": 173,
+   "labelable": 172
   },
   {
    "order": 8,
@@ -435,11 +435,11 @@
    "path": "HypaVPN/UI/AddVPNView.swift",
    "commit": "390e5d2cd44b9d78273abc5827e19636c58d683f",
    "git": "clean",
-   "screen_sha256": "378baa9854bfde9ae3ddf87cb90e8689196d2c629822d19a4bb0c4cdef52c438",
+   "screen_sha256": "e7e24e3f34d94984108b342d1d14301d43358b38b7ca57ff83f5c7f8ead8a895",
    "source_sha256": "21a555126b5fb0c8f8fbe72090425d78a567ce56b7763fbd2c9beed6b791fd12",
    "rank_sha256": "7a9501780ac67c41159b0a0e72d6d0161e41b8ccdcb2e4a62d127be480bbd625",
-   "nodes": 8,
-   "labelable": 8
+   "nodes": 15,
+   "labelable": 15
   },
   {
    "order": 19,
@@ -500,7 +500,7 @@
    "path": "rust/src/assets/visualizer.html",
    "commit": "c4d26312b5beebd0b1e4067c8f3d8ebaae39bb5a",
    "git": "clean",
-   "screen_sha256": "0c34eff843d949f357dd2c5e2e2402ca8c914bdff2af9a83b2d5cd7b9c12ca5f",
+   "screen_sha256": "791cf11108fcf283823d5504bffca5f53237573d395f748c603a1bce66b32753",
    "source_sha256": "c35f2be73b31a77216dec83601a06c3c56c97895f6284857b71912491907801d",
    "rank_sha256": "d8da1722db6006963a1907d7a38638fc4f6711618f8e9a9b52a580857613aee8",
    "nodes": 63,

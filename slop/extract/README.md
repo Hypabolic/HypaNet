@@ -41,7 +41,17 @@ copy key (`head`, `label`, `title`, `heading`, `caption`, `description`, `text`)
 columns={[{ head: "Year" }]} />` gives the column head "Year" (a `label`, inside a table), `<Legend items={[{ label:
 "Train" }]} />` a `label` (inside a list when the array has two or more items), each at its literal; the other keys
 take the roles of the props of the same name (`title` an `h3`, `heading` an `h2`, `caption` a `caption`,
-`description` a `subtitle`, `text` a `body`). A navigator screen's `options={{ title }}` is its `tab`
+`description` a `subtitle`, `text` a `body`). Inside an array, an object's other string-valued keys are copy too:
+`title` and `heading` (and any `*Title` or `*Heading`) give an `h3`, `tag` and `badge` a `badge`, any `*label` key
+(`subLabel`) a `label`, `*caption` a `caption`, `cta`/`button` keys a `button`, and every other key (`description`,
+`snippet`, `feature`, …) a `body`. String arrays are copy as well, named by their prop or key: a header-like name
+(`headers`, `columns`, `headings`) gives column heads (`label`), `rows` or `cells` (usually an array of arrays) table
+cells (`cell`), and everything inside such a prop is a head or a cell whatever its key (`rows={[{ feature: "…" }]}`);
+`tags` and `badges` give badges, `labels` labels, and any other name list items. Heads and rows passed as two props of
+one component are one table. Keys and props that hold no copy (`id`, `key`, `href`, `src`, `url`, `className`,
+`icon`, `variant`, `type`, `slug`, `colour`/`color`, `value`, `initial` and the like) are skipped, and so are values
+that read as an identifier (one lower-case token with no space, such as `sky` or `north-bed`), a URL, a path or a
+hex colour. A navigator screen's `options={{ title }}` is its `tab`
 (`Tabs.Screen`), drawer `nav` item (`Drawer.Screen`) or header `h1` (`Stack.Screen` and any other `*Screen`). In
 SwiftUI,
 `.navigationTitle` is placed first, a `Section` header before its rows and its footer after, and `.help`, `.badge`,
@@ -49,7 +59,10 @@ SwiftUI,
 
 Words keep the spacing a browser gives them. Text either side of an inline tag displayed as a block (`block`,
 `flex`, `grid` or the repo CSS's `display`) is kept apart by a space, and so is text in two different inline elements
-(also inside one branch of a conditional);
+(also inside one branch of a conditional, and a branch drawn in inline elements beside the text after it), and each
+child of a `flex` or `grid` row, bare text included. The test is whether two words would meet: the first ends with a
+letter, digit, closing punctuation or a separator glyph (`·`, `•`, `|`, `–`, `—`) and the second starts with one, so
+`<span>3 stages complete</span><span>· 2h left</span>` is "3 stages complete · 2h left";
 text and an inline child with no whitespace between them stay joined, as rendered (`Low<strong>tide</strong>` is
 "Lowtide", and JSX drops whitespace that holds a line break, as React does). A short coloured word (one to three
 words, a chromatic Tailwind text colour) inside a `flex` or `grid` row is an item of its own, not part of the row's
@@ -70,7 +83,24 @@ not read again on its own. iOS 18 `Tab("…", systemImage:)` gives a tab, and `.
 controls it covers into `aria` nodes. A view that is not drawn gives no nodes: one under `.opacity(0)` or `.hidden()`,
 or under `.accessibilityHidden(true)` when all its text is buttons with a `.keyboardShortcut` (the off-screen
 shortcut buttons). `.accessibilityHidden(true)` alone hides a view from VoiceOver only; its text is still on screen
-and is kept.
+and is kept. `.labelStyle(.iconOnly)` shows a Label's icon only, so its title is an `aria` node. `PhotosPicker` and
+`ShareLink` open a picker or share sheet: their title or `Label`/`Text` child is a `button`, as a `Menu`'s label is.
+
+View properties (`private var header: some View { … }`) are read where `body`, or another view, composes them
+(`header`, `self.header`), in that order and with that view's modifiers and conditions, instead of in declaration
+order; each is read at its first use only, and one that nothing composes is read on its own after the rest. A view
+declared in the same file (`struct HiveNoticeView: View`, declared once, with no custom `init`) is read through at its
+calls: a labelled argument for one of its stored properties gives a node at the call only when the view shows that
+property as text (as the argument of `Text`, `Label`, `Button` and the other text views, of a view of its own, or of a
+text modifier such as `.navigationTitle`) and the argument holds literal copy; a bound value (`message: loadError`) is
+already read by the view's body as VAR, and a property it does not show as text (`PairingCodeView(text:)` draws a QR
+code) gives nothing. Views declared elsewhere keep the rules above.
+
+Compiler directives. Code under `#if DEBUG` does not ship, so it is not user-facing: the lines of a branch that only
+compiles in a debug build (`#if DEBUG`, `#if DEBUG && os(iOS)`, `#elseif DEBUG`, and the `#else` of `#if !DEBUG`) are
+blanked before parsing, keeping every offset, and the other branches are read. Other conditions (`#if os(iOS)`) keep
+every branch: when each branch draws one text of the same kind they are one node, the texts joined with ALT (`Tap to
+edit ALT Click to edit`); otherwise every branch is read, as `conditional` when two or more draw something.
 
 Interpolations become the VAR marker, the private-use character U+E000, followed by the words of the last
 identifier segment (`{user.firstName}` gives `VAR first name`; `t("account.settingsTitle")` gives `VAR settings
@@ -161,7 +191,9 @@ Each node's role comes from the first of these four stages that gives one.
    SwiftUI when its `body` is a small leaf view (one to three texts, no control or container). A SwiftUI `List` with a
    `selection:` and the sidebar column of a `NavigationSplitView` are navigation, and their rows are `nav`.
 3. **Class tokens**, used only when no ancestor gave a role at stage 1 or 2: first `slop.config.json`, then semantic
-   class names (`hero__eyebrow`, `status-pill`), then Tailwind and the repo's own CSS: a large figure is a `stat`;
+   class names (`hero__eyebrow`, `status-pill`), then Tailwind and the repo's own CSS: a large figure (Tailwind
+   `text-2xl` or larger, or a `font-size` of 24px or 1.5rem or more in the repo's CSS, a `<style>` block or an inline
+   style, the minimum of a `clamp()` included) is a `stat`;
    `rounded-full` on short text is a `badge`; `uppercase` with positive `tracking-*` is a kicker; `text-destructive`,
    `text-red-*` and `text-rose-*` are an `error` (not on a dot-led status line), and so is text that is one bound value
    named as an error (`{uploadError}`, `model.errorMessage`) outside a dialog; `text-xs` is small;
@@ -196,7 +228,11 @@ Each node's role comes from the first of these four stages that gives one.
    `body`.
 
 After that, headings and body text inside a dialog become `dialog_title` and `dialog_body`, inside an empty state
-`empty_title` and `empty_body`, inside a toast `toast`; secondary text inside a form field becomes `helper`. Links
+`empty_title` and `empty_body`, inside a toast `toast`; secondary text inside a form field becomes `helper`, except
+the first text in a field that holds a checkbox, radio or switch and no label, which is its `label`. A version string
+(`v0.1.0`) that a heading class would make a heading is a `caption`. Two or more links set side by side with only
+separators or spaces between them (`<a>About</a> · <a>Privacy</a>`, a footer's links) are separate `link` nodes, not
+a line of prose, and text beside them, set apart by a separator, is a node of its own without the separator. Links
 in a list inside a page header (`header > ul > li > a`) are `nav`. A second line of text inside a button (a
 description under its label) is a `caption`; the first stays `button`, and texts in different branches of a condition
 inside the button are alternatives, not lines. A hand-built empty state is the branch shown when a collection is
@@ -261,7 +297,9 @@ frozen before labelling.
 `expected.json`, runs each one twice to check determinism, validates the schema (including `vw`: present exactly when
 the text holds a VAR marker, one count per marker, never more than the words after it), and fails unless there are
 at least 60 fixtures, every role bar `comment` and `code` and every flag and cluster kind appears somewhere, and the Swift
-grammar's wasm matches its pinned sha256. `npm run typecheck` runs `tsc`.
+grammar's wasm matches its pinned sha256. It also extracts the Swift files in `extract/test/swift-order/` each in a
+fresh process, then all of them in one process in two orders, and fails unless every file gives the same bytes every
+time. `npm run typecheck` runs `tsc`.
 
 To add a fixture:
 
@@ -282,3 +320,10 @@ Pinned exactly in `slop/package.json`: `@babel/parser` for JSX and TSX, `parse5`
 with the tree-sitter-swift grammar. The grammar's wasm comes prebuilt from `@repomix/tree-sitter-wasms` (built from
 tree-sitter-swift 0.7.1), because the `tree-sitter-swift` package ships native bindings and no wasm; its sha256 is
 pinned in `test/run.ts`.
+
+The grammar's external scanner keeps state in the wasm module's linear memory that outlives a parse, a `Parser` and
+even a reloaded `Language` (the language module shares the runtime's memory): after any earlier parse in the same
+process, even of an empty file, `#if … #endif` inside a view builder misparses. `swift.ts` therefore copies the
+runtime's memory once the parser is ready, before its first parse, and restores that image before every Swift file
+(`parseSwift`), so each file is parsed as if in a fresh process. A restore costs about half a millisecond; extracting
+HypaChef's 442 files took 2.0 s against 4.1 s before, because the leaked state also slowed later parses.

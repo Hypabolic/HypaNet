@@ -1,0 +1,8 @@
+{"schema": "slop.screen/1", "id": "70e9f4e72b1e84bf", "framework": "tsx",
+ "source": {"repo": "slop-fixtures", "path": "KilnStatus.tsx", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "body", "line": 3}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "body", "text": "\ue000 done of \ue000 total stages complete · \ue000 eta left \ue001 Kiln idle", "flags": ["small", "dynamic", "stateful", "conditional"], "loc": [7, 20, 11, 26], "vw": [1, 1, 1]},
+  {"i": 1, "k": 0, "role": "body", "text": "Glaze firing · check the vents \ue001 Glaze firing \ue001 Ready to load", "flags": ["small", "stateful", "conditional"], "loc": [17, 19, 21, 25]},
+  {"i": 2, "k": 0, "role": "body", "text": "Heating \ue001 Cooling · shelf 2", "flags": ["conditional"], "loc": [25, 25, 26, 24]}]}

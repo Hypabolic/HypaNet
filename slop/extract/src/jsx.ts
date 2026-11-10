@@ -6,7 +6,7 @@
 import { parse } from '@babel/parser';
 import type { El, Kid, LV, Opt, Slot, Sty, Txt } from './ir.ts';
 import {
-  ALT_JOIN, ALT_SEP, MAX_EXPAND, el, emptyCond, hasSubs, joinRenderings, markEmptyKids, identWords, jsxWhitespace, keyLastSegment, looksLikeCopy, markCopy, renderings, stripPUA, trimSpan, txt, varText,
+  ALT_JOIN, ALT_SEP, MAX_EXPAND, MAX_RENDERINGS, collapse, el, emptyCond, hasSubs, joinRenderings, markEmptyKids, identWords, jsxWhitespace, keyLastSegment, looksLikeCopy, markCopy, renderings, stripPUA, trimSpan, txt, varText, wordsMeet,
 } from './ir.ts';
 import { decorateComponent, decorateIntrinsic, propRole } from './roles.ts';
 import type { Role } from './schema.ts';
@@ -476,6 +476,30 @@ function constInit(id: N, env: Env): N | null {
 }
 
 /** An object or array literal an expression names (a const, or a member of one), or null. */
+// Props values (propCopy): names that hold column heads or table rows, keys and props that never hold copy, and the
+// role of a copy key of an object inside an array.
+const HEAD_PROP = /^(head|heads|headers?|headings|columns|cols|columnHeaders|columnHeads|columnNames|headerRow)$/i;
+const ROWS_PROP = /^(rows|cells|tableRows|bodyRows)$/;
+const NOT_COPY_KEY = /^(id|ids|key|keys|href|hrefs|src|srcs|url|urls|to|path|paths|route|routes|className|classNames|class|style|styles|icon|icons|iconName|variant|variants|type|types|kind|slug|slugs|colou?r|colou?rs|tone|image|images|img|value|initial|default|defaultValue|accept|size|sizes|locale|lang|name|field|fields|testId|data-testid|ref|as|target|rel|align|width|height|order|level|status)$/i;
+function itemKeyRole(k: string): Role | null {
+  if (/^(title|heading|headline)$|(Title|Heading)$/.test(k)) return 'h3';
+  if (/^(tag|tags|badge|badges|chip|pill)$/i.test(k)) return 'badge';
+  if (/label$/i.test(k)) return 'label';
+  if (/caption$/i.test(k)) return 'caption';
+  if (/^(cta|button|action)(Label|Text|Title)?$/i.test(k)) return 'button';
+  return 'body';
+}
+
+/** Copy, not a value: not one lower-case token (an identifier, a unit), a URL, a path or a colour. */
+function copyValue(t: string): boolean {
+  const v = t.trim();
+  if (!v || !/\p{L}|\p{N}/u.test(v)) return false;
+  if (/^[a-z][a-z0-9]*(?:[-_.:][a-z0-9]+)*$/.test(v)) return false;
+  if (/^(https?:|mailto:|tel:|www\.|\/|\.\.?\/|#[0-9a-f]{3,8}$)/i.test(v)) return false;
+  if (!/\s/.test(v) && /[\/\\]/.test(v) && !/^\p{N}+\/\p{N}+$/u.test(v)) return false;
+  return true;
+}
+
 function constObject(e0: N, env: Env, depth: number): N | null {
   const e = unwrap(e0);
   if (!e || depth > MAX_CONST_DEPTH) return null;
@@ -986,9 +1010,16 @@ class JsxBuilder {
         if (!role && expr && expr.type !== 'JSXEmptyExpression' && an !== 'key' && !/^(className|style|ref|as|asChild)$/.test(an)) {
           // columns={[{ head: "Year" }]}, items={[{ label: "Train" }]}: copy in a props object, as the table head
           // or list it draws
-          const pc = this.propCopy(name, expr);
+          const pc = this.propCopy(name, an, expr);
           if (pc.texts.length) {
-            const box = pc.head ? 'table' : pc.items >= 2 ? 'list' : undefined;
+            const box = pc.table ? 'table' : pc.items >= 2 ? 'list' : undefined;
+            // heads and rows passed as two props are one table
+            const prev = attrKids[attrKids.length - 1];
+            if (box === 'table' && prev && prev.t === 'el' && prev.name === '#props' && prev.box === 'table') {
+              prev.kids.push(...pc.texts);
+              prev.e = Math.max(prev.e, expr.end);
+              continue;
+            }
             const w = el('#props', expr.start, expr.end, box ? { box } : {});
             w.kids = pc.texts;
             attrKids.push(w);
@@ -1048,58 +1079,89 @@ class JsxBuilder {
   }
 
   /**
-   * Copy in a props object passed to a component: string values of copy keys (head, label, title, heading, caption,
-   * description, text) in an object or array literal, written in place or bound to an in-file const, down to
-   * nested arrays (`options: [{ label }]`). Each is a node at its literal; `head` (a column head) is a label.
+   * Copy in a props value passed to a component, written in place or bound to an in-file const, down to nested
+   * arrays. Each string is a node at its literal, its role from the prop or key that holds it:
+   * - an object's copy keys (head, label, title, heading, caption, description, text) take the prop roles (`head`, a
+   *   column head, is a label); inside an array, title and heading are an h3, description, snippet and other body
+   *   keys a body, tag and badge keys a badge, any `*label` key a label, and any other key that holds copy a body;
+   * - a string array under a header-like name (`headers`, `columns`) is column heads (labels), under `rows` or
+   *   `cells` (an array of arrays) table cells, under `tags` badges, under `labels` labels, under any other name
+   *   list items.
+   * Keys and props that hold no copy (id, href, src, icon, variant, …) are skipped, and so are values that read as
+   * an identifier (one lower-case token), a URL or a path. `table` is set when the strings are a table's heads or
+   * cells.
    */
-  propCopy(comp: string, expr0: N): { texts: Txt[]; head: boolean; items: number } {
+  propCopy(comp: string, prop: string, expr0: N): { texts: Txt[]; head: boolean; table: boolean; items: number } {
     const out: Txt[] = [];
     let head = false;
+    let table = false;
     let items = 0;
     const src = this.env.src;
     const seen = new Set<N>();
-    const walk = (x0: N, depth: number): void => {
+    const push = (v: N, role: Role, tv0?: ReturnType<typeof constText>): boolean => {
+      const tv = tv0 ?? constText(v, this.env);
+      if (!tv || !copyValue(tv.text)) return false;
+      const [s0, e0] = tv.lspans?.length === 1 ? tv.lspans[0] : innerSpan(v);
+      const t = txtFrom({ ...tv, lspans: undefined }, s0, e0, src, { attr: role });
+      if (t) out.push(t);
+      return !!t;
+    };
+    // tab: inside a header-like or rows prop, every string is a column head or a cell whatever its key
+    const walk = (x0: N, depth: number, key: string, inArray: boolean, tab: 'label' | 'cell' | null): void => {
       const x = unwrap(x0);
-      if (!x || depth > 3 || seen.has(x)) return;
+      if (!x || depth > 3 || seen.has(x) || NOT_COPY_KEY.test(key)) return;
       seen.add(x);
       if (x.type === 'Identifier' || x.type === 'MemberExpression' || x.type === 'OptionalMemberExpression') {
         if (depth > 0) return;
         const o = constObject(x, this.env, 0);
-        if (o) walk(o, depth);
+        if (o) walk(o, depth, key, inArray, tab);
         return;
       }
       if (x.type === 'ArrayExpression') {
+        if (depth === 0) items = x.elements.length;
         for (const el0 of x.elements) {
           const v = el0 ? unwrap(el0) : null;
-          if (v && (v.type === 'ObjectExpression' || v.type === 'ArrayExpression')) walk(v, depth + 1);
+          if (!v) continue;
+          if (v.type === 'ObjectExpression' || v.type === 'ArrayExpression') {
+            walk(v, depth + 1, key, true, tab ?? (HEAD_PROP.test(key) ? 'label' : ROWS_PROP.test(key) ? 'cell' : null));
+            continue;
+          }
+          if (v.type !== 'StringLiteral' && v.type !== 'TemplateLiteral') continue;
+          // a string array: its name says what the strings are
+          const role: Role = tab ? tab : HEAD_PROP.test(key) ? 'label' : ROWS_PROP.test(key) && inArray ? 'cell' : /^(tags|badges|chips|pills)$/i.test(key) ? 'badge' : /labels$/i.test(key) ? 'label' : ROWS_PROP.test(key) ? 'cell' : 'list_item';
+          if (push(v, role)) {
+            if (role === 'cell' || HEAD_PROP.test(key) || tab) table = true;
+            if (HEAD_PROP.test(key) || tab === 'label') head = true;
+          }
         }
-        if (depth === 0) items = x.elements.length;
         return;
       }
       if (x.type !== 'ObjectExpression') return;
       for (const p of x.properties) {
         if (p.type !== 'ObjectProperty' || p.computed) continue;
-        const key = p.key.type === 'Identifier' ? p.key.name : p.key.type === 'StringLiteral' ? p.key.value : null;
+        const k = p.key.type === 'Identifier' ? p.key.name : p.key.type === 'StringLiteral' ? p.key.value : null;
         const v = unwrap(p.value);
-        if (!key || !v) continue;
+        if (!k || !v || NOT_COPY_KEY.test(k)) continue;
         if (v.type === 'ArrayExpression' || v.type === 'ObjectExpression') {
-          walk(v, depth + 1);
+          walk(v, depth + 1, k, inArray, tab);
           continue;
         }
-        if (!/^(head|label|title|heading|caption|description|text)$/.test(key)) continue;
-        // a navigator screen's options title is its tab, drawer item or header title (Tabs.Screen, Stack.Screen)
-        const screen = key !== 'title' ? null : /^(Tabs?|BottomTab|MaterialTopTab|MaterialBottomTab)\w*Screen$/.test(comp) ? 'tab' : /^Drawer\w*Screen$/.test(comp) ? 'nav' : /Screen$/.test(comp) ? 'h1' : null;
-        const role: Role | null = key === 'head' ? 'label' : screen ?? propRole(comp, key);
-        const tv = role ? constText(v, this.env) : null;
-        if (!role || !tv) continue;
-        const [s0, e0] = tv.lspans?.length === 1 ? tv.lspans[0] : innerSpan(v);
-        const t = txtFrom({ ...tv, lspans: undefined }, s0, e0, src, { attr: role });
-        if (t) out.push(t);
-        if (t && key === 'head') head = true;
+        let role: Role | null = null;
+        if (tab && k !== 'head' && k !== 'caption') role = tab;
+        else if (/^(head|label|title|heading|caption|description|text)$/.test(k) && !(inArray && /^(title|heading|description)$/.test(k))) {
+          // a navigator screen's options title is its tab, drawer item or header title (Tabs.Screen, Stack.Screen)
+          const screen = k !== 'title' ? null : /^(Tabs?|BottomTab|MaterialTopTab|MaterialBottomTab)\w*Screen$/.test(comp) ? 'tab' : /^Drawer\w*Screen$/.test(comp) ? 'nav' : /Screen$/.test(comp) ? 'h1' : null;
+          role = k === 'head' ? 'label' : screen ?? propRole(comp, k);
+        } else if (inArray) role = itemKeyRole(k);
+        if (!role) continue;
+        if (push(v, role) && (k === 'head' || tab)) {
+          head = head || k === 'head' || tab === 'label';
+          table = true;
+        }
       }
     };
-    walk(expr0, 0);
-    return { texts: out, head, items };
+    walk(expr0, 0, prop, false, null);
+    return { texts: out, head, table, items };
   }
 
   children(children: N[]): Kid[] {
@@ -1157,12 +1219,21 @@ class JsxBuilder {
         const fb = flatInline(b);
         if (fa && fb && (fa.text.trim() || fb.text.trim())) {
           // two inline branches in the same run of text: one node, branches joined with ALT (an empty branch is a
-          // rendering of its own when the node has other text: see infer.ts)
-          const parts = [fa, fb].filter((p) => p.text.trim());
-          const t = txt(parts.map((p) => p.text.trim()).join(ALT_JOIN), Math.min(...parts.map((p) => p.s)), Math.max(...parts.map((p) => p.e)), {
-            lit: parts.map((p) => p.lit.trim()).join(ALT_SEP), dyn: parts.some((p) => p.dyn), alt: parts.length > 1, cond: true, bound: true,
-            opts: [fa, fb].map((p) => (p.text.trim() ? { text: p.text, lit: p.lit } : { text: '', lit: '' })),
+          // rendering of its own when the node has other text: see infer.ts); a branch with an `&&` fragment gives
+          // its renderings with and without it
+          const spans = [fa, fb].filter((p) => p.text.trim());
+          const opts = [...fa.opts, ...fb.opts].map((o) => (o.text.trim() ? o : { text: '', lit: '' }));
+          const seen = new Set<string>();
+          const parts = opts.filter((o) => o.text.trim() && !seen.has(collapse(o.text)) && !!seen.add(collapse(o.text)));
+          const t = txt(parts.map((p) => p.text.trim()).join(ALT_JOIN), Math.min(...spans.map((p) => p.s)), Math.max(...spans.map((p) => p.e)), {
+            lit: parts.map((p) => p.lit.trim()).join(ALT_SEP), dyn: spans.some((p) => p.dyn), alt: parts.length > 1, cond: true, bound: true, opts,
           });
+          // branches drawn in inline elements stay an inline element of the run (spaced from the text beside it)
+          if (fa.tagged || fb.tagged) {
+            const w = el('#branch', e.start, e.end, { inline: true });
+            w.kids = [t];
+            return [w];
+          }
           return [t];
         }
         return [...a, ...b].map(markCond);
@@ -1322,41 +1393,58 @@ function drawsText(k: Kid): boolean {
  * Text of kids made only of text and text-less or inline elements (no blocks, no roles), else null. Words in two
  * different inline elements are kept apart by a space, as in a run of text (infer.ts).
  */
-function flatInline(kids: Kid[]): { text: string; lit: string; s: number; e: number; dyn: boolean } | null {
-  let text = '';
-  let lit = '';
+function flatInline(kids: Kid[]): { text: string; lit: string; s: number; e: number; dyn: boolean; opts: Opt[]; tagged: boolean } | null {
+  // the run's text pieces, each with its inline path and the `&&` group it is shown under (if any)
+  const pieces: { k: Txt; path: El[]; g: number | undefined }[] = [];
   let s = Infinity;
   let e = -Infinity;
   let dyn = false;
-  let prevPath: El[] | null = null;
-  const walk = (k: Kid, path: El[]): boolean => {
+  const walk = (k: Kid, path: El[], g: number | undefined): boolean => {
     if (k.t === 'txt') {
       if (k.attr) return false;
+      pieces.push({ k, path, g: k.andGroup ?? g });
+      if (k.text.trim()) {
+        s = Math.min(s, k.s);
+        e = Math.max(e, k.e);
+      }
+      dyn = dyn || !!k.dyn;
+      return true;
+    }
+    if (k.icon || k.dot) return true;
+    const g2 = k.andGroup ?? g;
+    if (k.name === '#fragment') return k.kids.every((x) => walk(x, path, g2));
+    if (k.intrinsic && /^(span|strong|em|b|i|small|code)$/.test(k.name) && !k.cls.some((c) => /rounded-full|sr-only/.test(c))) return k.kids.every((x) => walk(x, path.concat(k), g2));
+    return false;
+  };
+  if (!kids.every((k) => walk(k, [], undefined))) return null;
+  const join = (ps: typeof pieces): Opt => {
+    let text = '';
+    let lit = '';
+    let prevPath: El[] | null = null;
+    for (const { k, path } of ps) {
       if (k.text.trim() && prevPath) {
         const same = prevPath.length === path.length && prevPath.every((x, j) => x === path[j]);
-        if (!same && prevPath.length > 0 && path.length > 0 && /[\p{L}\p{N}.:!?)\uE000\uE001\uE002]$/u.test(text) && /^[\p{L}\p{N}(\uE000\uE001]/u.test(k.text)) {
+        if (!same && prevPath.length > 0 && path.length > 0 && wordsMeet(text, k.text)) {
           text += ' ';
           lit += ' ';
         }
       }
       text += k.text;
       lit += k.lit;
-      if (k.text.trim()) {
-        s = Math.min(s, k.s);
-        e = Math.max(e, k.e);
-        prevPath = path;
-      }
-      dyn = dyn || !!k.dyn;
-      return true;
+      if (k.text.trim()) prevPath = path;
     }
-    if (k.icon || k.dot) return true;
-    if (k.name === '#fragment') return k.kids.every((x) => walk(x, path));
-    if (k.intrinsic && /^(span|strong|em|b|i|small|code)$/.test(k.name) && !k.cls.some((c) => /rounded-full|sr-only/.test(c))) return k.kids.every((x) => walk(x, path.concat(k)));
-    return false;
+    return { text, lit };
   };
-  if (!kids.every((k) => walk(k, []))) return null;
-  if (s === Infinity) return { text: '', lit: '', s: 0, e: 0, dyn };
-  return { text, lit, s, e, dyn };
+  // an `&&` fragment inside the run is optional: the renderings with it (one fragment at a time when there are
+  // several, as adjacent fragments are one choice) and without it
+  const groups = [...new Set(pieces.map((p) => p.g).filter((g): g is number => g !== undefined && pieces.some((q) => q.g === g && q.k.text.trim())))];
+  const opts: Opt[] = groups.length && groups.length < MAX_RENDERINGS
+    ? [...groups.map((g) => join(pieces.filter((p) => p.g === undefined || p.g === g))), join(pieces.filter((p) => p.g === undefined))]
+    : [join(pieces)];
+  const full = join(pieces);
+  const tagged = pieces.some((p) => p.path.length > 0 && p.k.text.trim());
+  if (s === Infinity) return { text: '', lit: '', s: 0, e: 0, dyn, opts: [{ text: '', lit: '' }], tagged };
+  return { text: full.text, lit: full.lit, s, e, dyn, opts, tagged };
 }
 
 

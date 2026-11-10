@@ -173,6 +173,7 @@ Short cases (invented):
 | eyebrow "FEATURES" over h2 "Tools for small kitchens" | eyebrow DECOR (R2; K1 genre word not in the heading; step 6) |
 | eyebrow "Features" over h2 "Features that scale" | eyebrow ECHO → h2 (R1; K1 genre word in the heading) |
 | eyebrow "Camping" over h2 "Trailhead 2 tent" | KEEP (K1) |
+| eyebrow "Groceries" over h2 "Groceries at Penny Jar" | eyebrow ECHO → h2 (R1; step 2 comes before K1: the heading already names the category) |
 | h2 "Settings" / subtitle "Manage your settings here." | subtitle ECHO → h2 (R3; step 2) |
 | label "Postcode" / helper "Enter your postcode" | helper ECHO → label (R5) |
 | label "Email" / helper "We send the receipt here" | helper KEEP (K4) |

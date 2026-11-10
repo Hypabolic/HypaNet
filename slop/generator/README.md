@@ -119,6 +119,32 @@ that reached REDUNDANT F1 0.86 from a node's own text, role and flags. v3 change
   (a second section is added otherwise); a heading plus a qualifier ("Shared budgets: new in 4.2", "Hives this
   week" under "Hives", a tooltip "New hive (N)") is KEEP with `partial`.
 
+## Frames and eyebrows (v4)
+
+A blind check of `val` v3 found K1 eyebrows that the guide makes ECHO, and restatement frames that occur only in
+redundant copy. v4 changes:
+
+- **Eyebrows the heading already says.** A K1 eyebrow whose every word (Porter stems, stop words aside) is in the
+  heading under it ("Groceries" over "Groceries at Penny Jar", the product name over "What you get with
+  Lindendock") is planted ECHO R1 → that heading, since `LABELLING.md` §4 step 2 comes before the K rules
+  (`compose.k1_eyebrow_echoes`, run on every screen after composing). On a clean screen, or over a heading that is
+  itself flagged, the eyebrow is dropped instead. Category eyebrows whose words the heading does not contain
+  ("Camping" over "Trailhead 2 tent") stay K1.
+- **Restatement frames with KEEP twins.** `compose.with_fact` puts a scope or a condition between a restatement's
+  opening and its closing words ("Manage your orders from the last 30 days, all in one place."), so the same first
+  and last two words occur in KEEP partials: list, settings and dashboard subtitles. Under a subset heading that
+  already states the scope ("Overdue orders", "Orders due in the next 14 days") the same shape is R3. Closing lines
+  ("And that's free for up to 5 boats."), count lines ("Here are 3 of the 8 features; ...", "Refunds are not
+  counted in the figures below."), toggle helpers ("Only owners can switch this on or off."), empty-state bodies
+  ("The bin is empty.", "Imports are paused for now."), figure captions ("Target stands at 400", "15 last month,
+  all told") and form notes ("... so you can stop and carry on.") get KEEP lines in the frames of their
+  restatements. Genre-word eyebrows ("At a glance") stay redundant, as the guide defines them by their words.
+- **Coherence.** Narration that mentions "the form" or "the fields above" is used only on screens with a form;
+  two notes about a search ("Press / to jump to search.", "Clear the search ...") were replaced, since the
+  screens that carried them had no search box.
+- **Extractor round 5.** The generator's own `.stat` class (`font-size: 2rem`) now makes those figures `stat`
+  instead of `body`; nothing in the join changed.
+
 An exact repeat at equal rank flags the later node in reading order; when the composer cannot know that order (a
 SwiftUI navigation title is read first), `build.orient_duplicates` swaps the label onto the later copy.
 
@@ -128,5 +154,5 @@ SwiftUI navigation title is read first), `build.orient_duplicates` swaps the lab
 byte-identical, namespaces differ, every node is labelled and `labeller/check.py` finds no errors, every plantable
 pattern and K rule occurs, the screen and source files name no kind and carry no clean flag, sixteen roles carry both
 classes, an equal-rank repeat flags the later node, a moved span is reported, `test_gen` refuses without a frozen
-registry, the duplicate check matches near copies, `core.article`, `core.plural` and `core.seams` handle their hard
+registry, no K1 eyebrow has every word in the heading under it, the duplicate check matches near copies, `core.article`, `core.plural` and `core.seams` handle their hard
 cases, and no node of the built screens or of `datasets/dev` (when built) has a grammar seam.

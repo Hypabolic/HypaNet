@@ -18,6 +18,7 @@ import re
 from . import lexicon as L
 from . import tables as T
 from .core import E, Page, S, article, cap, ctx, dyn, lower_first, plural, stack
+from ui.porter import stem
 
 KINDS = ["marketing", "app", "settings", "dialog", "empty", "dashboard", "game"]
 KIND_WEIGHTS = [("marketing", 22), ("app", 16), ("settings", 16), ("dialog", 10), ("empty", 10), ("dashboard", 12),
@@ -194,6 +195,33 @@ def restate(c: Ctx, noun: Noun, stem=None) -> str:
     return L.echo_list(c.rng, noun.pl, None if stem else c.alt(noun)[1])
 
 
+# v4: KEEP twins of restatement frames. The same opening and the same closing words with a fact between them
+# ("Manage your orders from the last 30 days, all in one place."), so that the frame alone does not decide the class.
+TWIN_TAIL = re.compile(r"(?:,? (?:all )?in one (?:place|list|spot)|,? from one screen|,? at a glance|,? all together"
+                       r"|; every one of them|, one by one|; nothing else|, every one, listed here|; all of them, listed"
+                       r"|, listed|, from first to last|, nothing more|, from top to bottom|, top to bottom| here)?\.$")
+TWIN_MID = {
+    "list": ["from the last {k} days", "due in the next {k} days", "over {k} days old", "logged since {date}", "older than {m} months", "from all {k} sites",
+             "still awaiting sign-off", "with a photo attached", "due before {date}", "from {month} onwards",
+             "your {role} has approved", "imported from the old system"],
+    "settings": ["on this phone", "for this account only", "for your whole {group}", "on every device you sign in on",
+                 "that only {roles} can change", "on the web app as well"],
+    "dash": ["for the last {k} days", "since {date}", "across all {k} sites", "before refunds", "excluding drafts",
+             "for {month} so far", "for {place} only", "with times in {zone}"],
+}
+
+
+def with_fact(c: Ctx, text: str, kind: str, mid: str | None = None) -> str:
+    """``text`` (a restatement) with a scope or a condition put before its closing words: KEEP, partial, unless
+    the heading already states that scope (then the caller plants it as R3)."""
+    m = TWIN_TAIL.search(text)
+    i = m.start() if m else len(text)
+    if mid is None:
+        mid = c.f(c.pick(TWIN_MID[kind]), k=c.pick([2, 3, 4, 7, 14, 30, 90]), m=c.pick([3, 6, 12, 18]),
+                  month=c.pick(L.MONTHS))
+    return text[:i] + " " + mid + text[i:]
+
+
 PRODUCT_FACTS = ["Every {x1} keeps a full history of who changed what, and when.", "{X} sync to every phone in your {group} within a minute.",
                  "Reminders go out {n} days before each {y1} is due.", "The free plan covers up to {n} {x}.",
                  "Works on iPhone, Android and the web, with one login.", "{X} you delete stay in the bin for {n} days.",
@@ -250,15 +278,16 @@ def short_keep(c: Ctx, *kinds) -> str:
     return c.f(c.fresh(pool))
 
 
-def narrate_control(c: Ctx, label: str) -> str:
-    """R6: what pressing a visible control does, in words its label already gives."""
+def narrate_control(c: Ctx, label: str, form=False) -> str:
+    """R6: what pressing a visible control does, in words its label already gives. Openers that mention a form or
+    its fields are used only where the screen has one (``form``)."""
     r = c.rng.random()
     v = c.pick(L.TAP_VERBS)
     if r < 0.6:
         return f"{v} {label} {c.pick(L.NARRATE_PURPOSE)}."
     if r < 0.8:
         return f"Use the {label} button {c.pick(['below', 'underneath', 'at the bottom'])} {c.pick(L.NARRATE_PURPOSE)}."
-    return f"{c.pick(L.NARRATE_FORM_OPEN)} {v.lower()} {label}."
+    return f"{c.pick(L.NARRATE_FORM_OPEN if form else L.NARRATE_DONE_OPEN)} {v.lower()} {label}."
 
 
 def scroll_line(c: Ctx, noun: Noun | None = None) -> str:
@@ -270,13 +299,23 @@ def scroll_line(c: Ctx, noun: Noun | None = None) -> str:
 COUNT_KEEP = {
     "features": [("{N} of the {m} features, picked for {who}; the rest are in the guide.", False),
                  ("These {n} come with every plan; {m} more are on Pro.", False),
-                 ("Every one of the {n} works offline.", True), ("All {n} are included on the free plan.", True)],
+                 ("Every one of the {n} works offline.", True), ("All {n} are included on the free plan.", True),
+                 ("Here are {n} of the {m} features; the rest are in the guide.", False),
+                 ("Pro adds {k} more; the {n} cards below cover the basics.", True),
+                 ("Below you’ll find {n} of the {m} features; the rest come with Pro.", False)],
     "steps": [("Most {groups} finish all {n} steps in a day.", True), ("All {n} steps work offline.", True),
-              ("The {n} steps take about {k} minutes in all.", True), ("Steps 2 to {n} can wait until later.", False)],
+              ("The {n} steps take about {k} minutes in all.", True), ("Steps 2 to {n} can wait until later.", False),
+              ("Here are the {n} steps most {groups} follow; the last one is optional.", True),
+              ("Step 1 is the only one you need today; the rest cover the basics.", False)],
     "pricing": [("All {n} plans include VAT.", True), ("Every one of the {n} plans has a {k}-day trial.", True),
-                ("Schools get {k}% off all {n} plans.", True), ("{N} plans here; charities ask us for a fourth.", False)],
+                ("Schools get {k}% off all {n} plans.", True), ("{N} plans here; charities ask us for a fourth.", False),
+                ("Here are all {n} plans; each has a {k}-day trial.", True), ("Charities get {k}% off the options below.", False),
+                ("Prices include VAT for every plan shown below.", False)],
     "dash": [("{N} figures from the last {k} days; older ones are in Reports.", True), ("These {n} figures exclude drafts.", True),
-             ("{N} of the {m} figures you follow; edit the list in Settings.", False)],
+             ("{N} of the {m} figures you follow; edit the list in Settings.", False),
+             ("Here are {n} of your {m} key numbers; edit the list in Settings.", False),
+             ("Refunds are not counted in the figures below.", False), ("Drafts are left out of the key numbers.", False),
+             ("Test data is excluded from everything shown below.", False), ("Only the first {n} cards below cover the basics; the rest are for {roles}.", False)],
 }
 
 
@@ -698,7 +737,7 @@ def m_features(c: Ctx):
     grid, n = card_grid(c, max(n, 3) if lead is not None else n, lead=lead)
     if c.want(0.1):
         kids.append(E("sub", s=S(count_line(c, n), "subtitle").narrate("R16", None)))
-    elif c.chance(0.07):
+    elif c.chance(0.12):
         kids.append(E("sub", s=count_keep(c, n, "features")))
     elif concept and c.want(0.3):
         kids.append(E("sub", s=S(c.f(c.pick(concept["echo"])), "subtitle").echo(h2, "R3", conf="judgement")))
@@ -716,6 +755,8 @@ def m_features(c: Ctx):
         else:
             line = S(closing_head(c, h2.text), "body").echo(h2, "R17")
         out.append(E("p", s=line))
+    elif c.chance(0.12):
+        out.append(E("p", s=S(c.f(c.pick(L.CLOSE_KEEP)), "body")))
     elif c.chance(0.15):
         out.append(E("p", s=S(product_fact(c), "body")))
     return E("section", *out)
@@ -809,7 +850,7 @@ def m_steps(c: Ctx):
     picks = c.rng.some(STEP_POOL, n)
     if c.want(0.2):
         kids.append(E("sub", s=S(count_line(c, n), "subtitle").narrate("R16", None)))
-    elif c.chance(0.1):
+    elif c.chance(0.16):
         kids.append(E("sub", s=count_keep(c, n, "steps")))
     elif c.chance(0.4):
         kids.append(E("sub", s=S(c.f(c.pick(["Most {groups} are set up within a day.", "You can stop after step 2 and come back later.",
@@ -824,6 +865,8 @@ def m_steps(c: Ctx):
     if c.want(0.25):
         out.append(E("p", s=S(c.pick(L.CLOSE_STEPS).format(N=cap(L.NUMBER_WORDS[n]), x1=c.x.sg), "body")
                      .echo(None, "R17", conf="judgement")))
+    elif c.chance(0.12):
+        out.append(E("p", s=S(c.f(c.pick(L.CLOSE_STEPS_KEEP)), "body")))
     return E("section", *out)
 
 
@@ -915,7 +958,7 @@ def m_pricing(c: Ctx):
     n = c.pick([2, 3, 3, 4])
     if c.want(0.18):
         kids.append(E("sub", s=S(count_line(c, n), "subtitle").narrate("R16", None)))
-    elif c.chance(0.1):
+    elif c.chance(0.16):
         kids.append(E("sub", s=count_keep(c, n, "pricing")))
     elif concept and c.want(0.3):
         kids.append(E("sub", s=S(c.f(c.pick(concept["echo"])), "subtitle").echo(h2, "R3", conf="judgement")))
@@ -998,6 +1041,8 @@ def m_faq(c: Ctx):
     out = [E("head", *kids), E("faq", items=items)]
     if c.want(0.2):
         out.append(E("p", s=S(c.f(c.pick(L.CLOSE_FAQ)), "body").echo(None, "R17", conf="judgement")))
+    elif c.chance(0.12):
+        out.append(E("p", s=S(c.f(c.pick(L.CLOSE_FAQ_KEEP)), "body")))
     return E("section", *out)
 
 
@@ -1037,6 +1082,8 @@ def m_quotes(c: Ctx):
             out.append(E("p", s=S(closing_head(c, h2.text), "body").echo(h2, "R17")))
         else:
             out.append(E("p", s=S(closing_spread(c), "body").echo(None, "R17", conf="judgement")))
+    elif c.chance(0.1):
+        out.append(E("p", s=S(c.f(c.pick(L.CLOSE_KEEP)), "body")))
     return E("section", *out)
 
 
@@ -1224,6 +1271,15 @@ def stat_caption(c: Ctx, lab, value: str, val=None):
         return S(c.pick([f"Out of {m} in total", f"Of {m} in total", f"{m} in total last year", f"Target: {m} in total"]), "caption")
     if c.chance(0.06):
         return S(short_keep(c, "stat"), "caption")
+    if c.chance(0.06):
+        # the frames of the restatements below with another figure or a fact (KEEP)
+        per = c.pick(["week", "month", "year"])
+        return S(c.pick([f"Target stands at {jitter(c.rng, value)}", f"{jitter(c.rng, value)} last {per}, all told",
+                         f"{jitter(c.rng, value)} last {per} in total", "Rounded to the nearest ten, as shown",
+                         f"The {c.pick(['figure', 'total', 'count'])} above excludes refunds.",
+                         f"{c.pick(['This', 'That'])} {c.pick(['figure', 'number', 'total'])} is worked out overnight for you.",
+                         f"Refunds are not in the {c.pick(['figure', 'total'])} shown here.",
+                         f"The {c.pick(['figure', 'count'])} at a glance leaves out drafts."]), "caption")
     if c.want(0.1):
         if c.chance(0.5):
             t = c.pick(["{L} right now", "{L}, as of today", "{L} at a glance", "{L} in total", "{L}, all told",
@@ -1335,15 +1391,29 @@ def list_heading(c: Ctx, noun: Noun):
                    f"Archived {noun.pl}", f"{noun.Pl} in {c.place}", f"Upcoming {noun.pl}", f"Your {noun.pl}"])
 
 
+def list_scope(c: Ctx, noun: Noun, htext: str):
+    """The scope a subset heading from ``list_heading`` states, as a phrase after the noun, or None."""
+    return {f"Overdue {noun.pl}": "that are overdue", f"{noun.Pl} this week": "from this week",
+            f"Recent {noun.pl}": "from the last few days", f"Shared {noun.pl}": "shared with you",
+            f"Archived {noun.pl}": "in the archive", f"{noun.Pl} in {c.place}": f"in {c.place}",
+            f"Upcoming {noun.pl}": "still to come"}.get(htext)
+
+
 def page_sub(c: Ctx, h, noun: Noun, allow_r16=True):
     """The subtitle under a list page's heading: a restatement (R3), layout narration (R16), a partial, or a fact
     about the noun (with or without its stem)."""
+    scope = list_scope(c, noun, h.text)
     if c.want(0.28):
+        if scope and c.chance(0.5):
+            # the KEEP twin's shape, whose scope the heading already states (R3)
+            return S(with_fact(c, restate(c, noun), "list", scope), "subtitle").echo(h, "R3", conf="clear")
         return S(restate(c, noun), "subtitle").echo(h, "R3", conf="clear")
     if allow_r16 and c.want(0.1):
         return S(layout_line(c, noun), "subtitle").narrate("R16", None)
     if c.chance(0.12):
         return S(restate(c, noun) + " " + about(c, noun), "subtitle").keep(partial=True)
+    if h.text == noun.Pl and c.chance(0.18):
+        return S(with_fact(c, restate(c, noun), "list"), "subtitle").keep(partial=True)
     if c.chance(0.22):
         return S(short_keep(c, "list"), "subtitle")
     if c.chance(0.6):
@@ -1425,7 +1495,12 @@ def app(c: Ctx) -> Page:
     else:
         sub_target = h1
     if list_fact is not None and c.want(0.45):
-        sub = S(cap(c.f(c.pick(list_fact[0][1]), **list_fact[1])), "subtitle").echo(sub_target, "R3")
+        if c.chance(0.35):
+            # the KEEP twin's sentence, whose scope this heading already states (R3)
+            mid = c.f(list_fact[0][0].removeprefix("{X} "), **list_fact[1])
+            sub = S(with_fact(c, restate(c, c.x, stem=True), "list", mid), "subtitle").echo(sub_target, "R3")
+        else:
+            sub = S(cap(c.f(c.pick(list_fact[0][1]), **list_fact[1])), "subtitle").echo(sub_target, "R3")
     elif list_fact is not None and c.chance(0.6):
         sub = S(cap(c.f(c.pick(list_fact[0][2]), **list_fact[1])), "subtitle")
     else:
@@ -1512,7 +1587,7 @@ def app(c: Ctx) -> Page:
     elif c.fw != "html" and c.chance(0.15):
         inner.append(E("dyn", s=dyn("VAR updated at", "caption"), expr="updatedAt", look="note"))
     if c.chance(0.12):
-        inner.append(E("note", s=S(c.f(c.pick(["Hold Shift to select a range of rows.", "Press / to jump to search.",
+        inner.append(E("note", s=S(c.f(c.pick(["Hold Shift to select a range of rows.", "Press N to start a new {x1}.",
                                                "Drag rows to change the order; the new order is saved for everyone.",
                                                "Swipe left on {a_x1} to archive it.", "Long-press a row to select several.",
                                                "Tap {a_x1} twice to mark it done.", "Click a date to block it out for everyone.",
@@ -1805,23 +1880,29 @@ def settings(c: Ctx) -> Page:
         if eb:
             kids.append(E("eyebrow", s=eb))
         kids.append(E("h", s=h1, level=1))
+        def set_echo(plain=False):
+            # plain: the frames that still read well with a scope added (the KEEP twins)
+            if plain or c.chance(0.5):
+                return c.pick(["Manage your {n}.", "Manage your {n} here.", "View and change your {n}.", "Your {n}, all in one place.",
+                               "Everything about your {n}.", "Update your {n}.", "{N}, in one place."] + ([] if plain else [
+                               "All {n}; every one, here.", "{N} for this account, listed.", "The {n}, from top to bottom."])).format(
+                    n=lower_first(htext), N=htext), "clear"
+            syn = c.pick(syns)
+            pool = [f"{cap(syn)}, in one place.", f"{cap(syn)}, all together.", f"Review {lower_first(syn)}."]
+            if not syn.lower().startswith("about"):
+                pool.append(f"Everything about {lower_first(syn)}.")
+            if htext in ("Preferences",) or htext.endswith("settings"):
+                pool += ["Change how things work for you.", "Adjust things to suit you.", "Make it work your way."]
+            return c.pick(pool), "judgement"
+
         if c.want(0.25):
-            if c.chance(0.5):
-                sub = S(c.pick(["Manage your {n}.", "Manage your {n} here.", "View and change your {n}.", "Your {n}, all in one place.",
-                                "Everything about your {n}.", "Update your {n}.", "{N}, in one place.", "All {n}; every one, here.",
-                                "{N} for this account, listed.", "The {n}, from top to bottom."]).format(
-                    n=lower_first(htext), N=htext), "subtitle").echo(h1, "R3")
-            else:
-                syn = c.pick(syns)
-                pool = [f"{cap(syn)}, in one place.", f"{cap(syn)}, all together.", f"Review {lower_first(syn)}."]
-                if not syn.lower().startswith("about"):
-                    pool.append(f"Everything about {lower_first(syn)}.")
-                if htext in ("Preferences",) or htext.endswith("settings"):
-                    pool += ["Change how things work for you.", "Adjust things to suit you.", "Make it work your way."]
-                sub = S(c.pick(pool), "subtitle").echo(h1, "R3", conf="judgement")
+            t, conf = set_echo()
+            sub = S(t, "subtitle").echo(h1, "R3", conf=conf)
             kids.append(E("sub", s=sub))
             if eb is not None and eb.cls == "ECHO":
                 stack(h1, [eb, sub], ["R1", "R3"], conf="judgement")
+        elif c.chance(0.1):
+            kids.append(E("sub", s=S(with_fact(c, set_echo(plain=True)[0], "settings"), "subtitle").keep(partial=True)))
         elif c.chance(0.15):
             kids.append(E("sub", s=S(short_keep(c, "settings"), "subtitle")))
         elif c.chance(0.5):
@@ -1908,6 +1989,11 @@ def settings(c: Ctx) -> Page:
                     hl = S(alt, "helper").echo(lab, "R5", conf="judgement")
             elif c.chance(0.2):
                 hl = S(short_keep(c, "toggle"), "helper").keep("K4")
+            elif c.chance(0.08):
+                # the narration's frame with a fact: who may switch it, or what else it does (K4)
+                hl = S(c.f(c.pick(["Only {roles} can switch this on or off.", "Your {role} can turn this on or off for everyone.",
+                                   "Turn on to send a copy to your {role} as well.", "Turn on to include {y} from {place}.",
+                                   "Each {y1} can have this on or off."])), "helper").keep("K4")
             elif c.chance(0.65):
                 hl = S(c.f(c.pick([helper, *TOGGLE_HELP_MORE.get(raw_label, [])])), "helper").keep("K4")
             sk.append(E("toggle", label=lab, helper=hl))
@@ -1960,10 +2046,12 @@ def settings(c: Ctx) -> Page:
                      "Save settings" if not domain_page else f"Save {c.x.sg}"]), "button")
     acts = [E("button", s=S("Cancel", "button"), primary=False), E("button", s=save)] if c.chance(0.5) else [E("button", s=save)]
     if c.want(0.12):
-        form_kids.append(E("note", s=S(narrate_control(c, save.text), "caption").narrate("R6", save, ct=True)))
+        form_kids.append(E("note", s=S(narrate_control(c, save.text, form=True), "caption").narrate("R6", save, ct=True)))
     elif c.chance(0.15):
         form_kids.append(E("note", s=S(c.pick(["Changes to your email take effect after you confirm the link we send.",
-                                              "Saving signs you out on other devices.", "Changes apply to new entries only."]),
+                                              "Saving signs you out on other devices.", "Changes apply to new entries only.",
+                                              "Use the web app to import more than 50 at once.",
+                                              "Answers are saved as you go, so you can stop and carry on."]),
                                        "caption").keep("K4", ct=True)))
     form_kids.append(E("actions", *acts))
     if swift:
@@ -2214,7 +2302,12 @@ EMPTY_KEEP = ["{A} you add from any device appear here, newest first.", "Add one
               "Your {role} adds {a} each {day}; check back then.", "Import last year’s {a} from a spreadsheet to get going.",
               "Ask your {role} to add one.", "Check back on {day}.", "Filters may be hiding some.", "New {a} land here first.",
               "Want one now? Start from a template.", "Make sure you are in the right {group}.", "Your {group} has not shared any.",
-              "Clear the search to see all {a}.", "{A} older than {n} months are in the archive.", "Imported {a} appear within the hour."]
+              "Archived {a} are hidden; open the archive to see them.", "{A} older than {n} months are in the archive.", "Imported {a} appear within the hour.",
+              "Imports are paused for now.", "Sharing with your {group} is off for now.", "The archive is empty.", "The bin is empty.",
+              "The bin still has {n} {a} in it.", "It looks like a filter is on; {n} {a} are hidden.", "Not {a_role}? Ask one to add {a}.",
+              "There are {n} {a} in the archive.", "You don’t have access to this {group}’s {a}; ask your {role}.",
+              "Nothing to show until your {role} approves them.", "Nothing here before {date}; older {a} are in the archive.",
+              "{A} from before {date} do not show here at all.", "The list refreshes every {n} minutes."]
 EMPTY_ECHO_STEM = ["There are no {a} yet.", "You don’t have any {a}.", "No {a} have been added.", "The list of {a} is empty.",
                    "It looks like there are no {a} here.", "Not one {a1} so far.", "No {a} so far; none at all.",
                    "Zero {a}, for now.", "The {a} list has nothing in it.", "None yet, not a single {a1}."]
@@ -2255,6 +2348,8 @@ def empty(c: Ctx) -> Page:
         hk = [E("h", s=h, level=1)]
         if c.want(0.15):
             hk.append(E("sub", s=S(restate(c, noun), "subtitle").echo(h, "R3")))
+        elif c.chance(0.08):
+            hk.append(E("sub", s=S(with_fact(c, restate(c, noun), "list"), "subtitle").keep(partial=True)))
         elif c.chance(0.3):
             hk.append(E("sub", s=S(about(c, noun), "subtitle")))
         page.append(E("head", *hk))
@@ -2393,6 +2488,12 @@ def next_card(c: Ctx):
     return E("card", *kids)
 
 
+def dash_echo(c: Ctx) -> str:
+    lead = c.pick(['A summary of', 'A look at', 'Everything about', 'How things stand with'])
+    obj = c.pick(['your ' + c.x.pl, 'your ' + c.group, 'the ' + c.x.pl] + ([] if lead == 'Everything about' else ['everything', 'it all']))
+    return f"{lead} {obj}{c.pick(['.', ', at a glance.', ' in one place.'])}"
+
+
 def dashboard(c: Ctx) -> Page:
     rng = c.rng
     key = c.pick(list(DASH_HEADS))
@@ -2418,17 +2519,16 @@ def dashboard(c: Ctx) -> Page:
         kids.append(E("sub", s=S(c.pick(["Here are your {n} key numbers.", "The {n} cards below cover the basics.",
                                          "Your {n} main figures are shown below.", "{N} figures, below."])
                                  .format(n=L.NUMBER_WORDS[stats_n], N=cap(L.NUMBER_WORDS[stats_n])), "subtitle").narrate("R16", None)))
-    elif c.chance(0.08):
+    elif c.chance(0.14):
         kids.append(E("sub", s=count_keep(c, stats_n, "dash")))
     elif c.want(0.2):
         if shares_stem("overview dashboard glance", htext) and c.chance(0.5):
             t = c.pick(["An overview of everything.", "Your dashboard, at a glance.", "An at-a-glance summary.", "Everything, at a glance."])
             kids.append(E("sub", s=S(t, "subtitle").echo(h1, "R3", conf="judgement")))
         else:
-            lead = c.pick(['A summary of', 'A look at', 'Everything about', 'How things stand with'])
-            obj = c.pick(['your ' + c.x.pl, 'your ' + c.group, 'the ' + c.x.pl] + ([] if lead == 'Everything about' else ['everything', 'it all']))
-            t = f"{lead} {obj}{c.pick(['.', ', at a glance.', ' in one place.'])}"
-            kids.append(E("sub", s=S(t, "subtitle").echo(h1, "R3", conf="judgement")))
+            kids.append(E("sub", s=S(dash_echo(c), "subtitle").echo(h1, "R3", conf="judgement")))
+    elif c.chance(0.1):
+        kids.append(E("sub", s=S(with_fact(c, dash_echo(c), "dash"), "subtitle").keep(partial=True)))
     elif c.chance(0.5):
         first_fact = S(c.f(c.pick(["Figures update every {n} minutes.", "Numbers exclude test data.", "Times are shown in {zone}.",
                                    "Totals include {y} still in draft.", "Counts reset on the 1st of each month."])), "subtitle")
@@ -2748,9 +2848,40 @@ def link_stacks(page: Page):
             s.equiv = [o for o in g if o is not s]
 
 
+_STOP = set("a an the and or of to in on for your you is are it this that with at by from be we our all any can as i me "
+             "my its their they them his her he she us not no do does".split())
+
+
+def content_stems(t: str) -> set:
+    return {stem(w) for w in re.findall(r"[a-z]+", t.lower().replace("’", "").replace("'", "")) if w not in _STOP}
+
+
+def k1_eyebrow_echoes(page: Page, c: Ctx):
+    """A K1 eyebrow whose every word the heading under it already says ("Groceries" over "Groceries at Penny Jar")
+    is ECHO R1 → that heading: LABELLING.md §4 step 2 comes before the K rules. On a clean screen the eyebrow is
+    dropped instead; so is one over a heading that is itself flagged. A category eyebrow whose words the heading
+    does not contain stays K1."""
+    for el in [e for top in page.body for e in top.walk()]:
+        kids = el.kids
+        i = 0
+        while i < len(kids):
+            k = kids[i]
+            eb = k["s"] if k.kind == "eyebrow" else None
+            if eb is not None and eb.cls == "KEEP" and eb.pattern == "K1":
+                h = next((x["s"] for x in kids[i + 1:i + 3] if x.kind == "h" and x["s"] is not None), None)
+                a = content_stems(eb.text)
+                if h is not None and a and a <= content_stems(h.text):
+                    if c.clean or h.planted:
+                        del kids[i]
+                        continue
+                    eb.echo(h, "R1", conf="clear")
+            i += 1
+
+
 def compose(rng, kind: str, fw: str, clean: bool) -> tuple[Page, Ctx]:
     c = Ctx(rng, fw, clean)
     page = COMPOSERS[kind](c)
+    k1_eyebrow_echoes(page, c)
     if kind in ("app", "dashboard", "settings", "game") and fw != "html" and rng.random() < 0.18:
         cond = k14(c, c.pick(["body", "caption"]))
         if cond is not None:

@@ -1,0 +1,12 @@
+{"schema": "slop.screen/1", "id": "ec4ee586e7411cea", "framework": "swift",
+ "source": {"repo": "slop-fixtures", "path": "KilnDashboard.swift", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "body", "line": 5}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "body", "text": "Bisque firing", "flags": [], "loc": [6, 19, 6, 32]},
+  {"i": 1, "k": 0, "role": "body", "text": "Firing safely", "flags": [], "loc": [11, 19, 11, 32]},
+  {"i": 2, "k": 0, "role": "body", "text": "Tap a shelf to log it \ue001 Click a shelf to log it", "flags": ["conditional"], "loc": [14, 19, 14, 40]},
+  {"i": 3, "k": 0, "role": "body", "text": "Kiln", "flags": ["conditional"], "loc": [20, 23, 20, 27]},
+  {"i": 4, "k": 0, "role": "body", "text": "Shelf map", "flags": ["conditional"], "loc": [21, 23, 21, 32]},
+  {"i": 5, "k": 0, "role": "body", "text": "Open the shelf map", "flags": ["conditional"], "loc": [24, 19, 24, 37]},
+  {"i": 6, "k": 0, "role": "body", "text": "Glaze notes are synced", "flags": [], "loc": [27, 19, 27, 41]}]}

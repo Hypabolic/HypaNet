@@ -4,7 +4,7 @@
 import type { Box, El, Kid, Opt, Sty, Txt } from './ir.ts';
 import {
   ALT_JOIN, ALT_SEP, MAX_RENDERINGS, collapse, hasArrowTail, hasDotLead, isCaps, isDotOnly, isEmojiLead, isFigure, isSeparatorOnly, isTitleCase,
-  joinRenderings, varWords, wordCount,
+  joinRenderings, varWords, wordCount, wordsMeet,
 } from './ir.ts';
 import { LISTISH, MONO_TAGS, STATEISH, strongRole } from './roles.ts';
 import type { ClusterKind, Flag, Framework, Role } from './schema.ts';
@@ -226,6 +226,7 @@ export function infer(root: El, ctx: InferCtx): { nodes: OutNode[]; clusters: Ou
   };
 
   /** Concatenate text pieces with the browser's spacing; `alts`: fragments of different `&&` groups join with ALT. */
+  let runOwner: El | null = null;
   const concatRun = (tpieces: Piece[], alts: boolean): { text: string; lit: string; altJoined: boolean } => {
     let text0 = '';
     let lit0 = '';
@@ -250,7 +251,9 @@ export function infer(root: El, ctx: InferCtx): { nodes: OutNode[]; clusters: Ou
         const pin = prev.inl;
         const crossed = [...pin.filter((x) => !ci.includes(x)), ...ci.filter((x) => !pin.includes(x))];
         const blockEdge = crossed.some((x) => sty(x).blockDisplay);
-        if ((blockEdge || (!sameEl && pin.length > 0 && ci.length > 0)) && /[\p{L}\p{N}.:!?)\uE000\uE001\uE002]$/u.test(text0) && /^[\p{L}\p{N}(\uE000\uE001]/u.test(t.text)) {
+        // in a flex or grid row each child is an item of its own, bare text included
+        const items = !!runOwner && !!sty(runOwner).flexBox && pin[0] !== ci[0];
+        if ((blockEdge || items || (!sameEl && pin.length > 0 && ci.length > 0)) && wordsMeet(text0, t.text)) {
           text0 += ' ';
           lit0 += ' ';
         }
@@ -333,7 +336,40 @@ export function infer(root: El, ctx: InferCtx): { nodes: OutNode[]; clusters: Ou
     return { text: j.text, lit: j.lit, altJoined: j.text.includes(ALT_SEP) };
   };
 
-  const buildRun = (owner: El, ch: El[], pieces: Piece[]): void => {
+  const SEP_ONLY = /^[\s·•|/–—-]*$/u;
+  const linkOf = (p: Piece): El | null => p.inl.find((x) => (x.intrinsic && x.name === 'a') || (!x.intrinsic && /Link$/.test(x.name))) ?? null;
+  /**
+   * Links set side by side with only separators between them (`<a>About</a> · <a>Privacy</a>`, a footer's links) are
+   * separate links, not a line of prose: the run splits at them, and text before or after them is its own node.
+   */
+  const splitLinks = (pieces: Piece[]): Piece[][] | null => {
+    const segs: { link: El | null; ps: Piece[] }[] = [];
+    for (const p of pieces) {
+      const k = p.txt && p.txt.text.trim() ? linkOf(p) : segs.length ? segs[segs.length - 1].link : null;
+      if (!segs.length || segs[segs.length - 1].link !== k) segs.push({ link: k, ps: [] });
+      segs[segs.length - 1].ps.push(p);
+    }
+    const links = segs.filter((g) => g.link);
+    if (links.length < 2) return null;
+    const texty = (g: { ps: Piece[] }): string => g.ps.map((p) => p.txt?.text ?? '').join('');
+    for (let i = 0; i < segs.length; i++) {
+      if (segs[i].link) continue;
+      const t = texty(segs[i]);
+      if (SEP_ONLY.test(t)) continue;
+      // text beside the links: kept apart from them by a separator
+      if (i > 0 && !/^\s*[·•|/–—-]/u.test(t)) return null;
+      if (i < segs.length - 1 && !/[·•|/–—-]\s*$/u.test(t)) return null;
+    }
+    return segs.filter((g) => g.link || !SEP_ONLY.test(texty(g))).map((g) => g.ps);
+  };
+
+  const buildRun = (owner: El, ch: El[], pieces: Piece[], split = true): void => {
+    runOwner = owner;
+    const parts = split ? splitLinks(pieces) : null;
+    if (parts) {
+      for (const ps of parts) buildRun(owner, ch, ps, false);
+      return;
+    }
     const textIdx = pieces.map((p, i) => (p.txt && p.txt.text.trim() !== '' ? i : -1)).filter((i) => i >= 0);
     if (textIdx.length === 0) {
       const prev = nodes[nodes.length - 1];
@@ -356,8 +392,10 @@ export function infer(root: El, ctx: InferCtx): { nodes: OutNode[]; clusters: Ou
     const lit0 = joined.lit;
     const altJoined = joined.altJoined;
     const tp = tpieces.map((p) => p.txt as Txt);
-    const text = collapse(text0);
-    const lit = collapse(lit0);
+    // a piece split off beside links keeps no separator at its ends
+    const edge = (x: string): string => (split ? x : x.replace(/^[\s·•|/–—-]+|[\s·•|/–—-]+$/gu, ''));
+    const text = edge(collapse(text0));
+    const lit = edge(collapse(lit0));
     if (isDotOnly(text)) {
       pendingDot = { scope: owner, bound: tp.some((t) => !!t.bound) };
       return;
@@ -466,6 +504,8 @@ export function infer(root: El, ctx: InferCtx): { nodes: OutNode[]; clusters: Ou
         break;
       }
     }
+    // a version string ("v0.1.0") in a header's class is its small print, not a heading
+    if (classRole && HEADING_LEVEL[classRole] !== undefined && /^(?:v(?:ersion)?\s?)?\d+(?:\.\d+){1,3}(?:[-+][\w.]+)?$/i.test(n.text.trim())) classRole = 'caption';
     // SVG <text> in a chart: axis and legend words are labels, data values are cells (never body)
     if (!classRole && n.chain.some((e) => e.intrinsic && e.name === 'text')) classRole = svgTextRole(n);
     if (!classRole) {
@@ -796,13 +836,23 @@ export function infer(root: El, ctx: InferCtx): { nodes: OutNode[]; clusters: Ou
     for (const k of e.kids) if (k.t === 'el') markControls(k);
   };
   markControls(root);
-  // secondary text inside a field is helper text
+  // secondary text inside a field is helper text; the first text beside a checkbox, radio or switch is its label
+  const checkLike = (e: El): boolean => (e.name === 'input' && /^(checkbox|radio)$/i.test(e.attrs.type ?? ''))
+    || /^(checkbox|switch|radio|menuitemcheckbox)$/.test(e.attrs.role ?? '') || (!e.intrinsic && /^(Checkbox|Switch|Radio|RadioGroupItem)$/.test(e.name));
+  const hasCheck = (e: El): boolean => checkLike(e) || e.kids.some((k) => k.t === 'el' && hasCheck(k));
+  const labelled = new Set<El>();
   for (const n of nodes) {
     if (n.attr || !/^(caption|body|subtitle)$/.test(n.role)) continue;
     for (let j = n.chain.length - 1; j >= 0; j--) {
-      const b = n.chain[j].box;
+      const box = n.chain[j];
+      const b = box.box;
       if (!b) continue;
-      if (b === 'control') n.role = 'helper';
+      if (b === 'control') {
+        if (!labelled.has(box) && hasCheck(box) && !under(box).some((x) => nodes[x].role === 'label' && !nodes[x].attr)) {
+          n.role = 'label';
+          labelled.add(box);
+        } else n.role = 'helper';
+      }
       break;
     }
   }

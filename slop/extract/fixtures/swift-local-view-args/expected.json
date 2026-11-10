@@ -1,0 +1,20 @@
+{"schema": "slop.screen/1", "id": "c98b7dc1479ccaf7", "framework": "swift",
+ "source": {"repo": "slop-fixtures", "path": "HiveListView.swift", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "header", "line": 8},
+  {"k": 1, "kind": "header", "line": 10},
+  {"k": 2, "kind": "body", "line": 10},
+  {"k": 3, "kind": "header", "line": 6},
+  {"k": 4, "kind": "body", "line": 12},
+  {"k": 5, "kind": "header", "line": 21},
+  {"k": 6, "kind": "body", "line": 34}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "h3", "text": "Hives did not load", "flags": ["conditional"], "loc": [8, 40, 8, 58]},
+  {"i": 1, "k": 1, "role": "h3", "text": "No hives yet", "flags": [], "loc": [10, 36, 10, 48]},
+  {"i": 2, "k": 2, "role": "body", "text": "Add your first hive to start logging inspections.", "flags": ["section_first", "section_last"], "loc": [10, 61, 10, 110]},
+  {"i": 3, "k": 3, "role": "caption", "text": "Scan to pair a scale", "flags": [], "loc": [11, 58, 11, 78]},
+  {"i": 4, "k": 3, "role": "h3", "text": "Swarm season", "flags": [], "loc": [12, 38, 12, 50]},
+  {"i": 5, "k": 4, "role": "body", "text": "\ue000 load error", "flags": ["dynamic", "stateful", "conditional", "section_first", "section_last"], "loc": [12, 62, 12, 77], "vw": [2]},
+  {"i": 6, "k": 5, "role": "h4", "text": "\ue000 title", "flags": ["dynamic", "stateful"], "loc": [22, 18, 22, 23], "vw": [1]},
+  {"i": 7, "k": 5, "role": "subtitle", "text": "\ue000 uppercased", "flags": ["dynamic", "stateful", "section_first", "section_last"], "loc": [23, 18, 23, 38], "vw": [1]},
+  {"i": 8, "k": 6, "role": "body", "text": "\ue000 caption", "flags": ["dynamic", "stateful"], "loc": [34, 18, 34, 25], "vw": [1]}]}

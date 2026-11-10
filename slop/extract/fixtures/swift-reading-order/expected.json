@@ -1,0 +1,15 @@
+{"schema": "slop.screen/1", "id": "f5c27f567a2646cd", "framework": "swift",
+ "source": {"repo": "slop-fixtures", "path": "AllotmentPlotView.swift", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "header", "line": 40},
+  {"k": 1, "kind": "header", "line": 33},
+  {"k": 2, "kind": "header", "line": 5},
+  {"k": 3, "kind": "body", "line": 44}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "h1", "text": "Plot 14", "flags": [], "loc": [40, 15, 40, 22]},
+  {"i": 1, "k": 1, "role": "h4", "text": "Watering rota", "flags": ["conditional", "section_first"], "loc": [34, 19, 34, 32]},
+  {"i": 2, "k": 1, "role": "subtitle", "text": "Plot holders take a week each.", "flags": ["conditional", "section_first", "section_last"], "loc": [35, 19, 35, 49]},
+  {"i": 3, "k": 2, "role": "h4", "text": "Notes", "flags": [], "loc": [22, 19, 22, 24]},
+  {"i": 4, "k": 2, "role": "subtitle", "text": "Mulch the beans before the dry spell.", "flags": ["section_first", "section_last"], "loc": [23, 19, 23, 56]},
+  {"i": 5, "k": 2, "role": "button", "text": "Share plot", "flags": ["in_header", "section_last"], "loc": [29, 31, 29, 41]},
+  {"i": 6, "k": 3, "role": "body", "text": "Last updated by the committee", "flags": [], "loc": [44, 15, 44, 44]}]}

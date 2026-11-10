@@ -6,6 +6,7 @@
 //   npm test -- --update NAME...  rewrite expected.json for the named fixtures (review the diff before committing)
 //   npm test -- --only NAME...    run only the named fixtures
 
+import { execFileSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
@@ -125,6 +126,28 @@ for (const name of dirs) {
     }
     fail(`${name}: output differs from expected.json\n${lines.slice(0, 8).join('\n')}`);
   } else process.stdout.write(`ok   ${name}\n`);
+}
+
+// Swift output must not depend on what was parsed before it in the process (tree-sitter-swift's scanner state):
+// each file of swift-order/ in a fresh process, then all of them in one process in two orders, give the same bytes.
+if (!update && !only) {
+  const orderDir = join(here, 'swift-order');
+  const files = readdirSync(orderDir).filter((f) => f.endsWith('.swift')).sort();
+  const meta = { repo: 'slop-fixtures', commit: null, licence: 'MIT' };
+  const single = new Map<string, string>();
+  const script = `const { extractFile, repoContext, serialise } = await import(${JSON.stringify(join(here, '..', 'src', 'extract.ts'))});
+    process.stdout.write(serialise(await extractFile(process.argv[1], repoContext(process.argv[2]), ${JSON.stringify(meta)})));`;
+  for (const f of files) single.set(f, execFileSync(process.execPath, ['--input-type=module', '-e', script, join(orderDir, f), orderDir], { encoding: 'utf8' }));
+  for (const order of [files, [...files].reverse()]) {
+    for (const f of order) {
+      const out = serialise(await extractFile(join(orderDir, f), repoContext(orderDir), meta));
+      if (out !== single.get(f)) fail(`swift-order: ${f} after ${order.slice(0, order.indexOf(f)).join(', ') || 'nothing'} differs from a fresh process`);
+    }
+  }
+  if (!/Tap the lid to start \\ue001 Press space to start/.test(single.get('C.swift') ?? '') || /Reset shelf cache/.test(single.get('B.swift') ?? '')) {
+    fail('swift-order: #if branches not read as expected');
+  }
+  process.stdout.write(`ok   swift-order (${files.length} files, two orders)\n`);
 }
 
 if (!update && !only) {

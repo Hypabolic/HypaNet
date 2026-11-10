@@ -417,6 +417,7 @@ NARRATE_PURPOSE = ["to continue", "to get started", "when you are ready", "to go
                    "once you are happy", "to finish"]
 NARRATE_FORM_OPEN = ["Fill in the form, then", "Enter your details and", "Complete the fields above, then",
                      "Make your changes, then", "Once you have filled everything in,", "When you are done,"]
+NARRATE_DONE_OPEN = ["Make your changes, then", "When you are done,", "When you are ready,", "Once you have decided,"]
 SCROLL_LINES = ["Scroll down to see more {x}.", "Scroll to see all your {x}.", "Swipe up for older {x}.",
                 "Tap any {x1} to open it.", "Click a row to open that {x1}.", "Hover over {a_x1} to see more options.",
                 "Use the arrows to page through your {x}.", "Pull down to refresh the list of {x}."]
@@ -438,6 +439,19 @@ CLOSE_HEAD = ["In short: {h}.", "{H}: that’s the promise.", "The upshot: {h}."
               "{H}. That’s {p} in one line.", "One more time: {h}.", "{H}, every time."]
 CLOSE_STEPS = ["That’s all it takes to get started.", "And that’s it: you’re set up.", "{N} steps, and you’re ready.",
                "That’s the whole process.", "Done: your first {x1} is in.", "That’s all there is to it."]
+# v4: closing lines in the same frames that add a fact (KEEP)
+CLOSE_KEEP = ["And that’s free for up to {n} {x}.", "And that’s on every plan, with no setup fee.",
+              "That’s everything on the free plan; {plan} adds reports.", "That’s all included in the price, VAT too.",
+              "That covers up to {n} {x}; beyond that, talk to us.", "All of this works offline for up to {n} days.",
+              "In short, everything here works on Android too.", "Put together, that’s about {n} minutes saved per {x1}.",
+              "Together, these cost {price} a month for the whole {group}.", "And that’s just the start: exports arrive next month."]
+CLOSE_STEPS_KEEP = ["That’s all it takes; most {groups} finish in a day.", "And that’s it: your first {x1} is free.",
+                    "That’s the whole process, and it works offline.", "That’s all there is to it; your {role} gets a copy.",
+                    "And that’s it: you can undo any step for {n} days."]
+CLOSE_FAQ_KEEP = ["That’s everything people usually ask; billing questions are on the pricing page.",
+                  "That covers the questions we hear most; for anything else, phone us on weekdays.",
+                  "Those are the common questions; {roles} have their own guide.",
+                  "And that’s the lot: answers are reviewed every month."]
 CLOSE_FAQ = ["That covers the questions we hear most.", "We hope that answers your questions.",
              "Those are the common questions, answered.", "That’s everything people usually ask.",
              "Those are the questions {who} ask most."]

@@ -113,6 +113,35 @@ def test_redundancy_is_not_decided_by_role_alone(built):
         assert seen.get(role) == {True, False}, role
 
 
+def test_k1_eyebrow_whose_words_the_heading_says_is_r1(built):
+    """LABELLING.md §4 step 2 before K1: "Groceries" over "Groceries at Penny Jar" is ECHO R1 → the heading; a
+    category eyebrow whose words the heading does not contain stays K1 (generator v4)."""
+    from generator.compose import content_stems
+
+    a = built[0]
+    screens = [json.loads(x) for x in (a / "screens.jsonl").read_text().splitlines()]
+    recs = {}
+    for line in (a / "val.gen.jsonl").read_text().splitlines():
+        r = json.loads(line)
+        if "loc" in r:
+            recs[(r["screen"], tuple(r["loc"]))] = r
+    k1_apart = r1_inside = 0
+    for s in screens:
+        ns = s["nodes"]
+        for j, n in enumerate(ns):
+            if n["role"] != "eyebrow":
+                continue
+            h = next((m for m in ns[j + 1:j + 3] if m["role"] in ("h1", "h2", "h3", "h4", "dialog_title", "empty_title")), None)
+            r = recs.get((s["id"], tuple(n["loc"])))
+            if h is None or r is None:
+                continue
+            inside = bool(content_stems(n["text"])) and content_stems(n["text"]) <= content_stems(h["text"])
+            assert not (inside and r["pattern"] == "K1"), (n["text"], h["text"])
+            k1_apart += r["pattern"] == "K1" and not inside
+            r1_inside += r["pattern"] == "R1" and inside
+    assert k1_apart > 0 and r1_inside > 0
+
+
 def test_equal_rank_repeat_flags_the_later_node():
     """A planted exact repeat that the extractor reads first swaps places with its target (LABELLING.md §5)."""
     nav = S("Hives", "h1")

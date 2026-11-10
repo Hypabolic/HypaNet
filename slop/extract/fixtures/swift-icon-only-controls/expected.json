@@ -1,0 +1,22 @@
+{"schema": "slop.screen/1", "id": "a8333bb5fec3dd33", "framework": "swift",
+ "source": {"repo": "slop-fixtures", "path": "GardenToolbar.swift", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "body", "line": 8},
+  {"k": 1, "kind": "actions", "line": 7},
+  {"k": 2, "kind": "list", "line": 17},
+  {"k": 3, "kind": "body", "line": 7},
+  {"k": 4, "kind": "actions", "line": 36},
+  {"k": 5, "kind": "list", "line": 34}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "body", "text": "Seed packets", "flags": [], "loc": [8, 19, 8, 31]},
+  {"i": 1, "k": 1, "role": "button", "text": "Add a bed photo", "flags": ["icon"], "loc": [10, 24, 10, 39]},
+  {"i": 2, "k": 1, "role": "button", "text": "Choose cover", "flags": [], "loc": [12, 27, 12, 39]},
+  {"i": 3, "k": 1, "role": "button", "text": "Send planting plan", "flags": ["icon"], "loc": [14, 24, 14, 42]},
+  {"i": 4, "k": 1, "role": "button", "text": "Share harvest", "flags": [], "loc": [16, 24, 16, 37]},
+  {"i": 5, "k": 1, "role": "aria", "text": "Bed options", "flags": [], "loc": [21, 24, 21, 35]},
+  {"i": 6, "k": 2, "role": "menu_item", "text": "Rename bed", "flags": ["conditional", "in_list"], "loc": [18, 25, 18, 35]},
+  {"i": 7, "k": 2, "role": "menu_item", "text": "Archive bed", "flags": ["conditional", "in_list"], "loc": [19, 25, 19, 36]},
+  {"i": 8, "k": 3, "role": "aria", "text": "Water now", "flags": [], "loc": [26, 24, 26, 33]},
+  {"i": 9, "k": 3, "role": "body", "text": "Frost tonight", "flags": ["icon"], "loc": [29, 20, 29, 33]},
+  {"i": 10, "k": 4, "role": "button", "text": "Sort", "flags": [], "loc": [36, 23, 36, 27]},
+  {"i": 11, "k": 5, "role": "menu_item", "text": "Sort by", "flags": ["conditional", "in_list"], "loc": [34, 23, 34, 30]}]}

@@ -5,7 +5,7 @@
 import { createRequire } from 'node:module';
 import { dirname, join } from 'node:path';
 import { Language, Parser } from 'web-tree-sitter';
-import type { Node as TSNode } from 'web-tree-sitter';
+import type { Node as TSNode, Tree } from 'web-tree-sitter';
 import type { El, Kid, LV, Opt, Slot, Txt } from './ir.ts';
 import {
   ALT_JOIN, ALT_SEP, MAX_EXPAND, el, emptyCond, hasSubs, isFigure, joinRenderings, keyLastSegment, looksLikeCopy, markCall, markCopy, markEmptyKids,
@@ -14,7 +14,12 @@ import {
 import { ICON_BUTTON, decorateComponent, propRole } from './roles.ts';
 import type { Role } from './schema.ts';
 
-let parserPromise: Promise<Parser> | null = null;
+// tree-sitter-swift's external scanner keeps state in the wasm module's linear memory that outlives a parse, a
+// Parser and even a reloaded Language (the side module shares the main module's memory): after any earlier parse,
+// `#if … #endif` inside a view builder misparses. Every Swift file is therefore parsed from the same memory image,
+// taken once the parser is ready and before its first parse, so the output never depends on what was parsed before.
+interface SwiftRuntime { parser: Parser; heap: () => Uint8Array; image: Uint8Array }
+let runtimePromise: Promise<SwiftRuntime> | null = null;
 
 export function swiftWasmPath(): string {
   const req = createRequire(import.meta.url);
@@ -22,17 +27,39 @@ export function swiftWasmPath(): string {
   return join(dirname(pkg), 'out', 'tree-sitter-swift.wasm');
 }
 
-export async function swiftParser(): Promise<Parser> {
-  if (!parserPromise) {
-    parserPromise = (async () => {
-      await Parser.init();
+async function swiftRuntime(): Promise<SwiftRuntime> {
+  if (!runtimePromise) {
+    runtimePromise = (async () => {
+      const mod: { HEAPU8?: Uint8Array } = {};
+      await Parser.init(mod);
       const lang = await Language.load(swiftWasmPath());
-      const p = new Parser();
-      p.setLanguage(lang);
-      return p;
+      const parser = new Parser();
+      parser.setLanguage(lang);
+      const heap = (): Uint8Array => {
+        if (!mod.HEAPU8) throw new Error('web-tree-sitter was initialised before the Swift front end could see its memory');
+        return mod.HEAPU8;
+      };
+      return { parser, heap, image: heap().slice() };
     })();
   }
-  return parserPromise;
+  return runtimePromise;
+}
+
+/** The ready Swift parser. Parse with `parseSwift`, which resets the runtime first; a direct `parse` can see the
+ * scanner state left by an earlier one. */
+export async function swiftParser(): Promise<Parser> {
+  return (await swiftRuntime()).parser;
+}
+
+/** Parse Swift source from the runtime's pristine memory image. Any tree from an earlier call must already be
+ * deleted (the reset frees it), so a caller finishes with one tree before parsing the next. */
+export async function parseSwift(src: string): Promise<Tree> {
+  const rt = await swiftRuntime();
+  // the memory may have grown since the image was taken; bytes above it are free heap again
+  rt.heap().set(rt.image);
+  const tree = rt.parser.parse(src);
+  if (!tree) throw new Error('tree-sitter returned no tree');
+  return tree;
 }
 
 // ---------------------------------------------------------------------------------------------------------------
@@ -219,6 +246,105 @@ function collectFuncs(root: TSNode): Map<string, LocalFunc | null> {
   walk(root);
   return out;
 }
+// In-file views: for each `struct NAME: View` declared once in the file, its stored properties and which of them its
+// own view code shows as text. A labelled argument at a call of such a view gives a node only when it is copy and
+// the view shows that property as text; otherwise the view's body already reads it (as VAR) or does not show it as
+// text at all (`QRCodeView(text:)` draws an image). A property the file cannot follow (a custom init) is not listed.
+interface LocalView { props: Set<string>; shown: Set<string> }
+let VIEWS: Map<string, LocalView | null> = new Map();
+const TEXT_MODS = /^(navigationTitle|navigationSubtitle|help|badge|accessibilityLabel|accessibilityValue|accessibilityHint|alert|confirmationDialog|searchable|tabItem)$/;
+const TEXT_CALLEES = /^(Text|Label|Button|Link|NavigationLink|ShareLink|Toggle|Picker|Menu|Section|LabeledContent|TextField|SecureField|Stepper|DisclosureGroup|ContentUnavailableView|Tab|ProgressView|GroupBox|PhotosPicker)$/;
+const STOP = /^(statements|lambda_literal|if_statement|guard_statement|switch_statement|switch_entry|property_declaration|function_body|computed_property|class_body|for_statement|while_statement)$/;
+
+/** Is this use of a property shown as text: an argument (at any depth of expression) of a text view or modifier? */
+function shownAsText(id: TSNode): boolean {
+  let cur: TSNode | null = id;
+  while (cur && cur.parent && !STOP.test(cur.parent.type)) {
+    const p: TSNode = cur.parent;
+    // only an argument counts, not the callee or the receiver of a modifier
+    if (p.type === 'call_expression' && !cur.equals(named(p)[0])) {
+      const callee = named(p)[0];
+      if (callee?.type === 'simple_identifier') {
+        if (/^[A-Z]/.test(callee.text)) return TEXT_CALLEES.test(callee.text) || (looksLikeView(callee.text) && !SHAPES.has(callee.text) && !/(Image|Icon|Symbol)$/.test(callee.text));
+        if (FUNCS.get(callee.text)) return true;
+      } else if (callee?.type === 'navigation_expression') {
+        const suf = named(callee).find((c) => c.type === 'navigation_suffix');
+        const m = suf ? named(suf).find((c) => c.type === 'simple_identifier')?.text ?? '' : '';
+        if (TEXT_MODS.test(m)) return true;
+      }
+    }
+    cur = p;
+  }
+  return false;
+}
+
+function collectViews(root: TSNode): Map<string, LocalView | null> {
+  const out = new Map<string, LocalView | null>();
+  const walk = (n: TSNode): void => {
+    if (n.type === 'class_declaration') {
+      const nm = n.childForFieldName('name')?.text ?? '';
+      const inh = named(n).filter((c) => c.type === 'inheritance_specifier').map((c) => c.text);
+      const body = named(n).find((c) => c.type === 'class_body');
+      if (nm && body && inh.includes('View')) {
+        const props = new Set<string>();
+        let custom = false;
+        for (const m of named(body)) {
+          if (m.type === 'init_declaration') custom = true;
+          if (m.type !== 'property_declaration' || m.childForFieldName('computed_value')) continue;
+          if (/@(State|Environment|EnvironmentObject|StateObject|FocusState|Namespace|AppStorage|SceneStorage|Query)\b/.test(m.text)) continue;
+          const pat = named(m).find((c) => c.type === 'pattern');
+          if (pat && /^[A-Za-z_]\w*$/.test(pat.text)) props.add(pat.text);
+        }
+        const shown = new Set<string>();
+        for (const id of body.descendantsOfType('simple_identifier')) {
+          if (id && props.has(id.text) && !shown.has(id.text) && shownAsText(id)) shown.add(id.text);
+        }
+        out.set(nm, out.has(nm) || custom ? null : { props, shown });
+      }
+    }
+    for (const c of named(n)) walk(c);
+  };
+  walk(root);
+  return out;
+}
+
+// View properties (`private var header: some View { … }`) are read where `body` (or another view) composes them, in
+// that order, instead of in declaration order; one that nothing composes is read on its own after the rest. Keyed by
+// `Type.name`; a name declared twice for one type is ambiguous and stays where it is declared.
+let PROPS: Map<string, TSNode | null> = new Map();
+let PROPS_READ: Set<string> = new Set();
+const PROP_STACK: string[] = [];
+let CUR_TYPE = '';
+
+function viewPropName(n: TSNode): string | null {
+  if (n.type === 'property_declaration') {
+    const nm = named(n).find((c) => c.type === 'pattern')?.text ?? '';
+    return n.childForFieldName('computed_value') && nm !== 'previews' && nm !== 'body' && isViewType(n) ? nm : null;
+  }
+  return null;
+}
+
+function collectProps(root: TSNode): Map<string, TSNode | null> {
+  const out = new Map<string, TSNode | null>();
+  const walk = (n: TSNode, type: string): void => {
+    if (n.type === 'class_declaration') {
+      const tn = n.childForFieldName('name')?.text ?? '';
+      for (const c of named(n)) walk(c, tn);
+      return;
+    }
+    const nm = viewPropName(n);
+    if (nm && type) {
+      const st = named(n.childForFieldName('computed_value') as TSNode).find((c) => c.type === 'statements');
+      const k = `${type}.${nm}`;
+      if (st) out.set(k, out.has(k) ? null : st);
+      return;
+    }
+    for (const c of named(n)) walk(c, type);
+  };
+  walk(root, '');
+  return out;
+}
+
 let ARRAYS: Map<string, TSNode[]> = new Map(); // let NAME = [ … ] declarations, and every other declaration of NAME
 
 function swLit(n: TSNode, depth: number): LV | null {
@@ -874,6 +1000,65 @@ const CONTAINERS = new Set([
 const SHAPES = new Set(['Circle', 'Capsule', 'Rectangle', 'RoundedRectangle', 'Ellipse', 'Spacer', 'Divider', 'EmptyView', 'Color', 'AsyncImage', 'ProgressViewStyle']);
 const NOT_VIEWS = /^(URL|Date|UUID|Color|Font|Binding|State|Data|NSError|Error|Task|DispatchQueue|NotificationCenter|UserDefaults|Array|Dictionary|Set|Int|Double|Float|Bool|String|CGSize|CGPoint|CGRect|EdgeInsets|Animation|LinearGradient|RadialGradient|AngularGradient|Gradient|Image|UIImage|NSImage)$/;
 
+/** `#if`, `#elseif`, `#else` or `#endif` for a compiler-directive node. */
+function directiveKind(d: TSNode): 'if' | 'elseif' | 'else' | 'endif' | null {
+  const m = /^#(if|elseif|else|endif)\b/.exec(d.text.trim());
+  return m ? (m[1] as 'if' | 'elseif' | 'else' | 'endif') : null;
+}
+
+/**
+ * `#if DEBUG` code is not shipped, so it is not user-facing copy: the lines of a branch that only compiles in debug
+ * builds (`#if DEBUG`, `#if DEBUG && os(iOS)`, `#elseif DEBUG`, and the `#else` of `#if !DEBUG`) are blanked to spaces
+ * before parsing, keeping every offset and line; the directives and the other branches stay. Directive lines are
+ * found by line, outside multi-line string literals.
+ */
+export function blankDebug(src: string): string {
+  if (!/^[ \t]*#(?:if|elseif)\b[^\n]*\bDEBUG\b/m.test(src)) return src;
+  const lines = src.split('\n');
+  // per open #if: is the current branch debug-only, and has a branch said `!DEBUG` (so later ones are debug-only)
+  const stack: { skip: boolean; notDebug: boolean }[] = [];
+  const skipping = (upTo: number): boolean => stack.slice(0, upTo).some((f) => f.skip);
+  const debugOnly = (c: string): boolean => {
+    const t = c.replace(/\/\/.*$/, '').trim();
+    return /^\(?\s*DEBUG\s*\)?$/.test(t) || (/(^|&&)\s*DEBUG\s*(&&|$)/.test(t) && !/\|\|/.test(t));
+  };
+  const notDebug = (c: string): boolean => /^!\s*DEBUG$/.test(c.replace(/\/\/.*$/, '').trim());
+  let inString = false;
+  const blank = (l: string): string => l.replace(/[^\r]/g, ' ');
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    const m = inString ? null : /^[ \t]*#(if|elseif|else|endif)\b(.*)$/.exec(line);
+    if (m) {
+      const [, kind, rest] = m;
+      if (kind === 'if') {
+        stack.push({ skip: debugOnly(rest), notDebug: notDebug(rest) });
+      } else if (stack.length && (kind === 'elseif' || kind === 'else')) {
+        const f = stack[stack.length - 1];
+        f.skip = f.notDebug || (kind === 'elseif' && debugOnly(rest));
+        if (kind === 'elseif' && notDebug(rest)) f.notDebug = true;
+      }
+      // a directive inside a blanked branch goes too; the block's own directives stay
+      if (skipping(stack.length - 1)) lines[i] = blank(line);
+      if (kind === 'endif') stack.pop();
+      continue;
+    }
+    if (skipping(stack.length)) lines[i] = blank(line);
+    if ((line.match(/"""/g) ?? []).length % 2 === 1) inString = !inString;
+  }
+  return lines.join('\n');
+}
+
+/** A reference to a view property of the current type (`header`, `self.header`) not yet read, or null. */
+function viewPropRef(n: TSNode): { key: string; st: TSNode } | null {
+  let nm: string | null = null;
+  if (n.type === 'simple_identifier') nm = n.text;
+  else if (n.type === 'navigation_expression' && /^self\.\w+$/.test(n.text)) nm = n.text.slice(5);
+  if (!nm || !CUR_TYPE || boundArg(n) || SUBST?.has(nm)) return null;
+  const key = `${CUR_TYPE}.${nm}`;
+  const st = PROPS.get(key);
+  return st && !PROPS_READ.has(key) && !PROP_STACK.includes(key) ? { key, st } : null;
+}
+
 class SwiftBuilder {
   private src: string;
   constructor(src: string) {
@@ -920,9 +1105,63 @@ class SwiftBuilder {
   }
 
   stmts(st: TSNode): Kid[] {
+    return this.stmtList(named(st));
+  }
+
+  /** Statements in order; a `#if … #endif` block among them is read by `ifConfig`. */
+  stmtList(ch: TSNode[]): Kid[] {
     const out: Kid[] = [];
-    for (const s of named(st)) out.push(...this.stmt(s));
+    for (let i = 0; i < ch.length; i++) {
+      const s = ch[i];
+      if (s.type === 'directive' && directiveKind(s) === 'if') {
+        const branches: TSNode[][] = [[]];
+        let depth = 0;
+        let j = i + 1;
+        for (; j < ch.length; j++) {
+          const d = ch[j];
+          const k = d.type === 'directive' ? directiveKind(d) : null;
+          if (k === 'if') depth++;
+          else if (k === 'endif') {
+            if (depth === 0) break;
+            depth--;
+          } else if (k && depth === 0) {
+            branches.push([]);
+            continue;
+          }
+          branches[branches.length - 1].push(d);
+        }
+        if (j < ch.length) {
+          out.push(...this.ifConfig(branches.map((b) => this.stmtList(b))));
+          i = j;
+          continue;
+        }
+      }
+      out.push(...this.stmt(s));
+    }
     return out;
+  }
+
+  /**
+   * The branches of a compile-time `#if` (`#if DEBUG` branches are already blanked: see `blankDebug`). Branches that
+   * each draw one text of the same kind are one node, its texts joined with ALT (`#if os(iOS) Text("Tap") #else
+   * Text("Click") #endif`); otherwise every branch is kept, as conditional when two or more draw something.
+   */
+  ifConfig(kids: Kid[][]): Kid[] {
+    const full = kids.filter((k) => k.length > 0);
+    if (full.length < 2) return full.flat();
+    const one = full.map((k) => (k.length === 1 && k[0].t === 'el' && k[0].kids.length === 1 && k[0].kids[0].t === 'txt' && !k[0].kids[0].attr ? k[0] : null));
+    const first = one[0];
+    if (first && one.every((e) => e && e.name === first.name)) {
+      const ts = one.map((e) => (e as El).kids[0] as Txt);
+      const seen = new Set<string>();
+      const keep = ts.filter((t) => t.text.trim() !== '' && !seen.has(t.text.trim()) && !!seen.add(t.text.trim()));
+      first.kids = [{
+        ...ts[0], text: keep.map((t) => t.text.trim()).join(ALT_JOIN), lit: keep.map((t) => t.lit.trim()).join(ALT_SEP),
+        dyn: keep.some((t) => !!t.dyn), alt: keep.length > 1 || !!ts[0].alt, opts: undefined,
+      }];
+      return [first];
+    }
+    return full.flat().map(cond);
   }
 
   stmt(s: TSNode): Kid[] {
@@ -954,7 +1193,7 @@ class SwiftBuilder {
         const v = named(s).find((c) => c.type !== 'comment');
         return v ? this.view(v) : [];
       }
-      case 'property_declaration': case 'comment': case 'multiline_comment': case 'function_declaration': case 'class_declaration':
+      case 'property_declaration': case 'comment': case 'multiline_comment': case 'function_declaration': case 'class_declaration': case 'directive':
         return [];
       default:
         return this.view(s);
@@ -967,7 +1206,17 @@ class SwiftBuilder {
     let core: El | null = null;
     let extra: Kid[] = [];
     const bound = boundArg(base);
-    if (bound && bound.node.type === 'lambda_literal') {
+    const prop = viewPropRef(base);
+    if (prop) {
+      // a view property composed here: read in place, once
+      PROPS_READ.add(prop.key);
+      PROP_STACK.push(prop.key);
+      try {
+        core = this.wrap('#prop', base, this.stmts(prop.st));
+      } finally {
+        PROP_STACK.pop();
+      }
+    } else if (bound && bound.node.type === 'lambda_literal') {
       // a view-builder closure passed to an inlined function, used as `content`
       extra = withEnv(bound, () => this.closureKids({ node: bound.node }));
     } else if (base.type === 'call_expression' && named(base)[0]?.type === 'additive_expression') {
@@ -1092,13 +1341,14 @@ class SwiftBuilder {
         kids.push(...this.closureKids(lab));
         return this.wrap('Button', n, kids);
       }
-      case 'Link': case 'ShareLink': case 'NavigationLink': {
+      case 'Link': case 'ShareLink': case 'NavigationLink': case 'PhotosPicker': {
         const kids: Kid[] = [...iconEl()];
         if (t0) kids.push(t0);
-        const hasDest = c.args.some((a) => a.label === 'destination' || a.label === 'value' || a.label === 'item');
+        const hasDest = c.args.some((a) => a.label === 'destination' || a.label === 'value' || a.label === 'item' || a.label === 'selection');
         const lab = this.closure(c, 'label') ?? (!t0 && hasDest ? c.closures.find((x) => x.label === null) : undefined);
         kids.push(...this.closureKids(lab));
-        return this.wrap(name === 'ShareLink' ? 'ShareButton' : name, n, kids);
+        // a share sheet or photo picker opens on tap: a button
+        return this.wrap(name === 'ShareLink' ? 'ShareButton' : name === 'PhotosPicker' ? 'PhotosPickerButton' : name, n, kids);
       }
       case 'Toggle': case 'Stepper': case 'DatePicker': case 'ColorPicker': case 'Slider': case 'Gauge': {
         const kids: Kid[] = [];
@@ -1284,10 +1534,14 @@ class SwiftBuilder {
     }
     // an icon-only button: an icon argument and a `label:` string but no visible title
     const iconOnly = !pt && iconArg && /(Button|Btn)$/.test(name);
+    const local = VIEWS.get(name);
     for (const a of c.args) {
       if (!a.label) continue;
       const r = iconOnly && /^(label|labelText)$/.test(a.label) ? 'aria' : propRole(name, a.label);
       if (!r) continue;
+      // a view declared in this file: only text with literal copy, for a property it shows as text (its body reads a
+      // bound value itself, as VAR)
+      if (local && local.props.has(a.label) && (!local.shown.has(a.label) || !(copyArg(a.value) || /[\p{L}\p{N}]/u.test(this.argTxt(c, a.label)?.lit ?? '')))) continue;
       // `content:` and `copy:` usually pass a model or a view in SwiftUI: text only when the argument is copy
       if (/^(content|copy)$/.test(a.label) && !copyArg(a.value)) {
         if (a.value.type === 'lambda_literal' || a.value.type === 'call_expression') {
@@ -1424,6 +1678,8 @@ class SwiftBuilder {
           break;
         }
         case 'labelsHidden': hideLabels(core); break;
+        // `.labelStyle(.iconOnly)`: a Label shows its icon only; its title is the accessible name
+        case 'labelStyle': if (/^(\.iconOnly|IconOnlyLabelStyle\(\))$/.test(a0t)) iconOnlyLabels(core); break;
         // a view that is not drawn gives no nodes (keyboard-shortcut buttons kept off screen)
         case 'opacity': if (m.args.length === 1 && /^0*(\.0*)?$/.test(a0t) && /\d/.test(a0t)) core.hidden = true; break;
         case 'hidden': if (!m.args.length) core.hidden = true; break;
@@ -1546,7 +1802,7 @@ function smallLeaf(kids: Kid[]): boolean {
       if (!k.attr) texts++;
       return;
     }
-    if (k.box || k.control || k.tmpl || /^(Button|Link|NavigationLink|ShareButton|Menu|Toggle|Picker)$/.test(k.name)) ok = false;
+    if (k.box || k.control || k.tmpl || /^(Button|Link|NavigationLink|ShareButton|PhotosPickerButton|Menu|Toggle|Picker)$/.test(k.name)) ok = false;
     k.kids.forEach(walk);
   };
   kids.forEach(walk);
@@ -1562,6 +1818,15 @@ function hideLabels(e: El): void {
       k.kids = k.kids.map((x) => (x.t === 'txt' ? { ...x, attr: 'aria' as Role } : x));
     } else hideLabels(k);
   }
+}
+
+/** The titles of the Labels inside (or the Label itself) become aria nodes. */
+function iconOnlyLabels(e: El): void {
+  if (e.name === 'Label') {
+    e.kids = e.kids.map((x) => (x.t === 'txt' ? { ...x, attr: 'aria' as Role } : x));
+    return;
+  }
+  for (const k of e.kids) if (k.t === 'el') iconOnlyLabels(k);
 }
 
 /** Does any text sit outside a button with a keyboard shortcut? */
@@ -1591,14 +1856,17 @@ function isViewType(n: TSNode): boolean {
 }
 
 export async function swiftToIR(src: string): Promise<El> {
-  const parser = await swiftParser();
-  const tree = parser.parse(src);
-  if (!tree) throw new Error('tree-sitter returned no tree');
-  const b = new SwiftBuilder(src);
+  const code = blankDebug(src);
+  const tree = await parseSwift(code);
+  const b = new SwiftBuilder(code);
   ARRAYS = collectArrays(tree.rootNode);
   BINDINGS = collectBindings(tree.rootNode);
   CONST_DEPTH = 0;
   FUNCS = collectFuncs(tree.rootNode);
+  VIEWS = collectViews(tree.rootNode);
+  PROPS = collectProps(tree.rootNode);
+  PROPS_READ = new Set();
+  CUR_TYPE = '';
   INLINED = new Set();
   EXPRS = new Map();
   SUBST = null;
@@ -1613,7 +1881,10 @@ export async function swiftToIR(src: string): Promise<El> {
       const inh = named(n).filter((c) => c.type === 'inheritance_specifier').map((c) => c.text).join(' ');
       if (/PreviewProvider/.test(inh)) return;
       const tn = n.childForFieldName('name')?.text ?? null;
+      const saved = CUR_TYPE;
+      CUR_TYPE = tn ?? '';
       for (const c of named(n)) walk(c, inPreview, tn);
+      CUR_TYPE = saved;
       return;
     }
     const hint = typeName ? DEF_ROLE.find(([re]) => re.test(typeName))?.[1] : undefined;
@@ -1623,6 +1894,11 @@ export async function swiftToIR(src: string): Promise<El> {
       const comp = n.childForFieldName('computed_value');
       if (comp && nm !== 'previews' && (isViewType(n) || nm === 'body')) {
         const st = named(comp).find((c) => c.type === 'statements');
+        // a view property is read where it is composed; the ones nothing composes come after the rest
+        if (st && typeName && PROPS.get(`${typeName}.${nm}`) && nm !== 'body') {
+          unread.push([`${typeName}.${nm}`, n, st, typeName]);
+          return;
+        }
         if (st) {
           const kids = b.stmts(st);
           // toolbar content (`some ToolbarContent`) sits in the bar, like .toolbar { }
@@ -1648,7 +1924,23 @@ export async function swiftToIR(src: string): Promise<El> {
     }
     for (const c of named(n)) walk(c, inPreview, typeName);
   };
+  const unread: [string, TSNode, TSNode, string][] = [];
   walk(tree.rootNode, false, null);
+  for (const [key, n, st, tn] of unread) {
+    if (PROPS_READ.has(key)) continue;
+    CUR_TYPE = tn;
+    PROPS_READ.add(key);
+    PROP_STACK.push(key);
+    let kids: Kid[];
+    try {
+      kids = b.stmts(st);
+    } finally {
+      PROP_STACK.pop();
+    }
+    const tb = /\bToolbarContent\b/.test(named(n).find((c) => c.type === 'type_annotation')?.text ?? '');
+    if (kids.length) roots.push(b.wrap(tb ? '#toolbar' : '#body', n, kids, tb ? { box: 'header' } : {}));
+  }
+  CUR_TYPE = '';
   tree.delete();
   // a local view function read at its calls is not also read on its own
   const drop = new Set(fnRoots.filter(([nm]) => INLINED.has(nm)).map(([, r]) => r));

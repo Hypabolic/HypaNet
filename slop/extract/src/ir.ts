@@ -232,6 +232,15 @@ export function looksLikeCopy(s: string): boolean {
   return /^[A-Z]/.test(s) || /[.!?]$/.test(s);
 }
 
+/**
+ * Text in two different inline elements is kept apart by a space when it would otherwise join two words: the first
+ * ends with a letter, digit, closing punctuation, marker or separator glyph and the second starts with a letter,
+ * digit, opening bracket, marker or separator glyph (`complete` + `· 3h left` gives `complete · 3h left`).
+ */
+export function wordsMeet(before: string, after: string): boolean {
+  return /[\p{L}\p{N}.:!?)\uE000\uE001\uE002·•|–—]$/u.test(before) && /^[\p{L}\p{N}(\uE000\uE001·•|–—]/u.test(after);
+}
+
 export function collapse(s: string): string {
   return s.replace(/\s+/g, ' ').trim();
 }
