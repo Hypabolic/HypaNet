@@ -55,8 +55,9 @@ unless `dev` and `val` are built. Screens whose normalised text, or whose node s
 5. `join.py` matches slots to nodes by span. Any planted span that is not a node, any node that came from no slot
    and any span used twice stops the build with an error. A screen whose extracted role contradicts its planted
    pattern (an R1 node that is not an eyebrow, say), whose pointer runs against the precedence of `LABELLING.md` §5,
-   or whose pointer crosses a window boundary is regenerated with the next attempt number; the manifest counts these
-   under `regenerated`.
+   or whose pointer crosses a window boundary is regenerated with the next attempt number; so is a screen whose copy
+   has a grammar seam (`core.seams`: "a" or "an" before the wrong sound, a doubled word, a bad plural such as
+   "branchs"). The manifest counts these under `regenerated`.
 
 R18 (comment restating code) and K10 (comments) belong to track C, which is deferred, so they are not planted; the
 extractor emits no comment nodes in r1.
@@ -84,6 +85,40 @@ A blind check of `val` v1 found surface features that decided the label. v2 remo
 - **Widgets.** Tables have 2 to 7 columns, dashboards vary their range tabs and draw a chart (no text) beside a
   legend of real series, icon buttons draw the icon their tooltip names, and badges, notices and update lines vary.
 
+## Context, not wording, decides the class (v3)
+
+A blind check of `val` v2 found single features that were one class, grammar seams, fixed widgets and a classifier
+that reached REDUNDANT F1 0.86 from a node's own text, role and flags. v3 changes:
+
+- **Grammar.** Articles and plurals come from `core.article` and `core.plural` ("an order", "travelling parties",
+  "heads of department"); templates that could double a word are guarded, and the build regenerates any screen that
+  still has a seam.
+- **The same sentence on both sides.** Facts (`lexicon.FACTS`: a limit, a price, a time, a window) come with a
+  heading that states the figure, a topic heading that does not, lines that only repeat the figure and lines that add
+  another fact. Under the figure heading a repeating line is R3, R4 or R5 (with digits, commas and semicolons); under
+  the topic heading the same line is KEEP. Fields and toggles work the same way: "Bio (up to 160 characters)" makes
+  "No more than 160 characters." R5, plain "Bio" makes it K4; "No invoices since 3 May" makes a dated body R4, "No
+  invoices" makes it KEEP. Restatement frames ("Manage your …", "There are no …", "Are you sure …") also open KEEP
+  partials that add a fact, and facts open with the same verbs ("Browse …", "Keep track of …").
+- **Single features with both classes.** Semicolons, mono upper-case meta lines (versions, builds, issues and dates
+  are KEEP), conditional empty-state bodies (R4 planted), placeholders with "e.g." (R8 "e.g. your email address"; and
+  bare examples without "e.g."), dialog bodies ending in "?" (a consequence and a question, K7), group labels (an item
+  name or a date, K1, beside the R2 ones), card titles inside grids (R9) and glyphs on informative badges (K2, aside
+  R11g).
+- **Tone.** Short KEEP lines that add one fact without a figure, drawn from pools that fit where they sit; KEEP copy
+  that uses the words restatements use ("total", "want", "sure", "confirm", "together", "below", "that"); restatements
+  that do not address the reader; more templates for each KEEP line that used to recur.
+- **Widgets.** Footer columns draw their headings and links from pools; legal lines carry random company, VAT and
+  charity numbers.
+- **Coherence.** Plan cards take seats, sites and limits from one ladder, so a card's subtitle and its list agree; a
+  spotlight's subtitle is about its feature; facts are only used by products they suit; counts in dialogs are three
+  or more.
+- **Guide decisions** (`LABELLING.md` §8): one "Most popular" pill on one plan card is K2 judgement; a genre-variant
+  eyebrow ("Word of mouth") over a heading that neither shares its stem nor is a genre word is DECOR R2; "Switch X on
+  or off." under toggle X is NARRATE R6 with `ct`; a near-synonym h2 heading the page's only section is R9 judgement
+  (a second section is added otherwise); a heading plus a qualifier ("Shared budgets: new in 4.2", "Hives this
+  week" under "Hives", a tooltip "New hive (N)") is KEEP with `partial`.
+
 An exact repeat at equal rank flags the later node in reading order; when the composer cannot know that order (a
 SwiftUI navigation title is read first), `build.orient_duplicates` swaps the label onto the later copy.
 
@@ -93,4 +128,5 @@ SwiftUI navigation title is read first), `build.orient_duplicates` swaps the lab
 byte-identical, namespaces differ, every node is labelled and `labeller/check.py` finds no errors, every plantable
 pattern and K rule occurs, the screen and source files name no kind and carry no clean flag, sixteen roles carry both
 classes, an equal-rank repeat flags the later node, a moved span is reported, `test_gen` refuses without a frozen
-registry, and the duplicate check matches near copies.
+registry, the duplicate check matches near copies, `core.article`, `core.plural` and `core.seams` handle their hard
+cases, and no node of the built screens or of `datasets/dev` (when built) has a grammar seam.

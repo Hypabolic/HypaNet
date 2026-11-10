@@ -13,6 +13,7 @@ import { fileURLToPath } from 'node:url';
 import { encodeScreen } from '../../lint/tokenizer.js';
 import { RULE_IDS, RULES, runRules } from '../index.js';
 import { buildAll } from '../fixtures/make_fixtures.mjs';
+import { isQualifier } from '../src/repeated-chrome.js';
 import { hasArrowTail, literalWords, nodeBranches, normalised, parseIndex, tokens } from '../src/text.js';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
@@ -79,7 +80,8 @@ test('every rule has positive and near-miss negative fixtures, and every repeate
 });
 
 test('the exact-repeat fixtures that need two windows have them', () => {
-  for (const name of ['er_cta_pos', 'er_rank_pos', 'er_exempt_neg', 'er_footer_links_neg', 'er_k11_cross_window_neg', 'er_two_dialogs_neg', 'er_conditional_keep_pos']) assert.ok(encodeScreen(loadFixture(name)).windows.length >= 2, name);
+  for (const name of ['er_cta_pos', 'er_rank_pos', 'er_exempt_neg', 'er_footer_links_neg', 'er_k11_cross_window_neg', 'er_two_dialogs_neg', 'er_conditional_keep_pos',
+    'er_k12_error_summary_neg', 'er_k12_icon_tooltip_neg', 'er_site_bar_link_neg', 'er_footer_vs_body_cta_pos']) assert.ok(encodeScreen(loadFixture(name)).windows.length >= 2, name);
   assert.equal(encodeScreen(loadFixture('er_same_window_neg')).windows.length, 1);
 });
 
@@ -119,6 +121,14 @@ test('parseIndex reads the index devices and nothing else', () => {
   assert.equal(parseIndex('01 / 04').total, 4);
   assert.equal(parseIndex('Step 2 of 4').total, 4);
   assert.equal(parseIndex('02 /').total, null);
+  // Leads keep their total; "05 / 03 Connect" is not a device.
+  assert.deepEqual(['01 / 03 Connect the hub', 'Step 2 of 3: Safety talk'].map((t) => { const d = parseIndex(t); return [d.family, d.value, d.whole, d.total]; }),
+    [['padded', 1, false, 3], ['label:step', 2, false, 3]]);
+  assert.equal(parseIndex('05 / 03 Connect'), null);
+  // A two-digit number 10–99, whole or as a lead, is a `wide` padded device: it only continues a padded column.
+  for (const t of ['10 Slipway', '12 months of data', '24 –']) assert.ok(parseIndex(t)?.wide, t);
+  assert.equal(parseIndex('10').family, 'plain');
+  for (const t of ['09 Fog bell', '3 seats left', '24/7 support', '100 days']) assert.ok(!parseIndex(t)?.wide, t);
 });
 
 test('words after a VAR marker are identifier words, not copy', () => {
@@ -158,6 +168,14 @@ test('arrow tails come from the flag or a trailing glyph', () => {
   assert.ok(hasArrowTail({ text: 'Docs ⟶', flags: [] }));
   // ↗ marks an external link, » and a glued › are not arrows: the text overrides the extractor's flag.
   for (const text of ['Docs ↗', 'More »', 'Next›', 'Below ↘']) assert.ok(!hasArrowTail({ text, flags: ['arrow_tail'] }), text);
+  for (const text of ['Guides ➡️', 'Guides ➡', 'Guides ⇒', 'Guides ➝', 'Guides ➞', 'Guides ⟹', 'Guides =>', 'Guides ⭢', 'Guides 🡒'])
+    assert.ok(hasArrowTail({ text, flags: [] }), text);
+});
+
+test('K13 qualifier badges: tax status, billing period, unit, currency, "from"', () => {
+  for (const t of ['Inc. VAT', '+ VAT', 'excl. tax', 'VAT included', '/month', '/ mo', 'per year', 'a night', 'Billed annually', 'Monthly',
+    'per seat', '/user/month', 'Each', 'GBP', 'in EUR', 'From']) assert.ok(isQualifier(t), t);
+  for (const t of ['New', 'Most popular', 'Monthly plan', 'Free', 'A list', 'VAT', 'Inc.', 'Best value']) assert.ok(!isQualifier(t), t);
 });
 
 // -- CLI -----------------------------------------------------------------------------------------------------------

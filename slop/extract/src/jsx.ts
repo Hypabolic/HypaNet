@@ -4,9 +4,9 @@
 // literal values substituted (see "Literal arrays" below).
 
 import { parse } from '@babel/parser';
-import type { El, Kid, LV, Slot, Sty, Txt } from './ir.ts';
+import type { El, Kid, LV, Opt, Slot, Sty, Txt } from './ir.ts';
 import {
-  ALT_JOIN, ALT_SEP, MAX_EXPAND, el, emptyCond, hasSubs, markEmptyKids, identWords, jsxWhitespace, keyLastSegment, looksLikeCopy, markCopy, trimSpan, txt, varText,
+  ALT_JOIN, ALT_SEP, MAX_EXPAND, el, emptyCond, hasSubs, joinRenderings, markEmptyKids, identWords, jsxWhitespace, keyLastSegment, looksLikeCopy, markCopy, renderings, stripPUA, trimSpan, txt, varText,
 } from './ir.ts';
 import { decorateComponent, decorateIntrinsic, propRole } from './roles.ts';
 import type { Role } from './schema.ts';
@@ -73,9 +73,9 @@ function litValue(e0: N, depth: number): LV | null {
   const e = unwrap(e0);
   if (!e) return null;
   switch (e.type) {
-    case 'StringLiteral': return { k: 'str', value: e.value, s: e.start + 1, e: e.end - 1 };
+    case 'StringLiteral': return { k: 'str', value: stripPUA(e.value), s: e.start + 1, e: e.end - 1 };
     case 'TemplateLiteral':
-      return e.expressions.length === 0 ? { k: 'str', value: e.quasis[0].value.cooked ?? '', s: e.start + 1, e: e.end - 1 } : null;
+      return e.expressions.length === 0 ? { k: 'str', value: stripPUA(e.quasis[0].value.cooked ?? ''), s: e.start + 1, e: e.end - 1 } : null;
     case 'NumericLiteral': return { k: 'num', value: e.value, raw: e.extra?.raw ?? String(e.value), s: e.start, e: e.end };
     case 'BooleanLiteral': return { k: 'bool', value: e.value };
     case 'NullLiteral': return { k: 'nil' };
@@ -374,6 +374,8 @@ interface TextVal {
   empty?: boolean;
   spans?: [number, number][]; // substituted array literals, in text order
   near?: [number, number][]; // their properties' spans
+  opts?: Opt[]; // complete renderings of a conditional text, '' for an empty branch (two or more)
+  lspans?: [number, number][]; // the in-file constant literals the text shows (constText)
 }
 
 const I18N_CALLEES = new Set(['t', '$t', 'translate', 'tr', '__', '_', 'i18n.t', 'i18next.t', 'intl.formatMessage', 'formatMessage', 'getString', 'localize']);
@@ -414,7 +416,8 @@ function identOf(e: N): string | null {
   }
 }
 
-function lit(text: string): TextVal {
+function lit(text0: string): TextVal {
+  const text = stripPUA(text0);
   return { text, lit: text, dyn: false, alt: false, cond: false, bound: false };
 }
 function vari(e: N): TextVal {
@@ -429,6 +432,139 @@ const nearOf = (...vs: TextVal[]): [number, number][] | undefined => {
   const out = vs.flatMap((v) => v.near ?? []);
   return out.length ? out : undefined;
 };
+const lspansOf = (...vs: TextVal[]): [number, number][] | undefined => {
+  const out = vs.flatMap((v) => v.lspans ?? []);
+  return out.length ? out : undefined;
+};
+/** The complete renderings of a text value: its own options, or itself ('' when empty). */
+const optsOf = (v: TextVal): Opt[] => v.opts ?? [v.empty ? { text: '', lit: '' } : { text: v.text, lit: v.lit }];
+
+/**
+ * Concatenated text (a template literal, `a + b`): when a part is conditional, every complete rendering is written,
+ * joined with ALT (`${n} file${n === 1 ? "" : "s"}` gives "VAR n file ALT VAR n files", and the fallback in
+ * `· ${error ?? "failed"}` keeps its "· "); past MAX_RENDERINGS the branches stay inline.
+ */
+function concatVals(parts: TextVal[]): TextVal {
+  const dyn = parts.some((p) => p.dyn);
+  const base: TextVal = {
+    text: parts.map((p) => p.text).join(''), lit: parts.map((p) => p.lit).join(''), dyn, alt: parts.some((p) => p.alt),
+    cond: parts.some((p) => p.cond), bound: false, spans: spansOf(...parts), near: nearOf(...parts), lspans: lspansOf(...parts),
+  };
+  if (!parts.some((p) => p.opts)) return base;
+  const rs = renderings(parts.map(optsOf));
+  if (!rs) return base;
+  const j = joinRenderings(rs);
+  return { ...base, text: j.text, lit: j.lit, alt: j.text.includes(ALT_SEP), cond: true, bound: true, opts: rs };
+}
+
+// ---------------------------------------------------------------------------------------------------------------
+// In-file constants
+//
+// An identifier or member expression in text position that names a `const` in this file (any scope, resolved by
+// scope, not changed in place) is read through to its literal when every path yields one: a string, or a template
+// literal with no interpolation; a member of an object or array literal (`COPY.title`, `LABELS["a"]`, and with a
+// dynamic key every value, joined with ALT); a ternary of such (whatever its test); and `+` of such. Anything else
+// keeps the VAR behaviour.
+
+const MAX_CONST_DEPTH = 6;
+
+/** The initialiser of the `const` an identifier refers to, or null. */
+function constInit(id: N, env: Env): N | null {
+  if (id.type !== 'Identifier' || env.subst?.has(id.name) || env.mutated.has(id.name)) return null;
+  const b = bindingOf(id, env);
+  return b && b.kind === 'const' && b.init ? unwrap(b.init) : null;
+}
+
+/** An object or array literal an expression names (a const, or a member of one), or null. */
+function constObject(e0: N, env: Env, depth: number): N | null {
+  const e = unwrap(e0);
+  if (!e || depth > MAX_CONST_DEPTH) return null;
+  if (e.type === 'ObjectExpression' || e.type === 'ArrayExpression') return e;
+  if (e.type === 'Identifier') {
+    const init = constInit(e, env);
+    return init ? constObject(init, env, depth + 1) : null;
+  }
+  if (e.type === 'MemberExpression' || e.type === 'OptionalMemberExpression') {
+    const obj = constObject(e.object, env, depth + 1);
+    const key = memberKey(e);
+    if (!obj || key === null) return null;
+    const v = memberValue(obj, key);
+    return v ? constObject(v, env, depth + 1) : null;
+  }
+  return null;
+}
+
+/** The static key of a member expression (`a.b`, `a["b"]`, `a[0]`), or null when it is computed. */
+function memberKey(e: N): string | number | null {
+  if (!e.computed) return e.property.type === 'Identifier' ? e.property.name : null;
+  const p = unwrap(e.property);
+  if (p.type === 'StringLiteral') return p.value;
+  if (p.type === 'NumericLiteral') return p.value;
+  if (p.type === 'TemplateLiteral' && p.expressions.length === 0) return p.quasis[0].value.cooked ?? null;
+  return null;
+}
+
+/** A property's value node in an object literal (no spreads or computed keys), or an array element; else null. */
+function memberValue(obj: N, key: string | number): N | null {
+  if (obj.type === 'ArrayExpression') return typeof key === 'number' && obj.elements[key] && obj.elements[key].type !== 'SpreadElement' ? obj.elements[key] : null;
+  if (obj.properties.some((p: N) => p.type !== 'ObjectProperty' || p.computed)) return null;
+  const hit = obj.properties.filter((p: N) => (p.key.type === 'Identifier' ? p.key.name : p.key.type === 'StringLiteral' ? p.key.value : p.key.type === 'NumericLiteral' ? p.key.value : null) === key);
+  return hit.length === 1 ? hit[0].value : null;
+}
+
+/** The literal text an expression stands for when every path through in-file constants yields a literal; else null. */
+function constText(e0: N, env: Env, depth = 0): TextVal | null {
+  const e = unwrap(e0);
+  if (!e || depth > MAX_CONST_DEPTH) return null;
+  switch (e.type) {
+    case 'StringLiteral': return { ...lit(e.value), lspans: [[e.start + 1, e.end - 1]] };
+    case 'TemplateLiteral':
+      return e.expressions.length ? null : { ...lit(e.quasis[0].value.cooked ?? ''), lspans: [[e.start + 1, e.end - 1]] };
+    case 'Identifier': {
+      if (depth === 0 && env.subst?.has(e.name)) return null;
+      const init = constInit(e, env);
+      return init ? constText(init, env, depth + 1) : null;
+    }
+    case 'MemberExpression': case 'OptionalMemberExpression': {
+      const obj = constObject(e.object, env, depth + 1);
+      if (!obj) return null;
+      let key = memberKey(e);
+      let viaCopy = false;
+      if (key === null && env.subst) {
+        // LABELS[item.kind] inside an expanded copy: the copy's own key
+        const r = resolve(e.property, env);
+        if (r?.v && (r.v.k === 'str' || r.v.k === 'num')) {
+          key = r.v.value;
+          viaCopy = true;
+        }
+      }
+      if (key !== null) {
+        const v = memberValue(obj, key);
+        const t = v ? constText(v, env, depth + 1) : null;
+        // the literal the copy shows is its substituted text (its node sits there, copy by copy)
+        return t && viaCopy && t.lspans ? { ...t, spans: t.lspans, lspans: undefined } : t;
+      }
+      // a dynamic key: any of the values may show
+      const vals: N[] = obj.type === 'ArrayExpression' ? obj.elements : obj.properties.map((p: N) => (p.type === 'ObjectProperty' && !p.computed ? p.value : null));
+      if (!vals.length || vals.length > MAX_EXPAND || vals.some((v) => !v || v.type === 'SpreadElement')) return null;
+      const ts = vals.map((v) => constText(v, env, depth + 1));
+      if (ts.some((t) => !t)) return null;
+      return joinAlt(ts as TextVal[]);
+    }
+    case 'ConditionalExpression': {
+      const a = constText(e.consequent, env, depth + 1);
+      const b = a ? constText(e.alternate, env, depth + 1) : null;
+      return a && b ? joinAlt([a, b]) : null;
+    }
+    case 'BinaryExpression': {
+      if (e.operator !== '+') return null;
+      const a = constText(e.left, env, depth + 1);
+      const b = a ? constText(e.right, env, depth + 1) : null;
+      return a && b ? concatVals([a, b]) : null;
+    }
+    default: return null;
+  }
+}
 
 /** Text of a substituted value: a string or number literal is copy at its own span; other values as before. */
 function slotText(v: Slot, e: N): TextVal {
@@ -453,30 +589,22 @@ function textOf(e0: N, env: Env): TextVal | null {
     case 'Identifier': {
       const r = resolve(e, env);
       if (r) return slotText(r.v, e);
-      return e.name === 'undefined' ? EMPTY : vari(e);
+      if (e.name === 'undefined') return EMPTY;
+      return constText(e, env) ?? vari(e);
     }
     case 'TemplateLiteral': {
-      let text = '';
-      let l = '';
-      let dyn = false;
       const parts: TextVal[] = [];
       for (let i = 0; i < e.quasis.length; i++) {
-        const q = e.quasis[i].value.cooked ?? e.quasis[i].value.raw;
-        text += q;
-        l += q;
-        if (i < e.expressions.length) {
-          const t = textOf(e.expressions[i], env) ?? vari(e.expressions[i]);
-          text += t.text;
-          l += t.lit;
-          dyn = dyn || t.dyn;
-          parts.push(t);
-        }
+        parts.push(lit(e.quasis[i].value.cooked ?? e.quasis[i].value.raw));
+        if (i < e.expressions.length) parts.push(textOf(e.expressions[i], env) ?? vari(e.expressions[i]));
       }
-      return { text, lit: l, dyn, alt: false, cond: false, bound: dyn && e.quasis.every((q: N) => !(q.value.cooked ?? '').trim()), spans: spansOf(...parts), near: nearOf(...parts) };
+      const v = concatVals(parts);
+      const bound = v.dyn && e.quasis.every((q: N) => !(q.value.cooked ?? '').trim());
+      return { ...v, alt: v.opts ? v.alt : false, cond: v.opts ? v.cond : false, bound: v.opts ? v.bound : bound };
     }
     case 'MemberExpression': case 'OptionalMemberExpression': {
       const r = resolve(e, env);
-      return r ? slotText(r.v, e) : vari(e);
+      return r ? slotText(r.v, e) : constText(e, env) ?? vari(e);
     }
     case 'AwaitExpression': return vari(e);
     case 'CallExpression': case 'OptionalCallExpression': {
@@ -504,6 +632,15 @@ function textOf(e0: N, env: Env): TextVal | null {
       if (name && I18N_CALLEES.has(name)) {
         const a0 = unwrap(e.arguments[0]);
         const sub = a0 && a0.type !== 'StringLiteral' ? resolve(a0, env) : null;
+        if (a0 && !sub && a0.type !== 'StringLiteral' && a0.type !== 'ObjectExpression') {
+          // t(KEY) with KEY an in-file constant string: as if the literal were written in place
+          const c = constText(a0, env);
+          if (c && !c.alt && c.lspans?.length === 1) {
+            const [ks, ke] = c.lspans[0];
+            if (looksLikeCopy(c.text)) return { ...lit(c.text), lspans: [[ks, ke]] };
+            return { text: ` ${varText(keyLastSegment(c.text))} `, lit: ' ', dyn: true, alt: false, cond: false, bound: true };
+          }
+        }
         if (sub?.v && sub.v.k === 'str') {
           // a translation key or gettext string from the array: the node sits at the literal
           const v = sub.v;
@@ -544,12 +681,13 @@ function textOf(e0: N, env: Env): TextVal | null {
       if (e.operator === '&&') {
         const r = textOf(e.right, env);
         if (!r) return null;
-        return { ...r, cond: true, bound: false };
+        return { ...r, cond: true, bound: false, opts: [...optsOf(r), { text: '', lit: '' }] };
       }
       const a = textOf(e.left, env);
       const b = textOf(e.right, env);
       if (!a || !b) return null;
-      return joinAlt([a, b]);
+      // `x ?? ""` guards a missing value; the empty fallback is not a rendering of its own
+      return joinAlt(b.empty || b.text.trim() === '' ? [a] : [a, b]);
     }
     case 'BinaryExpression': {
       if (e.operator !== '+') return vari(e);
@@ -562,7 +700,7 @@ function textOf(e0: N, env: Env): TextVal | null {
       const a = textOf(e.left, env);
       const b = textOf(e.right, env);
       if (!a || !b) return null;
-      return { text: a.text + b.text, lit: a.lit + b.lit, dyn: a.dyn || b.dyn, alt: a.alt || b.alt, cond: a.cond || b.cond, bound: false, spans: spansOf(a, b), near: nearOf(a, b) };
+      return concatVals([a, b]);
     }
     case 'UnaryExpression': case 'UpdateExpression': return vari(e.argument ?? e);
     default: return null;
@@ -572,8 +710,10 @@ function textOf(e0: N, env: Env): TextVal | null {
 function joinAlt(parts: TextVal[]): TextVal {
   const flat: TextVal[] = [];
   for (const p of parts) if (!p.empty && p.text.trim() !== '') flat.push(p);
+  const all = parts.flatMap(optsOf);
+  const opts = all.length >= 2 ? all : undefined;
   if (flat.length === 0) return { ...EMPTY, cond: true };
-  if (flat.length === 1) return { ...flat[0], cond: true, bound: true };
+  if (flat.length === 1) return { ...flat[0], cond: true, bound: true, opts };
   return {
     text: flat.map((p) => p.text.trim()).join(ALT_JOIN),
     lit: flat.map((p) => p.lit.trim()).join(ALT_SEP),
@@ -583,6 +723,8 @@ function joinAlt(parts: TextVal[]): TextVal {
     bound: true,
     spans: spansOf(...flat),
     near: nearOf(...flat),
+    lspans: lspansOf(...flat),
+    opts,
   };
 }
 
@@ -590,7 +732,10 @@ function txtFrom(v: TextVal, s: number, e: number, src: string, extra: Partial<T
   if (!v.empty && v.text !== '' && v.text.trim() === '' && !extra.attr) return txt(' ', s, s); // {" "}
   if (v.empty || v.text.trim() === '') return null;
   const sp = trimSpan(src, s, e) ?? [s, e];
-  return txt(v.text, sp[0], sp[1], { lit: v.lit, dyn: v.dyn, alt: v.alt, cond: v.cond, bound: v.bound, ...(v.spans ? { subs: v.spans, near: v.near } : {}), ...extra });
+  return txt(v.text, sp[0], sp[1], {
+    lit: v.lit, dyn: v.dyn, alt: v.alt, cond: v.cond, bound: v.bound, ...(v.spans ? { subs: v.spans, near: v.near } : {}),
+    ...(v.opts && v.opts.length >= 2 ? { opts: v.opts } : {}), ...(v.lspans?.length === 1 ? { lspan: v.lspans[0] } : {}), ...extra,
+  });
 }
 
 /** Span of the visible part of a literal: inside the quotes. */
@@ -721,12 +866,17 @@ function styleInfo(e0: N): { sty: Sty; bound: boolean } {
       const n = parseFloat(sv);
       const px = /rem|em/.test(sv) ? n * 16 : n;
       if (!Number.isNaN(px)) {
+        sty.fontPx = px;
         sty.small = px <= 14;
         sty.xsmall = px <= 12;
         sty.large = px >= 24;
       }
     }
     if (key === 'fontFamily') sty.mono = /mono|courier|menlo|consolas/.test(sv);
+    if (key === 'fontWeight') {
+      const w = /^bold(er)?$/.test(sv) ? 700 : parseFloat(sv);
+      if (!Number.isNaN(w)) sty.bold = w >= 600;
+    }
     if (key === 'textOverflow') sty.truncated = sv === 'ellipsis';
   }
   return { sty, bound };
@@ -833,6 +983,17 @@ class JsxBuilder {
         else if ((an === 'value' || an === 'defaultValue') && name === 'textarea') role = 'input_value';
       } else {
         role = iconOnly && /^(label|text)$/.test(an) ? 'aria' : propRole(name, an);
+        if (!role && expr && expr.type !== 'JSXEmptyExpression' && an !== 'key' && !/^(className|style|ref|as|asChild)$/.test(an)) {
+          // columns={[{ head: "Year" }]}, items={[{ label: "Train" }]}: copy in a props object, as the table head
+          // or list it draws
+          const pc = this.propCopy(name, expr);
+          if (pc.texts.length) {
+            const box = pc.head ? 'table' : pc.items >= 2 ? 'list' : undefined;
+            const w = el('#props', expr.start, expr.end, box ? { box } : {});
+            w.kids = pc.texts;
+            attrKids.push(w);
+          }
+        }
         if (!role && expr && expr.type !== 'JSXEmptyExpression' && an !== 'key' && !/^(className|style|ref|as|asChild)$/.test(an) && containsJsx(expr)) {
           const slot = el('#prop', expr.start, expr.end);
           slot.kids = this.exprKids(expr);
@@ -878,7 +1039,67 @@ class JsxBuilder {
     }
     if (intrinsic && e.icon && /material-(icons|symbols)/.test(e.cls.join(' '))) kids = [];
     e.kids = attrKids.concat(kids);
+    // a project's own <Dialog> holding its title directly (no DialogContent part): the dialog itself
+    if (!intrinsic && !e.box && /^(AlertDialog|Dialog|Sheet|Drawer|Popover)$/.test(name)) {
+      const part = (k: Kid, re: RegExp): boolean => k.t === 'el' && (re.test(k.name) || k.kids.some((x) => part(x, re)));
+      if (e.kids.some((k) => part(k, /^(AlertDialog|Dialog|Sheet|Drawer|Popover)Title$/)) && !e.kids.some((k) => part(k, /^(AlertDialog|Dialog|Sheet|Drawer|Popover)(Content|Portal|Trigger)$/))) e.box = 'dialog';
+    }
     return e;
+  }
+
+  /**
+   * Copy in a props object passed to a component: string values of copy keys (head, label, title, heading, caption,
+   * description, text) in an object or array literal, written in place or bound to an in-file const, down to
+   * nested arrays (`options: [{ label }]`). Each is a node at its literal; `head` (a column head) is a label.
+   */
+  propCopy(comp: string, expr0: N): { texts: Txt[]; head: boolean; items: number } {
+    const out: Txt[] = [];
+    let head = false;
+    let items = 0;
+    const src = this.env.src;
+    const seen = new Set<N>();
+    const walk = (x0: N, depth: number): void => {
+      const x = unwrap(x0);
+      if (!x || depth > 3 || seen.has(x)) return;
+      seen.add(x);
+      if (x.type === 'Identifier' || x.type === 'MemberExpression' || x.type === 'OptionalMemberExpression') {
+        if (depth > 0) return;
+        const o = constObject(x, this.env, 0);
+        if (o) walk(o, depth);
+        return;
+      }
+      if (x.type === 'ArrayExpression') {
+        for (const el0 of x.elements) {
+          const v = el0 ? unwrap(el0) : null;
+          if (v && (v.type === 'ObjectExpression' || v.type === 'ArrayExpression')) walk(v, depth + 1);
+        }
+        if (depth === 0) items = x.elements.length;
+        return;
+      }
+      if (x.type !== 'ObjectExpression') return;
+      for (const p of x.properties) {
+        if (p.type !== 'ObjectProperty' || p.computed) continue;
+        const key = p.key.type === 'Identifier' ? p.key.name : p.key.type === 'StringLiteral' ? p.key.value : null;
+        const v = unwrap(p.value);
+        if (!key || !v) continue;
+        if (v.type === 'ArrayExpression' || v.type === 'ObjectExpression') {
+          walk(v, depth + 1);
+          continue;
+        }
+        if (!/^(head|label|title|heading|caption|description|text)$/.test(key)) continue;
+        // a navigator screen's options title is its tab, drawer item or header title (Tabs.Screen, Stack.Screen)
+        const screen = key !== 'title' ? null : /^(Tabs?|BottomTab|MaterialTopTab|MaterialBottomTab)\w*Screen$/.test(comp) ? 'tab' : /^Drawer\w*Screen$/.test(comp) ? 'nav' : /Screen$/.test(comp) ? 'h1' : null;
+        const role: Role | null = key === 'head' ? 'label' : screen ?? propRole(comp, key);
+        const tv = role ? constText(v, this.env) : null;
+        if (!role || !tv) continue;
+        const [s0, e0] = tv.lspans?.length === 1 ? tv.lspans[0] : innerSpan(v);
+        const t = txtFrom({ ...tv, lspans: undefined }, s0, e0, src, { attr: role });
+        if (t) out.push(t);
+        if (t && key === 'head') head = true;
+      }
+    };
+    walk(expr0, 0);
+    return { texts: out, head, items };
   }
 
   children(children: N[]): Kid[] {
@@ -886,7 +1107,7 @@ class JsxBuilder {
     const src = this.env.src;
     for (const c of children) {
       if (c.type === 'JSXText') {
-        const v = jsxWhitespace(c.value);
+        const v = jsxWhitespace(stripPUA(c.value));
         if (!v) continue;
         if (v.trim() === '') {
           out.push(txt(' ', c.start, c.start));
@@ -935,10 +1156,12 @@ class JsxBuilder {
         const fa = flatInline(a);
         const fb = flatInline(b);
         if (fa && fb && (fa.text.trim() || fb.text.trim())) {
-          // two inline branches in the same run of text: one node, branches joined with ALT
+          // two inline branches in the same run of text: one node, branches joined with ALT (an empty branch is a
+          // rendering of its own when the node has other text: see infer.ts)
           const parts = [fa, fb].filter((p) => p.text.trim());
           const t = txt(parts.map((p) => p.text.trim()).join(ALT_JOIN), Math.min(...parts.map((p) => p.s)), Math.max(...parts.map((p) => p.e)), {
             lit: parts.map((p) => p.lit.trim()).join(ALT_SEP), dyn: parts.some((p) => p.dyn), alt: parts.length > 1, cond: true, bound: true,
+            opts: [fa, fb].map((p) => (p.text.trim() ? { text: p.text, lit: p.lit } : { text: '', lit: '' })),
           });
           return [t];
         }
@@ -952,8 +1175,10 @@ class JsxBuilder {
           const kids = this.exprKids(e.right).map(markCond);
           const em = emptyTest(e.left, this.env.src);
           if (em === 'pos') return markEmpty(kids, e.right);
+          // shown under its own condition: adjacent fragments of other groups are alternatives (infer.ts); an inline
+          // element's text belongs to the group too
           const g = nextAndGroup++;
-          for (const k of kids) if (k.t === 'txt') k.andGroup = g;
+          for (const k of kids) if (k.andGroup === undefined) k.andGroup = g;
           return kids;
         }
         const tv = textOf(e, this.env);
@@ -1093,30 +1318,43 @@ function drawsText(k: Kid): boolean {
   return k.kids.some(drawsText);
 }
 
-/** Text of kids made only of text and text-less or inline elements (no blocks, no roles), else null. */
+/**
+ * Text of kids made only of text and text-less or inline elements (no blocks, no roles), else null. Words in two
+ * different inline elements are kept apart by a space, as in a run of text (infer.ts).
+ */
 function flatInline(kids: Kid[]): { text: string; lit: string; s: number; e: number; dyn: boolean } | null {
   let text = '';
   let lit = '';
   let s = Infinity;
   let e = -Infinity;
   let dyn = false;
-  const walk = (k: Kid): boolean => {
+  let prevPath: El[] | null = null;
+  const walk = (k: Kid, path: El[]): boolean => {
     if (k.t === 'txt') {
       if (k.attr) return false;
+      if (k.text.trim() && prevPath) {
+        const same = prevPath.length === path.length && prevPath.every((x, j) => x === path[j]);
+        if (!same && prevPath.length > 0 && path.length > 0 && /[\p{L}\p{N}.:!?)\uE000\uE001\uE002]$/u.test(text) && /^[\p{L}\p{N}(\uE000\uE001]/u.test(k.text)) {
+          text += ' ';
+          lit += ' ';
+        }
+      }
       text += k.text;
       lit += k.lit;
       if (k.text.trim()) {
         s = Math.min(s, k.s);
         e = Math.max(e, k.e);
+        prevPath = path;
       }
       dyn = dyn || !!k.dyn;
       return true;
     }
     if (k.icon || k.dot) return true;
-    if (k.name === '#fragment' || (k.intrinsic && /^(span|strong|em|b|i|small|code)$/.test(k.name) && !k.cls.some((c) => /rounded-full|sr-only/.test(c)))) return k.kids.every(walk);
+    if (k.name === '#fragment') return k.kids.every((x) => walk(x, path));
+    if (k.intrinsic && /^(span|strong|em|b|i|small|code)$/.test(k.name) && !k.cls.some((c) => /rounded-full|sr-only/.test(c))) return k.kids.every((x) => walk(x, path.concat(k)));
     return false;
   };
-  if (!kids.every(walk)) return null;
+  if (!kids.every((k) => walk(k, []))) return null;
   if (s === Infinity) return { text: '', lit: '', s: 0, e: 0, dyn };
   return { text, lit, s, e, dyn };
 }

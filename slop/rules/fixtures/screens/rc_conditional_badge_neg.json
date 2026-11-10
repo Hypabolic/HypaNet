@@ -1,0 +1,15 @@
+{"schema": "slop.screen/1", "id": "9f6070f8f3ece838", "framework": "tsx",
+ "source": {"repo": "slop-rules-fixtures", "path": "src/rc_conditional_badge_neg.tsx", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "header", "line": 2},
+  {"k": 1, "kind": "card", "line": 4},
+  {"k": 2, "kind": "card", "line": 7},
+  {"k": 3, "kind": "card", "line": 10}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "h2", "text": "Route cards", "flags": [], "loc": [3, 7, 3, 18]},
+  {"i": 1, "k": 1, "role": "h3", "text": "Green slab", "flags": ["in_card"], "loc": [5, 7, 5, 17]},
+  {"i": 2, "k": 1, "role": "badge", "text": "New \ue001 Updated", "flags": ["small", "pill", "conditional", "in_card"], "loc": [6, 7, 6, 20]},
+  {"i": 3, "k": 2, "role": "h3", "text": "Red overhang", "flags": ["in_card"], "loc": [8, 7, 8, 19]},
+  {"i": 4, "k": 2, "role": "badge", "text": "New \ue001 Updated", "flags": ["small", "pill", "conditional", "in_card"], "loc": [9, 7, 9, 20]},
+  {"i": 5, "k": 3, "role": "h3", "text": "Blue crack", "flags": ["in_card"], "loc": [11, 7, 11, 17]},
+  {"i": 6, "k": 3, "role": "badge", "text": "New \ue001 Updated", "flags": ["small", "pill", "conditional", "in_card"], "loc": [12, 7, 12, 20]}]}

@@ -1,0 +1,15 @@
+{"schema": "slop.screen/1", "id": "78904ecf84982813", "framework": "tsx",
+ "source": {"repo": "slop-rules-fixtures", "path": "src/ix_padded_total_lead_pos.tsx", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "header", "line": 2},
+  {"k": 1, "kind": "card", "line": 4},
+  {"k": 2, "kind": "card", "line": 7},
+  {"k": 3, "kind": "card", "line": 10}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "h2", "text": "Set up the tide sensor", "flags": [], "loc": [3, 7, 3, 29]},
+  {"i": 1, "k": 1, "role": "h3", "text": "01 / 03 Connect the hub", "flags": ["in_card"], "loc": [5, 7, 5, 30]},
+  {"i": 2, "k": 1, "role": "body", "text": "Plug it in near the router.", "flags": ["in_card"], "loc": [6, 7, 6, 34]},
+  {"i": 3, "k": 2, "role": "h3", "text": "02 / 03 Pair the sensors", "flags": ["in_card"], "loc": [8, 7, 8, 31]},
+  {"i": 4, "k": 2, "role": "body", "text": "Hold each one by the hub.", "flags": ["in_card"], "loc": [9, 7, 9, 32]},
+  {"i": 5, "k": 3, "role": "h3", "text": "03 / 03 Name the berths", "flags": ["in_card"], "loc": [11, 7, 11, 30]},
+  {"i": 6, "k": 3, "role": "body", "text": "Names show on the alerts.", "flags": ["in_card"], "loc": [12, 7, 12, 32]}]}

@@ -37,7 +37,7 @@ if __package__ in (None, ""):
 from ui import tokenizer as tk  # noqa: E402
 
 from .compose import CLEAN_SHARE, FRAMEWORK_WEIGHTS, KIND_WEIGHTS, compose  # noqa: E402
-from .core import PATTERN_CLASS, PLANTABLE, PLANTABLE_K, GenError, Rng, ident, slug  # noqa: E402
+from .core import PATTERN_CLASS, PLANTABLE, PLANTABLE_K, GenError, Rng, ident, seams, slug  # noqa: E402
 from .join import CONTEXT_ROLES, check_labels, join_screen, node_record, run_extractor  # noqa: E402
 from .render_html import HtmlRenderer  # noqa: E402
 from .render_swift import SwiftRenderer  # noqa: E402
@@ -291,6 +291,8 @@ def build(set_name: str, n: int | None = None, out: Path | None = None, dupes: D
                                "; ".join(f"{k}: {v}" for k, v in fatal[:10]))
             orient_duplicates(j["pairs"])
             soft = check_labels(j["pairs"], screen) + window_problems(screen, j["pairs"])
+            # a template filled into bad grammar ("a order", "branchs", "details details") is regenerated
+            soft += [("grammar_seam", f"{n['text']!r}: {x}") for n, _ in j["pairs"] for x in seams(n["text"])][:1]
             if dupes is not None and dupes.hit(screen):
                 soft.append(("duplicate_of_dev_or_val", g["path"]))
             if soft:

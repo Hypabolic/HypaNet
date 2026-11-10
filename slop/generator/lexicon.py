@@ -17,6 +17,8 @@ Two rules shape the tables:
 
 from __future__ import annotations
 
+from .core import article, cap, plural
+
 # ---------------------------------------------------------------------------------------------------------------
 # Per-domain supplement: synonyms for the two nouns (sharing no stem with them), the people who use the product, the
 # group they belong to and a role with extra rights.
@@ -152,7 +154,7 @@ CONCEPTS = [
      "echo": ["Whether your team is small or large, it fits.", "It works for small groups and big ones alike.",
               "However many of you there are, it scales."],
      "keep": ["Teams of up to {n} share one bill; larger teams get a monthly invoice.",
-              "Each member gets their own login; {role}s can edit, everyone else can view.",
+              "Each member gets their own login; {roles} can edit, everyone else can view.",
               "Up to {n} people on the free plan, with no limit on paid plans.",
               "Invite links stay valid for {n} days and can be revoked at any time.",
               "{A_group} of {N} shares one bill, paid by whoever owns the account."]},
@@ -177,15 +179,15 @@ CONCEPTS = [
               "Photos taken offline upload on Wi-Fi only, unless you say otherwise."]},
     {"head": ["Simple, honest pricing", "One price, no surprises", "Pay for what you use"],
      "eb": ["Fair prices", "Transparent costs", "Nothing hidden", "Clear costs", "Honest rates", "Fair and square",
-            "Value", "Straight talk on cost"],
+            "Straight talk on cost"],
      "echo": ["Our prices are simple and honest.", "Costs are clear, with nothing hidden.", "What you see is what you pay."],
      "keep": ["Pricing is per {group}, not per person; charities pay half.",
               "Prices include VAT; {groups} registered as charities pay half.",
-              "Switch plans whenever you like and we pro-rate the difference to the day.",
+              "Move up or down a plan on any day; the difference is worked out to the day.",
               "Paid plans start with {n} days free and need no card until then.",
               "The free plan covers up to {n} {x}, with no time limit."]},
     {"head": ["Loved by {who}", "Trusted across the country", "Chosen by {N} {who}"],
-     "eb": ["Customer favourite", "Popular choice", "Word of mouth", "Much loved", "Highly rated", "Crowd pleaser"],
+     "eb": ["Customer favourite", "Popular choice", "Much loved", "Highly rated", "Crowd pleaser", "Well liked"],
      "echo": ["Lots of people really like using it.", "A firm favourite with its users.", "People love it, and say so."],
      "keep": ["Rated 4.{d} out of 5 from {N} reviews on the App Store.",
               "{N} {who} used {p} last month.",
@@ -197,7 +199,7 @@ CONCEPTS = [
      "keep": ["Security reviews by an outside firm every {n} months; the last report is on request.",
               "Secure sign-in links expire after {n} minutes.",
               "Two-step sign-in is on for every account and cannot be turned off by members.",
-              "Data is encrypted at rest and in transit; keys are rotated every {n} days.",
+              "Data is encrypted on our servers and on its way to them; keys change every {n} days.",
               "Every change to {a_x1} is logged with who made it and when.",
               "Sessions end after {n} days without use."]},
     {"head": ["Made for your phone", "In your pocket", "Built for the field"],
@@ -232,7 +234,7 @@ CONCEPTS = [
               "Paid invoices are marked as paid in Xero overnight.",
               "A read-only API lets your {group} build its own reports."]},
     {"head": ["Start for free", "Nothing to pay to begin", "Free to try, free to stay"],
-     "eb": ["No cost", "Try it", "Zero to begin", "On the house", "Gratis", "Costs nothing"],
+     "eb": ["No cost", "Zero to begin", "On the house", "Gratis", "Costs nothing"],
      "echo": ["Getting going costs nothing.", "Begin without paying a penny.", "It is free to get going."],
      "keep": ["Free for up to {n} {x}, for as long as you like.",
               "Start with the free plan; paid features unlock for {n} days, then switch off without charging you.",
@@ -250,7 +252,7 @@ GENRE_GROUPS = [
     ["Contact", "Get in touch", "Contact us"],
     ["About", "About us", "Our story"],
     ["Features", "Capabilities", "What it does"],
-    ["Testimonials", "Reviews", "What people say"],
+    ["Testimonials", "Reviews", "What people say", "Word of mouth", "Kind words"],
     ["How it works", "The process", "Step by step"],
     ["Get started", "Getting started", "Start here"],
     ["Our team", "The team", "Meet the team"],
@@ -308,16 +310,21 @@ def hud_meta(rng) -> str:
 ECHO_VERB = ["Manage", "View and manage", "Keep track of", "See", "Browse", "Review", "Find", "Look through",
              "Check on", "Organise"]
 ECHO_TAIL = ["", " here", " in one place", ", all in one place", " at a glance", " from one screen", " in one list",
-             ", all together"]
+             ", all together", "; every one of them", ", one by one", "; nothing else", ", listed"]
 
 
 def echo_list(rng, x: str, alt: str | None) -> str:
-    """A subtitle that only says the page lists ``x`` (R3). With ``alt`` it uses the synonym or a pronoun."""
+    """A subtitle that only says the page lists ``x`` (R3). With ``alt`` it uses the synonym or a pronoun. Half of
+    them do not address the reader."""
     if alt is None:
-        obj = rng.pick([f"your {x}", f"all your {x}", f"every one of your {x}", f"the {x} you have"])
+        obj = rng.pick([f"your {x}", f"all your {x}", f"every one of your {x}", f"the {x} you have", f"all {x}",
+                        f"the {x}", f"each of the {x}", f"every one of the {x}", f"all the {x} on record"])
     else:
         obj = rng.pick([f"your {alt}", f"all your {alt}", "everything you have added", "all of them",
-                        "everything you have so far", "what you have added"])
+                        "everything added so far", "what has been added", f"the {alt}", f"all the {alt}", "everything on record"])
+    if rng.chance(0.2):
+        return cap(obj) + rng.pick([", in one list.", "; all of them, listed.", ", every one, listed here.",
+                                    ", from first to last.", ", nothing more."])
     return rng.pick(ECHO_VERB) + " " + obj + rng.pick(ECHO_TAIL) + "."
 
 
@@ -327,24 +334,52 @@ def echo_list(rng, x: str, alt: str | None) -> str:
 
 LIST_FACTS = [
     "{X} older than {n} months move to the archive; nothing is deleted.",
+    "Your {x} older than {n} months move to the archive.",
+    "Your {group} sees the same {x} as you.",
+    "You can undo changes to {x} for {n} minutes.",
     "New {x} show up here within {n} minutes of being saved.",
-    "Only owners and {role}s can change {x}; everyone else can view them.",
+    "Only owners and {roles} can change {x}; everyone else can view them.",
     "The {plan} plan keeps up to {n} {x}; larger plans have no limit.",
     "{X} you delete stay in the bin for {n} days.",
     "Each {x1} keeps a history of who changed it and when.",
     "{X} are shared with everyone in your {group}.",
     "Times are shown in {zone}.",
     "{X} sync to your other devices within a minute.",
+    "Your {x} are backed up every night; the last {n} copies are kept.",
+    "The total counts {x} in every state except draft.",
+    "Each {x1} keeps its photos, notes and receipts together.",
+    "Browse {x} by {group}; filters are kept for next time.",
+    "Review {x} before {date}; anything unreviewed is archived.",
+    "Find any {x1} by name, date or {role}.",
+    "Keep track of {x} offline; changes sync when you reconnect.",
+    "Manage who can edit {x} from the Members page.",
+    "Look through {x} from before {year} in the archive.",
+    "Check on {x} shared with you; they are read-only.",
+    "Want them on paper? Each {x1} prints on one A4 sheet.",
+    "Look for the coloured edge: those {x} are shared.",
+    "{X} below the line are waiting for approval.",
+    "Times below are in {zone}.",
+    "Figures below exclude {x} still in draft.",
+    "{X} from your {group} appear here too.",
+    "Only {x} you can edit show here.",
     "Reminders go out {n} days before each {x1} is due.",
     "{X} added by {who} outside your {group} need approval first.",
     "{X} from before {year} are kept read-only.",
     "{X} marked private are hidden from this list for everyone but you.",
     "Totals exclude {x} still in draft.",
 ]
+VERB_FACTS = [
+    "Browse {x} by {group}; filters are kept for next time.", "Review {x} before {date}; anything unreviewed is archived.",
+    "Find any {x1} by name, date or {role}.", "Keep track of {x} offline; changes sync when you reconnect.",
+    "Manage who can edit {x} from the Members page.", "Look through {x} from before {year} in the archive.",
+    "Check on {x} shared with you; they are read-only.", "See {x} from other {groups} only when they share them.",
+    "View {x} on a map from the menu.", "Organise {x} into folders; each {x1} can sit in one.",
+    "Manage {x} for your whole {group} from one login.", "Browse {x} offline for up to {n} days.",
+]
 LIST_FACTS_ALT = [
     "Anything older than {n} months moves to the archive; nothing is deleted.",
     "Items you remove stay in the bin for {n} days.",
-    "Only owners and {role}s can make changes here; everyone else can view.",
+    "Only owners and {roles} can make changes here; everyone else can view.",
     "Shared with everyone in your {group}.",
     "Times are shown in {zone}.",
     "Changes reach your other devices within a minute.",
@@ -352,17 +387,25 @@ LIST_FACTS_ALT = [
     "Entries from before {year} are kept read-only.",
     "Private entries are hidden from everyone but you.",
     "Approval from {a_role} is needed before anything new appears.",
+    "Everything here is backed up every night.",
+    "The total excludes anything still in draft.",
+    "Make sure each entry has a date; undated ones are skipped.",
+    "Only {roles} can confirm new entries.",
 ]
 
 
 def fill_fact(rng, t: str, x: str, x1: str, ctx: dict) -> str:
     n = rng.pick([2, 3, 5, 6, 7, 10, 12, 14, 18, 21, 24, 30, 45, 60, 90])
-    vals = {"X": x[:1].upper() + x[1:], "x": x, "x1": x1, "n": n, "year": rng.pick([2019, 2020, 2021, 2022, 2023, 2024]),
+    vals = {"X": x[:1].upper() + x[1:], "x": x, "x1": x1, "n": n, "year": rng.pick([2019, 2020, 2021, 2022, 2023, 2024]), "date": date(rng),
             "zone": rng.pick(ZONES), "plan": rng.pick(PLANS[:5])}
     vals.update(ctx)
+    if "role" in vals:
+        vals["roles"] = plural(vals["role"])
+    if "group" in vals:
+        vals["groups"] = plural(vals["group"])
     for k in ("x1", "role", "group"):
         if k in vals:
-            vals["a_" + k] = ("an " if vals[k][:1].lower() in "aeiou" else "a ") + vals[k]
+            vals["a_" + k] = article(vals[k])
     return t.format(**vals)
 
 
@@ -406,7 +449,7 @@ PILL_WORDS = ["New", "Popular", "Featured", "Hot", "Beta", "Updated", "Pro", "Tr
 PILL_GLYPH = ["", "", "✨ ", "🔥 ", "● "]
 SIBLING_PILLS = ["All plans", "Pro plan", "Team plan", "Add-on", "Beta", "Coming in July", "iOS only", "New in 4.2",
                  "Web only", "Included free", "New", "Updated", "Popular", "Coming soon", "Android only", "Paid add-on"]
-POPULAR = ["Most popular", "Best value", "Recommended", "Our pick", "Most chosen", "Best for {groups}", "Staff pick"]
+POPULAR = ["Most popular", "Best value", "Recommended", "Our pick", "Most chosen", "Staff pick", "Popular"]
 
 # Notices (K6 once; later copies R14), compositional
 NOTICE_KINDS = [
@@ -458,3 +501,201 @@ RANGE_SETS = [
 # Field-style kickers (LABELLING.md K1): a label that names the kind of value after it.
 FIELD_KICKERS = ["Next {x1}", "Due", "Last {y1}", "Your plan", "Your next {x1}", "Your {group}", "Renews", "Owner",
                  "Booked for", "Status", "Your balance", "Your rota", "Started", "Location", "Assigned to"]
+
+
+# ---------------------------------------------------------------------------------------------------------------
+# v3: facts that a heading, label or figure states, with restatements that carry the same figure (R1, R3, R4, R5)
+# and lines that add a different fact (KEEP). A restatement repeats the heading's figure, date, limit or condition
+# and nothing else; it may use commas and semicolons, and it seldom says "you". {k} and {K} are the fact's own
+# figure (digits, or its word), {m} a second figure, {price} a price, {o1}/{o2} opening times.
+
+FACTS = [
+    {"topic": ["Free plan", "The free tier"], "head": ["Free for up to {k} {x}", "Up to {k} {x}, free", "{k} {x} free, for good"],
+     "echo": ["Keep up to {k} {x} without paying anything.", "The first {k} {x} cost nothing, on any account.",
+              "Up to {k} {x}; no charge for any of them.", "{K} {x} at no cost, whoever you are."],
+     "keep": ["Above {k}, it is {price} a month per {group}.", "Charities can keep twice as many.",
+              "Past that, each extra {x1} is {price} a year."],
+     "eb": ["{k} free", "Free to {k}"]},
+    {"topic": ["Free trial", "Trying it out"], "head": ["{k} days free", "Try it free for {k} days", "A {k}-day free trial"],
+     "echo": ["For the first {k} days, the bill is zero.", "{K} days, free of charge, from sign-up.",
+              "Nothing to pay for {k} days; not a penny."],
+     "keep": ["No card is needed, and the trial ends without charging you.", "The trial includes every paid feature.",
+              "Want longer? Ask and we add a week."],
+     "eb": ["{k} days free"]},
+    {"topic": ["Reminders", "Never miss a {y1}"], "head": ["Reminders {k} days ahead", "A nudge {k} days before", "Reminded {k} days early"],
+     "echo": ["A reminder arrives {k} days before, every time.", "You hear about each {y1} {k} days in advance.",
+              "{K} days before each {y1}, a reminder goes out."],
+     "keep": ["By email or push, never both; change it for each {x1}.", "Quiet hours, 9pm to 8am, hold them back.",
+              "Your {role} gets a copy."],
+     "eb": ["{k} days ahead"]},
+    {"topic": ["Opening hours", "When we are open"], "head": ["Open {o1} to {o2}, every day", "Open daily, {o1} to {o2}", "{o1} to {o2}, seven days a week"],
+     "echo": ["From {o1} until {o2}, seven days a week.", "Every day of the week, {o1} to {o2}.",
+              "Doors open at {o1} and close at {o2}, daily."],
+     "keep": ["Bank holidays: 10am to 4pm.", "Last entry is an hour before closing.", "Quietest before 11am."],
+     "eb": ["Daily, {o1}–{o2}"]},
+    {"topic": ["Support", "Talk to a person"], "head": ["Replies within {k} hours", "An answer in {k} hours", "Help within {k} hours"],
+     "echo": ["Every email is answered in {k} hours or less.", "Write to us and hear back inside {k} hours.",
+              "Within {k} hours, someone replies; always."],
+     "keep": ["Messages sent at the weekend are answered on Monday.", "Pro plans also get a phone line until 8pm.",
+              "A real person, never a bot."],
+     "eb": ["{k}-hour replies"]},
+    {"topic": ["Booking", "Plan ahead"], "head": ["Book up to {k} weeks ahead", "Slots open {k} weeks out", "{k} weeks of dates to choose from"],
+     "echo": ["Slots open {k} weeks in advance.", "You can reserve as far as {k} weeks out.",
+              "Dates appear {k} weeks ahead, on a rolling basis."],
+     "keep": ["Members get a two-day head start on new dates.", "Cancel free until 24 hours before.",
+              "Only you can see your bookings."],
+     "eb": ["{k} weeks ahead"]},
+    {"topic": ["Delivery", "Getting it to you"], "head": ["Delivered in {k} working days", "At your door in {k} working days", "{k}-day delivery"],
+     "echo": ["Orders arrive within {k} working days.", "Expect it {k} working days after you order.",
+              "{K} working days, door to door."],
+     "keep": ["Orders placed after 2pm leave the next morning.", "Tracking links arrive by text.",
+              "Shared with your {group}, so anyone can sign for it."],
+     "eb": ["{k}-day delivery"]},
+    {"topic": ["Price", "What it costs"], "head": ["{price} a month per {group}", "One price: {price} a month", "{price} a month, all in"],
+     "echo": ["Every {group} pays {price} each month.", "Monthly, it is {price}, the same for everyone.",
+              "{price} a month; that is the whole price."],
+     "keep": ["Charities pay half; prices include VAT.", "Pay yearly and get two months free.",
+              "Want a quote for a bigger {group}? Ask us."],
+     "eb": ["{price} a month"]},
+    {"topic": ["History", "Your records"], "head": ["{X} kept for {k} months", "{k} months of history", "Every {x1} kept {k} months"],
+     "echo": ["We hold on to {x} for {k} months.", "Each {x1} stays with us for {k} months.",
+              "For {k} months, nothing is thrown away."],
+     "keep": ["After that they are deleted, backups included.", "Download them as CSV before then.",
+              "Only you can see this history."],
+     "eb": ["{k} months"]},
+    {"topic": ["Cancellations", "Changing your plans"], "head": ["Cancel free up to {k} hours before", "Free changes until {k} hours before", "{k} hours to change your mind"],
+     "echo": ["Cancelling costs nothing until {k} hours beforehand.", "Change your mind up to {k} hours ahead, free.",
+              "Up to {k} hours before, a cancellation is free."],
+     "keep": ["Later than that, the fee becomes credit for {m} months.", "Your {role} is told straight away.",
+              "Swaps with another {who1} are always free."],
+     "eb": ["{k} hours’ notice"]},
+    {"topic": ["Sync", "Every device, up to date"], "head": ["Changes sync in {k} seconds", "Synced in {k} seconds", "{k}-second sync"],
+     "echo": ["Edits reach every phone within {k} seconds.", "Updates show up elsewhere {k} seconds later.",
+              "In {k} seconds or so, every device has the change."],
+     "keep": ["Offline edits wait and sync when you reconnect.", "Clashes are flagged, never overwritten.",
+              "Works without signal."],
+     "eb": ["{k}-second sync"]},
+    {"topic": ["Group size", "Who can come"], "head": ["Groups of up to {k}", "No more than {k} to a group", "Small groups, {k} at most"],
+     "echo": ["Each session takes {k} people at most.", "No more than {k} in a group, ever.",
+              "A group is capped at {k}; never more."],
+     "keep": ["Under-16s come with an adult.", "Private bookings can go up to {m}.", "Bring your own {y}, or borrow ours."],
+     "eb": ["Up to {k}"]},
+    {"topic": ["Storage", "Room for photos"], "head": ["{k} GB of storage", "Room for {k} GB", "{k} GB for your files"],
+     "echo": ["There is space for {k} GB of files.", "Store up to {k} GB, all told.", "{K} GB; that is the allowance."],
+     "keep": ["Photos are kept at full size.", "Extra space is {price} per 100 GB.", "Deleted files stop counting at once."],
+     "eb": ["{k} GB"]},
+    {"topic": ["Charities", "Good causes"], "head": ["{k}% off for charities", "Charities pay {k}% less", "{k}% charity discount"],
+     "echo": ["Registered charities pay {k}% less.", "Charities save {k}%, on any plan.", "For charities, {k}% comes off."],
+     "keep": ["Send us your charity number once; it applies at renewal.", "The discount stacks with yearly billing.",
+              "Schools count too."],
+     "eb": ["{k}% off"]},
+    {"topic": ["Entries", "How to enter"], "head": ["Entries close {day} {date}", "Last entries {day} {date}", "Closing date: {day} {date}"],
+     "echo": ["The last day to enter is {day} {date}.", "After {day} {date}, entries are closed.",
+              "{day} {date}; no entries after that."],
+     "keep": ["Late entries go on a waiting list.", "Results are posted the following week.", "Your {group} is told by email."],
+     "eb": ["Until {date}"]},
+    {"topic": ["Coverage", "Where we go"], "head": ["Within {k} miles of {place}", "{k} miles around {place}", "Covering {place} and {k} miles out"],
+     "echo": ["We cover a {k}-mile radius around {place}.", "Anywhere up to {k} miles from {place}, we come.",
+              "{place}, plus {k} miles in every direction."],
+     "keep": ["Further out, delivery is {price}.", "Postcodes outside it can join the waiting list.",
+              "Islands included."],
+     "eb": ["{k} miles"]},
+]
+OPEN_TIMES = [("7am", "10pm"), ("8am", "6pm"), ("9am", "5pm"), ("6am", "9pm"), ("10am", "4pm"), ("7:30am", "8pm")]
+
+# Short plain lines that add one fact and carry no figure (KEEP), by the place they fill; each pool holds only lines
+# that cannot contradict the copy around them.
+SHORT_KEEP = {
+    "list": ["Sorted by date, newest first.", "Drafts are not shown.", "Archived {x} are hidden.", "Updated every hour.",
+             "Synced to your other devices.", "Read-only for {who} outside the {group}.", "Oldest at the bottom.",
+             "Your {role} sees the same list.", "Shared with your {group}."],
+    "settings": ["Changes apply straight away.", "Applies from tomorrow.", "Synced to your other devices.",
+                 "Your {role} can see these too.", "Saved as you go."],
+    "field": ["Can be changed later.", "Checked before saving.", "Saved as you type."],
+    "toggle": ["Only on this device.", "Applies to every device you use.", "Changes apply straight away.", "Applies from tomorrow.",
+               "Off by default.", "Your {role} can turn it off for everyone."],
+    "stat": ["Excludes drafts.", "Updated every hour.", "Checked each morning.", "Test data left out."],
+}
+
+# Field labels that carry their own limit or format, a helper that only repeats it (R5) and one that adds a fact
+# (K4); placeholders that repeat the limit (R8).
+CONSTRAINT_FIELDS = [
+    ("Bio (up to {k} characters)", [160, 200, 280], ["No more than {k} characters.", "{K} characters at most, spaces included."],
+     ["Shown on your public profile.", "Other {who} see it beside your name."], ["Up to {k} characters", "Max. {k} characters"], ["e.g. Weekend {who1} in {place}", "e.g. Learning since {year}"]),
+    ("Password, {k} characters or more", [10, 12, 14], ["Use at least {k} characters.", "{K} characters is the minimum."],
+     ["Spaces are allowed; avoid one you use elsewhere.", "We never email it to you."], ["{k}+ characters", "At least {k} characters"], ["e.g. three random words"]),
+    ("Group size ({k1} to {k})", [6, 8, 10, 12], ["Between {k1} and {k} people.", "From {k1} up to {k}, no more."],
+     ["Bigger groups can book the whole room.", "Under-16s count as half."], ["{k1} to {k}", "{k1}–{k} people"], ["e.g. 4", "e.g. 5"]),
+    ("Display name (max {k} characters)", [20, 24, 30], ["{K} characters at most.", "No longer than {k} characters."],
+     ["Other members see it beside your comments.", "Must be unique in your {group}."], ["Max. {k} characters", "Up to {k} characters"], ["e.g. {person}"]),
+    ("PIN ({k} digits)", [4, 6], ["Exactly {k} digits.", "{K} digits, no letters."],
+     ["Staff can reset it at the desk.", "Asked for at the self-service kiosk."], ["{k} digits", "Enter {k} digits"], ["e.g. {pin}"]),
+    ("Phone number (UK mobile)", [0], ["A UK mobile number.", "Only UK mobile numbers."],
+     ["Only used for sign-in codes.", "We text you on the morning of each {y1}."], ["UK mobile", "07… UK mobile"], ["e.g. 07700 900123", "e.g. 07700 900456"]),
+    ("Postcode (UK only)", [0], ["UK postcodes only.", "A postcode in the UK."],
+     ["Used to work out delivery days.", "It sets which branch your {x} go to."], ["UK postcode", "UK only"], ["e.g. BS3 4QT", "e.g. LS6 2AB"]),
+    ("Weight in kg", [0], ["In kilograms.", "Kilograms, not pounds."],
+     ["Round to the nearest half kilo.", "Used for the ferry’s load sheet."], ["kg", "Weight, kg"], ["e.g. 62", "e.g. 4.5"]),
+    ("Notes (optional)", [0], ["This one is optional.", "Not required."],
+     ["Visible to your {role} only.", "Printed on the summary sheet."], ["Optional", "Optional notes"], ["e.g. Gate code is on the fence", "e.g. Back door sticks"]),
+    ("{X1} name (up to {k} characters)", [30, 40, 60], ["Keep it to {k} characters or fewer.", "{K} characters, at most."],
+     ["Must be unique in your {group}.", "Shown on every reminder."], ["Up to {k} characters", "{k} characters max."], ["e.g. {item}"]),
+    ("Start time (24-hour clock)", [0], ["Use the 24-hour clock.", "In 24-hour time."],
+     ["Times follow the {group}’s time zone.", "Your {role} is told if it moves."], ["24-hour clock", "HH:MM, 24-hour"], ["e.g. 14:30", "e.g. 09:15"]),
+]
+
+CONSTRAINT_PLAIN = ["Bio", "Password", "Group size", "Display name", "PIN", "Phone number", "Postcode", "Weight", "Notes",
+                    "{X1} name", "Start time"]
+
+# Toggles whose label carries a figure, with a helper that repeats it (R5) or adds a fact (K4).
+FIGURE_TOGGLES = [
+    ("Remind me {k} days before", [2, 3, 5, 7], ["A reminder goes out {k} days ahead.", "{K} days before, you get a nudge."],
+     ["Reminders follow your time zone.", "Your {role} gets the same reminder."]),
+    ("Daily digest at {clock}", [0], ["One email each day at {clock}.", "At {clock}, every day, one email."],
+     ["Skipped on days with nothing new.", "Lists only {x} that changed."]),
+    ("Sign out after {k} days", [7, 14, 30], ["After {k} days, you are signed out.", "{K} days, then a fresh sign-in."],
+     ["Only on this device.", "Clearing cookies signs you out sooner."]),
+    ("Archive after {k} months", [3, 6, 12], ["Things move to the archive after {k} months.", "{K} months on, it is archived."],
+     ["Nothing is deleted.", "Archived {x} still count in reports."]),
+]
+
+FIGURE_TOGGLES_PLAIN = ["Reminders", "Daily digest", "Automatic sign-out", "Auto-archive"]
+
+
+# Mono, upper-case meta lines that state a date, issue or version (KEEP; K1 for dates and issues).
+def keep_meta(rng, game=False) -> list:
+    m = rng.pick(MONTHS)
+    if game:
+        return [rng.pick([f"BUILD {rng.randrange(2024, 2027)}.{rng.randrange(1, 13):02d}.{rng.randrange(1, 29):02d}",
+                          f"V{rng.randrange(0, 3)}.{rng.randrange(0, 20)}.{rng.randrange(0, 10)}",
+                          f"PATCH {rng.randrange(1, 5)}.{rng.randrange(0, 10)} · {rng.randrange(1, 29)} {m[:3].upper()}",
+                          f"SEASON {rng.randrange(1, 8)} · WEEK {rng.randrange(1, 13)}",
+                          f"DAY {rng.randrange(2, 90)} · {clock(rng)}"])]
+    return rng.pick([[f"Issue {rng.randrange(2, 80)}", f"{m} 2026"], [f"Release 4.{rng.randrange(1, 12)}", f"{rng.randrange(1, 29)} {m} 2026"],
+                     [f"Updated {rng.randrange(1, 29)} {m} 2026"], [f"No. {rng.randrange(10, 99)}", f"{rng.pick(['Spring', 'Summer', 'Autumn', 'Winter'])} 2026"],
+                     [f"v{rng.randrange(1, 6)}.{rng.randrange(0, 20)}.{rng.randrange(0, 10)}", f"{m} 2026"]])
+
+
+# Footers: column headings vary by product, and each column draws its links from a pool.
+FOOTER_POOL = [
+    (["Product", "The app", "Explore", "Tour", "Inside"], ["Features", "Pricing", "Changelog", "Roadmap", "Download", "Integrations", "What’s new"]),
+    (["Company", "Who we are", "The team", "Us", "Studio"], ["About", "Careers", "Press", "Contact", "Blog", "Partners"]),
+    (["Resources", "Learn", "Guides", "Help", "Support"], ["Docs", "Guides", "Status", "Community", "Help centre", "Webinars", "Templates"]),
+    (["Legal", "Policies", "Small print", "Trust"], ["Privacy", "Terms", "Cookies", "Licences", "Security", "Accessibility"]),
+    (["For {who}", "Who it is for", "Use cases"], ["For {groups}", "For {roles}", "For schools", "For charities", "For clubs"]),
+    (["Follow", "Elsewhere", "Social"], ["Newsletter", "Mastodon", "Instagram", "YouTube", "RSS"]),
+    (["Get the app", "Apps", "Download"], ["iPhone", "Android", "Web app", "Mac", "Windows"]),
+]
+LEGAL_V3 = ["© {year} {p} Ltd. Registered in England and Wales, no. {cno}.", "© {year} {p}. All prices include VAT.",
+            "{p} is a trading name of {firm}, company no. {cno}.", "© {year} {firm}. VAT GB{vat}.",
+            "{p} Ltd, {num} {street}, {place}. Company {cno}.", "Made in {place} by {firm}.", "© {p} {year}. Registered charity {charity}.",
+            "{firm}, registered in Scotland, SC{cno6}.", "© {year} {p}"]
+STREETS = ["Mill Lane", "Quay Street", "Station Road", "Market Place", "Church Street", "Victoria Road", "Harbour Row", "King Street"]
+FIRM_TAIL = ["Ltd", "Limited", "LLP", "Studio Ltd", "Labs Ltd", "& Co"]
+
+
+def legal_line(rng, product: str) -> str:
+    firm = f"{rng.pick(NAME_A)}{rng.pick(NAME_B)} {rng.pick(FIRM_TAIL)}"
+    return rng.pick(LEGAL_V3).format(year=rng.pick([2025, 2026]), p=product, cno=f"{rng.randrange(10**7, 10**8)}", firm=firm,
+                                     vat=f"{rng.randrange(10**8, 10**9)}", num=rng.randrange(1, 120), street=rng.pick(STREETS),
+                                     place=rng.pick(PLACES), charity=f"{rng.randrange(10**6, 10**7)}", cno6=f"{rng.randrange(10**5, 10**6)}")

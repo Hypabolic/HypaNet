@@ -1,0 +1,12 @@
+{"schema": "slop.screen/1", "id": "b5045c5218e58a06", "framework": "tsx",
+ "source": {"repo": "slop-rules-fixtures", "path": "src/va_alt_fragment_pos.tsx", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "header", "line": 2},
+  {"k": 1, "kind": "list", "line": 4},
+  {"k": 2, "kind": "actions", "line": 7}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "h2", "text": "Moorings", "flags": [], "loc": [3, 7, 3, 15]},
+  {"i": 1, "k": 1, "role": "list_item", "text": "Pontoon A, berth 4", "flags": ["in_list"], "loc": [5, 7, 5, 25]},
+  {"i": 2, "k": 1, "role": "list_item", "text": "Pontoon B, berth 9", "flags": ["in_list"], "loc": [6, 7, 6, 25]},
+  {"i": 3, "k": 2, "role": "link", "text": "See fewer \ue001 more", "flags": ["conditional"], "loc": [8, 7, 8, 23]},
+  {"i": 4, "k": 2, "role": "button", "text": "Hide \ue001 Learn more", "flags": ["conditional"], "loc": [9, 7, 9, 24]}]}

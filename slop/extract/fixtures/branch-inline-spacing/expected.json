@@ -1,0 +1,7 @@
+{"schema": "slop.screen/1", "id": "1197c00bf5e64220", "framework": "tsx",
+ "source": {"repo": "slop-fixtures", "path": "KilnStatus.tsx", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "body", "line": 3}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "body", "text": "\ue000 n stages complete Cooling next \ue001 Idle", "flags": ["dynamic", "stateful", "conditional"], "loc": [8, 16, 13, 21], "vw": [1]},
+  {"i": 1, "k": 0, "role": "body", "text": "\ue000 n stages complete Cooling next", "flags": ["dynamic"], "loc": [18, 12, 20, 27], "vw": [1]}]}

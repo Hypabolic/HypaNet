@@ -1,0 +1,21 @@
+{"schema": "slop.screen/1", "id": "09c7575ed0004a06", "framework": "swift",
+ "source": {"repo": "slop-fixtures", "path": "KilnSettings.swift", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "header", "line": 25},
+  {"k": 1, "kind": "header", "line": 37},
+  {"k": 2, "kind": "control", "line": 27},
+  {"k": 3, "kind": "body", "line": 26},
+  {"k": 4, "kind": "body", "line": 71}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "h1", "text": "Kiln settings", "flags": ["in_header"], "loc": [21, 28, 21, 41]},
+  {"i": 1, "k": 1, "role": "h2", "text": "Kiln settings", "flags": ["in_form", "section_first"], "loc": [37, 22, 37, 29]},
+  {"i": 2, "k": 2, "role": "label", "text": "Firing", "flags": ["in_form", "in_control", "section_first"], "loc": [27, 25, 27, 31]},
+  {"i": 3, "k": 2, "role": "menu_item", "text": "Bisque \ue001 Glaze \ue001 Raku", "flags": ["stateful", "conditional", "in_form", "in_list", "in_control"], "loc": [28, 65, 28, 73]},
+  {"i": 4, "k": 3, "role": "body", "text": "Bisque \ue001 Glaze \ue001 Raku", "flags": ["stateful", "conditional", "in_form"], "loc": [30, 22, 30, 34]},
+  {"i": 5, "k": 3, "role": "body", "text": "Outdoor kiln only \ue001 Ready to load", "flags": ["stateful", "conditional", "in_form"], "loc": [31, 22, 31, 28]},
+  {"i": 6, "k": 3, "role": "body", "text": "Leave the bung out until 600 °C. \ue001 Check shelf wash before loading.", "flags": ["stateful", "conditional", "in_form"], "loc": [32, 22, 32, 42]},
+  {"i": 7, "k": 3, "role": "body", "text": "\ue000 note", "flags": ["dynamic", "stateful", "in_form"], "loc": [33, 22, 33, 26], "vw": [1]},
+  {"i": 8, "k": 3, "role": "body", "text": "\ue000 draft", "flags": ["dynamic", "stateful", "in_form"], "loc": [34, 22, 34, 27], "vw": [1]},
+  {"i": 9, "k": 3, "role": "body", "text": "\ue000 summary", "flags": ["dynamic", "stateful", "in_form"], "loc": [35, 22, 35, 29], "vw": [1]},
+  {"i": 10, "k": 3, "role": "helper", "text": "Cone values follow Orton charts.", "flags": ["in_form", "section_last"], "loc": [22, 44, 22, 76]},
+  {"i": 11, "k": 4, "role": "body", "text": "\ue000 heading", "flags": ["dynamic", "stateful"], "loc": [71, 14, 71, 21], "vw": [1]}]}

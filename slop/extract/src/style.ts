@@ -20,6 +20,8 @@ export interface CssRule {
   srOnly?: boolean;
   blockDisplay?: boolean;
   flexBox?: boolean;
+  bold?: boolean;
+  fontPx?: number;
 }
 export type CssMap = Map<string, CssRule>;
 
@@ -52,6 +54,7 @@ export function baseToken(tok: string): string | null {
 }
 
 const SIZE_TOK = /^text-(xs|sm|base|lg|xl|[2-9]xl)$/;
+const SIZE_PX: Record<string, number> = { xs: 12, sm: 14, base: 16, lg: 18, xl: 20, '2xl': 24, '3xl': 30, '4xl': 36, '5xl': 48, '6xl': 60, '7xl': 72, '8xl': 96, '9xl': 128 };
 const SIZE_ARB = /^text-\[(\d*\.?\d+)(px|rem|em)\]$/;
 const ALIGN_TOK = /^text-(left|right|center|justify|start|end|balance|pretty|wrap|nowrap|ellipsis|clip)$/;
 
@@ -66,11 +69,13 @@ export function tokenSty(tok0: string, css: CssMap): Sty {
     out.small = sz === 'xs' || sz === 'sm';
     out.xsmall = sz === 'xs';
     out.large = /^[2-9]xl$/.test(sz);
+    out.fontPx = SIZE_PX[sz];
   } else if ((m = tok.match(SIZE_ARB))) {
     const px = pxOf(m[1], m[2]);
     out.small = px <= 14;
     out.xsmall = px <= 12;
     out.large = px >= 24;
+    out.fontPx = px;
   } else if (/^text-/.test(tok) && !ALIGN_TOK.test(tok)) {
     // a colour token
     out.muted = /^text-(muted-foreground|muted|secondary|subtle)$/.test(tok);
@@ -91,6 +96,8 @@ export function tokenSty(tok0: string, css: CssMap): Sty {
     else out.tracked = false;
   }
   if (/^-tracking-/.test(tok)) out.tracked = false;
+  if (/^font-(semibold|bold|extrabold|black)$/.test(tok)) out.bold = true;
+  else if (/^font-(thin|extralight|light|normal|medium)$/.test(tok)) out.bold = false;
   if (tok === 'font-mono') out.mono = true;
   if (tok === 'font-sans' || tok === 'font-serif') out.mono = false;
   if (/^rounded(-[a-z]+)?-full$|^rounded-\[(9{3,}px|50%|100%)\]$/.test(tok)) out.rounded = true;
@@ -263,8 +270,12 @@ function addRule(into: CssMap, name: string, decls: string): void {
         if (px !== null) {
           rule.small = px <= 14;
           rule.xsmall = px <= 12;
+          rule.fontPx = px;
         }
       }
+    } else if (prop === 'font-weight') {
+      const w = /^bold(er)?$/.test(val) ? 700 : parseFloat(val);
+      if (!Number.isNaN(w)) rule.bold = w >= 600;
     } else if (prop === 'font-family') rule.mono = /mono|courier|menlo|consolas|monaco/.test(val);
     else if (prop === 'border-radius') rule.rounded = /^(50%|100%|9{3,}px|\d{3,}px|\d{2,}rem)$/.test(val);
     else if (prop === 'width') width = lengthPx(val);

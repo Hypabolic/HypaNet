@@ -28,6 +28,8 @@ export interface Sty {
   flexBox?: boolean; // display: flex or grid (inline or not): each child is laid out as its own item
   titleCase?: boolean;
   heading?: number; // SwiftUI title fonts: a class-stage heading level
+  bold?: boolean; // font weight 600 or more (Tailwind font-semibold and bolder, CSS font-weight)
+  fontPx?: number; // font size in px when known (Tailwind text-* sizes, a literal CSS font-size)
 }
 
 export interface El {
@@ -54,6 +56,8 @@ export interface El {
   textBlock?: boolean; // inline children always merge into one node
   inline?: boolean; // may merge into a surrounding run of text
   noMerge?: boolean; // never merges (pill, kicker, sr-only)
+  andGroup?: number; // shown under its own `&&` condition (jsx.ts): its text belongs to that group
+  hidden?: boolean; // not drawn (SwiftUI .opacity(0), .hidden()): no nodes
   // filled in by infer.ts
   parent?: El;
 }
@@ -74,6 +78,56 @@ export interface Txt {
   copy?: [number, number]; // span of the array element whose expanded copy holds this text
   call?: [number, number]; // span of the call of an inlined local view function (swift.ts): a last-resort loc
   andGroup?: number; // shown under its own `&&` condition (jsx.ts): adjacent texts of different groups are alternatives
+  opts?: Opt[]; // the complete renderings of a conditional text, in branch order, '' for an empty branch (≥ 2)
+  lspan?: [number, number]; // span of the one literal an in-file constant resolved to (jsx.ts, swift.ts): its loc
+}
+
+/** One complete rendering of a conditional text. */
+export interface Opt {
+  text: string;
+  lit: string;
+}
+
+/**
+ * At most this many complete renderings are written for a text with conditional parts (an optional fragment, a
+ * plural ending, a fallback inside a template); beyond it the branches stay inline, joined where they occur.
+ */
+export const MAX_RENDERINGS = 8;
+
+/**
+ * The complete renderings of a sequence of parts, each a list of alternatives: the product in order (the first part
+ * varies slowest), or null when there would be more than MAX_RENDERINGS.
+ */
+export function renderings(parts: Opt[][]): Opt[] | null {
+  let out: Opt[] = [{ text: '', lit: '' }];
+  for (const p of parts) {
+    if (out.length * p.length > MAX_RENDERINGS) return null;
+    const next: Opt[] = [];
+    for (const a of out) for (const b of p) next.push({ text: a.text + b.text, lit: a.lit + b.lit });
+    out = next;
+  }
+  return out;
+}
+
+/** Join complete renderings with ALT: empty and repeated renderings are dropped. */
+export function joinRenderings(rs: Opt[]): Opt {
+  const seen = new Set<string>();
+  const keep: Opt[] = [];
+  for (const r of rs) {
+    const k = collapse(r.text.replace(/\uE002/gu, ''));
+    if (!k || seen.has(k)) continue;
+    seen.add(k);
+    keep.push(r);
+  }
+  return { text: keep.map((r) => r.text.trim()).join(ALT_JOIN), lit: keep.map((r) => r.lit.trim()).join(ALT_SEP) };
+}
+
+/**
+ * Private-use characters in source copy (Material Icons ligature code points, say) are dropped before any marker is
+ * written, so that only the extractor's own VAR and ALT code points are markers.
+ */
+export function stripPUA(s: string): string {
+  return s.replace(/[\uE000-\uF8FF\u{F0000}-\u{FFFFD}\u{100000}-\u{10FFFD}]/gu, '');
 }
 
 export type Kid = El | Txt;

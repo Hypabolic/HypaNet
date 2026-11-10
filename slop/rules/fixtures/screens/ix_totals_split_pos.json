@@ -1,0 +1,18 @@
+{"schema": "slop.screen/1", "id": "259f0fe48f2af5c0", "framework": "tsx",
+ "source": {"repo": "slop-rules-fixtures", "path": "src/ix_totals_split_pos.tsx", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "header", "line": 2},
+  {"k": 1, "kind": "body", "line": 4},
+  {"k": 2, "kind": "body", "line": 9}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "h2", "text": "Gallery", "flags": [], "loc": [3, 7, 3, 14]},
+  {"i": 1, "k": 1, "role": "caption", "text": "1 / 2", "flags": [], "loc": [5, 7, 5, 12]},
+  {"i": 2, "k": 1, "role": "body", "text": "Slipway at dawn", "flags": [], "loc": [6, 7, 6, 22]},
+  {"i": 3, "k": 1, "role": "caption", "text": "2 / 2", "flags": [], "loc": [7, 7, 7, 12]},
+  {"i": 4, "k": 1, "role": "body", "text": "Slipway at dusk", "flags": [], "loc": [8, 7, 8, 22]},
+  {"i": 5, "k": 2, "role": "caption", "text": "1 / 3", "flags": [], "loc": [10, 7, 10, 12]},
+  {"i": 6, "k": 2, "role": "body", "text": "Pier", "flags": [], "loc": [11, 7, 11, 11]},
+  {"i": 7, "k": 2, "role": "caption", "text": "2 / 3", "flags": [], "loc": [12, 7, 12, 12]},
+  {"i": 8, "k": 2, "role": "body", "text": "Boathouse", "flags": [], "loc": [13, 7, 13, 16]},
+  {"i": 9, "k": 2, "role": "caption", "text": "3 / 3", "flags": [], "loc": [14, 7, 14, 12]},
+  {"i": 10, "k": 2, "role": "body", "text": "Crane", "flags": [], "loc": [15, 7, 15, 12]}]}

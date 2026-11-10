@@ -1,0 +1,12 @@
+{"schema": "slop.screen/1", "id": "f323a5be30f53097", "framework": "tsx",
+ "source": {"repo": "slop-fixtures", "path": "PlayerBar.tsx", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "actions", "line": 3},
+  {"k": 1, "kind": "body", "line": 3}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "button", "text": "Play", "flags": [], "loc": [4, 29, 4, 35]},
+  {"i": 1, "k": 0, "role": "aria", "text": "Skip", "flags": [], "loc": [5, 41, 5, 45]},
+  {"i": 2, "k": 1, "role": "body", "text": "Shuffle on", "flags": [], "loc": [8, 12, 8, 29]},
+  {"i": 3, "k": 1, "role": "body", "text": "Queue \ue000 track", "flags": ["dynamic"], "loc": [9, 10, 9, 24], "vw": [1]},
+  {"i": 4, "k": 1, "role": "tooltip", "text": "Repeat one", "flags": [], "loc": [10, 21, 10, 38]},
+  {"i": 5, "k": 1, "role": "body", "text": "Repeat", "flags": [], "loc": [10, 41, 10, 47]}]}

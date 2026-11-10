@@ -1,10 +1,10 @@
 // IR tree → screen nodes: runs of text, roles (tag/attribute → component → class → position), flags, repeated
 // subtrees, clusters and section_first/last. Deterministic: depends only on the tree and the style inputs.
 
-import type { Box, El, Kid, Sty, Txt } from './ir.ts';
+import type { Box, El, Kid, Opt, Sty, Txt } from './ir.ts';
 import {
-  ALT_JOIN, ALT_SEP, collapse, hasArrowTail, hasDotLead, isCaps, isDotOnly, isEmojiLead, isFigure, isSeparatorOnly, isTitleCase,
-  varWords, wordCount,
+  ALT_JOIN, ALT_SEP, MAX_RENDERINGS, collapse, hasArrowTail, hasDotLead, isCaps, isDotOnly, isEmojiLead, isFigure, isSeparatorOnly, isTitleCase,
+  joinRenderings, varWords, wordCount,
 } from './ir.ts';
 import { LISTISH, MONO_TAGS, STATEISH, strongRole } from './roles.ts';
 import type { ClusterKind, Flag, Framework, Role } from './schema.ts';
@@ -151,11 +151,14 @@ export function infer(root: El, ctx: InferCtx): { nodes: OutNode[]; clusters: Ou
   // Inside an expanded array copy (jsx.ts) a node sits at the first array literal substituted into its text, else at
   // the copy's array element. Its other literals, their properties, the element and its span in the callback are
   // fallbacks for when that span is taken (see the de-duplication below).
+  // A node showing only an in-file constant sits at the constant's literal (its use site if that is taken).
   const place = (pieces: Txt[], s: number, e: number): { s: number; e: number; alts: [number, number][] } => {
     const copy = pieces.find((t) => t.copy)?.copy;
     const call = pieces.find((t) => t.call)?.call;
+    const shown = pieces.filter((t) => t.text.trim());
+    const lspan = shown.length === 1 ? shown[0].lspan : undefined;
     const cands: [number, number][] = [
-      ...pieces.flatMap((t) => t.subs ?? []), ...pieces.flatMap((t) => t.near ?? []), ...(copy ? [copy] : []), [s, e],
+      ...pieces.flatMap((t) => t.subs ?? []), ...pieces.flatMap((t) => t.near ?? []), ...(lspan ? [lspan] : []), ...(copy ? [copy] : []), [s, e],
       ...(call ? [call] : []),
     ];
     return { s: cands[0][0], e: cands[0][1], alts: cands.slice(1) };
@@ -168,6 +171,7 @@ export function infer(root: El, ctx: InferCtx): { nodes: OutNode[]; clusters: Ou
   };
 
   const visit = (e: El, chain: El[]): void => {
+    if (e.hidden) return;
     const ch = chain.concat(e);
     if (dotGlyphEl(e)) {
       pendingDot = { scope: e.parent ?? e, bound: e.bound };
@@ -190,6 +194,7 @@ export function infer(root: El, ctx: InferCtx): { nodes: OutNode[]; clusters: Ou
         else run.push({ txt: k, inl });
         return;
       }
+      if (k.hidden) return;
       if (!hasText(k)) {
         if (someDesc(k, isDotEl)) run.push({ mark: 'dot', bound: someDesc(k, (x) => isDotEl(x) && x.bound), inl });
         else if (someDesc(k, (x) => !!x.arrowIcon)) run.push({ mark: 'arrow', inl });
@@ -220,6 +225,114 @@ export function infer(root: El, ctx: InferCtx): { nodes: OutNode[]; clusters: Ou
     if (pendingIcon && pendingIcon.scope === e) pendingIcon = null;
   };
 
+  /** Concatenate text pieces with the browser's spacing; `alts`: fragments of different `&&` groups join with ALT. */
+  const concatRun = (tpieces: Piece[], alts: boolean): { text: string; lit: string; altJoined: boolean } => {
+    let text0 = '';
+    let lit0 = '';
+    let altJoined = false;
+    let prev: Piece | null = null;
+    for (const cur of tpieces) {
+      const t = cur.txt as Txt;
+      if (t.text === '') continue;
+      if (prev) {
+        const pt = prev.txt as Txt;
+        if (alts && pt.andGroup !== undefined && t.andGroup !== undefined && pt.andGroup !== t.andGroup && pt.text.trim() && t.text.trim()) {
+          // fragments shown under different && conditions are alternatives, not one line of text
+          text0 = `${text0.trimEnd()}${ALT_JOIN}${t.text.trimStart()}`;
+          lit0 = `${lit0.trimEnd()}${ALT_SEP}${t.lit.trimStart()}`;
+          altJoined = true;
+          prev = cur;
+          continue;
+        }
+        const ci = cur.inl;
+        const sameEl = prev.inl.length === ci.length && prev.inl.every((x, j) => x === ci[j]);
+        // an inline tag displayed as a block starts its own line: the words on either side stay apart
+        const pin = prev.inl;
+        const crossed = [...pin.filter((x) => !ci.includes(x)), ...ci.filter((x) => !pin.includes(x))];
+        const blockEdge = crossed.some((x) => sty(x).blockDisplay);
+        if ((blockEdge || (!sameEl && pin.length > 0 && ci.length > 0)) && /[\p{L}\p{N}.:!?)\uE000\uE001\uE002]$/u.test(text0) && /^[\p{L}\p{N}(\uE000\uE001]/u.test(t.text)) {
+          text0 += ' ';
+          lit0 += ' ';
+        }
+      }
+      text0 += t.text;
+      lit0 += t.lit;
+      prev = cur;
+    }
+    return { text: text0, lit: lit0, altJoined };
+  };
+
+  /**
+   * A run of text with an optional part (a fragment under `&&`, a branch that renders nothing) is written as its
+   * complete renderings joined with ALT, the version without the part included ("Saved ALT Saved · draft"), so that
+   * the part does not read as always present. Adjacent fragments under different `&&` conditions are one choice of
+   * alternatives. Null when nothing is optional, or past MAX_RENDERINGS (the branches then stay inline).
+   */
+  const renderRun = (tpieces: Piece[]): { text: string; lit: string; altJoined: boolean } | null => {
+    const groupPath = (p: Piece): number[] => {
+      const out: number[] = [];
+      for (const x of p.inl) if (x.andGroup !== undefined) out.push(x.andGroup);
+      const t = p.txt as Txt;
+      if (t.andGroup !== undefined) out.push(t.andGroup);
+      return out;
+    };
+    let optional = false;
+    const withText = (p: Piece, o: Opt): Piece => ({ ...p, txt: { ...(p.txt as Txt), text: o.text, lit: o.lit } });
+    // each slot is a list of options, each option the pieces it shows
+    const slots = (ps: Piece[], depth: number): Piece[][][] | null => {
+      const out: Piece[][][] = [];
+      let i = 0;
+      while (i < ps.length) {
+        if (groupPath(ps[i])[depth] === undefined) {
+          const p = ps[i];
+          const o = (p.txt as Txt).opts;
+          if (o && o.length >= 2) {
+            if (o.some((x) => !x.text.trim())) optional = true;
+            out.push(o.map((x) => [withText(p, x)]));
+          } else out.push([[p]]);
+          i++;
+          continue;
+        }
+        const groups: Piece[][] = [];
+        let cur: number | undefined;
+        let j = i;
+        for (; j < ps.length; j++) {
+          const g = groupPath(ps[j])[depth];
+          if (g === undefined) break;
+          if (g !== cur) groups.push([]);
+          cur = g;
+          groups[groups.length - 1].push(ps[j]);
+        }
+        const options: Piece[][] = [];
+        for (const grp of groups) {
+          const sub = slots(grp, depth + 1);
+          const combos = sub ? product(sub) : null;
+          if (!combos) return null;
+          options.push(...combos);
+        }
+        options.push([]);
+        optional = true;
+        out.push(options);
+        i = j;
+      }
+      return out;
+    };
+    const product = (sl: Piece[][][]): Piece[][] | null => {
+      let out: Piece[][] = [[]];
+      for (const options of sl) {
+        if (out.length * options.length > MAX_RENDERINGS) return null;
+        out = out.flatMap((a) => options.map((b) => a.concat(b)));
+      }
+      return out;
+    };
+    const sl = slots(tpieces, 0);
+    if (!sl || !optional) return null;
+    const combos = product(sl);
+    if (!combos) return null;
+    const j = joinRenderings(combos.map((c) => concatRun(c, false)));
+    return { text: j.text, lit: j.lit, altJoined: j.text.includes(ALT_SEP) };
+  };
+
   const buildRun = (owner: El, ch: El[], pieces: Piece[]): void => {
     const textIdx = pieces.map((p, i) => (p.txt && p.txt.text.trim() !== '' ? i : -1)).filter((i) => i >= 0);
     if (textIdx.length === 0) {
@@ -238,34 +351,10 @@ export function infer(root: El, ctx: InferCtx): { nodes: OutNode[]; clusters: Ou
     // adjacent pieces from different inline elements with no space between them are separate words
     // (<a><strong>Name</strong><span>Detail</span></a> renders as two lines or two blocks far more often than as one word)
     const tpieces = pieces.filter((p) => p.txt);
-    let text0 = '';
-    let lit0 = '';
-    let altJoined = false;
-    for (let i = 0; i < tpieces.length; i++) {
-      const t = tpieces[i].txt as Txt;
-      if (i > 0) {
-        const prev = tpieces[i - 1];
-        const pt = prev.txt as Txt;
-        if (pt.andGroup !== undefined && t.andGroup !== undefined && pt.andGroup !== t.andGroup && pt.text.trim() && t.text.trim()) {
-          // fragments shown under different && conditions are alternatives, not one line of text
-          text0 = `${text0.trimEnd()}${ALT_JOIN}${t.text.trimStart()}`;
-          lit0 = `${lit0.trimEnd()}${ALT_SEP}${t.lit.trimStart()}`;
-          altJoined = true;
-          continue;
-        }
-        const cur = tpieces[i].inl;
-        const sameEl = prev.inl.length === cur.length && prev.inl.every((x, j) => x === cur[j]);
-        // an inline tag displayed as a block starts its own line: the words on either side stay apart
-        const crossed = [...prev.inl.filter((x) => !cur.includes(x)), ...cur.filter((x) => !prev.inl.includes(x))];
-        const blockEdge = crossed.some((x) => sty(x).blockDisplay);
-        if ((blockEdge || (!sameEl && prev.inl.length > 0 && cur.length > 0)) && /[\p{L}\p{N}.:!?)\uE000\uE001\uE002]$/u.test(text0) && /^[\p{L}\p{N}(\uE000\uE001]/u.test(t.text)) {
-          text0 += ' ';
-          lit0 += ' ';
-        }
-      }
-      text0 += t.text;
-      lit0 += t.lit;
-    }
+    const joined = renderRun(tpieces) ?? concatRun(tpieces, true);
+    const text0 = joined.text;
+    const lit0 = joined.lit;
+    const altJoined = joined.altJoined;
     const tp = tpieces.map((p) => p.txt as Txt);
     const text = collapse(text0);
     const lit = collapse(lit0);
@@ -331,6 +420,18 @@ export function infer(root: El, ctx: InferCtx): { nodes: OutNode[]; clusters: Ou
   // text that is one bound value named as an error (deepResearchError, model.errorMessage)
   const errorBinding = (n: RNode): boolean =>
     n.bound && /^\uE000 (?:[a-z0-9]+ )*errors?(?: (?:message|messages|text|detail|details|description|msg))?\uE002$/.test(n.text.trim());
+  const linkTexts = new Map<number, number>();
+  const cardLinkBlock = (n: RNode, j: number): boolean => {
+    const link = n.chain[j];
+    const between = n.chain.slice(j + 1);
+    if (!between.some((x) => !x.name.startsWith('#') && (!x.inline || !!sty(x).blockDisplay))) return false;
+    let c = linkTexts.get(link.id);
+    if (c === undefined) {
+      c = nodes.filter((m) => !m.attr && m.chain.includes(link)).length;
+      linkTexts.set(link.id, c);
+    }
+    return c >= 2;
+  };
   const hueCands: RNode[] = [];
   for (const n of nodes) {
     n.local = n.attr ? [n.chain[n.chain.length - 1]] : localChain(n);
@@ -342,6 +443,9 @@ export function infer(root: El, ctx: InferCtx): { nodes: OutNode[]; clusters: Ou
     for (let j = n.chain.length - 1; j >= 0; j--) {
       const r = strongOf(n.chain[j]);
       if (r) {
+        // a card link: a paragraph or other block inside a link that holds several texts keeps its own role; only
+        // text directly in the link (or in inline tags) is the link
+        if (r === 'link' && ctx.fw !== 'swift' && cardLinkBlock(n, j)) break;
         n.strong = r;
         strongAt = j;
         break;
@@ -463,6 +567,62 @@ export function infer(root: El, ctx: InferCtx): { nodes: OutNode[]; clusters: Ou
     return null;
   };
   const headingNode = (m: RNode | null): boolean => !!m && m.strong !== null && isHeading(m.strong);
+  // the element a node's text sits in (its first block element) and that element's parent
+  const blockOf = (n: RNode): El => n.local[n.local.length - 1] ?? n.chain[n.chain.length - 1];
+  /** Does content follow the node inside its block's parent? (The next node in reading order sits there.) */
+  const contentAfter = (n: RNode): RNode | null => {
+    const parent = blockOf(n).parent;
+    for (let i = n.idx + 1; i < nodes.length; i++) {
+      const m = nodes[i];
+      if (isContext(m)) continue;
+      return parent && m.chain.includes(parent) ? m : null;
+    }
+    return null;
+  };
+  /**
+   * An untagged heading: a short line in a large, bold type (Tailwind text-lg or larger with font-semibold or bolder,
+   * or the repo CSS's font-size of at least 18px with font-weight 600 or more) with content after it.
+   */
+  const headingPx = (n: RNode): number => {
+    if (n.pos !== 'none' && n.pos !== 'muted') return 0;
+    const ls = mergeSty([...n.local].reverse());
+    if (!ls.bold || (ls.fontPx ?? 0) < 18) return 0;
+    const t = n.text.trim();
+    const w = wordCount(t);
+    if (w < 1 || w > 10 || /[.,:;]$/.test(t) || isFigure(n.lit)) return 0;
+    return ls.fontPx ?? 0;
+  };
+  const candPx = nodes.map(headingPx);
+  /** Content follows the line: not a heading, nor a line in the same or a larger heading type. */
+  const untaggedHeading = (n: RNode): Role | null => {
+    const px = candPx[n.idx];
+    if (!px) return null;
+    const next = contentAfter(n);
+    if (!next || headingNode(next) || candPx[next.idx] >= px) return null;
+    return px >= 24 ? 'h2' : 'h3';
+  };
+  /** A group label in a sidebar: one to three words over a group of items ("Today" over a list). */
+  const sidebarGroupLabel = (n: RNode): boolean => {
+    if (!n.chain.some((e) => (e.intrinsic && e.name === 'aside') || /Sidebar/.test(e.name) || e.cls.some((c) => /(^|[-_])sidebar([-_]|$)/i.test(c)))) return false;
+    const t = n.text.trim();
+    const w = wordCount(t);
+    if (w < 1 || w > 3 || !/\p{L}/u.test(n.lit) || /[.!?:…]$/.test(t)) return false;
+    const b = blockOf(n);
+    const parent = b.parent;
+    if (!parent) return false;
+    const els = parent.kids.filter((k): k is El => k.t === 'el');
+    const sib = els[els.indexOf(b) + 1];
+    return !!sib && !sib.inline && !isTextBlock(sib) && nodes.some((m) => m.idx > n.idx && !m.attr && m.chain.includes(sib));
+  };
+  // untagged headings first, so that the lines around them see a heading
+  const uhs = nodes.map(untaggedHeading);
+  for (const n of nodes) {
+    const uh = uhs[n.idx];
+    if (uh) {
+      n.strong = uh;
+      n.pos = null;
+    }
+  }
   for (const n of nodes) {
     if (!n.pos) continue;
     const prev = neighbour(n, -1);
@@ -472,6 +632,10 @@ export function infer(root: El, ctx: InferCtx): { nodes: OutNode[]; clusters: Ou
     const before = headingNode(next);
     const after = headingNode(prev);
     let r: Role;
+    if (!before && sidebarGroupLabel(n)) {
+      n.strong = 'label';
+      continue;
+    }
     switch (n.pos) {
       case 'kicker':
         // above a heading: eyebrow; a lone line under a heading: its tagline; opening a panel: the panel's heading
@@ -548,7 +712,7 @@ export function infer(root: El, ctx: InferCtx): { nodes: OutNode[]; clusters: Ou
       seen.add(eb.id);
       const ms = nodes.filter((m) => !m.attr && m.chain.includes(eb) && !CONTEXT_ROLES.has(m.role) && nearestBox(m, STATEISH) === eb);
       const text = ms.filter((m) => /^(body|empty_body|caption|label|subtitle|helper)$/.test(m.role));
-      if (ms.some((m) => isHeading(m.role)) || text.length < 2 || text[0] !== ms[0] || wordCount(text[0].text) > 8) continue;
+      if (ms.some((m) => isHeading(m.role)) || text.length < 1 || text[0] !== ms[0] || wordCount(text[0].text) > 8) continue;
       text[0].role = 'empty_title';
       for (const m of text.slice(1)) if (m.role !== 'helper' && m.role !== 'label') m.role = 'empty_body';
     }

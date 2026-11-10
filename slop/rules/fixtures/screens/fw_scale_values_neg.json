@@ -1,0 +1,15 @@
+{"schema": "slop.screen/1", "id": "0bb4a38b748609eb", "framework": "tsx",
+ "source": {"repo": "slop-rules-fixtures", "path": "src/fw_scale_values_neg.tsx", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "control", "line": 2},
+  {"k": 1, "kind": "list", "line": 8}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "label", "text": "Wind risk", "flags": ["in_form", "in_control"], "loc": [3, 7, 3, 16]},
+  {"i": 1, "k": 0, "role": "menu_item", "text": "Very low", "flags": ["in_form", "in_list", "in_control"], "loc": [4, 7, 4, 15]},
+  {"i": 2, "k": 0, "role": "menu_item", "text": "Low", "flags": ["in_form", "in_list", "in_control"], "loc": [5, 7, 5, 10]},
+  {"i": 3, "k": 0, "role": "menu_item", "text": "High", "flags": ["in_form", "in_list", "in_control"], "loc": [6, 7, 6, 11]},
+  {"i": 4, "k": 0, "role": "menu_item", "text": "Very high", "flags": ["in_form", "in_list", "in_control"], "loc": [7, 7, 7, 16]},
+  {"i": 5, "k": 1, "role": "cell", "text": "Hull", "flags": ["in_table", "in_list"], "loc": [9, 7, 9, 11]},
+  {"i": 6, "k": 1, "role": "cell", "text": "Very good", "flags": ["in_table", "in_list"], "loc": [10, 7, 10, 16]},
+  {"i": 7, "k": 1, "role": "cell", "text": "Sails", "flags": ["in_table", "in_list"], "loc": [11, 7, 11, 12]},
+  {"i": 8, "k": 1, "role": "cell", "text": "Fair", "flags": ["in_table", "in_list"], "loc": [12, 7, 12, 11]}]}

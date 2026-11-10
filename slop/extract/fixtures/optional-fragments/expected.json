@@ -1,0 +1,10 @@
+{"schema": "slop.screen/1", "id": "dbe12bed13a54304", "framework": "tsx",
+ "source": {"repo": "slop-fixtures", "path": "SeedPackets.tsx", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "list", "line": 5}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "list_item", "text": "\ue000 n packet \ue001 \ue000 n packets", "flags": ["dynamic", "conditional", "in_list"], "loc": [6, 12, 6, 40], "vw": [1, 1]},
+  {"i": 1, "k": 0, "role": "list_item", "text": "Sown \ue000 sown at · Organic \ue001 Sown \ue000 sown at \ue001 Saved \ue000 saved at · Organic \ue001 Saved \ue000 saved at", "flags": ["dynamic", "conditional", "in_list"], "loc": [8, 10, 9, 37], "vw": [2, 2, 2, 2]},
+  {"i": 2, "k": 0, "role": "list_item", "text": "Order · packing \ue001 Order · \ue000 error \ue001 Order · not sent \ue001 Order", "flags": ["dynamic", "conditional", "in_list"], "loc": [12, 39, 14, 58], "vw": [1]},
+  {"i": 3, "k": 0, "role": "list_item", "text": "Draft (unsaved) \ue001 Draft", "flags": ["conditional", "in_list"], "loc": [17, 9, 17, 38]},
+  {"i": 4, "k": 0, "role": "list_item", "text": "Grown by \ue000 grower", "flags": ["dynamic", "in_list"], "loc": [19, 11, 19, 33], "vw": [1]}]}

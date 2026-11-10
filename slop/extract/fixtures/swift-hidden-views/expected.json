@@ -1,0 +1,11 @@
+{"schema": "slop.screen/1", "id": "1b67f934ed8b0d1e", "framework": "swift",
+ "source": {"repo": "slop-fixtures", "path": "LoomView.swift", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "header", "line": 8},
+  {"k": 1, "kind": "body", "line": 7},
+  {"k": 2, "kind": "actions", "line": 16}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "h2", "text": "Warp threads", "flags": [], "loc": [8, 19, 8, 31]},
+  {"i": 1, "k": 1, "role": "body", "text": "\ue000 rows rows", "flags": ["dynamic", "section_first"], "loc": [10, 21, 10, 31], "vw": [1]},
+  {"i": 2, "k": 1, "role": "body", "text": "Tension ok", "flags": [], "loc": [14, 19, 14, 29]},
+  {"i": 3, "k": 2, "role": "button", "text": "Weave row", "flags": ["section_last"], "loc": [16, 21, 16, 30]}]}

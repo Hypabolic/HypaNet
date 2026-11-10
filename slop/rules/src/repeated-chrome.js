@@ -2,19 +2,22 @@
 // (per section for state dots), listing the nodes that carry the device:
 //   eyebrow-quota   eyebrows above more than ceil(sections / 3) section headings (taste: local-skills.md:121,
 //                   design-taste-frontend-v2-experimental SKILL.md:254-256, a landing-page quota; "Hero counts as 1");
-//   decorative-dot  any `dot` node that is neither `stateful` nor `dynamic` (local-skills.md:145, v2-experimental
-//                   SKILL.md:705);
+//   decorative-dot  any `dot` node not bound to data: neither `stateful` nor `dynamic`, nor shown by a condition of
+//                   its own (local-skills.md:145, v2-experimental SKILL.md:705);
 //   state-dots      more than one `stateful` dot in one section (same line: "limited to one per page section"), not
 //                   counting one dot per sibling card or row, each bound to its own item (LABELLING.md K2);
-//   arrow-links     an arrow suffix on every link, two links or more (local-skills.md:46, copy.md:126-127;
-//                   anti-slop-guides.md:124, Hallmark gate 63); ↗ and » are not arrow suffixes (text.js);
+//   arrow-links     an arrow suffix on every link outside the footer, two links or more (local-skills.md:46,
+//                   copy.md:126-127; anti-slop-guides.md:124, Hallmark gate 63); ↗ and » are not arrow suffixes
+//                   (text.js);
 //   sibling-device  the same badge, pill or eyebrow text, an arrow suffix or an index number on most (more than half)
-//                   of three or more sibling cards or rows (LABELLING.md §9, R19).
+//                   of three or more sibling cards or rows (LABELLING.md §9, R19); a K13 qualifier badge ("Inc. VAT",
+//                   "/month") is not a device.
 
 import { finding } from './finding.js';
 import { indexRuns } from './index-numbering.js';
 import { hasFlag, isScored, isSectionHeading, sectionOf, siblingGroups } from './screen.js';
-import { clip, hasArrowTail, normalised } from './text.js';
+import { QUALIFIERS } from './lists.js';
+import { ALT_MARK, clip, hasArrowTail, normalised } from './text.js';
 
 export const id = 'slop/repeated-chrome';
 export const code = 'R19';
@@ -41,9 +44,24 @@ function eyebrowQuota(screen) {
     msg: `${eyebrows.length} eyebrows over ${sections} section headings; the quota is ${quota} (one per three sections)` }];
 }
 
+// Live state (LABELLING.md K2): text or colour bound to data (`stateful`), interpolated text (`dynamic`), or text chosen
+// or shown by a condition of its own. The extractor flags every node inside a conditional block `conditional` (an `&&`
+// section, a dialog, an early-return branch), so a node's condition counts as its own only when its text holds
+// branches (ALT) or one of `peers` (the other scored nodes of its card, row or cluster) is not conditional: `{live &&
+// <Dot/>Live}` beside a fixed heading, or a badge `{c.isNew ? "New" : "Updated"}` on each card.
+function bound(screen, x, peers) {
+  const n = screen.nodes[x];
+  if (hasFlag(n, 'stateful') || hasFlag(n, 'dynamic')) return true;
+  if (!hasFlag(n, 'conditional')) return false;
+  if (n.text.includes(ALT_MARK)) return true;
+  return peers.some((y) => y !== x && isScored(screen.nodes[y]) && !hasFlag(screen.nodes[y], 'conditional'));
+}
+
 function decorativeDots(screen) {
+  const byCluster = new Map();
+  screen.nodes.forEach((n, x) => { if (!byCluster.has(n.k)) byCluster.set(n.k, []); byCluster.get(n.k).push(x); });
   const xs = [];
-  screen.nodes.forEach((n, x) => { if (isScored(n) && hasFlag(n, 'dot') && !hasFlag(n, 'stateful') && !hasFlag(n, 'dynamic')) xs.push(x); });
+  screen.nodes.forEach((n, x) => { if (isScored(n) && hasFlag(n, 'dot') && !bound(screen, x, byCluster.get(n.k))) xs.push(x); });
   if (!xs.length) return [];
   const t = screen.nodes[xs[0]].text;
   return [{ condition: 'decorative-dot', xs,
@@ -82,9 +100,10 @@ function stateDots(screen) {
   return out;
 }
 
+// Footer links are navigation (K5) and rarely carry arrows; counting them would hide arrows on every content link.
 function arrowLinks(screen) {
   const links = [];
-  screen.nodes.forEach((n, x) => { if (isScored(n) && n.role === 'link') links.push(x); });
+  screen.nodes.forEach((n, x) => { if (isScored(n) && n.role === 'link' && !hasFlag(n, 'in_footer')) links.push(x); });
   if (links.length < 2 || !links.every((x) => hasArrowTail(screen.nodes[x]))) return [];
   return [{ condition: 'arrow-links', xs: links, msg: `all ${links.length} links end in an arrow; the arrow tells the reader nothing` }];
 }
@@ -92,6 +111,13 @@ function arrowLinks(screen) {
 // A rounded-full button, link or field is a control's shape, not a pill device (the extractor sets `pill` from
 // `rounded-full`); a `badge` counts whatever its shape.
 const CONTROLS = new Set(['button', 'link', 'nav', 'tab', 'menu_item', 'label', 'placeholder', 'input_value']);
+
+// A badge whose whole text is a K13 qualifier (tax status, billing period, currency, unit, "from"): KEEP in every
+// copy, so not a repeated device.
+export function isQualifier(text) {
+  const t = text.normalize('NFKC').toLowerCase().normalize('NFKD').replace(/\p{M}/gu, '').replace(/\s+/g, ' ').trim();
+  return QUALIFIERS.some((q) => q.re.test(t));
+}
 
 // Device signatures of one sibling item (a card or a list row).
 function signatures(screen, item, indexed) {
@@ -101,9 +127,11 @@ function signatures(screen, item, indexed) {
     const n = screen.nodes[x];
     if (indexed.has(x)) add(`index:${indexed.get(x)}`, x);
     if ((n.role === 'link' || n.role === 'button') && hasArrowTail(n)) add('arrow', x);
-    if (hasFlag(n, 'stateful') || hasFlag(n, 'dynamic')) continue; // bound text differs by item (K2)
+    if (bound(screen, x, item)) continue; // bound or chosen text can differ by item (K2)
     if (n.role === 'eyebrow') add(`eyebrow:${normalised(n.text)}`, x);
-    else if (n.role === 'badge' || (hasFlag(n, 'pill') && !CONTROLS.has(n.role))) add(`badge:${normalised(n.text)}`, x);
+    else if (n.role === 'badge' || (hasFlag(n, 'pill') && !CONTROLS.has(n.role))) {
+      if (!isQualifier(n.text)) add(`badge:${normalised(n.text)}`, x); // "Inc. VAT", "/month" on each price (K13)
+    }
   }
   return sigs;
 }

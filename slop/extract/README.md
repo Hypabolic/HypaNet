@@ -35,12 +35,21 @@ A node is a run of visible text. Inline elements inside a paragraph, heading, la
 `em`, `code`, a link inside prose, a nested React Native `Text`) are merged into one node; block elements, styled
 pills, eyebrows and anything with its own role start a new node. Attributes that show text become their own nodes
 at the element's position: `placeholder`, `title` (tooltip), `aria-label` (aria), `alt`, an input's `value`, and the
-text props of components (`title`, `description`, `eyebrow`, `label`, `cta` and so on, by prop name). In SwiftUI,
+text props of components (`title`, `description`, `eyebrow`, `label`, `cta` and so on, by prop name). A props object
+passed to a component, written in place or bound to an in-file `const` (below), gives a node for each string under a
+copy key (`head`, `label`, `title`, `heading`, `caption`, `description`, `text`), down to nested arrays: `<DataTable
+columns={[{ head: "Year" }]} />` gives the column head "Year" (a `label`, inside a table), `<Legend items={[{ label:
+"Train" }]} />` a `label` (inside a list when the array has two or more items), each at its literal; the other keys
+take the roles of the props of the same name (`title` an `h3`, `heading` an `h2`, `caption` a `caption`,
+`description` a `subtitle`, `text` a `body`). A navigator screen's `options={{ title }}` is its `tab`
+(`Tabs.Screen`), drawer `nav` item (`Drawer.Screen`) or header `h1` (`Stack.Screen` and any other `*Screen`). In
+SwiftUI,
 `.navigationTitle` is placed first, a `Section` header before its rows and its footer after, and `.help`, `.badge`,
 `.accessibilityLabel`, `.alert`, `.sheet` and `.toolbar` content after the view they modify.
 
 Words keep the spacing a browser gives them. Text either side of an inline tag displayed as a block (`block`,
-`flex`, `grid` or the repo CSS's `display`) is kept apart by a space, and so is text in two different inline elements;
+`flex`, `grid` or the repo CSS's `display`) is kept apart by a space, and so is text in two different inline elements
+(also inside one branch of a conditional);
 text and an inline child with no whitespace between them stay joined, as rendered (`Low<strong>tide</strong>` is
 "Lowtide", and JSX drops whitespace that holds a line break, as React does). A short coloured word (one to three
 words, a chromatic Tailwind text colour) inside a `flex` or `grid` row is an item of its own, not part of the row's
@@ -58,21 +67,55 @@ no node, and `content:` and `copy:` arguments give text only when they are copy.
 point(_ icon: String, _ text: String) -> some View`, declared once in the file) is read at each call in view position,
 its parameters bound to the call's arguments (a closure argument can be called as `content()`); its own body is then
 not read again on its own. iOS 18 `Tab("…", systemImage:)` gives a tab, and `.labelsHidden()` turns the labels of the
-controls it covers into `aria` nodes.
+controls it covers into `aria` nodes. A view that is not drawn gives no nodes: one under `.opacity(0)` or `.hidden()`,
+or under `.accessibilityHidden(true)` when all its text is buttons with a `.keyboardShortcut` (the off-screen
+shortcut buttons). `.accessibilityHidden(true)` alone hides a view from VoiceOver only; its text is still on screen
+and is kept.
 
 Interpolations become the VAR marker, the private-use character U+E000, followed by the words of the last
 identifier segment (`{user.firstName}` gives `VAR first name`; `t("account.settingsTitle")` gives `VAR settings
 title`, while `t("Save changes")` stays as copy). The string branches of a conditional are joined with the ALT marker,
 U+E001 (`Online ALT Offline`). The letters "VAR" and "ALT" in copy (a key cap, say) are ordinary words; only the two
-code points are markers, and the screen JSON writes them as the escapes `\ue000` and `\ue001`. A node whose text
+code points are markers, and the screen JSON writes them as the escapes `\ue000` and `\ue001`. Private-use characters
+in source copy (U+E000–U+F8FF and the supplementary private-use planes, such as Material Icons ligature code points)
+are dropped from the text before any marker is written, so a literal U+E000 or U+E001 in a string never reads as one. A node whose text
 holds a VAR marker carries `vw`, one integer per marker in order: how many identifier words follow it (`Due in VAR eta
-hours hours` has `"vw": [2]`); the rules layer reads it, the tokeniser ignores it. Fragments shown under different
-`&&` conditions in one run of text are alternatives and are joined with ALT too (`{s === "a" && " · sending…"}{s ===
-"b" && " · saved"}` gives `· sending… ALT · saved` after the text they follow). `\(date, format: …)` in a Swift
+hours hours` has `"vw": [2]`); the rules layer reads it, the tokeniser ignores it. **Complete renderings.** When a conditional part of a longer
+text can render nothing, or sits inside a template literal or concatenation, the node's text is every complete
+rendering of the text, joined with ALT, so that an optional part does not read as always present and a fallback
+keeps the words around it: `{n} file{n === 1 ? "" : "s"}` gives `VAR n file ALT VAR n files`; `{date}{md ? " ·
+Markdown" : ""}` gives `VAR date · Markdown ALT VAR date`; `` ` · ${error ?? "failed"}` `` gives `· VAR error ALT ·
+failed`; `Draft{dirty && <em> (unsaved)</em>}` gives `Draft (unsaved) ALT Draft`. Fragments shown under different
+`&&` conditions in one run of text are one choice among them or none (`{f}{s === "a" && " · sending…"}{s === "b" &&
+" · saved"}` gives `VAR f · sending… ALT VAR f · saved ALT VAR f`), and a nested `&&` is a choice inside its
+fragment. Renderings are written in branch order (a ternary's consequent first, an `&&` fragment before its absence),
+the first part varying slowest; empty and repeated renderings are dropped. Past eight renderings the branches stay
+inline where they occur, as do two non-empty branches in a run with nothing optional (`Status: Online ALT Offline`).
+An empty fallback (`x ?? ""`, `x || ""`, Swift `x ?? ""`) only guards a missing value and is not a rendering of its
+own. `\(date, format: …)` in a Swift
 string is one interpolation; `xs.join(", ")` over a literal string array is the joined copy (at the first string's
 `loc`); `new Date(x.createdAt)` is named by its argument. A text-less dot
 element, or an element holding only a dot glyph, is never a node: it sets `dot` on the next node in the same
 container. Separators with no letters or digits (`·`, `/`) are dropped.
+
+**In-file constants.** A name in text position that the same file binds to copy is read through to it when every path
+yields a literal; anything else keeps the VAR behaviour. In JSX and TSX: an identifier bound by `const` (any scope,
+resolved by scope, so a parameter or local of the same name hides it, and not changed in place) to a string or a
+template literal without interpolation; a member of an object or array literal bound that way (`COPY.title`,
+`COPY.footer.note`, `LABELS["a"]`; with a dynamic key, `LABELS[k]`, every value joined with ALT, at most 24); a
+ternary whose branches are such; and `+` of such. `t(KEY)` with `KEY` such a constant reads like `t("…")`. In an
+expanded array copy (below) a dynamic key that is the copy's own value picks that value (`LABELS[item.kind]`). In
+SwiftUI: a `let` (local, a member, `static let`, or at the top level) whose value is a string literal or
+`String(localized:)`; a computed property (`var title: String { switch kind { case .a: "A" … } }`) or a function
+returning `String` (called in text position) whose every path returns one, through `switch`, `if`/`else`, early
+returns and ternaries, joined with ALT (at most 24 branches; a `nil` branch renders nothing). A Swift member is found
+on `self`, `Self`, a type the file declares or extends (`Kind.title`, `static let`), or a value whose type the file
+states: a property or parameter annotated with it, or the closure parameter of a `ForEach` (or `.map`) over
+`Kind.allCases`, plain or filtered. A Swift string literal may interpolate: the interpolations stay VAR (`"\(pages)
+will be sent"` gives `VAR pages will be sent`), while a JSX template literal with an interpolation is not read
+through. A stored `var` (`@State private var draft = "…"`), a `let` with no value (a view's parameter) and a body with
+any other statement keep VAR. A node showing one constant literal sits at that literal; one showing several, or a
+second node showing the same literal, sits at its use site.
 
 **Literal arrays.** A `.map()` over an array literal is expanded once per element, at most 24 elements, in order,
 instead of being read once as a template: the receiver is an inline array literal, or a name bound in the same file by
@@ -96,10 +139,15 @@ Each node's role comes from the first of these four stages that gives one.
 1. **Tag and attribute.** The nearest ancestor with a semantic tag or attribute: `h1`–`h6`, `label`, `legend`, `th`
    and `dt` (label), `button` and `summary`, `a` (link), `figcaption` and `caption`, `li`, `td` (cell), `option`
    (menu item), the ARIA `role` attribute, and the attribute nodes above. Links and buttons inside a navigation,
-   tab list, menu or breadcrumb become `nav`, `tab`, `menu_item` or `breadcrumb`.
+   tab list, menu or breadcrumb become `nav`, `tab`, `menu_item` or `breadcrumb`. In a card link (an `<a>` or
+   `*Link` holding two or more texts), a heading, paragraph or other block element keeps its own role, decided by the
+   later stages; only text directly in the link or in inline tags is `link` (JSX and HTML; a SwiftUI `NavigationLink`
+   row is unchanged). A link holding a single text is a link whatever wraps the text.
 2. **Component name.** `*Title` (dialog, empty-state, page and section titles have their own roles), `*Description`,
    `Badge|Chip|Tag|Pill`, `EmptyState` with `title`/`description`, `*Button`, `*Link`, `Tabs`, `Breadcrumb` and
-   `DropdownMenu` parts, `FormLabel`/`FormDescription`/`FormMessage`, `Typography variant`, `as="h2"`, and the
+   `DropdownMenu` parts (a project's own bare `<Dialog>`, `AlertDialog`, `Sheet`, `Drawer` or `Popover` that holds its
+   `*Title` directly, with no `*Content`, `*Portal` or `*Trigger` part, is the dialog itself),
+   `FormLabel`/`FormDescription`/`FormMessage`, `Typography variant`, `as="h2"`, and the
    SwiftUI views (`Button`, `Link`, `Toggle`, `Picker`, `Section`, `GroupBox`, `ContentUnavailableView`, `Menu`,
    `Tab`). The nearer of a tag and a component wins, so a `CardTitle` inside a card link is still a heading. A SwiftUI
    custom view's first unlabelled copy argument takes its role from the view's name: `*Button` a button,
@@ -131,7 +179,15 @@ Each node's role comes from the first of these four stages that gives one.
    `.bodyEmphasis`) is read as a font. `.foregroundStyle(.red)` or a colour named `destructive`, `danger` or `error`
    (not a ternary) is error-coloured. A pill or kicker inside a list item or table cell overrides that weak tag role.
 4. **Position**, for whatever is left. Neighbours are the nodes before and after in reading order that share the same
-   group (the nearest ancestor holding more than one piece of text). A kicker directly before a heading is an
+   group (the nearest ancestor holding more than one piece of text). First, an untagged heading: a line of one to ten
+   words, not ending in `.`, `,`, `:` or `;` and not a figure, in a large bold type (Tailwind `text-lg` or larger, or
+   an arbitrary size of 18px or more, with `font-semibold`, `font-bold`, `font-extrabold` or `font-black`; or the
+   repo CSS's literal `font-size` of 18px or more with `font-weight` 600 or more; or the same as an inline style),
+   with content after it inside its block's parent that is not a heading or a line in the same or a larger such type,
+   is an `h2` at 24px or more and an `h3` below (CSS custom properties are not resolved). Then a group label in a
+   sidebar (inside an `<aside>`, a `*Sidebar` component or a `sidebar` class): one to three words with no closing
+   punctuation, not directly before a heading, whose element is followed by a container sibling holding more text
+   ("Today" over a list), is a `label`. A kicker directly before a heading is an
    `eyebrow`; the only line after a heading in its group is its tagline (`subtitle`); the first node of a card,
    dialog, state or alert with at least three nodes after it is that panel's heading (`h3`); otherwise a kicker is a
    `label` (a group label, or a field label such as a HUD's "Objective"); small or muted text of up to eight words
@@ -147,7 +203,7 @@ inside the button are alternatives, not lines. A hand-built empty state is the b
 empty (`xs.length === 0 ? … : …`, `!xs.length && …`, `if (!xs.length) return …`, Swift `if xs.isEmpty { … }`, or the
 other branch of `xs.length > 0` and `!xs.isEmpty`) when it holds one to four lines of text, at least one of them
 literal copy, and no list or other container; with no heading of its own, its first line of up to eight words becomes
-`empty_title` and the rest `empty_body`. The extractor never emits `comment` or `code` (track C is deferred).
+`empty_title` and the rest `empty_body`, also when it is the only line. The extractor never emits `comment` or `code` (track C is deferred).
 
 ## Flags and clusters
 
@@ -176,7 +232,8 @@ column is one past the last character. Locations point at the visible characters
 string literals, at the expression for an interpolation. In an expanded array copy a node's `loc` is the string
 literal in the array that it shows (the first one, if it shows several). Because labels key on `loc`, no two nodes
 share one: a second node showing the same literal (an `alt` or `aria-label` that repeats a title) takes the span of
-the literal's property (`title: "…"`) instead; the first node in a copy with no literal of its own (a constant
+the literal's property (`title: "…"`) instead; a node showing one in-file constant sits at the constant's literal, or at its
+use site when that literal is taken or the node shows several; the first node in a copy with no literal of its own (a constant
 label, or the VAR text of the index) takes the span of the whole array element; and copy text left without a free
 span keeps its span in the callback in the first copy and is dropped from later ones. Text read from an inlined local
 SwiftUI function sits at the argument it shows (the literal in the call), or else at its own span in the function,

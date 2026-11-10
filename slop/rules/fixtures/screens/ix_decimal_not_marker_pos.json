@@ -1,0 +1,14 @@
+{"schema": "slop.screen/1", "id": "56b1476bf479a522", "framework": "tsx",
+ "source": {"repo": "slop-rules-fixtures", "path": "src/ix_decimal_not_marker_pos.tsx", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "header", "line": 2},
+  {"k": 1, "kind": "body", "line": 4}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "h2", "text": "Visitor moorings", "flags": [], "loc": [3, 7, 3, 23]},
+  {"i": 1, "k": 1, "role": "caption", "text": "1", "flags": [], "loc": [5, 7, 5, 8]},
+  {"i": 2, "k": 1, "role": "body", "text": "Members only.", "flags": [], "loc": [6, 7, 6, 20]},
+  {"i": 3, "k": 1, "role": "caption", "text": "2", "flags": [], "loc": [7, 7, 7, 8]},
+  {"i": 4, "k": 1, "role": "body", "text": "Weekdays from 9:30.", "flags": [], "loc": [8, 7, 8, 26]},
+  {"i": 5, "k": 1, "role": "caption", "text": "3", "flags": [], "loc": [9, 7, 9, 8]},
+  {"i": 6, "k": 1, "role": "body", "text": "Closed in July.", "flags": [], "loc": [10, 7, 10, 22]},
+  {"i": 7, "k": 1, "role": "body", "text": "Rated 4.1 in spring and 4.2 in autumn.", "flags": [], "loc": [11, 7, 11, 45]}]}

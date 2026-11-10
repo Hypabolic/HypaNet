@@ -153,3 +153,43 @@ def test_duplicate_check():
     d = gb.Dupes([s1])
     assert d.hit(s2)  # Jaccard 5/6 after normalising case
     assert not d.hit(s3)
+
+
+def _seam_hits(screens_path: Path) -> list:
+    from generator.core import seams
+
+    hits = []
+    for line in screens_path.read_text(encoding="utf-8").splitlines():
+        s = json.loads(line)
+        for n in s["nodes"]:
+            for x in seams(n["text"]):
+                hits.append((s["id"], n["text"], x))
+    return hits
+
+
+def test_article_plural_and_seam_checks():
+    from generator.core import article, plural, seams
+
+    assert [article(w) for w in ("order", "invoice", "hive", "hour", "user", "one-off")] == \
+        ["an order", "an invoice", "a hive", "an hour", "a user", "a one-off"]
+    assert [plural(w) for w in ("branch", "travelling party", "head of department", "witness", "series", "box")] == \
+        ["branches", "travelling parties", "heads of department", "witnesses", "series", "boxes"]
+    for bad in ("Log a order", "Add a invoice", "Reading history for branchs", "Pets for travelling partys",
+                "Budget details details", "Full full name", "Bikes in in total", "Add an hive"):
+        assert seams(bad), bad
+    for good in ("Log an order", "Add an invoice", "a user", "an hour", "Rhys Jones", "branches", "parties", "a one-off"):
+        assert not seams(good), good
+
+
+def test_no_grammar_seams_in_built_screens(built):
+    """No a/an before the wrong sound, doubled word or bad plural in any node (generator v3)."""
+    assert _seam_hits(built[0] / "screens.jsonl") == []
+
+
+def test_no_grammar_seams_in_dev():
+    """The same scan over the whole of datasets/dev, when it has been built."""
+    p = SLOP / "datasets" / "dev" / "screens.jsonl"
+    if not p.exists():
+        pytest.skip("datasets/dev is not built")
+    hits = _seam_hits(p)
+    assert hits == [], hits[:10]

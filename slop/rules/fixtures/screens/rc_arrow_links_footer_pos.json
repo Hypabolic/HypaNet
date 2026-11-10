@@ -1,0 +1,12 @@
+{"schema": "slop.screen/1", "id": "eb82d45ec93e7d57", "framework": "tsx",
+ "source": {"repo": "slop-rules-fixtures", "path": "src/rc_arrow_links_footer_pos.tsx", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "header", "line": 2},
+  {"k": 1, "kind": "actions", "line": 4},
+  {"k": 2, "kind": "body", "line": 7}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "h2", "text": "Tide tables", "flags": [], "loc": [3, 7, 3, 18]},
+  {"i": 1, "k": 1, "role": "link", "text": "Read the tide tables →", "flags": ["arrow_tail"], "loc": [5, 7, 5, 29]},
+  {"i": 2, "k": 1, "role": "link", "text": "See mooring prices →", "flags": ["arrow_tail"], "loc": [6, 7, 6, 27]},
+  {"i": 3, "k": 2, "role": "link", "text": "Terms", "flags": ["in_footer"], "loc": [8, 7, 8, 12]},
+  {"i": 4, "k": 2, "role": "link", "text": "Privacy", "flags": ["in_footer"], "loc": [9, 7, 9, 14]}]}

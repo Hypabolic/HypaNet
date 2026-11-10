@@ -9,7 +9,8 @@
 // and ALT markers (SPEC.md §4); a node with a VAR marker carries the extractor's `vw` (identifier words after each
 // marker), except in `fw_markers_mixed`, which keeps the rules' fallback for screens without it. Each fixture names the
 // rules it is a positive or a near-miss negative for; a fixture expects exactly the findings listed, from every rule.
-// The fixtures marked "review" come from the adversarial review of the rule layer (2026-11-10).
+// The fixtures marked "review" come from the adversarial review of the rule layer (2026-11-10); those marked b, j and c
+// come from the second review the same day (j: the lead's decisions), with c06–c08 guarding its fixes.
 
 import { createHash } from 'node:crypto';
 import { mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
@@ -676,6 +677,250 @@ const FIXTURES = [
       ['Agency', '£99 a month', 'Perfect for agencies with many clients']].map(([t, p, b]) =>
       ['card', [['h3', t, ['in_card', 'repeated']], ['body', p, ['in_card', 'repeated']], ['body', b, ['in_card', 'repeated']]]]),
   ]), expect: [f(SL, 'R10', [3, 6, 9])] },
+
+  // -- from the second review (2026-11-10: screens b01–b18, j01–j04, c01–c05) and guards for its fixes (c06–c08) ----
+  // b01: a dot shown only while a data condition holds (`{live && <span><Dot/>Live</span>}`) beside a fixed heading is
+  // bound to data (K2); the extractor gives it `conditional`, not `stateful`.
+  { name: 'rc_conditional_dot_neg', fw: 'tsx', about: [neg(RC)], ...clustered([
+    ['header', [['h2', 'Harbour webcam'], ['subtitle', 'Live', ['dot', 'conditional', 'section_first']]]],
+    ['body', [['body', 'The picture refreshes every minute.']]],
+  ]), expect: [] },
+
+  // b02: `See {x ? "fewer" : "more"}` comes out "See fewer ALT more": the lone "more" is the tail of the conditional,
+  // not a label. `{open ? "Hide" : "Learn"} more` is "Hide ALT Learn more", whose branch "Learn more" is a true R7.
+  { name: 'va_alt_fragment_pos', fw: 'tsx', about: [pos(VA), neg(VA)], ...clustered([
+    ['header', [['h2', 'Moorings']]],
+    ['list', [['list_item', 'Pontoon A, berth 4', ['in_list']], ['list_item', 'Pontoon B, berth 9', ['in_list']]]],
+    ['actions', [['link', `See fewer ${A} more`, ['conditional']], ['button', `Hide ${A} Learn more`, ['conditional']]]],
+  ]), expect: [f(VA, 'R7', [4])] },
+
+  // b03: a wizard shows one "Step N of 3: …" heading at a time; the lead form keeps its total, so the conditional skip
+  // applies (K3).
+  { name: 'ix_wizard_lead_total_neg', fw: 'tsx', about: [neg(IX)], ...clustered([
+    ['header', [['h2', 'Step 1 of 3: Your boat', ['conditional']]]],
+    ['header', [['h2', 'Step 2 of 3: Berth dates', ['conditional']]]],
+    ['header', [['h2', 'Step 3 of 3: Payment', ['conditional']]]],
+    ['actions', [['button', 'Continue']]],
+  ]), expect: [] },
+
+  // b04: an error summary item (a link in the alert) and the inline error it links to are both KEEP (K12), here in
+  // different windows.
+  { name: 'er_k12_error_summary_neg', fw: 'tsx', about: [neg(ER)], ...clustered([
+    ['state', [['h2', 'There is a problem', ['in_state']],
+               ['link', 'Enter your date of birth', ['in_list', 'in_state']],
+               ['link', 'Choose how to pay the key deposit', ['in_list', 'in_state']]]],
+    ['header', [['h1', 'Apply for a plot']]],
+    ['control', [['label', 'Date of birth', ['in_form', 'in_control']], ['error', 'Enter your date of birth', ['in_form', 'in_control']]]],
+    ...notes(70),
+    ['control', [['label', 'Key deposit method', ['in_form', 'in_control']], ['error', 'Choose how to pay the key deposit', ['in_form', 'in_control']]]],
+  ]), expect: [] },
+
+  // b05: the tooltip is the only visible name of an icon-only button (K12); the dialog it opens names the same action
+  // (K11 between the control and the dialog).
+  { name: 'er_k12_icon_tooltip_neg', fw: 'tsx', about: [neg(ER)], ...clustered([
+    ['header', [['h1', 'Harbour mix', ['in_header']], ['tooltip', 'Delete playlist', ['in_header']], ['tooltip', 'Clear listening history', ['in_header']]]],
+    ...notes(70),
+    ['state', [['dialog_title', 'Delete this playlist?', ['in_dialog', 'in_state']],
+               ['dialog_body', 'The songs stay in your library.', ['in_dialog', 'in_state']],
+               ['button', 'Delete playlist', ['in_dialog', 'in_state']],
+               ['button', 'Keep it', ['in_dialog', 'in_state']]]],
+    ['state', [['dialog_title', 'Clear listening history?', ['in_dialog', 'in_state']],
+               ['button', 'Clear', ['in_dialog', 'in_state']]]],
+  ]), expect: [] },
+
+  // b06: the hour labels of a day grid, "06" … "11", are values: the padded column continues past "09" and starts above
+  // one, so it is not an index.
+  { name: 'ix_hour_gutter_neg', fw: 'tsx', about: [neg(IX), neg(RC)], ...clustered([
+    ['header', [['h2', 'Tuesday at the boatyard']]],
+    ...['06', '07', '08', '09', '10', '11'].map((h) => ['card', [['caption', h, ['small', 'in_card', 'repeated']], ['body', 'Slip free for hire', ['in_card', 'repeated']]]]),
+  ]), expect: [] },
+
+  // b07: another node refers to the numbers in the plural ("Steps 2 and 3 …", K3).
+  { name: 'ix_steps_plural_reference_neg', fw: 'tsx', about: [neg(IX)], ...clustered([
+    ['header', [['h2', 'Launch a boat']]],
+    ['body', [['h3', 'Step 1'], ['body', 'Book the slipway at the office.']]],
+    ['body', [['h3', 'Step 2'], ['body', 'Check the trailer lights.']]],
+    ['body', [['h3', 'Step 3'], ['body', 'Wash the hull after launching.'], ['body', 'Steps 2 and 3 can be done in either order.']]],
+  ]), expect: [] },
+
+  // b08: footnote numbers referenced by markers in the price line (K3, K13); `<sup>1</sup>` comes out glued, "night1".
+  { name: 'ix_footnote_markers_neg', fw: 'tsx', about: [neg(IX), neg(RC)], ...clustered([
+    ['header', [['h2', 'Mooring fees'], ['subtitle', 'From £14 a night1, or £300 a season2, plus harbour dues3.']]],
+    ['card', [['caption', '1', ['small', 'in_card', 'repeated']], ['caption', 'Boats up to eight metres.', ['small', 'in_card', 'repeated']]]],
+    ['card', [['caption', '2', ['small', 'in_card', 'repeated']], ['caption', 'April to October only.', ['small', 'in_card', 'repeated']]]],
+    ['card', [['caption', '3', ['small', 'in_card', 'repeated']], ['caption', 'Set by the council each spring.', ['small', 'in_card', 'repeated']]]],
+  ]), expect: [] },
+
+  // b09: "Very low" … "Very high" in an option list, and "Very good" in a table, are values on a scale (K5).
+  { name: 'fw_scale_values_neg', fw: 'tsx', about: [neg(FW)], ...clustered([
+    ['control', [['label', 'Wind risk', ['in_form', 'in_control']],
+                 ['menu_item', 'Very low', ['in_form', 'in_list', 'in_control']], ['menu_item', 'Low', ['in_form', 'in_list', 'in_control']],
+                 ['menu_item', 'High', ['in_form', 'in_list', 'in_control']], ['menu_item', 'Very high', ['in_form', 'in_list', 'in_control']]]],
+    ['list', [['cell', 'Hull', ['in_table', 'in_list']], ['cell', 'Very good', ['in_table', 'in_list']],
+              ['cell', 'Sails', ['in_table', 'in_list']], ['cell', 'Fair', ['in_table', 'in_list']]]],
+  ]), expect: [] },
+
+  // b10: a badge chosen per card by a condition (`{c.isNew ? "New" : "Updated"}`) can differ between siblings (K2).
+  { name: 'rc_conditional_badge_neg', fw: 'tsx', about: [neg(RC)], ...clustered([
+    ['header', [['h2', 'Route cards']]],
+    ['card', [['h3', 'Green slab', ['in_card']], ['badge', `New ${A} Updated`, ['small', 'pill', 'conditional', 'in_card']]]],
+    ['card', [['h3', 'Red overhang', ['in_card']], ['badge', `New ${A} Updated`, ['small', 'pill', 'conditional', 'in_card']]]],
+    ['card', [['h3', 'Blue crack', ['in_card']], ['badge', `New ${A} Updated`, ['small', 'pill', 'conditional', 'in_card']]]],
+  ]), expect: [] },
+
+  // b11: "long" and "double" end a sentence here, so "Click here" and "Tap here" are not named gestures; the third node
+  // is the hidden-input case (K4).
+  { name: 'va_gesture_sentences_pos', fw: 'html', about: [pos(VA), neg(VA)], ...clustered([
+    ['header', [['h2', 'Climbing wall']]],
+    ['body', [['body', 'The queue for the wall is long. Click here to join it.'],
+              ['body', 'Weekend points are double. Tap here to claim them.'],
+              ['body', 'Double-click a route card to rename it.']]],
+  ]), expect: [f(VA, 'R7', [1]), f(VA, 'R7', [2])] },
+
+  // b12: arrow suffixes outside the first list (➡️ with U+FE0F, ⇒, ➝); the extractor sets no `arrow_tail` for them.
+  { name: 'rc_arrow_glyphs_pos', fw: 'html', about: [pos(RC)], ...clustered([
+    ['header', [['h2', 'Guides']]],
+    ['actions', [['link', 'Belay basics ➡️'], ['link', 'Knots for beginners ⇒'], ['link', 'Grading explained ➝']]],
+  ]), expect: [f(RC, 'R19', [1, 2, 3], { condition: 'arrow-links' })] },
+
+  // b13, a known false negative: a <legend> comes out as a `label` in a body cluster, exactly like a <label for>, so it
+  // counts as the label of the first field after it ("Street"). "Town" and "Postcode" are flagged.
+  { name: 'pl_fieldset_legend_pos', fw: 'tsx', about: [pos(PL)], ...clustered([
+    ['header', [['h2', 'Collection']]],
+    ['body', [['label', 'Collection address', ['in_form']]]],
+    ['control', [['placeholder', 'Street', ['in_form', 'in_control']]]],
+    ['control', [['placeholder', 'Town', ['in_form', 'in_control']]]],
+    ['control', [['placeholder', 'Postcode', ['in_form', 'in_control']]]],
+  ]), expect: [f(PL, 'R8b', [3]), f(PL, 'R8b', [4])] },
+
+  // b14, a known false negative: `<label for="nick">Nickname</label><input id="nick"/>` gives no node for the input, so
+  // the next field's placeholder takes "Nickname" as its label. The screen cannot tell this from a <label for> whose
+  // input has the placeholder.
+  { name: 'pl_label_for_textless_neg', fw: 'tsx', about: [neg(PL)], ...clustered([
+    ['header', [['h2', 'Crew details']]],
+    ['body', [['label', 'Nickname']]],
+    ['control', [['placeholder', 'Phone number', ['in_control']]]],
+  ]), expect: [] },
+
+  // b15: a padded column "01" … "12" is one device; "10"–"12" continue it.
+  { name: 'ix_padded_past_nine_pos', fw: 'tsx', about: [pos(IX), pos(RC)], ...clustered([
+    ['header', [['h2', 'Harbour mix']]],
+    ['list', ['Harbour lights', 'Low tide waltz', 'Gull song', 'Ropewalk', 'Salt on the sill', 'Night ferry', 'Lantern row', 'Breakwater', 'Fog bell', 'Slipway', 'Mooring line', 'Pilot boat']
+      .map((t, j) => ['list_item', `${String(j + 1).padStart(2, '0')} ${t}`, ['in_list']])],
+  ]), expect: [f(RC, 'R19', [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], { condition: 'sibling-device' }), f(IX, 'R12', [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12])] },
+
+  // b16: `{mine ? "Your" : "Shared"} playlists` comes out "Your ALT Shared playlists"; the lone "Your" leads "Your
+  // playlists".
+  { name: 'fw_alt_lone_your_pos', fw: 'tsx', about: [pos(FW)], ...clustered([
+    ['header', [['h2', `Your ${A} Shared playlists`, ['conditional']]]],
+    ['list', [['list_item', 'Harbour mix', ['in_list']], ['list_item', 'Night ferry', ['in_list']]]],
+  ]), expect: [f(FW, 'R15', [0])] },
+
+  // b17: "01 / 03 Connect the hub", a padded device with a total used as a lead.
+  { name: 'ix_padded_total_lead_pos', fw: 'tsx', about: [pos(IX), pos(RC)], ...clustered([
+    ['header', [['h2', 'Set up the tide sensor']]],
+    ['card', [['h3', '01 / 03 Connect the hub', ['in_card']], ['body', 'Plug it in near the router.', ['in_card']]]],
+    ['card', [['h3', '02 / 03 Pair the sensors', ['in_card']], ['body', 'Hold each one by the hub.', ['in_card']]]],
+    ['card', [['h3', '03 / 03 Name the berths', ['in_card']], ['body', 'Names show on the alerts.', ['in_card']]]],
+  ]), expect: [f(RC, 'R19', [1, 3, 5], { condition: 'sibling-device' }), f(IX, 'R12', [1, 3, 5])] },
+
+  // b18: "Step 1 of 3" (whole) then "Step 2 of 3: …" (lead) keep one total, so the run holds all three.
+  { name: 'ix_mixed_totals_pos', fw: 'tsx', about: [pos(IX), pos(RC)], ...clustered([
+    ['header', [['h2', 'Join the club']]],
+    ['card', [['h3', 'Step 1 of 3', ['in_card']], ['body', 'Pick a membership.', ['in_card']]]],
+    ['card', [['h3', 'Step 2 of 3: Safety talk', ['in_card']], ['body', 'Twenty minutes at the desk.', ['in_card']]]],
+    ['card', [['h3', 'Step 3 of 3: First climb', ['in_card']], ['body', 'An instructor belays you.', ['in_card']]]],
+  ]), expect: [f(RC, 'R19', [1, 3, 5], { condition: 'sibling-device' }), f(IX, 'R12', [1, 3, 5])] },
+
+  // j01 (lead's decision): footer links are left out of the arrow-links count.
+  { name: 'rc_arrow_links_footer_pos', fw: 'tsx', about: [pos(RC)], ...clustered([
+    ['header', [['h2', 'Tide tables']]],
+    ['actions', [['link', 'Read the tide tables →', ['arrow_tail']], ['link', 'See mooring prices →', ['arrow_tail']]]],
+    ['body', [['link', 'Terms', ['in_footer']], ['link', 'Privacy', ['in_footer']]]],
+  ]), expect: [f(RC, 'R19', [1, 2], { condition: 'arrow-links' })] },
+
+  // j02 (lead's decision): a site-bar link (in_header, in a cluster with no heading) is navigation chrome (K5), like a
+  // footer link, so a later "Sign in" link does not repeat it.
+  { name: 'er_site_bar_link_neg', fw: 'tsx', about: [neg(ER)], ...clustered([
+    ['header', [['link', 'Harbourside Allotments', ['in_header']], ['link', 'Sign in', ['in_header']]]],
+    ...notes(70),
+    ['body', [['h2', 'Questions about plots'], ['link', 'Sign in']]],
+  ]), expect: [] },
+
+  // j03 (lead's decision): a tax-status qualifier on each price card is KEEP in every copy (K13), not a device.
+  { name: 'rc_qualifier_badge_neg', fw: 'tsx', about: [neg(RC)], ...clustered([
+    ['header', [['h2', 'Berth plans']]],
+    ['card', [['h3', 'Day', ['in_card']], ['stat', '£14', ['in_card']], ['badge', 'Inc. VAT', ['small', 'pill', 'in_card']]]],
+    ['card', [['h3', 'Month', ['in_card']], ['stat', '£180', ['in_card']], ['badge', 'Inc. VAT', ['small', 'pill', 'in_card']]]],
+    ['card', [['h3', 'Season', ['in_card']], ['stat', '£300', ['in_card']], ['badge', 'Inc. VAT', ['small', 'pill', 'in_card']]]],
+  ]), expect: [] },
+
+  // j04 (lead's decision): the filler list stays as it is; "quickly" in an instruction still fires (the rule layer is a
+  // cheap baseline).
+  { name: 'fw_quickly_instruction_pos', fw: 'tsx', about: [pos(FW)], ...clustered([
+    ['header', [['h2', 'Cradle lock']]],
+    ['body', [['body', 'Turn the winch quickly to lock the cradle.']]],
+  ]), expect: [f(FW, 'R15', [1])] },
+
+  // c01: `vw` sliced per ALT branch with two markers: "now" after identifier words in the second branch, and "Your crew"
+  // as a two-word branch after an identifier-only branch.
+  { name: 'fw_vw_alt_mix_pos', fw: 'tsx', about: [pos(FW)], ...clustered([
+    ['header', [['h2', `${V} crew name ${A} Your crew`, ['conditional', 'dynamic'], [2]]]],
+    ['actions', [['button', `Pay ${V} amount due ${A} Pay ${V} balance now`, ['conditional', 'dynamic'], [2, 1]]]],
+  ]), expect: [f(FW, 'R15', [0]), f(FW, 'R15', [1])] },
+
+  // c02: one stateful dot per row is K2, and the section badge's dot is one dot.
+  { name: 'rc_row_dots_header_dot_neg', fw: 'tsx', about: [neg(RC)], ...clustered([
+    ['header', [['h2', 'Pontoons'], ['badge', `${V} overall state`, ['small', 'dot', 'stateful', 'dynamic'], [2]]]],
+    ['list', [['list_item', 'Pontoon A', ['in_list']], ['caption', `${V} power state`, ['dot', 'stateful', 'dynamic', 'in_list'], [2]],
+              ['list_item', 'Pontoon B', ['in_list']], ['caption', `${V} power state`, ['dot', 'stateful', 'dynamic', 'in_list'], [2]],
+              ['list_item', 'Pontoon C', ['in_list']], ['caption', `${V} power state`, ['dot', 'stateful', 'dynamic', 'in_list'], [2]]]],
+  ]), expect: [] },
+
+  // c03: fraction runs with different totals do not join; each is reported.
+  { name: 'ix_totals_split_pos', fw: 'tsx', about: [pos(IX)], ...clustered([
+    ['header', [['h2', 'Gallery']]],
+    ['body', [['caption', '1 / 2'], ['body', 'Slipway at dawn'], ['caption', '2 / 2'], ['body', 'Slipway at dusk']]],
+    ['body', [['caption', '1 / 3'], ['body', 'Pier'], ['caption', '2 / 3'], ['body', 'Boathouse'], ['caption', '3 / 3'], ['body', 'Crane']]],
+  ]), expect: [f(IX, 'R12', [1, 3]), f(IX, 'R12', [5, 7, 9])] },
+
+  // c04: a footer link is skipped; a body call to action repeated across windows is still R14.
+  { name: 'er_footer_vs_body_cta_pos', fw: 'tsx', about: [pos(ER), neg(ER)], ...clustered([
+    ['actions', [['button', 'Book a guided climb']]],
+    ...notes(70),
+    ['actions', [['button', 'Book a guided climb']]],
+    ['body', [['link', 'Book a guided climb', ['in_footer']]]],
+  ]), expect: [f(ER, 'R14', [71], { target: 0 })] },
+
+  // c05: when the ternary is the whole label (`{sending ? "Sending your form" : "Submit"}`), "Submit" is still R7; the
+  // fragment reading covers only a lone "more" or "here".
+  { name: 'va_whole_branch_submit_pos', fw: 'tsx', about: [pos(VA)], ...clustered([
+    ['control', [['label', 'Message', ['in_form', 'in_control']]]],
+    ['actions', [['button', `Sending your form ${A} Submit`, ['conditional', 'in_form']]]],
+  ]), expect: [f(VA, 'R7', [1])] },
+
+  // c06: inside a conditional block (`{show && …}`) every node is `conditional`, so the flag alone is not a node's own
+  // condition: a fixed dot and a fixed pill on every card are still R19.
+  { name: 'rc_conditional_block_pos', fw: 'tsx', about: [pos(RC)], ...clustered([
+    ['header', [['h2', 'Winter berths']]],
+    ['body', [['body', 'Harbour office open', ['dot', 'conditional']], ['body', 'Ask at the hut for the gate key.', ['conditional']]]],
+    ...['Dinghy', 'Keelboat', 'Catamaran'].map((t) => ['card', [['h3', t, ['conditional', 'in_card', 'repeated']], ['badge', 'New', ['pill', 'conditional', 'in_card', 'repeated']]]]),
+  ]), expect: [f(RC, 'R19', [1], { condition: 'decorative-dot' }), f(RC, 'R19', [4, 6, 8], { condition: 'sibling-device' })] },
+
+  // c07: a two-digit number with words ("12 months …") after a bare number is not a device that makes the bare number
+  // a value; it only continues a padded column.
+  { name: 'ix_plain_before_wide_pos', fw: 'tsx', about: [pos(IX)], ...clustered([
+    ['header', [['h2', 'Fit the tide gauge']]],
+    ['body', [['caption', '1'], ['body', 'Fix the mast to the pier rail.'], ['caption', '2'], ['body', 'Point the sensor at open water.'],
+              ['caption', '3'], ['body', '12 months of readings fit on the card.']]],
+  ]), expect: [f(IX, 'R12', [1, 3, 5])] },
+
+  // c08: decimals and times are not footnote markers ("4.1", "4.2" do not refer to notes 1 and 2).
+  { name: 'ix_decimal_not_marker_pos', fw: 'tsx', about: [pos(IX)], ...clustered([
+    ['header', [['h2', 'Visitor moorings']]],
+    ['body', [['caption', '1'], ['body', 'Members only.'], ['caption', '2'], ['body', 'Weekdays from 9:30.'], ['caption', '3'], ['body', 'Closed in July.'],
+              ['body', 'Rated 4.1 in spring and 4.2 in autumn.']]],
+  ]), expect: [f(IX, 'R12', [1, 3, 5])] },
 
   // -- a clean screen: no rule fires ------------------------------------------------------------------------------
   { name: 'clean_settings_neg', fw: 'swift', about: [neg(RC), neg(VA), neg(FW), neg(PL), neg(SL), neg(IX), neg(ER)],

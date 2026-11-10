@@ -260,17 +260,19 @@ Written by the harness, shipped as separate ESLint rules, scored separately agai
 `slop/repeated-chrome` (scored against the screen-level R19 labels; conditions: eyebrows above more than
 ceil(sections / 3) section headings, a section heading being one outside cards, lists, tables, navigation, dialogs,
 states and repeated siblings, a quota marked taste (tasteskill v2-experimental, landing pages); any decorative dot,
-that is a `dot` flag without `stateful` or `dynamic`; more than one real-state dot per section (v2-experimental
-SKILL.md:705), where K2 wins: one stateful dot on each of several sibling cards or rows, each bound to its own item,
-is not counted; an arrow suffix on every link, when there are two or more, an arrow being → ➔ ➜ ⟶ ⇢ ⇾ or `->` (or
-› as a separate final token), not ↗, which marks an external link, nor »; the same badge, pill or eyebrow text, arrow
-suffix or index number on more than half of three or more sibling cards or rows, as `LABELLING.md` R19 describes),
+that is a `dot` flag on a node not bound to data (bound: `stateful`, `dynamic`, or `conditional` by a condition of its
+own rather than an enclosing block's); more than one real-state dot per section (v2-experimental SKILL.md:705), where
+K2 wins: one stateful dot on each of several sibling cards or rows, each bound to its own item, is not counted; an
+arrow suffix on every link outside the footer, when there are two or more, an arrow being → or a similar arrow glyph,
+`->` or `=>` (or › as a separate final token), not ↗, which marks an external link, nor »; the same badge, pill or
+eyebrow text, arrow suffix or index number on more than half of three or more sibling cards or rows, as
+`LABELLING.md` R19 describes, a K13 qualifier badge (tax status, billing period, currency, unit) excepted),
 `slop/vacuous-action` (R7 list), `slop/filler-words` (R15 list), `slop/placeholder-as-label` (R8b),
 `slop/shared-lead-in` (R10), `slop/index-numbering` (R12) and `slop/exact-repeat` (the same normalised string of two
-or more words in two windows of one file, outside navigation, menus, tables, form fields, footer links (K5), nodes
-flagged `repeated`, `conditional` copies, and pairs that K11 or separately mounted states (§2a) exempt; the
-lower-ranked copy by `LABELLING.md` §5 is flagged). The rules read identifier words from the node's `vw` (§4). The
-lists and exact conditions are in `rules/README.md`.
+or more words in two windows of one file, outside navigation, menus, tables, form fields, footer links and site-bar
+links (a header link in a cluster with no heading) (K5), nodes flagged `repeated`, `conditional` copies, and pairs
+that K11, K12 or separately mounted states (§2a) exempt; the lower-ranked copy by `LABELLING.md` §5 is flagged). The
+rules read identifier words from the node's `vw` (§4). The lists and exact conditions are in `rules/README.md`.
 
 ## 9. Data, splits and sealing
 
@@ -301,16 +303,19 @@ Reserved and never used here: 20261104 and 20261106–20261111, 20261201, 202612
   Matthew's review.
 - **Dev generator** (`slop/generator/`). Emits source files (TSX, HTML, SwiftUI) plus label records, then runs the
   real extractor, so labels are joined to extracted nodes by source span; a planted span with no node stops the build,
-  and a screen whose extracted roles contradict its planted pattern or precedence is regenerated and counted. Screen
-  kinds: marketing sections, app pages, settings and forms, dialogs, empty states, dashboards, game menus and HUDs.
+  and a screen whose extracted roles contradict its planted pattern or precedence, or whose copy has a grammar seam
+  (a/an before the wrong sound, a doubled word, a bad plural), is regenerated and counted. Screen kinds: marketing
+  sections, app pages, settings and forms, dialogs, empty states, dashboards, game menus and HUDs.
   It plants every scored pattern of `LABELLING.md` §9 with an exact class, pattern and target, and every K rule as
   hard negatives, with clean screens mixed in; comment pairs, R18 and K10 belong to track C and are not built for r1.
   Each screen is built around one product, so kept copy adds a fact about what its heading or label names. Restating
   copy and informative copy each come both with and without words shared with the node they sit under, every role the
   guide lets be redundant carries both classes, and copy is assembled from slots (nouns, synonyms, figures, names), so
-  that no role, stem overlap or frequent string decides the class. A screen's kind and whether it is clean are
-  written only to a harness sidecar (`<set>.meta.jsonl`), never to the screen or source files, and source paths name
-  no kind. Its templates and synonym tables never enter the packet and pass the leakage check.
+  that no role, stem overlap or frequent string decides the class. Restatements carry the figures, dates and limits
+  of what they restate, and the same sentence occurs as a restatement under a heading or label that states its fact
+  and as `KEEP` under one that does not, so that the class depends on the context, not on the sentence. A screen's
+  kind and whether it is clean are written only to a harness sidecar (`<set>.meta.jsonl`), never to the screen or
+  source files, and source paths name no kind. Its templates and synonym tables never enter the packet and pass the leakage check.
 - **OOD generator (Codex).** Briefed with `LABELLING.md` and §4 only. It emits TSX, HTML and SwiftUI source files with
   span-keyed labels; the harness runs the real extractor on them (0 unmatched spans, §12.4). It never sees the
   harness generator, `dev`, `val`, the reference labels or Fable's output.
@@ -330,8 +335,8 @@ Reserved and never used here: 20261104 and 20261106–20261111, 20261201, 202612
   gives more than 25% of the nodes of `sealed_real` or of the pairs of `comments_real`, or more than 40% of the
   nodes of `reference_real`'s repo screens. The calibration screens take the same cap: no repo gives more than 40%
   of their nodes, and a shortfall from 40 screens is reported, never filled by relaxing the cap. In `reference_real`
-  no directory gives more than 6 screens, taken in hash-rank order, so that one folder of similar components
-  (PersonalHomepage's blog figures) cannot fill the set. MemoryOS is third-party (Apache-2.0) and is credited. ACCACloner
+  and the calibration screens no directory gives more than 6 screens, taken in hash-rank order, so that one folder of
+  similar components (PersonalHomepage's blog figures, HypaVPN's `UI`) cannot fill the set. MemoryOS is third-party (Apache-2.0) and is credited. ACCACloner
   and the 3DConnexions SDK are excluded. Private repo text is never committed or published; manifests hold repo,
   path, commit and hashes.
 - **Sealed sibling fixture.** Before launch Matthew obtains a second AI-built game or app overlay (eyebrow, heading,

@@ -13,6 +13,7 @@ from __future__ import annotations
 
 import hashlib
 import random
+import re
 from dataclasses import dataclass, field
 
 # LABELLING.md §9 scored patterns (R18 is track C, deferred: the extractor emits no comment nodes in r1)
@@ -249,6 +250,62 @@ class Rng(random.Random):
 
 def cap(s: str) -> str:
     return s[:1].upper() + s[1:] if s else s
+
+
+_A_BEFORE_VOWEL = ("uni", "use", "usu", "uti", "eu", "one", "once", "ewe")
+_AN_BEFORE_H = ("hour", "honest", "honour", "heir")
+
+
+def article(w: str) -> str:
+    """``w`` with "a" or "an" by its first sound ("an hour", "a user", "an inspection")."""
+    lw = w.lower()
+    if lw.startswith(_AN_BEFORE_H):
+        return "an " + w
+    if lw[:1] in "aeiou" and not lw.startswith(_A_BEFORE_VOWEL):
+        return "an " + w
+    return "a " + w
+
+
+_IRREGULAR = {"series": "series", "craft": "craft", "staff": "staff", "person": "people", "child": "children"}
+
+
+def plural(w: str) -> str:
+    """The plural of a noun phrase: its head noun is the last word, or the word before " of " ("heads of
+    department")."""
+    if " of " in w:
+        head, rest = w.split(" of ", 1)
+        return plural(head) + " of " + rest
+    pre, _, last = w.rpartition(" ")
+    pre = pre + " " if pre else ""
+    lw = last.lower()
+    if lw in _IRREGULAR:
+        return pre + _IRREGULAR[lw]
+    if lw.endswith("y") and lw[-2:-1] not in "aeiou":
+        return pre + last[:-1] + "ies"
+    if lw.endswith(("s", "sh", "ch", "x", "z")):
+        return pre + last + "es"
+    return pre + last + "s"
+
+
+_DOUBLED = re.compile(r"\b(\w+) \1\b", re.I)
+_A_VOWEL = re.compile(r"\ba (?!one\b|once\b|uni|use|usu|uti|eu|ewe|u\b|uk\b)[aeiou]\w*", re.I)
+_AN_CONS = re.compile(r"\ban (?!hour|honest|honou|heir|mot\b|sms\b|rsvp|mp3|faq\b|hd\b)[bcdfghjklmnpqrstvwxyz]\w*", re.I)
+_BAD_PLURAL = re.compile(r"\b\w+(?:ch|sh|x|z)s\b|\b\w*[bcdfghjklmnpqrstvwxz]ys\b")
+_PLURAL_OK = {"rhys"}
+
+
+def seams(text: str) -> list:
+    """Grammar seams left by filling templates: a/an before the wrong sound, a doubled word, a bad plural."""
+    out = []
+    for rx, name in ((_DOUBLED, "doubled word"), (_A_VOWEL, "a before a vowel"), (_AN_CONS, "an before a consonant")):
+        m = rx.search(text)
+        if m:
+            out.append(f"{name}: {m.group(0)!r}")
+    for m in _BAD_PLURAL.finditer(text):
+        if m.group(0).lower() not in _PLURAL_OK:
+            out.append(f"bad plural: {m.group(0)!r}")
+            break
+    return out
 
 
 def lower_first(s: str) -> str:

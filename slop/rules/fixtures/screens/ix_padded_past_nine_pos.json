@@ -1,0 +1,19 @@
+{"schema": "slop.screen/1", "id": "8953618ea68993b1", "framework": "tsx",
+ "source": {"repo": "slop-rules-fixtures", "path": "src/ix_padded_past_nine_pos.tsx", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "header", "line": 2},
+  {"k": 1, "kind": "list", "line": 4}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "h2", "text": "Harbour mix", "flags": [], "loc": [3, 7, 3, 18]},
+  {"i": 1, "k": 1, "role": "list_item", "text": "01 Harbour lights", "flags": ["in_list"], "loc": [5, 7, 5, 24]},
+  {"i": 2, "k": 1, "role": "list_item", "text": "02 Low tide waltz", "flags": ["in_list"], "loc": [6, 7, 6, 24]},
+  {"i": 3, "k": 1, "role": "list_item", "text": "03 Gull song", "flags": ["in_list"], "loc": [7, 7, 7, 19]},
+  {"i": 4, "k": 1, "role": "list_item", "text": "04 Ropewalk", "flags": ["in_list"], "loc": [8, 7, 8, 18]},
+  {"i": 5, "k": 1, "role": "list_item", "text": "05 Salt on the sill", "flags": ["in_list"], "loc": [9, 7, 9, 26]},
+  {"i": 6, "k": 1, "role": "list_item", "text": "06 Night ferry", "flags": ["in_list"], "loc": [10, 7, 10, 21]},
+  {"i": 7, "k": 1, "role": "list_item", "text": "07 Lantern row", "flags": ["in_list"], "loc": [11, 7, 11, 21]},
+  {"i": 8, "k": 1, "role": "list_item", "text": "08 Breakwater", "flags": ["in_list"], "loc": [12, 7, 12, 20]},
+  {"i": 9, "k": 1, "role": "list_item", "text": "09 Fog bell", "flags": ["in_list"], "loc": [13, 7, 13, 18]},
+  {"i": 10, "k": 1, "role": "list_item", "text": "10 Slipway", "flags": ["in_list"], "loc": [14, 7, 14, 17]},
+  {"i": 11, "k": 1, "role": "list_item", "text": "11 Mooring line", "flags": ["in_list"], "loc": [15, 7, 15, 22]},
+  {"i": 12, "k": 1, "role": "list_item", "text": "12 Pilot boat", "flags": ["in_list"], "loc": [16, 7, 16, 20]}]}

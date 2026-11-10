@@ -63,3 +63,20 @@ export const FILLER = [
 export const ACTION_ROLES = new Set(['button', 'link', 'menu_item', 'nav', 'tab']);
 export const TITLE_ROLES = new Set(['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'nav', 'tab', 'menu_item', 'empty_title', 'dialog_title']);
 export const TITLE_LEAD_MAX_WORDS = 4;
+
+// slop/repeated-chrome, sibling-device: a qualifier attached to each of several sibling figures or offers is KEEP in
+// every copy (LABELLING.md K13: "unit, currency, billing period, tax status, \"from\""), so a badge or pill whose whole
+// text is one is not a repeated device. Matched against the whole text, folded (NFKC, lower case, accents dropped,
+// spaces collapsed). Added from K13, not from the research notes.
+const PERIOD = '(?:month|mo|year|yr|annum|quarter|week|wk|day|night|hour|hr)';
+export const QUALIFIERS = [
+  { re: /^(?:\+|plus|inc|incl|including|ex|exc|excl|excluding)\.?\s*(?:vat|gst|tax|taxes|sales tax)$/u, src: 'K13 tax status: "Inc. VAT", "+ VAT", "excl. tax"' },
+  { re: /^(?:vat|gst|tax|taxes)\s+(?:inc|incl|included|exc|excl|excluded|extra|free)\.?$/u, src: 'K13 tax status: "VAT included", "tax extra"' },
+  { re: /^(?:before|after)\s+tax(?:es)?$/u, src: 'K13 tax status: "before tax"' },
+  { re: new RegExp(`^(?:\\/|per |an? )\\s*${PERIOD}$`, 'u'), src: 'K13 billing period: "/month", "per year", "a night"' },
+  { re: /^(?:billed )?(?:monthly|yearly|annually|quarterly|weekly|daily|nightly|hourly)$/u, src: 'K13 billing period: "monthly", "billed annually"' },
+  { re: /^(?:(?:\/|per )\s*\p{L}+\s*){1,2}$/u, src: 'K13 unit: "per seat", "/user/month", "per person"' },
+  { re: /^(?:each|ea\.?)$/u, src: 'K13 unit: "each"' },
+  { re: /^(?:in )?(?:gbp|usd|eur|aud|cad|nzd|chf|jpy|sek|nok|dkk|inr)$/u, src: 'K13 currency: "GBP", "in EUR"' },
+  { re: /^from$/u, src: 'K13: "from"' },
+];

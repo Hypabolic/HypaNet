@@ -3,7 +3,7 @@
 
 import { parse, parseFragment } from 'parse5';
 import type { El, Kid } from './ir.ts';
-import { el, keyLastSegment, txt, varText } from './ir.ts';
+import { el, keyLastSegment, stripPUA, txt, varText } from './ir.ts';
 import { decorateIntrinsic } from './roles.ts';
 import type { Role } from './schema.ts';
 import type { CssMap } from './style.ts';
@@ -68,10 +68,10 @@ function textPieces(src: string, s: number, e: number): Kid[] {
  * text as the content of a <title> element, which takes references but no tags.
  */
 function decode(s: string): string {
-  if (!s.includes('&')) return s;
+  if (!s.includes('&')) return stripPUA(s);
   const frag: N = parseFragment(`<title>${s.replace(/</g, '&lt;')}</title>`);
   const t = frag.childNodes?.[0]?.childNodes?.[0];
-  return t?.nodeName === '#text' ? t.value : s;
+  return stripPUA(t?.nodeName === '#text' ? t.value : s);
 }
 
 export function htmlToIR(src: string, css: CssMap): { root: El; css: CssMap } {
@@ -92,13 +92,13 @@ export function htmlToIR(src: string, css: CssMap): { root: El; css: CssMap } {
     if (n.nodeName === '#text') {
       const loc = n.sourceCodeLocation;
       if (!n.value.trim()) return [txt(' ', loc?.startOffset ?? 0, loc?.startOffset ?? 0)];
-      if (!loc) return [txt(n.value, 0, 0)];
+      if (!loc) return [txt(stripPUA(n.value), 0, 0)];
       const raw = src.slice(loc.startOffset, loc.endOffset);
       if (/[<>]/.test(raw) && !/[<>]/.test(n.value)) {
         // parse5 can stretch a text node's location over end tags it moved; fall back to the decoded value
         const at = raw.indexOf(n.value.trim().slice(0, 20));
         const s0 = at >= 0 ? loc.startOffset + at : loc.startOffset;
-        return [txt(n.value, s0, s0 + n.value.trim().length)];
+        return [txt(stripPUA(n.value), s0, s0 + n.value.trim().length)];
       }
       return textPieces(src, loc.startOffset, loc.endOffset);
     }
@@ -134,7 +134,10 @@ export function htmlToIR(src: string, css: CssMap): { root: El; css: CssMap } {
           e.sty.small = px <= 14;
           e.sty.xsmall = px <= 12;
           e.sty.large = px >= 24;
+          e.sty.fontPx = px;
         }
+        const fw = decl.match(/font-weight\s*:\s*(bold(?:er)?|\d+)/);
+        if (fw) e.sty.bold = /^bold/.test(fw[1]) || parseFloat(fw[1]) >= 600;
         if (/font-family\s*:[^;]*mono/.test(decl)) e.sty.mono = true;
       }
       if (!role || !v.trim()) continue;

@@ -6,8 +6,11 @@ import { createRequire } from 'node:module';
 import { dirname, join } from 'node:path';
 import { Language, Parser } from 'web-tree-sitter';
 import type { Node as TSNode } from 'web-tree-sitter';
-import type { El, Kid, LV, Slot, Txt } from './ir.ts';
-import { ALT_JOIN, ALT_SEP, MAX_EXPAND, el, emptyCond, hasSubs, isFigure, keyLastSegment, looksLikeCopy, markCall, markCopy, markEmptyKids, txt, varText } from './ir.ts';
+import type { El, Kid, LV, Opt, Slot, Txt } from './ir.ts';
+import {
+  ALT_JOIN, ALT_SEP, MAX_EXPAND, el, emptyCond, hasSubs, isFigure, joinRenderings, keyLastSegment, looksLikeCopy, markCall, markCopy, markEmptyKids,
+  renderings, stripPUA, txt, varText,
+} from './ir.ts';
 import { ICON_BUTTON, decorateComponent, propRole } from './roles.ts';
 import type { Role } from './schema.ts';
 
@@ -124,6 +127,27 @@ interface TV {
   bound: boolean;
   spans?: [number, number][]; // substituted array literals (see "Literal arrays")
   near?: [number, number][];
+  opts?: Opt[]; // complete renderings of a conditional text, '' for an empty branch (two or more)
+  lspans?: [number, number][]; // in-file constant literals the text shows (see "In-file constants")
+}
+
+const EMPTY_TV: TV = { text: '', lit: '', dyn: false, alt: false, bound: false };
+const optsOf = (v: TV): Opt[] => v.opts ?? [{ text: v.text.trim() ? v.text : '', lit: v.text.trim() ? v.lit : '' }];
+
+/** Concatenated text ("…\(x ?? "y")…", `a + b`): conditional parts give every complete rendering, as in jsx.ts. */
+function concatTV(parts: TV[]): TV {
+  const spans = parts.flatMap((p) => p.spans ?? []);
+  const near = parts.flatMap((p) => p.near ?? []);
+  const lspans = parts.flatMap((p) => p.lspans ?? []);
+  const base: TV = {
+    text: parts.map((p) => p.text).join(''), lit: parts.map((p) => p.lit).join(''), dyn: parts.some((p) => p.dyn),
+    alt: parts.some((p) => p.alt), bound: false, ...(spans.length ? { spans, near } : {}), ...(lspans.length ? { lspans } : {}),
+  };
+  if (!parts.some((p) => p.opts)) return base;
+  const rs = renderings(parts.map(optsOf));
+  if (!rs) return base;
+  const j = joinRenderings(rs);
+  return { ...base, text: j.text, lit: j.lit, alt: j.text.includes(ALT_SEP), bound: true, opts: rs };
 }
 
 // ---------------------------------------------------------------------------------------------------------------
@@ -312,6 +336,347 @@ function collectArrays(root: TSNode): Map<string, TSNode[]> {
   return out;
 }
 
+// ---------------------------------------------------------------------------------------------------------------
+// In-file constants
+//
+// A name in text position that is bound in this file to copy is read through to it when every path yields a literal:
+// a `let` (local, a member or `static let`, or at the top level) whose value is a string literal or
+// `String(localized:)`, a computed property (`var title: String { switch kind { case .a: "A" … } }`) or a function
+// returning String whose every branch is one, joined with ALT. A member is found on `self`, `Self`, a type named in
+// the file (`Kind.title`), or a value whose type the file states: a parameter or property annotated with it, or the
+// closure parameter of a ForEach (or `.map`) over `Kind.allCases`. Names are resolved by scope: a parameter, closure
+// parameter or pattern binding of the same name hides the constant. String literals may interpolate (the
+// interpolations stay VAR). Anything else keeps the VAR behaviour.
+
+interface SwBinding {
+  node: TSNode; // property_declaration, function_declaration, or the binding identifier (parameters, patterns)
+  kind: 'prop' | 'func' | 'param';
+  scope: TSNode | null; // the node the binding is visible in (null: a member of `type`, or top level)
+  type: string | null; // the type a member belongs to (last name component), null for locals and top level
+  top: boolean;
+}
+let BINDINGS: Map<string, SwBinding[]> = new Map();
+let CONST_DEPTH = 0;
+
+/** Last component of a type name node (user_type, type_identifier, navigation or identifier), if it looks like a type. */
+function typeNameOf(n: TSNode | null | undefined): string | null {
+  if (!n) return null;
+  if (n.type === 'type_identifier') return n.text;
+  if (n.type === 'user_type') {
+    const ids = n.descendantsOfType('type_identifier').filter((x): x is TSNode => x !== null);
+    return ids.length ? ids[ids.length - 1].text : null;
+  }
+  if (n.type === 'optional_type') return typeNameOf(named(n)[0]);
+  if (n.type === 'simple_identifier') return /^[A-Z]/.test(n.text) ? n.text : null;
+  if (n.type === 'navigation_expression') {
+    const nm = n.childForFieldName('suffix');
+    const id = nm ? named(nm).find((c) => c.type === 'simple_identifier') : null;
+    return id && /^[A-Z]/.test(id.text) ? id.text : null;
+  }
+  return null;
+}
+
+/** The type a class_declaration (struct, enum, class, extension) declares or extends. */
+function declTypeName(n: TSNode): string | null {
+  return typeNameOf(n.childForFieldName('name'));
+}
+
+const BINDING_SCOPE = /^(if_statement|guard_statement|switch_entry|for_statement|while_statement|repeat_while_statement|catch_block|do_statement)$/;
+
+function collectBindings(root: TSNode): Map<string, SwBinding[]> {
+  const out = new Map<string, SwBinding[]>();
+  const add = (name: string, b: SwBinding): void => {
+    let a = out.get(name);
+    if (!a) out.set(name, (a = []));
+    a.push(b);
+  };
+  const walk = (n: TSNode, type: string | null): void => {
+    const parent = n.parent;
+    const member = !!parent && /^(class_body|enum_class_body|protocol_body)$/.test(parent.type);
+    const top = !!parent && parent.type === 'source_file';
+    if (n.type === 'class_declaration') {
+      const t = declTypeName(n);
+      for (const c of named(n)) walk(c, t);
+      return;
+    }
+    if (n.type === 'property_declaration') {
+      for (const pat of named(n).filter((c) => c.type === 'pattern')) {
+        const id = pat.childForFieldName('bound_identifier');
+        if (id) add(id.text, { node: n, kind: 'prop', scope: member || top ? null : parent, type: member ? type : null, top });
+      }
+    } else if (n.type === 'function_declaration') {
+      const id = n.childForFieldName('name');
+      if (id) add(id.text, { node: n, kind: 'func', scope: member || top ? null : parent, type: member ? type : null, top });
+      for (const c of named(n)) if (c.type === 'parameter') {
+        const pn = c.childForFieldName('name');
+        if (pn) add(pn.text, { node: pn, kind: 'param', scope: n, type: null, top: false });
+      }
+    } else if (n.type === 'lambda_parameter') {
+      const pn = n.childForFieldName('name') ?? named(n).find((c) => c.type === 'simple_identifier');
+      let lam: TSNode | null = n.parent;
+      while (lam && lam.type !== 'lambda_literal') lam = lam.parent;
+      if (pn && lam) add(pn.text, { node: pn, kind: 'param', scope: lam, type: null, top: false });
+    } else if (n.type === 'pattern' && parent?.type !== 'property_declaration') {
+      // if let x, case .a(let x), for x in, catch let x
+      const id = n.childForFieldName('bound_identifier');
+      if (id) {
+        let sc: TSNode | null = n.parent;
+        while (sc && !BINDING_SCOPE.test(sc.type)) sc = sc.parent;
+        if (sc?.type === 'guard_statement') sc = sc.parent;
+        if (sc) add(id.text, { node: id, kind: 'param', scope: sc, type: null, top: false });
+      }
+    }
+    for (const c of named(n)) walk(c, type);
+  };
+  walk(root, null);
+  return out;
+}
+
+const within = (outer: TSNode, n: TSNode): boolean => outer.startIndex <= n.startIndex && n.endIndex <= outer.endIndex;
+
+/** The types enclosing a node, innermost first. */
+function enclosingTypes(n: TSNode): string[] {
+  const out: string[] = [];
+  for (let p: TSNode | null = n.parent; p; p = p.parent) {
+    if (p.type === 'class_declaration') {
+      const t = declTypeName(p);
+      if (t) out.push(t);
+    }
+  }
+  return out;
+}
+
+/** The binding a bare name refers to at a node, or null when it is unknown or ambiguous. */
+function bindingAt(name: string, at: TSNode): SwBinding | null {
+  const cands = BINDINGS.get(name) ?? [];
+  const local = cands.filter((b) => b.scope && within(b.scope, at));
+  if (local.length) {
+    const size = Math.min(...local.map((b) => (b.scope as TSNode).endIndex - (b.scope as TSNode).startIndex));
+    const inner = local.filter((b) => (b.scope as TSNode).endIndex - (b.scope as TSNode).startIndex === size);
+    return inner.length === 1 && inner[0].node.startIndex < at.startIndex ? inner[0] : null;
+  }
+  for (const t of enclosingTypes(at)) {
+    const ms = cands.filter((b) => b.type === t);
+    if (ms.length) return ms.length === 1 ? ms[0] : null;
+  }
+  const tops = cands.filter((b) => b.top);
+  return tops.length === 1 ? tops[0] : null;
+}
+
+/** A member of a type (by its last name component), declared once in the file. */
+function memberOf(type: string, name: string): SwBinding | null {
+  const ms = (BINDINGS.get(name) ?? []).filter((b) => b.type === type);
+  return ms.length === 1 ? ms[0] : null;
+}
+
+/** `Kind.allCases` (possibly filtered, sorted or mapped): Kind. */
+function allCasesType(n: TSNode | null | undefined): string | null {
+  if (!n) return null;
+  if (n.type === 'navigation_expression') {
+    const suf = n.childForFieldName('suffix');
+    const id = suf ? named(suf).find((c) => c.type === 'simple_identifier') : null;
+    if (id?.text === 'allCases') return typeNameOf(n.childForFieldName('target'));
+    return allCasesType(n.childForFieldName('target'));
+  }
+  if (n.type === 'call_expression') return allCasesType(named(n)[0]);
+  return null;
+}
+
+/** The type of a value the file states: an annotated parameter or property, or a closure over `Kind.allCases`. */
+function valueType(n: TSNode): string | null {
+  if (n.type !== 'simple_identifier') return null;
+  let b: SwBinding | null;
+  if (/^\$0$/.test(n.text)) {
+    let lam: TSNode | null = n.parent;
+    while (lam && lam.type !== 'lambda_literal') lam = lam.parent;
+    if (!lam || named(lam).some((c) => c.type === 'lambda_function_type')) return null;
+    b = { node: lam, kind: 'param', scope: lam, type: null, top: false };
+  } else b = bindingAt(n.text, n);
+  if (!b) return null;
+  if (b.kind === 'prop') return typeNameOf(named(b.node).find((c) => c.type === 'type_annotation')?.childForFieldName('name'));
+  if (b.kind !== 'param') return null;
+  const decl = b.node.parent;
+  if (decl?.type === 'parameter') return typeNameOf(named(decl).filter((c) => c.type !== 'simple_identifier').pop());
+  if (b.scope?.type === 'lambda_literal') {
+    // the closure of ForEach(Kind.allCases) { k in … } or Kind.allCases.map { … }
+    let call: TSNode | null = b.scope.parent;
+    while (call && call.type !== 'call_expression') call = call.parent;
+    if (!call) return null;
+    const callee = named(call)[0];
+    if (callee?.type === 'navigation_expression') return allCasesType(callee);
+    const data = asCall(call)?.args.find((a) => a.label === null)?.value;
+    return allCasesType(data);
+  }
+  return null;
+}
+
+/** The value nodes every path of a body yields, or null when a path does something else. */
+function bodyValues(st: TSNode): TSNode[] | null {
+  const items = named(st).filter((c) => !/comment/.test(c.type));
+  if (!items.length) return null;
+  const out: TSNode[] = [];
+  for (let i = 0; i < items.length; i++) {
+    const x = items[i];
+    const last = i === items.length - 1;
+    if (x.type === 'switch_statement' && last) {
+      for (const entry of named(x)) {
+        if (entry.type !== 'switch_entry') continue;
+        const body = named(entry).find((c) => c.type === 'statements');
+        const v = body ? bodyValues(body) : null;
+        if (!v) return null;
+        out.push(...v);
+      }
+    } else if (x.type === 'if_statement') {
+      // `if c { "a" } else { "b" }` last, or `if c { return "a" }` falling through to what follows
+      const v = ifValues(x, last);
+      if (!v) return null;
+      out.push(...v);
+    } else if (x.type === 'control_transfer_statement') {
+      const v = x.childForFieldName('result') ?? named(x).find((c) => !/comment/.test(c.type));
+      if (!v || !/^return\b/.test(x.text)) return null;
+      out.push(v);
+      return out;
+    } else if (last && items.length === 1) out.push(x);
+    else return null;
+  }
+  return out;
+}
+
+function ifValues(x: TSNode, last: boolean): TSNode[] | null {
+  const ch = named(x);
+  const blocks = ch.filter((c) => c.type === 'statements');
+  const elseIf = ch.find((c) => c.type === 'if_statement');
+  const out: TSNode[] = [];
+  for (const b of blocks) {
+    const items = named(b).filter((c) => !/comment/.test(c.type));
+    // a branch that falls through must return
+    if (!last && items[items.length - 1]?.type !== 'control_transfer_statement') return null;
+    const v = bodyValues(b);
+    if (!v) return null;
+    out.push(...v);
+  }
+  if (elseIf) {
+    const v = ifValues(elseIf, last);
+    if (!v) return null;
+    out.push(...v);
+  } else if (last && blocks.length < 2) return null;
+  return out;
+}
+
+/** Text of a literal value (a string, String(localized:), a ternary of them, nil, or another constant), or null. */
+function literalTV(v: TSNode): TV | null {
+  if (v.text === 'nil') return EMPTY_TV;
+  if (/^(line|multi_line|raw)_string_literal$/.test(v.type)) {
+    const tv = stringParts(v);
+    return { ...tv, lspans: [litSpan(v)] };
+  }
+  if (v.type === 'call_expression') {
+    const c = asCall(v);
+    if (c && LOCALISE.test(c.name)) {
+      const a = c.args.find((x) => x.label === null || x.label === 'localized');
+      if (!a || !/^(line|multi_line)_string_literal$/.test(a.value.type)) return null;
+      const tv = textOf(v);
+      return tv ? { ...tv, lspans: [litSpan(a.value)] } : null;
+    }
+    return constCallTV(v);
+  }
+  if (v.type === 'ternary_expression') {
+    const a = literalTV(v.childForFieldName('if_true') as TSNode);
+    const b = a ? literalTV(v.childForFieldName('if_false') as TSNode) : null;
+    return a && b ? joinAlt([a, b]) : null;
+  }
+  if (v.type === 'simple_identifier' || v.type === 'navigation_expression') return constTV(v);
+  if (v.type === 'tuple_expression') {
+    const ch = named(v).filter((c) => !/comment/.test(c.type));
+    return ch.length === 1 ? literalTV(ch[0]) : null;
+  }
+  return null;
+}
+
+/** Text a binding stands for when every path yields a literal. */
+function bindingTV(b: SwBinding, call: boolean): TV | null {
+  if (CONST_DEPTH > 6) return null;
+  let vals: TSNode[] | null = null;
+  if (b.kind === 'prop' && !call) {
+    const comp = b.node.childForFieldName('computed_value');
+    const isLet = named(b.node).some((c) => c.type === 'value_binding_pattern' && /^let\b/.test(c.text));
+    if (comp) {
+      const st = named(comp).find((c) => c.type === 'statements');
+      vals = st ? bodyValues(st) : null;
+    } else if (isLet) {
+      const v = b.node.childForFieldName('value');
+      vals = v ? [v] : null;
+    }
+  } else if (b.kind === 'func' && call) {
+    if (!/->\s*(String|LocalizedStringKey|LocalizedStringResource|Text)\??\s*\{/.test(b.node.text.slice(0, b.node.text.indexOf('{') + 1))) return null;
+    const body = named(b.node).find((c) => c.type === 'function_body');
+    const st = body ? named(body).find((c) => c.type === 'statements') : undefined;
+    vals = st ? bodyValues(st) : null;
+  }
+  if (!vals || !vals.length || vals.length > MAX_EXPAND) return null;
+  CONST_DEPTH++;
+  try {
+    // the body is read in its own scope: no substitutions from the caller
+    const tvs = withEnv({ node: b.node, subst: null, exprs: new Map() }, () => vals!.map(literalTV));
+    if (tvs.some((t) => !t)) return null;
+    const ts = tvs as TV[];
+    if (ts.length === 1) return ts[0];
+    const j = joinAlt(ts);
+    // several literals: the node sits at its use site
+    return { ...j, lspans: undefined };
+  } finally {
+    CONST_DEPTH--;
+  }
+}
+
+/** A bare name or member (`title`, `self.title`, `Self.title`, `Kind.title`, `kind.title`) bound to copy. */
+function constTV(n: TSNode): TV | null {
+  if (n.type === 'simple_identifier') {
+    if (/^\$/.test(n.text)) return null;
+    const b = bindingAt(n.text, n);
+    return b ? bindingTV(b, false) : null;
+  }
+  if (n.type !== 'navigation_expression') return null;
+  const target = n.childForFieldName('target');
+  const suf = n.childForFieldName('suffix');
+  const name = suf ? named(suf).find((c) => c.type === 'simple_identifier')?.text : undefined;
+  if (!target || !name) return null;
+  let type: string | null = null;
+  if (target.type === 'self_expression' || target.text === 'self' || target.text === 'Self') {
+    for (const t of enclosingTypes(n)) {
+      const m = memberOf(t, name);
+      if (m) return bindingTV(m, false);
+    }
+    return null;
+  }
+  type = typeNameOf(target) ?? valueType(target);
+  const m = type ? memberOf(type, name) : null;
+  return m ? bindingTV(m, false) : null;
+}
+
+/** A call of a function in this file (`title(kind)`, `self.title(for: kind)`) whose every branch returns copy. */
+function constCallTV(n: TSNode): TV | null {
+  const callee = named(n)[0];
+  if (!callee) return null;
+  if (callee.type === 'simple_identifier') {
+    if (/^[A-Z]/.test(callee.text)) return null;
+    const b = bindingAt(callee.text, n);
+    return b && b.kind === 'func' ? bindingTV(b, true) : null;
+  }
+  if (callee.type === 'navigation_expression') {
+    const target = callee.childForFieldName('target');
+    const suf = callee.childForFieldName('suffix');
+    const name = suf ? named(suf).find((c) => c.type === 'simple_identifier')?.text : undefined;
+    if (!target || !name) return null;
+    const types = target.text === 'self' || target.text === 'Self' ? enclosingTypes(n) : [typeNameOf(target) ?? valueType(target)].filter((t): t is string => !!t);
+    for (const t of types) {
+      const m = memberOf(t, name);
+      if (m) return m.kind === 'func' ? bindingTV(m, true) : null;
+    }
+  }
+  return null;
+}
+
 function slotTV(v: Slot): TV | null {
   if (v === undefined) return { text: '', lit: '', dyn: false, alt: false, bound: false };
   if (v === null) return null;
@@ -349,21 +714,19 @@ function identOf(n: TSNode | null): string | null {
 const ESC: Record<string, string> = { n: ' ', t: ' ', r: ' ', '"': '"', "'": "'", '\\': '\\', '0': '' };
 
 function stringParts(n: TSNode): TV {
-  let text = '';
-  let lit = '';
-  let dyn = false;
-  const subbed: TV[] = [];
+  const parts: TV[] = [];
+  const plain = (v: string): void => {
+    parts.push({ text: v, lit: v, dyn: false, alt: false, bound: false });
+  };
   for (const c of named(n)) {
     if (c.type === 'line_str_text' || c.type === 'multi_line_str_text' || c.type === 'raw_str_part' || c.type === 'raw_str_end_part') {
-      text += c.text;
-      lit += c.text;
+      plain(stripPUA(c.text));
     } else if (c.type === 'str_escaped_char') {
       const t = c.text;
       let v: string;
       if (/^\\u\{/.test(t)) v = String.fromCodePoint(parseInt(t.slice(3, -1), 16));
       else v = ESC[t.slice(1)] ?? t.slice(1);
-      text += v;
-      lit += v;
+      plain(stripPUA(v));
     } else if (c.type === 'interpolated_expression' || c.type === 'raw_str_interpolation') {
       // `\(date, format: …)` parses as two interpolations; the labelled one is an argument of the first
       if (c.childForFieldName('name')) continue;
@@ -372,10 +735,7 @@ function stringParts(n: TSNode): TV {
       if (bv) {
         const tv = withEnv(bv, () => textOf(bv.node));
         if (tv) {
-          text += tv.dyn ? ` ${tv.text.trim()} ` : tv.text;
-          lit += tv.dyn ? ' ' : tv.lit;
-          dyn = dyn || tv.dyn;
-          if (tv.spans) subbed.push(tv);
+          parts.push(tv.dyn ? { ...tv, text: ` ${tv.text.trim()} `, lit: ' ', opts: tv.opts?.map((o) => ({ text: o.text.trim() ? ` ${o.text.trim()} ` : '', lit: ' ' })) } : tv);
           continue;
         }
       }
@@ -383,20 +743,17 @@ function stringParts(n: TSNode): TV {
       const sub = r ? slotTV(r.v) : null;
       if (sub) {
         // "\(row.title)": a substituted literal is copy
-        text += sub.text;
-        lit += sub.lit;
-        subbed.push(sub);
+        parts.push(sub);
         continue;
       }
       const tv = v && /^(ternary_expression|nil_coalescing_expression)$/.test(v.type) ? textOf(v) : null;
-      text += ` ${tv ? tv.text.trim() : varText(identOf(v))} `;
-      lit += ' ';
-      dyn = dyn || !tv || tv.dyn;
+      if (tv) parts.push({ ...tv, text: ` ${tv.text.trim()} `, lit: ' ', opts: tv.opts?.map((o) => ({ text: o.text.trim() ? ` ${o.text.trim()} ` : '', lit: ' ' })) });
+      else parts.push({ text: ` ${varText(identOf(v))} `, lit: ' ', dyn: true, alt: false, bound: false });
     }
   }
-  const spans = subbed.flatMap((t) => t.spans ?? []);
-  const near = subbed.flatMap((t) => t.near ?? []);
-  return { text, lit, dyn, alt: false, bound: dyn && lit.trim() === '', ...(spans.length ? { spans, near } : {}) };
+  const out = concatTV(parts);
+  const lit = parts.map((p) => p.lit).join('');
+  return { ...out, lspans: undefined, bound: out.opts ? out.bound : out.dyn && lit.trim() === '' };
 }
 
 const LOCALISE = /^(String|NSLocalizedString|LocalizedStringKey|LocalizedStringResource)$/;
@@ -413,6 +770,8 @@ function textOf(n0: TSNode | null): TV | null {
       const r = swResolve(n);
       const sub = r ? slotTV(r.v) : null;
       if (sub) return sub;
+      const k = constTV(n);
+      if (k) return k;
       return { text: ` ${varText(identOf(n))} `, lit: ' ', dyn: true, alt: false, bound: true };
     }
     case 'call_expression': {
@@ -431,6 +790,8 @@ function textOf(n0: TSNode | null): TV | null {
         const a = c.args[0];
         return a ? textOf(a.value) : null;
       }
+      const k = constCallTV(n);
+      if (k) return k;
       return { text: ` ${varText(identOf(n))} `, lit: ' ', dyn: true, alt: false, bound: true };
     }
     case 'ternary_expression': {
@@ -443,15 +804,14 @@ function textOf(n0: TSNode | null): TV | null {
       const a = textOf(n.childForFieldName('value'));
       const b = textOf(n.childForFieldName('if_nil'));
       if (!a || !b) return null;
-      return joinAlt([a, b]);
+      // `x ?? ""` guards a missing value; the empty fallback is not a rendering of its own
+      return joinAlt(b.text.trim() === '' ? [a] : [a, b]);
     }
     case 'additive_expression': {
       const a = textOf(n.childForFieldName('lhs'));
       const b = textOf(n.childForFieldName('rhs'));
       if (!a || !b) return null;
-      const spans = [...(a.spans ?? []), ...(b.spans ?? [])];
-      const near = [...(a.near ?? []), ...(b.near ?? [])];
-      return { text: a.text + b.text, lit: a.lit + b.lit, dyn: a.dyn || b.dyn, alt: a.alt || b.alt, bound: false, ...(spans.length ? { spans, near } : {}) };
+      return concatTV([a, b]);
     }
     case 'prefix_expression': return null;
     case 'tuple_expression': {
@@ -465,13 +825,16 @@ function textOf(n0: TSNode | null): TV | null {
 
 function joinAlt(parts: TV[]): TV {
   const f = parts.filter((p) => p.text.trim() !== '');
+  const all = parts.flatMap(optsOf);
+  const opts = all.length >= 2 ? all : undefined;
   if (f.length === 0) return { text: '', lit: '', dyn: false, alt: false, bound: false };
-  if (f.length === 1) return { ...f[0], alt: true, bound: true };
+  if (f.length === 1) return { ...f[0], alt: true, bound: true, opts };
   const spans = f.flatMap((p) => p.spans ?? []);
   const near = f.flatMap((p) => p.near ?? []);
+  const lspans = f.flatMap((p) => p.lspans ?? []);
   return {
     text: f.map((p) => p.text.trim()).join(ALT_JOIN), lit: f.map((p) => p.lit.trim()).join(ALT_SEP), dyn: f.some((p) => p.dyn), alt: true, bound: true,
-    ...(spans.length ? { spans, near } : {}),
+    ...(spans.length ? { spans, near } : {}), ...(lspans.length ? { lspans } : {}), opts,
   };
 }
 
@@ -491,7 +854,10 @@ function mkTxt(n: TSNode, src: string, extra: Partial<Txt> = {}): Txt | null {
   let [s, e] = litSpan(n);
   while (s < e && /\s/.test(src[s])) s++;
   while (e > s && /\s/.test(src[e - 1])) e--;
-  return txt(tv.text, s, e, { lit: tv.lit, dyn: tv.dyn, alt: tv.alt, bound: tv.bound, ...(tv.spans ? { subs: tv.spans, near: tv.near } : {}), ...extra });
+  return txt(tv.text, s, e, {
+    lit: tv.lit, dyn: tv.dyn, alt: tv.alt, bound: tv.bound, ...(tv.spans ? { subs: tv.spans, near: tv.near } : {}),
+    ...(tv.opts && tv.opts.length >= 2 ? { opts: tv.opts } : {}), ...(tv.lspans?.length === 1 ? { lspan: tv.lspans[0] } : {}), ...extra,
+  });
 }
 
 // ---------------------------------------------------------------------------------------------------------------
@@ -1058,6 +1424,14 @@ class SwiftBuilder {
           break;
         }
         case 'labelsHidden': hideLabels(core); break;
+        // a view that is not drawn gives no nodes (keyboard-shortcut buttons kept off screen)
+        case 'opacity': if (m.args.length === 1 && /^0*(\.0*)?$/.test(a0t) && /\d/.test(a0t)) core.hidden = true; break;
+        case 'hidden': if (!m.args.length) core.hidden = true; break;
+        case 'keyboardShortcut': core.attrs.keyboardShortcut = a0t || '1'; break;
+        case 'accessibilityHidden':
+          // hidden from VoiceOver only: the view is still drawn, unless all its text is keyboard-shortcut buttons
+          if (/^true$/.test(a0t) && kidsHaveText(core) && !textOutsideShortcut(core)) core.hidden = true;
+          break;
         case 'listStyle': if (/sidebar/.test(a0t)) core.box = 'nav'; break;
         case 'accessibilityAddTraits': if (/isHeader/.test(a0t) && /^(Text|Label)$/.test(core.name)) core.hint = core.hint ?? 'h2'; break;
         case 'navigationTitle': case 'navigationBarTitle': case 'navigationSubtitle': {
@@ -1190,6 +1564,13 @@ function hideLabels(e: El): void {
   }
 }
 
+/** Does any text sit outside a button with a keyboard shortcut? */
+function textOutsideShortcut(k: Kid): boolean {
+  if (k.t === 'txt') return !k.attr && k.text.trim() !== '';
+  if (k.attrs.keyboardShortcut) return false;
+  return k.kids.some(textOutsideShortcut);
+}
+
 function kidsHaveText(k: Kid): boolean {
   if (k.t === 'txt') return k.text.trim() !== '';
   return k.kids.some(kidsHaveText);
@@ -1215,6 +1596,8 @@ export async function swiftToIR(src: string): Promise<El> {
   if (!tree) throw new Error('tree-sitter returned no tree');
   const b = new SwiftBuilder(src);
   ARRAYS = collectArrays(tree.rootNode);
+  BINDINGS = collectBindings(tree.rootNode);
+  CONST_DEPTH = 0;
   FUNCS = collectFuncs(tree.rootNode);
   INLINED = new Set();
   EXPRS = new Map();

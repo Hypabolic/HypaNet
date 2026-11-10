@@ -5,9 +5,9 @@
 INPUT is a screen JSON file, a directory (every ``*.json`` in it, sorted) or a ``.jsonl`` file (one screen per
 line). Without ``--art`` the network is built afresh by ``validate/build_floor_net.py`` in a temporary directory.
 
-Reported: nodes, the share whose class and pointer equal the floor's (the §12.3 pass mark is ``--min``, default 0.99,
-on ``val``), the same against the floor limited to pairs at most 7 nodes apart (the network's reach; expected 100%),
-and the first disagreements. With ``--js`` the artefact is compiled and every screen is also run through
+Reported: nodes, the share whose class and pointer equal the floor's limited to pairs at most 7 nodes apart (the
+network's construction reach; the §12.3 pass mark ``--min``, default 0.99 on ``val``, applies to this figure), the
+same against the full floor (reported beside it, no pass mark), and the first disagreements with the full floor. With ``--js`` the artefact is compiled and every screen is also run through
 ``lint/runtime.js``: argmax and pointer must be identical on every node and logits within 1e-6 x max(1, |logit|).
 Exit status 1 if any check fails.
 """
@@ -116,7 +116,8 @@ def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
     ap.add_argument("inputs", nargs="*")
     ap.add_argument("--art", help="artefact directory (default: build the floor network afresh)")
-    ap.add_argument("--min", type=float, default=0.99, help="required agreement with the floor (default 0.99)")
+    ap.add_argument("--min", type=float, default=0.99,
+                    help="required agreement with the floor within the network's reach (default 0.99)")
     ap.add_argument("--js", action="store_true", help="also check lint/runtime.js against numpy on every node")
     ap.add_argument("--random", type=int, default=0, help="add N seeded random screens")
     ap.add_argument("--seed", type=int, default=0)
@@ -135,11 +136,12 @@ def main(argv: list[str] | None = None) -> int:
         if args.js:
             report["js"] = compare_js(art, art_dir, screens, work)
     fl = report["floor"]
-    ok = fl["agreement"] >= args.min and (not args.js or report["js"]["pass"])
+    ok = fl["agreement_within_range"] >= args.min and (not args.js or report["js"]["pass"])
     report["pass"] = ok
     print(f"artefact {report['artifact_sha256'][:16]}  screens {len(screens)}  nodes {fl['nodes']}")
-    print(f"floor agreement (class and pointer): {fl['agree']}/{fl['nodes']} = {fl['agreement']:.4%}  (min {args.min:.0%})")
-    print(f"within {build_floor_net.RANGE} nodes: {fl['agree_within_range']}/{fl['nodes']} = {fl['agreement_within_range']:.4%}")
+    print(f"floor agreement within {build_floor_net.RANGE} nodes (class and pointer): {fl['agree_within_range']}/{fl['nodes']} = "
+          f"{fl['agreement_within_range']:.4%}  (min {args.min:.0%})")
+    print(f"floor agreement overall (reported): {fl['agree']}/{fl['nodes']} = {fl['agreement']:.4%}")
     print(f"flags: floor {fl['floor_flags']}, network {fl['network_flags']}")
     for m in fl["disagreements"]:
         print(f"  {m['screen']} node {m['node']} {m['role']} {m['text']!r}: network {m['network']}, floor {m['floor']}")

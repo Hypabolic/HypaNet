@@ -38,8 +38,8 @@ Rules, in order; each file is counted under the first rule that drops it:
 11. `dedupe_exact`, `dedupe_jaccard`: in hash-rank order, a screen whose normalised node-text sequence has the same
     sha256 as, or whose node-text set has Jaccard similarity of at least 0.8 with, a screen already kept in this set
     or in an earlier set (`reference_real` before `calibration` and `sealed_real`).
-12. `dir_cap` (`reference_real` only): in rank order, a screen whose directory (its file's parent directory in the
-    repo) already gives 6 selected screens.
+12. `dir_cap` (`reference_real` and `calibration`): in rank order, a screen whose directory (its file's parent
+    directory in the repo) already gives 6 selected screens.
 13. `repo_cap`: dropped to hold the set's repo balance rule (no repo gives more than 40% of the nodes of
     `reference_real`'s repo screens or of `calibration`, or 25% of those of `sealed_real`).
 14. `below_cut`: ranked after the set was full.
@@ -138,13 +138,14 @@ SEALED_REPOS = [
 ]
 
 REFERENCE_RULE = {"measure": "nodes", "share": 0.4, "dir_cap": 6,
-                  "text": "no repo gives more than 40% of the nodes of the 50 repo screens (a 25% cap, as for "
+                  "text": "no repo gives more than 40% of the nodes of the set's repo screens (a 25% cap, as for "
                           "sealed_real, cannot hold with three repos), and no directory gives more than 6 screens "
-                          "(taken in rank order); the pause-menu fixture is added on top"}
-CALIBRATION_RULE = {"measure": "nodes", "share": 0.4, "dir_cap": None,
-                    "text": "no repo gives more than 40% of the set's nodes, as for reference_real; up to 40 screens "
-                            "drawn by hash rank (SPEC.md §5), and a shortfall is reported, not filled by relaxing the "
-                            "cap"}
+                          "(taken in rank order); up to 50 repo screens, and a shortfall is reported, not filled by "
+                          "relaxing either cap; the pause-menu fixture is added on top"}
+CALIBRATION_RULE = {"measure": "nodes", "share": 0.4, "dir_cap": 6,
+                    "text": "no repo gives more than 40% of the set's nodes and no directory gives more than 6 screens "
+                            "(taken in rank order), as for reference_real; up to 40 screens drawn by hash rank "
+                            "(SPEC.md §5), and a shortfall is reported, not filled by relaxing either cap"}
 SEALED_RULE = {"measure": "nodes", "share": 0.25, "dir_cap": None,
                "text": "no repo gives more than 25% of the nodes (SPEC.md §9)"}
 

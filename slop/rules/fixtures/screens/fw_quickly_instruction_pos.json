@@ -1,0 +1,8 @@
+{"schema": "slop.screen/1", "id": "5a1edd72078e1850", "framework": "tsx",
+ "source": {"repo": "slop-rules-fixtures", "path": "src/fw_quickly_instruction_pos.tsx", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "header", "line": 2},
+  {"k": 1, "kind": "body", "line": 4}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "h2", "text": "Cradle lock", "flags": [], "loc": [3, 7, 3, 18]},
+  {"i": 1, "k": 1, "role": "body", "text": "Turn the winch quickly to lock the cradle.", "flags": [], "loc": [5, 7, 5, 49]}]}

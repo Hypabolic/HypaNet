@@ -20,10 +20,20 @@ const TITLES = new Set([...HEADINGS, 'dialog_title', 'empty_title']);
 const MIN_WORDS = 2;
 const ACTIONS = new Set(['button', 'link']);
 
+// K12: an error summary item (a link or list item in an alert) and the inline error it links to; a tooltip, which names
+// its control (often icon-only), and a control or title naming the same action (K11 between the control and the
+// dialog it opens).
+function k12(p, q) {
+  if (p.role === 'error' && (q.role === 'link' || q.role === 'list_item') && hasFlag(q, 'in_state')) return true;
+  return p.role === 'tooltip' && (ACTIONS.has(q.role) || TITLES.has(q.role));
+}
+
 // Pairs that never echo each other: a title and a button or link acting on what it names (LABELLING.md K11, "Delete
-// playlist?" / "Delete playlist"), and two nodes in different separately mounted states, such as two dialogs (§2a).
+// playlist?" / "Delete playlist"), the K12 pairs above, and two nodes in different separately mounted states, such as
+// two dialogs (§2a).
 function exempt(p, q) {
   if ((TITLES.has(p.role) && ACTIONS.has(q.role)) || (ACTIONS.has(p.role) && TITLES.has(q.role))) return true;
+  if (k12(p, q) || k12(q, p)) return true;
   return hasFlag(p, 'in_state') && hasFlag(q, 'in_state') && p.k !== q.k;
 }
 
@@ -38,10 +48,15 @@ export function check(screen) {
   const windowOf = new Array(nodes.length);
   enc.windows.forEach((w, wi) => w.nodes.forEach((x) => { windowOf[x] = wi; }));
   if (enc.windows.length < 2) return [];
+  // Site-bar links: a link flagged `in_header` in a cluster with no heading (a brand link, a top-bar "Sign in") is
+  // navigation chrome, like a footer link (K5). A link in a header cluster with a heading (a hero's call to action) is
+  // still compared.
+  const headed = new Set(nodes.filter((n) => isScored(n) && HEADINGS.has(n.role)).map((n) => n.k));
   const groups = new Map();
   nodes.forEach((n, x) => {
     if (!isScored(n) || SKIP_ROLES.has(n.role) || hasFlag(n, 'repeated')) return;
     if (n.role === 'link' && hasFlag(n, 'in_footer')) return; // footer links are navigation (K5)
+    if (n.role === 'link' && hasFlag(n, 'in_header') && !headed.has(n.k)) return; // site-bar links, likewise
     if (literalWords(n.text, n.vw).length < MIN_WORDS) return; // short labels and nodes with no literal words
     const key = normalised(n.text);
     if (!groups.has(key)) groups.set(key, []);

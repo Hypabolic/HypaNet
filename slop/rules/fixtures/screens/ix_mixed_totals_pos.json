@@ -1,0 +1,15 @@
+{"schema": "slop.screen/1", "id": "d375c61e87f2d1dc", "framework": "tsx",
+ "source": {"repo": "slop-rules-fixtures", "path": "src/ix_mixed_totals_pos.tsx", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "header", "line": 2},
+  {"k": 1, "kind": "card", "line": 4},
+  {"k": 2, "kind": "card", "line": 7},
+  {"k": 3, "kind": "card", "line": 10}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "h2", "text": "Join the club", "flags": [], "loc": [3, 7, 3, 20]},
+  {"i": 1, "k": 1, "role": "h3", "text": "Step 1 of 3", "flags": ["in_card"], "loc": [5, 7, 5, 18]},
+  {"i": 2, "k": 1, "role": "body", "text": "Pick a membership.", "flags": ["in_card"], "loc": [6, 7, 6, 25]},
+  {"i": 3, "k": 2, "role": "h3", "text": "Step 2 of 3: Safety talk", "flags": ["in_card"], "loc": [8, 7, 8, 31]},
+  {"i": 4, "k": 2, "role": "body", "text": "Twenty minutes at the desk.", "flags": ["in_card"], "loc": [9, 7, 9, 34]},
+  {"i": 5, "k": 3, "role": "h3", "text": "Step 3 of 3: First climb", "flags": ["in_card"], "loc": [11, 7, 11, 31]},
+  {"i": 6, "k": 3, "role": "body", "text": "An instructor belays you.", "flags": ["in_card"], "loc": [12, 7, 12, 32]}]}

@@ -1,0 +1,9 @@
+{"schema": "slop.screen/1", "id": "cbd5826736b33f25", "framework": "tsx",
+ "source": {"repo": "slop-rules-fixtures", "path": "src/rc_conditional_dot_neg.tsx", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "header", "line": 2},
+  {"k": 1, "kind": "body", "line": 5}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "h2", "text": "Harbour webcam", "flags": [], "loc": [3, 7, 3, 21]},
+  {"i": 1, "k": 0, "role": "subtitle", "text": "Live", "flags": ["dot", "conditional", "section_first"], "loc": [4, 7, 4, 11]},
+  {"i": 2, "k": 1, "role": "body", "text": "The picture refreshes every minute.", "flags": [], "loc": [6, 7, 6, 42]}]}

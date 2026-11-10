@@ -77,7 +77,8 @@ def test_select_dir_cap_in_rank_order():
 
 def test_calibration_has_the_reference_node_cap():
     assert (bs.CALIBRATION_RULE["measure"], bs.CALIBRATION_RULE["share"]) == ("nodes", 0.4)
-    assert bs.REFERENCE_RULE["dir_cap"] == 6 and not bs.CALIBRATION_RULE["dir_cap"]
+    assert bs.REFERENCE_RULE["dir_cap"] == 6 and bs.CALIBRATION_RULE["dir_cap"] == 6
+    assert "of the 50 repo screens" not in bs.REFERENCE_RULE["text"]
     big = [_cand("W", f"w{i}", ["x"] * 150) for i in range(4)]
     small = [_cand(r, f"{r}{i}", ["x"] * 10) for r in "BCD" for i in range(3)]
     cands = sorted(big + small, key=lambda c: c.rank)

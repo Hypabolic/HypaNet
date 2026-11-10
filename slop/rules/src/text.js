@@ -77,11 +77,11 @@ export function clip(text, n = 48) {
   return t.length > n ? `${t.slice(0, n - 1)}…` : t;
 }
 
-// An arrow suffix: a text ending in → ➔ ➜ ⟶ ⇢ ⇾ or "->", or in › as a separate final token ("Next ›"); otherwise the
-// extractor's `arrow_tail` flag (an arrow icon after the text). A text ending in ↗ (an external-link marker, which
-// tells the reader something), ↘, » or a › glued to the last word is not an arrow suffix, even when the extractor
-// flagged it.
-const ARROW_TAIL = /(?:[→➔➜⟶⇢⇾]|->|\s›)\s*$/u;
+// An arrow suffix: a text ending in → ➔ ➜ ➝ ➞ ➡ ⟶ ⟹ ⇒ ⇢ ⇾ ⭢ ⮕ 🡒 (an emoji variation selector allowed after it, "➡️"),
+// "->" or "=>", or in › as a separate final token ("Next ›"); otherwise the extractor's `arrow_tail` flag (an arrow
+// icon after the text). A text ending in ↗ (an external-link marker, which tells the reader something), ↘, » or a ›
+// glued to the last word is not an arrow suffix, even when the extractor flagged it.
+const ARROW_TAIL = /(?:[→➔➜➝➞➡⟶⟹⇒⇢⇾⭢⮕🡒]\uFE0F?|->|=>|\s›)\s*$/u;
 const NOT_ARROW_TAIL = /[↗↘»›]\s*$/u;
 export function hasArrowTail(node) {
   if (ARROW_TAIL.test(node.text)) return true;
@@ -91,12 +91,13 @@ export function hasArrowTail(node) {
 
 // -- the index-number device (slop/index-numbering, R12) ------------------------------------------------------------
 //
-// Families: `padded` ("01", "02 /", "(001)", "#03", "01 / 04", and as a lead "01 / Connect", "01. Connect"),
+// Families: `padded` ("01", "02 /", "(001)", "#03", "01 / 04", and as a lead "01 / Connect", "01. Connect",
+// "01 / 03 Connect"; a two-digit 10–99 in those shapes is `wide`, which only continues a padded column),
 // `fraction` ("3 / 6" as the whole node; a second number after a padded one needs a slash, so "08:00" and "01.03"
 // are not devices), `label:<word>` ("Step 2", "Phase 02", "Stage 1 of 3", and as a lead
-// "Step 1: Create an account") and `plain` (a bare "1", "2." or "3)" as the whole node). Sources:
-// anti-slop-guides.md:416 (R12: "01 /", "(001)", "Step 2", "Phase 02", "01 / 4"); local-skills.md:239 (gpt-taste:63,
-// "SECTION 01", "QUESTION 05"); local-skills.md:138 (v2-exp:686, "Stage 1 / Stage 2 / Stage 3").
+// "Step 1: Create an account", "Step 2 of 3: Safety talk") and `plain` (a bare "1", "2." or "3)" as the whole node).
+// Sources: anti-slop-guides.md:416 (R12: "01 /", "(001)", "Step 2", "Phase 02", "01 / 4"); local-skills.md:239
+// (gpt-taste:63, "SECTION 01", "QUESTION 05"); local-skills.md:138 (v2-exp:686, "Stage 1 / Stage 2 / Stage 3").
 // Label words left out on purpose: "level", "round", "lesson", "module", "chapter", "part" usually name content (a game
 // level, a course unit, a book chapter), which is a fact, not an index.
 const LABEL_WORDS = 'step|phase|stage|section|question|no\\.?|nº';
@@ -105,8 +106,9 @@ const RE_PADDED = new RegExp(`^[(\\[#]?\\s*(0\\d{1,2})\\s*[)\\]]?\\s*(?:\\/\\s*(
 const RE_FRACTION = /^(\d{1,2})\s*\/\s*(\d{1,2})$/u;
 const RE_LABEL = new RegExp(`^(${LABEL_WORDS})\\s*(\\d{1,3})(?:\\s*(?:of|\\/)\\s*(\\d{1,3}))?\\s*${SEP}?\\s*$`, 'iu');
 const RE_PLAIN = /^(\d{1,2})\s*[.)/]?$/u;
-const RE_PADDED_LEAD = new RegExp(`^[(\\[#]?(0\\d{1,2})[)\\]]?\\s*(?:${SEP}\\s*|\\s+)(?=\\p{L})`, 'u');
-const RE_LABEL_LEAD = new RegExp(`^(${LABEL_WORDS})\\s*(\\d{1,3})(?:\\s*(?:of|\\/)\\s*\\d{1,3})?\\s*${SEP}\\s*(?=\\p{L})`, 'iu');
+const RE_PADDED_LEAD = new RegExp(`^[(\\[#]?(0\\d{1,2})[)\\]]?\\s*(?:\\/\\s*(\\d{1,3})\\s*(?:${SEP}\\s*|\\s+)|${SEP}\\s*|\\s+)(?=\\p{L})`, 'u');
+const RE_WIDE = new RegExp(`^(\\d{2})(?:\\s*${SEP}?\\s*$|\\s*(?:${SEP}\\s*|\\s+)(?=(\\p{L})))`, 'u');
+const RE_LABEL_LEAD = new RegExp(`^(${LABEL_WORDS})\\s*(\\d{1,3})(?:\\s*(?:of|\\/)\\s*(\\d{1,3}))?\\s*${SEP}\\s*(?=\\p{L})`, 'iu');
 
 const labelWord = (w) => w.toLowerCase().replace(/\.$/, '').replace('nº', 'no');
 
@@ -119,7 +121,9 @@ export function parseIndex(text) {
   if ((m = RE_FRACTION.exec(t)) && Number(m[2]) >= Number(m[1])) return { family: 'fraction', value: Number(m[1]), whole: true, total: Number(m[2]) };
   if ((m = RE_LABEL.exec(t))) return { family: `label:${labelWord(m[1])}`, value: Number(m[2]), whole: true, word: labelWord(m[1]), total: m[3] ? Number(m[3]) : null };
   if ((m = RE_PLAIN.exec(t))) return { family: 'plain', value: Number(m[1]), whole: true };
-  if ((m = RE_PADDED_LEAD.exec(t))) return { family: 'padded', value: Number(m[1]), whole: false };
-  if ((m = RE_LABEL_LEAD.exec(t))) return { family: `label:${labelWord(m[1])}`, value: Number(m[2]), whole: false, word: labelWord(m[1]) };
+  if ((m = RE_PADDED_LEAD.exec(t)) && (!m[2] || Number(m[2]) >= Number(m[1]))) return { family: 'padded', value: Number(m[1]), whole: false, total: m[2] ? Number(m[2]) : null };
+  if ((m = RE_LABEL_LEAD.exec(t))) return { family: `label:${labelWord(m[1])}`, value: Number(m[2]), whole: false, word: labelWord(m[1]), total: m[3] ? Number(m[3]) : null };
+  // A two-digit number 10–99 in the same shape as a padded device continues a padded column ("09", "10"): `wide`.
+  if ((m = RE_WIDE.exec(t)) && Number(m[1]) >= 10) return { family: 'padded', value: Number(m[1]), whole: !m[2], total: null, wide: true };
   return null;
 }

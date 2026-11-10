@@ -1,0 +1,19 @@
+{"schema": "slop.screen/1", "id": "cff8ecdb0754f0b7", "framework": "tsx",
+ "source": {"repo": "slop-fixtures", "path": "WalkIndex.tsx", "commit": null, "licence": "MIT"},
+ "clusters": [
+  {"k": 0, "kind": "header", "line": 6},
+  {"k": 1, "kind": "list", "line": 7},
+  {"k": 2, "kind": "card", "line": 14},
+  {"k": 3, "kind": "body", "line": 21},
+  {"k": 4, "kind": "actions", "line": 25}],
+ "nodes": [
+  {"i": 0, "k": 0, "role": "h1", "text": "Coastal walks", "flags": [], "loc": [6, 11, 6, 24]},
+  {"i": 1, "k": 1, "role": "nav", "text": "All walks", "flags": ["in_nav", "section_first"], "loc": [9, 16, 9, 25]},
+  {"i": 2, "k": 1, "role": "nav", "text": "Maps", "flags": ["in_nav"], "loc": [11, 25, 11, 29]},
+  {"i": 3, "k": 2, "role": "h2", "text": "\ue000 name", "flags": ["dynamic", "stateful", "in_list", "in_card", "repeated"], "loc": [15, 16, 15, 22], "vw": [1]},
+  {"i": 4, "k": 2, "role": "subtitle", "text": "\ue000 summary", "flags": ["small", "dynamic", "stateful", "in_list", "in_card", "section_first", "repeated"], "loc": [16, 57, 16, 66], "vw": [1]},
+  {"i": 5, "k": 2, "role": "caption", "text": "\ue000 miles miles", "flags": ["small", "dynamic", "in_list", "in_card", "repeated"], "loc": [17, 37, 17, 51], "vw": [1]},
+  {"i": 6, "k": 2, "role": "link", "text": "Open route", "flags": ["in_list", "in_card", "section_last", "repeated"], "loc": [18, 17, 18, 27]},
+  {"i": 7, "k": 3, "role": "body", "text": "Printed maps", "flags": [], "loc": [22, 12, 22, 24]},
+  {"i": 8, "k": 3, "role": "body", "text": "Waterproof, folded to pocket size", "flags": [], "loc": [23, 12, 23, 45]},
+  {"i": 9, "k": 4, "role": "link", "text": "About the trail society", "flags": ["section_last"], "loc": [25, 24, 25, 55]}]}

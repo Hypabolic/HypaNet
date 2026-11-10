@@ -3,4 +3,4 @@
  "clusters": [
   {"k": 0, "kind": "body", "line": 3}],
  "nodes": [
-  {"i": 0, "k": 0, "role": "caption", "text": "\ue000 file · sending… \ue001 · checking… \ue001 · saved · \ue000 count waypoints \ue001 · \ue000 error \ue001 failed", "flags": ["small", "dynamic", "conditional"], "loc": [4, 38, 8, 64], "vw": [1, 1, 1]}]}
+  {"i": 0, "k": 0, "role": "caption", "text": "\ue000 file · sending… \ue001 \ue000 file · checking… \ue001 \ue000 file · saved · \ue000 count waypoints \ue001 \ue000 file · \ue000 error \ue001 \ue000 file · failed \ue001 \ue000 file", "flags": ["small", "dynamic", "conditional"], "loc": [4, 38, 8, 64], "vw": [1, 1, 1, 1, 1, 1, 1, 1]}]}
