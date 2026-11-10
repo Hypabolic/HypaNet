@@ -1,0 +1,61 @@
+# The kind of redundant copy AI-built pages produce, in my own wording. Labels: my reading of LABELLING.md.
+0 eyebrow caps,tracked,small | Our features | ECHO>1
+0 h2 - | Powerful features for modern teams | KEEP
+0 subtitle section_first | Explore our features. | ECHO>1
+1 eyebrow caps,tracked,small | Testimonials | DECOR
+1 h2 - | What our customers say | KEEP
+1 subtitle section_first | Here's what people have to say. | ?
+2 eyebrow caps,tracked,small | Pricing plans | ECHO>7
+2 h2 - | Choose your plan | KEEP
+2 subtitle section_first | Below you'll find our plans. | NARRATE
+3 eyebrow caps,tracked,small | How it works | DECOR
+3 h2 - | Up and running in three steps | KEEP
+4 eyebrow caps,tracked,small | FAQ | ECHO>12
+4 h2 - | Frequently asked questions | KEEP
+4 subtitle section_first | Find answers to common questions. | ECHO>12
+5 eyebrow caps,tracked,small | Contact us | ECHO>15
+5 h2 - | Get in touch | KEEP
+6 eyebrow caps,tracked,small | About us | DECOR
+6 h2 - | A small studio in Leeds | KEEP
+7 h2 - | Our team | KEEP
+7 subtitle section_first | Meet the team. | ?
+8 h2 - | Latest posts | KEEP
+8 subtitle section_first | Read our latest blog posts. | ECHO>20
+9 h3 in_card,repeated | Easy to use | KEEP
+9 subtitle in_card,section_first,repeated | Our product is easy to use. | ?
+9 h3 in_card,repeated | Offline first | KEEP
+9 subtitle in_card,section_first,repeated | Edits are queued on your device and sync when you reconnect. | KEEP
+10 h1 - | Welcome to Acme | KEEP
+10 subtitle section_first | Welcome to the Acme platform. | ECHO>26
+11 h2 - | Ready to get started? | KEEP
+11 subtitle section_first | Get started today. | ECHO>28
+11 button - | Create your account | KEEP
+11 body section_last | That's everything you need to know. | ECHO
+12 h1 - | Settings | KEEP
+12 subtitle section_first | Manage your settings and preferences. | ECHO>32
+13 h1 - | Profile | KEEP
+13 subtitle section_first | View and edit your profile information. | ECHO>34
+14 h1 - | Dashboard | KEEP
+14 subtitle section_first | An overview of your account. | ECHO>36
+15 label in_form,in_control | Email | KEEP
+15 placeholder in_form,in_control | Enter your email address | ECHO>38
+16 label in_form,in_control | Phone | KEEP
+16 placeholder in_form,in_control | Phone number | ECHO>40
+17 label in_form,in_control | Company | KEEP
+17 placeholder in_form,in_control | Company name | ECHO>42
+18 label in_form,in_control | Message | KEEP
+18 placeholder in_form,in_control | Type your message here... | ECHO>44
+19 label in_form,in_control | Username | KEEP
+19 helper small,in_form,in_control | This is your username. | ECHO>46
+20 empty_title in_state,conditional | No results | KEEP
+20 empty_body in_state,conditional,section_first | No results found. | ECHO>48
+21 empty_title in_state,conditional | No data | KEEP
+21 empty_body in_state,conditional,section_first | No data available. | ECHO>50
+22 dialog_title in_dialog,in_state,conditional | Log out | KEEP
+22 dialog_body in_dialog,in_state,conditional,section_first | Are you sure you want to log out? | ECHO>52
+22 button in_dialog,in_state,conditional | Log out | KEEP
+23 error in_state,conditional | Something went wrong | KEEP
+23 error in_state,conditional | An error occurred. | ECHO>55
+24 h1 - | Orders | KEEP
+24 h2 in_card | Orders | ECHO>57
+24 subtitle small,in_card,section_first | A list of your recent orders. | ECHO>58

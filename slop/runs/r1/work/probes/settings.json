@@ -1,0 +1,922 @@
+{
+ "schema": "slop.screen/1",
+ "id": "settings",
+ "framework": "tsx",
+ "clusters": [],
+ "nodes": [
+  {
+   "i": 0,
+   "k": 0,
+   "role": "h2",
+   "text": "Settings",
+   "flags": [],
+   "loc": [
+    1,
+    1,
+    1,
+    9
+   ]
+  },
+  {
+   "i": 1,
+   "k": 0,
+   "role": "subtitle",
+   "text": "Manage your account settings and set e-mail preferences.",
+   "flags": [
+    "section_first"
+   ],
+   "loc": [
+    2,
+    1,
+    2,
+    57
+   ]
+  },
+  {
+   "i": 2,
+   "k": 1,
+   "role": "h3",
+   "text": "Profile",
+   "flags": [
+    "in_form"
+   ],
+   "loc": [
+    3,
+    1,
+    3,
+    8
+   ]
+  },
+  {
+   "i": 3,
+   "k": 1,
+   "role": "subtitle",
+   "text": "This is how others will see you on the site.",
+   "flags": [
+    "small",
+    "in_form",
+    "section_first"
+   ],
+   "loc": [
+    4,
+    1,
+    4,
+    45
+   ]
+  },
+  {
+   "i": 4,
+   "k": 2,
+   "role": "label",
+   "text": "Username",
+   "flags": [
+    "in_form",
+    "in_control"
+   ],
+   "loc": [
+    5,
+    1,
+    5,
+    9
+   ]
+  },
+  {
+   "i": 5,
+   "k": 2,
+   "role": "placeholder",
+   "text": "shadcn",
+   "flags": [
+    "in_form",
+    "in_control"
+   ],
+   "loc": [
+    6,
+    1,
+    6,
+    7
+   ]
+  },
+  {
+   "i": 6,
+   "k": 2,
+   "role": "helper",
+   "text": "This is your public display name. You can only change this once every 30 days.",
+   "flags": [
+    "small",
+    "in_form",
+    "in_control"
+   ],
+   "loc": [
+    7,
+    1,
+    7,
+    79
+   ]
+  },
+  {
+   "i": 7,
+   "k": 3,
+   "role": "label",
+   "text": "Email",
+   "flags": [
+    "in_form",
+    "in_control"
+   ],
+   "loc": [
+    8,
+    1,
+    8,
+    6
+   ]
+  },
+  {
+   "i": 8,
+   "k": 3,
+   "role": "placeholder",
+   "text": "Select a verified email to display",
+   "flags": [
+    "in_form",
+    "in_control"
+   ],
+   "loc": [
+    9,
+    1,
+    9,
+    35
+   ]
+  },
+  {
+   "i": 9,
+   "k": 3,
+   "role": "helper",
+   "text": "You can manage verified email addresses in your email settings.",
+   "flags": [
+    "small",
+    "in_form",
+    "in_control"
+   ],
+   "loc": [
+    10,
+    1,
+    10,
+    64
+   ]
+  },
+  {
+   "i": 10,
+   "k": 4,
+   "role": "label",
+   "text": "Bio",
+   "flags": [
+    "in_form",
+    "in_control"
+   ],
+   "loc": [
+    11,
+    1,
+    11,
+    4
+   ]
+  },
+  {
+   "i": 11,
+   "k": 4,
+   "role": "helper",
+   "text": "You can @mention other users and organizations to link to them.",
+   "flags": [
+    "small",
+    "in_form",
+    "in_control"
+   ],
+   "loc": [
+    12,
+    1,
+    12,
+    64
+   ]
+  },
+  {
+   "i": 12,
+   "k": 5,
+   "role": "button",
+   "text": "Update profile",
+   "flags": [
+    "in_form"
+   ],
+   "loc": [
+    13,
+    1,
+    13,
+    15
+   ]
+  },
+  {
+   "i": 13,
+   "k": 6,
+   "role": "h3",
+   "text": "Notifications",
+   "flags": [
+    "in_form"
+   ],
+   "loc": [
+    14,
+    1,
+    14,
+    14
+   ]
+  },
+  {
+   "i": 14,
+   "k": 6,
+   "role": "subtitle",
+   "text": "Configure how you receive notifications.",
+   "flags": [
+    "small",
+    "in_form",
+    "section_first"
+   ],
+   "loc": [
+    15,
+    1,
+    15,
+    41
+   ]
+  },
+  {
+   "i": 15,
+   "k": 7,
+   "role": "label",
+   "text": "Marketing emails",
+   "flags": [
+    "in_form",
+    "in_control"
+   ],
+   "loc": [
+    16,
+    1,
+    16,
+    17
+   ]
+  },
+  {
+   "i": 16,
+   "k": 7,
+   "role": "helper",
+   "text": "Receive emails about new products, features, and more.",
+   "flags": [
+    "small",
+    "in_form",
+    "in_control"
+   ],
+   "loc": [
+    17,
+    1,
+    17,
+    55
+   ]
+  },
+  {
+   "i": 17,
+   "k": 8,
+   "role": "label",
+   "text": "Security emails",
+   "flags": [
+    "in_form",
+    "in_control"
+   ],
+   "loc": [
+    18,
+    1,
+    18,
+    16
+   ]
+  },
+  {
+   "i": 18,
+   "k": 8,
+   "role": "helper",
+   "text": "Receive emails about your account activity and security.",
+   "flags": [
+    "small",
+    "in_form",
+    "in_control"
+   ],
+   "loc": [
+    19,
+    1,
+    19,
+    57
+   ]
+  },
+  {
+   "i": 19,
+   "k": 9,
+   "role": "label",
+   "text": "Dark mode",
+   "flags": [
+    "in_form",
+    "in_control"
+   ],
+   "loc": [
+    20,
+    1,
+    20,
+    10
+   ]
+  },
+  {
+   "i": 20,
+   "k": 9,
+   "role": "helper",
+   "text": "Enable dark mode.",
+   "flags": [
+    "small",
+    "in_form",
+    "in_control"
+   ],
+   "loc": [
+    21,
+    1,
+    21,
+    18
+   ]
+  },
+  {
+   "i": 21,
+   "k": 10,
+   "role": "label",
+   "text": "Language",
+   "flags": [
+    "in_form",
+    "in_control"
+   ],
+   "loc": [
+    22,
+    1,
+    22,
+    9
+   ]
+  },
+  {
+   "i": 22,
+   "k": 10,
+   "role": "helper",
+   "text": "Select your language.",
+   "flags": [
+    "small",
+    "in_form",
+    "in_control"
+   ],
+   "loc": [
+    23,
+    1,
+    23,
+    22
+   ]
+  },
+  {
+   "i": 23,
+   "k": 11,
+   "role": "label",
+   "text": "Name",
+   "flags": [
+    "in_form",
+    "in_control"
+   ],
+   "loc": [
+    24,
+    1,
+    24,
+    5
+   ]
+  },
+  {
+   "i": 24,
+   "k": 11,
+   "role": "placeholder",
+   "text": "Enter your name",
+   "flags": [
+    "in_form",
+    "in_control"
+   ],
+   "loc": [
+    25,
+    1,
+    25,
+    16
+   ]
+  },
+  {
+   "i": 25,
+   "k": 12,
+   "role": "label",
+   "text": "Email address",
+   "flags": [
+    "in_form",
+    "in_control"
+   ],
+   "loc": [
+    26,
+    1,
+    26,
+    14
+   ]
+  },
+  {
+   "i": 26,
+   "k": 12,
+   "role": "placeholder",
+   "text": "Email",
+   "flags": [
+    "in_form",
+    "in_control"
+   ],
+   "loc": [
+    27,
+    1,
+    27,
+    6
+   ]
+  },
+  {
+   "i": 27,
+   "k": 13,
+   "role": "label",
+   "text": "Password",
+   "flags": [
+    "in_form",
+    "in_control"
+   ],
+   "loc": [
+    28,
+    1,
+    28,
+    9
+   ]
+  },
+  {
+   "i": 28,
+   "k": 13,
+   "role": "placeholder",
+   "text": "••••••••",
+   "flags": [
+    "in_form",
+    "in_control"
+   ],
+   "loc": [
+    29,
+    1,
+    29,
+    9
+   ]
+  },
+  {
+   "i": 29,
+   "k": 13,
+   "role": "helper",
+   "text": "Must be at least 8 characters.",
+   "flags": [
+    "small",
+    "in_form",
+    "in_control"
+   ],
+   "loc": [
+    30,
+    1,
+    30,
+    31
+   ]
+  },
+  {
+   "i": 30,
+   "k": 14,
+   "role": "label",
+   "text": "Time zone",
+   "flags": [
+    "in_form",
+    "in_control"
+   ],
+   "loc": [
+    31,
+    1,
+    31,
+    10
+   ]
+  },
+  {
+   "i": 31,
+   "k": 14,
+   "role": "helper",
+   "text": "Used for reminders and reports.",
+   "flags": [
+    "small",
+    "in_form",
+    "in_control"
+   ],
+   "loc": [
+    32,
+    1,
+    32,
+    32
+   ]
+  },
+  {
+   "i": 32,
+   "k": 15,
+   "role": "button",
+   "text": "Save changes",
+   "flags": [
+    "in_form"
+   ],
+   "loc": [
+    33,
+    1,
+    33,
+    13
+   ]
+  },
+  {
+   "i": 33,
+   "k": 15,
+   "role": "button",
+   "text": "Cancel",
+   "flags": [
+    "in_form",
+    "section_last"
+   ],
+   "loc": [
+    34,
+    1,
+    34,
+    7
+   ]
+  }
+ ],
+ "labels": [
+  {
+   "loc": [
+    1,
+    1,
+    1,
+    9
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    2,
+    1,
+    2,
+    57
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    3,
+    1,
+    3,
+    8
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    4,
+    1,
+    4,
+    45
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    5,
+    1,
+    5,
+    9
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    6,
+    1,
+    6,
+    7
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    7,
+    1,
+    7,
+    79
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    8,
+    1,
+    8,
+    6
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    9,
+    1,
+    9,
+    35
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    10,
+    1,
+    10,
+    64
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    11,
+    1,
+    11,
+    4
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    12,
+    1,
+    12,
+    64
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    13,
+    1,
+    13,
+    15
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    14,
+    1,
+    14,
+    14
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    15,
+    1,
+    15,
+    41
+   ],
+   "class": "ECHO",
+   "target": [
+    14,
+    1,
+    14,
+    14
+   ]
+  },
+  {
+   "loc": [
+    16,
+    1,
+    16,
+    17
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    17,
+    1,
+    17,
+    55
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    18,
+    1,
+    18,
+    16
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    19,
+    1,
+    19,
+    57
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    20,
+    1,
+    20,
+    10
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    21,
+    1,
+    21,
+    18
+   ],
+   "class": "ECHO",
+   "target": [
+    20,
+    1,
+    20,
+    10
+   ]
+  },
+  {
+   "loc": [
+    22,
+    1,
+    22,
+    9
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    23,
+    1,
+    23,
+    22
+   ],
+   "class": "ECHO",
+   "target": [
+    22,
+    1,
+    22,
+    9
+   ]
+  },
+  {
+   "loc": [
+    24,
+    1,
+    24,
+    5
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    25,
+    1,
+    25,
+    16
+   ],
+   "class": "ECHO",
+   "target": [
+    24,
+    1,
+    24,
+    5
+   ]
+  },
+  {
+   "loc": [
+    26,
+    1,
+    26,
+    14
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    27,
+    1,
+    27,
+    6
+   ],
+   "class": "ECHO",
+   "target": [
+    26,
+    1,
+    26,
+    14
+   ]
+  },
+  {
+   "loc": [
+    28,
+    1,
+    28,
+    9
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    29,
+    1,
+    29,
+    9
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    30,
+    1,
+    30,
+    31
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    31,
+    1,
+    31,
+    10
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    32,
+    1,
+    32,
+    32
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    33,
+    1,
+    33,
+    13
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    34,
+    1,
+    34,
+    7
+   ],
+   "class": "KEEP",
+   "target": null
+  }
+ ]
+}

@@ -1,0 +1,3 @@
+button buttons page pages card cards list lists section sections tab tabs menu menus screen
+panel panels table option options choice choices link links arrow arrows icon icons
+field fields form row rows column columns chart count counts total totals number numbers figure figures

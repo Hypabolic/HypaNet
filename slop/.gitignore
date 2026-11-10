@@ -9,3 +9,7 @@ datasets/**/sources/
 datasets/sealed_sha256.txt
 datasets/**/private_manifest.json
 kit/build/
+
+# run transcripts hold real reference-screen copy; kept local
+runs/*/logs/*.stream.jsonl
+runs/*/work/scratch/

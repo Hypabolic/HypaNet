@@ -1,0 +1,238 @@
+no not none nothing zero never nobody nowhere neither dont doesnt didnt cant cannot couldnt wont wouldnt isnt arent wasnt werent havent hasnt hadnt shouldnt empty blank
+settings setting set setup preferences preference options option configuration configure configured config customise customised customisation tweak tweaks adjust adjusts adjusting adjustment
+overview summary glance snapshot recap rundown dashboard home
+pause paused pausing hold halt halted suspend suspended frozen freeze froze
+resume resumed continue continued continuing proceed unpause
+victory win wins won winner winning triumph success successful succeeded accomplished cleared complete completed passed
+defeat defeated lose loses lost losing loss beaten died dead eliminated
+fail fails failed failing failure error errors problem problems wrong issue issues trouble unable oops
+load loading loads wait waiting moment
+login logins signin sign signs signed signing authentication authenticate auth log logs logged logging
+logout signout
+signup register registration enrol enroll enrolment enrollment join joins joined joining subscribe subscribes subscribed
+password passwords passcode passphrase
+email emails mail mailbox inbox
+phone phones mobile telephone landline cellphone
+username usernames handle nickname alias
+photo photos picture pictures image images pic pics photograph photographs avatar avatars
+video videos clip clips footage
+file files document documents doc docs
+notification notifications notify notifies notified alert alerts tell tells told
+reminder reminders remind reminds nudge nudges
+sound sounds audio chime chimes beep beeps tone tones noise
+search searching searches lookup find finds finding found
+delete deletes deleted deleting deletion remove removes removed removing removal erase erased discard discarded trash rid bin
+archive archives archived archiving shelve shelved
+download downloads downloaded downloading export exports exported exporting
+send sends sent sending share shares shared sharing submit submits submitted
+copy copies copied duplicate duplicated clone cloned
+add adds added adding create creates created creating new
+start starts started starting begin begins began beginning launch launched
+end ends ended ending finish finishes finished stop stops stopped
+quit exit exits leave leaves leaving
+back return returns
+restart retry replay
+cancel cancels cancelled canceled cancelling abort dismiss
+help helping support assistance assist
+faq faqs question questions answer answers answered ask asks asking asked
+secure security safe safety protect protects protected protection guard guarded locked lock
+private privacy confidential
+price prices pricing cost costs fee fees plan plans
+pay pays paid paying payment payments transaction transactions checkout
+billing bill bills invoice invoices invoicing
+subscription subscriptions membership tier
+free gratis complimentary
+trial trials taster
+team teams crew squad staff group groups
+user users member members people person persons
+customer customers client clients
+guest guests visitor visitors
+company companies business businesses organisation organisations organization organizations firm
+workspace workspaces
+size sizes small smaller big bigger large larger tiny huge little
+popular favourite favourites favorite favorites love loves loved trust trusts trusted chosen beloved pleaser admired rated
+testimonial testimonials review reviews feedback
+fast faster quick quickly rapid speedy swift instant instantly
+week weeks weekly
+day days daily
+month months monthly
+year years yearly annual annually
+hour hours hourly
+minute minutes min mins
+last past previous prior
+recent recently latest newest
+old older oldest
+upcoming future
+overdue late
+pending awaiting
+approve approved approves accept accepted accepts
+reject rejected rejects decline declined declines deny denied
+connect connects connected connecting connection connections integration integrations integrate integrated
+sync syncs synced syncing synchronise synchronize
+theme themes mode modes appearance
+colour colours color colors
+calendar calendars schedule schedules agenda timetable
+appointment appointments booking bookings reservation reservations
+loan loans borrow borrowed borrowing lend lent
+tutor tutors teacher teachers instructor instructors coach coaches trainer trainers
+student students pupil pupils learner learners
+goal goals target targets objective objectives aim aims aiming
+choose chooses chose choosing select selects selected selecting selection pick picks picked picking
+tax taxes vat
+order orders purchase purchases
+cart basket bag
+delivery deliveries shipping shipment
+coupon coupons voucher vouchers promo discount discounts
+note notes comment comments
+storage space capacity
+folder folders directory directories
+backup backups
+version versions release releases
+automatic automatically auto
+limit limits cap maximum max quota
+required mandatory compulsory
+episode episodes instalment instalments installment installments
+post posts article articles blog essay essays
+chat chats conversation conversations thread threads
+newsletter newsletters digest roundup bulletin
+analytics statistics stats insights metrics
+revenue income earnings sales turnover
+increase increased increases rise rises rose growth grew
+decrease decreased decreases drop drops dropped fall falls fell
+average avg
+task tasks todo todos chore chores
+deadline deadlines due
+leaderboard leaderboards ranking rankings scoreboard
+achievement achievements trophy trophies award awards medal medals
+subtitle subtitles caption captions
+volume loudness
+postcode postcodes zip postal
+website websites site sites homepage
+bio biography
+admin admins administrator administrators
+language languages locale
+feature features capability capabilities benefit benefits
+contact touch reach reached
+location locations venue venues
+role roles position positions occupation job jobs
+welcome hello hi hey greetings
+refresh reload
+verify verified verification confirm confirmed confirmation
+product products
+service services
+address addresses
+date dates
+name names
+number numbers
+close closes closed closing
+open opens opened opening
+save saves saved saving
+print prints printed printing
+import imports imported importing
+upload uploads uploaded uploading
+hide hides hidden hiding
+enable enabled enables
+disable disabled disables
+profile profiles
+account accounts
+message messages
+link links linked
+level levels stage stages
+game games
+player players
+score scores points
+edit edits editing edited change changes changing changed update updates updating updated modify modifying amend revise
+view views viewing see sees show shows display displays
+manage manages managing administer
+browse browsing explore exploring discover discovering
+information info details detail
+birthday birthdate dob birth
+amount amounts sum total totals
+quantity quantities qty
+description descriptions desc
+title titles headline
+timezone timezones zone zones
+guide guides manual handbook tutorial tutorials
+refund refunds reimburse reimbursement
+chart charts graph graphs diagram diagrams
+controls keybindings bindings
+mission missions quest quests
+health hp
+usage consumption
+teammate teammates collaborator collaborators colleague colleagues coworker coworkers
+country countries nation
+city cities town
+reply replies response responses respond
+friend friends buddy buddies
+song songs tune tunes
+movie movies film films
+author authors writer writers
+meal meals dish dishes
+workout workouts exercise exercises
+medication medications medicine medicines meds
+trip trips journey journeys
+hotel hotels accommodation lodging
+car cars vehicle vehicles automobile
+bike bikes bicycle bicycles
+shop shops store stores
+buy buys bought buying
+stock inventory
+supplier suppliers vendor vendors
+money cash funds
+expense expenses spending outgoings
+salary salaries wage wages paycheck
+quote quotes estimate estimates quotation
+lead leads prospect prospects
+deal deals opportunity opportunities
+bug bugs defect defects
+deploy deploys deployed deployment deployments
+repo repos repository repositories
+database databases db
+warning warnings caution
+spreadsheet spreadsheets sheet sheets
+slide slides deck
+attachment attachments attach attached
+tag tags
+class classes lesson lessons
+quiz quizzes exam exams
+homework assignment assignments
+child children kid kids
+temperature temp
+speed pace
+duration length
+holiday holidays vacation vacations
+rota roster
+employee employees worker workers
+department departments dept
+applicant applicants candidate candidates
+skill skills ability abilities
+habit habits routine routines
+reward rewards prize prizes
+enemy enemies foe foes opponent opponents rival rivals
+voice speech
+graphics visuals
+controller gamepad
+font fonts typeface
+shortcut shortcuts hotkey hotkeys
+plugin plugins extension extensions addon addons
+restore restores restored recover recovery
+license licence licenses licences
+centre center centres centers
+catalogue catalog
+programme program programmes programs
+enquiry inquiry enquiries inquiries
+analyse analyze analysis
+region regions province provinces
+gender sex
+surname lastname
+first forename firstname
+id ids identifier identifiers
+survey surveys questionnaire poll polls
+donate donation donations contribute contribution contributions
+incident incidents outage outages
+community forum forums
+demo demos demonstration
+tip tips hint hints
+tour walkthrough
+ok okay
+play plays playing playback

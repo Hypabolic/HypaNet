@@ -1,0 +1,54 @@
+# A SwiftUI-style settings screen and a game HUD / menu, as an extractor would see them. Mostly negatives.
+0 h1 in_header | Settings | KEEP
+1 h2 - | Account | KEEP
+1 label in_control | Name | KEEP
+1 input_value dynamic,stateful,in_control | ⟨VAR⟩ name | ?
+1 label in_control | Email | KEEP
+1 button - | Sign out | KEEP
+2 h2 - | Cooking | KEEP
+2 label in_control | Keep screen awake | KEEP
+2 helper small | Stops the screen dimming while a recipe is open. | KEEP
+2 label in_control | Default servings | KEEP
+2 helper small | Every quantity is scaled for this many. | KEEP
+2 label in_control | Units | KEEP
+2 menu_item in_control | Metric | KEEP
+2 menu_item in_control | Imperial | KEEP
+3 h2 - | Voice | KEEP
+3 label in_control | Voice commands | KEEP
+3 helper small | Voice commands for your account. | ECHO>15
+3 label in_control | Read steps aloud | KEEP
+3 helper small | Turn read steps aloud on or off. | NARRATE>17
+4 h2 - | About | KEEP
+4 label - | Version | KEEP
+4 body - | 2.4.1 | KEEP
+4 link - | Privacy policy | KEEP
+4 caption small,section_last | Made in Manchester. | KEEP
+5 tab icon,in_nav | Recipes | KEEP
+5 tab icon,in_nav | Favourites | KEEP
+5 tab icon,in_nav | Settings | KEEP
+6 h1 caps | PAUSED | KEEP
+6 subtitle small,section_first | Timers are stopped until you resume. | KEEP
+6 button caps | RESUME | KEEP
+6 button caps | SETTINGS | KEEP
+6 button caps | QUIT TO MENU | KEEP
+7 label caps,small | HEALTH | KEEP
+7 stat dynamic,stateful | ⟨VAR⟩ health | ?
+7 label caps,small | AMMO | KEEP
+7 stat - | 24 / 120 | KEEP
+7 label caps,tracked,small | Objective | KEEP
+7 body - | Reach the signal tower | KEEP
+7 caption small | Hold E to interact. | KEEP
+8 eyebrow caps,tracked,small | MISSION 4 | KEEP
+8 h1 caps | VICTORY | KEEP
+8 subtitle small,section_first | You won! Victory is yours. | ECHO>40
+8 stat - | 12,400 | KEEP
+8 label small | Score | KEEP
+8 button - | Next mission | KEEP
+8 button - | Main menu | KEEP
+9 eyebrow caps,tracked,small | GAME OVER | ECHO>47
+9 h1 caps | YOU DIED | KEEP
+9 button - | Try again | KEEP
+10 dialog_title in_dialog,in_state,conditional | Quit to menu? | KEEP
+10 dialog_body in_dialog,in_state,conditional,section_first | Unsaved progress will be lost. | KEEP
+10 button in_dialog,in_state,conditional | Quit | KEEP
+10 button in_dialog,in_state,conditional | Keep playing | KEEP

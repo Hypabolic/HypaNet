@@ -1,0 +1,2 @@
+{"name": "r1", "mode": "start", "session_id": "a37ed14f-351d-4ea9-8693-6666c38659b5", "utc_start": "2026-11-10T13:15:30Z", "utc_end": "2026-11-10T14:25:44Z", "claude_rc": 1, "started": true}
+{"name": "r1.c1", "mode": "continue", "session_id": "a37ed14f-351d-4ea9-8693-6666c38659b5", "utc_start": "2026-11-10T18:34:55Z", "utc_end": "2026-11-10T18:55:24Z", "claude_rc": 0, "started": true}

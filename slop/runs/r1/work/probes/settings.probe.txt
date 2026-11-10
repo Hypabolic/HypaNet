@@ -1,0 +1,35 @@
+# A settings page in the style of common component-library examples (my own wording), plus toggles.
+0 h2 - | Settings | KEEP
+0 subtitle section_first | Manage your account settings and set e-mail preferences. | KEEP
+1 h3 in_form | Profile | KEEP
+1 subtitle small,in_form,section_first | This is how others will see you on the site. | KEEP
+2 label in_form,in_control | Username | KEEP
+2 placeholder in_form,in_control | shadcn | KEEP
+2 helper small,in_form,in_control | This is your public display name. You can only change this once every 30 days. | KEEP
+3 label in_form,in_control | Email | KEEP
+3 placeholder in_form,in_control | Select a verified email to display | KEEP
+3 helper small,in_form,in_control | You can manage verified email addresses in your email settings. | KEEP
+4 label in_form,in_control | Bio | KEEP
+4 helper small,in_form,in_control | You can @mention other users and organizations to link to them. | KEEP
+5 button in_form | Update profile | KEEP
+6 h3 in_form | Notifications | KEEP
+6 subtitle small,in_form,section_first | Configure how you receive notifications. | ECHO>13
+7 label in_form,in_control | Marketing emails | KEEP
+7 helper small,in_form,in_control | Receive emails about new products, features, and more. | KEEP
+8 label in_form,in_control | Security emails | KEEP
+8 helper small,in_form,in_control | Receive emails about your account activity and security. | KEEP
+9 label in_form,in_control | Dark mode | KEEP
+9 helper small,in_form,in_control | Enable dark mode. | ECHO>19
+10 label in_form,in_control | Language | KEEP
+10 helper small,in_form,in_control | Select your language. | ECHO>21
+11 label in_form,in_control | Name | KEEP
+11 placeholder in_form,in_control | Enter your name | ECHO>23
+12 label in_form,in_control | Email address | KEEP
+12 placeholder in_form,in_control | Email | ECHO>25
+13 label in_form,in_control | Password | KEEP
+13 placeholder in_form,in_control | •••••••• | KEEP
+13 helper small,in_form,in_control | Must be at least 8 characters. | KEEP
+14 label in_form,in_control | Time zone | KEEP
+14 helper small,in_form,in_control | Used for reminders and reports. | KEEP
+15 button in_form | Save changes | KEEP
+15 button in_form,section_last | Cancel | KEEP

@@ -1,0 +1,9 @@
+ids from no vocabulary (hash buckets only)
+  text   'Resume recaptures the mouse.'
+  flags  -
+    'Resume'                 -> 'resume' -> stem 'resum'          id  6223  hash bucket 2127
+    'recaptures'             -> 'recaptures' -> stem 'recaptur'       id  4963  hash bucket 867
+    'the'                    -> 'the' -> stem 'the'            id  5501  hash bucket 1405
+    'mouse'                  -> 'mouse' -> stem 'mous'           id  7393  hash bucket 3297
+    '.'                      -> punct  id   109  punct '.'
+    EON id 2

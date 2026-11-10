@@ -1,0 +1,1611 @@
+{
+ "schema": "slop.screen/1",
+ "id": "slop",
+ "framework": "tsx",
+ "clusters": [],
+ "nodes": [
+  {
+   "i": 0,
+   "k": 0,
+   "role": "eyebrow",
+   "text": "Our features",
+   "flags": [
+    "caps",
+    "tracked",
+    "small"
+   ],
+   "loc": [
+    1,
+    1,
+    1,
+    13
+   ]
+  },
+  {
+   "i": 1,
+   "k": 0,
+   "role": "h2",
+   "text": "Powerful features for modern teams",
+   "flags": [],
+   "loc": [
+    2,
+    1,
+    2,
+    35
+   ]
+  },
+  {
+   "i": 2,
+   "k": 0,
+   "role": "subtitle",
+   "text": "Explore our features.",
+   "flags": [
+    "section_first"
+   ],
+   "loc": [
+    3,
+    1,
+    3,
+    22
+   ]
+  },
+  {
+   "i": 3,
+   "k": 1,
+   "role": "eyebrow",
+   "text": "Testimonials",
+   "flags": [
+    "caps",
+    "tracked",
+    "small"
+   ],
+   "loc": [
+    4,
+    1,
+    4,
+    13
+   ]
+  },
+  {
+   "i": 4,
+   "k": 1,
+   "role": "h2",
+   "text": "What our customers say",
+   "flags": [],
+   "loc": [
+    5,
+    1,
+    5,
+    23
+   ]
+  },
+  {
+   "i": 5,
+   "k": 1,
+   "role": "subtitle",
+   "text": "Here's what people have to say.",
+   "flags": [
+    "section_first"
+   ],
+   "loc": [
+    6,
+    1,
+    6,
+    32
+   ]
+  },
+  {
+   "i": 6,
+   "k": 2,
+   "role": "eyebrow",
+   "text": "Pricing plans",
+   "flags": [
+    "caps",
+    "tracked",
+    "small"
+   ],
+   "loc": [
+    7,
+    1,
+    7,
+    14
+   ]
+  },
+  {
+   "i": 7,
+   "k": 2,
+   "role": "h2",
+   "text": "Choose your plan",
+   "flags": [],
+   "loc": [
+    8,
+    1,
+    8,
+    17
+   ]
+  },
+  {
+   "i": 8,
+   "k": 2,
+   "role": "subtitle",
+   "text": "Below you'll find our plans.",
+   "flags": [
+    "section_first"
+   ],
+   "loc": [
+    9,
+    1,
+    9,
+    29
+   ]
+  },
+  {
+   "i": 9,
+   "k": 3,
+   "role": "eyebrow",
+   "text": "How it works",
+   "flags": [
+    "caps",
+    "tracked",
+    "small"
+   ],
+   "loc": [
+    10,
+    1,
+    10,
+    13
+   ]
+  },
+  {
+   "i": 10,
+   "k": 3,
+   "role": "h2",
+   "text": "Up and running in three steps",
+   "flags": [],
+   "loc": [
+    11,
+    1,
+    11,
+    30
+   ]
+  },
+  {
+   "i": 11,
+   "k": 4,
+   "role": "eyebrow",
+   "text": "FAQ",
+   "flags": [
+    "caps",
+    "tracked",
+    "small"
+   ],
+   "loc": [
+    12,
+    1,
+    12,
+    4
+   ]
+  },
+  {
+   "i": 12,
+   "k": 4,
+   "role": "h2",
+   "text": "Frequently asked questions",
+   "flags": [],
+   "loc": [
+    13,
+    1,
+    13,
+    27
+   ]
+  },
+  {
+   "i": 13,
+   "k": 4,
+   "role": "subtitle",
+   "text": "Find answers to common questions.",
+   "flags": [
+    "section_first"
+   ],
+   "loc": [
+    14,
+    1,
+    14,
+    34
+   ]
+  },
+  {
+   "i": 14,
+   "k": 5,
+   "role": "eyebrow",
+   "text": "Contact us",
+   "flags": [
+    "caps",
+    "tracked",
+    "small"
+   ],
+   "loc": [
+    15,
+    1,
+    15,
+    11
+   ]
+  },
+  {
+   "i": 15,
+   "k": 5,
+   "role": "h2",
+   "text": "Get in touch",
+   "flags": [],
+   "loc": [
+    16,
+    1,
+    16,
+    13
+   ]
+  },
+  {
+   "i": 16,
+   "k": 6,
+   "role": "eyebrow",
+   "text": "About us",
+   "flags": [
+    "caps",
+    "tracked",
+    "small"
+   ],
+   "loc": [
+    17,
+    1,
+    17,
+    9
+   ]
+  },
+  {
+   "i": 17,
+   "k": 6,
+   "role": "h2",
+   "text": "A small studio in Leeds",
+   "flags": [],
+   "loc": [
+    18,
+    1,
+    18,
+    24
+   ]
+  },
+  {
+   "i": 18,
+   "k": 7,
+   "role": "h2",
+   "text": "Our team",
+   "flags": [],
+   "loc": [
+    19,
+    1,
+    19,
+    9
+   ]
+  },
+  {
+   "i": 19,
+   "k": 7,
+   "role": "subtitle",
+   "text": "Meet the team.",
+   "flags": [
+    "section_first"
+   ],
+   "loc": [
+    20,
+    1,
+    20,
+    15
+   ]
+  },
+  {
+   "i": 20,
+   "k": 8,
+   "role": "h2",
+   "text": "Latest posts",
+   "flags": [],
+   "loc": [
+    21,
+    1,
+    21,
+    13
+   ]
+  },
+  {
+   "i": 21,
+   "k": 8,
+   "role": "subtitle",
+   "text": "Read our latest blog posts.",
+   "flags": [
+    "section_first"
+   ],
+   "loc": [
+    22,
+    1,
+    22,
+    28
+   ]
+  },
+  {
+   "i": 22,
+   "k": 9,
+   "role": "h3",
+   "text": "Easy to use",
+   "flags": [
+    "in_card",
+    "repeated"
+   ],
+   "loc": [
+    23,
+    1,
+    23,
+    12
+   ]
+  },
+  {
+   "i": 23,
+   "k": 9,
+   "role": "subtitle",
+   "text": "Our product is easy to use.",
+   "flags": [
+    "in_card",
+    "section_first",
+    "repeated"
+   ],
+   "loc": [
+    24,
+    1,
+    24,
+    28
+   ]
+  },
+  {
+   "i": 24,
+   "k": 9,
+   "role": "h3",
+   "text": "Offline first",
+   "flags": [
+    "in_card",
+    "repeated"
+   ],
+   "loc": [
+    25,
+    1,
+    25,
+    14
+   ]
+  },
+  {
+   "i": 25,
+   "k": 9,
+   "role": "subtitle",
+   "text": "Edits are queued on your device and sync when you reconnect.",
+   "flags": [
+    "in_card",
+    "section_first",
+    "repeated"
+   ],
+   "loc": [
+    26,
+    1,
+    26,
+    61
+   ]
+  },
+  {
+   "i": 26,
+   "k": 10,
+   "role": "h1",
+   "text": "Welcome to Acme",
+   "flags": [],
+   "loc": [
+    27,
+    1,
+    27,
+    16
+   ]
+  },
+  {
+   "i": 27,
+   "k": 10,
+   "role": "subtitle",
+   "text": "Welcome to the Acme platform.",
+   "flags": [
+    "section_first"
+   ],
+   "loc": [
+    28,
+    1,
+    28,
+    30
+   ]
+  },
+  {
+   "i": 28,
+   "k": 11,
+   "role": "h2",
+   "text": "Ready to get started?",
+   "flags": [],
+   "loc": [
+    29,
+    1,
+    29,
+    22
+   ]
+  },
+  {
+   "i": 29,
+   "k": 11,
+   "role": "subtitle",
+   "text": "Get started today.",
+   "flags": [
+    "section_first"
+   ],
+   "loc": [
+    30,
+    1,
+    30,
+    19
+   ]
+  },
+  {
+   "i": 30,
+   "k": 11,
+   "role": "button",
+   "text": "Create your account",
+   "flags": [],
+   "loc": [
+    31,
+    1,
+    31,
+    20
+   ]
+  },
+  {
+   "i": 31,
+   "k": 11,
+   "role": "body",
+   "text": "That's everything you need to know.",
+   "flags": [
+    "section_last"
+   ],
+   "loc": [
+    32,
+    1,
+    32,
+    36
+   ]
+  },
+  {
+   "i": 32,
+   "k": 12,
+   "role": "h1",
+   "text": "Settings",
+   "flags": [],
+   "loc": [
+    33,
+    1,
+    33,
+    9
+   ]
+  },
+  {
+   "i": 33,
+   "k": 12,
+   "role": "subtitle",
+   "text": "Manage your settings and preferences.",
+   "flags": [
+    "section_first"
+   ],
+   "loc": [
+    34,
+    1,
+    34,
+    38
+   ]
+  },
+  {
+   "i": 34,
+   "k": 13,
+   "role": "h1",
+   "text": "Profile",
+   "flags": [],
+   "loc": [
+    35,
+    1,
+    35,
+    8
+   ]
+  },
+  {
+   "i": 35,
+   "k": 13,
+   "role": "subtitle",
+   "text": "View and edit your profile information.",
+   "flags": [
+    "section_first"
+   ],
+   "loc": [
+    36,
+    1,
+    36,
+    40
+   ]
+  },
+  {
+   "i": 36,
+   "k": 14,
+   "role": "h1",
+   "text": "Dashboard",
+   "flags": [],
+   "loc": [
+    37,
+    1,
+    37,
+    10
+   ]
+  },
+  {
+   "i": 37,
+   "k": 14,
+   "role": "subtitle",
+   "text": "An overview of your account.",
+   "flags": [
+    "section_first"
+   ],
+   "loc": [
+    38,
+    1,
+    38,
+    29
+   ]
+  },
+  {
+   "i": 38,
+   "k": 15,
+   "role": "label",
+   "text": "Email",
+   "flags": [
+    "in_form",
+    "in_control"
+   ],
+   "loc": [
+    39,
+    1,
+    39,
+    6
+   ]
+  },
+  {
+   "i": 39,
+   "k": 15,
+   "role": "placeholder",
+   "text": "Enter your email address",
+   "flags": [
+    "in_form",
+    "in_control"
+   ],
+   "loc": [
+    40,
+    1,
+    40,
+    25
+   ]
+  },
+  {
+   "i": 40,
+   "k": 16,
+   "role": "label",
+   "text": "Phone",
+   "flags": [
+    "in_form",
+    "in_control"
+   ],
+   "loc": [
+    41,
+    1,
+    41,
+    6
+   ]
+  },
+  {
+   "i": 41,
+   "k": 16,
+   "role": "placeholder",
+   "text": "Phone number",
+   "flags": [
+    "in_form",
+    "in_control"
+   ],
+   "loc": [
+    42,
+    1,
+    42,
+    13
+   ]
+  },
+  {
+   "i": 42,
+   "k": 17,
+   "role": "label",
+   "text": "Company",
+   "flags": [
+    "in_form",
+    "in_control"
+   ],
+   "loc": [
+    43,
+    1,
+    43,
+    8
+   ]
+  },
+  {
+   "i": 43,
+   "k": 17,
+   "role": "placeholder",
+   "text": "Company name",
+   "flags": [
+    "in_form",
+    "in_control"
+   ],
+   "loc": [
+    44,
+    1,
+    44,
+    13
+   ]
+  },
+  {
+   "i": 44,
+   "k": 18,
+   "role": "label",
+   "text": "Message",
+   "flags": [
+    "in_form",
+    "in_control"
+   ],
+   "loc": [
+    45,
+    1,
+    45,
+    8
+   ]
+  },
+  {
+   "i": 45,
+   "k": 18,
+   "role": "placeholder",
+   "text": "Type your message here...",
+   "flags": [
+    "in_form",
+    "in_control"
+   ],
+   "loc": [
+    46,
+    1,
+    46,
+    26
+   ]
+  },
+  {
+   "i": 46,
+   "k": 19,
+   "role": "label",
+   "text": "Username",
+   "flags": [
+    "in_form",
+    "in_control"
+   ],
+   "loc": [
+    47,
+    1,
+    47,
+    9
+   ]
+  },
+  {
+   "i": 47,
+   "k": 19,
+   "role": "helper",
+   "text": "This is your username.",
+   "flags": [
+    "small",
+    "in_form",
+    "in_control"
+   ],
+   "loc": [
+    48,
+    1,
+    48,
+    23
+   ]
+  },
+  {
+   "i": 48,
+   "k": 20,
+   "role": "empty_title",
+   "text": "No results",
+   "flags": [
+    "in_state",
+    "conditional"
+   ],
+   "loc": [
+    49,
+    1,
+    49,
+    11
+   ]
+  },
+  {
+   "i": 49,
+   "k": 20,
+   "role": "empty_body",
+   "text": "No results found.",
+   "flags": [
+    "in_state",
+    "conditional",
+    "section_first"
+   ],
+   "loc": [
+    50,
+    1,
+    50,
+    18
+   ]
+  },
+  {
+   "i": 50,
+   "k": 21,
+   "role": "empty_title",
+   "text": "No data",
+   "flags": [
+    "in_state",
+    "conditional"
+   ],
+   "loc": [
+    51,
+    1,
+    51,
+    8
+   ]
+  },
+  {
+   "i": 51,
+   "k": 21,
+   "role": "empty_body",
+   "text": "No data available.",
+   "flags": [
+    "in_state",
+    "conditional",
+    "section_first"
+   ],
+   "loc": [
+    52,
+    1,
+    52,
+    19
+   ]
+  },
+  {
+   "i": 52,
+   "k": 22,
+   "role": "dialog_title",
+   "text": "Log out",
+   "flags": [
+    "in_dialog",
+    "in_state",
+    "conditional"
+   ],
+   "loc": [
+    53,
+    1,
+    53,
+    8
+   ]
+  },
+  {
+   "i": 53,
+   "k": 22,
+   "role": "dialog_body",
+   "text": "Are you sure you want to log out?",
+   "flags": [
+    "in_dialog",
+    "in_state",
+    "conditional",
+    "section_first"
+   ],
+   "loc": [
+    54,
+    1,
+    54,
+    34
+   ]
+  },
+  {
+   "i": 54,
+   "k": 22,
+   "role": "button",
+   "text": "Log out",
+   "flags": [
+    "in_dialog",
+    "in_state",
+    "conditional"
+   ],
+   "loc": [
+    55,
+    1,
+    55,
+    8
+   ]
+  },
+  {
+   "i": 55,
+   "k": 23,
+   "role": "error",
+   "text": "Something went wrong",
+   "flags": [
+    "in_state",
+    "conditional"
+   ],
+   "loc": [
+    56,
+    1,
+    56,
+    21
+   ]
+  },
+  {
+   "i": 56,
+   "k": 23,
+   "role": "error",
+   "text": "An error occurred.",
+   "flags": [
+    "in_state",
+    "conditional"
+   ],
+   "loc": [
+    57,
+    1,
+    57,
+    19
+   ]
+  },
+  {
+   "i": 57,
+   "k": 24,
+   "role": "h1",
+   "text": "Orders",
+   "flags": [],
+   "loc": [
+    58,
+    1,
+    58,
+    7
+   ]
+  },
+  {
+   "i": 58,
+   "k": 24,
+   "role": "h2",
+   "text": "Orders",
+   "flags": [
+    "in_card"
+   ],
+   "loc": [
+    59,
+    1,
+    59,
+    7
+   ]
+  },
+  {
+   "i": 59,
+   "k": 24,
+   "role": "subtitle",
+   "text": "A list of your recent orders.",
+   "flags": [
+    "small",
+    "in_card",
+    "section_first"
+   ],
+   "loc": [
+    60,
+    1,
+    60,
+    30
+   ]
+  }
+ ],
+ "labels": [
+  {
+   "loc": [
+    1,
+    1,
+    1,
+    13
+   ],
+   "class": "ECHO",
+   "target": [
+    2,
+    1,
+    2,
+    35
+   ]
+  },
+  {
+   "loc": [
+    2,
+    1,
+    2,
+    35
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    3,
+    1,
+    3,
+    22
+   ],
+   "class": "ECHO",
+   "target": [
+    2,
+    1,
+    2,
+    35
+   ]
+  },
+  {
+   "loc": [
+    4,
+    1,
+    4,
+    13
+   ],
+   "class": "DECOR",
+   "target": null
+  },
+  {
+   "loc": [
+    5,
+    1,
+    5,
+    23
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    7,
+    1,
+    7,
+    14
+   ],
+   "class": "ECHO",
+   "target": [
+    8,
+    1,
+    8,
+    17
+   ]
+  },
+  {
+   "loc": [
+    8,
+    1,
+    8,
+    17
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    9,
+    1,
+    9,
+    29
+   ],
+   "class": "NARRATE",
+   "target": null
+  },
+  {
+   "loc": [
+    10,
+    1,
+    10,
+    13
+   ],
+   "class": "DECOR",
+   "target": null
+  },
+  {
+   "loc": [
+    11,
+    1,
+    11,
+    30
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    12,
+    1,
+    12,
+    4
+   ],
+   "class": "ECHO",
+   "target": [
+    13,
+    1,
+    13,
+    27
+   ]
+  },
+  {
+   "loc": [
+    13,
+    1,
+    13,
+    27
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    14,
+    1,
+    14,
+    34
+   ],
+   "class": "ECHO",
+   "target": [
+    13,
+    1,
+    13,
+    27
+   ]
+  },
+  {
+   "loc": [
+    15,
+    1,
+    15,
+    11
+   ],
+   "class": "ECHO",
+   "target": [
+    16,
+    1,
+    16,
+    13
+   ]
+  },
+  {
+   "loc": [
+    16,
+    1,
+    16,
+    13
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    17,
+    1,
+    17,
+    9
+   ],
+   "class": "DECOR",
+   "target": null
+  },
+  {
+   "loc": [
+    18,
+    1,
+    18,
+    24
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    19,
+    1,
+    19,
+    9
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    21,
+    1,
+    21,
+    13
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    22,
+    1,
+    22,
+    28
+   ],
+   "class": "ECHO",
+   "target": [
+    21,
+    1,
+    21,
+    13
+   ]
+  },
+  {
+   "loc": [
+    23,
+    1,
+    23,
+    12
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    25,
+    1,
+    25,
+    14
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    26,
+    1,
+    26,
+    61
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    27,
+    1,
+    27,
+    16
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    28,
+    1,
+    28,
+    30
+   ],
+   "class": "ECHO",
+   "target": [
+    27,
+    1,
+    27,
+    16
+   ]
+  },
+  {
+   "loc": [
+    29,
+    1,
+    29,
+    22
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    30,
+    1,
+    30,
+    19
+   ],
+   "class": "ECHO",
+   "target": [
+    29,
+    1,
+    29,
+    22
+   ]
+  },
+  {
+   "loc": [
+    31,
+    1,
+    31,
+    20
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    32,
+    1,
+    32,
+    36
+   ],
+   "class": "ECHO",
+   "target": null
+  },
+  {
+   "loc": [
+    33,
+    1,
+    33,
+    9
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    34,
+    1,
+    34,
+    38
+   ],
+   "class": "ECHO",
+   "target": [
+    33,
+    1,
+    33,
+    9
+   ]
+  },
+  {
+   "loc": [
+    35,
+    1,
+    35,
+    8
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    36,
+    1,
+    36,
+    40
+   ],
+   "class": "ECHO",
+   "target": [
+    35,
+    1,
+    35,
+    8
+   ]
+  },
+  {
+   "loc": [
+    37,
+    1,
+    37,
+    10
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    38,
+    1,
+    38,
+    29
+   ],
+   "class": "ECHO",
+   "target": [
+    37,
+    1,
+    37,
+    10
+   ]
+  },
+  {
+   "loc": [
+    39,
+    1,
+    39,
+    6
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    40,
+    1,
+    40,
+    25
+   ],
+   "class": "ECHO",
+   "target": [
+    39,
+    1,
+    39,
+    6
+   ]
+  },
+  {
+   "loc": [
+    41,
+    1,
+    41,
+    6
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    42,
+    1,
+    42,
+    13
+   ],
+   "class": "ECHO",
+   "target": [
+    41,
+    1,
+    41,
+    6
+   ]
+  },
+  {
+   "loc": [
+    43,
+    1,
+    43,
+    8
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    44,
+    1,
+    44,
+    13
+   ],
+   "class": "ECHO",
+   "target": [
+    43,
+    1,
+    43,
+    8
+   ]
+  },
+  {
+   "loc": [
+    45,
+    1,
+    45,
+    8
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    46,
+    1,
+    46,
+    26
+   ],
+   "class": "ECHO",
+   "target": [
+    45,
+    1,
+    45,
+    8
+   ]
+  },
+  {
+   "loc": [
+    47,
+    1,
+    47,
+    9
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    48,
+    1,
+    48,
+    23
+   ],
+   "class": "ECHO",
+   "target": [
+    47,
+    1,
+    47,
+    9
+   ]
+  },
+  {
+   "loc": [
+    49,
+    1,
+    49,
+    11
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    50,
+    1,
+    50,
+    18
+   ],
+   "class": "ECHO",
+   "target": [
+    49,
+    1,
+    49,
+    11
+   ]
+  },
+  {
+   "loc": [
+    51,
+    1,
+    51,
+    8
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    52,
+    1,
+    52,
+    19
+   ],
+   "class": "ECHO",
+   "target": [
+    51,
+    1,
+    51,
+    8
+   ]
+  },
+  {
+   "loc": [
+    53,
+    1,
+    53,
+    8
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    54,
+    1,
+    54,
+    34
+   ],
+   "class": "ECHO",
+   "target": [
+    53,
+    1,
+    53,
+    8
+   ]
+  },
+  {
+   "loc": [
+    55,
+    1,
+    55,
+    8
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    56,
+    1,
+    56,
+    21
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    57,
+    1,
+    57,
+    19
+   ],
+   "class": "ECHO",
+   "target": [
+    56,
+    1,
+    56,
+    21
+   ]
+  },
+  {
+   "loc": [
+    58,
+    1,
+    58,
+    7
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    59,
+    1,
+    59,
+    7
+   ],
+   "class": "ECHO",
+   "target": [
+    58,
+    1,
+    58,
+    7
+   ]
+  },
+  {
+   "loc": [
+    60,
+    1,
+    60,
+    30
+   ],
+   "class": "ECHO",
+   "target": [
+    59,
+    1,
+    59,
+    7
+   ]
+  }
+ ]
+}

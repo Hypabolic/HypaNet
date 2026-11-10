@@ -1,0 +1,1148 @@
+{
+ "schema": "slop.screen/1",
+ "id": "landing",
+ "framework": "tsx",
+ "clusters": [],
+ "nodes": [
+  {
+   "i": 0,
+   "k": 0,
+   "role": "nav",
+   "text": "Features",
+   "flags": [
+    "in_nav"
+   ],
+   "loc": [
+    1,
+    1,
+    1,
+    9
+   ]
+  },
+  {
+   "i": 1,
+   "k": 0,
+   "role": "nav",
+   "text": "Pricing",
+   "flags": [
+    "in_nav"
+   ],
+   "loc": [
+    2,
+    1,
+    2,
+    8
+   ]
+  },
+  {
+   "i": 2,
+   "k": 0,
+   "role": "nav",
+   "text": "FAQ",
+   "flags": [
+    "in_nav"
+   ],
+   "loc": [
+    3,
+    1,
+    3,
+    4
+   ]
+  },
+  {
+   "i": 3,
+   "k": 0,
+   "role": "button",
+   "text": "Get started",
+   "flags": [
+    "in_nav"
+   ],
+   "loc": [
+    4,
+    1,
+    4,
+    12
+   ]
+  },
+  {
+   "i": 4,
+   "k": 1,
+   "role": "badge",
+   "text": "✨ Now in beta",
+   "flags": [
+    "small",
+    "pill"
+   ],
+   "loc": [
+    5,
+    1,
+    5,
+    14
+   ]
+  },
+  {
+   "i": 5,
+   "k": 1,
+   "role": "h1",
+   "text": "Ship your product faster",
+   "flags": [],
+   "loc": [
+    6,
+    1,
+    6,
+    25
+   ]
+  },
+  {
+   "i": 6,
+   "k": 1,
+   "role": "subtitle",
+   "text": "The all-in-one platform for building, deploying and scaling web apps.",
+   "flags": [
+    "section_first"
+   ],
+   "loc": [
+    7,
+    1,
+    7,
+    70
+   ]
+  },
+  {
+   "i": 7,
+   "k": 1,
+   "role": "button",
+   "text": "Get started",
+   "flags": [],
+   "loc": [
+    8,
+    1,
+    8,
+    12
+   ]
+  },
+  {
+   "i": 8,
+   "k": 1,
+   "role": "link",
+   "text": "View the docs →",
+   "flags": [
+    "arrow_tail"
+   ],
+   "loc": [
+    9,
+    1,
+    9,
+    16
+   ]
+  },
+  {
+   "i": 9,
+   "k": 1,
+   "role": "caption",
+   "text": "No credit card required.",
+   "flags": [
+    "small",
+    "section_last"
+   ],
+   "loc": [
+    10,
+    1,
+    10,
+    25
+   ]
+  },
+  {
+   "i": 10,
+   "k": 2,
+   "role": "eyebrow",
+   "text": "Features",
+   "flags": [
+    "caps",
+    "tracked",
+    "small"
+   ],
+   "loc": [
+    11,
+    1,
+    11,
+    9
+   ]
+  },
+  {
+   "i": 11,
+   "k": 2,
+   "role": "h2",
+   "text": "Everything you need to launch",
+   "flags": [],
+   "loc": [
+    12,
+    1,
+    12,
+    30
+   ]
+  },
+  {
+   "i": 12,
+   "k": 2,
+   "role": "subtitle",
+   "text": "Powerful features to help you build and grow.",
+   "flags": [
+    "section_first"
+   ],
+   "loc": [
+    13,
+    1,
+    13,
+    46
+   ]
+  },
+  {
+   "i": 13,
+   "k": 3,
+   "role": "h3",
+   "text": "Lightning fast",
+   "flags": [
+    "in_card",
+    "repeated"
+   ],
+   "loc": [
+    14,
+    1,
+    14,
+    15
+   ]
+  },
+  {
+   "i": 14,
+   "k": 3,
+   "role": "subtitle",
+   "text": "Pages load in under 100 ms on a global edge network.",
+   "flags": [
+    "in_card",
+    "section_first",
+    "repeated"
+   ],
+   "loc": [
+    15,
+    1,
+    15,
+    53
+   ]
+  },
+  {
+   "i": 15,
+   "k": 4,
+   "role": "h3",
+   "text": "Secure by default",
+   "flags": [
+    "in_card",
+    "repeated"
+   ],
+   "loc": [
+    16,
+    1,
+    16,
+    18
+   ]
+  },
+  {
+   "i": 16,
+   "k": 4,
+   "role": "subtitle",
+   "text": "Security is built in from the start.",
+   "flags": [
+    "in_card",
+    "section_first",
+    "repeated"
+   ],
+   "loc": [
+    17,
+    1,
+    17,
+    37
+   ]
+  },
+  {
+   "i": 17,
+   "k": 5,
+   "role": "h3",
+   "text": "Analytics",
+   "flags": [
+    "in_card",
+    "repeated"
+   ],
+   "loc": [
+    18,
+    1,
+    18,
+    10
+   ]
+  },
+  {
+   "i": 18,
+   "k": 5,
+   "role": "subtitle",
+   "text": "See which pages convert and where visitors drop off.",
+   "flags": [
+    "in_card",
+    "section_first",
+    "repeated"
+   ],
+   "loc": [
+    19,
+    1,
+    19,
+    53
+   ]
+  },
+  {
+   "i": 19,
+   "k": 6,
+   "role": "eyebrow",
+   "text": "Pricing",
+   "flags": [
+    "caps",
+    "tracked",
+    "small"
+   ],
+   "loc": [
+    20,
+    1,
+    20,
+    8
+   ]
+  },
+  {
+   "i": 20,
+   "k": 6,
+   "role": "h2",
+   "text": "Simple, transparent pricing",
+   "flags": [],
+   "loc": [
+    21,
+    1,
+    21,
+    28
+   ]
+  },
+  {
+   "i": 21,
+   "k": 6,
+   "role": "subtitle",
+   "text": "Choose the plan that fits your team.",
+   "flags": [
+    "section_first"
+   ],
+   "loc": [
+    22,
+    1,
+    22,
+    37
+   ]
+  },
+  {
+   "i": 22,
+   "k": 7,
+   "role": "h3",
+   "text": "Starter",
+   "flags": [
+    "in_card"
+   ],
+   "loc": [
+    23,
+    1,
+    23,
+    8
+   ]
+  },
+  {
+   "i": 23,
+   "k": 7,
+   "role": "stat",
+   "text": "$0",
+   "flags": [
+    "in_card"
+   ],
+   "loc": [
+    24,
+    1,
+    24,
+    3
+   ]
+  },
+  {
+   "i": 24,
+   "k": 7,
+   "role": "caption",
+   "text": "per month",
+   "flags": [
+    "small",
+    "in_card"
+   ],
+   "loc": [
+    25,
+    1,
+    25,
+    10
+   ]
+  },
+  {
+   "i": 25,
+   "k": 7,
+   "role": "button",
+   "text": "Choose Starter",
+   "flags": [
+    "in_card"
+   ],
+   "loc": [
+    26,
+    1,
+    26,
+    15
+   ]
+  },
+  {
+   "i": 26,
+   "k": 8,
+   "role": "h3",
+   "text": "Pro",
+   "flags": [
+    "in_card"
+   ],
+   "loc": [
+    27,
+    1,
+    27,
+    4
+   ]
+  },
+  {
+   "i": 27,
+   "k": 8,
+   "role": "badge",
+   "text": "Most popular",
+   "flags": [
+    "small",
+    "pill",
+    "in_card"
+   ],
+   "loc": [
+    28,
+    1,
+    28,
+    13
+   ]
+  },
+  {
+   "i": 28,
+   "k": 8,
+   "role": "stat",
+   "text": "$29",
+   "flags": [
+    "in_card"
+   ],
+   "loc": [
+    29,
+    1,
+    29,
+    4
+   ]
+  },
+  {
+   "i": 29,
+   "k": 8,
+   "role": "caption",
+   "text": "per month",
+   "flags": [
+    "small",
+    "in_card"
+   ],
+   "loc": [
+    30,
+    1,
+    30,
+    10
+   ]
+  },
+  {
+   "i": 30,
+   "k": 8,
+   "role": "button",
+   "text": "Choose Pro",
+   "flags": [
+    "in_card"
+   ],
+   "loc": [
+    31,
+    1,
+    31,
+    11
+   ]
+  },
+  {
+   "i": 31,
+   "k": 9,
+   "role": "eyebrow",
+   "text": "Testimonials",
+   "flags": [
+    "caps",
+    "tracked",
+    "small"
+   ],
+   "loc": [
+    32,
+    1,
+    32,
+    13
+   ]
+  },
+  {
+   "i": 32,
+   "k": 9,
+   "role": "h2",
+   "text": "Loved by developers",
+   "flags": [],
+   "loc": [
+    33,
+    1,
+    33,
+    20
+   ]
+  },
+  {
+   "i": 33,
+   "k": 10,
+   "role": "eyebrow",
+   "text": "FAQ",
+   "flags": [
+    "caps",
+    "tracked",
+    "small"
+   ],
+   "loc": [
+    34,
+    1,
+    34,
+    4
+   ]
+  },
+  {
+   "i": 34,
+   "k": 10,
+   "role": "h2",
+   "text": "Frequently asked questions",
+   "flags": [],
+   "loc": [
+    35,
+    1,
+    35,
+    27
+   ]
+  },
+  {
+   "i": 35,
+   "k": 11,
+   "role": "h2",
+   "text": "Ready to get started?",
+   "flags": [],
+   "loc": [
+    36,
+    1,
+    36,
+    22
+   ]
+  },
+  {
+   "i": 36,
+   "k": 11,
+   "role": "subtitle",
+   "text": "Join 4,000 teams already shipping with Acme.",
+   "flags": [
+    "section_first"
+   ],
+   "loc": [
+    37,
+    1,
+    37,
+    45
+   ]
+  },
+  {
+   "i": 37,
+   "k": 11,
+   "role": "button",
+   "text": "Get started",
+   "flags": [
+    "section_last"
+   ],
+   "loc": [
+    38,
+    1,
+    38,
+    12
+   ]
+  },
+  {
+   "i": 38,
+   "k": 12,
+   "role": "h4",
+   "text": "Product",
+   "flags": [
+    "small",
+    "in_footer"
+   ],
+   "loc": [
+    39,
+    1,
+    39,
+    8
+   ]
+  },
+  {
+   "i": 39,
+   "k": 12,
+   "role": "link",
+   "text": "Features",
+   "flags": [
+    "small",
+    "in_footer",
+    "in_list"
+   ],
+   "loc": [
+    40,
+    1,
+    40,
+    9
+   ]
+  },
+  {
+   "i": 40,
+   "k": 12,
+   "role": "link",
+   "text": "Pricing",
+   "flags": [
+    "small",
+    "in_footer",
+    "in_list"
+   ],
+   "loc": [
+    41,
+    1,
+    41,
+    8
+   ]
+  },
+  {
+   "i": 41,
+   "k": 12,
+   "role": "link",
+   "text": "Changelog",
+   "flags": [
+    "small",
+    "in_footer",
+    "in_list"
+   ],
+   "loc": [
+    42,
+    1,
+    42,
+    10
+   ]
+  },
+  {
+   "i": 42,
+   "k": 13,
+   "role": "caption",
+   "text": "© 2025 Acme Inc. All rights reserved.",
+   "flags": [
+    "small",
+    "in_footer"
+   ],
+   "loc": [
+    43,
+    1,
+    43,
+    38
+   ]
+  },
+  {
+   "i": 43,
+   "k": 13,
+   "role": "body",
+   "text": "All systems operational",
+   "flags": [
+    "small",
+    "dot"
+   ],
+   "loc": [
+    44,
+    1,
+    44,
+    24
+   ]
+  }
+ ],
+ "labels": [
+  {
+   "loc": [
+    1,
+    1,
+    1,
+    9
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    2,
+    1,
+    2,
+    8
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    3,
+    1,
+    3,
+    4
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    4,
+    1,
+    4,
+    12
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    5,
+    1,
+    5,
+    14
+   ],
+   "class": "DECOR",
+   "target": null
+  },
+  {
+   "loc": [
+    6,
+    1,
+    6,
+    25
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    7,
+    1,
+    7,
+    70
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    8,
+    1,
+    8,
+    12
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    9,
+    1,
+    9,
+    16
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    10,
+    1,
+    10,
+    25
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    11,
+    1,
+    11,
+    9
+   ],
+   "class": "DECOR",
+   "target": null
+  },
+  {
+   "loc": [
+    12,
+    1,
+    12,
+    30
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    13,
+    1,
+    13,
+    46
+   ],
+   "class": "ECHO",
+   "target": [
+    12,
+    1,
+    12,
+    30
+   ]
+  },
+  {
+   "loc": [
+    14,
+    1,
+    14,
+    15
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    15,
+    1,
+    15,
+    53
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    16,
+    1,
+    16,
+    18
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    17,
+    1,
+    17,
+    37
+   ],
+   "class": "ECHO",
+   "target": [
+    16,
+    1,
+    16,
+    18
+   ]
+  },
+  {
+   "loc": [
+    18,
+    1,
+    18,
+    10
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    19,
+    1,
+    19,
+    53
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    20,
+    1,
+    20,
+    8
+   ],
+   "class": "ECHO",
+   "target": [
+    21,
+    1,
+    21,
+    28
+   ]
+  },
+  {
+   "loc": [
+    21,
+    1,
+    21,
+    28
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    22,
+    1,
+    22,
+    37
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    23,
+    1,
+    23,
+    8
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    24,
+    1,
+    24,
+    3
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    25,
+    1,
+    25,
+    10
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    26,
+    1,
+    26,
+    15
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    27,
+    1,
+    27,
+    4
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    28,
+    1,
+    28,
+    13
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    29,
+    1,
+    29,
+    4
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    30,
+    1,
+    30,
+    10
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    31,
+    1,
+    31,
+    11
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    32,
+    1,
+    32,
+    13
+   ],
+   "class": "DECOR",
+   "target": null
+  },
+  {
+   "loc": [
+    33,
+    1,
+    33,
+    20
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    34,
+    1,
+    34,
+    4
+   ],
+   "class": "ECHO",
+   "target": [
+    35,
+    1,
+    35,
+    27
+   ]
+  },
+  {
+   "loc": [
+    35,
+    1,
+    35,
+    27
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    36,
+    1,
+    36,
+    22
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    37,
+    1,
+    37,
+    45
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    38,
+    1,
+    38,
+    12
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    39,
+    1,
+    39,
+    8
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    40,
+    1,
+    40,
+    9
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    41,
+    1,
+    41,
+    8
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    42,
+    1,
+    42,
+    10
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    43,
+    1,
+    43,
+    38
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    44,
+    1,
+    44,
+    24
+   ],
+   "class": "DECOR",
+   "target": null
+  }
+ ]
+}

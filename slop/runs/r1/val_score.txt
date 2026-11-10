@@ -1,0 +1,45 @@
+artefact e3e0b1d08f24 (work), pointer head [3, 0]  on examples/dev
+2000 screens, 36307 labelled nodes (315 ct); not scored: {'unresolved': 39}
+headline (ct nodes left out): REDUNDANT vs KEEP  P 0.908  R 0.611  F1 0.731  false alarms 127/33949 KEEP (0.4%)   TP 1249 FP 127 FN 794 TN 33822
+ct column (stretch): REDUNDANT vs KEEP  P 0.963  R 0.814  F1 0.882  false alarms 5/154 KEEP (3.2%)   TP 131 FP 5 FN 30 TN 149
+confusion, headline nodes (rows: label, columns: prediction):
+               KEEP    ECHO    NARR   DECOR
+  KEEP        33822      96      22       9
+  ECHO          710    1000       7      13
+  NARRATE         4       6      71       0
+  DECOR          80       1       0     151
+four-class macro-F1 0.806  (KEEP 0.987  ECHO 0.706  NARRATE 0.785  DECOR 0.746)
+per pattern (labelled REDUNDANT nodes, ct nodes included; flagged = any non-KEEP call; exact = the labelled class; ct = how many of n are ct):
+  R1   ECHO     n  322  flagged  238 ( 73.9%)  exact  225  ct    0
+  R2   DECOR    n  135  flagged   71 ( 52.6%)  exact   70  ct    0
+  R3   ECHO     n  306  flagged  139 ( 45.4%)  exact  137  ct    0
+  R4   ECHO     n  146  flagged  105 ( 71.9%)  exact  105  ct    0
+  R5   ECHO     n  353  flagged  169 ( 47.9%)  exact  164  ct    0
+  R6   NARRATE  n  161  flagged  131 ( 81.4%)  exact  131  ct  161
+  R8   ECHO     n  115  flagged   76 ( 66.1%)  exact   76  ct    0
+  R9   ECHO     n  265  flagged  209 ( 78.9%)  exact  209  ct    0
+  R11  DECOR    n   97  flagged   81 ( 83.5%)  exact   81  ct    0
+  R14  ECHO     n  168  flagged   61 ( 36.3%)  exact   61  ct    0
+  R16  NARRATE  n   81  flagged   77 ( 95.1%)  exact   71  ct    0
+  R17  ECHO     n   55  flagged   23 ( 41.8%)  exact   23  ct    0
+per K rule (KEEP nodes that name it; flagged = false alarms):
+  K1   n  804  flagged   11 (  1.4%)
+  K2   n  664  flagged    1 (  0.2%)
+  K3   n  280  flagged    0 (  0.0%)
+  K4   n 1114  flagged   20 (  1.8%)
+  K5   n 1240  flagged    0 (  0.0%)
+  K6   n  149  flagged    0 (  0.0%)
+  K7   n   99  flagged    0 (  0.0%)
+  K8   n  221  flagged    1 (  0.5%)
+  K9   n  478  flagged    0 (  0.0%)
+  K11  n  608  flagged    0 (  0.0%)
+  K12  n  197  flagged    0 (  0.0%)
+  K13  n  201  flagged    0 (  0.0%)
+  K14  n  195  flagged    0 (  0.0%)
+pointer accuracy: 997/1103 (90.4%)  (labelled ECHO/NARRATE with a target, called non-KEEP; the target or an equiv copy counts)
+wrong nodes: 1072; showing 1-40 (--offset to page)
+  0011fc60ebee0432 6 eyebrow "Honest rates"  label ECHO→7 R1  called KEEP (-0.50)
+  0011fc60ebee0432 10 subtitle "Costs nothing, as the name says."  label ECHO→9 R3  called ECHO→7 (+2.25)
+  0040728c1960ff6e 21 label "Visitors today"  label ECHO→5 R14  called KEEP (-0.50)
+  0040728c1960ff6e 22 stat "5,918"  label ECHO→6 R14  called KEEP (-0.50)
+  005854c7dd63bd41 11 helper "Turns rapid button presses into a single hold."  label KEEP K4  called NARRATE→10 (+1.50)

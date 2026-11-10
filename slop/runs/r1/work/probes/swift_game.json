@@ -1,0 +1,1333 @@
+{
+ "schema": "slop.screen/1",
+ "id": "swift_game",
+ "framework": "tsx",
+ "clusters": [],
+ "nodes": [
+  {
+   "i": 0,
+   "k": 0,
+   "role": "h1",
+   "text": "Settings",
+   "flags": [
+    "in_header"
+   ],
+   "loc": [
+    1,
+    1,
+    1,
+    9
+   ]
+  },
+  {
+   "i": 1,
+   "k": 1,
+   "role": "h2",
+   "text": "Account",
+   "flags": [],
+   "loc": [
+    2,
+    1,
+    2,
+    8
+   ]
+  },
+  {
+   "i": 2,
+   "k": 1,
+   "role": "label",
+   "text": "Name",
+   "flags": [
+    "in_control"
+   ],
+   "loc": [
+    3,
+    1,
+    3,
+    5
+   ]
+  },
+  {
+   "i": 3,
+   "k": 1,
+   "role": "input_value",
+   "text": "⟨VAR⟩ name",
+   "flags": [
+    "dynamic",
+    "stateful",
+    "in_control"
+   ],
+   "loc": [
+    4,
+    1,
+    4,
+    11
+   ]
+  },
+  {
+   "i": 4,
+   "k": 1,
+   "role": "label",
+   "text": "Email",
+   "flags": [
+    "in_control"
+   ],
+   "loc": [
+    5,
+    1,
+    5,
+    6
+   ]
+  },
+  {
+   "i": 5,
+   "k": 1,
+   "role": "button",
+   "text": "Sign out",
+   "flags": [],
+   "loc": [
+    6,
+    1,
+    6,
+    9
+   ]
+  },
+  {
+   "i": 6,
+   "k": 2,
+   "role": "h2",
+   "text": "Cooking",
+   "flags": [],
+   "loc": [
+    7,
+    1,
+    7,
+    8
+   ]
+  },
+  {
+   "i": 7,
+   "k": 2,
+   "role": "label",
+   "text": "Keep screen awake",
+   "flags": [
+    "in_control"
+   ],
+   "loc": [
+    8,
+    1,
+    8,
+    18
+   ]
+  },
+  {
+   "i": 8,
+   "k": 2,
+   "role": "helper",
+   "text": "Stops the screen dimming while a recipe is open.",
+   "flags": [
+    "small"
+   ],
+   "loc": [
+    9,
+    1,
+    9,
+    49
+   ]
+  },
+  {
+   "i": 9,
+   "k": 2,
+   "role": "label",
+   "text": "Default servings",
+   "flags": [
+    "in_control"
+   ],
+   "loc": [
+    10,
+    1,
+    10,
+    17
+   ]
+  },
+  {
+   "i": 10,
+   "k": 2,
+   "role": "helper",
+   "text": "Every quantity is scaled for this many.",
+   "flags": [
+    "small"
+   ],
+   "loc": [
+    11,
+    1,
+    11,
+    40
+   ]
+  },
+  {
+   "i": 11,
+   "k": 2,
+   "role": "label",
+   "text": "Units",
+   "flags": [
+    "in_control"
+   ],
+   "loc": [
+    12,
+    1,
+    12,
+    6
+   ]
+  },
+  {
+   "i": 12,
+   "k": 2,
+   "role": "menu_item",
+   "text": "Metric",
+   "flags": [
+    "in_control"
+   ],
+   "loc": [
+    13,
+    1,
+    13,
+    7
+   ]
+  },
+  {
+   "i": 13,
+   "k": 2,
+   "role": "menu_item",
+   "text": "Imperial",
+   "flags": [
+    "in_control"
+   ],
+   "loc": [
+    14,
+    1,
+    14,
+    9
+   ]
+  },
+  {
+   "i": 14,
+   "k": 3,
+   "role": "h2",
+   "text": "Voice",
+   "flags": [],
+   "loc": [
+    15,
+    1,
+    15,
+    6
+   ]
+  },
+  {
+   "i": 15,
+   "k": 3,
+   "role": "label",
+   "text": "Voice commands",
+   "flags": [
+    "in_control"
+   ],
+   "loc": [
+    16,
+    1,
+    16,
+    15
+   ]
+  },
+  {
+   "i": 16,
+   "k": 3,
+   "role": "helper",
+   "text": "Voice commands for your account.",
+   "flags": [
+    "small"
+   ],
+   "loc": [
+    17,
+    1,
+    17,
+    33
+   ]
+  },
+  {
+   "i": 17,
+   "k": 3,
+   "role": "label",
+   "text": "Read steps aloud",
+   "flags": [
+    "in_control"
+   ],
+   "loc": [
+    18,
+    1,
+    18,
+    17
+   ]
+  },
+  {
+   "i": 18,
+   "k": 3,
+   "role": "helper",
+   "text": "Turn read steps aloud on or off.",
+   "flags": [
+    "small"
+   ],
+   "loc": [
+    19,
+    1,
+    19,
+    33
+   ]
+  },
+  {
+   "i": 19,
+   "k": 4,
+   "role": "h2",
+   "text": "About",
+   "flags": [],
+   "loc": [
+    20,
+    1,
+    20,
+    6
+   ]
+  },
+  {
+   "i": 20,
+   "k": 4,
+   "role": "label",
+   "text": "Version",
+   "flags": [],
+   "loc": [
+    21,
+    1,
+    21,
+    8
+   ]
+  },
+  {
+   "i": 21,
+   "k": 4,
+   "role": "body",
+   "text": "2.4.1",
+   "flags": [],
+   "loc": [
+    22,
+    1,
+    22,
+    6
+   ]
+  },
+  {
+   "i": 22,
+   "k": 4,
+   "role": "link",
+   "text": "Privacy policy",
+   "flags": [],
+   "loc": [
+    23,
+    1,
+    23,
+    15
+   ]
+  },
+  {
+   "i": 23,
+   "k": 4,
+   "role": "caption",
+   "text": "Made in Manchester.",
+   "flags": [
+    "small",
+    "section_last"
+   ],
+   "loc": [
+    24,
+    1,
+    24,
+    20
+   ]
+  },
+  {
+   "i": 24,
+   "k": 5,
+   "role": "tab",
+   "text": "Recipes",
+   "flags": [
+    "icon",
+    "in_nav"
+   ],
+   "loc": [
+    25,
+    1,
+    25,
+    8
+   ]
+  },
+  {
+   "i": 25,
+   "k": 5,
+   "role": "tab",
+   "text": "Favourites",
+   "flags": [
+    "icon",
+    "in_nav"
+   ],
+   "loc": [
+    26,
+    1,
+    26,
+    11
+   ]
+  },
+  {
+   "i": 26,
+   "k": 5,
+   "role": "tab",
+   "text": "Settings",
+   "flags": [
+    "icon",
+    "in_nav"
+   ],
+   "loc": [
+    27,
+    1,
+    27,
+    9
+   ]
+  },
+  {
+   "i": 27,
+   "k": 6,
+   "role": "h1",
+   "text": "PAUSED",
+   "flags": [
+    "caps"
+   ],
+   "loc": [
+    28,
+    1,
+    28,
+    7
+   ]
+  },
+  {
+   "i": 28,
+   "k": 6,
+   "role": "subtitle",
+   "text": "Timers are stopped until you resume.",
+   "flags": [
+    "small",
+    "section_first"
+   ],
+   "loc": [
+    29,
+    1,
+    29,
+    37
+   ]
+  },
+  {
+   "i": 29,
+   "k": 6,
+   "role": "button",
+   "text": "RESUME",
+   "flags": [
+    "caps"
+   ],
+   "loc": [
+    30,
+    1,
+    30,
+    7
+   ]
+  },
+  {
+   "i": 30,
+   "k": 6,
+   "role": "button",
+   "text": "SETTINGS",
+   "flags": [
+    "caps"
+   ],
+   "loc": [
+    31,
+    1,
+    31,
+    9
+   ]
+  },
+  {
+   "i": 31,
+   "k": 6,
+   "role": "button",
+   "text": "QUIT TO MENU",
+   "flags": [
+    "caps"
+   ],
+   "loc": [
+    32,
+    1,
+    32,
+    13
+   ]
+  },
+  {
+   "i": 32,
+   "k": 7,
+   "role": "label",
+   "text": "HEALTH",
+   "flags": [
+    "caps",
+    "small"
+   ],
+   "loc": [
+    33,
+    1,
+    33,
+    7
+   ]
+  },
+  {
+   "i": 33,
+   "k": 7,
+   "role": "stat",
+   "text": "⟨VAR⟩ health",
+   "flags": [
+    "dynamic",
+    "stateful"
+   ],
+   "loc": [
+    34,
+    1,
+    34,
+    13
+   ]
+  },
+  {
+   "i": 34,
+   "k": 7,
+   "role": "label",
+   "text": "AMMO",
+   "flags": [
+    "caps",
+    "small"
+   ],
+   "loc": [
+    35,
+    1,
+    35,
+    5
+   ]
+  },
+  {
+   "i": 35,
+   "k": 7,
+   "role": "stat",
+   "text": "24 / 120",
+   "flags": [],
+   "loc": [
+    36,
+    1,
+    36,
+    9
+   ]
+  },
+  {
+   "i": 36,
+   "k": 7,
+   "role": "label",
+   "text": "Objective",
+   "flags": [
+    "caps",
+    "tracked",
+    "small"
+   ],
+   "loc": [
+    37,
+    1,
+    37,
+    10
+   ]
+  },
+  {
+   "i": 37,
+   "k": 7,
+   "role": "body",
+   "text": "Reach the signal tower",
+   "flags": [],
+   "loc": [
+    38,
+    1,
+    38,
+    23
+   ]
+  },
+  {
+   "i": 38,
+   "k": 7,
+   "role": "caption",
+   "text": "Hold E to interact.",
+   "flags": [
+    "small"
+   ],
+   "loc": [
+    39,
+    1,
+    39,
+    20
+   ]
+  },
+  {
+   "i": 39,
+   "k": 8,
+   "role": "eyebrow",
+   "text": "MISSION 4",
+   "flags": [
+    "caps",
+    "tracked",
+    "small"
+   ],
+   "loc": [
+    40,
+    1,
+    40,
+    10
+   ]
+  },
+  {
+   "i": 40,
+   "k": 8,
+   "role": "h1",
+   "text": "VICTORY",
+   "flags": [
+    "caps"
+   ],
+   "loc": [
+    41,
+    1,
+    41,
+    8
+   ]
+  },
+  {
+   "i": 41,
+   "k": 8,
+   "role": "subtitle",
+   "text": "You won! Victory is yours.",
+   "flags": [
+    "small",
+    "section_first"
+   ],
+   "loc": [
+    42,
+    1,
+    42,
+    27
+   ]
+  },
+  {
+   "i": 42,
+   "k": 8,
+   "role": "stat",
+   "text": "12,400",
+   "flags": [],
+   "loc": [
+    43,
+    1,
+    43,
+    7
+   ]
+  },
+  {
+   "i": 43,
+   "k": 8,
+   "role": "label",
+   "text": "Score",
+   "flags": [
+    "small"
+   ],
+   "loc": [
+    44,
+    1,
+    44,
+    6
+   ]
+  },
+  {
+   "i": 44,
+   "k": 8,
+   "role": "button",
+   "text": "Next mission",
+   "flags": [],
+   "loc": [
+    45,
+    1,
+    45,
+    13
+   ]
+  },
+  {
+   "i": 45,
+   "k": 8,
+   "role": "button",
+   "text": "Main menu",
+   "flags": [],
+   "loc": [
+    46,
+    1,
+    46,
+    10
+   ]
+  },
+  {
+   "i": 46,
+   "k": 9,
+   "role": "eyebrow",
+   "text": "GAME OVER",
+   "flags": [
+    "caps",
+    "tracked",
+    "small"
+   ],
+   "loc": [
+    47,
+    1,
+    47,
+    10
+   ]
+  },
+  {
+   "i": 47,
+   "k": 9,
+   "role": "h1",
+   "text": "YOU DIED",
+   "flags": [
+    "caps"
+   ],
+   "loc": [
+    48,
+    1,
+    48,
+    9
+   ]
+  },
+  {
+   "i": 48,
+   "k": 9,
+   "role": "button",
+   "text": "Try again",
+   "flags": [],
+   "loc": [
+    49,
+    1,
+    49,
+    10
+   ]
+  },
+  {
+   "i": 49,
+   "k": 10,
+   "role": "dialog_title",
+   "text": "Quit to menu?",
+   "flags": [
+    "in_dialog",
+    "in_state",
+    "conditional"
+   ],
+   "loc": [
+    50,
+    1,
+    50,
+    14
+   ]
+  },
+  {
+   "i": 50,
+   "k": 10,
+   "role": "dialog_body",
+   "text": "Unsaved progress will be lost.",
+   "flags": [
+    "in_dialog",
+    "in_state",
+    "conditional",
+    "section_first"
+   ],
+   "loc": [
+    51,
+    1,
+    51,
+    31
+   ]
+  },
+  {
+   "i": 51,
+   "k": 10,
+   "role": "button",
+   "text": "Quit",
+   "flags": [
+    "in_dialog",
+    "in_state",
+    "conditional"
+   ],
+   "loc": [
+    52,
+    1,
+    52,
+    5
+   ]
+  },
+  {
+   "i": 52,
+   "k": 10,
+   "role": "button",
+   "text": "Keep playing",
+   "flags": [
+    "in_dialog",
+    "in_state",
+    "conditional"
+   ],
+   "loc": [
+    53,
+    1,
+    53,
+    13
+   ]
+  }
+ ],
+ "labels": [
+  {
+   "loc": [
+    1,
+    1,
+    1,
+    9
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    2,
+    1,
+    2,
+    8
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    3,
+    1,
+    3,
+    5
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    5,
+    1,
+    5,
+    6
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    6,
+    1,
+    6,
+    9
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    7,
+    1,
+    7,
+    8
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    8,
+    1,
+    8,
+    18
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    9,
+    1,
+    9,
+    49
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    10,
+    1,
+    10,
+    17
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    11,
+    1,
+    11,
+    40
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    12,
+    1,
+    12,
+    6
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    13,
+    1,
+    13,
+    7
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    14,
+    1,
+    14,
+    9
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    15,
+    1,
+    15,
+    6
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    16,
+    1,
+    16,
+    15
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    17,
+    1,
+    17,
+    33
+   ],
+   "class": "ECHO",
+   "target": [
+    16,
+    1,
+    16,
+    15
+   ]
+  },
+  {
+   "loc": [
+    18,
+    1,
+    18,
+    17
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    19,
+    1,
+    19,
+    33
+   ],
+   "class": "NARRATE",
+   "target": [
+    18,
+    1,
+    18,
+    17
+   ]
+  },
+  {
+   "loc": [
+    20,
+    1,
+    20,
+    6
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    21,
+    1,
+    21,
+    8
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    22,
+    1,
+    22,
+    6
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    23,
+    1,
+    23,
+    15
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    24,
+    1,
+    24,
+    20
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    25,
+    1,
+    25,
+    8
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    26,
+    1,
+    26,
+    11
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    27,
+    1,
+    27,
+    9
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    28,
+    1,
+    28,
+    7
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    29,
+    1,
+    29,
+    37
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    30,
+    1,
+    30,
+    7
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    31,
+    1,
+    31,
+    9
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    32,
+    1,
+    32,
+    13
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    33,
+    1,
+    33,
+    7
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    35,
+    1,
+    35,
+    5
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    36,
+    1,
+    36,
+    9
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    37,
+    1,
+    37,
+    10
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    38,
+    1,
+    38,
+    23
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    39,
+    1,
+    39,
+    20
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    40,
+    1,
+    40,
+    10
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    41,
+    1,
+    41,
+    8
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    42,
+    1,
+    42,
+    27
+   ],
+   "class": "ECHO",
+   "target": [
+    41,
+    1,
+    41,
+    8
+   ]
+  },
+  {
+   "loc": [
+    43,
+    1,
+    43,
+    7
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    44,
+    1,
+    44,
+    6
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    45,
+    1,
+    45,
+    13
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    46,
+    1,
+    46,
+    10
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    47,
+    1,
+    47,
+    10
+   ],
+   "class": "ECHO",
+   "target": [
+    48,
+    1,
+    48,
+    9
+   ]
+  },
+  {
+   "loc": [
+    48,
+    1,
+    48,
+    9
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    49,
+    1,
+    49,
+    10
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    50,
+    1,
+    50,
+    14
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    51,
+    1,
+    51,
+    31
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    52,
+    1,
+    52,
+    5
+   ],
+   "class": "KEEP",
+   "target": null
+  },
+  {
+   "loc": [
+    53,
+    1,
+    53,
+    13
+   ],
+   "class": "KEEP",
+   "target": null
+  }
+ ]
+}

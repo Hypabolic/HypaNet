@@ -1,0 +1,64 @@
+# Hard negatives in natural phrasing: every node here should stay KEEP.
+0 breadcrumb in_nav | Home | KEEP
+0 breadcrumb in_nav | Settings | KEEP
+0 breadcrumb in_nav | Billing | KEEP
+1 h1 - | Billing | KEEP
+1 subtitle section_first | Update your payment method and download past invoices. | KEEP
+2 tab - | Overview | KEEP
+2 tab - | Billing | KEEP
+2 tab - | Usage | KEEP
+3 h2 - | Payment method | KEEP
+3 body section_first | Visa ending in 4242 | KEEP
+3 button - | Update payment method | KEEP
+4 h2 - | Billing history | KEEP
+4 label small,in_table | Invoice | KEEP
+4 label small,in_table | Amount | KEEP
+4 label small,in_table | Status | KEEP
+4 cell small,in_table,repeated | INV-0012 | KEEP
+4 cell small,in_table,repeated | $29.00 | KEEP
+4 badge small,pill,in_table,repeated | Paid | KEEP
+4 cell small,in_table,repeated | INV-0011 | KEEP
+4 cell small,in_table,repeated | $29.00 | KEEP
+4 badge small,pill,in_table,repeated | Paid | KEEP
+5 eyebrow caps,tracked,small | Case study | KEEP
+5 h2 - | How Northwind cut onboarding time in half | KEEP
+5 subtitle section_first | Read the full story of their move from spreadsheets. | KEEP
+6 eyebrow caps,tracked,small | March 12, 2025 | KEEP
+6 h3 - | Introducing workspaces | KEEP
+6 body section_first | Workspaces let you keep client projects separate, each with its own members and billing. | KEEP
+7 eyebrow caps,tracked,small | Step 2 of 3 | KEEP
+7 h2 - | Invite your team | KEEP
+7 subtitle section_first | You can skip this and invite people later. | KEEP
+7 label in_form,in_control | Email addresses | KEEP
+7 helper small,in_form,in_control | Separate multiple addresses with commas. | KEEP
+7 button in_form | Send invites | KEEP
+7 button in_form | Skip for now | KEEP
+8 h2 - | Danger zone | KEEP
+8 h3 - | Delete workspace | KEEP
+8 body section_first | Deleting a workspace removes all of its projects and cannot be undone. | KEEP
+8 button - | Delete workspace | KEEP
+9 h3 in_card,repeated | Starter | KEEP
+9 badge small,pill,in_card,repeated | Available | KEEP
+9 h3 in_card,repeated | Enterprise | KEEP
+9 badge small,pill,in_card,repeated | Coming soon | KEEP
+10 label in_form,in_control | Password | KEEP
+10 helper small,in_form,in_control | Use at least 8 characters, including a number. | KEEP
+10 label in_form,in_control | Confirm password | KEEP
+10 error small,conditional,in_form,in_control | Passwords do not match | KEEP
+11 h2 - | Notifications | KEEP
+11 label in_form,in_control | Email notifications | KEEP
+11 helper small,in_form,in_control | We'll only email you about activity on your own projects. | KEEP
+11 label in_form,in_control | Push notifications | KEEP
+11 helper small,in_form,in_control | Requires the mobile app. | KEEP
+12 empty_title in_state,conditional | No invoices yet | KEEP
+12 empty_body in_state,conditional,section_first | Invoices appear here after your first payment. | KEEP
+13 caption small,in_footer | Fill out the form below and we'll get back to you within 24 hours. | KEEP
+13 body small | Questions? Email support@example.com. | KEEP
+14 h2 - | What's included | KEEP
+14 list_item in_list | Unlimited projects | KEEP
+14 list_item in_list | Priority support | KEEP
+14 list_item in_list | Custom domains | KEEP
+15 h3 in_list,repeated | Lancaster University | KEEP
+15 subtitle small,in_list,repeated | BSc Computer Science | KEEP
+15 h3 in_list,repeated | Lancaster University | KEEP
+15 subtitle small,in_list,repeated | Foundation degree | KEEP

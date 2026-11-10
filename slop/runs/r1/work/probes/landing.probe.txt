@@ -1,0 +1,45 @@
+# An AI-built landing page: eyebrows over section headings, feature cards, pricing, footer.
+0 nav in_nav | Features | KEEP
+0 nav in_nav | Pricing | KEEP
+0 nav in_nav | FAQ | KEEP
+0 button in_nav | Get started | KEEP
+1 badge small,pill | ✨ Now in beta | DECOR
+1 h1 - | Ship your product faster | KEEP
+1 subtitle section_first | The all-in-one platform for building, deploying and scaling web apps. | KEEP
+1 button - | Get started | KEEP
+1 link arrow_tail | View the docs → | KEEP
+1 caption small,section_last | No credit card required. | KEEP
+2 eyebrow caps,tracked,small | Features | DECOR
+2 h2 - | Everything you need to launch | KEEP
+2 subtitle section_first | Powerful features to help you build and grow. | ECHO>11
+3 h3 in_card,repeated | Lightning fast | KEEP
+3 subtitle in_card,section_first,repeated | Pages load in under 100 ms on a global edge network. | KEEP
+4 h3 in_card,repeated | Secure by default | KEEP
+4 subtitle in_card,section_first,repeated | Security is built in from the start. | ECHO>15
+5 h3 in_card,repeated | Analytics | KEEP
+5 subtitle in_card,section_first,repeated | See which pages convert and where visitors drop off. | KEEP
+6 eyebrow caps,tracked,small | Pricing | ECHO>20
+6 h2 - | Simple, transparent pricing | KEEP
+6 subtitle section_first | Choose the plan that fits your team. | KEEP
+7 h3 in_card | Starter | KEEP
+7 stat in_card | $0 | KEEP
+7 caption small,in_card | per month | KEEP
+7 button in_card | Choose Starter | KEEP
+8 h3 in_card | Pro | KEEP
+8 badge small,pill,in_card | Most popular | KEEP
+8 stat in_card | $29 | KEEP
+8 caption small,in_card | per month | KEEP
+8 button in_card | Choose Pro | KEEP
+9 eyebrow caps,tracked,small | Testimonials | DECOR
+9 h2 - | Loved by developers | KEEP
+10 eyebrow caps,tracked,small | FAQ | ECHO>34
+10 h2 - | Frequently asked questions | KEEP
+11 h2 - | Ready to get started? | KEEP
+11 subtitle section_first | Join 4,000 teams already shipping with Acme. | KEEP
+11 button section_last | Get started | KEEP
+12 h4 small,in_footer | Product | KEEP
+12 link small,in_footer,in_list | Features | KEEP
+12 link small,in_footer,in_list | Pricing | KEEP
+12 link small,in_footer,in_list | Changelog | KEEP
+13 caption small,in_footer | © 2025 Acme Inc. All rights reserved. | KEEP
+13 body small,dot | All systems operational | DECOR
