@@ -1,0 +1,102 @@
+# Round 2 recall probe 2: more restatements in other words, in the register of real product UIs.
+# Every heading is used once. ? = arguable.
+0 h1 - | Inbox | KEEP
+0 subtitle section_first | All your messages in one place. | ECHO>0
+1 h1 - | Bookmarks | KEEP
+1 subtitle section_first | Pages you've saved for later. | ?
+2 h1 - | Activity | KEEP
+2 subtitle section_first | A record of what's happened. | ?
+3 h1 - | Collections | KEEP
+3 subtitle section_first | Group your recipes into collections. | ?
+4 empty_title in_state | No collections yet | KEEP
+4 empty_body in_state,section_first | You haven't created any collections. | ECHO>8
+5 empty_title in_state | Nothing scheduled | KEEP
+5 empty_body in_state,section_first | Your calendar is empty. | ?
+6 empty_title in_state | No favourites | KEEP
+6 empty_body in_state,section_first | You haven't favourited anything yet. | ECHO>12
+7 empty_title in_state | All caught up | KEEP
+7 empty_body in_state,section_first | You have no new notifications. | ?
+8 empty_title in_state | No documents found | KEEP
+8 empty_body in_state,section_first | We couldn't find any documents matching your search. | ECHO>16
+9 empty_title in_state | Your cart is empty | KEEP
+9 empty_body in_state,section_first | There's nothing in your basket yet. | ECHO>18
+10 dialog_title in_dialog,in_state | Delete recipe? | KEEP
+10 dialog_body in_dialog,in_state,section_first | Are you sure you want to remove this recipe? | ECHO>20
+11 dialog_title in_dialog,in_state | Log out? | KEEP
+11 dialog_body in_dialog,in_state,section_first | Do you really want to sign out? | ECHO>22
+12 dialog_title in_dialog,in_state | Discard changes? | KEEP
+12 dialog_body in_dialog,in_state,section_first | Your edits will be discarded. | ECHO>24
+13 dialog_title in_dialog,in_state | Remove from library? | KEEP
+13 dialog_body in_dialog,in_state,section_first | This will remove it from your library. | ECHO>26
+14 label in_form,in_control | Full name | KEEP
+14 placeholder in_form,in_control | Enter your full name | ECHO>28
+15 label in_form,in_control | Message | KEEP
+15 placeholder in_form,in_control | Type your message here... | ECHO>30
+16 label in_form,in_control | Search | KEEP
+16 placeholder in_form,in_control | Search... | ECHO>32
+17 label in_form,in_control | Password | KEEP
+17 helper small,in_form,in_control | Your password. | ECHO>34
+18 label in_form,in_control | Company | KEEP
+18 helper small,in_form,in_control | The name of your organisation. | ECHO>36
+19 label in_form,in_control | Notifications | KEEP
+19 helper small,in_form,in_control | Receive alerts. | ECHO>38
+20 label in_form,in_control | Language | KEEP
+20 helper small,in_form,in_control | Select your preferred language. | ECHO>40
+21 label in_form,in_control | Profile picture | KEEP
+21 helper small,in_form,in_control | Upload a photo for your profile. | ECHO>42
+22 h2 - | Danger zone | KEEP
+22 subtitle section_first | Irreversible and destructive actions. | ?
+23 h2 - | Connected accounts | KEEP
+23 subtitle section_first | Accounts you've linked. | ?
+24 h2 - | Usage | KEEP
+24 subtitle section_first | See how much you've used. | ECHO>48
+25 h2 - | Getting started | KEEP
+25 subtitle section_first | Everything you need to begin. | ECHO>50
+26 h2 - | What's new | KEEP
+26 subtitle section_first | The latest updates and improvements. | ?
+27 h2 - | Support | KEEP
+27 subtitle section_first | We're here to help. | ECHO>54
+28 eyebrow caps,tracked,small | Testimonials | ?
+28 h2 - | What our customers say | KEEP
+29 eyebrow caps,tracked,small | Get in touch | ECHO>59
+29 h2 - | Contact us | KEEP
+30 eyebrow caps,tracked,small | Our mission | DECOR
+30 h2 - | Software that respects your time | KEEP
+31 eyebrow caps,tracked,small | The team | DECOR
+31 h2 - | Built by two people in Leeds | KEEP
+32 eyebrow caps,tracked,small | FAQ | ECHO>65
+32 h2 - | Frequently asked questions | KEEP
+33 eyebrow caps,tracked,small | Dashboard | ?
+33 h1 - | Welcome back | KEEP
+34 h3 in_card | Fast | KEEP
+34 subtitle in_card,section_first | Lightning-quick performance. | ?
+35 h3 in_card | Secure by default | KEEP
+35 subtitle in_card,section_first | Your data is safe and protected. | ECHO>70
+36 h3 in_card | Easy sharing | KEEP
+36 subtitle in_card,section_first | Share effortlessly with anyone. | ?
+37 h3 in_card | Offline mode | KEEP
+37 subtitle in_card,section_first | Work offline, anytime. | ECHO>74
+38 h3 in_card | Real-time sync | KEEP
+38 subtitle in_card,section_first | Changes sync instantly across your devices. | ?
+39 button - | Add to cart | KEEP
+39 tooltip - | Add to basket | ECHO>78
+40 button - | Remove | KEEP
+40 tooltip - | Delete | ECHO>80
+41 h2 - | Order summary | KEEP
+41 caption small | A summary of your order. | ECHO>82
+42 h2 - | Billing history | KEEP
+42 caption small | Your past invoices and payments. | ?
+43 h2 - | Members list | KEEP
+43 body section_first | Here you can see all the members. | ?
+44 h2 - | Keyboard shortcuts | KEEP
+44 subtitle section_first | Hotkeys to speed things up. | ?
+45 h2 - | Upcoming events | KEEP
+45 subtitle section_first | Events that are coming up. | ?
+46 h2 - | Privacy | KEEP
+46 subtitle section_first | Control your privacy settings. | ECHO>92
+47 error in_state | Something went wrong | KEEP
+47 error small,in_state | An error occurred. | ECHO>94
+48 error in_state | Couldn't load recipes | KEEP
+48 error small,in_state | We were unable to load your recipes. | ECHO>96
+49 h2 - | Timer | KEEP
+49 caption small | Start, pause or reset the timer. | ?

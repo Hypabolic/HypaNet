@@ -1,0 +1,132 @@
+# Round 2 probe 4: ordinary product copy in the register of component-library apps and SwiftUI screens.
+# Mostly KEEP: short labels, captions, stat cards, forms, dialogs, settings rows, footers. ? = arguable.
+0 nav in_nav | Dashboard | KEEP
+0 nav in_nav | Projects | KEEP
+0 nav in_nav | Settings | KEEP
+1 h1 - | Dashboard | KEEP
+1 button - | Download | KEEP
+2 label small,in_card | Total revenue | KEEP
+2 stat in_card | $45,231.89 | KEEP
+2 caption small,in_card | +20.1% from last month | KEEP
+3 label small,in_card | Subscriptions | KEEP
+3 stat in_card | +2350 | KEEP
+3 caption small,in_card | +180.1% from last month | KEEP
+4 h3 in_card | Recent sales | KEEP
+4 subtitle in_card,section_first | You made 265 sales this month. | KEEP
+5 h3 in_card | Team members | KEEP
+5 subtitle in_card,section_first | Invite your team members to collaborate. | ?
+5 button in_card | Invite | KEEP
+6 dialog_title in_dialog,in_state | Edit profile | KEEP
+6 dialog_body in_dialog,in_state,section_first | Make changes to your profile here. Click save when you're done. | ?
+6 label in_dialog,in_control | Name | KEEP
+6 label in_dialog,in_control | Username | KEEP
+6 button in_dialog | Save changes | KEEP
+7 h3 in_card | Create project | KEEP
+7 subtitle in_card,section_first | Deploy your new project in one-click. | KEEP
+7 label in_card,in_control | Name | KEEP
+7 placeholder in_card,in_control | Name of your project | ECHO>21
+7 label in_card,in_control | Framework | KEEP
+7 placeholder in_card,in_control | Select | KEEP
+7 button in_card | Cancel | KEEP
+7 button in_card | Deploy | KEEP
+8 h3 in_card | Notifications | KEEP
+8 subtitle in_card,section_first | You have 3 unread messages. | KEEP
+8 label in_card | Push notifications | KEEP
+8 helper small,in_card | Send notifications to device. | ?
+8 button in_card | Mark all as read | KEEP
+9 h2 - | Appearance | KEEP
+9 subtitle section_first | Customize the appearance of the app. Automatically switch between day and night themes. | KEEP
+9 label in_form,in_control | Font | KEEP
+9 helper small,in_form,in_control | Set the font you want to use in the dashboard. | KEEP
+9 label in_form,in_control | Theme | KEEP
+9 helper small,in_form,in_control | Select the theme for the dashboard. | ?
+10 h2 - | Account | KEEP
+10 subtitle section_first | Update your account settings. Set your preferred language and timezone. | KEEP
+10 label in_form,in_control | Date of birth | KEEP
+10 helper small,in_form,in_control | Your date of birth is used to calculate your age. | KEEP
+10 label in_form,in_control | Language | KEEP
+10 helper small,in_form,in_control | This is the language that will be used in the dashboard. | ?
+10 button in_form | Update account | KEEP
+11 h2 - | Danger zone | KEEP
+11 body section_first | Once you delete a project, there is no going back. Please be certain. | KEEP
+11 button - | Delete this project | KEEP
+12 dialog_title in_dialog,in_state | Are you absolutely sure? | KEEP
+12 dialog_body in_dialog,in_state,section_first | This action cannot be undone. This will permanently delete your account and remove your data from our servers. | KEEP
+12 button in_dialog,in_state | Cancel | KEEP
+12 button in_dialog,in_state | Continue | KEEP
+13 h1 - | Sign in | KEEP
+13 subtitle section_first | Enter your email below to sign in to your account | ?
+13 label in_form,in_control | Email | KEEP
+13 placeholder in_form,in_control | m@example.com | KEEP
+13 label in_form,in_control | Password | KEEP
+13 link in_form | Forgot your password? | KEEP
+13 button in_form | Sign in | KEEP
+13 caption small | Don't have an account? | KEEP
+13 link - | Sign up | KEEP
+14 h2 - | Payment method | KEEP
+14 subtitle section_first | Add a new payment method to your account. | KEEP
+14 label in_form,in_control | Card number | KEEP
+14 label in_form,in_control | Expires | KEEP
+14 label in_form,in_control | CVC | KEEP
+15 empty_title in_state | No projects | KEEP
+15 empty_body in_state,section_first | Get started by creating a new project. | KEEP
+15 button in_state | New project | KEEP
+16 h2 - | Recent | KEEP
+16 caption small | Updated 2 hours ago | KEEP
+16 caption small | Edited by Ana | KEEP
+17 h2 - | Storage | KEEP
+17 caption small | 4.2 GB of 15 GB used | KEEP
+17 link - | Manage storage | KEEP
+18 h2 - | Plan | KEEP
+18 badge small,pill | Pro | KEEP
+18 caption small | Renews on 3 May | KEEP
+18 button - | Change plan | KEEP
+19 caption small,in_footer | © 2026 Acme Inc. All rights reserved. | KEEP
+19 link small,in_footer | Privacy | KEEP
+19 link small,in_footer | Terms | KEEP
+20 h2 - | Timers | KEEP
+20 body section_first | Timers keep running while the screen is locked. | KEEP
+21 h2 - | Ingredients | KEEP
+21 caption small | Serves 4 | KEEP
+21 caption small | Scaled for 6 | KEEP
+22 h2 - | Method | KEEP
+22 caption small | Step 2 of 8 | KEEP
+23 h2 - | Sources | KEEP
+23 caption small,mono | 12 documents | KEEP
+23 caption small | Sorted by relevance | KEEP
+24 h2 - | History | KEEP
+24 label small,mono | Today | KEEP
+24 label small,mono | Yesterday | KEEP
+24 label small,mono | Earlier | KEEP
+25 h2 - | Report | KEEP
+25 caption small,mono | Generated in 42 s | KEEP
+25 caption small | Based on 12 sources | KEEP
+26 h3 - | Share | KEEP
+26 body section_first | Anyone with the link can view this report. | KEEP
+26 button - | Copy link | KEEP
+27 h3 - | Voice | KEEP
+27 caption small | Say “next” to move to the next step. | KEEP
+28 h2 - | About | KEEP
+28 caption small | Version 2.4.1 | KEEP
+28 caption small | Made in Manchester | KEEP
+29 h2 - | Experience | KEEP
+29 caption small,mono | 2019 — Present | KEEP
+29 h3 - | Chief Technology Officer | KEEP
+29 body - | Led the platform team through two funding rounds. | KEEP
+30 h2 - | Writing | KEEP
+30 subtitle section_first | Notes on software, security and leadership. | KEEP
+30 link - | All posts | KEEP
+31 h2 - | Contact | KEEP
+31 body section_first | The best way to reach me is by email. | KEEP
+31 link - | hello@example.com | KEEP
+32 h2 - | Shortcuts | KEEP
+32 caption small,mono | ⌘K | KEEP
+32 caption small | Press ? to see all shortcuts. | KEEP
+33 h2 - | Sync | KEEP
+33 caption small | Last synced 5 minutes ago | KEEP
+33 badge small,pill,stateful | Synced | KEEP
+34 h2 - | Export | KEEP
+34 caption small | PDF, Markdown or plain text | KEEP
+35 h2 - | Collections | KEEP
+35 caption small | 12 recipes | KEEP
+35 button - | New collection | KEEP

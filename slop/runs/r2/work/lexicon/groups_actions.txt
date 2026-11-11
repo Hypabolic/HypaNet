@@ -1,0 +1,134 @@
+no not none nothing zero never nowhere neither dont doesnt didnt cant cannot couldnt wont wouldnt isnt arent wasnt werent havent hasnt hadnt shouldnt empty blank clear clears without nil void vacant bare
+delete deletes deleted deleting deletion remove removes removed removing removal erase erased erasing discard discarded discarding trash trashed rid destroy destroyed wipe wiped purge purged scrap scrapped eliminate eliminated expunge obliterate
+add adds added adding create creates created creating new insert inserted append appended
+edit edits editing edited change changes changing changed update updates updating updated modify modifying modified modification amend amended revise revised revision alter altered alteration
+cancel cancels cancelled canceled cancelling cancellation abort aborted
+dismiss dismissed dismissing
+confirm confirmed confirmation verify verified verification verifying
+approve approved approves approval accept accepted accepts acceptance agree agreed agreement consent
+reject rejected rejects rejection decline declined declines deny denied denial refuse refused refusal
+send sends sent sending share shares shared sharing submit submits submitted submitting submission
+search searching searches searched lookup find finds finding found seek seeking result results query queries match matches matching matched
+filter filters filtering filtered refine refining refined narrow narrowing
+sort sorting sorted arrange arranged arrangement reorder reordered rearrange
+copy copies copied copying duplicate duplicated duplicating clone cloned replicate
+move moves moved moving transfer transfers transferred transferring relocate relocated migrate migrated migration
+rename renamed renaming
+upload uploads uploaded uploading import imports imported importing
+download downloads downloaded downloading export exports exported exporting
+print prints printed printing printout
+open opens opened opening
+close closes closed closing shut
+quit exit exits exited leave leaves leaving
+start starts started starting begin begins began beginning begun launch launched launching commence initiate starter
+end ends ended ending finish finishes finished finishing stop stops stopped stopping terminate terminated cease conclude concluded over defeat defeated beaten died dead die dies
+pause paused pausing pauses hold halt halted suspend suspended suspension frozen freeze froze standby intermission
+resume resumed resuming continue continued continuing continues proceed proceeding unpause
+restart restarted retry retries retried replay redo again
+undo undone revert reverted rollback reverse reversed
+refresh refreshed refreshing reload reloaded reloading
+login logins signin sign signs signed signing authentication authenticate authenticated auth log logs logged logging
+logout signout
+signup register registered registration enrol enroll enrolled enrolment enrollment join joins joined joining
+subscription subscriptions subscribe subscribes subscribed subscriber subscribers membership memberships plan plans tier tiers package packages
+invite invites invited inviting invitation invitations
+follow follows followed following follower followers
+favourite favourites favorite favorites favourited favorited bookmark bookmarks bookmarked starred
+block blocked blocking ban banned blacklist
+mute muted muting silence silenced silent
+pin pinned pinning
+archive archives archived archiving shelve shelved
+restore restores restored restoring recover recovered recovery retrieve retrieved reinstate
+reset resets resetting
+connect connects connected connecting connection connections integration integrations integrate integrated pair paired pairing
+disconnect disconnected disconnecting unlink unlinked
+sync syncs synced syncing synchronise synchronised synchronize synchronized synchronisation synchronization
+enable enabled enables enabling
+disable disabled disables disabling deactivate deactivated
+view views viewing see sees show shows shown display displays displayed visible visibility seen reveal revealed
+hide hides hidden hiding conceal concealed invisible
+expand expanded expanding
+collapse collapsed collapsing
+choose chooses chose choosing chosen select selects selected selecting selection pick picks picked picking opt choice choices
+install installs installed installing installation
+upgrade upgrades upgraded upgrading
+downgrade downgraded downgrading
+renew renews renewed renewal renewing extend extended
+order orders ordered ordering purchase purchases purchased purchasing buy buys bought buying
+pay pays paid paying payment payments transaction transactions checkout billing bill bills invoice invoices invoicing
+appointment appointments booking bookings booked reservation reservations reserve reserved
+calendar calendars schedule schedules scheduled scheduling agenda timetable
+apply applies applied applying
+publish publishes published publishing
+assign assigns assigned assigning assignment
+scan scans scanned scanning
+play plays playing played playback
+load loading loads loaded wait waiting waits moment matchmaking
+help helping helps support supports supported assistance assist assisted helpdesk
+faq faqs question questions ask asks asking asked
+contact contacts touch reach reached
+notification notifications notify notifies notified alert alerts tell tells hear hears heard ping
+reminder reminders remind reminds reminded nudge nudges
+manage manages managing administer
+browse browsing explore exploring discover discovering
+track tracking monitor monitoring monitored
+record recorded recording recordings
+attach attached attachment attachments
+allow allows allowed allowing permit permits permitted
+grant granted granting
+request requests requested requesting
+report reports reported reporting
+complain complaint complaints
+translate translated translation translations
+convert converted converting
+merge merged merging combine combined combining
+split splits splitting divide divided
+lock locks locked locking
+unlock unlocks unlocked unlocking
+swap swapped switch switched switching switches
+compare compared comparing comparison
+measure measured measuring measurement measurements
+calculate calculated calculating calculation calculator compute computed
+estimate estimates estimated quote quotes quotation quotations
+remember remembered remembers
+forget forgot forgotten
+learn learns learned learning learnt
+teach teaches taught teaching
+test tests tested testing
+train trains trained training
+improve improved improves improving improvement improvements enhance enhanced enhancement
+increase increased increases increasing rise rises rose risen growth grew grow grows growing grown
+decrease decreased decreases decreasing drop drops dropped fall falls fell fallen reduce reduced reduces reduction lower lowered
+prevent prevents prevented avoid avoids avoided
+replace replaces replaced replacing replacement overwrite overwrites overwritten
+include includes included including contain contains containing
+exclude excludes excluded excluding omit omitted
+expire expires expired expiring expiry expiration
+deliver delivers delivered delivering delivery deliveries shipping shipment shipments shipped ship ships dispatch dispatched
+return returns returned returning
+borrow borrowed borrowing loan loans
+lend lent lending
+earn earns earned earning
+spend spends spent spending
+donate donated donation donations contribute contributed contribution contributions
+win wins won winning winner winners victory victorious triumph success successful succeeded succeed complete completed completes completing completion accomplished passed done achieved beat beats
+lose loses lost losing loss
+fail fails failed failing failure error errors problem problems wrong issue issues trouble unable oops fault
+fix fixes fixed fixing repair repairs repaired repairing mend mended
+break breaks broke broken breaking
+clean cleans cleaned cleaning tidy tidied
+cook cooks cooked cooking
+eat eats ate eaten eating
+drink drinks drank drinking
+sleep sleeps slept sleeping
+walk walks walked walking
+run runs ran running
+drive drives drove driven driving
+travel travels travelled traveled travelling traveling
+visit visits visited visiting
+watch watches watched watching
+listen listens listened listening
+speak speaks spoke spoken speaking talk talks talked talking
+sell sells sold selling
+rent rents rented renting rental rentals hire hires hired hiring
+vote votes voted voting

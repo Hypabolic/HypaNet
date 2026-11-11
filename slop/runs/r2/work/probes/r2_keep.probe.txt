@@ -1,0 +1,139 @@
+# Round 2 precision probe: full sentences that share a concept with their title, heading or control and then add
+# a consequence, an instruction or a reason (RESULTS.md categories 1-3, codex section 7). All KEEP.
+0 dialog_title in_dialog,in_state,conditional | Remove this list? | KEEP
+0 dialog_body in_dialog,in_state,conditional,section_first | All items in this list will also be removed. | KEEP
+0 button in_dialog,in_state,conditional | Remove | KEEP
+0 button in_dialog,in_state,conditional,section_last | Cancel | KEEP
+1 h2 - | Playlists | KEEP
+1 button - | New playlist | KEEP
+2 empty_body in_state,section_first,section_last | Pick a playlist. | KEEP
+3 label in_form,in_control | Public profile | KEEP
+3 helper small,in_form,in_control | Your profile is public, so anyone can find it. | KEEP
+4 dialog_title in_dialog,in_state | Discard this draft? | KEEP
+4 dialog_body in_dialog,in_state,section_first | All 6 photos in it will be deleted. | KEEP
+4 button in_dialog,in_state | Discard | KEEP
+5 dialog_title in_dialog,in_state | Delete account? | KEEP
+5 dialog_body in_dialog,in_state,section_first | This can't be undone. | KEEP
+5 button in_dialog,in_state | Delete account | KEEP
+6 dialog_title in_dialog,in_state | Delete workspace? | KEEP
+6 dialog_body in_dialog,in_state,section_first | Members lose access to its boards straight away. | KEEP
+6 button in_dialog,in_state | Delete workspace | KEEP
+7 dialog_title in_dialog,in_state | Cancel subscription? | KEEP
+7 dialog_body in_dialog,in_state,section_first | You keep Pro features until 14 March. | KEEP
+7 button in_dialog,in_state | Cancel subscription | KEEP
+8 dialog_title in_dialog,in_state | Archive project? | KEEP
+8 dialog_body in_dialog,in_state,section_first | You can restore it later. | KEEP
+8 button in_dialog,in_state | Archive | KEEP
+9 dialog_title in_dialog,in_state | Sign out? | KEEP
+9 dialog_body in_dialog,in_state,section_first | You'll need to sign in again on this device. | KEEP
+9 button in_dialog,in_state | Sign out | KEEP
+10 dialog_title in_dialog,in_state | Delete folder? | KEEP
+10 dialog_body in_dialog,in_state,section_first | Everything in it will be deleted. | KEEP
+10 button in_dialog,in_state | Delete | KEEP
+11 dialog_title in_dialog,in_state | Delete photo? | KEEP
+11 dialog_body in_dialog,in_state,section_first | This photo will be deleted from all your devices. | KEEP
+11 button in_dialog,in_state | Delete | KEEP
+12 dialog_title in_dialog,in_state | Leave team? | KEEP
+12 dialog_body in_dialog,in_state,section_first | You will lose access to the team's projects. | KEEP
+12 button in_dialog,in_state | Leave team | KEEP
+13 dialog_title in_dialog,in_state | Clear history? | KEEP
+13 dialog_body in_dialog,in_state,section_first | Your history will be cleared on this device only. | KEEP
+13 button in_dialog,in_state | Clear history | KEEP
+14 dialog_title in_dialog,in_state | Remove member? | KEEP
+14 dialog_body in_dialog,in_state,section_first | They won't be notified. | KEEP
+14 button in_dialog,in_state | Remove | KEEP
+15 dialog_title in_dialog,in_state | Reset settings? | KEEP
+15 dialog_body in_dialog,in_state,section_first | Your settings go back to their defaults. | KEEP
+15 button in_dialog,in_state | Reset | KEEP
+16 dialog_title in_dialog,in_state | Unsaved changes | KEEP
+16 dialog_body in_dialog,in_state,section_first | Your changes will be lost if you leave. | KEEP
+16 button in_dialog,in_state | Leave | KEEP
+17 dialog_title in_dialog,in_state | Delete collection? | KEEP
+17 dialog_body in_dialog,in_state,section_first | The notes in it stay in your archive. | KEEP
+17 button in_dialog,in_state | Delete collection | KEEP
+18 empty_title in_state | No recipes yet | KEEP
+18 empty_body in_state,section_first | Add a recipe to get started. | KEEP
+18 button in_state | Add recipe | KEEP
+19 empty_title in_state | No results | KEEP
+19 empty_body in_state,section_first | Try a different search. | KEEP
+20 empty_title in_state | No messages | KEEP
+20 empty_body in_state,section_first | Messages you receive will show up here. | ?
+21 empty_title in_state | No invoices | KEEP
+21 empty_body in_state,section_first | Create an invoice to see it here. | KEEP
+22 empty_title in_state | No notifications | KEEP
+22 empty_body in_state,section_first | We'll let you know when something needs your attention. | KEEP
+23 h2 - | Recipes | KEEP
+23 caption small | Choose a recipe to see its steps. | KEEP
+24 h2 - | Projects | KEEP
+24 caption small | Select a project to view its tasks. | KEEP
+25 error in_state | Upload failed | KEEP
+25 error small,in_state | Files over 20 MB can't be uploaded. | KEEP
+26 error in_state | Payment failed | KEEP
+26 error small,in_state | Your card has expired. Update it in Billing. | KEEP
+27 h1 - | Paused | KEEP
+27 body section_first | Timers are stopped until you resume. | KEEP
+27 button - | Resume cooking | KEEP
+28 label in_form,in_control | Email | KEEP
+28 helper small,in_form,in_control | We send the receipt here. | KEEP
+29 label in_form,in_control | Password | KEEP
+29 helper small,in_form,in_control | Must be at least 8 characters. | KEEP
+30 label in_form,in_control | Username | KEEP
+30 helper small,in_form,in_control | Your username can't be changed later. | KEEP
+31 label in_form,in_control | Email notifications | KEEP
+31 helper small,in_form,in_control | Get notified when someone replies. | KEEP
+32 label in_form,in_control | Private account | KEEP
+32 helper small,in_form,in_control | Only people you approve can see your posts. | KEEP
+33 label in_form,in_control | Sync | KEEP
+33 helper small,in_form,in_control | Syncs only when you're on Wi-Fi. | KEEP
+34 label in_form,in_control | Location | KEEP
+34 helper small,in_form,in_control | Your location is never shared. | KEEP
+35 label in_form,in_control | Dark mode | KEEP
+35 helper small,in_form,in_control | Follows your system setting when off. | KEEP
+36 label in_form,in_control | Backups | KEEP
+36 helper small,in_form,in_control | Backups are kept for 30 days. | KEEP
+37 h2 - | Sharing | KEEP
+37 subtitle section_first | Only people you invite can see this album. | KEEP
+38 h2 - | Team | KEEP
+38 subtitle section_first | Admins can invite people and change roles. | KEEP
+39 h2 - | Storage | KEEP
+39 subtitle section_first | Storage used across all your devices. | KEEP
+40 h2 - | Export | KEEP
+40 caption small | Exports exclude archived rows. | KEEP
+41 h2 - | Notifications | KEEP
+41 subtitle section_first | You won't get notifications while Focus is on. | KEEP
+42 h2 - | Invoices | KEEP
+42 subtitle section_first | Invoices for every client, newest first. | KEEP
+43 h2 - | Members | ?
+43 subtitle section_first | Members can view projects but not edit them. | KEEP
+44 h2 - | Delete account | KEEP
+44 body section_first | Deleting your account removes all your data after 30 days. | KEEP
+44 button - | Delete account | KEEP
+45 h2 - | Two-factor authentication | KEEP
+45 subtitle section_first | Required for all admins from 1 June. | KEEP
+46 h2 - | Downloads | ?
+46 subtitle section_first | Downloads expire after 7 days. | KEEP
+47 dialog_title in_dialog,in_state | Turn off backups? | KEEP
+47 dialog_body in_dialog,in_state,section_first | Photos taken after today won't be copied to the cloud. | KEEP
+48 dialog_title in_dialog,in_state | Publish post? | KEEP
+48 dialog_body in_dialog,in_state,section_first | Your post will be visible to everyone. | KEEP
+49 dialog_title in_dialog,in_state | Remove Sam from the project? | KEEP
+49 dialog_body in_dialog,in_state,section_first | Sam can be added again later. | KEEP
+50 toast - | Link copied | KEEP
+51 h2 - | Library | KEEP
+51 caption small | Open a book to keep reading. | KEEP
+52 h2 - | Comments | KEEP
+52 caption small | Sign in to leave a comment. | KEEP
+53 empty_title in_state | No history | KEEP
+53 empty_body in_state,section_first | Searches are saved only while you're signed in. | KEEP
+54 h2 - | Reminders | KEEP
+54 subtitle section_first | Reminders are sent the day before. | KEEP
+55 label in_form,in_control | Phone | KEEP
+55 helper small,in_form,in_control | Used only for delivery updates. | KEEP
+56 label in_form,in_control | Display name | KEEP
+56 helper small,in_form,in_control | You can change this at any time. | KEEP
+57 dialog_title in_dialog,in_state | Delete message? | KEEP
+57 dialog_body in_dialog,in_state,section_first | It will be deleted for everyone in the chat. | KEEP
+58 dialog_title in_dialog,in_state | Restore backup? | KEEP
+58 dialog_body in_dialog,in_state,section_first | This replaces your current data. | KEEP
+59 h2 - | Plan | KEEP
+59 subtitle section_first | Your plan renews on 3 May. | KEEP

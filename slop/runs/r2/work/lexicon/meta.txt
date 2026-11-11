@@ -1,0 +1,1 @@
+sector sys cam rec lat lon coordinates latitude longitude

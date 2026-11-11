@@ -1,0 +1,103 @@
+# Round 2 recall probe 3: restatements by slot, across kinds of product. Every heading is used once.
+0 h1 - | Profile | KEEP
+0 subtitle section_first | Your personal information. | ?
+1 h1 - | Devices | KEEP
+1 subtitle section_first | Manage the devices signed in to your account. | ?
+2 h1 - | Sessions | KEEP
+2 subtitle section_first | Your active sessions. | ?
+3 h1 - | API keys | KEEP
+3 subtitle section_first | Manage your API keys. | ECHO>6
+4 h1 - | Webhooks | KEEP
+4 subtitle section_first | Configure your webhooks. | ECHO>8
+5 h1 - | Usage and billing | KEEP
+5 subtitle section_first | View your usage and manage billing. | ECHO>10
+6 h1 - | Wishlist | KEEP
+6 subtitle section_first | Items you've saved for later. | ?
+7 h1 - | Your basket | KEEP
+7 subtitle section_first | Review the items in your cart. | ECHO>14
+8 h1 - | Watch later | KEEP
+8 subtitle section_first | Videos you've saved to watch later. | ?
+9 h1 - | Continue watching | KEEP
+9 subtitle section_first | Pick up where you left off. | ?
+10 h1 - | Shared with me | KEEP
+10 subtitle section_first | Files others have shared with you. | ?
+11 h1 - | Starred | KEEP
+11 subtitle section_first | Your starred items. | ECHO>22
+12 h1 - | Deployments | KEEP
+12 subtitle section_first | A list of your recent deployments. | ECHO>24
+13 h1 - | Environment variables | KEEP
+13 subtitle section_first | Manage environment variables for this project. | ?
+14 h1 - | Ask | KEEP
+14 subtitle section_first | Ask a question about your documents. | ?
+15 h1 - | Sources | KEEP
+15 subtitle section_first | The documents this answer draws on. | ?
+16 h1 - | Reports | KEEP
+16 subtitle section_first | Browse your reports. | ECHO>32
+17 h1 - | Shopping list | KEEP
+17 subtitle section_first | Everything you need to buy. | ?
+18 h1 - | Meal plan | KEEP
+18 subtitle section_first | Plan your meals for the week. | ?
+19 h1 - | Cooking mode | KEEP
+19 subtitle section_first | Step-by-step cooking view. | ?
+20 empty_title in_state | No recipes found | KEEP
+20 empty_body in_state,section_first | No recipes match your search. | ECHO>40
+21 empty_title in_state | No timers | KEEP
+21 empty_body in_state,section_first | You don't have any timers running. | ?
+22 empty_title in_state | No sources yet | KEEP
+22 empty_body in_state,section_first | There are no sources to show. | ECHO>44
+23 empty_title in_state | No conversations | KEEP
+23 empty_body in_state,section_first | You haven't started any chats yet. | ECHO>46
+24 empty_title in_state | Nothing to review | KEEP
+24 empty_body in_state,section_first | There's nothing waiting for your review. | ECHO>48
+25 empty_title in_state | No uploads | KEEP
+25 empty_body in_state,section_first | You haven't uploaded any files. | ?
+26 dialog_title in_dialog,in_state | Delete conversation? | KEEP
+26 dialog_body in_dialog,in_state,section_first | This conversation will be deleted. | ECHO>52
+27 dialog_title in_dialog,in_state | Stop timer? | KEEP
+27 dialog_body in_dialog,in_state,section_first | Are you sure you want to stop this timer? | ECHO>54
+28 dialog_title in_dialog,in_state | Remove source? | KEEP
+28 dialog_body in_dialog,in_state,section_first | Do you want to remove this source? | ECHO>56
+29 dialog_title in_dialog,in_state | Leave without saving? | KEEP
+29 dialog_body in_dialog,in_state,section_first | You have unsaved changes. | ?
+30 label in_form,in_control | Title | KEEP
+30 placeholder in_form,in_control | Enter a title | ECHO>60
+31 label in_form,in_control | Description | KEEP
+31 placeholder in_form,in_control | Add a description... | ECHO>62
+32 label in_form,in_control | Tags | KEEP
+32 placeholder in_form,in_control | Add tags | ECHO>64
+33 label in_form,in_control | Servings | KEEP
+33 helper small,in_form,in_control | Number of servings. | ECHO>66
+34 label in_form,in_control | Cook time | KEEP
+34 helper small,in_form,in_control | How long it takes to cook. | ECHO>68
+35 label in_form,in_control | API key | KEEP
+35 helper small,in_form,in_control | Your API key. | ECHO>70
+36 label in_form,in_control | Model | KEEP
+36 helper small,in_form,in_control | Choose a model. | ECHO>72
+37 label in_form,in_control | Default view | KEEP
+37 helper small,in_form,in_control | Select the default view. | ECHO>74
+38 label in_form,in_control | Time zone | KEEP
+38 helper small,in_form,in_control | Your timezone. | ?
+39 button - | Share | KEEP
+39 tooltip - | Share | ECHO>78
+40 button - | New chat | KEEP
+40 tooltip - | Start a new chat | ?
+41 eyebrow caps,tracked,small | Recipes | ECHO>83
+41 h2 - | All recipes | KEEP
+42 eyebrow caps,tracked,small | Research | ECHO>85
+42 h2 - | Deep research | KEEP
+43 eyebrow caps,tracked,small | Your library | ECHO>87
+43 h2 - | Library | KEEP
+44 eyebrow caps,tracked,small | Overview | DECOR
+44 h2 - | Project status | KEEP
+45 eyebrow caps,tracked,small | Introduction | DECOR
+45 h2 - | Why we built Tally | KEEP
+46 eyebrow caps,tracked,small | Highlights | DECOR
+46 h2 - | Built for small kitchens | KEEP
+47 h2 - | Ingredients list | KEEP
+47 caption small | The ingredients for this recipe. | ?
+48 h2 - | Cooking steps | KEEP
+48 caption small | Follow the steps to cook. | ?
+49 h2 - | Nutrition | KEEP
+49 caption small | Nutritional information. | ECHO>98
+50 h2 - | Related questions | KEEP
+50 caption small | Questions related to this one. | ECHO>100

@@ -1,0 +1,9 @@
+ids from no vocabulary (hash buckets only), id layout 2 (this kit's default; --ids 1 for layout 1)
+  text   'Resume recaptures the mouse.'
+  flags  -
+    'Resume'                 -> 'resume' -> stem 'resum'          id 21071  hash bucket 4175
+    'recaptures'             -> 'recaptures' -> stem 'recaptur'       id 21859  hash bucket 4963
+    'the'                    -> 'the' -> stem 'the'            id 20349  hash bucket 3453
+    'mouse'                  -> 'mouse' -> stem 'mous'           id 24289  hash bucket 7393
+    '.'                      -> punct  id   109  punct '.'
+    EON id 2

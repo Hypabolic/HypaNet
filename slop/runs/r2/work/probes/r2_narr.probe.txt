@@ -1,0 +1,63 @@
+# Round 2 probe for the rule "half an action cue + a control named in full + nothing else" (codex U11) and its
+# guard: an instruction whose object is not the control is KEEP (K8, codex U14) even when a purpose clause names
+# the button. Lines marked ? are ones I would not be held to.
+0 h2 - | Profile photo | KEEP
+0 caption small | Choose a photo to upload. | KEEP
+0 button - | Upload | KEEP
+1 h2 - | Plans | KEEP
+1 subtitle - | Choose a plan to upgrade. | KEEP
+1 button - | Upgrade | KEEP
+2 h1 - | Welcome back | KEEP
+2 subtitle - | Select a workspace to continue. | KEEP
+2 button - | Continue | KEEP
+3 h2 - | Book a table | KEEP
+3 helper small,in_form | Pick a date to book. | KEEP
+3 button in_form | Book | KEEP
+4 h2 - | Playlists | KEEP
+4 empty_body in_state,section_first,section_last | Pick a playlist. | KEEP
+4 button in_state | New playlist | KEEP
+5 h2 - | Checkout | KEEP
+5 helper small | Choose a plan to continue. | KEEP
+5 button - | Continue | KEEP
+6 dialog_title in_dialog,in_state | Replace file? | KEEP
+6 dialog_body in_dialog,in_state,section_first | Choose Keep both to save the new file with a number added. | KEEP
+6 button in_dialog,in_state | Replace | KEEP
+6 button in_dialog,in_state | Keep both | KEEP
+7 h2 - | Import contacts | KEEP
+7 caption small | Select a file to import. | KEEP
+7 button - | Import | KEEP
+8 h2 - | Billing period | KEEP
+8 caption small | Switch to annual and save 20%. | KEEP
+8 button - | Switch to annual | KEEP
+9 h2 - | Notifications | KEEP
+9 caption small | Choose Save changes to continue. | NARRATE>30
+9 button - | Save changes | KEEP
+10 h2 - | Display | KEEP
+10 subtitle - | Hit Save to proceed. | NARRATE>33
+10 button - | Save | KEEP
+11 dialog_title in_dialog,in_state | Leave the call? | KEEP
+11 dialog_body in_dialog,in_state,section_first | Press Continue to proceed. | NARRATE>36
+11 button in_dialog,in_state | Continue | KEEP
+11 button in_dialog,in_state | Cancel | KEEP
+12 h2 - | Activity | KEEP
+12 caption small,section_last | Scroll down to see more. | NARRATE
+13 h2 - | Review order | KEEP
+13 caption small | Press Confirm once you are happy. | NARRATE>42
+13 button - | Confirm | KEEP
+14 h2 - | Edit profile | KEEP
+14 helper small,in_form | Tap Save when you're done. | NARRATE>45
+14 button in_form | Save | KEEP
+15 h2 - | Filters | KEEP
+15 caption small | Select Apply when you're ready. | ?
+15 button - | Apply | KEEP
+16 h2 - | Avatar | KEEP
+16 caption small | Click Upload to add a photo. | ?
+16 button - | Upload | KEEP
+17 empty_title in_state | No conversation selected | KEEP
+17 empty_body in_state,section_first,section_last | Select a conversation to read it. | ?
+18 h2 - | Team | KEEP
+18 subtitle - | Select a member to change their role. | KEEP
+18 button - | Invite member | KEEP
+19 h2 - | Export | KEEP
+19 caption small | Pick a format, then choose Export. | KEEP
+19 button - | Export | KEEP

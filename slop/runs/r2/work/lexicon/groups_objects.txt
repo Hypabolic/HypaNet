@@ -1,0 +1,178 @@
+settings setting set setup preferences preference options option configuration configure configured config customise customised customisation tweak tweaks adjust adjusts adjusting adjustment adjustments prefs
+overview summary glance snapshot recap rundown dashboard home lowdown gist synopsis roundup
+profile profiles bio biography
+user users member members people person persons team teams teammate teammates crew squad staff folks colleague colleagues collaborator collaborators coworker coworkers participant participants workspace workspaces
+customer customers client clients buyer buyers shopper shoppers
+guest guests visitor visitors attendee attendees
+admin admins administrator administrators
+company companies business businesses organisation organisations organization organizations firm employer
+message messages email emails mail mailbox inbox chat chats conversation conversations thread threads dm dms
+newsletter newsletters digest bulletin
+comment comments note notes remark remarks annotation annotations memo
+reply replies replied response responses respond responded answer answers answered
+feedback testimonial testimonials review reviews rating ratings
+file files document documents doc docs paperwork
+folder folders directory directories
+photo photos picture pictures image images pic pics photograph photographs avatar avatars
+video videos clip clips footage
+sound sounds audio chime chimes beep beeps tone tones noise
+music song songs tune tunes
+movie movies film films
+link links url urls hyperlink
+website websites site sites homepage web
+password passwords passcode passphrase
+username usernames handle nickname alias
+name names title titles headline label labels caption captions called
+description descriptions desc blurb
+phone phones mobile telephone landline cellphone cell
+location locations venue venues whereabouts
+postcode postcodes zip postal
+country countries nation
+city cities town towns
+region regions province provinces area areas district districts
+language languages locale
+timezone timezones zone zones
+event events occasion occasions
+session sessions
+task tasks todo todos chore chores job jobs
+project projects
+goal goals target targets objective objectives aim aims aiming
+price prices pricing cost costs fee fees charge charges charged
+receipt receipts
+discount discounts coupon coupons voucher vouchers promo offer deal deals
+refund refunds refunded reimburse reimbursement
+tax taxes vat
+cart basket bag
+product products goods merchandise
+service services
+shop shops store stores
+stock inventory
+supplier suppliers vendor vendors
+money cash funds
+balance balances
+budget budgets
+expense expenses outgoings
+revenue income sales turnover
+salary salaries wage wages paycheck
+analytics statistics stats insights metrics
+chart charts graph graphs diagram diagrams
+history timeline recent recently latest newest
+collection collections library libraries catalogue catalog album albums playlist playlists save saves saved saving
+category categories type types kind kinds genre genres
+topic topics subject subjects
+theme themes mode modes appearance look
+colour colours color colors
+font fonts typeface
+storage space capacity
+backup backups
+version versions release releases
+computer computers desktop laptop pc
+tablet tablets ipad
+app apps application applications software tool tools program programs
+plugin plugins extension extensions addon addons
+feature features capability capabilities benefit benefits functionality
+security secure safe safety protect protects protected protection guard guarded
+privacy private confidential
+public publicly
+permission permissions
+role roles position positions occupation
+guide guides manual handbook tutorial tutorials walkthrough
+tip tips hint hints advice suggestion suggestions
+post posts article articles blog essay essays story stories write writes writing wrote written compose composing composed
+episode episodes
+subtitle subtitles
+volume loudness
+network networks internet wifi signal
+server servers host hosts
+database databases db
+code codes
+key keys
+id ids identifier identifiers
+status state states condition
+level levels stage stages phase phases
+score scores points
+rank ranking rankings leaderboard leaderboards scoreboard
+achievement achievements trophy trophies award awards medal medals badge badges
+reward rewards prize prizes
+game games contest contests
+player players
+limit limits cap maximum max quota
+minimum min
+required mandatory compulsory
+automatic automatically auto automated
+average avg
+amount amounts sum quantity quantities qty
+weight weights
+height heights
+width widths
+length lengths duration durations long longer time times
+distance distances
+temperature temperatures temp
+speed speeds pace
+percent percentage
+deadline deadlines due
+shortcut shortcuts hotkey hotkeys keybinding keybindings bindings
+warning warnings caution
+spreadsheet spreadsheets sheet sheets
+slide slides deck presentation
+survey surveys questionnaire poll polls
+quiz quizzes exam exams
+class classes lesson lessons course courses
+school schools college colleges university universities
+teacher teachers tutor tutors instructor instructors coach coaches trainer trainers
+student students pupil pupils learner learners
+child children kid kids
+parent parents
+family families household households
+friend friends buddy buddies
+employee employees worker workers
+department departments dept
+applicant applicants candidate candidates
+skill skills ability abilities
+habit habits routine routines
+community forum forums
+demo demos demonstration
+licence license licenses licences
+centre center centres centers
+enquiry inquiry enquiries inquiries
+gender sex
+surname lastname
+forename firstname
+birthday birthdate dob birth
+bug bugs defect defects glitch glitches
+incident incidents outage outages downtime
+repo repos repository repositories
+deploy deploys deployed deployment deployments
+ticket tickets
+lead leads prospect prospects
+opportunity opportunities
+contract contracts
+campaign campaigns
+audience audiences
+brand brands
+logo logos
+template templates
+draft drafts
+entry entries
+recipe recipes dish dishes
+meal meals
+ingredient ingredients
+workout workouts exercise exercises
+medication medications medicine medicines meds
+trip trips journey journeys
+flight flights
+hotel hotels accommodation lodging
+car cars vehicle vehicles automobile
+bike bikes bicycle bicycles
+holiday holidays vacation vacations
+rota roster shift shifts
+map maps
+route routes
+voice speech
+graphics visuals
+controller gamepad
+mission missions quest quests
+health hp
+enemy enemies foe foes opponent opponents rival rivals
+usage consumption
+project projects portfolio portfolios

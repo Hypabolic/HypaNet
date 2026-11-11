@@ -1,0 +1,1853 @@
+{
+"schema": "slop.screen/1",
+"id": "probe-r2_narr",
+"framework": "tsx",
+"clusters": [],
+"nodes": [
+{
+"i": 0,
+"k": 0,
+"role": "h2",
+"text": "Profile photo",
+"flags": [],
+"loc": [
+1,
+1,
+1,
+14
+]
+},
+{
+"i": 1,
+"k": 0,
+"role": "caption",
+"text": "Choose a photo to upload.",
+"flags": [
+"small"
+],
+"loc": [
+2,
+1,
+2,
+26
+]
+},
+{
+"i": 2,
+"k": 0,
+"role": "button",
+"text": "Upload",
+"flags": [],
+"loc": [
+3,
+1,
+3,
+7
+]
+},
+{
+"i": 3,
+"k": 1,
+"role": "h2",
+"text": "Plans",
+"flags": [],
+"loc": [
+4,
+1,
+4,
+6
+]
+},
+{
+"i": 4,
+"k": 1,
+"role": "subtitle",
+"text": "Choose a plan to upgrade.",
+"flags": [],
+"loc": [
+5,
+1,
+5,
+26
+]
+},
+{
+"i": 5,
+"k": 1,
+"role": "button",
+"text": "Upgrade",
+"flags": [],
+"loc": [
+6,
+1,
+6,
+8
+]
+},
+{
+"i": 6,
+"k": 2,
+"role": "h1",
+"text": "Welcome back",
+"flags": [],
+"loc": [
+7,
+1,
+7,
+13
+]
+},
+{
+"i": 7,
+"k": 2,
+"role": "subtitle",
+"text": "Select a workspace to continue.",
+"flags": [],
+"loc": [
+8,
+1,
+8,
+32
+]
+},
+{
+"i": 8,
+"k": 2,
+"role": "button",
+"text": "Continue",
+"flags": [],
+"loc": [
+9,
+1,
+9,
+9
+]
+},
+{
+"i": 9,
+"k": 3,
+"role": "h2",
+"text": "Book a table",
+"flags": [],
+"loc": [
+10,
+1,
+10,
+13
+]
+},
+{
+"i": 10,
+"k": 3,
+"role": "helper",
+"text": "Pick a date to book.",
+"flags": [
+"small",
+"in_form"
+],
+"loc": [
+11,
+1,
+11,
+21
+]
+},
+{
+"i": 11,
+"k": 3,
+"role": "button",
+"text": "Book",
+"flags": [
+"in_form"
+],
+"loc": [
+12,
+1,
+12,
+5
+]
+},
+{
+"i": 12,
+"k": 4,
+"role": "h2",
+"text": "Playlists",
+"flags": [],
+"loc": [
+13,
+1,
+13,
+10
+]
+},
+{
+"i": 13,
+"k": 4,
+"role": "empty_body",
+"text": "Pick a playlist.",
+"flags": [
+"in_state",
+"section_first",
+"section_last"
+],
+"loc": [
+14,
+1,
+14,
+17
+]
+},
+{
+"i": 14,
+"k": 4,
+"role": "button",
+"text": "New playlist",
+"flags": [
+"in_state"
+],
+"loc": [
+15,
+1,
+15,
+13
+]
+},
+{
+"i": 15,
+"k": 5,
+"role": "h2",
+"text": "Checkout",
+"flags": [],
+"loc": [
+16,
+1,
+16,
+9
+]
+},
+{
+"i": 16,
+"k": 5,
+"role": "helper",
+"text": "Choose a plan to continue.",
+"flags": [
+"small"
+],
+"loc": [
+17,
+1,
+17,
+27
+]
+},
+{
+"i": 17,
+"k": 5,
+"role": "button",
+"text": "Continue",
+"flags": [],
+"loc": [
+18,
+1,
+18,
+9
+]
+},
+{
+"i": 18,
+"k": 6,
+"role": "dialog_title",
+"text": "Replace file?",
+"flags": [
+"in_dialog",
+"in_state"
+],
+"loc": [
+19,
+1,
+19,
+14
+]
+},
+{
+"i": 19,
+"k": 6,
+"role": "dialog_body",
+"text": "Choose Keep both to save the new file with a number added.",
+"flags": [
+"in_dialog",
+"in_state",
+"section_first"
+],
+"loc": [
+20,
+1,
+20,
+59
+]
+},
+{
+"i": 20,
+"k": 6,
+"role": "button",
+"text": "Replace",
+"flags": [
+"in_dialog",
+"in_state"
+],
+"loc": [
+21,
+1,
+21,
+8
+]
+},
+{
+"i": 21,
+"k": 6,
+"role": "button",
+"text": "Keep both",
+"flags": [
+"in_dialog",
+"in_state"
+],
+"loc": [
+22,
+1,
+22,
+10
+]
+},
+{
+"i": 22,
+"k": 7,
+"role": "h2",
+"text": "Import contacts",
+"flags": [],
+"loc": [
+23,
+1,
+23,
+16
+]
+},
+{
+"i": 23,
+"k": 7,
+"role": "caption",
+"text": "Select a file to import.",
+"flags": [
+"small"
+],
+"loc": [
+24,
+1,
+24,
+25
+]
+},
+{
+"i": 24,
+"k": 7,
+"role": "button",
+"text": "Import",
+"flags": [],
+"loc": [
+25,
+1,
+25,
+7
+]
+},
+{
+"i": 25,
+"k": 8,
+"role": "h2",
+"text": "Billing period",
+"flags": [],
+"loc": [
+26,
+1,
+26,
+15
+]
+},
+{
+"i": 26,
+"k": 8,
+"role": "caption",
+"text": "Switch to annual and save 20%.",
+"flags": [
+"small"
+],
+"loc": [
+27,
+1,
+27,
+31
+]
+},
+{
+"i": 27,
+"k": 8,
+"role": "button",
+"text": "Switch to annual",
+"flags": [],
+"loc": [
+28,
+1,
+28,
+17
+]
+},
+{
+"i": 28,
+"k": 9,
+"role": "h2",
+"text": "Notifications",
+"flags": [],
+"loc": [
+29,
+1,
+29,
+14
+]
+},
+{
+"i": 29,
+"k": 9,
+"role": "caption",
+"text": "Choose Save changes to continue.",
+"flags": [
+"small"
+],
+"loc": [
+30,
+1,
+30,
+33
+]
+},
+{
+"i": 30,
+"k": 9,
+"role": "button",
+"text": "Save changes",
+"flags": [],
+"loc": [
+31,
+1,
+31,
+13
+]
+},
+{
+"i": 31,
+"k": 10,
+"role": "h2",
+"text": "Display",
+"flags": [],
+"loc": [
+32,
+1,
+32,
+8
+]
+},
+{
+"i": 32,
+"k": 10,
+"role": "subtitle",
+"text": "Hit Save to proceed.",
+"flags": [],
+"loc": [
+33,
+1,
+33,
+21
+]
+},
+{
+"i": 33,
+"k": 10,
+"role": "button",
+"text": "Save",
+"flags": [],
+"loc": [
+34,
+1,
+34,
+5
+]
+},
+{
+"i": 34,
+"k": 11,
+"role": "dialog_title",
+"text": "Leave the call?",
+"flags": [
+"in_dialog",
+"in_state"
+],
+"loc": [
+35,
+1,
+35,
+16
+]
+},
+{
+"i": 35,
+"k": 11,
+"role": "dialog_body",
+"text": "Press Continue to proceed.",
+"flags": [
+"in_dialog",
+"in_state",
+"section_first"
+],
+"loc": [
+36,
+1,
+36,
+27
+]
+},
+{
+"i": 36,
+"k": 11,
+"role": "button",
+"text": "Continue",
+"flags": [
+"in_dialog",
+"in_state"
+],
+"loc": [
+37,
+1,
+37,
+9
+]
+},
+{
+"i": 37,
+"k": 11,
+"role": "button",
+"text": "Cancel",
+"flags": [
+"in_dialog",
+"in_state"
+],
+"loc": [
+38,
+1,
+38,
+7
+]
+},
+{
+"i": 38,
+"k": 12,
+"role": "h2",
+"text": "Activity",
+"flags": [],
+"loc": [
+39,
+1,
+39,
+9
+]
+},
+{
+"i": 39,
+"k": 12,
+"role": "caption",
+"text": "Scroll down to see more.",
+"flags": [
+"small",
+"section_last"
+],
+"loc": [
+40,
+1,
+40,
+25
+]
+},
+{
+"i": 40,
+"k": 13,
+"role": "h2",
+"text": "Review order",
+"flags": [],
+"loc": [
+41,
+1,
+41,
+13
+]
+},
+{
+"i": 41,
+"k": 13,
+"role": "caption",
+"text": "Press Confirm once you are happy.",
+"flags": [
+"small"
+],
+"loc": [
+42,
+1,
+42,
+34
+]
+},
+{
+"i": 42,
+"k": 13,
+"role": "button",
+"text": "Confirm",
+"flags": [],
+"loc": [
+43,
+1,
+43,
+8
+]
+},
+{
+"i": 43,
+"k": 14,
+"role": "h2",
+"text": "Edit profile",
+"flags": [],
+"loc": [
+44,
+1,
+44,
+13
+]
+},
+{
+"i": 44,
+"k": 14,
+"role": "helper",
+"text": "Tap Save when you're done.",
+"flags": [
+"small",
+"in_form"
+],
+"loc": [
+45,
+1,
+45,
+27
+]
+},
+{
+"i": 45,
+"k": 14,
+"role": "button",
+"text": "Save",
+"flags": [
+"in_form"
+],
+"loc": [
+46,
+1,
+46,
+5
+]
+},
+{
+"i": 46,
+"k": 15,
+"role": "h2",
+"text": "Filters",
+"flags": [],
+"loc": [
+47,
+1,
+47,
+8
+]
+},
+{
+"i": 47,
+"k": 15,
+"role": "caption",
+"text": "Select Apply when you're ready.",
+"flags": [
+"small"
+],
+"loc": [
+48,
+1,
+48,
+32
+]
+},
+{
+"i": 48,
+"k": 15,
+"role": "button",
+"text": "Apply",
+"flags": [],
+"loc": [
+49,
+1,
+49,
+6
+]
+},
+{
+"i": 49,
+"k": 16,
+"role": "h2",
+"text": "Avatar",
+"flags": [],
+"loc": [
+50,
+1,
+50,
+7
+]
+},
+{
+"i": 50,
+"k": 16,
+"role": "caption",
+"text": "Click Upload to add a photo.",
+"flags": [
+"small"
+],
+"loc": [
+51,
+1,
+51,
+29
+]
+},
+{
+"i": 51,
+"k": 16,
+"role": "button",
+"text": "Upload",
+"flags": [],
+"loc": [
+52,
+1,
+52,
+7
+]
+},
+{
+"i": 52,
+"k": 17,
+"role": "empty_title",
+"text": "No conversation selected",
+"flags": [
+"in_state"
+],
+"loc": [
+53,
+1,
+53,
+25
+]
+},
+{
+"i": 53,
+"k": 17,
+"role": "empty_body",
+"text": "Select a conversation to read it.",
+"flags": [
+"in_state",
+"section_first",
+"section_last"
+],
+"loc": [
+54,
+1,
+54,
+34
+]
+},
+{
+"i": 54,
+"k": 18,
+"role": "h2",
+"text": "Team",
+"flags": [],
+"loc": [
+55,
+1,
+55,
+5
+]
+},
+{
+"i": 55,
+"k": 18,
+"role": "subtitle",
+"text": "Select a member to change their role.",
+"flags": [],
+"loc": [
+56,
+1,
+56,
+38
+]
+},
+{
+"i": 56,
+"k": 18,
+"role": "button",
+"text": "Invite member",
+"flags": [],
+"loc": [
+57,
+1,
+57,
+14
+]
+},
+{
+"i": 57,
+"k": 19,
+"role": "h2",
+"text": "Export",
+"flags": [],
+"loc": [
+58,
+1,
+58,
+7
+]
+},
+{
+"i": 58,
+"k": 19,
+"role": "caption",
+"text": "Pick a format, then choose Export.",
+"flags": [
+"small"
+],
+"loc": [
+59,
+1,
+59,
+35
+]
+},
+{
+"i": 59,
+"k": 19,
+"role": "button",
+"text": "Export",
+"flags": [],
+"loc": [
+60,
+1,
+60,
+7
+]
+}
+],
+"labels": [
+{
+"loc": [
+1,
+1,
+1,
+14
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+2,
+1,
+2,
+26
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+3,
+1,
+3,
+7
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+4,
+1,
+4,
+6
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+5,
+1,
+5,
+26
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+6,
+1,
+6,
+8
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+7,
+1,
+7,
+13
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+8,
+1,
+8,
+32
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+9,
+1,
+9,
+9
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+10,
+1,
+10,
+13
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+11,
+1,
+11,
+21
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+12,
+1,
+12,
+5
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+13,
+1,
+13,
+10
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+14,
+1,
+14,
+17
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+15,
+1,
+15,
+13
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+16,
+1,
+16,
+9
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+17,
+1,
+17,
+27
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+18,
+1,
+18,
+9
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+19,
+1,
+19,
+14
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+20,
+1,
+20,
+59
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+21,
+1,
+21,
+8
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+22,
+1,
+22,
+10
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+23,
+1,
+23,
+16
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+24,
+1,
+24,
+25
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+25,
+1,
+25,
+7
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+26,
+1,
+26,
+15
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+27,
+1,
+27,
+31
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+28,
+1,
+28,
+17
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+29,
+1,
+29,
+14
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+30,
+1,
+30,
+33
+],
+"class": "NARRATE",
+"target": [
+31,
+1,
+31,
+13
+],
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+31,
+1,
+31,
+13
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+32,
+1,
+32,
+8
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+33,
+1,
+33,
+21
+],
+"class": "NARRATE",
+"target": [
+34,
+1,
+34,
+5
+],
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+34,
+1,
+34,
+5
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+35,
+1,
+35,
+16
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+36,
+1,
+36,
+27
+],
+"class": "NARRATE",
+"target": [
+37,
+1,
+37,
+9
+],
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+37,
+1,
+37,
+9
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+38,
+1,
+38,
+7
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+39,
+1,
+39,
+9
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+40,
+1,
+40,
+25
+],
+"class": "NARRATE",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+41,
+1,
+41,
+13
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+42,
+1,
+42,
+34
+],
+"class": "NARRATE",
+"target": [
+43,
+1,
+43,
+8
+],
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+43,
+1,
+43,
+8
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+44,
+1,
+44,
+13
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+45,
+1,
+45,
+27
+],
+"class": "NARRATE",
+"target": [
+46,
+1,
+46,
+5
+],
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+46,
+1,
+46,
+5
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+47,
+1,
+47,
+8
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+49,
+1,
+49,
+6
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+50,
+1,
+50,
+7
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+52,
+1,
+52,
+7
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+53,
+1,
+53,
+25
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+55,
+1,
+55,
+5
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+56,
+1,
+56,
+38
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+57,
+1,
+57,
+14
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+58,
+1,
+58,
+7
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+59,
+1,
+59,
+35
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+60,
+1,
+60,
+7
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+}
+]
+}

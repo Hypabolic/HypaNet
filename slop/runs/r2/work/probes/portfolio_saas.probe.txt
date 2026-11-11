@@ -1,0 +1,95 @@
+# A personal site and a SaaS app shell, in ordinary phrasing. "?" = I would not want to be held to a label.
+0 nav in_nav | About | KEEP
+0 nav in_nav | Experience | KEEP
+0 nav in_nav | Projects | KEEP
+0 nav in_nav | Writing | KEEP
+0 nav in_nav | Contact | KEEP
+1 h1 - | Jane Doe | KEEP
+1 subtitle section_first | Software engineer building tools for small teams. | KEEP
+1 body - | I write about distributed systems, testing and the craft of software. | KEEP
+1 link - | Get in touch | KEEP
+1 link - | Read the blog | KEEP
+2 h2 caps,tracked,small | About | KEEP
+2 body section_first | I'm a software engineer based in Leeds with ten years of experience in payments. | KEEP
+3 h2 caps,tracked,small | Experience | KEEP
+3 caption small,mono,repeated | 2021 — Present | KEEP
+3 h3 repeated | Senior Engineer | KEEP
+3 subtitle small,repeated | Acme Corp | KEEP
+3 body repeated | Led the migration of the billing system to an event-driven design. | KEEP
+3 caption small,mono,repeated | 2018 — 2021 | KEEP
+3 h3 repeated | Engineer | KEEP
+3 subtitle small,repeated | Northwind | KEEP
+4 h2 caps,tracked,small | Projects | KEEP
+4 subtitle section_first | A selection of things I've built. | ?
+4 h3 in_card,repeated | Mosaic | KEEP
+4 subtitle in_card,repeated | Research assistant over your document library. | KEEP
+4 badge small,pill,in_card,repeated | TypeScript | KEEP
+4 badge small,pill,in_card,repeated | React | KEEP
+4 link in_card,repeated,arrow_tail | View project → | KEEP
+4 h3 in_card,repeated | Ledgerline | KEEP
+4 subtitle in_card,repeated | Double-entry bookkeeping for freelancers. | KEEP
+4 badge small,pill,in_card,repeated | TypeScript | KEEP
+4 link in_card,repeated,arrow_tail | View project → | KEEP
+5 h2 caps,tracked,small | Writing | KEEP
+5 subtitle section_first | Thoughts on software, systems and teams. | KEEP
+5 h3 repeated | Why I stopped mocking the database | KEEP
+5 caption small,repeated | 12 March 2025 · 6 min read | KEEP
+5 link arrow_tail | All posts → | KEEP
+6 h2 caps,tracked,small | Contact | KEEP
+6 subtitle section_first | Get in touch. | ECHO>36
+6 body - | I'm always happy to talk about new projects. | KEEP
+6 link - | Email me | KEEP
+6 link - | GitHub | KEEP
+7 caption small,in_footer | © 2025 Jane Doe. All rights reserved. | KEEP
+7 caption small,in_footer | Built with Next.js and Tailwind. | KEEP
+8 nav in_nav,icon | Dashboard | KEEP
+8 nav in_nav,icon | Projects | KEEP
+8 nav in_nav,icon | Team | KEEP
+8 nav in_nav,icon | Settings | KEEP
+9 h1 - | Projects | KEEP
+9 subtitle section_first | Manage your projects and their settings. | ?
+9 button - | New project | KEEP
+9 placeholder - | Search projects… | KEEP
+10 label small,in_table | Name | KEEP
+10 label small,in_table | Status | KEEP
+10 label small,in_table | Updated | KEEP
+10 cell in_table,repeated | Website redesign | KEEP
+10 badge small,pill,in_table,repeated | Active | KEEP
+10 cell in_table,repeated | 2 days ago | KEEP
+10 cell in_table,repeated | Mobile app | KEEP
+10 badge small,pill,in_table,repeated | Archived | KEEP
+10 cell in_table,repeated | 3 weeks ago | KEEP
+11 h3 in_card | Usage | KEEP
+11 subtitle small,in_card,section_first | Your usage this billing period. | ?
+11 stat in_card | 4.2 GB | KEEP
+11 caption small,in_card | of 10 GB used | KEEP
+11 button in_card | Upgrade | KEEP
+12 h3 in_card | Need help? | KEEP
+12 body in_card,section_first | Our support team is here to help. | KEEP
+12 link in_card | Contact support | KEEP
+13 label caps,tracked,small | Today | KEEP
+13 button repeated,truncated | Quarterly report draft | KEEP
+13 label caps,tracked,small | Yesterday | KEEP
+13 button repeated,truncated | Onboarding checklist | KEEP
+13 label caps,tracked,small | Previous 7 days | KEEP
+14 empty_title in_state,conditional | How can I help you today? | KEEP
+14 placeholder - | Ask anything… | KEEP
+14 button icon | Send | KEEP
+14 caption small | Assistant can make mistakes. Check important info. | KEEP
+15 eyebrow caps,tracked,small | Camping | KEEP
+15 h1 - | Trailhead 2 tent | KEEP
+15 subtitle section_first | A two-person tent that pitches in four minutes. | KEEP
+15 stat - | $249 | KEEP
+15 caption small | Free shipping over $50 | KEEP
+15 badge small,pill | In stock | KEEP
+15 button - | Add to cart | KEEP
+15 button - | Buy now | KEEP
+16 h2 - | Specifications | KEEP
+16 label small | Weight | KEEP
+16 body - | 2.1 kg | KEEP
+16 label small | Capacity | KEEP
+16 body - | 2 people | KEEP
+17 h2 - | Reviews | KEEP
+17 subtitle section_first | See what customers are saying. | ?
+17 body repeated | Pitched it in the dark on the first try. | KEEP
+17 caption small,repeated | Maya, verified buyer | KEEP

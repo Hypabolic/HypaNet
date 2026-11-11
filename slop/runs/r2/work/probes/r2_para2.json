@@ -1,0 +1,3058 @@
+{
+"schema": "slop.screen/1",
+"id": "probe-r2_para2",
+"framework": "tsx",
+"clusters": [],
+"nodes": [
+{
+"i": 0,
+"k": 0,
+"role": "h1",
+"text": "Inbox",
+"flags": [],
+"loc": [
+1,
+1,
+1,
+6
+]
+},
+{
+"i": 1,
+"k": 0,
+"role": "subtitle",
+"text": "All your messages in one place.",
+"flags": [
+"section_first"
+],
+"loc": [
+2,
+1,
+2,
+32
+]
+},
+{
+"i": 2,
+"k": 1,
+"role": "h1",
+"text": "Bookmarks",
+"flags": [],
+"loc": [
+3,
+1,
+3,
+10
+]
+},
+{
+"i": 3,
+"k": 1,
+"role": "subtitle",
+"text": "Pages you've saved for later.",
+"flags": [
+"section_first"
+],
+"loc": [
+4,
+1,
+4,
+30
+]
+},
+{
+"i": 4,
+"k": 2,
+"role": "h1",
+"text": "Activity",
+"flags": [],
+"loc": [
+5,
+1,
+5,
+9
+]
+},
+{
+"i": 5,
+"k": 2,
+"role": "subtitle",
+"text": "A record of what's happened.",
+"flags": [
+"section_first"
+],
+"loc": [
+6,
+1,
+6,
+29
+]
+},
+{
+"i": 6,
+"k": 3,
+"role": "h1",
+"text": "Collections",
+"flags": [],
+"loc": [
+7,
+1,
+7,
+12
+]
+},
+{
+"i": 7,
+"k": 3,
+"role": "subtitle",
+"text": "Group your recipes into collections.",
+"flags": [
+"section_first"
+],
+"loc": [
+8,
+1,
+8,
+37
+]
+},
+{
+"i": 8,
+"k": 4,
+"role": "empty_title",
+"text": "No collections yet",
+"flags": [
+"in_state"
+],
+"loc": [
+9,
+1,
+9,
+19
+]
+},
+{
+"i": 9,
+"k": 4,
+"role": "empty_body",
+"text": "You haven't created any collections.",
+"flags": [
+"in_state",
+"section_first"
+],
+"loc": [
+10,
+1,
+10,
+37
+]
+},
+{
+"i": 10,
+"k": 5,
+"role": "empty_title",
+"text": "Nothing scheduled",
+"flags": [
+"in_state"
+],
+"loc": [
+11,
+1,
+11,
+18
+]
+},
+{
+"i": 11,
+"k": 5,
+"role": "empty_body",
+"text": "Your calendar is empty.",
+"flags": [
+"in_state",
+"section_first"
+],
+"loc": [
+12,
+1,
+12,
+24
+]
+},
+{
+"i": 12,
+"k": 6,
+"role": "empty_title",
+"text": "No favourites",
+"flags": [
+"in_state"
+],
+"loc": [
+13,
+1,
+13,
+14
+]
+},
+{
+"i": 13,
+"k": 6,
+"role": "empty_body",
+"text": "You haven't favourited anything yet.",
+"flags": [
+"in_state",
+"section_first"
+],
+"loc": [
+14,
+1,
+14,
+37
+]
+},
+{
+"i": 14,
+"k": 7,
+"role": "empty_title",
+"text": "All caught up",
+"flags": [
+"in_state"
+],
+"loc": [
+15,
+1,
+15,
+14
+]
+},
+{
+"i": 15,
+"k": 7,
+"role": "empty_body",
+"text": "You have no new notifications.",
+"flags": [
+"in_state",
+"section_first"
+],
+"loc": [
+16,
+1,
+16,
+31
+]
+},
+{
+"i": 16,
+"k": 8,
+"role": "empty_title",
+"text": "No documents found",
+"flags": [
+"in_state"
+],
+"loc": [
+17,
+1,
+17,
+19
+]
+},
+{
+"i": 17,
+"k": 8,
+"role": "empty_body",
+"text": "We couldn't find any documents matching your search.",
+"flags": [
+"in_state",
+"section_first"
+],
+"loc": [
+18,
+1,
+18,
+53
+]
+},
+{
+"i": 18,
+"k": 9,
+"role": "empty_title",
+"text": "Your cart is empty",
+"flags": [
+"in_state"
+],
+"loc": [
+19,
+1,
+19,
+19
+]
+},
+{
+"i": 19,
+"k": 9,
+"role": "empty_body",
+"text": "There's nothing in your basket yet.",
+"flags": [
+"in_state",
+"section_first"
+],
+"loc": [
+20,
+1,
+20,
+36
+]
+},
+{
+"i": 20,
+"k": 10,
+"role": "dialog_title",
+"text": "Delete recipe?",
+"flags": [
+"in_dialog",
+"in_state"
+],
+"loc": [
+21,
+1,
+21,
+15
+]
+},
+{
+"i": 21,
+"k": 10,
+"role": "dialog_body",
+"text": "Are you sure you want to remove this recipe?",
+"flags": [
+"in_dialog",
+"in_state",
+"section_first"
+],
+"loc": [
+22,
+1,
+22,
+45
+]
+},
+{
+"i": 22,
+"k": 11,
+"role": "dialog_title",
+"text": "Log out?",
+"flags": [
+"in_dialog",
+"in_state"
+],
+"loc": [
+23,
+1,
+23,
+9
+]
+},
+{
+"i": 23,
+"k": 11,
+"role": "dialog_body",
+"text": "Do you really want to sign out?",
+"flags": [
+"in_dialog",
+"in_state",
+"section_first"
+],
+"loc": [
+24,
+1,
+24,
+32
+]
+},
+{
+"i": 24,
+"k": 12,
+"role": "dialog_title",
+"text": "Discard changes?",
+"flags": [
+"in_dialog",
+"in_state"
+],
+"loc": [
+25,
+1,
+25,
+17
+]
+},
+{
+"i": 25,
+"k": 12,
+"role": "dialog_body",
+"text": "Your edits will be discarded.",
+"flags": [
+"in_dialog",
+"in_state",
+"section_first"
+],
+"loc": [
+26,
+1,
+26,
+30
+]
+},
+{
+"i": 26,
+"k": 13,
+"role": "dialog_title",
+"text": "Remove from library?",
+"flags": [
+"in_dialog",
+"in_state"
+],
+"loc": [
+27,
+1,
+27,
+21
+]
+},
+{
+"i": 27,
+"k": 13,
+"role": "dialog_body",
+"text": "This will remove it from your library.",
+"flags": [
+"in_dialog",
+"in_state",
+"section_first"
+],
+"loc": [
+28,
+1,
+28,
+39
+]
+},
+{
+"i": 28,
+"k": 14,
+"role": "label",
+"text": "Full name",
+"flags": [
+"in_form",
+"in_control"
+],
+"loc": [
+29,
+1,
+29,
+10
+]
+},
+{
+"i": 29,
+"k": 14,
+"role": "placeholder",
+"text": "Enter your full name",
+"flags": [
+"in_form",
+"in_control"
+],
+"loc": [
+30,
+1,
+30,
+21
+]
+},
+{
+"i": 30,
+"k": 15,
+"role": "label",
+"text": "Message",
+"flags": [
+"in_form",
+"in_control"
+],
+"loc": [
+31,
+1,
+31,
+8
+]
+},
+{
+"i": 31,
+"k": 15,
+"role": "placeholder",
+"text": "Type your message here...",
+"flags": [
+"in_form",
+"in_control"
+],
+"loc": [
+32,
+1,
+32,
+26
+]
+},
+{
+"i": 32,
+"k": 16,
+"role": "label",
+"text": "Search",
+"flags": [
+"in_form",
+"in_control"
+],
+"loc": [
+33,
+1,
+33,
+7
+]
+},
+{
+"i": 33,
+"k": 16,
+"role": "placeholder",
+"text": "Search...",
+"flags": [
+"in_form",
+"in_control"
+],
+"loc": [
+34,
+1,
+34,
+10
+]
+},
+{
+"i": 34,
+"k": 17,
+"role": "label",
+"text": "Password",
+"flags": [
+"in_form",
+"in_control"
+],
+"loc": [
+35,
+1,
+35,
+9
+]
+},
+{
+"i": 35,
+"k": 17,
+"role": "helper",
+"text": "Your password.",
+"flags": [
+"small",
+"in_form",
+"in_control"
+],
+"loc": [
+36,
+1,
+36,
+15
+]
+},
+{
+"i": 36,
+"k": 18,
+"role": "label",
+"text": "Company",
+"flags": [
+"in_form",
+"in_control"
+],
+"loc": [
+37,
+1,
+37,
+8
+]
+},
+{
+"i": 37,
+"k": 18,
+"role": "helper",
+"text": "The name of your organisation.",
+"flags": [
+"small",
+"in_form",
+"in_control"
+],
+"loc": [
+38,
+1,
+38,
+31
+]
+},
+{
+"i": 38,
+"k": 19,
+"role": "label",
+"text": "Notifications",
+"flags": [
+"in_form",
+"in_control"
+],
+"loc": [
+39,
+1,
+39,
+14
+]
+},
+{
+"i": 39,
+"k": 19,
+"role": "helper",
+"text": "Receive alerts.",
+"flags": [
+"small",
+"in_form",
+"in_control"
+],
+"loc": [
+40,
+1,
+40,
+16
+]
+},
+{
+"i": 40,
+"k": 20,
+"role": "label",
+"text": "Language",
+"flags": [
+"in_form",
+"in_control"
+],
+"loc": [
+41,
+1,
+41,
+9
+]
+},
+{
+"i": 41,
+"k": 20,
+"role": "helper",
+"text": "Select your preferred language.",
+"flags": [
+"small",
+"in_form",
+"in_control"
+],
+"loc": [
+42,
+1,
+42,
+32
+]
+},
+{
+"i": 42,
+"k": 21,
+"role": "label",
+"text": "Profile picture",
+"flags": [
+"in_form",
+"in_control"
+],
+"loc": [
+43,
+1,
+43,
+16
+]
+},
+{
+"i": 43,
+"k": 21,
+"role": "helper",
+"text": "Upload a photo for your profile.",
+"flags": [
+"small",
+"in_form",
+"in_control"
+],
+"loc": [
+44,
+1,
+44,
+33
+]
+},
+{
+"i": 44,
+"k": 22,
+"role": "h2",
+"text": "Danger zone",
+"flags": [],
+"loc": [
+45,
+1,
+45,
+12
+]
+},
+{
+"i": 45,
+"k": 22,
+"role": "subtitle",
+"text": "Irreversible and destructive actions.",
+"flags": [
+"section_first"
+],
+"loc": [
+46,
+1,
+46,
+38
+]
+},
+{
+"i": 46,
+"k": 23,
+"role": "h2",
+"text": "Connected accounts",
+"flags": [],
+"loc": [
+47,
+1,
+47,
+19
+]
+},
+{
+"i": 47,
+"k": 23,
+"role": "subtitle",
+"text": "Accounts you've linked.",
+"flags": [
+"section_first"
+],
+"loc": [
+48,
+1,
+48,
+24
+]
+},
+{
+"i": 48,
+"k": 24,
+"role": "h2",
+"text": "Usage",
+"flags": [],
+"loc": [
+49,
+1,
+49,
+6
+]
+},
+{
+"i": 49,
+"k": 24,
+"role": "subtitle",
+"text": "See how much you've used.",
+"flags": [
+"section_first"
+],
+"loc": [
+50,
+1,
+50,
+26
+]
+},
+{
+"i": 50,
+"k": 25,
+"role": "h2",
+"text": "Getting started",
+"flags": [],
+"loc": [
+51,
+1,
+51,
+16
+]
+},
+{
+"i": 51,
+"k": 25,
+"role": "subtitle",
+"text": "Everything you need to begin.",
+"flags": [
+"section_first"
+],
+"loc": [
+52,
+1,
+52,
+30
+]
+},
+{
+"i": 52,
+"k": 26,
+"role": "h2",
+"text": "What's new",
+"flags": [],
+"loc": [
+53,
+1,
+53,
+11
+]
+},
+{
+"i": 53,
+"k": 26,
+"role": "subtitle",
+"text": "The latest updates and improvements.",
+"flags": [
+"section_first"
+],
+"loc": [
+54,
+1,
+54,
+37
+]
+},
+{
+"i": 54,
+"k": 27,
+"role": "h2",
+"text": "Support",
+"flags": [],
+"loc": [
+55,
+1,
+55,
+8
+]
+},
+{
+"i": 55,
+"k": 27,
+"role": "subtitle",
+"text": "We're here to help.",
+"flags": [
+"section_first"
+],
+"loc": [
+56,
+1,
+56,
+20
+]
+},
+{
+"i": 56,
+"k": 28,
+"role": "eyebrow",
+"text": "Testimonials",
+"flags": [
+"caps",
+"tracked",
+"small"
+],
+"loc": [
+57,
+1,
+57,
+13
+]
+},
+{
+"i": 57,
+"k": 28,
+"role": "h2",
+"text": "What our customers say",
+"flags": [],
+"loc": [
+58,
+1,
+58,
+23
+]
+},
+{
+"i": 58,
+"k": 29,
+"role": "eyebrow",
+"text": "Get in touch",
+"flags": [
+"caps",
+"tracked",
+"small"
+],
+"loc": [
+59,
+1,
+59,
+13
+]
+},
+{
+"i": 59,
+"k": 29,
+"role": "h2",
+"text": "Contact us",
+"flags": [],
+"loc": [
+60,
+1,
+60,
+11
+]
+},
+{
+"i": 60,
+"k": 30,
+"role": "eyebrow",
+"text": "Our mission",
+"flags": [
+"caps",
+"tracked",
+"small"
+],
+"loc": [
+61,
+1,
+61,
+12
+]
+},
+{
+"i": 61,
+"k": 30,
+"role": "h2",
+"text": "Software that respects your time",
+"flags": [],
+"loc": [
+62,
+1,
+62,
+33
+]
+},
+{
+"i": 62,
+"k": 31,
+"role": "eyebrow",
+"text": "The team",
+"flags": [
+"caps",
+"tracked",
+"small"
+],
+"loc": [
+63,
+1,
+63,
+9
+]
+},
+{
+"i": 63,
+"k": 31,
+"role": "h2",
+"text": "Built by two people in Leeds",
+"flags": [],
+"loc": [
+64,
+1,
+64,
+29
+]
+},
+{
+"i": 64,
+"k": 32,
+"role": "eyebrow",
+"text": "FAQ",
+"flags": [
+"caps",
+"tracked",
+"small"
+],
+"loc": [
+65,
+1,
+65,
+4
+]
+},
+{
+"i": 65,
+"k": 32,
+"role": "h2",
+"text": "Frequently asked questions",
+"flags": [],
+"loc": [
+66,
+1,
+66,
+27
+]
+},
+{
+"i": 66,
+"k": 33,
+"role": "eyebrow",
+"text": "Dashboard",
+"flags": [
+"caps",
+"tracked",
+"small"
+],
+"loc": [
+67,
+1,
+67,
+10
+]
+},
+{
+"i": 67,
+"k": 33,
+"role": "h1",
+"text": "Welcome back",
+"flags": [],
+"loc": [
+68,
+1,
+68,
+13
+]
+},
+{
+"i": 68,
+"k": 34,
+"role": "h3",
+"text": "Fast",
+"flags": [
+"in_card"
+],
+"loc": [
+69,
+1,
+69,
+5
+]
+},
+{
+"i": 69,
+"k": 34,
+"role": "subtitle",
+"text": "Lightning-quick performance.",
+"flags": [
+"in_card",
+"section_first"
+],
+"loc": [
+70,
+1,
+70,
+29
+]
+},
+{
+"i": 70,
+"k": 35,
+"role": "h3",
+"text": "Secure by default",
+"flags": [
+"in_card"
+],
+"loc": [
+71,
+1,
+71,
+18
+]
+},
+{
+"i": 71,
+"k": 35,
+"role": "subtitle",
+"text": "Your data is safe and protected.",
+"flags": [
+"in_card",
+"section_first"
+],
+"loc": [
+72,
+1,
+72,
+33
+]
+},
+{
+"i": 72,
+"k": 36,
+"role": "h3",
+"text": "Easy sharing",
+"flags": [
+"in_card"
+],
+"loc": [
+73,
+1,
+73,
+13
+]
+},
+{
+"i": 73,
+"k": 36,
+"role": "subtitle",
+"text": "Share effortlessly with anyone.",
+"flags": [
+"in_card",
+"section_first"
+],
+"loc": [
+74,
+1,
+74,
+32
+]
+},
+{
+"i": 74,
+"k": 37,
+"role": "h3",
+"text": "Offline mode",
+"flags": [
+"in_card"
+],
+"loc": [
+75,
+1,
+75,
+13
+]
+},
+{
+"i": 75,
+"k": 37,
+"role": "subtitle",
+"text": "Work offline, anytime.",
+"flags": [
+"in_card",
+"section_first"
+],
+"loc": [
+76,
+1,
+76,
+23
+]
+},
+{
+"i": 76,
+"k": 38,
+"role": "h3",
+"text": "Real-time sync",
+"flags": [
+"in_card"
+],
+"loc": [
+77,
+1,
+77,
+15
+]
+},
+{
+"i": 77,
+"k": 38,
+"role": "subtitle",
+"text": "Changes sync instantly across your devices.",
+"flags": [
+"in_card",
+"section_first"
+],
+"loc": [
+78,
+1,
+78,
+44
+]
+},
+{
+"i": 78,
+"k": 39,
+"role": "button",
+"text": "Add to cart",
+"flags": [],
+"loc": [
+79,
+1,
+79,
+12
+]
+},
+{
+"i": 79,
+"k": 39,
+"role": "tooltip",
+"text": "Add to basket",
+"flags": [],
+"loc": [
+80,
+1,
+80,
+14
+]
+},
+{
+"i": 80,
+"k": 40,
+"role": "button",
+"text": "Remove",
+"flags": [],
+"loc": [
+81,
+1,
+81,
+7
+]
+},
+{
+"i": 81,
+"k": 40,
+"role": "tooltip",
+"text": "Delete",
+"flags": [],
+"loc": [
+82,
+1,
+82,
+7
+]
+},
+{
+"i": 82,
+"k": 41,
+"role": "h2",
+"text": "Order summary",
+"flags": [],
+"loc": [
+83,
+1,
+83,
+14
+]
+},
+{
+"i": 83,
+"k": 41,
+"role": "caption",
+"text": "A summary of your order.",
+"flags": [
+"small"
+],
+"loc": [
+84,
+1,
+84,
+25
+]
+},
+{
+"i": 84,
+"k": 42,
+"role": "h2",
+"text": "Billing history",
+"flags": [],
+"loc": [
+85,
+1,
+85,
+16
+]
+},
+{
+"i": 85,
+"k": 42,
+"role": "caption",
+"text": "Your past invoices and payments.",
+"flags": [
+"small"
+],
+"loc": [
+86,
+1,
+86,
+33
+]
+},
+{
+"i": 86,
+"k": 43,
+"role": "h2",
+"text": "Members list",
+"flags": [],
+"loc": [
+87,
+1,
+87,
+13
+]
+},
+{
+"i": 87,
+"k": 43,
+"role": "body",
+"text": "Here you can see all the members.",
+"flags": [
+"section_first"
+],
+"loc": [
+88,
+1,
+88,
+34
+]
+},
+{
+"i": 88,
+"k": 44,
+"role": "h2",
+"text": "Keyboard shortcuts",
+"flags": [],
+"loc": [
+89,
+1,
+89,
+19
+]
+},
+{
+"i": 89,
+"k": 44,
+"role": "subtitle",
+"text": "Hotkeys to speed things up.",
+"flags": [
+"section_first"
+],
+"loc": [
+90,
+1,
+90,
+28
+]
+},
+{
+"i": 90,
+"k": 45,
+"role": "h2",
+"text": "Upcoming events",
+"flags": [],
+"loc": [
+91,
+1,
+91,
+16
+]
+},
+{
+"i": 91,
+"k": 45,
+"role": "subtitle",
+"text": "Events that are coming up.",
+"flags": [
+"section_first"
+],
+"loc": [
+92,
+1,
+92,
+27
+]
+},
+{
+"i": 92,
+"k": 46,
+"role": "h2",
+"text": "Privacy",
+"flags": [],
+"loc": [
+93,
+1,
+93,
+8
+]
+},
+{
+"i": 93,
+"k": 46,
+"role": "subtitle",
+"text": "Control your privacy settings.",
+"flags": [
+"section_first"
+],
+"loc": [
+94,
+1,
+94,
+31
+]
+},
+{
+"i": 94,
+"k": 47,
+"role": "error",
+"text": "Something went wrong",
+"flags": [
+"in_state"
+],
+"loc": [
+95,
+1,
+95,
+21
+]
+},
+{
+"i": 95,
+"k": 47,
+"role": "error",
+"text": "An error occurred.",
+"flags": [
+"small",
+"in_state"
+],
+"loc": [
+96,
+1,
+96,
+19
+]
+},
+{
+"i": 96,
+"k": 48,
+"role": "error",
+"text": "Couldn't load recipes",
+"flags": [
+"in_state"
+],
+"loc": [
+97,
+1,
+97,
+22
+]
+},
+{
+"i": 97,
+"k": 48,
+"role": "error",
+"text": "We were unable to load your recipes.",
+"flags": [
+"small",
+"in_state"
+],
+"loc": [
+98,
+1,
+98,
+37
+]
+},
+{
+"i": 98,
+"k": 49,
+"role": "h2",
+"text": "Timer",
+"flags": [],
+"loc": [
+99,
+1,
+99,
+6
+]
+},
+{
+"i": 99,
+"k": 49,
+"role": "caption",
+"text": "Start, pause or reset the timer.",
+"flags": [
+"small"
+],
+"loc": [
+100,
+1,
+100,
+33
+]
+}
+],
+"labels": [
+{
+"loc": [
+1,
+1,
+1,
+6
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+2,
+1,
+2,
+32
+],
+"class": "ECHO",
+"target": [
+1,
+1,
+1,
+6
+],
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+3,
+1,
+3,
+10
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+5,
+1,
+5,
+9
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+7,
+1,
+7,
+12
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+9,
+1,
+9,
+19
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+10,
+1,
+10,
+37
+],
+"class": "ECHO",
+"target": [
+9,
+1,
+9,
+19
+],
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+11,
+1,
+11,
+18
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+13,
+1,
+13,
+14
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+14,
+1,
+14,
+37
+],
+"class": "ECHO",
+"target": [
+13,
+1,
+13,
+14
+],
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+15,
+1,
+15,
+14
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+17,
+1,
+17,
+19
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+18,
+1,
+18,
+53
+],
+"class": "ECHO",
+"target": [
+17,
+1,
+17,
+19
+],
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+19,
+1,
+19,
+19
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+20,
+1,
+20,
+36
+],
+"class": "ECHO",
+"target": [
+19,
+1,
+19,
+19
+],
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+21,
+1,
+21,
+15
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+22,
+1,
+22,
+45
+],
+"class": "ECHO",
+"target": [
+21,
+1,
+21,
+15
+],
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+23,
+1,
+23,
+9
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+24,
+1,
+24,
+32
+],
+"class": "ECHO",
+"target": [
+23,
+1,
+23,
+9
+],
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+25,
+1,
+25,
+17
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+26,
+1,
+26,
+30
+],
+"class": "ECHO",
+"target": [
+25,
+1,
+25,
+17
+],
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+27,
+1,
+27,
+21
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+28,
+1,
+28,
+39
+],
+"class": "ECHO",
+"target": [
+27,
+1,
+27,
+21
+],
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+29,
+1,
+29,
+10
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+30,
+1,
+30,
+21
+],
+"class": "ECHO",
+"target": [
+29,
+1,
+29,
+10
+],
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+31,
+1,
+31,
+8
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+32,
+1,
+32,
+26
+],
+"class": "ECHO",
+"target": [
+31,
+1,
+31,
+8
+],
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+33,
+1,
+33,
+7
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+34,
+1,
+34,
+10
+],
+"class": "ECHO",
+"target": [
+33,
+1,
+33,
+7
+],
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+35,
+1,
+35,
+9
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+36,
+1,
+36,
+15
+],
+"class": "ECHO",
+"target": [
+35,
+1,
+35,
+9
+],
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+37,
+1,
+37,
+8
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+38,
+1,
+38,
+31
+],
+"class": "ECHO",
+"target": [
+37,
+1,
+37,
+8
+],
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+39,
+1,
+39,
+14
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+40,
+1,
+40,
+16
+],
+"class": "ECHO",
+"target": [
+39,
+1,
+39,
+14
+],
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+41,
+1,
+41,
+9
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+42,
+1,
+42,
+32
+],
+"class": "ECHO",
+"target": [
+41,
+1,
+41,
+9
+],
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+43,
+1,
+43,
+16
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+44,
+1,
+44,
+33
+],
+"class": "ECHO",
+"target": [
+43,
+1,
+43,
+16
+],
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+45,
+1,
+45,
+12
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+47,
+1,
+47,
+19
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+49,
+1,
+49,
+6
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+50,
+1,
+50,
+26
+],
+"class": "ECHO",
+"target": [
+49,
+1,
+49,
+6
+],
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+51,
+1,
+51,
+16
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+52,
+1,
+52,
+30
+],
+"class": "ECHO",
+"target": [
+51,
+1,
+51,
+16
+],
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+53,
+1,
+53,
+11
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+55,
+1,
+55,
+8
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+56,
+1,
+56,
+20
+],
+"class": "ECHO",
+"target": [
+55,
+1,
+55,
+8
+],
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+58,
+1,
+58,
+23
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+59,
+1,
+59,
+13
+],
+"class": "ECHO",
+"target": [
+60,
+1,
+60,
+11
+],
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+60,
+1,
+60,
+11
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+61,
+1,
+61,
+12
+],
+"class": "DECOR",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+62,
+1,
+62,
+33
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+63,
+1,
+63,
+9
+],
+"class": "DECOR",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+64,
+1,
+64,
+29
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+65,
+1,
+65,
+4
+],
+"class": "ECHO",
+"target": [
+66,
+1,
+66,
+27
+],
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+66,
+1,
+66,
+27
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+68,
+1,
+68,
+13
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+69,
+1,
+69,
+5
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+71,
+1,
+71,
+18
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+72,
+1,
+72,
+33
+],
+"class": "ECHO",
+"target": [
+71,
+1,
+71,
+18
+],
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+73,
+1,
+73,
+13
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+75,
+1,
+75,
+13
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+76,
+1,
+76,
+23
+],
+"class": "ECHO",
+"target": [
+75,
+1,
+75,
+13
+],
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+77,
+1,
+77,
+15
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+79,
+1,
+79,
+12
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+80,
+1,
+80,
+14
+],
+"class": "ECHO",
+"target": [
+79,
+1,
+79,
+12
+],
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+81,
+1,
+81,
+7
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+82,
+1,
+82,
+7
+],
+"class": "ECHO",
+"target": [
+81,
+1,
+81,
+7
+],
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+83,
+1,
+83,
+14
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+84,
+1,
+84,
+25
+],
+"class": "ECHO",
+"target": [
+83,
+1,
+83,
+14
+],
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+85,
+1,
+85,
+16
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+87,
+1,
+87,
+13
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+89,
+1,
+89,
+19
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+91,
+1,
+91,
+16
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+93,
+1,
+93,
+8
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+94,
+1,
+94,
+31
+],
+"class": "ECHO",
+"target": [
+93,
+1,
+93,
+8
+],
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+95,
+1,
+95,
+21
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+96,
+1,
+96,
+19
+],
+"class": "ECHO",
+"target": [
+95,
+1,
+95,
+21
+],
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+97,
+1,
+97,
+22
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+98,
+1,
+98,
+37
+],
+"class": "ECHO",
+"target": [
+97,
+1,
+97,
+22
+],
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+99,
+1,
+99,
+6
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+}
+]
+}

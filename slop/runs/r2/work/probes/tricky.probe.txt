@@ -1,0 +1,76 @@
+# Lines that share a word with their heading or label but add something. All KEEP unless marked; "?" = arguable.
+0 h1 - | Team | KEEP
+0 subtitle section_first | Invite and manage your team. | KEEP
+1 h1 - | API keys | KEEP
+1 subtitle section_first | Keys are shown only once. | KEEP
+2 h1 - | Billing | KEEP
+2 subtitle section_first | You are on the Pro plan. | KEEP
+3 h1 - | Backups | KEEP
+3 subtitle section_first | Backups run every night. | KEEP
+4 h2 - | Change password | KEEP
+4 subtitle section_first | Use a strong password. | KEEP
+5 h2 - | Sessions | KEEP
+5 subtitle section_first | Devices where you're signed in. | KEEP
+6 h2 - | Recent activity | KEEP
+6 subtitle section_first | Updated a moment ago. | KEEP
+7 h2 - | Welcome back | KEEP
+7 subtitle section_first | Here's what changed while you were away. | KEEP
+8 h2 - | Get started | KEEP
+8 subtitle section_first | Start by creating your first project. | KEEP
+9 label in_form,in_control | Email | KEEP
+9 helper small,in_form,in_control | We'll never share your email. | KEEP
+10 label in_form,in_control | Username | KEEP
+10 helper small,in_form,in_control | Usernames can't be changed. | KEEP
+11 label in_form,in_control | Display name | KEEP
+11 helper small,in_form,in_control | Shown on your profile. | KEEP
+12 label in_form,in_control | Phone | KEEP
+12 helper small,in_form,in_control | Include your country code. | KEEP
+13 label in_form,in_control | Amount | KEEP
+13 helper small,in_form,in_control | Amount in USD. | KEEP
+14 label in_form,in_control | Start date | KEEP
+14 helper small,in_form,in_control | The date the project starts. | KEEP
+15 label in_form,in_control | Notes | KEEP
+15 helper small,in_form,in_control | Notes are private to you. | KEEP
+16 label in_form,in_control | Auto-save | KEEP
+16 helper small,in_form,in_control | Saves automatically every few seconds. | KEEP
+17 label in_form,in_control | Search | KEEP
+17 placeholder in_form,in_control | Search by name or email | KEEP
+18 label in_form,in_control | Website | KEEP
+18 placeholder in_form,in_control | https://example.com | KEEP
+18 helper small,in_form,in_control | Optional. | KEEP
+19 eyebrow caps,tracked,small | Step 1 | KEEP
+19 h2 - | Create your workspace | KEEP
+20 eyebrow caps,tracked,small | New | KEEP
+20 h2 - | Scheduled exports | KEEP
+21 eyebrow caps,tracked,small | Guide | KEEP
+21 h2 - | Migrating from spreadsheets | KEEP
+22 eyebrow caps,tracked,small | For teams | KEEP
+22 h2 - | Shared inboxes that stay tidy | KEEP
+23 empty_title in_state,conditional | No notifications | KEEP
+23 empty_body in_state,conditional,section_first | You're all caught up. | KEEP
+24 dialog_title in_dialog,in_state,conditional | Delete file? | KEEP
+24 dialog_body in_dialog,in_state,conditional,section_first | This file will be permanently deleted. | KEEP
+25 dialog_title in_dialog,in_state,conditional | Sign out? | KEEP
+25 dialog_body in_dialog,in_state,conditional,section_first | You'll need to sign in again. | KEEP
+26 dialog_title in_dialog,in_state,conditional | Session expired | KEEP
+26 dialog_body in_dialog,in_state,conditional,section_first | Please sign in again. | KEEP
+27 error in_state,conditional | Something went wrong | KEEP
+27 error in_state,conditional | Please try again. | KEEP
+28 badge small,pill | Beta | KEEP
+28 badge small,pill | Draft | KEEP
+28 badge small,pill | Admin | KEEP
+29 h2 - | Members | KEEP
+29 caption small | 3 of 5 seats used | KEEP
+29 button - | Invite member | KEEP
+30 h3 - | Storage | KEEP
+30 caption small | 4.2 GB of 10 GB used | KEEP
+31 label in_form,in_control | Password | KEEP
+31 helper small,in_form,in_control | Your current password. | ?
+32 label in_form,in_control | Name | KEEP
+32 helper small,in_form,in_control | Your full name. | ?
+33 h1 - | Notifications | KEEP
+33 subtitle section_first | Choose what you want to be notified about. | ?
+34 h1 - | Export | KEEP
+34 subtitle section_first | Export your data. | ?
+35 eyebrow caps,tracked,small | Featured | ?
+35 h3 - | How we cut build times in half | KEEP

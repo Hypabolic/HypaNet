@@ -1,0 +1,114 @@
+# Round 2 recall probe: restatements in other words (RESULTS.md misses, codex L35 / L41 / U04-U34 / U47 examples
+# and my own in the same spirit). Lines marked ? are arguable.
+0 h1 - | Library | KEEP
+0 subtitle section_first | Everything you've saved, in one spot. | ECHO>0
+1 eyebrow caps,tracked,small | THE LOWDOWN | ECHO>3
+1 h1 - | Overview | KEEP
+2 empty_title in_state | No messages | KEEP
+2 empty_body in_state,section_first | Your inbox is clear. | ECHO>4
+3 label in_form,in_control | Display name | KEEP
+3 helper small,in_form,in_control | The name people see. | ECHO>6
+4 h1 - | Members | KEEP
+4 subtitle section_first | The people on your team | ECHO>8
+5 h1 - | Orders | KEEP
+5 subtitle section_first | Things you've bought | ECHO>10
+6 h1 - | Recipes | KEEP
+6 subtitle section_first | Dishes you've saved | ECHO>12
+7 h1 - | Simple pricing | KEEP
+7 subtitle section_first | Pricing that's clear and easy to understand. | ECHO>14
+8 h2 - | Your library | ?
+8 subtitle section_first | All your saved books in one place. | ?
+9 h1 - | Notifications | KEEP
+9 subtitle section_first | Manage your notification settings. | ECHO>18
+10 h2 - | Team | ?
+10 subtitle section_first | View and manage your team. | ECHO>20
+11 h2 - | Integrations | KEEP
+11 subtitle section_first | Configure your integrations here. | ECHO>22
+12 dialog_title in_dialog,in_state | Discard this draft? | KEEP
+12 dialog_body in_dialog,in_state,section_first | Are you sure you want to discard this draft? | ECHO>24
+13 dialog_title in_dialog,in_state | Sign out? | KEEP
+13 dialog_body in_dialog,in_state,section_first | You're about to sign out. | ECHO>26
+14 dialog_title in_dialog,in_state | Delete project? | KEEP
+14 dialog_body in_dialog,in_state,section_first | The project will be deleted. | ECHO>28
+15 error in_state | Payment failed | KEEP
+15 error small,in_state | Your payment didn't go through. | ?
+16 empty_title in_state | No results | KEEP
+16 empty_body in_state,section_first | We couldn't find anything. | ECHO>32
+17 empty_title in_state | No invoices | KEEP
+17 empty_body in_state,section_first | There are no invoices yet. | ECHO>34
+18 label in_form,in_control | Postcode | KEEP
+18 helper small,in_form,in_control | Enter your postcode | ECHO>36
+19 label in_form,in_control | Email | KEEP
+19 placeholder in_form,in_control | Your email address | ECHO>38
+20 label in_form,in_control | Country | KEEP
+20 placeholder in_form,in_control | Select a country... | ECHO>40
+21 label in_form,in_control | Size | KEEP
+21 helper small,in_form,in_control | Choose a size. | ECHO>42
+22 label in_form,in_control | Phone | KEEP
+22 helper small,in_form,in_control | Enter your phone number. | ECHO>44
+23 button - | Export | KEEP
+23 tooltip - | Export | ECHO>46
+24 h2 - | Offline mode | KEEP
+24 body section_first | Offline mode lets you work offline. | ECHO>48
+25 h2 - | Billing | KEEP
+25 subtitle section_first | Payment details and invoices for your plan. | ?
+26 empty_title in_state | No bookings | KEEP
+26 empty_body in_state,section_first | You have no reservations yet. | ECHO>52
+27 h1 - | Settings | KEEP
+27 subtitle section_first | Manage your account settings and preferences. | ECHO>54
+28 h2 - | Appearance | KEEP
+28 subtitle section_first | Customise how the app looks. | ECHO>56
+29 eyebrow caps,tracked,small | Your plan | ECHO>59
+29 h2 - | Plan | KEEP
+30 eyebrow caps,tracked,small | How it works | ?
+30 h2 - | How Tally works | KEEP
+31 eyebrow caps,tracked,small | Pricing | ECHO>63
+31 h2 - | Simple pricing | ?
+32 eyebrow caps,tracked,small | Features | DECOR
+32 h2 - | Tools for small kitchens | KEEP
+33 eyebrow caps,tracked,small | Kind words | DECOR
+33 h2 - | Trusted by 300 bakeries | KEEP
+34 eyebrow caps,tracked,small | Under the hood | DECOR
+34 h2 - | Built on open standards | KEEP
+35 eyebrow caps,tracked,small | Got questions? | ?
+35 h2 - | FAQ | KEEP
+36 toast - | Saved | KEEP
+37 h2 - | Payment received | KEEP
+37 body section_first | We've received your payment. | ECHO>73
+38 h2 - | Invite sent | KEEP
+38 body section_first | Your invite has been sent successfully. | ECHO>75
+39 error in_state | Upload failed | KEEP
+39 error small,in_state | Your upload could not be completed. | ?
+40 h2 - | Your orders | KEEP
+40 subtitle section_first | Below are your recent orders. | NARRATE
+41 label in_form,in_control | Mention alerts | KEEP
+41 caption small,in_control | Switch mention alerts on or off. | NARRATE>81
+42 h2 - | Search | KEEP
+42 subtitle section_first | Find what you're looking for. | ECHO>83
+43 h2 - | Help | KEEP
+43 subtitle section_first | Get support and assistance. | ECHO>85
+44 h2 - | Favourites | KEEP
+44 subtitle section_first | Items you've bookmarked. | ECHO>87
+45 h2 - | Recent | KEEP
+45 subtitle section_first | Your latest items. | ECHO>89
+46 h2 - | Photos | KEEP
+46 subtitle section_first | All your pictures. | ECHO>91
+47 h2 - | Security | KEEP
+47 subtitle section_first | Keep your account safe and protected. | ECHO>93
+48 badge small,pill,dot | ● Online | DECOR
+49 badge small,pill | All systems operational | DECOR
+50 caption caps,small,mono | 51.5074° N | DECOR
+51 h2 - | Dashboard | KEEP
+51 subtitle section_first | A quick overview of your account. | ECHO>98
+52 label in_form,in_control | Bio | KEEP
+52 helper small,in_form,in_control | Tell us about yourself. | ?
+53 label in_form,in_control | Notes | KEEP
+53 helper small,in_form,in_control | Any notes you want to add. | ECHO>102
+54 h2 - | Contact | KEEP
+54 subtitle section_first | Get in touch with us. | ECHO>104
+55 empty_title in_state | Nothing here yet | KEEP
+55 empty_body in_state,section_first | You haven't added anything yet. | ECHO>106
+56 h2 - | Downloads | KEEP
+56 subtitle section_first | Files you've downloaded. | ?
+57 h2 - | Trash | KEEP
+57 subtitle section_first | Items you've deleted. | ECHO>110

@@ -1,0 +1,97 @@
+# Round 2, second probe of ordinary product copy (paywall, permission prompt, onboarding, error page, settings
+# rows, dashboard, checkout, pricing cards, empty states). Written before running it; ? = I would not be held to it.
+0 h1 - | Upgrade to Pro | KEEP
+0 subtitle section_first | Unlimited projects, priority support and offline access. | ?
+0 list_item in_list,repeated | Unlimited projects | KEEP
+0 list_item in_list,repeated | Priority support | KEEP
+0 list_item in_list,repeated | Offline access | KEEP
+0 button - | Start free trial | KEEP
+0 caption small | Then £8 a month. Cancel anytime. | KEEP
+0 link - | Restore purchases | KEEP
+1 dialog_title in_dialog,in_state | Allow notifications? | KEEP
+1 dialog_body in_dialog,in_state,section_first | We'll only notify you about replies and mentions. | KEEP
+1 button in_dialog,in_state | Allow | KEEP
+1 button in_dialog,in_state | Not now | KEEP
+2 h1 - | Create your workspace | KEEP
+2 subtitle section_first | You can change the name later. | KEEP
+2 label in_form,in_control | Workspace name | KEEP
+2 placeholder in_form,in_control | Acme Inc. | KEEP
+2 helper small,in_form,in_control | This is what your teammates will see. | ?
+2 button in_form | Continue | KEEP
+3 h1 - | Page not found | KEEP
+3 body section_first,section_last | The page you're looking for doesn't exist or has been moved. | KEEP
+3 link - | Go home | KEEP
+4 h2 - | Security | KEEP
+4 label in_form,in_control | Two-factor authentication | KEEP
+4 helper small,in_form,in_control | Adds a second step when you sign in. | KEEP
+4 label in_form,in_control | Email notifications | KEEP
+4 helper small,in_form,in_control | Get an email when someone mentions you. | KEEP
+4 label in_form,in_control | Language | KEEP
+4 helper small,in_form,in_control | Choose your language. | ECHO>26
+4 label in_form,in_control | Time zone | KEEP
+4 helper small,in_form,in_control | Used for reminders and due dates. | KEEP
+4 label in_form,in_control | Delete account | KEEP
+4 helper small,in_form,in_control | Permanently delete your account and all of its data. | KEEP
+5 stat - | 128 | KEEP
+5 label small | Open tickets | KEEP
+5 caption small | 12 more than last week | KEEP
+5 h2 - | Recent activity | KEEP
+5 empty_body in_state,section_first,section_last | No activity yet. | KEEP
+6 h2 - | Payment | KEEP
+6 subtitle section_first | All transactions are secure and encrypted. | KEEP
+6 button - | Pay £24.00 | KEEP
+6 caption small | You won't be charged until your order ships. | KEEP
+7 h2 - | Canvas | KEEP
+7 badge pill | Beta | KEEP
+7 badge pill | Pro | KEEP
+8 caption small | © 2026 Acme Ltd. All rights reserved. | KEEP
+8 link - | Privacy | KEEP
+8 link - | Terms | KEEP
+9 empty_title in_state | No messages yet | KEEP
+9 empty_body in_state,section_first | Send a message to start the conversation. | KEEP
+9 button in_state | New message | KEEP
+10 h1 - | Recipes | KEEP
+10 placeholder in_control | Search recipes… | KEEP
+10 empty_title in_state,conditional | No results | KEEP
+10 empty_body in_state,conditional,section_first | Try a different search term. | KEEP
+11 label in_form,in_control | Attachments | KEEP
+11 helper small,in_form,in_control | Up to 5 files, 10 MB each. | KEEP
+11 caption small,in_form | Drag files here or browse. | KEEP
+12 h3 in_card | Team | KEEP
+12 subtitle in_card,section_first | For growing teams. | KEEP
+12 h3 in_card | Free | KEEP
+12 subtitle in_card,section_first | Free forever. | KEEP
+12 h3 in_card | Pro | KEEP
+12 subtitle in_card,section_first | Everything in Free, plus: | KEEP
+13 h1 - | Your profile | KEEP
+13 subtitle section_first | This is how others see you. | KEEP
+14 h2 - | Notifications | KEEP
+14 subtitle section_first | You're all caught up. | KEEP
+15 h2 - | Danger zone | KEEP
+15 body section_first,section_last | Once you delete a repository, there is no going back. | KEEP
+16 body conditional,in_state | Loading your dashboard… | KEEP
+17 h2 - | Members | KEEP
+17 caption small | 3 of 5 seats used | KEEP
+18 eyebrow tracked,small | Step 2 of 4 | KEEP
+18 h1 - | Connect your bank | KEEP
+18 subtitle section_first | We use read-only access and never store your login. | KEEP
+19 eyebrow tracked,small | Case study | KEEP
+19 h2 - | How Northwind cut costs by 30% | KEEP
+20 eyebrow tracked,small | New | ?
+20 h2 - | Introducing Canvas | KEEP
+20 body section_first | A shared board for sketches, notes and feedback. | KEEP
+21 h2 - | Storage | KEEP
+21 caption small | 4.2 GB of 15 GB used | KEEP
+21 link - | Manage storage | KEEP
+22 h2 - | Invite teammates | KEEP
+22 subtitle section_first | They'll get an email with a link to join. | KEEP
+22 placeholder in_control | name@company.com | KEEP
+22 button - | Send invites | KEEP
+23 h2 - | Export data | KEEP
+23 body section_first | Exports include your projects, comments and files. | KEEP
+23 helper small | Large exports can take a few minutes. | KEEP
+23 button - | Request export | KEEP
+24 h2 - | Sessions | KEEP
+24 body section_first | These devices are currently signed in to your account. | KEEP
+24 button - | Sign out everywhere | KEEP
+24 caption small | You'll stay signed in on this device. | KEEP

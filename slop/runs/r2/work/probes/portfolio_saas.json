@@ -1,0 +1,2987 @@
+{
+"schema": "slop.screen/1",
+"id": "probe-portfolio_saas",
+"framework": "tsx",
+"clusters": [],
+"nodes": [
+{
+"i": 0,
+"k": 0,
+"role": "nav",
+"text": "About",
+"flags": [
+"in_nav"
+],
+"loc": [
+1,
+1,
+1,
+6
+]
+},
+{
+"i": 1,
+"k": 0,
+"role": "nav",
+"text": "Experience",
+"flags": [
+"in_nav"
+],
+"loc": [
+2,
+1,
+2,
+11
+]
+},
+{
+"i": 2,
+"k": 0,
+"role": "nav",
+"text": "Projects",
+"flags": [
+"in_nav"
+],
+"loc": [
+3,
+1,
+3,
+9
+]
+},
+{
+"i": 3,
+"k": 0,
+"role": "nav",
+"text": "Writing",
+"flags": [
+"in_nav"
+],
+"loc": [
+4,
+1,
+4,
+8
+]
+},
+{
+"i": 4,
+"k": 0,
+"role": "nav",
+"text": "Contact",
+"flags": [
+"in_nav"
+],
+"loc": [
+5,
+1,
+5,
+8
+]
+},
+{
+"i": 5,
+"k": 1,
+"role": "h1",
+"text": "Jane Doe",
+"flags": [],
+"loc": [
+6,
+1,
+6,
+9
+]
+},
+{
+"i": 6,
+"k": 1,
+"role": "subtitle",
+"text": "Software engineer building tools for small teams.",
+"flags": [
+"section_first"
+],
+"loc": [
+7,
+1,
+7,
+50
+]
+},
+{
+"i": 7,
+"k": 1,
+"role": "body",
+"text": "I write about distributed systems, testing and the craft of software.",
+"flags": [],
+"loc": [
+8,
+1,
+8,
+70
+]
+},
+{
+"i": 8,
+"k": 1,
+"role": "link",
+"text": "Get in touch",
+"flags": [],
+"loc": [
+9,
+1,
+9,
+13
+]
+},
+{
+"i": 9,
+"k": 1,
+"role": "link",
+"text": "Read the blog",
+"flags": [],
+"loc": [
+10,
+1,
+10,
+14
+]
+},
+{
+"i": 10,
+"k": 2,
+"role": "h2",
+"text": "About",
+"flags": [
+"caps",
+"tracked",
+"small"
+],
+"loc": [
+11,
+1,
+11,
+6
+]
+},
+{
+"i": 11,
+"k": 2,
+"role": "body",
+"text": "I'm a software engineer based in Leeds with ten years of experience in payments.",
+"flags": [
+"section_first"
+],
+"loc": [
+12,
+1,
+12,
+81
+]
+},
+{
+"i": 12,
+"k": 3,
+"role": "h2",
+"text": "Experience",
+"flags": [
+"caps",
+"tracked",
+"small"
+],
+"loc": [
+13,
+1,
+13,
+11
+]
+},
+{
+"i": 13,
+"k": 3,
+"role": "caption",
+"text": "2021 — Present",
+"flags": [
+"small",
+"mono",
+"repeated"
+],
+"loc": [
+14,
+1,
+14,
+15
+]
+},
+{
+"i": 14,
+"k": 3,
+"role": "h3",
+"text": "Senior Engineer",
+"flags": [
+"repeated"
+],
+"loc": [
+15,
+1,
+15,
+16
+]
+},
+{
+"i": 15,
+"k": 3,
+"role": "subtitle",
+"text": "Acme Corp",
+"flags": [
+"small",
+"repeated"
+],
+"loc": [
+16,
+1,
+16,
+10
+]
+},
+{
+"i": 16,
+"k": 3,
+"role": "body",
+"text": "Led the migration of the billing system to an event-driven design.",
+"flags": [
+"repeated"
+],
+"loc": [
+17,
+1,
+17,
+67
+]
+},
+{
+"i": 17,
+"k": 3,
+"role": "caption",
+"text": "2018 — 2021",
+"flags": [
+"small",
+"mono",
+"repeated"
+],
+"loc": [
+18,
+1,
+18,
+12
+]
+},
+{
+"i": 18,
+"k": 3,
+"role": "h3",
+"text": "Engineer",
+"flags": [
+"repeated"
+],
+"loc": [
+19,
+1,
+19,
+9
+]
+},
+{
+"i": 19,
+"k": 3,
+"role": "subtitle",
+"text": "Northwind",
+"flags": [
+"small",
+"repeated"
+],
+"loc": [
+20,
+1,
+20,
+10
+]
+},
+{
+"i": 20,
+"k": 4,
+"role": "h2",
+"text": "Projects",
+"flags": [
+"caps",
+"tracked",
+"small"
+],
+"loc": [
+21,
+1,
+21,
+9
+]
+},
+{
+"i": 21,
+"k": 4,
+"role": "subtitle",
+"text": "A selection of things I've built.",
+"flags": [
+"section_first"
+],
+"loc": [
+22,
+1,
+22,
+34
+]
+},
+{
+"i": 22,
+"k": 4,
+"role": "h3",
+"text": "Mosaic",
+"flags": [
+"in_card",
+"repeated"
+],
+"loc": [
+23,
+1,
+23,
+7
+]
+},
+{
+"i": 23,
+"k": 4,
+"role": "subtitle",
+"text": "Research assistant over your document library.",
+"flags": [
+"in_card",
+"repeated"
+],
+"loc": [
+24,
+1,
+24,
+47
+]
+},
+{
+"i": 24,
+"k": 4,
+"role": "badge",
+"text": "TypeScript",
+"flags": [
+"small",
+"pill",
+"in_card",
+"repeated"
+],
+"loc": [
+25,
+1,
+25,
+11
+]
+},
+{
+"i": 25,
+"k": 4,
+"role": "badge",
+"text": "React",
+"flags": [
+"small",
+"pill",
+"in_card",
+"repeated"
+],
+"loc": [
+26,
+1,
+26,
+6
+]
+},
+{
+"i": 26,
+"k": 4,
+"role": "link",
+"text": "View project →",
+"flags": [
+"in_card",
+"repeated",
+"arrow_tail"
+],
+"loc": [
+27,
+1,
+27,
+15
+]
+},
+{
+"i": 27,
+"k": 4,
+"role": "h3",
+"text": "Ledgerline",
+"flags": [
+"in_card",
+"repeated"
+],
+"loc": [
+28,
+1,
+28,
+11
+]
+},
+{
+"i": 28,
+"k": 4,
+"role": "subtitle",
+"text": "Double-entry bookkeeping for freelancers.",
+"flags": [
+"in_card",
+"repeated"
+],
+"loc": [
+29,
+1,
+29,
+42
+]
+},
+{
+"i": 29,
+"k": 4,
+"role": "badge",
+"text": "TypeScript",
+"flags": [
+"small",
+"pill",
+"in_card",
+"repeated"
+],
+"loc": [
+30,
+1,
+30,
+11
+]
+},
+{
+"i": 30,
+"k": 4,
+"role": "link",
+"text": "View project →",
+"flags": [
+"in_card",
+"repeated",
+"arrow_tail"
+],
+"loc": [
+31,
+1,
+31,
+15
+]
+},
+{
+"i": 31,
+"k": 5,
+"role": "h2",
+"text": "Writing",
+"flags": [
+"caps",
+"tracked",
+"small"
+],
+"loc": [
+32,
+1,
+32,
+8
+]
+},
+{
+"i": 32,
+"k": 5,
+"role": "subtitle",
+"text": "Thoughts on software, systems and teams.",
+"flags": [
+"section_first"
+],
+"loc": [
+33,
+1,
+33,
+41
+]
+},
+{
+"i": 33,
+"k": 5,
+"role": "h3",
+"text": "Why I stopped mocking the database",
+"flags": [
+"repeated"
+],
+"loc": [
+34,
+1,
+34,
+35
+]
+},
+{
+"i": 34,
+"k": 5,
+"role": "caption",
+"text": "12 March 2025 · 6 min read",
+"flags": [
+"small",
+"repeated"
+],
+"loc": [
+35,
+1,
+35,
+27
+]
+},
+{
+"i": 35,
+"k": 5,
+"role": "link",
+"text": "All posts →",
+"flags": [
+"arrow_tail"
+],
+"loc": [
+36,
+1,
+36,
+12
+]
+},
+{
+"i": 36,
+"k": 6,
+"role": "h2",
+"text": "Contact",
+"flags": [
+"caps",
+"tracked",
+"small"
+],
+"loc": [
+37,
+1,
+37,
+8
+]
+},
+{
+"i": 37,
+"k": 6,
+"role": "subtitle",
+"text": "Get in touch.",
+"flags": [
+"section_first"
+],
+"loc": [
+38,
+1,
+38,
+14
+]
+},
+{
+"i": 38,
+"k": 6,
+"role": "body",
+"text": "I'm always happy to talk about new projects.",
+"flags": [],
+"loc": [
+39,
+1,
+39,
+45
+]
+},
+{
+"i": 39,
+"k": 6,
+"role": "link",
+"text": "Email me",
+"flags": [],
+"loc": [
+40,
+1,
+40,
+9
+]
+},
+{
+"i": 40,
+"k": 6,
+"role": "link",
+"text": "GitHub",
+"flags": [],
+"loc": [
+41,
+1,
+41,
+7
+]
+},
+{
+"i": 41,
+"k": 7,
+"role": "caption",
+"text": "© 2025 Jane Doe. All rights reserved.",
+"flags": [
+"small",
+"in_footer"
+],
+"loc": [
+42,
+1,
+42,
+38
+]
+},
+{
+"i": 42,
+"k": 7,
+"role": "caption",
+"text": "Built with Next.js and Tailwind.",
+"flags": [
+"small",
+"in_footer"
+],
+"loc": [
+43,
+1,
+43,
+33
+]
+},
+{
+"i": 43,
+"k": 8,
+"role": "nav",
+"text": "Dashboard",
+"flags": [
+"in_nav",
+"icon"
+],
+"loc": [
+44,
+1,
+44,
+10
+]
+},
+{
+"i": 44,
+"k": 8,
+"role": "nav",
+"text": "Projects",
+"flags": [
+"in_nav",
+"icon"
+],
+"loc": [
+45,
+1,
+45,
+9
+]
+},
+{
+"i": 45,
+"k": 8,
+"role": "nav",
+"text": "Team",
+"flags": [
+"in_nav",
+"icon"
+],
+"loc": [
+46,
+1,
+46,
+5
+]
+},
+{
+"i": 46,
+"k": 8,
+"role": "nav",
+"text": "Settings",
+"flags": [
+"in_nav",
+"icon"
+],
+"loc": [
+47,
+1,
+47,
+9
+]
+},
+{
+"i": 47,
+"k": 9,
+"role": "h1",
+"text": "Projects",
+"flags": [],
+"loc": [
+48,
+1,
+48,
+9
+]
+},
+{
+"i": 48,
+"k": 9,
+"role": "subtitle",
+"text": "Manage your projects and their settings.",
+"flags": [
+"section_first"
+],
+"loc": [
+49,
+1,
+49,
+41
+]
+},
+{
+"i": 49,
+"k": 9,
+"role": "button",
+"text": "New project",
+"flags": [],
+"loc": [
+50,
+1,
+50,
+12
+]
+},
+{
+"i": 50,
+"k": 9,
+"role": "placeholder",
+"text": "Search projects…",
+"flags": [],
+"loc": [
+51,
+1,
+51,
+17
+]
+},
+{
+"i": 51,
+"k": 10,
+"role": "label",
+"text": "Name",
+"flags": [
+"small",
+"in_table"
+],
+"loc": [
+52,
+1,
+52,
+5
+]
+},
+{
+"i": 52,
+"k": 10,
+"role": "label",
+"text": "Status",
+"flags": [
+"small",
+"in_table"
+],
+"loc": [
+53,
+1,
+53,
+7
+]
+},
+{
+"i": 53,
+"k": 10,
+"role": "label",
+"text": "Updated",
+"flags": [
+"small",
+"in_table"
+],
+"loc": [
+54,
+1,
+54,
+8
+]
+},
+{
+"i": 54,
+"k": 10,
+"role": "cell",
+"text": "Website redesign",
+"flags": [
+"in_table",
+"repeated"
+],
+"loc": [
+55,
+1,
+55,
+17
+]
+},
+{
+"i": 55,
+"k": 10,
+"role": "badge",
+"text": "Active",
+"flags": [
+"small",
+"pill",
+"in_table",
+"repeated"
+],
+"loc": [
+56,
+1,
+56,
+7
+]
+},
+{
+"i": 56,
+"k": 10,
+"role": "cell",
+"text": "2 days ago",
+"flags": [
+"in_table",
+"repeated"
+],
+"loc": [
+57,
+1,
+57,
+11
+]
+},
+{
+"i": 57,
+"k": 10,
+"role": "cell",
+"text": "Mobile app",
+"flags": [
+"in_table",
+"repeated"
+],
+"loc": [
+58,
+1,
+58,
+11
+]
+},
+{
+"i": 58,
+"k": 10,
+"role": "badge",
+"text": "Archived",
+"flags": [
+"small",
+"pill",
+"in_table",
+"repeated"
+],
+"loc": [
+59,
+1,
+59,
+9
+]
+},
+{
+"i": 59,
+"k": 10,
+"role": "cell",
+"text": "3 weeks ago",
+"flags": [
+"in_table",
+"repeated"
+],
+"loc": [
+60,
+1,
+60,
+12
+]
+},
+{
+"i": 60,
+"k": 11,
+"role": "h3",
+"text": "Usage",
+"flags": [
+"in_card"
+],
+"loc": [
+61,
+1,
+61,
+6
+]
+},
+{
+"i": 61,
+"k": 11,
+"role": "subtitle",
+"text": "Your usage this billing period.",
+"flags": [
+"small",
+"in_card",
+"section_first"
+],
+"loc": [
+62,
+1,
+62,
+32
+]
+},
+{
+"i": 62,
+"k": 11,
+"role": "stat",
+"text": "4.2 GB",
+"flags": [
+"in_card"
+],
+"loc": [
+63,
+1,
+63,
+7
+]
+},
+{
+"i": 63,
+"k": 11,
+"role": "caption",
+"text": "of 10 GB used",
+"flags": [
+"small",
+"in_card"
+],
+"loc": [
+64,
+1,
+64,
+14
+]
+},
+{
+"i": 64,
+"k": 11,
+"role": "button",
+"text": "Upgrade",
+"flags": [
+"in_card"
+],
+"loc": [
+65,
+1,
+65,
+8
+]
+},
+{
+"i": 65,
+"k": 12,
+"role": "h3",
+"text": "Need help?",
+"flags": [
+"in_card"
+],
+"loc": [
+66,
+1,
+66,
+11
+]
+},
+{
+"i": 66,
+"k": 12,
+"role": "body",
+"text": "Our support team is here to help.",
+"flags": [
+"in_card",
+"section_first"
+],
+"loc": [
+67,
+1,
+67,
+34
+]
+},
+{
+"i": 67,
+"k": 12,
+"role": "link",
+"text": "Contact support",
+"flags": [
+"in_card"
+],
+"loc": [
+68,
+1,
+68,
+16
+]
+},
+{
+"i": 68,
+"k": 13,
+"role": "label",
+"text": "Today",
+"flags": [
+"caps",
+"tracked",
+"small"
+],
+"loc": [
+69,
+1,
+69,
+6
+]
+},
+{
+"i": 69,
+"k": 13,
+"role": "button",
+"text": "Quarterly report draft",
+"flags": [
+"repeated",
+"truncated"
+],
+"loc": [
+70,
+1,
+70,
+23
+]
+},
+{
+"i": 70,
+"k": 13,
+"role": "label",
+"text": "Yesterday",
+"flags": [
+"caps",
+"tracked",
+"small"
+],
+"loc": [
+71,
+1,
+71,
+10
+]
+},
+{
+"i": 71,
+"k": 13,
+"role": "button",
+"text": "Onboarding checklist",
+"flags": [
+"repeated",
+"truncated"
+],
+"loc": [
+72,
+1,
+72,
+21
+]
+},
+{
+"i": 72,
+"k": 13,
+"role": "label",
+"text": "Previous 7 days",
+"flags": [
+"caps",
+"tracked",
+"small"
+],
+"loc": [
+73,
+1,
+73,
+16
+]
+},
+{
+"i": 73,
+"k": 14,
+"role": "empty_title",
+"text": "How can I help you today?",
+"flags": [
+"in_state",
+"conditional"
+],
+"loc": [
+74,
+1,
+74,
+26
+]
+},
+{
+"i": 74,
+"k": 14,
+"role": "placeholder",
+"text": "Ask anything…",
+"flags": [],
+"loc": [
+75,
+1,
+75,
+14
+]
+},
+{
+"i": 75,
+"k": 14,
+"role": "button",
+"text": "Send",
+"flags": [
+"icon"
+],
+"loc": [
+76,
+1,
+76,
+5
+]
+},
+{
+"i": 76,
+"k": 14,
+"role": "caption",
+"text": "Assistant can make mistakes. Check important info.",
+"flags": [
+"small"
+],
+"loc": [
+77,
+1,
+77,
+51
+]
+},
+{
+"i": 77,
+"k": 15,
+"role": "eyebrow",
+"text": "Camping",
+"flags": [
+"caps",
+"tracked",
+"small"
+],
+"loc": [
+78,
+1,
+78,
+8
+]
+},
+{
+"i": 78,
+"k": 15,
+"role": "h1",
+"text": "Trailhead 2 tent",
+"flags": [],
+"loc": [
+79,
+1,
+79,
+17
+]
+},
+{
+"i": 79,
+"k": 15,
+"role": "subtitle",
+"text": "A two-person tent that pitches in four minutes.",
+"flags": [
+"section_first"
+],
+"loc": [
+80,
+1,
+80,
+48
+]
+},
+{
+"i": 80,
+"k": 15,
+"role": "stat",
+"text": "$249",
+"flags": [],
+"loc": [
+81,
+1,
+81,
+5
+]
+},
+{
+"i": 81,
+"k": 15,
+"role": "caption",
+"text": "Free shipping over $50",
+"flags": [
+"small"
+],
+"loc": [
+82,
+1,
+82,
+23
+]
+},
+{
+"i": 82,
+"k": 15,
+"role": "badge",
+"text": "In stock",
+"flags": [
+"small",
+"pill"
+],
+"loc": [
+83,
+1,
+83,
+9
+]
+},
+{
+"i": 83,
+"k": 15,
+"role": "button",
+"text": "Add to cart",
+"flags": [],
+"loc": [
+84,
+1,
+84,
+12
+]
+},
+{
+"i": 84,
+"k": 15,
+"role": "button",
+"text": "Buy now",
+"flags": [],
+"loc": [
+85,
+1,
+85,
+8
+]
+},
+{
+"i": 85,
+"k": 16,
+"role": "h2",
+"text": "Specifications",
+"flags": [],
+"loc": [
+86,
+1,
+86,
+15
+]
+},
+{
+"i": 86,
+"k": 16,
+"role": "label",
+"text": "Weight",
+"flags": [
+"small"
+],
+"loc": [
+87,
+1,
+87,
+7
+]
+},
+{
+"i": 87,
+"k": 16,
+"role": "body",
+"text": "2.1 kg",
+"flags": [],
+"loc": [
+88,
+1,
+88,
+7
+]
+},
+{
+"i": 88,
+"k": 16,
+"role": "label",
+"text": "Capacity",
+"flags": [
+"small"
+],
+"loc": [
+89,
+1,
+89,
+9
+]
+},
+{
+"i": 89,
+"k": 16,
+"role": "body",
+"text": "2 people",
+"flags": [],
+"loc": [
+90,
+1,
+90,
+9
+]
+},
+{
+"i": 90,
+"k": 17,
+"role": "h2",
+"text": "Reviews",
+"flags": [],
+"loc": [
+91,
+1,
+91,
+8
+]
+},
+{
+"i": 91,
+"k": 17,
+"role": "subtitle",
+"text": "See what customers are saying.",
+"flags": [
+"section_first"
+],
+"loc": [
+92,
+1,
+92,
+31
+]
+},
+{
+"i": 92,
+"k": 17,
+"role": "body",
+"text": "Pitched it in the dark on the first try.",
+"flags": [
+"repeated"
+],
+"loc": [
+93,
+1,
+93,
+41
+]
+},
+{
+"i": 93,
+"k": 17,
+"role": "caption",
+"text": "Maya, verified buyer",
+"flags": [
+"small",
+"repeated"
+],
+"loc": [
+94,
+1,
+94,
+21
+]
+}
+],
+"labels": [
+{
+"loc": [
+1,
+1,
+1,
+6
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+2,
+1,
+2,
+11
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+3,
+1,
+3,
+9
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+4,
+1,
+4,
+8
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+5,
+1,
+5,
+8
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+6,
+1,
+6,
+9
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+7,
+1,
+7,
+50
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+8,
+1,
+8,
+70
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+9,
+1,
+9,
+13
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+10,
+1,
+10,
+14
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+11,
+1,
+11,
+6
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+12,
+1,
+12,
+81
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+13,
+1,
+13,
+11
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+14,
+1,
+14,
+15
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+15,
+1,
+15,
+16
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+16,
+1,
+16,
+10
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+17,
+1,
+17,
+67
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+18,
+1,
+18,
+12
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+19,
+1,
+19,
+9
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+20,
+1,
+20,
+10
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+21,
+1,
+21,
+9
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+23,
+1,
+23,
+7
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+24,
+1,
+24,
+47
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+25,
+1,
+25,
+11
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+26,
+1,
+26,
+6
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+27,
+1,
+27,
+15
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+28,
+1,
+28,
+11
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+29,
+1,
+29,
+42
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+30,
+1,
+30,
+11
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+31,
+1,
+31,
+15
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+32,
+1,
+32,
+8
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+33,
+1,
+33,
+41
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+34,
+1,
+34,
+35
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+35,
+1,
+35,
+27
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+36,
+1,
+36,
+12
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+37,
+1,
+37,
+8
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+38,
+1,
+38,
+14
+],
+"class": "ECHO",
+"target": [
+37,
+1,
+37,
+8
+],
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+39,
+1,
+39,
+45
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+40,
+1,
+40,
+9
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+41,
+1,
+41,
+7
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+42,
+1,
+42,
+38
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+43,
+1,
+43,
+33
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+44,
+1,
+44,
+10
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+45,
+1,
+45,
+9
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+46,
+1,
+46,
+5
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+47,
+1,
+47,
+9
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+48,
+1,
+48,
+9
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+50,
+1,
+50,
+12
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+51,
+1,
+51,
+17
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+52,
+1,
+52,
+5
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+53,
+1,
+53,
+7
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+54,
+1,
+54,
+8
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+55,
+1,
+55,
+17
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+56,
+1,
+56,
+7
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+57,
+1,
+57,
+11
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+58,
+1,
+58,
+11
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+59,
+1,
+59,
+9
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+60,
+1,
+60,
+12
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+61,
+1,
+61,
+6
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+63,
+1,
+63,
+7
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+64,
+1,
+64,
+14
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+65,
+1,
+65,
+8
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+66,
+1,
+66,
+11
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+67,
+1,
+67,
+34
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+68,
+1,
+68,
+16
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+69,
+1,
+69,
+6
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+70,
+1,
+70,
+23
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+71,
+1,
+71,
+10
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+72,
+1,
+72,
+21
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+73,
+1,
+73,
+16
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+74,
+1,
+74,
+26
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+75,
+1,
+75,
+14
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+76,
+1,
+76,
+5
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+77,
+1,
+77,
+51
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+78,
+1,
+78,
+8
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+79,
+1,
+79,
+17
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+80,
+1,
+80,
+48
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+81,
+1,
+81,
+5
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+82,
+1,
+82,
+23
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+83,
+1,
+83,
+9
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+84,
+1,
+84,
+12
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+85,
+1,
+85,
+8
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+86,
+1,
+86,
+15
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+87,
+1,
+87,
+7
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+88,
+1,
+88,
+7
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+89,
+1,
+89,
+9
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+90,
+1,
+90,
+9
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+91,
+1,
+91,
+8
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+93,
+1,
+93,
+41
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+},
+{
+"loc": [
+94,
+1,
+94,
+21
+],
+"class": "KEEP",
+"target": null,
+"equiv": [],
+"pattern": null,
+"aside": [],
+"partial": false,
+"ct": false,
+"conf": "clear",
+"role_ok": true
+}
+]
+}
